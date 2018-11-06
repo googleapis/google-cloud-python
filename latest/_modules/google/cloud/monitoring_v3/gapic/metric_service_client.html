@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.monitoring_v3.gapic.metric_service_client &#8212; google-cloud 32265bb documentation</title>
+    <title>google.cloud.monitoring_v3.gapic.metric_service_client &#8212; google-cloud ea16a5a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -216,9 +216,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -262,23 +263,23 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_monitored_resource_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_monitored_resource_descriptors(name).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The project on which to execute the request. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}\&quot;``.</span>
-<span class="sd">            filter_ (str): An optional `filter &lt;https://cloud.google.com/monitoring/api/v3/filters&gt;`_ describing</span>
-<span class="sd">                the descriptors to be returned.  The filter can reference</span>
-<span class="sd">                the descriptor&#39;s type and labels. For example, the</span>
-<span class="sd">                following filter returns only Google Compute Engine descriptors</span>
-<span class="sd">                that have an ``id`` label:</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}&quot;``.</span>
+<span class="sd">            filter_ (str): An optional</span>
+<span class="sd">                `filter &lt;https://cloud.google.com/monitoring/api/v3/filters&gt;`__</span>
+<span class="sd">                describing the descriptors to be returned. The filter can reference the</span>
+<span class="sd">                descriptor&#39;s type and labels. For example, the following filter returns</span>
+<span class="sd">                only Google Compute Engine descriptors that have an ``id`` label:</span>
 
 <span class="sd">                ::</span>
 
-<span class="sd">                    resource.type = starts_with(\&quot;gce_\&quot;) AND resource.label:id</span>
+<span class="sd">                     resource.type = starts_with(&quot;gce_&quot;) AND resource.label:id</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -359,8 +360,8 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_monitored_resource_descriptor(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): The monitored resource descriptor to get.  The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}/monitoredResourceDescriptors/{resource_type}\&quot;``.</span>
+<span class="sd">            name (str): The monitored resource descriptor to get. The format is</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}/monitoredResourceDescriptors/{resource_type}&quot;``.</span>
 <span class="sd">                The ``{resource_type}`` is a predefined type, such as</span>
 <span class="sd">                ``cloudsql_database``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -429,24 +430,24 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_metric_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_metric_descriptors(name).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The project on which to execute the request. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}\&quot;``.</span>
-<span class="sd">            filter_ (str): If this field is empty, all custom and</span>
-<span class="sd">                system-defined metric descriptors are returned.</span>
-<span class="sd">                Otherwise, the `filter &lt;https://cloud.google.com/monitoring/api/v3/filters&gt;`_</span>
-<span class="sd">                specifies which metric descriptors are to be</span>
-<span class="sd">                returned. For example, the following filter matches all</span>
-<span class="sd">                `custom metrics &lt;https://cloud.google.com/monitoring/custom-metrics&gt;`_:</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}&quot;``.</span>
+<span class="sd">            filter_ (str): If this field is empty, all custom and system-defined metric descriptors</span>
+<span class="sd">                are returned. Otherwise, the</span>
+<span class="sd">                `filter &lt;https://cloud.google.com/monitoring/api/v3/filters&gt;`__</span>
+<span class="sd">                specifies which metric descriptors are to be returned. For example, the</span>
+<span class="sd">                following filter matches all `custom</span>
+<span class="sd">                metrics &lt;https://cloud.google.com/monitoring/custom-metrics&gt;`__:</span>
 
 <span class="sd">                ::</span>
 
-<span class="sd">                    metric.type = starts_with(\&quot;custom.googleapis.com/\&quot;)</span>
+<span class="sd">                     metric.type = starts_with(&quot;custom.googleapis.com/&quot;)</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -527,9 +528,9 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The metric descriptor on which to execute the request. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}/metricDescriptors/{metric_id}\&quot;``.</span>
-<span class="sd">                An example value of ``{metric_id}`` is</span>
-<span class="sd">                ``\&quot;compute.googleapis.com/instance/disk/read_bytes_count\&quot;``.</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}/metricDescriptors/{metric_id}&quot;``. An</span>
+<span class="sd">                example value of ``{metric_id}`` is</span>
+<span class="sd">                ``&quot;compute.googleapis.com/instance/disk/read_bytes_count&quot;``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -576,9 +577,8 @@
             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new metric descriptor.</span>
-<span class="sd">        User-created metric descriptors define</span>
-<span class="sd">        `custom metrics &lt;https://cloud.google.com/monitoring/custom-metrics&gt;`_.</span>
+<span class="sd">        Creates a new metric descriptor. User-created metric descriptors define</span>
+<span class="sd">        `custom metrics &lt;https://cloud.google.com/monitoring/custom-metrics&gt;`__.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
@@ -587,16 +587,18 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``metric_descriptor``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `metric_descriptor`:</span>
 <span class="sd">            &gt;&gt;&gt; metric_descriptor = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_metric_descriptor(name, metric_descriptor)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The project on which to execute the request. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}\&quot;``.</span>
-<span class="sd">            metric_descriptor (Union[dict, ~google.cloud.monitoring_v3.types.MetricDescriptor]): The new `custom metric &lt;https://cloud.google.com/monitoring/custom-metrics&gt;`_</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}&quot;``.</span>
+<span class="sd">            metric_descriptor (Union[dict, ~google.cloud.monitoring_v3.types.MetricDescriptor]): The new `custom</span>
+<span class="sd">                metric &lt;https://cloud.google.com/monitoring/custom-metrics&gt;`__</span>
 <span class="sd">                descriptor.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.MetricDescriptor`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -647,8 +649,9 @@
             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deletes a metric descriptor. Only user-created</span>
-<span class="sd">        `custom metrics &lt;https://cloud.google.com/monitoring/custom-metrics&gt;`_ can be deleted.</span>
+<span class="sd">        Deletes a metric descriptor. Only user-created `custom</span>
+<span class="sd">        metrics &lt;https://cloud.google.com/monitoring/custom-metrics&gt;`__ can be</span>
+<span class="sd">        deleted.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
@@ -661,9 +664,9 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The metric descriptor on which to execute the request. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}/metricDescriptors/{metric_id}\&quot;``.</span>
-<span class="sd">                An example of ``{metric_id}`` is:</span>
-<span class="sd">                ``\&quot;custom.googleapis.com/my_test_metric\&quot;``.</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}/metricDescriptors/{metric_id}&quot;``. An</span>
+<span class="sd">                example of ``{metric_id}`` is:</span>
+<span class="sd">                ``&quot;custom.googleapis.com/my_test_metric&quot;``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -721,13 +724,13 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``filter_``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `filter_`:</span>
 <span class="sd">            &gt;&gt;&gt; filter_ = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``interval``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `interval`:</span>
 <span class="sd">            &gt;&gt;&gt; interval = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``view``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `view`:</span>
 <span class="sd">            &gt;&gt;&gt; view = enums.ListTimeSeriesRequest.TimeSeriesView.FULL</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
@@ -739,32 +742,35 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_time_series(name, filter_, interval, view, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_time_series(name, filter_, interval, view).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The project on which to execute the request. The format is</span>
-<span class="sd">                \&quot;projects/{project_id_or_number}\&quot;.</span>
-<span class="sd">            filter_ (str): A `monitoring filter &lt;https://cloud.google.com/monitoring/api/v3/filters&gt;`_ that specifies which time</span>
-<span class="sd">                series should be returned.  The filter must specify a single metric type,</span>
-<span class="sd">                and can additionally specify metric labels and other information. For</span>
-<span class="sd">                example:</span>
+<span class="sd">                &quot;projects/{project\_id\_or\_number}&quot;.</span>
+<span class="sd">            filter_ (str): A `monitoring</span>
+<span class="sd">                filter &lt;https://cloud.google.com/monitoring/api/v3/filters&gt;`__ that</span>
+<span class="sd">                specifies which time series should be returned. The filter must specify</span>
+<span class="sd">                a single metric type, and can additionally specify metric labels and</span>
+<span class="sd">                other information. For example:</span>
 
 <span class="sd">                ::</span>
 
-<span class="sd">                    metric.type = \&quot;compute.googleapis.com/instance/cpu/usage_time\&quot; AND</span>
-<span class="sd">                        metric.label.instance_name = \&quot;my-instance-name\&quot;</span>
+<span class="sd">                     metric.type = &quot;compute.googleapis.com/instance/cpu/usage_time&quot; AND</span>
+<span class="sd">                         metric.label.instance_name = &quot;my-instance-name&quot;</span>
 <span class="sd">            interval (Union[dict, ~google.cloud.monitoring_v3.types.TimeInterval]): The time interval for which results should be returned. Only time series</span>
 <span class="sd">                that contain data points in the specified interval are included</span>
 <span class="sd">                in the response.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.TimeInterval`</span>
 <span class="sd">            view (~google.cloud.monitoring_v3.types.TimeSeriesView): Specifies which information is returned about the time series.</span>
 <span class="sd">            aggregation (Union[dict, ~google.cloud.monitoring_v3.types.Aggregation]): By default, the raw time series data is returned.</span>
 <span class="sd">                Use this field to combine multiple time series for different</span>
 <span class="sd">                views of the data.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.Aggregation`</span>
 <span class="sd">            order_by (str): Unsupported: must be left blank. The points in each time series are</span>
@@ -852,19 +858,20 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``time_series``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `time_series`:</span>
 <span class="sd">            &gt;&gt;&gt; time_series = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.create_time_series(name, time_series)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The project on which to execute the request. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}\&quot;``.</span>
-<span class="sd">            time_series (list[Union[dict, ~google.cloud.monitoring_v3.types.TimeSeries]]): The new data to be added to a list of time series.</span>
-<span class="sd">                Adds at most one data point to each of several time series.  The new data</span>
-<span class="sd">                point must be more recent than any other point in its time series.  Each</span>
-<span class="sd">                ``TimeSeries`` value must fully specify a unique time series by supplying</span>
-<span class="sd">                all label values for the metric and the monitored resource.</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}&quot;``.</span>
+<span class="sd">            time_series (list[Union[dict, ~google.cloud.monitoring_v3.types.TimeSeries]]): The new data to be added to a list of time series. Adds at most one data</span>
+<span class="sd">                point to each of several time series. The new data point must be more</span>
+<span class="sd">                recent than any other point in its time series. Each ``TimeSeries``</span>
+<span class="sd">                value must fully specify a unique time series by supplying all label</span>
+<span class="sd">                values for the metric and the monitored resource.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.TimeSeries`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.monitoring_v3.gapic.alert_policy_service_client &#8212; google-cloud 32265bb documentation</title>
+    <title>google.cloud.monitoring_v3.gapic.alert_policy_service_client &#8212; google-cloud ea16a5a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -80,14 +80,14 @@
 <span class="k">class</span> <span class="nc">AlertPolicyServiceClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The AlertPolicyService API is used to manage (list, create, delete,</span>
-<span class="sd">    edit) alert policies in Stackdriver Monitoring. An alerting policy is</span>
-<span class="sd">    a description of the conditions under which some aspect of your</span>
-<span class="sd">    system is considered to be \&quot;unhealthy\&quot; and the ways to notify</span>
-<span class="sd">    people or services about this state. In addition to using this API, alert</span>
-<span class="sd">    policies can also be managed through</span>
-<span class="sd">    `Stackdriver Monitoring &lt;https://cloud.google.com/monitoring/docs/&gt;`_,</span>
-<span class="sd">    which can be reached by clicking the \&quot;Monitoring\&quot; tab in</span>
-<span class="sd">    `Cloud Console &lt;https://console.cloud.google.com/&gt;`_.</span>
+<span class="sd">    edit) alert policies in Stackdriver Monitoring. An alerting policy is a</span>
+<span class="sd">    description of the conditions under which some aspect of your system is</span>
+<span class="sd">    considered to be &quot;unhealthy&quot; and the ways to notify people or services</span>
+<span class="sd">    about this state. In addition to using this API, alert policies can also</span>
+<span class="sd">    be managed through `Stackdriver</span>
+<span class="sd">    Monitoring &lt;https://cloud.google.com/monitoring/docs/&gt;`__, which can be</span>
+<span class="sd">    reached by clicking the &quot;Monitoring&quot; tab in `Cloud</span>
+<span class="sd">    Console &lt;https://console.cloud.google.com/&gt;`__.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;monitoring.googleapis.com:443&#39;</span>
@@ -214,9 +214,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -260,7 +261,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_alert_policies(name, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_alert_policies(name).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -268,24 +269,22 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The project whose alert policies are to be listed. The format is</span>
 
-<span class="sd">                    projects/[PROJECT_ID]</span>
+<span class="sd">                     projects/[PROJECT_ID]</span>
 
 <span class="sd">                Note that this field names the parent container in which the alerting</span>
 <span class="sd">                policies to be listed are stored. To retrieve a single alerting policy</span>
-<span class="sd">                by name, use the</span>
-<span class="sd">                ``GetAlertPolicy``</span>
-<span class="sd">                operation, instead.</span>
-<span class="sd">            filter_ (str): If provided, this field specifies the criteria that must be met by</span>
-<span class="sd">                alert policies to be included in the response.</span>
+<span class="sd">                by name, use the ``GetAlertPolicy`` operation, instead.</span>
+<span class="sd">            filter_ (str): If provided, this field specifies the criteria that must be met by alert</span>
+<span class="sd">                policies to be included in the response.</span>
 
-<span class="sd">                For more details, see [sorting and</span>
-<span class="sd">                filtering](/monitoring/api/v3/sorting-and-filtering).</span>
+<span class="sd">                For more details, see `sorting and</span>
+<span class="sd">                filtering &lt;https://cloud.google.com/monitoring/api/v3/sorting-and-filtering&gt;`__.</span>
 <span class="sd">            order_by (str): A comma-separated list of fields by which to sort the result. Supports</span>
 <span class="sd">                the same set of field references as the ``filter`` field. Entries can be</span>
 <span class="sd">                prefixed with a minus sign to sort by the field in descending order.</span>
 
-<span class="sd">                For more details, see [sorting and</span>
-<span class="sd">                filtering](/monitoring/api/v3/sorting-and-filtering).</span>
+<span class="sd">                For more details, see `sorting and</span>
+<span class="sd">                filtering &lt;https://cloud.google.com/monitoring/api/v3/sorting-and-filtering&gt;`__.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -368,7 +367,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The alerting policy to retrieve. The format is</span>
 
-<span class="sd">                    projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]</span>
+<span class="sd">                     projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -422,7 +421,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``alert_policy``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `alert_policy`:</span>
 <span class="sd">            &gt;&gt;&gt; alert_policy = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_alert_policy(name, alert_policy)</span>
@@ -436,9 +435,10 @@
 <span class="sd">                policy that is returned will have a name that contains a normalized</span>
 <span class="sd">                representation of this name as a prefix but adds a suffix of the form</span>
 <span class="sd">                ``/alertPolicies/[POLICY_ID]``, identifying the policy in the container.</span>
-<span class="sd">            alert_policy (Union[dict, ~google.cloud.monitoring_v3.types.AlertPolicy]): The requested alerting policy. You should omit the ``name`` field in this</span>
-<span class="sd">                policy. The name will be returned in the new policy, including</span>
-<span class="sd">                a new [ALERT_POLICY_ID] value.</span>
+<span class="sd">            alert_policy (Union[dict, ~google.cloud.monitoring_v3.types.AlertPolicy]): The requested alerting policy. You should omit the ``name`` field in</span>
+<span class="sd">                this policy. The name will be returned in the new policy, including a</span>
+<span class="sd">                new [ALERT\_POLICY\_ID] value.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.AlertPolicy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -502,7 +502,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The alerting policy to delete. The format is:</span>
 
-<span class="sd">                    projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]</span>
+<span class="sd">                     projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]</span>
 
 <span class="sd">                For more information, see ``AlertPolicy``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -547,49 +547,51 @@
                             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Updates an alerting policy. You can either replace the entire policy with</span>
-<span class="sd">        a new one or replace only certain fields in the current alerting policy by</span>
-<span class="sd">        specifying the fields to be updated via ``updateMask``. Returns the</span>
-<span class="sd">        updated alerting policy.</span>
+<span class="sd">        Updates an alerting policy. You can either replace the entire policy</span>
+<span class="sd">        with a new one or replace only certain fields in the current alerting</span>
+<span class="sd">        policy by specifying the fields to be updated via ``updateMask``.</span>
+<span class="sd">        Returns the updated alerting policy.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = monitoring_v3.AlertPolicyServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``alert_policy``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `alert_policy`:</span>
 <span class="sd">            &gt;&gt;&gt; alert_policy = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_alert_policy(alert_policy)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            alert_policy (Union[dict, ~google.cloud.monitoring_v3.types.AlertPolicy]): Required. The updated alerting policy or the updated values for the</span>
-<span class="sd">                fields listed in ``update_mask``.</span>
-<span class="sd">                If ``update_mask`` is not empty, any fields in this policy that are</span>
-<span class="sd">                not in ``update_mask`` are ignored.</span>
+<span class="sd">                fields listed in ``update_mask``. If ``update_mask`` is not empty, any</span>
+<span class="sd">                fields in this policy that are not in ``update_mask`` are ignored.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.AlertPolicy`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.monitoring_v3.types.FieldMask]): Optional. A list of alerting policy field names. If this field is not</span>
 <span class="sd">                empty, each listed field in the existing alerting policy is set to the</span>
-<span class="sd">                value of the corresponding field in the supplied policy (``alert_policy``),</span>
-<span class="sd">                or to the field&#39;s default value if the field is not in the supplied</span>
-<span class="sd">                alerting policy.  Fields not listed retain their previous value.</span>
+<span class="sd">                value of the corresponding field in the supplied policy</span>
+<span class="sd">                (``alert_policy``), or to the field&#39;s default value if the field is not</span>
+<span class="sd">                in the supplied alerting policy. Fields not listed retain their previous</span>
+<span class="sd">                value.</span>
 
-<span class="sd">                Examples of valid field masks include ``display_name``, ``documentation``,</span>
-<span class="sd">                ``documentation.content``, ``documentation.mime_type``, ``user_labels``,</span>
-<span class="sd">                ``user_label.nameofkey``, ``enabled``, ``conditions``, ``combiner``, etc.</span>
+<span class="sd">                Examples of valid field masks include ``display_name``,</span>
+<span class="sd">                ``documentation``, ``documentation.content``,</span>
+<span class="sd">                ``documentation.mime_type``, ``user_labels``, ``user_label.nameofkey``,</span>
+<span class="sd">                ``enabled``, ``conditions``, ``combiner``, etc.</span>
 
 <span class="sd">                If this field is empty, then the supplied alerting policy replaces the</span>
 <span class="sd">                existing policy. It is the same as deleting the existing policy and</span>
 <span class="sd">                adding the supplied policy, except for the following:</span>
 
-<span class="sd">                +   The new policy will have the same ``[ALERT_POLICY_ID]`` as the former</span>
-<span class="sd">                    policy. This gives you continuity with the former policy in your</span>
-<span class="sd">                    notifications and incidents.</span>
-<span class="sd">                +   Conditions in the new policy will keep their former ``[CONDITION_ID]`` if</span>
-<span class="sd">                    the supplied condition includes the `name` field with that</span>
-<span class="sd">                    `[CONDITION_ID]`. If the supplied condition omits the `name` field,</span>
-<span class="sd">                    then a new `[CONDITION_ID]` is created.</span>
+<span class="sd">                -  The new policy will have the same ``[ALERT_POLICY_ID]`` as the former</span>
+<span class="sd">                   policy. This gives you continuity with the former policy in your</span>
+<span class="sd">                   notifications and incidents.</span>
+<span class="sd">                -  Conditions in the new policy will keep their former</span>
+<span class="sd">                   ``[CONDITION_ID]`` if the supplied condition includes the ``name``</span>
+<span class="sd">                   field with that ``[CONDITION_ID]``. If the supplied condition omits</span>
+<span class="sd">                   the ``name`` field, then a new ``[CONDITION_ID]`` is created.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.FieldMask`</span>

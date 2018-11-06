@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.monitoring_v3.gapic.notification_channel_service_client &#8212; google-cloud 32265bb documentation</title>
+    <title>google.cloud.monitoring_v3.gapic.notification_channel_service_client &#8212; google-cloud ea16a5a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -219,9 +219,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -265,23 +266,22 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_notification_channel_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_notification_channel_descriptors(name).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): The REST resource name of the parent from which to retrieve</span>
-<span class="sd">                the notification channel descriptors. The expected syntax is:</span>
+<span class="sd">            name (str): The REST resource name of the parent from which to retrieve the</span>
+<span class="sd">                notification channel descriptors. The expected syntax is:</span>
 
 <span class="sd">                ::</span>
 
-<span class="sd">                    projects/[PROJECT_ID]</span>
+<span class="sd">                     projects/[PROJECT_ID]</span>
 
 <span class="sd">                Note that this names the parent container in which to look for the</span>
 <span class="sd">                descriptors; to retrieve a single descriptor by name, use the</span>
-<span class="sd">                ``GetNotificationChannelDescriptor``</span>
-<span class="sd">                operation, instead.</span>
+<span class="sd">                ``GetNotificationChannelDescriptor`` operation, instead.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -431,29 +431,28 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_notification_channels(name, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_notification_channels(name).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The project on which to execute the request. The format is</span>
-<span class="sd">                ``projects/[PROJECT_ID]``. That is, this names the container</span>
-<span class="sd">                in which to look for the notification channels; it does not name a</span>
-<span class="sd">                specific channel. To query a specific channel by REST resource name, use</span>
-<span class="sd">                the</span>
-<span class="sd">                ````GetNotificationChannel```` operation.</span>
+<span class="sd">                ``projects/[PROJECT_ID]``. That is, this names the container in which to</span>
+<span class="sd">                look for the notification channels; it does not name a specific channel.</span>
+<span class="sd">                To query a specific channel by REST resource name, use the</span>
+<span class="sd">                ``GetNotificationChannel`` operation.</span>
 <span class="sd">            filter_ (str): If provided, this field specifies the criteria that must be met by</span>
 <span class="sd">                notification channels to be included in the response.</span>
 
-<span class="sd">                For more details, see [sorting and</span>
-<span class="sd">                filtering](/monitoring/api/v3/sorting-and-filtering).</span>
+<span class="sd">                For more details, see `sorting and</span>
+<span class="sd">                filtering &lt;https://cloud.google.com/monitoring/api/v3/sorting-and-filtering&gt;`__.</span>
 <span class="sd">            order_by (str): A comma-separated list of fields by which to sort the result. Supports</span>
-<span class="sd">                the same set of fields as in ``filter``. Entries can be prefixed with</span>
-<span class="sd">                a minus sign to sort in descending rather than ascending order.</span>
+<span class="sd">                the same set of fields as in ``filter``. Entries can be prefixed with a</span>
+<span class="sd">                minus sign to sort in descending rather than ascending order.</span>
 
-<span class="sd">                For more details, see [sorting and</span>
-<span class="sd">                filtering](/monitoring/api/v3/sorting-and-filtering).</span>
+<span class="sd">                For more details, see `sorting and</span>
+<span class="sd">                filtering &lt;https://cloud.google.com/monitoring/api/v3/sorting-and-filtering&gt;`__.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -598,7 +597,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``notification_channel``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `notification_channel`:</span>
 <span class="sd">            &gt;&gt;&gt; notification_channel = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_notification_channel(name, notification_channel)</span>
@@ -608,13 +607,15 @@
 
 <span class="sd">                ::</span>
 
-<span class="sd">                    projects/[PROJECT_ID]</span>
+<span class="sd">                     projects/[PROJECT_ID]</span>
 
 <span class="sd">                Note that this names the container into which the channel will be</span>
 <span class="sd">                written. This does not name the newly created channel. The resulting</span>
 <span class="sd">                channel&#39;s name will have a normalized version of this field as a prefix,</span>
-<span class="sd">                but will add ``/notificationChannels/[CHANNEL_ID]`` to identify the channel.</span>
+<span class="sd">                but will add ``/notificationChannels/[CHANNEL_ID]`` to identify the</span>
+<span class="sd">                channel.</span>
 <span class="sd">            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): The definition of the ``NotificationChannel`` to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -674,19 +675,21 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = monitoring_v3.NotificationChannelServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``notification_channel``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `notification_channel`:</span>
 <span class="sd">            &gt;&gt;&gt; notification_channel = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_notification_channel(notification_channel)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): A description of the changes to be applied to the specified</span>
-<span class="sd">                notification channel. The description must provide a definition for</span>
-<span class="sd">                fields to be updated; the names of these fields should also be</span>
-<span class="sd">                included in the ``update_mask``.</span>
+<span class="sd">            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): A description of the changes to be applied to the specified notification</span>
+<span class="sd">                channel. The description must provide a definition for fields to be</span>
+<span class="sd">                updated; the names of these fields should also be included in the</span>
+<span class="sd">                ``update_mask``.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.monitoring_v3.types.FieldMask]): The fields to update.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>

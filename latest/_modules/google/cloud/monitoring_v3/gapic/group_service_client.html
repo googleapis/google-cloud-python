@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.monitoring_v3.gapic.group_service_client &#8212; google-cloud 32265bb documentation</title>
+    <title>google.cloud.monitoring_v3.gapic.group_service_client &#8212; google-cloud ea16a5a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -85,17 +85,16 @@
 <span class="k">class</span> <span class="nc">GroupServiceClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Group API lets you inspect and manage your</span>
-<span class="sd">    `groups &lt;https://cloud.google.com#google.monitoring.v3.Group&gt;`_.</span>
+<span class="sd">    `groups &lt;#google.monitoring.v3.Group&gt;`__.</span>
 
-<span class="sd">    A group is a named filter that is used to identify</span>
-<span class="sd">    a collection of monitored resources. Groups are typically used to</span>
-<span class="sd">    mirror the physical and/or logical topology of the environment.</span>
-<span class="sd">    Because group membership is computed dynamically, monitored</span>
-<span class="sd">    resources that are started in the future are automatically placed</span>
-<span class="sd">    in matching groups. By using a group to name monitored resources in,</span>
-<span class="sd">    for example, an alert policy, the target of that alert policy is</span>
-<span class="sd">    updated automatically as monitored resources are added and removed</span>
-<span class="sd">    from the infrastructure.</span>
+<span class="sd">    A group is a named filter that is used to identify a collection of</span>
+<span class="sd">    monitored resources. Groups are typically used to mirror the physical</span>
+<span class="sd">    and/or logical topology of the environment. Because group membership is</span>
+<span class="sd">    computed dynamically, monitored resources that are started in the future</span>
+<span class="sd">    are automatically placed in matching groups. By using a group to name</span>
+<span class="sd">    monitored resources in, for example, an alert policy, the target of that</span>
+<span class="sd">    alert policy is updated automatically as monitored resources are added</span>
+<span class="sd">    and removed from the infrastructure.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;monitoring.googleapis.com:443&#39;</span>
@@ -212,9 +211,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -259,24 +259,24 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_groups(name, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_groups(name).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The project whose groups are to be listed. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}\&quot;``.</span>
-<span class="sd">            children_of_group (str): A group name: ``\&quot;projects/{project_id_or_number}/groups/{group_id}\&quot;``.</span>
-<span class="sd">                Returns groups whose ``parentName`` field contains the group</span>
-<span class="sd">                name.  If no groups have this parent, the results are empty.</span>
-<span class="sd">            ancestors_of_group (str): A group name: ``\&quot;projects/{project_id_or_number}/groups/{group_id}\&quot;``.</span>
-<span class="sd">                Returns groups that are ancestors of the specified group.</span>
-<span class="sd">                The groups are returned in order, starting with the immediate parent and</span>
-<span class="sd">                ending with the most distant ancestor.  If the specified group has no</span>
-<span class="sd">                immediate parent, the results are empty.</span>
-<span class="sd">            descendants_of_group (str): A group name: ``\&quot;projects/{project_id_or_number}/groups/{group_id}\&quot;``.</span>
-<span class="sd">                Returns the descendants of the specified group.  This is a superset of</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}&quot;``.</span>
+<span class="sd">            children_of_group (str): A group name: ``&quot;projects/{project_id_or_number}/groups/{group_id}&quot;``.</span>
+<span class="sd">                Returns groups whose ``parentName`` field contains the group name. If no</span>
+<span class="sd">                groups have this parent, the results are empty.</span>
+<span class="sd">            ancestors_of_group (str): A group name: ``&quot;projects/{project_id_or_number}/groups/{group_id}&quot;``.</span>
+<span class="sd">                Returns groups that are ancestors of the specified group. The groups are</span>
+<span class="sd">                returned in order, starting with the immediate parent and ending with</span>
+<span class="sd">                the most distant ancestor. If the specified group has no immediate</span>
+<span class="sd">                parent, the results are empty.</span>
+<span class="sd">            descendants_of_group (str): A group name: ``&quot;projects/{project_id_or_number}/groups/{group_id}&quot;``.</span>
+<span class="sd">                Returns the descendants of the specified group. This is a superset of</span>
 <span class="sd">                the results returned by the ``childrenOfGroup`` filter, and includes</span>
 <span class="sd">                children-of-children, and so forth.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
@@ -367,7 +367,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The group to retrieve. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}/groups/{group_id}\&quot;``.</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}/groups/{group_id}&quot;``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -421,16 +421,17 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``group``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `group`:</span>
 <span class="sd">            &gt;&gt;&gt; group = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_group(name, group)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The project in which to create the group. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}\&quot;``.</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}&quot;``.</span>
 <span class="sd">            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): A group definition. It is an error to define the ``name`` field because</span>
 <span class="sd">                the system assigns the name.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.Group`</span>
 <span class="sd">            validate_only (bool): If true, validate this request but do not create the group.</span>
@@ -482,22 +483,24 @@
                      <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                      <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Updates an existing group.</span>
-<span class="sd">        You can change any group attributes except ``name``.</span>
+<span class="sd">        Updates an existing group. You can change any group attributes except</span>
+<span class="sd">        ``name``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = monitoring_v3.GroupServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``group``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `group`:</span>
 <span class="sd">            &gt;&gt;&gt; group = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_group(group)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): The new definition of the group.  All fields of the existing group,</span>
-<span class="sd">                excepting ``name``, are replaced with the corresponding fields of this group.</span>
+<span class="sd">            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): The new definition of the group. All fields of the existing group,</span>
+<span class="sd">                excepting ``name``, are replaced with the corresponding fields of this</span>
+<span class="sd">                group.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.Group`</span>
 <span class="sd">            validate_only (bool): If true, validate this request but do not update the existing group.</span>
@@ -560,7 +563,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The group to delete. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}/groups/{group_id}\&quot;``.</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}/groups/{group_id}&quot;``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -622,32 +625,34 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_group_members(name, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_group_members(name).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The group whose members are listed. The format is</span>
-<span class="sd">                ``\&quot;projects/{project_id_or_number}/groups/{group_id}\&quot;``.</span>
+<span class="sd">                ``&quot;projects/{project_id_or_number}/groups/{group_id}&quot;``.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            filter_ (str): An optional `list filter &lt;https://cloud.google.com/monitoring/api/learn_more#filtering&gt;`_ describing</span>
-<span class="sd">                the members to be returned.  The filter may reference the type, labels, and</span>
-<span class="sd">                metadata of monitored resources that comprise the group.</span>
-<span class="sd">                For example, to return only resources representing Compute Engine VM</span>
-<span class="sd">                instances, use this filter:</span>
+<span class="sd">            filter_ (str): An optional `list</span>
+<span class="sd">                filter &lt;https://cloud.google.com/monitoring/api/learn_more#filtering&gt;`__</span>
+<span class="sd">                describing the members to be returned. The filter may reference the</span>
+<span class="sd">                type, labels, and metadata of monitored resources that comprise the</span>
+<span class="sd">                group. For example, to return only resources representing Compute Engine</span>
+<span class="sd">                VM instances, use this filter:</span>
 
 <span class="sd">                ::</span>
 
-<span class="sd">                    resource.type = \&quot;gce_instance\&quot;</span>
+<span class="sd">                     resource.type = &quot;gce_instance&quot;</span>
 <span class="sd">            interval (Union[dict, ~google.cloud.monitoring_v3.types.TimeInterval]): An optional time interval for which results should be returned. Only</span>
 <span class="sd">                members that were part of the group during the specified interval are</span>
 <span class="sd">                included in the response.  If no interval is provided then the group</span>
 <span class="sd">                membership over the last minute is returned.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.TimeInterval`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>

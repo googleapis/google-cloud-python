@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Stackdriver Monitoring API &#8212; google-cloud 32265bb documentation</title>
+    <title>Client for Stackdriver Monitoring API &#8212; google-cloud ea16a5a documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,16 +39,16 @@
 <span id="client-for-stackdriver-monitoring-api"></span><h1>Client for Stackdriver Monitoring API<a class="headerlink" href="#module-google.cloud.monitoring_v3" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.AlertPolicyServiceClient">
-<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.</code><code class="descname">AlertPolicyServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.monitoring.v3.AlertPolicyService': {'methods': {'CreateAlertPolicy': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'DeleteAlertPolicy': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetAlertPolicy': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListAlertPolicies': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateAlertPolicy': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#AlertPolicyServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.AlertPolicyServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.</code><code class="descname">AlertPolicyServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.monitoring.v3.AlertPolicyService': {'methods': {'CreateAlertPolicy': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'DeleteAlertPolicy': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'GetAlertPolicy': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'ListAlertPolicies': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'UpdateAlertPolicy': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#AlertPolicyServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.AlertPolicyServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>The AlertPolicyService API is used to manage (list, create, delete,
-edit) alert policies in Stackdriver Monitoring. An alerting policy is
-a description of the conditions under which some aspect of your
-system is considered to be “unhealthy” and the ways to notify
-people or services about this state. In addition to using this API, alert
-policies can also be managed through
-<a class="reference external" href="https://cloud.google.com/monitoring/docs/">Stackdriver Monitoring</a>,
-which can be reached by clicking the “Monitoring” tab in
-<a class="reference external" href="https://console.cloud.google.com/">Cloud Console</a>.</p>
+edit) alert policies in Stackdriver Monitoring. An alerting policy is a
+description of the conditions under which some aspect of your system is
+considered to be “unhealthy” and the ways to notify people or services
+about this state. In addition to using this API, alert policies can also
+be managed through <a class="reference external" href="https://cloud.google.com/monitoring/docs/">Stackdriver
+Monitoring</a>, which can be
+reached by clicking the “Monitoring” tab in <a class="reference external" href="https://console.cloud.google.com/">Cloud
+Console</a>.</p>
 <p>Constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -107,7 +107,7 @@ your own client library.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``alert_policy``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `alert_policy`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alert_policy</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_alert_policy</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">alert_policy</span><span class="p">)</span>
@@ -126,11 +126,12 @@ policy that is returned will have a name that contains a normalized
 representation of this name as a prefix but adds a suffix of the form
 <code class="docutils literal notranslate"><span class="pre">/alertPolicies/[POLICY_ID]</span></code>, identifying the policy in the container.</p>
 </li>
-<li><strong>alert_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.AlertPolicy" title="google.cloud.monitoring_v3.types.AlertPolicy"><em>AlertPolicy</em></a><em>]</em>) – The requested alerting policy. You should omit the <code class="docutils literal notranslate"><span class="pre">name</span></code> field in this
-policy. The name will be returned in the new policy, including
-a new [ALERT_POLICY_ID] value.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.AlertPolicy" title="google.cloud.monitoring_v3.types.AlertPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlertPolicy</span></code></a></li>
+<li><strong>alert_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.AlertPolicy" title="google.cloud.monitoring_v3.types.AlertPolicy"><em>AlertPolicy</em></a><em>]</em>) – <p>The requested alerting policy. You should omit the <code class="docutils literal notranslate"><span class="pre">name</span></code> field in
+this policy. The name will be returned in the new policy, including a
+new [ALERT_POLICY_ID] value.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.AlertPolicy" title="google.cloud.monitoring_v3.types.AlertPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlertPolicy</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -334,7 +335,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_alert_policies</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_alert_policies</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -350,20 +351,18 @@ to a retryable error and retry attempts failed.</li>
 <div>projects/[PROJECT_ID]</div></blockquote>
 <p>Note that this field names the parent container in which the alerting
 policies to be listed are stored. To retrieve a single alerting policy
-by name, use the
-<code class="docutils literal notranslate"><span class="pre">GetAlertPolicy</span></code>
-operation, instead.</p>
+by name, use the <code class="docutils literal notranslate"><span class="pre">GetAlertPolicy</span></code> operation, instead.</p>
 </li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>If provided, this field specifies the criteria that must be met by
-alert policies to be included in the response.</p>
-<p>For more details, see [sorting and
-filtering](/monitoring/api/v3/sorting-and-filtering).</p>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>If provided, this field specifies the criteria that must be met by alert
+policies to be included in the response.</p>
+<p>For more details, see <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/sorting-and-filtering">sorting and
+filtering</a>.</p>
 </li>
 <li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>A comma-separated list of fields by which to sort the result. Supports
 the same set of field references as the <code class="docutils literal notranslate"><span class="pre">filter</span></code> field. Entries can be
 prefixed with a minus sign to sort by the field in descending order.</p>
-<p>For more details, see [sorting and
-filtering](/monitoring/api/v3/sorting-and-filtering).</p>
+<p>For more details, see <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/sorting-and-filtering">sorting and
+filtering</a>.</p>
 </li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
@@ -409,16 +408,16 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.monitoring_v3.AlertPolicyServiceClient.update_alert_policy">
 <code class="descname">update_alert_policy</code><span class="sig-paren">(</span><em>alert_policy</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3/gapic/alert_policy_service_client.html#AlertPolicyServiceClient.update_alert_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.AlertPolicyServiceClient.update_alert_policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates an alerting policy. You can either replace the entire policy with
-a new one or replace only certain fields in the current alerting policy by
-specifying the fields to be updated via <code class="docutils literal notranslate"><span class="pre">updateMask</span></code>. Returns the
-updated alerting policy.</p>
+<dd><p>Updates an alerting policy. You can either replace the entire policy
+with a new one or replace only certain fields in the current alerting
+policy by specifying the fields to be updated via <code class="docutils literal notranslate"><span class="pre">updateMask</span></code>.
+Returns the updated alerting policy.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring_v3</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring_v3</span><span class="o">.</span><span class="n">AlertPolicyServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``alert_policy``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `alert_policy`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alert_policy</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_alert_policy</span><span class="p">(</span><span class="n">alert_policy</span><span class="p">)</span>
@@ -429,20 +428,22 @@ updated alerting policy.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>alert_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.AlertPolicy" title="google.cloud.monitoring_v3.types.AlertPolicy"><em>AlertPolicy</em></a><em>]</em>) – Required. The updated alerting policy or the updated values for the
-fields listed in <code class="docutils literal notranslate"><span class="pre">update_mask</span></code>.
-If <code class="docutils literal notranslate"><span class="pre">update_mask</span></code> is not empty, any fields in this policy that are
-not in <code class="docutils literal notranslate"><span class="pre">update_mask</span></code> are ignored.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.AlertPolicy" title="google.cloud.monitoring_v3.types.AlertPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlertPolicy</span></code></a></li>
+<li><strong>alert_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.AlertPolicy" title="google.cloud.monitoring_v3.types.AlertPolicy"><em>AlertPolicy</em></a><em>]</em>) – <p>Required. The updated alerting policy or the updated values for the
+fields listed in <code class="docutils literal notranslate"><span class="pre">update_mask</span></code>. If <code class="docutils literal notranslate"><span class="pre">update_mask</span></code> is not empty, any
+fields in this policy that are not in <code class="docutils literal notranslate"><span class="pre">update_mask</span></code> are ignored.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.AlertPolicy" title="google.cloud.monitoring_v3.types.AlertPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlertPolicy</span></code></a></p>
+</li>
 <li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.FieldMask" title="google.cloud.monitoring_v3.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Optional. A list of alerting policy field names. If this field is not
 empty, each listed field in the existing alerting policy is set to the
-value of the corresponding field in the supplied policy (<code class="docutils literal notranslate"><span class="pre">alert_policy</span></code>),
-or to the field’s default value if the field is not in the supplied
-alerting policy.  Fields not listed retain their previous value.</p>
-<p>Examples of valid field masks include <code class="docutils literal notranslate"><span class="pre">display_name</span></code>, <code class="docutils literal notranslate"><span class="pre">documentation</span></code>,
-<code class="docutils literal notranslate"><span class="pre">documentation.content</span></code>, <code class="docutils literal notranslate"><span class="pre">documentation.mime_type</span></code>, <code class="docutils literal notranslate"><span class="pre">user_labels</span></code>,
-<code class="docutils literal notranslate"><span class="pre">user_label.nameofkey</span></code>, <code class="docutils literal notranslate"><span class="pre">enabled</span></code>, <code class="docutils literal notranslate"><span class="pre">conditions</span></code>, <code class="docutils literal notranslate"><span class="pre">combiner</span></code>, etc.</p>
+value of the corresponding field in the supplied policy
+(<code class="docutils literal notranslate"><span class="pre">alert_policy</span></code>), or to the field’s default value if the field is not
+in the supplied alerting policy. Fields not listed retain their previous
+value.</p>
+<p>Examples of valid field masks include <code class="docutils literal notranslate"><span class="pre">display_name</span></code>,
+<code class="docutils literal notranslate"><span class="pre">documentation</span></code>, <code class="docutils literal notranslate"><span class="pre">documentation.content</span></code>,
+<code class="docutils literal notranslate"><span class="pre">documentation.mime_type</span></code>, <code class="docutils literal notranslate"><span class="pre">user_labels</span></code>, <code class="docutils literal notranslate"><span class="pre">user_label.nameofkey</span></code>,
+<code class="docutils literal notranslate"><span class="pre">enabled</span></code>, <code class="docutils literal notranslate"><span class="pre">conditions</span></code>, <code class="docutils literal notranslate"><span class="pre">combiner</span></code>, etc.</p>
 <p>If this field is empty, then the supplied alerting policy replaces the
 existing policy. It is the same as deleting the existing policy and
 adding the supplied policy, except for the following:</p>
@@ -450,10 +451,10 @@ adding the supplied policy, except for the following:</p>
 <li>The new policy will have the same <code class="docutils literal notranslate"><span class="pre">[ALERT_POLICY_ID]</span></code> as the former
 policy. This gives you continuity with the former policy in your
 notifications and incidents.</li>
-<li>Conditions in the new policy will keep their former <code class="docutils literal notranslate"><span class="pre">[CONDITION_ID]</span></code> if
-the supplied condition includes the <cite>name</cite> field with that
-<cite>[CONDITION_ID]</cite>. If the supplied condition omits the <cite>name</cite> field,
-then a new <cite>[CONDITION_ID]</cite> is created.</li>
+<li>Conditions in the new policy will keep their former
+<code class="docutils literal notranslate"><span class="pre">[CONDITION_ID]</span></code> if the supplied condition includes the <code class="docutils literal notranslate"><span class="pre">name</span></code>
+field with that <code class="docutils literal notranslate"><span class="pre">[CONDITION_ID]</span></code>. If the supplied condition omits
+the <code class="docutils literal notranslate"><span class="pre">name</span></code> field, then a new <code class="docutils literal notranslate"><span class="pre">[CONDITION_ID]</span></code> is created.</li>
 </ul>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.FieldMask" title="google.cloud.monitoring_v3.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
@@ -489,18 +490,17 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.GroupServiceClient">
-<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.</code><code class="descname">GroupServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.monitoring.v3.GroupService': {'methods': {'CreateGroup': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'DeleteGroup': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetGroup': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListGroupMembers': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListGroups': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateGroup': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#GroupServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.GroupServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.</code><code class="descname">GroupServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.monitoring.v3.GroupService': {'methods': {'CreateGroup': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'DeleteGroup': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'GetGroup': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'ListGroupMembers': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'ListGroups': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'UpdateGroup': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#GroupServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.GroupServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>The Group API lets you inspect and manage your
-<a class="reference external" href="https://cloud.google.com#google.monitoring.v3.Group">groups</a>.</p>
-<p>A group is a named filter that is used to identify
-a collection of monitored resources. Groups are typically used to
-mirror the physical and/or logical topology of the environment.
-Because group membership is computed dynamically, monitored
-resources that are started in the future are automatically placed
-in matching groups. By using a group to name monitored resources in,
-for example, an alert policy, the target of that alert policy is
-updated automatically as monitored resources are added and removed
-from the infrastructure.</p>
+<a class="reference external" href="#google.monitoring.v3.Group">groups</a>.</p>
+<p>A group is a named filter that is used to identify a collection of
+monitored resources. Groups are typically used to mirror the physical
+and/or logical topology of the environment. Because group membership is
+computed dynamically, monitored resources that are started in the future
+are automatically placed in matching groups. By using a group to name
+monitored resources in, for example, an alert policy, the target of that
+alert policy is updated automatically as monitored resources are added
+and removed from the infrastructure.</p>
 <p>Constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -547,7 +547,7 @@ your own client library.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``group``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `group`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
@@ -560,10 +560,11 @@ your own client library.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project in which to create the group. The format is
 <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</li>
-<li><strong>group</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Group" title="google.cloud.monitoring_v3.types.Group"><em>Group</em></a><em>]</em>) – A group definition. It is an error to define the <code class="docutils literal notranslate"><span class="pre">name</span></code> field because
-the system assigns the name.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Group" title="google.cloud.monitoring_v3.types.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></li>
+<li><strong>group</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Group" title="google.cloud.monitoring_v3.types.Group"><em>Group</em></a><em>]</em>) – <p>A group definition. It is an error to define the <code class="docutils literal notranslate"><span class="pre">name</span></code> field because
+the system assigns the name.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Group" title="google.cloud.monitoring_v3.types.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></p>
+</li>
 <li><strong>validate_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If true, validate this request but do not create the group.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -770,7 +771,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_group_members</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_group_members</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -788,21 +789,23 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>An optional <a class="reference external" href="https://cloud.google.com/monitoring/api/learn_more#filtering">list filter</a> describing
-the members to be returned.  The filter may reference the type, labels, and
-metadata of monitored resources that comprise the group.
-For example, to return only resources representing Compute Engine VM
-instances, use this filter:</p>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>An optional <a class="reference external" href="https://cloud.google.com/monitoring/api/learn_more#filtering">list
+filter</a>
+describing the members to be returned. The filter may reference the
+type, labels, and metadata of monitored resources that comprise the
+group. For example, to return only resources representing Compute Engine
+VM instances, use this filter:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">resource</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;gce_instance&quot;</span>
 </pre></div>
 </div>
 </li>
-<li><strong>interval</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeInterval" title="google.cloud.monitoring_v3.types.TimeInterval"><em>TimeInterval</em></a><em>]</em>) – An optional time interval for which results should be returned. Only
+<li><strong>interval</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeInterval" title="google.cloud.monitoring_v3.types.TimeInterval"><em>TimeInterval</em></a><em>]</em>) – <p>An optional time interval for which results should be returned. Only
 members that were part of the group during the specified interval are
 included in the response.  If no interval is provided then the group
-membership over the last minute is returned.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeInterval" title="google.cloud.monitoring_v3.types.TimeInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeInterval</span></code></a></li>
+membership over the last minute is returned.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeInterval" title="google.cloud.monitoring_v3.types.TimeInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeInterval</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -853,7 +856,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_groups</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_groups</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -867,15 +870,15 @@ to a retryable error and retry attempts failed.</li>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project whose groups are to be listed. The format is
 <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</li>
 <li><strong>children_of_group</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A group name: <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>.
-Returns groups whose <code class="docutils literal notranslate"><span class="pre">parentName</span></code> field contains the group
-name.  If no groups have this parent, the results are empty.</li>
+Returns groups whose <code class="docutils literal notranslate"><span class="pre">parentName</span></code> field contains the group name. If no
+groups have this parent, the results are empty.</li>
 <li><strong>ancestors_of_group</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A group name: <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>.
-Returns groups that are ancestors of the specified group.
-The groups are returned in order, starting with the immediate parent and
-ending with the most distant ancestor.  If the specified group has no
-immediate parent, the results are empty.</li>
+Returns groups that are ancestors of the specified group. The groups are
+returned in order, starting with the immediate parent and ending with
+the most distant ancestor. If the specified group has no immediate
+parent, the results are empty.</li>
 <li><strong>descendants_of_group</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A group name: <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>.
-Returns the descendants of the specified group.  This is a superset of
+Returns the descendants of the specified group. This is a superset of
 the results returned by the <code class="docutils literal notranslate"><span class="pre">childrenOfGroup</span></code> filter, and includes
 children-of-children, and so forth.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
@@ -922,14 +925,14 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.monitoring_v3.GroupServiceClient.update_group">
 <code class="descname">update_group</code><span class="sig-paren">(</span><em>group</em>, <em>validate_only=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3/gapic/group_service_client.html#GroupServiceClient.update_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.GroupServiceClient.update_group" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates an existing group.
-You can change any group attributes except <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+<dd><p>Updates an existing group. You can change any group attributes except
+<code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring_v3</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring_v3</span><span class="o">.</span><span class="n">GroupServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``group``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `group`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_group</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
@@ -940,10 +943,12 @@ You can change any group attributes except <code class="docutils literal notrans
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>group</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Group" title="google.cloud.monitoring_v3.types.Group"><em>Group</em></a><em>]</em>) – The new definition of the group.  All fields of the existing group,
-excepting <code class="docutils literal notranslate"><span class="pre">name</span></code>, are replaced with the corresponding fields of this group.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Group" title="google.cloud.monitoring_v3.types.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></li>
+<li><strong>group</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Group" title="google.cloud.monitoring_v3.types.Group"><em>Group</em></a><em>]</em>) – <p>The new definition of the group. All fields of the existing group,
+excepting <code class="docutils literal notranslate"><span class="pre">name</span></code>, are replaced with the corresponding fields of this
+group.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Group" title="google.cloud.monitoring_v3.types.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></p>
+</li>
 <li><strong>validate_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If true, validate this request but do not update the existing group.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -976,7 +981,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.MetricServiceClient">
-<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.</code><code class="descname">MetricServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.monitoring.v3.MetricService': {'methods': {'CreateMetricDescriptor': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'CreateTimeSeries': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'DeleteMetricDescriptor': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetMetricDescriptor': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetMonitoredResourceDescriptor': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListMetricDescriptors': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListMonitoredResourceDescriptors': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListTimeSeries': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#MetricServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.</code><code class="descname">MetricServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.monitoring.v3.MetricService': {'methods': {'CreateMetricDescriptor': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'CreateTimeSeries': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 12000}, 'DeleteMetricDescriptor': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'GetMetricDescriptor': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'GetMonitoredResourceDescriptor': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'ListMetricDescriptors': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'ListMonitoredResourceDescriptors': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'ListTimeSeries': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#MetricServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>Manages metric descriptors, monitored resource descriptors, and
 time series data.</p>
 <p>Constructor.</p>
@@ -1017,8 +1022,7 @@ your own client library.</li>
 <dl class="method">
 <dt id="google.cloud.monitoring_v3.MetricServiceClient.create_metric_descriptor">
 <code class="descname">create_metric_descriptor</code><span class="sig-paren">(</span><em>name</em>, <em>metric_descriptor</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3/gapic/metric_service_client.html#MetricServiceClient.create_metric_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient.create_metric_descriptor" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a new metric descriptor.
-User-created metric descriptors define
+<dd><p>Creates a new metric descriptor. User-created metric descriptors define
 <a class="reference external" href="https://cloud.google.com/monitoring/custom-metrics">custom metrics</a>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring_v3</span>
@@ -1027,7 +1031,7 @@ User-created metric descriptors define
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``metric_descriptor``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `metric_descriptor`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metric_descriptor</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_metric_descriptor</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metric_descriptor</span><span class="p">)</span>
@@ -1040,10 +1044,12 @@ User-created metric descriptors define
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project on which to execute the request. The format is
 <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</li>
-<li><strong>metric_descriptor</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.MetricDescriptor" title="google.cloud.monitoring_v3.types.MetricDescriptor"><em>MetricDescriptor</em></a><em>]</em>) – The new <a class="reference external" href="https://cloud.google.com/monitoring/custom-metrics">custom metric</a>
-descriptor.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.MetricDescriptor" title="google.cloud.monitoring_v3.types.MetricDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricDescriptor</span></code></a></li>
+<li><strong>metric_descriptor</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.MetricDescriptor" title="google.cloud.monitoring_v3.types.MetricDescriptor"><em>MetricDescriptor</em></a><em>]</em>) – <p>The new <a class="reference external" href="https://cloud.google.com/monitoring/custom-metrics">custom
+metric</a>
+descriptor.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.MetricDescriptor" title="google.cloud.monitoring_v3.types.MetricDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricDescriptor</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1085,7 +1091,7 @@ included in the error response.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``time_series``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `time_series`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">time_series</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">create_time_series</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">time_series</span><span class="p">)</span>
@@ -1098,13 +1104,14 @@ included in the error response.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project on which to execute the request. The format is
 <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</li>
-<li><strong>time_series</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeSeries" title="google.cloud.monitoring_v3.types.TimeSeries"><em>TimeSeries</em></a><em>]</em><em>]</em>) – The new data to be added to a list of time series.
-Adds at most one data point to each of several time series.  The new data
-point must be more recent than any other point in its time series.  Each
-<code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> value must fully specify a unique time series by supplying
-all label values for the metric and the monitored resource.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeSeries" title="google.cloud.monitoring_v3.types.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></li>
+<li><strong>time_series</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeSeries" title="google.cloud.monitoring_v3.types.TimeSeries"><em>TimeSeries</em></a><em>]</em><em>]</em>) – <p>The new data to be added to a list of time series. Adds at most one data
+point to each of several time series. The new data point must be more
+recent than any other point in its time series. Each <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code>
+value must fully specify a unique time series by supplying all label
+values for the metric and the monitored resource.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeSeries" title="google.cloud.monitoring_v3.types.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1132,8 +1139,9 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.monitoring_v3.MetricServiceClient.delete_metric_descriptor">
 <code class="descname">delete_metric_descriptor</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3/gapic/metric_service_client.html#MetricServiceClient.delete_metric_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient.delete_metric_descriptor" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes a metric descriptor. Only user-created
-<a class="reference external" href="https://cloud.google.com/monitoring/custom-metrics">custom metrics</a> can be deleted.</p>
+<dd><p>Deletes a metric descriptor. Only user-created <a class="reference external" href="https://cloud.google.com/monitoring/custom-metrics">custom
+metrics</a> can be
+deleted.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring_v3</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1150,8 +1158,8 @@ to a retryable error and retry attempts failed.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The metric descriptor on which to execute the request. The format is
-<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/metricDescriptors/{metric_id}&quot;</span></code>.
-An example of <code class="docutils literal notranslate"><span class="pre">{metric_id}</span></code> is:
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/metricDescriptors/{metric_id}&quot;</span></code>. An
+example of <code class="docutils literal notranslate"><span class="pre">{metric_id}</span></code> is:
 <code class="docutils literal notranslate"><span class="pre">&quot;custom.googleapis.com/my_test_metric&quot;</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -1256,8 +1264,8 @@ file.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The metric descriptor on which to execute the request. The format is
-<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/metricDescriptors/{metric_id}&quot;</span></code>.
-An example value of <code class="docutils literal notranslate"><span class="pre">{metric_id}</span></code> is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/metricDescriptors/{metric_id}&quot;</span></code>. An
+example value of <code class="docutils literal notranslate"><span class="pre">{metric_id}</span></code> is
 <code class="docutils literal notranslate"><span class="pre">&quot;compute.googleapis.com/instance/disk/read_bytes_count&quot;</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -1305,7 +1313,7 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The monitored resource descriptor to get.  The format is
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The monitored resource descriptor to get. The format is
 <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/monitoredResourceDescriptors/{resource_type}&quot;</span></code>.
 The <code class="docutils literal notranslate"><span class="pre">{resource_type}</span></code> is a predefined type, such as
 <code class="docutils literal notranslate"><span class="pre">cloudsql_database</span></code>.</li>
@@ -1356,7 +1364,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_metric_descriptors</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_metric_descriptors</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -1369,12 +1377,12 @@ to a retryable error and retry attempts failed.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project on which to execute the request. The format is
 <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>If this field is empty, all custom and
-system-defined metric descriptors are returned.
-Otherwise, the <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters">filter</a>
-specifies which metric descriptors are to be
-returned. For example, the following filter matches all
-<a class="reference external" href="https://cloud.google.com/monitoring/custom-metrics">custom metrics</a>:</p>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>If this field is empty, all custom and system-defined metric descriptors
+are returned. Otherwise, the
+<a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters">filter</a>
+specifies which metric descriptors are to be returned. For example, the
+following filter matches all <a class="reference external" href="https://cloud.google.com/monitoring/custom-metrics">custom
+metrics</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">metric</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">starts_with</span><span class="p">(</span><span class="s2">&quot;custom.googleapis.com/&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1434,7 +1442,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_monitored_resource_descriptors</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_monitored_resource_descriptors</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -1447,11 +1455,11 @@ to a retryable error and retry attempts failed.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project on which to execute the request. The format is
 <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>An optional <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters">filter</a> describing
-the descriptors to be returned.  The filter can reference
-the descriptor’s type and labels. For example, the
-following filter returns only Google Compute Engine descriptors
-that have an <code class="docutils literal notranslate"><span class="pre">id</span></code> label:</p>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>An optional
+<a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters">filter</a>
+describing the descriptors to be returned. The filter can reference the
+descriptor’s type and labels. For example, the following filter returns
+only Google Compute Engine descriptors that have an <code class="docutils literal notranslate"><span class="pre">id</span></code> label:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">resource</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">starts_with</span><span class="p">(</span><span class="s2">&quot;gce_&quot;</span><span class="p">)</span> <span class="n">AND</span> <span class="n">resource</span><span class="o">.</span><span class="n">label</span><span class="p">:</span><span class="nb">id</span>
 </pre></div>
 </div>
@@ -1503,13 +1511,13 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``filter_``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `filter_`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">filter_</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``interval``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `interval`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">interval</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``view``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `view`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">view</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">ListTimeSeriesRequest</span><span class="o">.</span><span class="n">TimeSeriesView</span><span class="o">.</span><span class="n">FULL</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
@@ -1521,7 +1529,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_time_series</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_time_series</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -1534,26 +1542,29 @@ to a retryable error and retry attempts failed.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project on which to execute the request. The format is
 “projects/{project_id_or_number}”.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>A <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters">monitoring filter</a> that specifies which time
-series should be returned.  The filter must specify a single metric type,
-and can additionally specify metric labels and other information. For
-example:</p>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>A <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters">monitoring
+filter</a> that
+specifies which time series should be returned. The filter must specify
+a single metric type, and can additionally specify metric labels and
+other information. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">metric</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;compute.googleapis.com/instance/cpu/usage_time&quot;</span> <span class="n">AND</span>
     <span class="n">metric</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">instance_name</span> <span class="o">=</span> <span class="s2">&quot;my-instance-name&quot;</span>
 </pre></div>
 </div>
 </li>
-<li><strong>interval</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeInterval" title="google.cloud.monitoring_v3.types.TimeInterval"><em>TimeInterval</em></a><em>]</em>) – The time interval for which results should be returned. Only time series
+<li><strong>interval</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeInterval" title="google.cloud.monitoring_v3.types.TimeInterval"><em>TimeInterval</em></a><em>]</em>) – <p>The time interval for which results should be returned. Only time series
 that contain data points in the specified interval are included
-in the response.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeInterval" title="google.cloud.monitoring_v3.types.TimeInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeInterval</span></code></a></li>
+in the response.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeInterval" title="google.cloud.monitoring_v3.types.TimeInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeInterval</span></code></a></p>
+</li>
 <li><strong>view</strong> (<em>TimeSeriesView</em>) – Specifies which information is returned about the time series.</li>
-<li><strong>aggregation</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Aggregation" title="google.cloud.monitoring_v3.types.Aggregation"><em>Aggregation</em></a><em>]</em>) – By default, the raw time series data is returned.
+<li><strong>aggregation</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Aggregation" title="google.cloud.monitoring_v3.types.Aggregation"><em>Aggregation</em></a><em>]</em>) – <p>By default, the raw time series data is returned.
 Use this field to combine multiple time series for different
-views of the data.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Aggregation" title="google.cloud.monitoring_v3.types.Aggregation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Aggregation</span></code></a></li>
+views of the data.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Aggregation" title="google.cloud.monitoring_v3.types.Aggregation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Aggregation</span></code></a></p>
+</li>
 <li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Unsupported: must be left blank. The points in each time series are
 returned in reverse time order.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
@@ -1613,7 +1624,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.NotificationChannelServiceClient">
-<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.</code><code class="descname">NotificationChannelServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.monitoring.v3.NotificationChannelService': {'methods': {'CreateNotificationChannel': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'DeleteNotificationChannel': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetNotificationChannel': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetNotificationChannelDescriptor': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListNotificationChannelDescriptors': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListNotificationChannels': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateNotificationChannel': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'no_retry': [], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#NotificationChannelServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.NotificationChannelServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.</code><code class="descname">NotificationChannelServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.monitoring.v3.NotificationChannelService': {'methods': {'CreateNotificationChannel': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'DeleteNotificationChannel': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'GetNotificationChannel': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'GetNotificationChannelDescriptor': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'ListNotificationChannelDescriptors': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'ListNotificationChannels': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'UpdateNotificationChannel': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#NotificationChannelServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.NotificationChannelServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>The Notification Channel API provides access to configuration that
 controls how messages related to incidents are sent.</p>
 <p>Constructor.</p>
@@ -1663,7 +1674,7 @@ endpoint such as an email address, SMS number, or pagerduty service.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``notification_channel``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `notification_channel`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">notification_channel</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_notification_channel</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">notification_channel</span><span class="p">)</span>
@@ -1681,11 +1692,13 @@ endpoint such as an email address, SMS number, or pagerduty service.</p>
 <p>Note that this names the container into which the channel will be
 written. This does not name the newly created channel. The resulting
 channel’s name will have a normalized version of this field as a prefix,
-but will add <code class="docutils literal notranslate"><span class="pre">/notificationChannels/[CHANNEL_ID]</span></code> to identify the channel.</p>
+but will add <code class="docutils literal notranslate"><span class="pre">/notificationChannels/[CHANNEL_ID]</span></code> to identify the
+channel.</p>
 </li>
-<li><strong>notification_channel</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannel" title="google.cloud.monitoring_v3.types.NotificationChannel"><em>NotificationChannel</em></a><em>]</em>) – The definition of the <code class="docutils literal notranslate"><span class="pre">NotificationChannel</span></code> to create.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannel" title="google.cloud.monitoring_v3.types.NotificationChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotificationChannel</span></code></a></li>
+<li><strong>notification_channel</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannel" title="google.cloud.monitoring_v3.types.NotificationChannel"><em>NotificationChannel</em></a><em>]</em>) – <p>The definition of the <code class="docutils literal notranslate"><span class="pre">NotificationChannel</span></code> to create.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannel" title="google.cloud.monitoring_v3.types.NotificationChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotificationChannel</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1943,7 +1956,7 @@ makes it possible for new channel types to be dynamically added.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_notification_channel_descriptors</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_notification_channel_descriptors</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -1954,15 +1967,14 @@ makes it possible for new channel types to be dynamically added.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The REST resource name of the parent from which to retrieve
-the notification channel descriptors. The expected syntax is:</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The REST resource name of the parent from which to retrieve the
+notification channel descriptors. The expected syntax is:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">projects</span><span class="o">/</span><span class="p">[</span><span class="n">PROJECT_ID</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Note that this names the parent container in which to look for the
 descriptors; to retrieve a single descriptor by name, use the
-<code class="docutils literal notranslate"><span class="pre">GetNotificationChannelDescriptor</span></code>
-operation, instead.</p>
+<code class="docutils literal notranslate"><span class="pre">GetNotificationChannelDescriptor</span></code> operation, instead.</p>
 </li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
@@ -2019,7 +2031,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_notification_channels</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_notification_channels</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -2031,21 +2043,20 @@ to a retryable error and retry attempts failed.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project on which to execute the request. The format is
-<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>. That is, this names the container
-in which to look for the notification channels; it does not name a
-specific channel. To query a specific channel by REST resource name, use
-the
-<code class="docutils literal notranslate"><span class="pre">``GetNotificationChannel``</span></code> operation.</li>
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>. That is, this names the container in which to
+look for the notification channels; it does not name a specific channel.
+To query a specific channel by REST resource name, use the
+<code class="docutils literal notranslate"><span class="pre">GetNotificationChannel</span></code> operation.</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>If provided, this field specifies the criteria that must be met by
 notification channels to be included in the response.</p>
-<p>For more details, see [sorting and
-filtering](/monitoring/api/v3/sorting-and-filtering).</p>
+<p>For more details, see <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/sorting-and-filtering">sorting and
+filtering</a>.</p>
 </li>
 <li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>A comma-separated list of fields by which to sort the result. Supports
-the same set of fields as in <code class="docutils literal notranslate"><span class="pre">filter</span></code>. Entries can be prefixed with
-a minus sign to sort in descending rather than ascending order.</p>
-<p>For more details, see [sorting and
-filtering](/monitoring/api/v3/sorting-and-filtering).</p>
+the same set of fields as in <code class="docutils literal notranslate"><span class="pre">filter</span></code>. Entries can be prefixed with a
+minus sign to sort in descending rather than ascending order.</p>
+<p>For more details, see <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/sorting-and-filtering">sorting and
+filtering</a>.</p>
 </li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
@@ -2110,7 +2121,7 @@ remain unchanged.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring_v3</span><span class="o">.</span><span class="n">NotificationChannelServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``notification_channel``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `notification_channel`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">notification_channel</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_notification_channel</span><span class="p">(</span><span class="n">notification_channel</span><span class="p">)</span>
@@ -2121,15 +2132,17 @@ remain unchanged.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>notification_channel</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannel" title="google.cloud.monitoring_v3.types.NotificationChannel"><em>NotificationChannel</em></a><em>]</em>) – A description of the changes to be applied to the specified
-notification channel. The description must provide a definition for
-fields to be updated; the names of these fields should also be
-included in the <code class="docutils literal notranslate"><span class="pre">update_mask</span></code>.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannel" title="google.cloud.monitoring_v3.types.NotificationChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotificationChannel</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.FieldMask" title="google.cloud.monitoring_v3.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – The fields to update.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.FieldMask" title="google.cloud.monitoring_v3.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>notification_channel</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannel" title="google.cloud.monitoring_v3.types.NotificationChannel"><em>NotificationChannel</em></a><em>]</em>) – <p>A description of the changes to be applied to the specified notification
+channel. The description must provide a definition for fields to be
+updated; the names of these fields should also be included in the
+<code class="docutils literal notranslate"><span class="pre">update_mask</span></code>.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannel" title="google.cloud.monitoring_v3.types.NotificationChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotificationChannel</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.FieldMask" title="google.cloud.monitoring_v3.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>The fields to update.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.FieldMask" title="google.cloud.monitoring_v3.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -2162,14 +2175,14 @@ to a retryable error and retry attempts failed.</li>
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.UptimeCheckServiceClient">
 <em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.</code><code class="descname">UptimeCheckServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.monitoring.v3.UptimeCheckService': {'methods': {'CreateUptimeCheckConfig': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'DeleteUptimeCheckConfig': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'GetUptimeCheckConfig': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListUptimeCheckConfigs': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'ListUptimeCheckIps': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateUptimeCheckConfig': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#UptimeCheckServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.UptimeCheckServiceClient" title="Permalink to this definition">#</a></dt>
-<dd><p>The UptimeCheckService API is used to manage (list, create, delete, edit)
-uptime check configurations in the Stackdriver Monitoring product. An uptime
-check is a piece of configuration that determines which resources and
-services to monitor for availability. These configurations can also be
-configured interactively by navigating to the [Cloud Console]
-(<a class="reference external" href="http://console.cloud.google.com">http://console.cloud.google.com</a>), selecting the appropriate project,
-clicking on “Monitoring” on the left-hand side to navigate to Stackdriver,
-and then clicking on “Uptime”.</p>
+<dd><p>The UptimeCheckService API is used to manage (list, create, delete,
+edit) uptime check configurations in the Stackdriver Monitoring product.
+An uptime check is a piece of configuration that determines which
+resources and services to monitor for availability. These configurations
+can also be configured interactively by navigating to the [Cloud
+Console] (<a class="reference external" href="http://console.cloud.google.com">http://console.cloud.google.com</a>), selecting the appropriate
+project, clicking on “Monitoring” on the left-hand side to navigate to
+Stackdriver, and then clicking on “Uptime”.</p>
 <p>Constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2216,7 +2229,7 @@ your own client library.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``uptime_check_config``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `uptime_check_config`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">uptime_check_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_uptime_check_config</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">uptime_check_config</span><span class="p">)</span>
@@ -2227,11 +2240,12 @@ your own client library.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project in which to create the uptime check. The format
-is <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</li>
-<li><strong>uptime_check_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.UptimeCheckConfig" title="google.cloud.monitoring_v3.types.UptimeCheckConfig"><em>UptimeCheckConfig</em></a><em>]</em>) – The new uptime check configuration.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.UptimeCheckConfig" title="google.cloud.monitoring_v3.types.UptimeCheckConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">UptimeCheckConfig</span></code></a></li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project in which to create the uptime check. The format is
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</li>
+<li><strong>uptime_check_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.UptimeCheckConfig" title="google.cloud.monitoring_v3.types.UptimeCheckConfig"><em>UptimeCheckConfig</em></a><em>]</em>) – <p>The new uptime check configuration.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.UptimeCheckConfig" title="google.cloud.monitoring_v3.types.UptimeCheckConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">UptimeCheckConfig</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -2280,8 +2294,8 @@ other dependent configs that would be rendered invalid by the deletion.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The uptime check configuration to delete. The format
-is <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]</span></code>.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The uptime check configuration to delete. The format is
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -2384,8 +2398,8 @@ file.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The uptime check configuration to retrieve. The format
-is <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]</span></code>.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The uptime check configuration to retrieve. The format is
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -2434,7 +2448,7 @@ leaving out any invalid configurations.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_uptime_check_configs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_uptime_check_configs</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -2445,8 +2459,8 @@ leaving out any invalid configurations.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project whose uptime check configurations are listed. The format
-is <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project whose uptime check configurations are listed. The format is
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
@@ -2500,7 +2514,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_uptime_check_ips</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_uptime_check_ips</span><span class="p">()</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -2556,15 +2570,15 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.monitoring_v3.UptimeCheckServiceClient.update_uptime_check_config">
 <code class="descname">update_uptime_check_config</code><span class="sig-paren">(</span><em>uptime_check_config</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3/gapic/uptime_check_service_client.html#UptimeCheckServiceClient.update_uptime_check_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.UptimeCheckServiceClient.update_uptime_check_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates an uptime check configuration. You can either replace the entire
-configuration with a new one or replace only certain fields in the current
-configuration by specifying the fields to be updated via <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code>.
-Returns the updated configuration.</p>
+configuration with a new one or replace only certain fields in the
+current configuration by specifying the fields to be updated via
+<code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code>. Returns the updated configuration.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring_v3</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring_v3</span><span class="o">.</span><span class="n">UptimeCheckServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``uptime_check_config``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `uptime_check_config`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">uptime_check_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_uptime_check_config</span><span class="p">(</span><span class="n">uptime_check_config</span><span class="p">)</span>
@@ -2576,24 +2590,25 @@ Returns the updated configuration.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>uptime_check_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.UptimeCheckConfig" title="google.cloud.monitoring_v3.types.UptimeCheckConfig"><em>UptimeCheckConfig</em></a><em>]</em>) – <p>Required. If an <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code> has been specified, this field gives
-the values for the set of fields mentioned in the <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code>. If an
-<code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code> has not been given, this uptime check configuration replaces
-the current configuration. If a field is mentioned in <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code> but
-the corresonding field is omitted in this partial uptime check
-configuration, it has the effect of deleting/clearing the field from the
-configuration on the server.</p>
-<p>The following fields can be updated: <code class="docutils literal notranslate"><span class="pre">display_name</span></code>,
-<code class="docutils literal notranslate"><span class="pre">http_check</span></code>, <code class="docutils literal notranslate"><span class="pre">tcp_check</span></code>, <code class="docutils literal notranslate"><span class="pre">timeout</span></code>, <code class="docutils literal notranslate"><span class="pre">content_matchers</span></code>, and
-<code class="docutils literal notranslate"><span class="pre">selected_regions</span></code>.
-If a dict is provided, it must be of the same form as the protobuf
+the values for the set of fields mentioned in the <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code>. If
+an <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code> has not been given, this uptime check configuration
+replaces the current configuration. If a field is mentioned in
+<code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code> but the corresonding field is omitted in this partial
+uptime check configuration, it has the effect of deleting/clearing the
+field from the configuration on the server.</p>
+<p>The following fields can be updated: <code class="docutils literal notranslate"><span class="pre">display_name</span></code>, <code class="docutils literal notranslate"><span class="pre">http_check</span></code>,
+<code class="docutils literal notranslate"><span class="pre">tcp_check</span></code>, <code class="docutils literal notranslate"><span class="pre">timeout</span></code>, <code class="docutils literal notranslate"><span class="pre">content_matchers</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">selected_regions</span></code>.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.UptimeCheckConfig" title="google.cloud.monitoring_v3.types.UptimeCheckConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">UptimeCheckConfig</span></code></a></p>
 </li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.FieldMask" title="google.cloud.monitoring_v3.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Optional. If present, only the listed fields in the current uptime check
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.FieldMask" title="google.cloud.monitoring_v3.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Optional. If present, only the listed fields in the current uptime check
 configuration are updated with values from the new configuration. If this
 field is empty, then the current configuration is completely replaced with
-the new configuration.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.FieldMask" title="google.cloud.monitoring_v3.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+the new configuration.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.FieldMask" title="google.cloud.monitoring_v3.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
