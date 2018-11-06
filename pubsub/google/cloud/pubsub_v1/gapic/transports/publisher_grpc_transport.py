@@ -100,8 +100,8 @@ class PublisherGrpcTransport(object):
     def create_topic(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Creates the given topic with the given name. See the
-        <a href=\"/pubsub/docs/admin#resource_names\"> resource name rules</a>.
+        Creates the given topic with the given name. See the resource name
+        rules.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -128,8 +128,8 @@ class PublisherGrpcTransport(object):
     def publish(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the topic
-        does not exist.
+        Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the
+        topic does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -181,11 +181,12 @@ class PublisherGrpcTransport(object):
     def delete_topic(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Deletes the topic with the given name. Returns ``NOT_FOUND`` if the topic
-        does not exist. After a topic is deleted, a new topic may be created with
-        the same name; this is an entirely new topic with none of the old
-        configuration or subscriptions. Existing subscriptions to this topic are
-        not deleted, but their ``topic`` field is set to ``_deleted-topic_``.
+        Deletes the topic with the given name. Returns ``NOT_FOUND`` if the
+        topic does not exist. After a topic is deleted, a new topic may be
+        created with the same name; this is an entirely new topic with none of
+        the old configuration or subscriptions. Existing subscriptions to this
+        topic are not deleted, but their ``topic`` field is set to
+        ``_deleted-topic_``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -227,9 +228,9 @@ class PublisherGrpcTransport(object):
     def test_iam_permissions(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Returns permissions that a caller has on the specified resource.
-        If the resource does not exist, this will return an empty set of
-        permissions, not a NOT_FOUND error.
+        Returns permissions that a caller has on the specified resource. If the
+        resource does not exist, this will return an empty set of permissions,
+        not a NOT\_FOUND error.
 
         Returns:
             Callable: A callable which accepts the appropriate
