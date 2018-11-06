@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Model classes for datastore objects and properties for models.
-
-.. autoclass:: _BaseValue
-"""
+"""Model classes for datastore objects and properties for models."""
 
 
 import inspect
@@ -351,11 +348,14 @@ class Property(ModelAttribute):
         describe properties of various types (and :class:`GenericProperty`
         which describes a dynamically typed property).
 
-    All special property attributes, even those considered "public",
-    have names starting with an underscore, because :class:`StructuredProperty`
-    uses the non-underscore attribute namespace to refer to nested
-    property names; this is essential for specifying queries on
-    subproperties.
+    The :class:`Property` does not reserve any "public" names (i.e. names
+    that don't start with an underscore). This is intentional; the subclass
+    :class:`StructuredProperty` uses the public attribute namespace to refer to
+    nested property names (this is essential for specifying queries on
+    subproperties).
+
+    The :meth:`IN` attribute is provided as an alias for ``_IN``, but ``IN``
+    can be overridden if a subproperty has the same name.
 
     The :class:`Property` class and its predefined subclasses allow easy
     subclassing using composable (or stackable) validation and
@@ -368,25 +368,38 @@ class Property(ModelAttribute):
 
     A property will be a member of a :class:`Model` and will be used to help
     store values in an ``entity`` (i.e. instance of a model subclass). The
-    value(s) for a given property ``name`` will be stored in
-    ``entity._values[name]`` and accessed by :meth:`_store_value` and
-    :meth:`_retrieve_value`. For these methods, the values can be either user
-    values or base values. To retrieve user values, use
-    :meth:`_get_user_value`. To retrieve base values, use
-    :meth:`_get_base_value`. In particular, :meth:`_get_value` calls
-    :meth:`_get_user_value`, and :meth:`_serialize` effectively calls
-    :meth:`_get_base_value`.
+    underlying stored values can be either user values or base values.
 
-    To store a user value, just call :meth:`_store_value`. To store a
-    base value, wrap the value in a :class:`_BaseValue` and then
-    call :meth:`_store_value`.
+    To interact with the composable conversion and validation API, a
+    :class:`Property` subclass can define
 
-    A :class:`Property` subclass that wants to implement a specific
-    transformation between user values and serializable values should
-    implement two methods, ``_to_base_type()`` and ``_from_base_type()``.
-    These should **not** call their ``super()`` method; super calls are taken
-    care of by :meth:`_call_to_base_type` and :meth:`_call_from_base_type`.
-    This is what is meant by composable (or stackable) APIs.
+    * ``_to_base_type()``
+    * ``_from_base_type()``
+    * ``_validate()``
+
+    These should **not** call their ``super()`` method, since the methods
+    are meant to be composed. For example with composable validation:
+
+    .. code-block:: python
+
+        class Positive(ndb.IntegerProperty):
+            def _validate(self, value):
+                if value < 1:
+                    raise ndb.exceptions.BadValueError("Non-positive", value)
+
+
+        class SingleDigit(Positive):
+            def _validate(self, value):
+                if value > 10:
+                    raise ndb.exceptions.BadValueError("Multi-digit", value)
+
+    neither ``_validate()`` method calls ``super()``. Instead, when a
+    ``SingleDigit`` property validates a value, it composes all validation
+    calls in order:
+
+    * ``SingleDigit._validate``
+    * ``Positive._validate``
+    * ``IntegerProperty._validate``
 
     The API supports "stacking" classes with ever more sophisticated
     user <-> base conversions: the user -> base conversion goes from more
@@ -395,48 +408,48 @@ class Property(ModelAttribute):
     relationship between :class:`BlobProperty`, :class:`TextProperty` and
     :class:`StringProperty`.
 
-    In addition to ``_to_base_type()`` and ``_from_base_type()``, the
-    ``_validate()`` method is also a composable API.
-
     The validation API distinguishes between "lax" and "strict" user values.
     The set of lax values is a superset of the set of strict values. The
     ``_validate()`` method takes a lax value and if necessary converts it to
-    a strict value. This means that when setting the property value, lax values
-    are accepted, while when getting the property value, only strict values
-    will be returned. If no conversion is needed, ``_validate()`` may return
-    :data:`None`. If the argument is outside the set of accepted lax values,
-    ``_validate()`` should raise an exception, preferably :exc:`TypeError` or
-    :exc:`.BadValueError`.
+    a strict value. For example, an integer (lax) can be converted to a
+    floating point (strict) value. This means that when setting the property
+    value, lax values are accepted, while when getting the property value, only
+    strict values will be returned. If no conversion is needed, ``_validate()``
+    may return :data:`None`. If the argument is outside the set of accepted lax
+    values, ``_validate()`` should raise an exception, preferably
+    :exc:`TypeError` or :exc:`.BadValueError`.
 
-    Example / boilerplate:
+    A class utilizing all three may resemble:
 
     .. code-block:: python
 
-        def _validate(self, value):
-            # Lax user value to strict user value.
-            if not isinstance(value, TopType):
-                raise TypeError(value)  # Or BadValueError(...).
+        class WidgetProperty(ndb.Property):
 
-        def _to_base_type(self, value):
-            # (Strict) user value to base value.
-            if isinstance(value, SomeUserType):
-                return SomeBaseType(value)
+            def _validate(self, value):
+                # Lax user value to strict user value.
+                if not isinstance(value, Widget):
+                    raise nbd.exceptions.BadValueError(value)
 
-        def _from_base_type(self, value):
-            # Base value to (strict) user value.'
-            if not isinstance(value, SomeBaseType):
-                return SomeUserType(value)
+            def _to_base_type(self, value):
+                # (Strict) user value to base value.
+                if isinstance(value, Widget):
+                    return _WidgetInternal.to_value()
 
-    Things that ``_validate()``, ``_to_base_type()`` and
+            def _from_base_type(self, value):
+                # Base value to (strict) user value.'
+                if not isinstance(value, _WidgetInternal):
+                    return Widget(value)
+
+    There are some things that ``_validate()``, ``_to_base_type()`` and
     ``_from_base_type()`` do **not** need to handle:
 
     * :data:`None`: They will not be called with :data:`None` (and if they
       return :data:`None`, this means that the value does not need conversion).
-    * Repeated values: The infrastructure (:meth:`_get_user_value` and
-      :meth:`_get_base_value`) takes care of calling ``_from_base_type()`` or
-      ``_to_base_type()`` for each list item in a repeated value.
-    * Wrapping values in :class:`_BaseValue`: The wrapping and unwrapping is
-      taken care of by the infrastructure that calls the composable APIs.
+    * Repeated values: The infrastructure takes care of calling
+      ``_from_base_type()`` or ``_to_base_type()`` for each list item in a
+      repeated value.
+    * Wrapping "base" values: The wrapping and unwrapping is taken care of by
+      the infrastructure that calls the composable APIs.
     * Comparisons: The comparison operations call ``_to_base_type()`` on
       their operand.
     * Distinguishing between user and base values: the infrastructure
@@ -446,15 +459,6 @@ class Property(ModelAttribute):
     * Returning the original value: if any of these return :data:`None`, the
       original value is kept. (Returning a different value not equal to
       :data:`None` will substitute the different value.)
-
-    .. automethod:: _store_value
-    .. automethod:: _retrieve_value
-    .. automethod:: _get_user_value
-    .. automethod:: _get_base_value
-    .. automethod:: _get_value
-    .. automethod:: _serialize
-    .. automethod:: _call_to_base_type
-    .. automethod:: _call_from_base_type
 
     Args:
         name (str): The name of the property.
