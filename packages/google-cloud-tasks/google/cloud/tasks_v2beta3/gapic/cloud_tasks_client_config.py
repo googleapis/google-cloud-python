@@ -18,7 +18,7 @@ config = {
             },
             "methods": {
                 "ListQueues": {
-                    "timeout_millis": 10000,
+                    "timeout_millis": 15000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
