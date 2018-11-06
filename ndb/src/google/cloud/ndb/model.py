@@ -455,6 +455,22 @@ class Property(ModelAttribute):
     .. automethod:: _serialize
     .. automethod:: _call_to_base_type
     .. automethod:: _call_from_base_type
+
+    Args:
+        name (str): The name of the property.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (Any): The default value for this property.
+        choices (Iterable[Any]): A container of allowed values for this
+            property.
+        validator (Callable[[Property, Any], bool]): A validator to be used
+            to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
     """
 
     # Instance default fallbacks provided by class.
