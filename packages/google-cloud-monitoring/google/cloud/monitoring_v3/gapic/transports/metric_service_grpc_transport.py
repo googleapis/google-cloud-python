@@ -159,9 +159,8 @@ class MetricServiceGrpcTransport(object):
     def create_metric_descriptor(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Creates a new metric descriptor.
-        User-created metric descriptors define
-        `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`_.
+        Creates a new metric descriptor. User-created metric descriptors define
+        `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -174,8 +173,9 @@ class MetricServiceGrpcTransport(object):
     def delete_metric_descriptor(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Deletes a metric descriptor. Only user-created
-        `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`_ can be deleted.
+        Deletes a metric descriptor. Only user-created `custom
+        metrics <https://cloud.google.com/monitoring/custom-metrics>`__ can be
+        deleted.
 
         Returns:
             Callable: A callable which accepts the appropriate
