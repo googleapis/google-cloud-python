@@ -8,12 +8,12 @@
 
 11-05-2018 16:41 PST
 
-
 ### Implementation Changes
 
 - Add destination table properties to 'LoadJobConfig'. ([#6202](https://github.com/googleapis/google-cloud-python/pull/6202))
 - Allow strings or references in create_dataset and create_table ([#6199](https://github.com/googleapis/google-cloud-python/pull/6199))
 - Fix swallowed error message ([#6168](https://github.com/googleapis/google-cloud-python/pull/6168))
+
 ### New Features
 
 - Add --params option to %%bigquery magic ([#6277](https://github.com/googleapis/google-cloud-python/pull/6277))
