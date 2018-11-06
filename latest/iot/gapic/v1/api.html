@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud IoT API &#8212; google-cloud 20cd10f documentation</title>
+    <title>Client for Cloud IoT API &#8212; google-cloud 6ca19ce documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -88,7 +88,7 @@ your own client library.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">registry_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[REGISTRY]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``device``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `device`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">device</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_device</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
@@ -99,14 +99,15 @@ your own client library.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the device registry where this device should be created.
-For example,
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the device registry where this device should be created. For
+example,
 <code class="docutils literal notranslate"><span class="pre">projects/example-project/locations/us-central1/registries/my-registry</span></code>.</li>
-<li><strong>device</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.Device" title="google.cloud.iot_v1.types.Device"><em>Device</em></a><em>]</em>) – The device registration details. The field <code class="docutils literal notranslate"><span class="pre">name</span></code> must be empty. The server
-will generate that field from the device registry <code class="docutils literal notranslate"><span class="pre">id</span></code> provided and the
-<code class="docutils literal notranslate"><span class="pre">parent</span></code> field.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.Device" title="google.cloud.iot_v1.types.Device"><code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code></a></li>
+<li><strong>device</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.Device" title="google.cloud.iot_v1.types.Device"><em>Device</em></a><em>]</em>) – <p>The device registration details. The field <code class="docutils literal notranslate"><span class="pre">name</span></code> must be empty. The
+server will generate that field from the device registry <code class="docutils literal notranslate"><span class="pre">id</span></code> provided
+and the <code class="docutils literal notranslate"><span class="pre">parent</span></code> field.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.Device" title="google.cloud.iot_v1.types.Device"><code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -145,7 +146,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``device_registry``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `device_registry`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">device_registry</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_device_registry</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">device_registry</span><span class="p">)</span>
@@ -158,11 +159,12 @@ to a retryable error and retry attempts failed.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The project and cloud region where this device registry must be created.
 For example, <code class="docutils literal notranslate"><span class="pre">projects/example-project/locations/us-central1</span></code>.</li>
-<li><strong>device_registry</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.DeviceRegistry" title="google.cloud.iot_v1.types.DeviceRegistry"><em>DeviceRegistry</em></a><em>]</em>) – The device registry. The field <code class="docutils literal notranslate"><span class="pre">name</span></code> must be empty. The server will
+<li><strong>device_registry</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.DeviceRegistry" title="google.cloud.iot_v1.types.DeviceRegistry"><em>DeviceRegistry</em></a><em>]</em>) – <p>The device registry. The field <code class="docutils literal notranslate"><span class="pre">name</span></code> must be empty. The server will
 generate that field from the device registry <code class="docutils literal notranslate"><span class="pre">id</span></code> provided and the
-<code class="docutils literal notranslate"><span class="pre">parent</span></code> field.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.DeviceRegistry" title="google.cloud.iot_v1.types.DeviceRegistry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceRegistry</span></code></a></li>
+<code class="docutils literal notranslate"><span class="pre">parent</span></code> field.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.DeviceRegistry" title="google.cloud.iot_v1.types.DeviceRegistry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceRegistry</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -210,7 +212,8 @@ to a retryable error and retry attempts failed.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the device. For example,
-<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code>
+or
 <code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/{num_id}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -366,12 +369,14 @@ file.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the device. For example,
-<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code>
+or
 <code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/{num_id}</span></code>.</li>
-<li><strong>field_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – The fields of the <code class="docutils literal notranslate"><span class="pre">Device</span></code> resource to be returned in the response. If the
-field mask is unset or empty, all fields are returned.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>field_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>The fields of the <code class="docutils literal notranslate"><span class="pre">Device</span></code> resource to be returned in the response. If
+the field mask is unset or empty, all fields are returned.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -519,7 +524,8 @@ order (i.e.: newest first).</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the device. For example,
-<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code>
+or
 <code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/{num_id}</span></code>.</li>
 <li><strong>num_versions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of versions to list. Versions are listed in decreasing order of
 the version number. The maximum number of versions retained is 10. If this
@@ -571,7 +577,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_device_registries</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_device_registries</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -640,7 +646,8 @@ newest first).</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the device. For example,
-<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code>
+or
 <code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/{num_id}</span></code>.</li>
 <li><strong>num_states</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of states to list. States are listed in descending order of
 update time. The maximum number of states retained is 10. If this
@@ -692,7 +699,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_devices</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_devices</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -707,14 +714,15 @@ to a retryable error and retry attempts failed.</li>
 <code class="docutils literal notranslate"><span class="pre">projects/my-project/locations/us-central1/registries/my-registry</span></code>.</li>
 <li><strong>device_num_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>long</em><em>]</em>) – A list of device numerical ids. If empty, it will ignore this field. This
 field cannot hold more than 10,000 entries.</li>
-<li><strong>device_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – A list of device string identifiers. If empty, it will ignore this field.
-For example, <code class="docutils literal notranslate"><span class="pre">['device0',</span> <span class="pre">'device12']</span></code>. This field cannot hold more than
-10,000 entries.</li>
-<li><strong>field_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – The fields of the <code class="docutils literal notranslate"><span class="pre">Device</span></code> resource to be returned in the response. The
-fields <code class="docutils literal notranslate"><span class="pre">id</span></code>, and <code class="docutils literal notranslate"><span class="pre">num_id</span></code> are always returned by default, along with any
-other fields specified.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>device_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – A list of device string identifiers. If empty, it will ignore this
+field. For example, <code class="docutils literal notranslate"><span class="pre">['device0',</span> <span class="pre">'device12']</span></code>. This field cannot hold
+more than 10,000 entries.</li>
+<li><strong>field_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>The fields of the <code class="docutils literal notranslate"><span class="pre">Device</span></code> resource to be returned in the response.
+The fields <code class="docutils literal notranslate"><span class="pre">id</span></code>, and <code class="docutils literal notranslate"><span class="pre">num_id</span></code> are always returned by default, along
+with any other fields specified.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
@@ -769,7 +777,7 @@ its metadata.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">device_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[REGISTRY]&#39;</span><span class="p">,</span> <span class="s1">&#39;[DEVICE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``binary_data``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `binary_data`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">binary_data</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">modify_cloud_to_device_config</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">binary_data</span><span class="p">)</span>
@@ -781,7 +789,8 @@ its metadata.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the device. For example,
-<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code>
+or
 <code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/{num_id}</span></code>.</li>
 <li><strong>binary_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – The configuration data for the device.</li>
 <li><strong>version_to_update</strong> (<em>long</em>) – The version number to update. If this value is zero, it will not check the
@@ -834,7 +843,7 @@ existing policy.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">registry_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[REGISTRY]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``policy``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `policy`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
@@ -848,12 +857,13 @@ existing policy.</p>
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being specified.
 <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
 resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
-<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.Policy" title="google.cloud.iot_v1.types.Policy"><em>Policy</em></a><em>]</em>) – REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of
-the policy is limited to a few 10s of KB. An empty policy is a
+<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.Policy" title="google.cloud.iot_v1.types.Policy"><em>Policy</em></a><em>]</em>) – <p>REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The
+size of the policy is limited to a few 10s of KB. An empty policy is a
 valid policy but certain Cloud Platform services (such as Projects)
-might reject them.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.Policy" title="google.cloud.iot_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></li>
+might reject them.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.Policy" title="google.cloud.iot_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -884,9 +894,9 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.iot_v1.DeviceManagerClient.test_iam_permissions">
 <code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iot_v1/gapic/device_manager_client.html#DeviceManagerClient.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iot_v1.DeviceManagerClient.test_iam_permissions" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns permissions that a caller has on the specified resource.
-If the resource does not exist, this will return an empty set of
-permissions, not a NOT_FOUND error.</p>
+<dd><p>Returns permissions that a caller has on the specified resource. If the
+resource does not exist, this will return an empty set of permissions,
+not a NOT_FOUND error.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">iot_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -894,7 +904,7 @@ permissions, not a NOT_FOUND error.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">registry_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[REGISTRY]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``permissions``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `permissions`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="p">)</span>
@@ -910,8 +920,8 @@ permissions, not a NOT_FOUND error.</p>
 resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
 <li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. Permissions with
 wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
-information see
-<a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</li>
+information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM
+Overview</a>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -948,10 +958,10 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">iot_v1</span><span class="o">.</span><span class="n">DeviceManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``device``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `device`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">device</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``update_mask``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `update_mask`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">update_mask</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_device</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">update_mask</span><span class="p">)</span>
@@ -962,18 +972,21 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>device</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.Device" title="google.cloud.iot_v1.types.Device"><em>Device</em></a><em>]</em>) – The new values for the device registry. The <code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">num_id</span></code> fields must
-be empty, and the field <code class="docutils literal notranslate"><span class="pre">name</span></code> must specify the name path. For example,
-<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0``or</span>
-<span class="pre">``projects/p0/locations/us-central1/registries/registry0/devices/{num_id}</span></code>.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.Device" title="google.cloud.iot_v1.types.Device"><code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Only updates the <code class="docutils literal notranslate"><span class="pre">device</span></code> fields indicated by this mask.
-The field mask must not be empty, and it must not contain fields that
-are immutable or only set by the server.
-Mutable top-level fields: <code class="docutils literal notranslate"><span class="pre">credentials</span></code>, <code class="docutils literal notranslate"><span class="pre">blocked</span></code>, and <code class="docutils literal notranslate"><span class="pre">metadata</span></code>
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>device</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.Device" title="google.cloud.iot_v1.types.Device"><em>Device</em></a><em>]</em>) – <p>The new values for the device registry. The <code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">num_id</span></code> fields
+must be empty, and the field <code class="docutils literal notranslate"><span class="pre">name</span></code> must specify the name path. For
+example,
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/device0</span></code>or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-central1/registries/registry0/devices/{num_id}</span></code>.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.Device" title="google.cloud.iot_v1.types.Device"><code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Only updates the <code class="docutils literal notranslate"><span class="pre">device</span></code> fields indicated by this mask. The field
+mask must not be empty, and it must not contain fields that are
+immutable or only set by the server. Mutable top-level fields:
+<code class="docutils literal notranslate"><span class="pre">credentials</span></code>, <code class="docutils literal notranslate"><span class="pre">blocked</span></code>, and <code class="docutils literal notranslate"><span class="pre">metadata</span></code></p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1010,10 +1023,10 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">iot_v1</span><span class="o">.</span><span class="n">DeviceManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``device_registry``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `device_registry`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">device_registry</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``update_mask``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `update_mask`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">update_mask</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_device_registry</span><span class="p">(</span><span class="n">device_registry</span><span class="p">,</span> <span class="n">update_mask</span><span class="p">)</span>
@@ -1024,18 +1037,21 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>device_registry</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.DeviceRegistry" title="google.cloud.iot_v1.types.DeviceRegistry"><em>DeviceRegistry</em></a><em>]</em>) – The new values for the device registry. The <code class="docutils literal notranslate"><span class="pre">id</span></code> field must be empty, and
-the <code class="docutils literal notranslate"><span class="pre">name</span></code> field must indicate the path of the resource. For example,
-<code class="docutils literal notranslate"><span class="pre">projects/example-project/locations/us-central1/registries/my-registry</span></code>.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.DeviceRegistry" title="google.cloud.iot_v1.types.DeviceRegistry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceRegistry</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Only updates the <code class="docutils literal notranslate"><span class="pre">device_registry</span></code> fields indicated by this mask.
-The field mask must not be empty, and it must not contain fields that
-are immutable or only set by the server.
-Mutable top-level fields: <code class="docutils literal notranslate"><span class="pre">event_notification_config</span></code>, <code class="docutils literal notranslate"><span class="pre">http_config</span></code>,
-<code class="docutils literal notranslate"><span class="pre">mqtt_config</span></code>, and <code class="docutils literal notranslate"><span class="pre">state_notification_config</span></code>.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>device_registry</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.DeviceRegistry" title="google.cloud.iot_v1.types.DeviceRegistry"><em>DeviceRegistry</em></a><em>]</em>) – <p>The new values for the device registry. The <code class="docutils literal notranslate"><span class="pre">id</span></code> field must be empty,
+and the <code class="docutils literal notranslate"><span class="pre">name</span></code> field must indicate the path of the resource. For
+example,
+<code class="docutils literal notranslate"><span class="pre">projects/example-project/locations/us-central1/registries/my-registry</span></code>.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.DeviceRegistry" title="google.cloud.iot_v1.types.DeviceRegistry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceRegistry</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Only updates the <code class="docutils literal notranslate"><span class="pre">device_registry</span></code> fields indicated by this mask. The
+field mask must not be empty, and it must not contain fields that are
+immutable or only set by the server. Mutable top-level fields:
+<code class="docutils literal notranslate"><span class="pre">event_notification_config</span></code>, <code class="docutils literal notranslate"><span class="pre">http_config</span></code>, <code class="docutils literal notranslate"><span class="pre">mqtt_config</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">state_notification_config</span></code>.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.iot_v1.types.FieldMask" title="google.cloud.iot_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
