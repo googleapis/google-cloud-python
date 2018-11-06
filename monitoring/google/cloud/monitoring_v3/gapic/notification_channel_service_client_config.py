@@ -3,7 +3,6 @@ config = {
         "google.monitoring.v3.NotificationChannelService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "no_retry": [],
                 "non_idempotent": []
             },
             "retry_params": {
@@ -19,37 +18,37 @@ config = {
             },
             "methods": {
                 "ListNotificationChannelDescriptors": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "GetNotificationChannelDescriptor": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "ListNotificationChannels": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "GetNotificationChannel": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "CreateNotificationChannel": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "UpdateNotificationChannel": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "DeleteNotificationChannel": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 }
