@@ -105,8 +105,8 @@ class CloudRedisGrpcTransport(object):
         Lists all Redis instances owned by a project in either the specified
         location (region) or all locations.
 
-        The location should have the following format:
-        * ``projects/{project_id}/locations/{location_id}``
+        The location should have the following format: \*
+        ``projects/{project_id}/locations/{location_id}``
 
         If ``location_id`` is specified as ``-`` (wildcard), then all regions
         available to the project are queried, and the results are aggregated.
@@ -137,16 +137,17 @@ class CloudRedisGrpcTransport(object):
 
         Creates a Redis instance based on the specified tier and memory size.
 
-        By default, the instance is peered to the project's
-        `default network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`_.
+        By default, the instance is peered to the project's `default
+        network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
 
-        The creation is executed asynchronously and callers may check the returned
-        operation to track its progress. Once the operation is completed the Redis
-        instance will be fully functional. Completed longrunning.Operation will
-        contain the new instance object in the response field.
+        The creation is executed asynchronously and callers may check the
+        returned operation to track its progress. Once the operation is
+        completed the Redis instance will be fully functional. Completed
+        longrunning.Operation will contain the new instance object in the
+        response field.
 
-        The returned operation is automatically deleted after a few hours, so there
-        is no need to call DeleteOperation.
+        The returned operation is automatically deleted after a few hours, so
+        there is no need to call DeleteOperation.
 
         Returns:
             Callable: A callable which accepts the appropriate
