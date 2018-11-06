@@ -1152,6 +1152,13 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         from google.cloud.bigquery.job import LoadJobConfig
         return LoadJobConfig
 
+    def test_ctor_w_properties(self):
+        config = self._get_target_class()(
+            allow_jagged_rows=True, allow_quoted_newlines=True)
+
+        self.assertTrue(config.allow_jagged_rows)
+        self.assertTrue(config.allow_quoted_newlines)
+
     def test_allow_jagged_rows_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.allow_jagged_rows)
@@ -2482,6 +2489,20 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         from google.cloud.bigquery.job import CopyJobConfig
         return CopyJobConfig
 
+    def test_ctor_w_properties(self):
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import WriteDisposition
+
+        create_disposition = CreateDisposition.CREATE_NEVER
+        write_disposition = WriteDisposition.WRITE_TRUNCATE
+        config = self._get_target_class()(
+            create_disposition=create_disposition,
+            write_disposition=write_disposition
+        )
+
+        self.assertEqual(config.create_disposition, create_disposition)
+        self.assertEqual(config.write_disposition, write_disposition)
+
     def test_to_api_repr_with_encryption(self):
         from google.cloud.bigquery.table import EncryptionConfiguration
 
@@ -2916,6 +2937,13 @@ class TestExtractJobConfig(unittest.TestCase, _Base):
         from google.cloud.bigquery.job import ExtractJobConfig
         return ExtractJobConfig
 
+    def test_ctor_w_properties(self):
+        config = self._get_target_class()(
+            field_delimiter='\t', print_header=True)
+
+        self.assertEqual(config.field_delimiter, '\t')
+        self.assertTrue(config.print_header)
+
     def test_to_api_repr(self):
         from google.cloud.bigquery import job
         config = self._make_one()
@@ -3299,6 +3327,13 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.default_dataset)
         self.assertIsNone(config.destination)
 
+    def test_ctor_w_properties(self):
+        config = self._get_target_class()(
+            use_query_cache=False, use_legacy_sql=True)
+
+        self.assertFalse(config.use_query_cache)
+        self.assertTrue(config.use_legacy_sql)
+
     def test_time_partitioning(self):
         from google.cloud.bigquery import table
 
@@ -3637,8 +3672,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
         client = _make_client(project=self.PROJECT)
-        config = QueryJobConfig()
-        config.query_parameters = query_parameters
+        config = QueryJobConfig(query_parameters=query_parameters)
         job = self._make_one(
             self.JOB_ID, self.QUERY, client, job_config=config)
         self.assertEqual(job.query_parameters, query_parameters)
