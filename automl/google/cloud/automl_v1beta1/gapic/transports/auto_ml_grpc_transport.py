@@ -141,10 +141,8 @@ class AutoMlGrpcTransport(object):
     def delete_dataset(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Deletes a dataset and all of its contents.
-        Returns empty response in the
-        ``response`` field when it completes,
-        and ``delete_details`` in the
+        Deletes a dataset and all of its contents. Returns empty response in the
+        ``response`` field when it completes, and ``delete_details`` in the
         ``metadata`` field.
 
         Returns:
@@ -158,8 +156,7 @@ class AutoMlGrpcTransport(object):
     def import_data(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Imports data into a dataset.
-        Returns an empty response in the
+        Imports data into a dataset. Returns an empty response in the
         ``response`` field when it completes.
 
         Returns:
@@ -173,9 +170,8 @@ class AutoMlGrpcTransport(object):
     def export_data(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Exports dataset's data to a Google Cloud Storage bucket.
-        Returns an empty response in the
-        ``response`` field when it completes.
+        Exports dataset's data to a Google Cloud Storage bucket. Returns an
+        empty response in the ``response`` field when it completes.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -188,11 +184,10 @@ class AutoMlGrpcTransport(object):
     def create_model(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Creates a model.
-        Returns a Model in the ``response``
-        field when it completes.
-        When you create a model, several model evaluations are created for it:
-        a global evaluation, and one evaluation for each annotation spec.
+        Creates a model. Returns a Model in the ``response`` field when it
+        completes. When you create a model, several model evaluations are
+        created for it: a global evaluation, and one evaluation for each
+        annotation spec.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -231,13 +226,10 @@ class AutoMlGrpcTransport(object):
     def delete_model(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Deletes a model.
-        If a model is already deployed, this only deletes the model in AutoML BE,
-        and does not change the status of the deployed model in the production
-        environment.
-        Returns ``google.protobuf.Empty`` in the
-        ``response`` field when it completes,
-        and ``delete_details`` in the
+        Deletes a model. If a model is already deployed, this only deletes the
+        model in AutoML BE, and does not change the status of the deployed model
+        in the production environment. Returns ``google.protobuf.Empty`` in the
+        ``response`` field when it completes, and ``delete_details`` in the
         ``metadata`` field.
 
         Returns:
@@ -251,9 +243,8 @@ class AutoMlGrpcTransport(object):
     def deploy_model(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Deploys model.
-        Returns a ``DeployModelResponse`` in the
-        ``response`` field when it completes.
+        Deploys model. Returns a ``DeployModelResponse`` in the ``response``
+        field when it completes.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -266,8 +257,7 @@ class AutoMlGrpcTransport(object):
     def undeploy_model(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Undeploys model.
-        Returns an ``UndeployModelResponse`` in the
+        Undeploys model. Returns an ``UndeployModelResponse`` in the
         ``response`` field when it completes.
 
         Returns:
