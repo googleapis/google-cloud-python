@@ -466,8 +466,8 @@ class Property(ModelAttribute):
         default (Any): The default value for this property.
         choices (Iterable[Any]): A container of allowed values for this
             property.
-        validator (Callable[[Property, Any], bool]): A validator to be used
-            to check values.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
         verbose_name (str): A longer, user-friendly name for this property.
         write_empty_list (bool): Indicates if an empty list should be written
             to the datastore.
