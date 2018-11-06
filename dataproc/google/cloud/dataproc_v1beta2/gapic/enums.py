@@ -62,9 +62,9 @@ class ClusterStatus(object):
 class LoggingConfig(object):
     class Level(enum.IntEnum):
         """
-        The Log4j level for job execution. When running an
-        `Apache Hive <http://hive.apache.org/>`_ job, Cloud
-        Dataproc configures the Hive client to an equivalent verbosity level.
+        The Log4j level for job execution. When running an `Apache
+        Hive <http://hive.apache.org/>`__ job, Cloud Dataproc configures the
+        Hive client to an equivalent verbosity level.
 
         Attributes:
           LEVEL_UNSPECIFIED (int): Level is unspecified. Use default level for log4j.
@@ -131,7 +131,7 @@ class JobStatus(object):
 
           Applies to RUNNING state.
           QUEUED (int): The Job has been received and is awaiting execution (it may be waiting
-          for a condition to be met). See the \"details\" field for the reason for
+          for a condition to be met). See the "details" field for the reason for
           the delay.
 
           Applies to RUNNING state.
@@ -156,7 +156,7 @@ class YarnApplication(object):
         Attributes:
           STATE_UNSPECIFIED (int): Status is unspecified.
           NEW (int): Status is NEW.
-          NEW_SAVING (int): Status is NEW_SAVING.
+          NEW_SAVING (int): Status is NEW\_SAVING.
           SUBMITTED (int): Status is SUBMITTED.
           ACCEPTED (int): Status is ACCEPTED.
           RUNNING (int): Status is RUNNING.
@@ -183,7 +183,7 @@ class ListJobsRequest(object):
         Attributes:
           ALL (int): Match all jobs, regardless of state.
           ACTIVE (int): Only match jobs in non-terminal states: PENDING, RUNNING, or
-          CANCEL_PENDING.
+          CANCEL\_PENDING.
           NON_ACTIVE (int): Only match jobs in terminal states: CANCELLED, DONE, or ERROR.
         """
         ALL = 0

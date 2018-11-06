@@ -147,9 +147,10 @@ class ClusterControllerClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -182,13 +183,13 @@ class ClusterControllerClient(object):
             >>>
             >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
-            >>> # TODO: Initialize ``cluster``:
+            >>> # TODO: Initialize `cluster`:
             >>> cluster = {}
             >>>
             >>> response = client.create_cluster(project_id, region, cluster)
@@ -207,19 +208,20 @@ class ClusterControllerClient(object):
                 belongs to.
             region (str): Required. The Cloud Dataproc region in which to handle the request.
             cluster (Union[dict, ~google.cloud.dataproc_v1beta2.types.Cluster]): Required. The cluster to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.Cluster`
             request_id (str): Optional. A unique id used to identify the request. If the server
-                receives two ``CreateClusterRequest`` requests  with the same
-                id, then the second request will be ignored and the
-                first ``google.longrunning.Operation`` created and stored in the backend
-                is returned.
+                receives two ``CreateClusterRequest`` requests with the same id, then
+                the second request will be ignored and the first
+                ``google.longrunning.Operation`` created and stored in the backend is
+                returned.
 
                 It is recommended to always set this value to a
-                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`_.
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
-                The id must contain only letters (a-z, A-Z), numbers (0-9),
-                underscores (_), and hyphens (-). The maximum length is 40 characters.
+                The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+                (\_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -284,19 +286,19 @@ class ClusterControllerClient(object):
             >>>
             >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
-            >>> # TODO: Initialize ``cluster_name``:
+            >>> # TODO: Initialize `cluster_name`:
             >>> cluster_name = ''
             >>>
-            >>> # TODO: Initialize ``cluster``:
+            >>> # TODO: Initialize `cluster`:
             >>> cluster = {}
             >>>
-            >>> # TODO: Initialize ``update_mask``:
+            >>> # TODO: Initialize `update_mask`:
             >>> update_mask = {}
             >>>
             >>> response = client.update_cluster(project_id, region, cluster_name, cluster, update_mask)
@@ -316,50 +318,248 @@ class ClusterControllerClient(object):
             region (str): Required. The Cloud Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             cluster (Union[dict, ~google.cloud.dataproc_v1beta2.types.Cluster]): Required. The changes to the cluster.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.Cluster`
-            update_mask (Union[dict, ~google.cloud.dataproc_v1beta2.types.FieldMask]): Required. Specifies the path, relative to ``Cluster``, of
-                the field to update. For example, to change the number of workers
-                in a cluster to 5, the ``update_mask`` parameter would be
-                specified as ``config.worker_config.num_instances``,
-                and the ``PATCH`` request body would specify the new value, as follows:
+            update_mask (Union[dict, ~google.cloud.dataproc_v1beta2.types.FieldMask]): Required. Specifies the path, relative to ``Cluster``, of the field to
+                update. For example, to change the number of workers in a cluster to 5,
+                the ``update_mask`` parameter would be specified as
+                ``config.worker_config.num_instances``, and the ``PATCH`` request body
+                would specify the new value, as follows:
 
                 ::
 
-                    {
-                      \"config\":{
-                        \"workerConfig\":{
-                          \"numInstances\":\"5\"
-                        }
-                      }
-                    }
+                     {
+                       "config":{
+                         "workerConfig":{
+                           "numInstances":"5"
+                         }
+                       }
+                     }
 
-                Similarly, to change the number of preemptible workers in a cluster to 5, the
-                ``update_mask`` parameter would be ``config.secondary_worker_config.num_instances``,
-                and the ``PATCH`` request body would be set as follows:
+                Similarly, to change the number of preemptible workers in a cluster to
+                5, the ``update_mask`` parameter would be
+                ``config.secondary_worker_config.num_instances``, and the ``PATCH``
+                request body would be set as follows:
 
                 ::
 
-                    {
-                      \"config\":{
-                        \"secondaryWorkerConfig\":{
-                          \"numInstances\":\"5\"
-                        }
-                      }
-                    }
+                     {
+                       "config":{
+                         "secondaryWorkerConfig":{
+                           "numInstances":"5"
+                         }
+                       }
+                     }
 
-                .. note::
+                Note: currently only the following fields can be updated:
 
-                    Currently, only the following fields can be updated:
+                .. raw:: html
 
-                    * ``labels``: Update labels
-                    * ``config.worker_config.num_instances``: Resize primary
-                      worker group
-                    * ``config.secondary_worker_config.num_instances``: Resize
-                      secondary worker group
+                   <table>
 
-                    If a dict is provided, it must be of the same form as the protobuf
-                    message :class:`~google.cloud.dataproc_v1beta2.types.FieldMask`
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                Mask
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Purpose
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                labels
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Updates labels
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                config.worker\_config.num\_instances
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Resize primary worker group
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                config.secondary\_worker\_config.num\_instances
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Resize secondary worker group
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                config.lifecycle\_config.auto\_delete\_ttl
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Reset MAX TTL duration
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                config.lifecycle\_config.auto\_delete\_time
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Update MAX TTL deletion timestamp
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                config.lifecycle\_config.idle\_delete\_ttl
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Update Idle TTL duration
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   </table>
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dataproc_v1beta2.types.FieldMask`
             graceful_decommission_timeout (Union[dict, ~google.cloud.dataproc_v1beta2.types.Duration]): Optional. Timeout for graceful YARN decomissioning. Graceful
                 decommissioning allows removing nodes from the cluster without
                 interrupting jobs in progress. Timeout specifies how long to wait for jobs
@@ -368,19 +568,20 @@ class ClusterControllerClient(object):
                 the maximum allowed timeout is 1 day.
 
                 Only supported on Dataproc image versions 1.2 and higher.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.Duration`
             request_id (str): Optional. A unique id used to identify the request. If the server
-                receives two ``UpdateClusterRequest`` requests  with the same
-                id, then the second request will be ignored and the
-                first ``google.longrunning.Operation`` created and stored in the
-                backend is returned.
+                receives two ``UpdateClusterRequest`` requests with the same id, then
+                the second request will be ignored and the first
+                ``google.longrunning.Operation`` created and stored in the backend is
+                returned.
 
                 It is recommended to always set this value to a
-                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`_.
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
-                The id must contain only letters (a-z, A-Z), numbers (0-9),
-                underscores (_), and hyphens (-). The maximum length is 40 characters.
+                The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+                (\_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -446,13 +647,13 @@ class ClusterControllerClient(object):
             >>>
             >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
-            >>> # TODO: Initialize ``cluster_name``:
+            >>> # TODO: Initialize `cluster_name`:
             >>> cluster_name = ''
             >>>
             >>> response = client.delete_cluster(project_id, region, cluster_name)
@@ -472,18 +673,18 @@ class ClusterControllerClient(object):
             region (str): Required. The Cloud Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             cluster_uuid (str): Optional. Specifying the ``cluster_uuid`` means the RPC should fail
-                (with error NOT_FOUND) if cluster with specified UUID does not exist.
+                (with error NOT\_FOUND) if cluster with specified UUID does not exist.
             request_id (str): Optional. A unique id used to identify the request. If the server
-                receives two ``DeleteClusterRequest`` requests  with the same
-                id, then the second request will be ignored and the
-                first ``google.longrunning.Operation`` created and stored in the
-                backend is returned.
+                receives two ``DeleteClusterRequest`` requests with the same id, then
+                the second request will be ignored and the first
+                ``google.longrunning.Operation`` created and stored in the backend is
+                returned.
 
                 It is recommended to always set this value to a
-                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`_.
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
-                The id must contain only letters (a-z, A-Z), numbers (0-9),
-                underscores (_), and hyphens (-). The maximum length is 40 characters.
+                The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+                (\_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -545,13 +746,13 @@ class ClusterControllerClient(object):
             >>>
             >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
-            >>> # TODO: Initialize ``cluster_name``:
+            >>> # TODO: Initialize `cluster_name`:
             >>> cluster_name = ''
             >>>
             >>> response = client.get_cluster(project_id, region, cluster_name)
@@ -614,10 +815,10 @@ class ClusterControllerClient(object):
             >>>
             >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
             >>> # Iterate over all results
@@ -629,7 +830,7 @@ class ClusterControllerClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_clusters(project_id, region, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_clusters(project_id, region).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -643,20 +844,21 @@ class ClusterControllerClient(object):
 
                 field = value [AND [field = value]] ...
 
-                where **field** is one of ``status.state``, ``clusterName``, or ``labels.[KEY]``,
-                and ``[KEY]`` is a label key. **value** can be ``*`` to match all values.
-                ``status.state`` can be one of the following: ``ACTIVE``, ``INACTIVE``,
-                ``CREATING``, ``RUNNING``, ``ERROR``, ``DELETING``, or ``UPDATING``. ``ACTIVE``
-                contains the ``CREATING``, ``UPDATING``, and ``RUNNING`` states. ``INACTIVE``
-                contains the ``DELETING`` and ``ERROR`` states.
-                ``clusterName`` is the name of the cluster provided at creation time.
-                Only the logical ``AND`` operator is supported; space-separated items are
-                treated as having an implicit ``AND`` operator.
+                where **field** is one of ``status.state``, ``clusterName``, or
+                ``labels.[KEY]``, and ``[KEY]`` is a label key. **value** can be ``*``
+                to match all values. ``status.state`` can be one of the following:
+                ``ACTIVE``, ``INACTIVE``, ``CREATING``, ``RUNNING``, ``ERROR``,
+                ``DELETING``, or ``UPDATING``. ``ACTIVE`` contains the ``CREATING``,
+                ``UPDATING``, and ``RUNNING`` states. ``INACTIVE`` contains the
+                ``DELETING`` and ``ERROR`` states. ``clusterName`` is the name of the
+                cluster provided at creation time. Only the logical ``AND`` operator is
+                supported; space-separated items are treated as having an implicit
+                ``AND`` operator.
 
                 Example filter:
 
-                status.state = ACTIVE AND clusterName = mycluster
-                AND labels.env = staging AND labels.starred = *
+                status.state = ACTIVE AND clusterName = mycluster AND labels.env =
+                staging AND labels.starred = \*
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -723,22 +925,21 @@ class ClusterControllerClient(object):
                          timeout=google.api_core.gapic_v1.method.DEFAULT,
                          metadata=None):
         """
-        Gets cluster diagnostic information.
-        After the operation completes, the Operation.response field
-        contains ``DiagnoseClusterOutputLocation``.
+        Gets cluster diagnostic information. After the operation completes, the
+        Operation.response field contains ``DiagnoseClusterOutputLocation``.
 
         Example:
             >>> from google.cloud import dataproc_v1beta2
             >>>
             >>> client = dataproc_v1beta2.ClusterControllerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``region``:
+            >>> # TODO: Initialize `region`:
             >>> region = ''
             >>>
-            >>> # TODO: Initialize ``cluster_name``:
+            >>> # TODO: Initialize `cluster_name`:
             >>> cluster_name = ''
             >>>
             >>> response = client.diagnose_cluster(project_id, region, cluster_name)
