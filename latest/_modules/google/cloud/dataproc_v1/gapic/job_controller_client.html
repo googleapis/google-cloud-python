@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dataproc_v1.gapic.job_controller_client &#8212; google-cloud 18f6634 documentation</title>
+    <title>google.cloud.dataproc_v1.gapic.job_controller_client &#8212; google-cloud 980a631 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -179,9 +179,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -213,13 +214,13 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = dataproc_v1.JobControllerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``region``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `region`:</span>
 <span class="sd">            &gt;&gt;&gt; region = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``job``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `job`:</span>
 <span class="sd">            &gt;&gt;&gt; job = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.submit_job(project_id, region, job)</span>
@@ -229,6 +230,7 @@
 <span class="sd">                belongs to.</span>
 <span class="sd">            region (str): Required. The Cloud Dataproc region in which to handle the request.</span>
 <span class="sd">            job (Union[dict, ~google.cloud.dataproc_v1.types.Job]): Required. The job resource.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dataproc_v1.types.Job`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -283,13 +285,13 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = dataproc_v1.JobControllerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``region``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `region`:</span>
 <span class="sd">            &gt;&gt;&gt; region = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``job_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `job_id`:</span>
 <span class="sd">            &gt;&gt;&gt; job_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.get_job(project_id, region, job_id)</span>
@@ -354,10 +356,10 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = dataproc_v1.JobControllerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``region``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `region`:</span>
 <span class="sd">            &gt;&gt;&gt; region = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
@@ -369,7 +371,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_jobs(project_id, region, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_jobs(project_id, region).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -385,8 +387,8 @@
 <span class="sd">                of resources in a page.</span>
 <span class="sd">            cluster_name (str): Optional. If set, the returned jobs list includes only jobs that were</span>
 <span class="sd">                submitted to the named cluster.</span>
-<span class="sd">            job_state_matcher (~google.cloud.dataproc_v1.types.JobStateMatcher): Optional. Specifies enumerated categories of jobs to list.</span>
-<span class="sd">                (default = match ALL jobs).</span>
+<span class="sd">            job_state_matcher (~google.cloud.dataproc_v1.types.JobStateMatcher): Optional. Specifies enumerated categories of jobs to list. (default =</span>
+<span class="sd">                match ALL jobs).</span>
 
 <span class="sd">                If ``filter`` is provided, ``jobStateMatcher`` will be ignored.</span>
 <span class="sd">            filter_ (str): Optional. A filter constraining the jobs to list. Filters are</span>
@@ -394,15 +396,15 @@
 
 <span class="sd">                [field = value] AND [field [= value]] ...</span>
 
-<span class="sd">                where **field** is ``status.state`` or ``labels.[KEY]``, and ``[KEY]`` is a label</span>
-<span class="sd">                key. **value** can be ``*`` to match all values.</span>
-<span class="sd">                ``status.state`` can be either ``ACTIVE`` or ``NON_ACTIVE``.</span>
-<span class="sd">                Only the logical ``AND`` operator is supported; space-separated items are</span>
-<span class="sd">                treated as having an implicit ``AND`` operator.</span>
+<span class="sd">                where **field** is ``status.state`` or ``labels.[KEY]``, and ``[KEY]``</span>
+<span class="sd">                is a label key. **value** can be ``*`` to match all values.</span>
+<span class="sd">                ``status.state`` can be either ``ACTIVE`` or ``NON_ACTIVE``. Only the</span>
+<span class="sd">                logical ``AND`` operator is supported; space-separated items are treated</span>
+<span class="sd">                as having an implicit ``AND`` operator.</span>
 
 <span class="sd">                Example filter:</span>
 
-<span class="sd">                status.state = ACTIVE AND labels.env = staging AND labels.starred = *</span>
+<span class="sd">                status.state = ACTIVE AND labels.env = staging AND labels.starred = \*</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -474,19 +476,19 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = dataproc_v1.JobControllerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``region``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `region`:</span>
 <span class="sd">            &gt;&gt;&gt; region = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``job_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `job_id`:</span>
 <span class="sd">            &gt;&gt;&gt; job_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``job``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `job`:</span>
 <span class="sd">            &gt;&gt;&gt; job = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``update_mask``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `update_mask`:</span>
 <span class="sd">            &gt;&gt;&gt; update_mask = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_job(project_id, region, job_id, job, update_mask)</span>
@@ -497,14 +499,15 @@
 <span class="sd">            region (str): Required. The Cloud Dataproc region in which to handle the request.</span>
 <span class="sd">            job_id (str): Required. The job ID.</span>
 <span class="sd">            job (Union[dict, ~google.cloud.dataproc_v1.types.Job]): Required. The changes to the job.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dataproc_v1.types.Job`</span>
-<span class="sd">            update_mask (Union[dict, ~google.cloud.dataproc_v1.types.FieldMask]): Required. Specifies the path, relative to &lt;code&gt;Job&lt;/code&gt;, of</span>
-<span class="sd">                the field to update. For example, to update the labels of a Job the</span>
-<span class="sd">                &lt;code&gt;update_mask&lt;/code&gt; parameter would be specified as</span>
-<span class="sd">                &lt;code&gt;labels&lt;/code&gt;, and the ``PATCH`` request body would specify the new</span>
-<span class="sd">                value. &lt;strong&gt;Note:&lt;/strong&gt; Currently, &lt;code&gt;labels&lt;/code&gt; is the only</span>
-<span class="sd">                field that can be updated.</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.dataproc_v1.types.FieldMask]): Required. Specifies the path, relative to Job, of the field to update.</span>
+<span class="sd">                For example, to update the labels of a Job the update\_mask parameter</span>
+<span class="sd">                would be specified as labels, and the ``PATCH`` request body would</span>
+<span class="sd">                specify the new value. Note: Currently, labels is the only field that</span>
+<span class="sd">                can be updated.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dataproc_v1.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -554,23 +557,24 @@
                    <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                    <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Starts a job cancellation request. To access the job resource</span>
-<span class="sd">        after cancellation, call</span>
-<span class="sd">        `regions/{region}/jobs.list &lt;https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/list&gt;`_ or</span>
-<span class="sd">        `regions/{region}/jobs.get &lt;https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get&gt;`_.</span>
+<span class="sd">        Starts a job cancellation request. To access the job resource after</span>
+<span class="sd">        cancellation, call</span>
+<span class="sd">        `regions/{region}/jobs.list &lt;https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/list&gt;`__</span>
+<span class="sd">        or</span>
+<span class="sd">        `regions/{region}/jobs.get &lt;https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get&gt;`__.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import dataproc_v1</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = dataproc_v1.JobControllerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``region``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `region`:</span>
 <span class="sd">            &gt;&gt;&gt; region = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``job_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `job_id`:</span>
 <span class="sd">            &gt;&gt;&gt; job_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.cancel_job(project_id, region, job_id)</span>
@@ -625,21 +629,21 @@
                    <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                    <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deletes the job from the project. If the job is active, the delete fails,</span>
-<span class="sd">        and the response returns ``FAILED_PRECONDITION``.</span>
+<span class="sd">        Deletes the job from the project. If the job is active, the delete</span>
+<span class="sd">        fails, and the response returns ``FAILED_PRECONDITION``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import dataproc_v1</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = dataproc_v1.JobControllerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``region``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `region`:</span>
 <span class="sd">            &gt;&gt;&gt; region = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``job_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `job_id`:</span>
 <span class="sd">            &gt;&gt;&gt; job_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.delete_job(project_id, region, job_id)</span>

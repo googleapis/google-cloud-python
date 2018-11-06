@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Google Container Engine API &#8212; google-cloud 18f6634 documentation</title>
+    <title>Client for Google Container Engine API &#8212; google-cloud 980a631 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -85,13 +85,13 @@ your own client library.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``operation_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `operation_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">operation_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">cancel_operation</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">)</span>
@@ -102,10 +102,11 @@ your own client library.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
 <li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the operation resides.</li>
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the operation resides.</li>
 <li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -140,13 +141,13 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">complete_i_p_rotation</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">)</span>
@@ -157,12 +158,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">https://developers.google.com/console/help/new/#projectnumber</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -196,12 +196,11 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">create_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.create_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.create_cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a cluster, consisting of the specified number and type of Google
 Compute Engine instances.</p>
-<p>By default, the cluster is created in the project’s
-<a class="reference external" href="https://cloud.google.com/compute/docs/networks-and-firewalls#networks">default network</a>.</p>
-<p>One firewall is added for the cluster. After cluster creation,
-the cluster creates routes for each node to allow the containers
-on that node to communicate with all other instances in the
-cluster.</p>
+<p>By default, the cluster is created in the project’s <a class="reference external" href="https://cloud.google.com/compute/docs/networks-and-firewalls#networks">default
+network</a>.</p>
+<p>One firewall is added for the cluster. After cluster creation, the
+cluster creates routes for each node to allow the containers on that
+node to communicate with all other instances in the cluster.</p>
 <p>Finally, an entry is added to the project’s global metadata indicating
 which CIDR range is being used by the cluster.</p>
 <p class="rubric">Example</p>
@@ -209,13 +208,13 @@ which CIDR range is being used by the cluster.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_cluster</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster</span><span class="p">)</span>
@@ -226,16 +225,16 @@ which CIDR range is being used by the cluster.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
+<li><strong>cluster</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><em>Cluster</em></a><em>]</em>) – <p>A <a class="reference external" href="https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters">cluster
+resource</a></p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a></p>
 </li>
-<li><strong>cluster</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><em>Cluster</em></a><em>]</em>) – A [cluster
-resource](/container-engine/reference/rest/v1/projects.zones.clusters)
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -272,16 +271,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``node_pool``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `node_pool`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_pool</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_node_pool</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">node_pool</span><span class="p">)</span>
@@ -292,16 +291,16 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">https://developers.google.com/console/help/new/#projectnumber</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
-<li><strong>node_pool</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><em>NodePool</em></a><em>]</em>) – The node pool to create.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodePool</span></code></a></li>
+<li><strong>node_pool</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><em>NodePool</em></a><em>]</em>) – <p>The node pool to create.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodePool</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -344,13 +343,13 @@ at the initial create time.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">delete_cluster</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">)</span>
@@ -361,12 +360,11 @@ at the initial create time.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to delete.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -404,16 +402,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``node_pool_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `node_pool_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_pool_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">delete_node_pool</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">node_pool_id</span><span class="p">)</span>
@@ -424,12 +422,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">https://developers.google.com/console/help/new/#projectnumber</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to delete.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -527,13 +524,13 @@ file.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_cluster</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">)</span>
@@ -544,12 +541,11 @@ file.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to retrieve.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -587,16 +583,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``node_pool_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `node_pool_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_pool_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_node_pool</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">node_pool_id</span><span class="p">)</span>
@@ -607,12 +603,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">https://developers.google.com/console/help/new/#projectnumber</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -651,13 +646,13 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``operation_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `operation_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">operation_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_operation</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">)</span>
@@ -668,12 +663,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -711,10 +705,10 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_server_config</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">)</span>
@@ -725,11 +719,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a>
-to return operations for.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> to
+return operations for.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -767,10 +761,10 @@ zones.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_clusters</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">)</span>
@@ -781,12 +775,11 @@ zones.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides, or “-” for all zones.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides, or “-” for all zones.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -823,13 +816,13 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_node_pools</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">)</span>
@@ -840,12 +833,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">https://developers.google.com/console/help/new/#projectnumber</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -883,10 +875,10 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_operations</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">)</span>
@@ -897,11 +889,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a>
-to return operations for, or <code class="docutils literal notranslate"><span class="pre">-</span></code> for all zones.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> to
+return operations for, or <code class="docutils literal notranslate"><span class="pre">-</span></code> for all zones.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -939,16 +931,16 @@ This will be an no-op if the last upgrade successfully completed.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``node_pool_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `node_pool_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_pool_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">rollback_node_pool_upgrade</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">node_pool_id</span><span class="p">)</span>
@@ -959,12 +951,11 @@ This will be an no-op if the last upgrade successfully completed.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to rollback.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to rollback.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -1003,16 +994,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``addons_config``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `addons_config`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">addons_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_addons_config</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">addons_config</span><span class="p">)</span>
@@ -1023,17 +1014,17 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
-<li><strong>addons_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.AddonsConfig" title="google.cloud.container_v1.types.AddonsConfig"><em>AddonsConfig</em></a><em>]</em>) – The desired configurations for the various addons available to run in the
-cluster.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.AddonsConfig" title="google.cloud.container_v1.types.AddonsConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddonsConfig</span></code></a></li>
+<li><strong>addons_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.AddonsConfig" title="google.cloud.container_v1.types.AddonsConfig"><em>AddonsConfig</em></a><em>]</em>) – <p>The desired configurations for the various addons available to run in the
+cluster.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.AddonsConfig" title="google.cloud.container_v1.types.AddonsConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddonsConfig</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1070,19 +1061,19 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``resource_labels``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `resource_labels`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource_labels</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``label_fingerprint``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `label_fingerprint`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">label_fingerprint</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_labels</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">resource_labels</span><span class="p">,</span> <span class="n">label_fingerprint</span><span class="p">)</span>
@@ -1093,12 +1084,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">https://developers.google.com/console/help/new/#projectnumber</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>resource_labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – The labels to set for that cluster.</li>
 <li><strong>label_fingerprint</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The fingerprint of the previous set of labels for this resource,
@@ -1143,16 +1133,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``enabled``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `enabled`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_legacy_abac</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">enabled</span><span class="p">)</span>
@@ -1163,12 +1153,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to update.</li>
 <li><strong>enabled</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether ABAC authorization will be enabled in the cluster.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -1207,16 +1196,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``locations``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `locations`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">locations</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_locations</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">locations</span><span class="p">)</span>
@@ -1227,18 +1216,17 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
 <li><strong>locations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>The desired list of Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">locations</a> in which the cluster’s nodes
-should be located. Changing the locations a cluster is in will result
-in nodes being either created or removed from the cluster, depending on
-whether locations are being added or removed.</p>
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">locations</a> in
+which the cluster’s nodes should be located. Changing the locations a
+cluster is in will result in nodes being either created or removed from
+the cluster, depending on whether locations are being added or removed.</p>
 <p>This list must always include the cluster’s primary zone.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -1277,16 +1265,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``logging_service``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `logging_service`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logging_service</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_logging_service</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">logging_service</span><span class="p">)</span>
@@ -1297,15 +1285,14 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
-<li><strong>logging_service</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The logging service the cluster should use to write metrics.
-Currently available options:</p>
+<li><strong>logging_service</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The logging service the cluster should use to write metrics. Currently
+available options:</p>
 <ul>
 <li>”logging.googleapis.com” - the Google Cloud Logging service</li>
 <li>”none” - no metrics will be exported from the cluster</li>
@@ -1347,16 +1334,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``maintenance_policy``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `maintenance_policy`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">maintenance_policy</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_maintenance_policy</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">maintenance_policy</span><span class="p">)</span>
@@ -1367,17 +1354,17 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to update.</li>
-<li><strong>maintenance_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.MaintenancePolicy" title="google.cloud.container_v1.types.MaintenancePolicy"><em>MaintenancePolicy</em></a><em>]</em>) – The maintenance policy to be set for the cluster. An empty field
-clears the existing maintenance policy.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.MaintenancePolicy" title="google.cloud.container_v1.types.MaintenancePolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaintenancePolicy</span></code></a></li>
+<li><strong>maintenance_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.MaintenancePolicy" title="google.cloud.container_v1.types.MaintenancePolicy"><em>MaintenancePolicy</em></a><em>]</em>) – <p>The maintenance policy to be set for the cluster. An empty field
+clears the existing maintenance policy.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.MaintenancePolicy" title="google.cloud.container_v1.types.MaintenancePolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaintenancePolicy</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1417,19 +1404,19 @@ This can be either via password generation or explicitly set the password.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``action``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `action`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">action</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">SetMasterAuthRequest</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">UNKNOWN</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``update``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `update`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">update</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_master_auth</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">update</span><span class="p">)</span>
@@ -1440,17 +1427,17 @@ This can be either via password generation or explicitly set the password.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
 <li><strong>action</strong> (<em>Action</em>) – The exact form of action to be taken on the master auth.</li>
-<li><strong>update</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.MasterAuth" title="google.cloud.container_v1.types.MasterAuth"><em>MasterAuth</em></a><em>]</em>) – A description of the update.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.MasterAuth" title="google.cloud.container_v1.types.MasterAuth"><code class="xref py py-class docutils literal notranslate"><span class="pre">MasterAuth</span></code></a></li>
+<li><strong>update</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.MasterAuth" title="google.cloud.container_v1.types.MasterAuth"><em>MasterAuth</em></a><em>]</em>) – <p>A description of the update.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.MasterAuth" title="google.cloud.container_v1.types.MasterAuth"><code class="xref py py-class docutils literal notranslate"><span class="pre">MasterAuth</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1487,16 +1474,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``monitoring_service``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `monitoring_service`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">monitoring_service</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_monitoring_service</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">monitoring_service</span><span class="p">)</span>
@@ -1507,12 +1494,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
 <li><strong>monitoring_service</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The monitoring service the cluster should use to write metrics.
 Currently available options:</p>
@@ -1557,16 +1543,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``network_policy``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `network_policy`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">network_policy</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_network_policy</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">network_policy</span><span class="p">)</span>
@@ -1577,16 +1563,16 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">https://developers.google.com/console/help/new/#projectnumber</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
-<li><strong>network_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NetworkPolicy" title="google.cloud.container_v1.types.NetworkPolicy"><em>NetworkPolicy</em></a><em>]</em>) – Configuration options for the NetworkPolicy feature.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NetworkPolicy" title="google.cloud.container_v1.types.NetworkPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkPolicy</span></code></a></li>
+<li><strong>network_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NetworkPolicy" title="google.cloud.container_v1.types.NetworkPolicy"><em>NetworkPolicy</em></a><em>]</em>) – <p>Configuration options for the NetworkPolicy feature.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NetworkPolicy" title="google.cloud.container_v1.types.NetworkPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkPolicy</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1623,19 +1609,19 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``node_pool_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `node_pool_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_pool_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``autoscaling``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `autoscaling`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">autoscaling</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_node_pool_autoscaling</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">node_pool_id</span><span class="p">,</span> <span class="n">autoscaling</span><span class="p">)</span>
@@ -1646,17 +1632,17 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to upgrade.</li>
-<li><strong>autoscaling</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePoolAutoscaling" title="google.cloud.container_v1.types.NodePoolAutoscaling"><em>NodePoolAutoscaling</em></a><em>]</em>) – Autoscaling configuration for the node pool.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePoolAutoscaling" title="google.cloud.container_v1.types.NodePoolAutoscaling"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodePoolAutoscaling</span></code></a></li>
+<li><strong>autoscaling</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePoolAutoscaling" title="google.cloud.container_v1.types.NodePoolAutoscaling"><em>NodePoolAutoscaling</em></a><em>]</em>) – <p>Autoscaling configuration for the node pool.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePoolAutoscaling" title="google.cloud.container_v1.types.NodePoolAutoscaling"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodePoolAutoscaling</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1693,19 +1679,19 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``node_pool_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `node_pool_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_pool_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``management``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `management`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">management</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_node_pool_management</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">node_pool_id</span><span class="p">,</span> <span class="n">management</span><span class="p">)</span>
@@ -1716,17 +1702,17 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to update.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to update.</li>
-<li><strong>management</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodeManagement" title="google.cloud.container_v1.types.NodeManagement"><em>NodeManagement</em></a><em>]</em>) – NodeManagement configuration for the node pool.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodeManagement" title="google.cloud.container_v1.types.NodeManagement"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeManagement</span></code></a></li>
+<li><strong>management</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodeManagement" title="google.cloud.container_v1.types.NodeManagement"><em>NodeManagement</em></a><em>]</em>) – <p>NodeManagement configuration for the node pool.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodeManagement" title="google.cloud.container_v1.types.NodeManagement"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeManagement</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1763,19 +1749,19 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``node_pool_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `node_pool_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_pool_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``node_count``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `node_count`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_count</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_node_pool_size</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">node_pool_id</span><span class="p">,</span> <span class="n">node_count</span><span class="p">)</span>
@@ -1786,12 +1772,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to update.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to update.</li>
 <li><strong>node_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The desired node count for the pool.</li>
@@ -1831,13 +1816,13 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">start_i_p_rotation</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">)</span>
@@ -1848,12 +1833,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">https://developers.google.com/console/help/new/#projectnumber</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -1891,16 +1875,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``update``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `update`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">update</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_cluster</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">update</span><span class="p">)</span>
@@ -1911,16 +1895,16 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
-<li><strong>update</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.ClusterUpdate" title="google.cloud.container_v1.types.ClusterUpdate"><em>ClusterUpdate</em></a><em>]</em>) – A description of the update.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.ClusterUpdate" title="google.cloud.container_v1.types.ClusterUpdate"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClusterUpdate</span></code></a></li>
+<li><strong>update</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.ClusterUpdate" title="google.cloud.container_v1.types.ClusterUpdate"><em>ClusterUpdate</em></a><em>]</em>) – <p>A description of the update.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.ClusterUpdate" title="google.cloud.container_v1.types.ClusterUpdate"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClusterUpdate</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1957,16 +1941,16 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``master_version``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `master_version`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">master_version</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_master</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">master_version</span><span class="p">)</span>
@@ -1977,12 +1961,11 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
 <li><strong>master_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Kubernetes version to change the master to. The only valid value is the
 latest supported version. Use “-” to have the server automatically select
@@ -2023,22 +2006,22 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``project_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `project_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">project_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``zone``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `zone`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``cluster_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `cluster_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``node_pool_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `node_pool_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_pool_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``node_version``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `node_version`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node_version</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``image_type``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `image_type`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">image_type</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_node_pool</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">node_pool_id</span><span class="p">,</span> <span class="n">node_version</span><span class="p">,</span> <span class="n">image_type</span><span class="p">)</span>
@@ -2049,17 +2032,15 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console [project ID or project
-number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The name of the Google Compute Engine
-<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
-</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
+which the cluster resides.</li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to upgrade.</li>
-<li><strong>node_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Kubernetes version to change the nodes to (typically an
-upgrade). Use <code class="docutils literal notranslate"><span class="pre">-</span></code> to upgrade to the latest version supported by
-the server.</li>
+<li><strong>node_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Kubernetes version to change the nodes to (typically an upgrade).
+Use <code class="docutils literal notranslate"><span class="pre">-</span></code> to upgrade to the latest version supported by the server.</li>
 <li><strong>image_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The desired image type for the node pool.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not

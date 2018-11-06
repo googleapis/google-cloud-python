@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.container_v1.gapic.cluster_manager_client &#8212; google-cloud 18f6634 documentation</title>
+    <title>google.cloud.container_v1.gapic.cluster_manager_client &#8212; google-cloud 980a631 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -172,9 +172,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -206,20 +207,20 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.list_clusters(project_id, zone)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides, or \&quot;-\&quot; for all zones.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides, or &quot;-&quot; for all zones.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -272,23 +273,23 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.get_cluster(project_id, zone, cluster_id)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to retrieve.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -338,13 +339,12 @@
 <span class="sd">        Creates a cluster, consisting of the specified number and type of Google</span>
 <span class="sd">        Compute Engine instances.</span>
 
-<span class="sd">        By default, the cluster is created in the project&#39;s</span>
-<span class="sd">        `default network &lt;https://cloud.google.com/compute/docs/networks-and-firewalls#networks&gt;`_.</span>
+<span class="sd">        By default, the cluster is created in the project&#39;s `default</span>
+<span class="sd">        network &lt;https://cloud.google.com/compute/docs/networks-and-firewalls#networks&gt;`__.</span>
 
-<span class="sd">        One firewall is added for the cluster. After cluster creation,</span>
-<span class="sd">        the cluster creates routes for each node to allow the containers</span>
-<span class="sd">        on that node to communicate with all other instances in the</span>
-<span class="sd">        cluster.</span>
+<span class="sd">        One firewall is added for the cluster. After cluster creation, the</span>
+<span class="sd">        cluster creates routes for each node to allow the containers on that</span>
+<span class="sd">        node to communicate with all other instances in the cluster.</span>
 
 <span class="sd">        Finally, an entry is added to the project&#39;s global metadata indicating</span>
 <span class="sd">        which CIDR range is being used by the cluster.</span>
@@ -354,25 +354,26 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_cluster(project_id, zone, cluster)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
-<span class="sd">            cluster (Union[dict, ~google.cloud.container_v1.types.Cluster]): A [cluster</span>
-<span class="sd">                resource](/container-engine/reference/rest/v1/projects.zones.clusters)</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
+<span class="sd">            cluster (Union[dict, ~google.cloud.container_v1.types.Cluster]): A `cluster</span>
+<span class="sd">                resource &lt;https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters&gt;`__</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.container_v1.types.Cluster`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -429,28 +430,29 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``update``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `update`:</span>
 <span class="sd">            &gt;&gt;&gt; update = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_cluster(project_id, zone, cluster_id, update)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to upgrade.</span>
 <span class="sd">            update (Union[dict, ~google.cloud.container_v1.types.ClusterUpdate]): A description of the update.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.container_v1.types.ClusterUpdate`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -510,37 +512,36 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``node_pool_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `node_pool_id`:</span>
 <span class="sd">            &gt;&gt;&gt; node_pool_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``node_version``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `node_version`:</span>
 <span class="sd">            &gt;&gt;&gt; node_version = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``image_type``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `image_type`:</span>
 <span class="sd">            &gt;&gt;&gt; image_type = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_node_pool(project_id, zone, cluster_id, node_pool_id, node_version, image_type)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to upgrade.</span>
 <span class="sd">            node_pool_id (str): The name of the node pool to upgrade.</span>
-<span class="sd">            node_version (str): The Kubernetes version to change the nodes to (typically an</span>
-<span class="sd">                upgrade). Use ``-`` to upgrade to the latest version supported by</span>
-<span class="sd">                the server.</span>
+<span class="sd">            node_version (str): The Kubernetes version to change the nodes to (typically an upgrade).</span>
+<span class="sd">                Use ``-`` to upgrade to the latest version supported by the server.</span>
 <span class="sd">            image_type (str): The desired image type for the node pool.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -601,32 +602,33 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``node_pool_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `node_pool_id`:</span>
 <span class="sd">            &gt;&gt;&gt; node_pool_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``autoscaling``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `autoscaling`:</span>
 <span class="sd">            &gt;&gt;&gt; autoscaling = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_node_pool_autoscaling(project_id, zone, cluster_id, node_pool_id, autoscaling)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to upgrade.</span>
 <span class="sd">            node_pool_id (str): The name of the node pool to upgrade.</span>
 <span class="sd">            autoscaling (Union[dict, ~google.cloud.container_v1.types.NodePoolAutoscaling]): Autoscaling configuration for the node pool.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.container_v1.types.NodePoolAutoscaling`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -686,32 +688,32 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``logging_service``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `logging_service`:</span>
 <span class="sd">            &gt;&gt;&gt; logging_service = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_logging_service(project_id, zone, cluster_id, logging_service)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to upgrade.</span>
-<span class="sd">            logging_service (str): The logging service the cluster should use to write metrics.</span>
-<span class="sd">                Currently available options:</span>
+<span class="sd">            logging_service (str): The logging service the cluster should use to write metrics. Currently</span>
+<span class="sd">                available options:</span>
 
-<span class="sd">                * \&quot;logging.googleapis.com\&quot; - the Google Cloud Logging service</span>
-<span class="sd">                * \&quot;none\&quot; - no metrics will be exported from the cluster</span>
+<span class="sd">                -  &quot;logging.googleapis.com&quot; - the Google Cloud Logging service</span>
+<span class="sd">                -  &quot;none&quot; - no metrics will be exported from the cluster</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -768,32 +770,32 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``monitoring_service``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `monitoring_service`:</span>
 <span class="sd">            &gt;&gt;&gt; monitoring_service = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_monitoring_service(project_id, zone, cluster_id, monitoring_service)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to upgrade.</span>
 <span class="sd">            monitoring_service (str): The monitoring service the cluster should use to write metrics.</span>
 <span class="sd">                Currently available options:</span>
 
-<span class="sd">                * \&quot;monitoring.googleapis.com\&quot; - the Google Cloud Monitoring service</span>
-<span class="sd">                * \&quot;none\&quot; - no metrics will be exported from the cluster</span>
+<span class="sd">                -  &quot;monitoring.googleapis.com&quot; - the Google Cloud Monitoring service</span>
+<span class="sd">                -  &quot;none&quot; - no metrics will be exported from the cluster</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -850,29 +852,30 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``addons_config``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `addons_config`:</span>
 <span class="sd">            &gt;&gt;&gt; addons_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_addons_config(project_id, zone, cluster_id, addons_config)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to upgrade.</span>
 <span class="sd">            addons_config (Union[dict, ~google.cloud.container_v1.types.AddonsConfig]): The desired configurations for the various addons available to run in the</span>
 <span class="sd">                cluster.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.container_v1.types.AddonsConfig`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -931,32 +934,32 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``locations``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `locations`:</span>
 <span class="sd">            &gt;&gt;&gt; locations = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_locations(project_id, zone, cluster_id, locations)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to upgrade.</span>
 <span class="sd">            locations (list[str]): The desired list of Google Compute Engine</span>
-<span class="sd">                `locations &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster&#39;s nodes</span>
-<span class="sd">                should be located. Changing the locations a cluster is in will result</span>
-<span class="sd">                in nodes being either created or removed from the cluster, depending on</span>
-<span class="sd">                whether locations are being added or removed.</span>
+<span class="sd">                `locations &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster&#39;s nodes should be located. Changing the locations a</span>
+<span class="sd">                cluster is in will result in nodes being either created or removed from</span>
+<span class="sd">                the cluster, depending on whether locations are being added or removed.</span>
 
 <span class="sd">                This list must always include the cluster&#39;s primary zone.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1014,29 +1017,29 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``master_version``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `master_version`:</span>
 <span class="sd">            &gt;&gt;&gt; master_version = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_master(project_id, zone, cluster_id, master_version)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to upgrade.</span>
 <span class="sd">            master_version (str): The Kubernetes version to change the master to. The only valid value is the</span>
-<span class="sd">                latest supported version. Use \&quot;-\&quot; to have the server automatically select</span>
+<span class="sd">                latest supported version. Use &quot;-&quot; to have the server automatically select</span>
 <span class="sd">                the latest version.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -1097,32 +1100,33 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``action``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `action`:</span>
 <span class="sd">            &gt;&gt;&gt; action = enums.SetMasterAuthRequest.Action.UNKNOWN</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``update``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `update`:</span>
 <span class="sd">            &gt;&gt;&gt; update = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_master_auth(project_id, zone, cluster_id, action, update)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to upgrade.</span>
 <span class="sd">            action (~google.cloud.container_v1.types.Action): The exact form of action to be taken on the master auth.</span>
 <span class="sd">            update (Union[dict, ~google.cloud.container_v1.types.MasterAuth]): A description of the update.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.container_v1.types.MasterAuth`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1188,23 +1192,23 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.delete_cluster(project_id, zone, cluster_id)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to delete.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -1258,19 +1262,20 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.list_operations(project_id, zone)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
-<span class="sd">            zone (str): The name of the Google Compute Engine `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_</span>
-<span class="sd">                to return operations for, or ``-`` for all zones.</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
+<span class="sd">            zone (str): The name of the Google Compute Engine</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ to</span>
+<span class="sd">                return operations for, or ``-`` for all zones.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1323,23 +1328,23 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``operation_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `operation_id`:</span>
 <span class="sd">            &gt;&gt;&gt; operation_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.get_operation(project_id, zone, operation_id)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            operation_id (str): The server-assigned ``name`` of the operation.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -1394,22 +1399,23 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``operation_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `operation_id`:</span>
 <span class="sd">            &gt;&gt;&gt; operation_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.cancel_operation(project_id, zone, operation_id)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the operation resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the operation resides.</span>
 <span class="sd">            operation_id (str): The server-assigned ``name`` of the operation.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -1461,19 +1467,20 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.get_server_config(project_id, zone)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
-<span class="sd">            zone (str): The name of the Google Compute Engine `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_</span>
-<span class="sd">                to return operations for.</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
+<span class="sd">            zone (str): The name of the Google Compute Engine</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ to</span>
+<span class="sd">                return operations for.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1527,23 +1534,23 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.list_node_pools(project_id, zone, cluster_id)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://developers.google.com/console/help/new/#projectnumber).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://developers.google.com/console/help/new/#projectnumber&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -1599,26 +1606,26 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``node_pool_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `node_pool_id`:</span>
 <span class="sd">            &gt;&gt;&gt; node_pool_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.get_node_pool(project_id, zone, cluster_id, node_pool_id)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://developers.google.com/console/help/new/#projectnumber).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://developers.google.com/console/help/new/#projectnumber&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster.</span>
 <span class="sd">            node_pool_id (str): The name of the node pool.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1676,28 +1683,29 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``node_pool``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `node_pool`:</span>
 <span class="sd">            &gt;&gt;&gt; node_pool = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_node_pool(project_id, zone, cluster_id, node_pool)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://developers.google.com/console/help/new/#projectnumber).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://developers.google.com/console/help/new/#projectnumber&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster.</span>
 <span class="sd">            node_pool (Union[dict, ~google.cloud.container_v1.types.NodePool]): The node pool to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.container_v1.types.NodePool`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1755,26 +1763,26 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``node_pool_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `node_pool_id`:</span>
 <span class="sd">            &gt;&gt;&gt; node_pool_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.delete_node_pool(project_id, zone, cluster_id, node_pool_id)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://developers.google.com/console/help/new/#projectnumber).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://developers.google.com/console/help/new/#projectnumber&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster.</span>
 <span class="sd">            node_pool_id (str): The name of the node pool to delete.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1834,26 +1842,26 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``node_pool_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `node_pool_id`:</span>
 <span class="sd">            &gt;&gt;&gt; node_pool_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.rollback_node_pool_upgrade(project_id, zone, cluster_id, node_pool_id)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to rollback.</span>
 <span class="sd">            node_pool_id (str): The name of the node pool to rollback.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1914,32 +1922,33 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``node_pool_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `node_pool_id`:</span>
 <span class="sd">            &gt;&gt;&gt; node_pool_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``management``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `management`:</span>
 <span class="sd">            &gt;&gt;&gt; management = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_node_pool_management(project_id, zone, cluster_id, node_pool_id, management)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to update.</span>
 <span class="sd">            node_pool_id (str): The name of the node pool to update.</span>
 <span class="sd">            management (Union[dict, ~google.cloud.container_v1.types.NodeManagement]): NodeManagement configuration for the node pool.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.container_v1.types.NodeManagement`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -2000,29 +2009,29 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``resource_labels``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `resource_labels`:</span>
 <span class="sd">            &gt;&gt;&gt; resource_labels = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``label_fingerprint``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `label_fingerprint`:</span>
 <span class="sd">            &gt;&gt;&gt; label_fingerprint = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_labels(project_id, zone, cluster_id, resource_labels, label_fingerprint)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://developers.google.com/console/help/new/#projectnumber).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://developers.google.com/console/help/new/#projectnumber&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster.</span>
 <span class="sd">            resource_labels (dict[str -&gt; str]): The labels to set for that cluster.</span>
 <span class="sd">            label_fingerprint (str): The fingerprint of the previous set of labels for this resource,</span>
@@ -2086,26 +2095,26 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``enabled``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `enabled`:</span>
 <span class="sd">            &gt;&gt;&gt; enabled = False</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_legacy_abac(project_id, zone, cluster_id, enabled)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to update.</span>
 <span class="sd">            enabled (bool): Whether ABAC authorization will be enabled in the cluster.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -2162,23 +2171,23 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.start_i_p_rotation(project_id, zone, cluster_id)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://developers.google.com/console/help/new/#projectnumber).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://developers.google.com/console/help/new/#projectnumber&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -2234,23 +2243,23 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.complete_i_p_rotation(project_id, zone, cluster_id)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://developers.google.com/console/help/new/#projectnumber).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://developers.google.com/console/help/new/#projectnumber&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -2308,29 +2317,29 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``node_pool_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `node_pool_id`:</span>
 <span class="sd">            &gt;&gt;&gt; node_pool_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``node_count``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `node_count`:</span>
 <span class="sd">            &gt;&gt;&gt; node_count = 0</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_node_pool_size(project_id, zone, cluster_id, node_pool_id, node_count)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to update.</span>
 <span class="sd">            node_pool_id (str): The name of the node pool to update.</span>
 <span class="sd">            node_count (int): The desired node count for the pool.</span>
@@ -2391,28 +2400,29 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``network_policy``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `network_policy`:</span>
 <span class="sd">            &gt;&gt;&gt; network_policy = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_network_policy(project_id, zone, cluster_id, network_policy)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://developers.google.com/console/help/new/#projectnumber).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://developers.google.com/console/help/new/#projectnumber&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster.</span>
 <span class="sd">            network_policy (Union[dict, ~google.cloud.container_v1.types.NetworkPolicy]): Configuration options for the NetworkPolicy feature.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.container_v1.types.NetworkPolicy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -2471,29 +2481,30 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = container_v1.ClusterManagerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``zone``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `zone`:</span>
 <span class="sd">            &gt;&gt;&gt; zone = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``cluster_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `cluster_id`:</span>
 <span class="sd">            &gt;&gt;&gt; cluster_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``maintenance_policy``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `maintenance_policy`:</span>
 <span class="sd">            &gt;&gt;&gt; maintenance_policy = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_maintenance_policy(project_id, zone, cluster_id, maintenance_policy)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_id (str): The Google Developers Console [project ID or project</span>
-<span class="sd">                number](https://support.google.com/cloud/answer/6158840).</span>
+<span class="sd">            project_id (str): The Google Developers Console `project ID or project</span>
+<span class="sd">                number &lt;https://support.google.com/cloud/answer/6158840&gt;`__.</span>
 <span class="sd">            zone (str): The name of the Google Compute Engine</span>
-<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`_ in which the cluster</span>
-<span class="sd">                resides.</span>
+<span class="sd">                `zone &lt;https://cloud.google.com/compute/docs/zones#available&gt;`__ in</span>
+<span class="sd">                which the cluster resides.</span>
 <span class="sd">            cluster_id (str): The name of the cluster to update.</span>
 <span class="sd">            maintenance_policy (Union[dict, ~google.cloud.container_v1.types.MaintenancePolicy]): The maintenance policy to be set for the cluster. An empty field</span>
 <span class="sd">                clears the existing maintenance policy.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.container_v1.types.MaintenancePolicy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>

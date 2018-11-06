@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dataproc_v1beta2.gapic.workflow_template_service_client &#8212; google-cloud 18f6634 documentation</title>
+    <title>google.cloud.dataproc_v1beta2.gapic.workflow_template_service_client &#8212; google-cloud 980a631 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -207,9 +207,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -243,16 +244,17 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.region_path(&#39;[PROJECT]&#39;, &#39;[REGION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``template``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `template`:</span>
 <span class="sd">            &gt;&gt;&gt; template = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_workflow_template(parent, template)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required. The \&quot;resource name\&quot; of the region, as described</span>
-<span class="sd">                in https://cloud.google.com/apis/design/resource_names of the form</span>
+<span class="sd">            parent (str): Required. The &quot;resource name&quot; of the region, as described in</span>
+<span class="sd">                https://cloud.google.com/apis/design/resource\_names of the form</span>
 <span class="sd">                ``projects/{project_id}/regions/{region}``</span>
 <span class="sd">            template (Union[dict, ~google.cloud.dataproc_v1beta2.types.WorkflowTemplate]): Required. The Dataproc workflow template to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -315,8 +317,8 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_workflow_template(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required. The \&quot;resource name\&quot; of the workflow template, as described</span>
-<span class="sd">                in https://cloud.google.com/apis/design/resource_names of the form</span>
+<span class="sd">            name (str): Required. The &quot;resource name&quot; of the workflow template, as described in</span>
+<span class="sd">                https://cloud.google.com/apis/design/resource\_names of the form</span>
 <span class="sd">                ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``</span>
 <span class="sd">            version (int): Optional. The version of workflow template to retrieve. Only previously</span>
 <span class="sd">                instatiated versions can be retrieved.</span>
@@ -371,22 +373,17 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Instantiates a template and begins execution.</span>
 
-<span class="sd">        The returned Operation can be used to track execution of</span>
-<span class="sd">        workflow by polling</span>
-<span class="sd">        ``operations.get``.</span>
-<span class="sd">        The Operation will complete when entire workflow is finished.</span>
+<span class="sd">        The returned Operation can be used to track execution of workflow by</span>
+<span class="sd">        polling ``operations.get``. The Operation will complete when entire</span>
+<span class="sd">        workflow is finished.</span>
 
-<span class="sd">        The running workflow can be aborted via</span>
-<span class="sd">        ``operations.cancel``.</span>
-<span class="sd">        This will cause any inflight jobs to be cancelled and workflow-owned</span>
-<span class="sd">        clusters to be deleted.</span>
+<span class="sd">        The running workflow can be aborted via ``operations.cancel``. This will</span>
+<span class="sd">        cause any inflight jobs to be cancelled and workflow-owned clusters to</span>
+<span class="sd">        be deleted.</span>
 
-<span class="sd">        The ``Operation.metadata`` will be</span>
-<span class="sd">        ``WorkflowMetadata``.</span>
+<span class="sd">        The ``Operation.metadata`` will be ``WorkflowMetadata``.</span>
 
-<span class="sd">        On successful completion,</span>
-<span class="sd">        ``Operation.response`` will be</span>
-<span class="sd">        ``Empty``.</span>
+<span class="sd">        On successful completion, ``Operation.response`` will be ``Empty``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import dataproc_v1beta2</span>
@@ -407,8 +404,8 @@
 <span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required. The \&quot;resource name\&quot; of the workflow template, as described</span>
-<span class="sd">                in https://cloud.google.com/apis/design/resource_names of the form</span>
+<span class="sd">            name (str): Required. The &quot;resource name&quot; of the workflow template, as described in</span>
+<span class="sd">                https://cloud.google.com/apis/design/resource\_names of the form</span>
 <span class="sd">                ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``</span>
 <span class="sd">            version (int): Optional. The version of workflow template to instantiate. If specified,</span>
 <span class="sd">                the workflow will be instantiated only if the current version of</span>
@@ -416,15 +413,15 @@
 
 <span class="sd">                This option cannot be used to instantiate a previous version of</span>
 <span class="sd">                workflow template.</span>
-<span class="sd">            instance_id (str): Optional. A tag that prevents multiple concurrent workflow</span>
-<span class="sd">                instances with the same tag from running. This mitigates risk of</span>
-<span class="sd">                concurrent instances started due to retries.</span>
+<span class="sd">            instance_id (str): Optional. A tag that prevents multiple concurrent workflow instances</span>
+<span class="sd">                with the same tag from running. This mitigates risk of concurrent</span>
+<span class="sd">                instances started due to retries.</span>
 
 <span class="sd">                It is recommended to always set this value to a</span>
-<span class="sd">                `UUID &lt;https://en.wikipedia.org/wiki/Universally_unique_identifier&gt;`_.</span>
+<span class="sd">                `UUID &lt;https://en.wikipedia.org/wiki/Universally_unique_identifier&gt;`__.</span>
 
-<span class="sd">                The tag must contain only letters (a-z, A-Z), numbers (0-9),</span>
-<span class="sd">                underscores (_), and hyphens (-). The maximum length is 40 characters.</span>
+<span class="sd">                The tag must contain only letters (a-z, A-Z), numbers (0-9), underscores</span>
+<span class="sd">                (\_), and hyphens (-). The maximum length is 40 characters.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -485,7 +482,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = dataproc_v1beta2.WorkflowTemplateServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``template``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `template`:</span>
 <span class="sd">            &gt;&gt;&gt; template = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_workflow_template(template)</span>
@@ -494,6 +491,7 @@
 <span class="sd">            template (Union[dict, ~google.cloud.dataproc_v1beta2.types.WorkflowTemplate]): Required. The updated workflow template.</span>
 
 <span class="sd">                The ``template.version`` field must match the current version.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -558,14 +556,14 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_workflow_templates(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_workflow_templates(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required. The \&quot;resource name\&quot; of the region, as described</span>
-<span class="sd">                in https://cloud.google.com/apis/design/resource_names of the form</span>
+<span class="sd">            parent (str): Required. The &quot;resource name&quot; of the region, as described in</span>
+<span class="sd">                https://cloud.google.com/apis/design/resource\_names of the form</span>
 <span class="sd">                ``projects/{project_id}/regions/{region}``</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
@@ -644,8 +642,8 @@
 <span class="sd">            &gt;&gt;&gt; client.delete_workflow_template(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required. The \&quot;resource name\&quot; of the workflow template, as described</span>
-<span class="sd">                in https://cloud.google.com/apis/design/resource_names of the form</span>
+<span class="sd">            name (str): Required. The &quot;resource name&quot; of the workflow template, as described in</span>
+<span class="sd">                https://cloud.google.com/apis/design/resource\_names of the form</span>
 <span class="sd">                ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``</span>
 <span class="sd">            version (int): Optional. The version of workflow template to delete. If specified,</span>
 <span class="sd">                will only delete the template if the current server version matches</span>
