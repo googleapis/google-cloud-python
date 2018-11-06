@@ -198,9 +198,10 @@ class BigtableTableAdminClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -237,42 +238,42 @@ class BigtableTableAdminClient(object):
             >>>
             >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
             >>>
-            >>> # TODO: Initialize ``table_id``:
+            >>> # TODO: Initialize `table_id`:
             >>> table_id = ''
             >>>
-            >>> # TODO: Initialize ``table``:
+            >>> # TODO: Initialize `table`:
             >>> table = {}
             >>>
             >>> response = client.create_table(parent, table_id, table)
 
         Args:
-            parent (str): The unique name of the instance in which to create the table.
-                Values are of the form ``projects/<project>/instances/<instance>``.
+            parent (str): The unique name of the instance in which to create the table. Values are
+                of the form ``projects/<project>/instances/<instance>``.
             table_id (str): The name by which the new table should be referred to within the parent
                 instance, e.g., ``foobar`` rather than ``<parent>/tables/foobar``.
             table (Union[dict, ~google.cloud.bigtable_admin_v2.types.Table]): The Table to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Table`
             initial_splits (list[Union[dict, ~google.cloud.bigtable_admin_v2.types.Split]]): The optional list of row keys that will be used to initially split the
-                table into several tablets (tablets are similar to HBase regions).
-                Given two split keys, ``s1`` and ``s2``, three tablets will be created,
+                table into several tablets (tablets are similar to HBase regions). Given
+                two split keys, ``s1`` and ``s2``, three tablets will be created,
                 spanning the key ranges: ``[, s1), [s1, s2), [s2, )``.
 
                 Example:
 
-                * Row keys := ``[\"a\", \"apple\", \"custom\", \"customer_1\", \"customer_2\",``
-                ::
+                -  Row keys := ``["a", "apple", "custom", "customer_1", "customer_2",``
+                   ``"other", "zz"]``
+                -  initial\_split\_keys :=
+                   ``["apple", "customer_1", "customer_2", "other"]``
+                -  Key assignment:
 
-                               `\"other\", \"zz\"]`
-                * initial_split_keys := ``[\"apple\", \"customer_1\", \"customer_2\", \"other\"]``
-                * Key assignment:
-                ::
+                   -  Tablet 1 ``[, apple)                => {"a"}.``
+                   -  Tablet 2 ``[apple, customer_1)      => {"apple", "custom"}.``
+                   -  Tablet 3 ``[customer_1, customer_2) => {"customer_1"}.``
+                   -  Tablet 4 ``[customer_2, other)      => {"customer_2"}.``
+                   -  Tablet 5 ``[other, )                => {"other", "zz"}.``
 
-                    - Tablet 1 `[, apple)                => {\"a\"}.`
-                    - Tablet 2 `[apple, customer_1)      => {\"apple\", \"custom\"}.`
-                    - Tablet 3 `[customer_1, customer_2) => {\"customer_1\"}.`
-                    - Tablet 4 `[customer_2, other)      => {\"customer_2\"}.`
-                    - Tablet 5 `[other, )                => {\"other\", \"zz\"}.`
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Split`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -351,10 +352,10 @@ class BigtableTableAdminClient(object):
             >>>
             >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
             >>>
-            >>> # TODO: Initialize ``table_id``:
+            >>> # TODO: Initialize `table_id`:
             >>> table_id = ''
             >>>
-            >>> # TODO: Initialize ``source_snapshot``:
+            >>> # TODO: Initialize `source_snapshot`:
             >>> source_snapshot = ''
             >>>
             >>> response = client.create_table_from_snapshot(parent, table_id, source_snapshot)
@@ -369,13 +370,13 @@ class BigtableTableAdminClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): The unique name of the instance in which to create the table.
-                Values are of the form ``projects/<project>/instances/<instance>``.
+            parent (str): The unique name of the instance in which to create the table. Values are
+                of the form ``projects/<project>/instances/<instance>``.
             table_id (str): The name by which the new table should be referred to within the parent
                 instance, e.g., ``foobar`` rather than ``<parent>/tables/foobar``.
             source_snapshot (str): The unique name of the snapshot from which to restore the table. The
-                snapshot and the table must be in the same instance.
-                Values are of the form
+                snapshot and the table must be in the same instance. Values are of the
+                form
                 ``projects/<project>/instances/<instance>/clusters/<cluster>/snapshots/<snapshot>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -461,7 +462,7 @@ class BigtableTableAdminClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_tables(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_tables(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -469,8 +470,8 @@ class BigtableTableAdminClient(object):
         Args:
             parent (str): The unique name of the instance for which tables should be listed.
                 Values are of the form ``projects/<project>/instances/<instance>``.
-            view (~google.cloud.bigtable_admin_v2.types.View): The view to be applied to the returned tables' fields.
-                Defaults to ``NAME_ONLY`` if unspecified; no others are currently supported.
+            view (~google.cloud.bigtable_admin_v2.types.View): The view to be applied to the returned tables' fields. Defaults to
+                ``NAME_ONLY`` if unspecified; no others are currently supported.
             page_size (int): Maximum number of results per page.
                 CURRENTLY UNIMPLEMENTED AND IGNORED.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -555,11 +556,10 @@ class BigtableTableAdminClient(object):
             >>> response = client.get_table(name)
 
         Args:
-            name (str): The unique name of the requested table.
-                Values are of the form
+            name (str): The unique name of the requested table. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
-            view (~google.cloud.bigtable_admin_v2.types.View): The view to be applied to the returned table's fields.
-                Defaults to ``SCHEMA_VIEW`` if unspecified.
+            view (~google.cloud.bigtable_admin_v2.types.View): The view to be applied to the returned table's fields. Defaults to
+                ``SCHEMA_VIEW`` if unspecified.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -626,8 +626,7 @@ class BigtableTableAdminClient(object):
             >>> client.delete_table(name)
 
         Args:
-            name (str): The unique name of the table to be deleted.
-                Values are of the form
+            name (str): The unique name of the table to be deleted. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -691,19 +690,20 @@ class BigtableTableAdminClient(object):
             >>>
             >>> name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
             >>>
-            >>> # TODO: Initialize ``modifications``:
+            >>> # TODO: Initialize `modifications`:
             >>> modifications = []
             >>>
             >>> response = client.modify_column_families(name, modifications)
 
         Args:
-            name (str): The unique name of the table whose families should be modified.
-                Values are of the form
+            name (str): The unique name of the table whose families should be modified. Values
+                are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             modifications (list[Union[dict, ~google.cloud.bigtable_admin_v2.types.Modification]]): Modifications to be atomically applied to the specified table's families.
                 Entries are applied in order, meaning that earlier modifications can be
                 masked by later ones (in the case of repeated updates to the same family,
                 for example).
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Modification`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -778,8 +778,8 @@ class BigtableTableAdminClient(object):
             >>> client.drop_row_range(name)
 
         Args:
-            name (str): The unique name of the table on which to drop a range of rows.
-                Values are of the form
+            name (str): The unique name of the table on which to drop a range of rows. Values
+                are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             row_key_prefix (bytes): Delete all rows that start with this row key prefix. Prefix cannot be
                 zero length.
@@ -929,7 +929,7 @@ class BigtableTableAdminClient(object):
             >>>
             >>> name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
             >>>
-            >>> # TODO: Initialize ``consistency_token``:
+            >>> # TODO: Initialize `consistency_token`:
             >>> consistency_token = ''
             >>>
             >>> response = client.check_consistency(name, consistency_token)
@@ -1015,13 +1015,13 @@ class BigtableTableAdminClient(object):
             >>>
             >>> name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
             >>>
-            >>> # TODO: Initialize ``cluster``:
+            >>> # TODO: Initialize `cluster`:
             >>> cluster = ''
             >>>
-            >>> # TODO: Initialize ``snapshot_id``:
+            >>> # TODO: Initialize `snapshot_id`:
             >>> snapshot_id = ''
             >>>
-            >>> # TODO: Initialize ``description``:
+            >>> # TODO: Initialize `description`:
             >>> description = ''
             >>>
             >>> response = client.snapshot_table(name, cluster, snapshot_id, description)
@@ -1036,21 +1036,21 @@ class BigtableTableAdminClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            name (str): The unique name of the table to have the snapshot taken.
-                Values are of the form
-                ``projects/<project>/instances/<instance>/tables/<table>``.
-            cluster (str): The name of the cluster where the snapshot will be created in.
-                Values are of the form
+            name (str): The unique name of the table to have the snapshot taken. Values are of
+                the form ``projects/<project>/instances/<instance>/tables/<table>``.
+            cluster (str): The name of the cluster where the snapshot will be created in. Values
+                are of the form
                 ``projects/<project>/instances/<instance>/clusters/<cluster>``.
             snapshot_id (str): The ID by which the new snapshot should be referred to within the parent
-                cluster, e.g., ``mysnapshot`` of the form: ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``
-                rather than
+                cluster, e.g., ``mysnapshot`` of the form:
+                ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*`` rather than
                 ``projects/<project>/instances/<instance>/clusters/<cluster>/snapshots/mysnapshot``.
             description (str): Description of the snapshot.
             ttl (Union[dict, ~google.cloud.bigtable_admin_v2.types.Duration]): The amount of time that the new snapshot can stay active after it is
                 created. Once 'ttl' expires, the snapshot will get deleted. The maximum
                 amount of time a snapshot can stay active is 7 days. If 'ttl' is not
                 specified, the default value of 24 hours will be used.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Duration`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1135,8 +1135,7 @@ class BigtableTableAdminClient(object):
             >>> response = client.get_snapshot(name)
 
         Args:
-            name (str): The unique name of the requested snapshot.
-                Values are of the form
+            name (str): The unique name of the requested snapshot. Values are of the form
                 ``projects/<project>/instances/<instance>/clusters/<cluster>/snapshots/<snapshot>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -1215,7 +1214,7 @@ class BigtableTableAdminClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_snapshots(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_snapshots(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -1223,8 +1222,8 @@ class BigtableTableAdminClient(object):
         Args:
             parent (str): The unique name of the cluster for which snapshots should be listed.
                 Values are of the form
-                ``projects/<project>/instances/<instance>/clusters/<cluster>``.
-                Use ``<cluster> = '-'`` to list snapshots for all clusters in an instance,
+                ``projects/<project>/instances/<instance>/clusters/<cluster>``. Use
+                ``<cluster> = '-'`` to list snapshots for all clusters in an instance,
                 e.g., ``projects/<project>/instances/<instance>/clusters/-``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -1318,8 +1317,7 @@ class BigtableTableAdminClient(object):
             >>> client.delete_snapshot(name)
 
         Args:
-            name (str): The unique name of the snapshot to be deleted.
-                Values are of the form
+            name (str): The unique name of the snapshot to be deleted. Values are of the form
                 ``projects/<project>/instances/<instance>/clusters/<cluster>/snapshots/<snapshot>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
