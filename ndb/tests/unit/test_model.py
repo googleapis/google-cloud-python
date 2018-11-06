@@ -1568,6 +1568,11 @@ class TestBlobProperty:
 
 class TestTextProperty:
     @staticmethod
+    def test_constructor_defaults():
+        prop = model.TextProperty()
+        assert not prop._indexed
+
+    @staticmethod
     def test__validate():
         prop = model.TextProperty(name="text")
         assert prop._validate("abc") is None
@@ -1629,9 +1634,9 @@ class TestTextProperty:
 
 class TestStringProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.StringProperty()
+    def test_constructor_defaults():
+        prop = model.StringProperty()
+        assert prop._indexed
 
 
 class TestGeoPtProperty:

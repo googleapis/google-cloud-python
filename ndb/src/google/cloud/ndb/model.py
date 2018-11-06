@@ -1883,12 +1883,19 @@ class BlobProperty(Property):
 
 
 class TextProperty(BlobProperty):
-    """A property that contains UTF-8 encoded text values.
+    """An unindexed property that contains UTF-8 encoded text values.
 
-    .. note::
+    A :class:`TextProperty` is intended for values of unlimited length, hence
+    is **not** indexed by default. A :class:`TextProperty` can be indexed via:
 
-        Unlike most property types, a :class:`TextProperty` is **not**
-        indexed by default.
+    .. code-block:: python
+
+        class Item(ndb.Model):
+            description = ndb.TextProperty(indexed=True)
+            ...
+
+    but that is not the intended usage. If indexed text is desired, a
+    :class:`StringProperty` should be used instead.
 
     .. automethod:: _to_base_type
     .. automethod:: _from_base_type
@@ -1982,10 +1989,16 @@ class TextProperty(BlobProperty):
 
 
 class StringProperty(TextProperty):
+    """An indexed property that contains UTF-8 encoded text values.
+
+    This is nearly identical to :class:`TextProperty`, but is indexed by
+    default. When indexed, values must be at most 1500 bytes (when encoded from
+    UTF-8 to bytes).
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    _indexed = True
 
 
 class GeoPtProperty(Property):
