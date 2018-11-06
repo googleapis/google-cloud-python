@@ -719,7 +719,7 @@ class _JobConfig(object):
         job_type (str): The key to use for the job configuration.
     """
 
-    def __init__(self, job_type, properties={}):
+    def __init__(self, job_type, **properties):
         self._job_type = job_type
         self._properties = {job_type: {}}
         for prop, val in properties.items():
@@ -881,7 +881,7 @@ class LoadJobConfig(_JobConfig):
     """
 
     def __init__(self, **properties):
-        super(LoadJobConfig, self).__init__('load', properties)
+        super(LoadJobConfig, self).__init__('load', **properties)
 
     @property
     def allow_jagged_rows(self):
@@ -1476,7 +1476,7 @@ class CopyJobConfig(_JobConfig):
     """
 
     def __init__(self, **properties):
-        super(CopyJobConfig, self).__init__('copy', properties)
+        super(CopyJobConfig, self).__init__('copy', **properties)
 
     @property
     def create_disposition(self):
@@ -1669,7 +1669,7 @@ class ExtractJobConfig(_JobConfig):
     """
 
     def __init__(self, **properties):
-        super(ExtractJobConfig, self).__init__('extract', properties)
+        super(ExtractJobConfig, self).__init__('extract', **properties)
 
     @property
     def compression(self):
@@ -1913,7 +1913,7 @@ class QueryJobConfig(_JobConfig):
     """
 
     def __init__(self, **properties):
-        super(QueryJobConfig, self).__init__('query', properties)
+        super(QueryJobConfig, self).__init__('query', **properties)
 
     @property
     def destination_encryption_configuration(self):
