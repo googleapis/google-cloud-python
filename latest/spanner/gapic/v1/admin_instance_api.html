@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Admin Instance Client API &#8212; google-cloud 20a4b5d documentation</title>
+    <title>Spanner Admin Instance Client API &#8212; google-cloud c566550 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -97,15 +97,14 @@ your own client library.</li>
 <dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.create_instance">
 <code class="descname">create_instance</code><span class="sig-paren">(</span><em>parent</em>, <em>instance_id</em>, <em>instance</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.create_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.create_instance" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates an instance and begins preparing it to begin serving. The
-returned <code class="docutils literal notranslate"><span class="pre">long-running</span> <span class="pre">operation</span></code>
-can be used to track the progress of preparing the new
-instance. The instance name is assigned by the caller. If the
-named instance already exists, <code class="docutils literal notranslate"><span class="pre">CreateInstance</span></code> returns
+returned <code class="docutils literal notranslate"><span class="pre">long-running</span> <span class="pre">operation</span></code> can be used to track the progress of
+preparing the new instance. The instance name is assigned by the caller.
+If the named instance already exists, <code class="docutils literal notranslate"><span class="pre">CreateInstance</span></code> returns
 <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.</p>
 <p>Immediately upon completion of this request:</p>
 <ul class="simple">
 <li>The instance is readable via the API, with all requested attributes
-but no allocated resources. Its state is <cite>CREATING</cite>.</li>
+but no allocated resources. Its state is <code class="docutils literal notranslate"><span class="pre">CREATING</span></code>.</li>
 </ul>
 <p>Until completion of the returned operation:</p>
 <ul class="simple">
@@ -122,13 +121,11 @@ may have lower than the requested levels).</li>
 <li>The instance’s allocated resource levels are readable via the API.</li>
 <li>The instance’s state becomes <code class="docutils literal notranslate"><span class="pre">READY</span></code>.</li>
 </ul>
-<p>The returned <code class="docutils literal notranslate"><span class="pre">long-running</span> <span class="pre">operation</span></code> will
-have a name of the format <code class="docutils literal notranslate"><span class="pre">&lt;instance_name&gt;/operations/&lt;operation_id&gt;</span></code> and
-can be used to track creation of the instance.  The
-<code class="docutils literal notranslate"><span class="pre">metadata</span></code> field type is
-<code class="docutils literal notranslate"><span class="pre">CreateInstanceMetadata</span></code>.
-The <code class="docutils literal notranslate"><span class="pre">response</span></code> field type is
-<code class="docutils literal notranslate"><span class="pre">Instance</span></code>, if successful.</p>
+<p>The returned <code class="docutils literal notranslate"><span class="pre">long-running</span> <span class="pre">operation</span></code> will have a name of the format
+<code class="docutils literal notranslate"><span class="pre">&lt;instance_name&gt;/operations/&lt;operation_id&gt;</span></code> and can be used to track
+creation of the instance. The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> field type is
+<code class="docutils literal notranslate"><span class="pre">CreateInstanceMetadata</span></code>. The <code class="docutils literal notranslate"><span class="pre">response</span></code> field type is <code class="docutils literal notranslate"><span class="pre">Instance</span></code>,
+if successful.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -136,10 +133,10 @@ The <code class="docutils literal notranslate"><span class="pre">response</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``instance_id``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `instance_id`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">instance_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``instance``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `instance`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">instance</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_instance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
@@ -159,15 +156,16 @@ The <code class="docutils literal notranslate"><span class="pre">response</span>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The name of the project in which to create the instance. Values
-are of the form <code class="docutils literal notranslate"><span class="pre">projects/&lt;project&gt;</span></code>.</li>
-<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The ID of the instance to create.  Valid identifiers are of the
-form <code class="docutils literal notranslate"><span class="pre">[a-z][-a-z0-9]*[a-z0-9]</span></code> and must be between 6 and 30 characters in
-length.</li>
-<li><strong>instance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><em>Instance</em></a><em>]</em>) – Required. The instance to create.  The name may be omitted, but if
-specified must be <code class="docutils literal notranslate"><span class="pre">&lt;parent&gt;/instances/&lt;instance_id&gt;</span></code>.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a></li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The name of the project in which to create the instance.
+Values are of the form <code class="docutils literal notranslate"><span class="pre">projects/&lt;project&gt;</span></code>.</li>
+<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The ID of the instance to create. Valid identifiers are of the
+form <code class="docutils literal notranslate"><span class="pre">[a-z][-a-z0-9]*[a-z0-9]</span></code> and must be between 6 and 30 characters
+in length.</li>
+<li><strong>instance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><em>Instance</em></a><em>]</em>) – <p>Required. The instance to create. The name may be omitted, but if
+specified must be <code class="docutils literal notranslate"><span class="pre">&lt;parent&gt;/instances/&lt;instance_id&gt;</span></code>.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -205,9 +203,9 @@ to a retryable error and retry attempts failed.</li>
 </ul>
 <p>Soon afterward:</p>
 <ul class="simple">
-<li>The instance and <em>all of its databases</em> immediately and
-irrevocably disappear from the API. All data in the databases
-is permanently deleted.</li>
+<li>The instance and <em>all of its databases</em> immediately and irrevocably
+disappear from the API. All data in the databases is permanently
+deleted.</li>
 </ul>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
@@ -312,8 +310,8 @@ file.</li>
 <dl class="method">
 <dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_iam_policy">
 <code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_iam_policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets the access control policy for an instance resource. Returns an empty
-policy if an instance exists but does not have a policy set.</p>
+<dd><p>Gets the access control policy for an instance resource. Returns an
+empty policy if an instance exists but does not have a policy set.</p>
 <p>Authorization requires <code class="docutils literal notranslate"><span class="pre">spanner.instances.getIamPolicy</span></code> on
 <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
 <p class="rubric">Example</p>
@@ -428,8 +426,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The name of the requested instance configuration. Values are of
-the form <code class="docutils literal notranslate"><span class="pre">projects/&lt;project&gt;/instanceConfigs/&lt;config&gt;</span></code>.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The name of the requested instance configuration. Values are
+of the form <code class="docutils literal notranslate"><span class="pre">projects/&lt;project&gt;/instanceConfigs/&lt;config&gt;</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -489,7 +487,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -558,7 +556,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -578,28 +576,23 @@ streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>An expression for filtering the results of the request. Filter rules are
 case insensitive. The fields eligible for filtering are:</p>
-<blockquote>
-<div><ul>
+<ul>
 <li><code class="docutils literal notranslate"><span class="pre">name</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">display_name</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">labels.key</span></code> where key is the name of a label</li>
 </ul>
-</div></blockquote>
 <p>Some examples of using filters are:</p>
-<blockquote>
-<div><ul>
+<ul>
 <li><code class="docutils literal notranslate"><span class="pre">name:*</span></code> –&gt; The instance has a name.</li>
 <li><code class="docutils literal notranslate"><span class="pre">name:Howl</span></code> –&gt; The instance’s name contains the string “howl”.</li>
 <li><code class="docutils literal notranslate"><span class="pre">name:HOWL</span></code> –&gt; Equivalent to above.</li>
 <li><code class="docutils literal notranslate"><span class="pre">NAME:howl</span></code> –&gt; Equivalent to above.</li>
 <li><code class="docutils literal notranslate"><span class="pre">labels.env:*</span></code> –&gt; The instance has the label “env”.</li>
-<li><code class="docutils literal notranslate"><span class="pre">labels.env:dev</span></code> –&gt; The instance has the label “env”
-and the value of the label contains the string “dev”.</li>
-<li><code class="docutils literal notranslate"><span class="pre">name:howl</span> <span class="pre">labels.env:dev</span></code> –&gt; The instance’s name
-contains “howl” and it has the label “env” with
-its value containing “dev”.</li>
+<li><code class="docutils literal notranslate"><span class="pre">labels.env:dev</span></code> –&gt; The instance has the label “env” and the value
+of the label contains the string “dev”.</li>
+<li><code class="docutils literal notranslate"><span class="pre">name:howl</span> <span class="pre">labels.env:dev</span></code> –&gt; The instance’s name contains “howl”
+and it has the label “env” with its value containing “dev”.</li>
 </ul>
-</div></blockquote>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -651,7 +644,7 @@ existing policy.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``policy``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `policy`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
@@ -665,12 +658,13 @@ existing policy.</p>
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being specified.
 <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
 resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
-<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Policy" title="google.cloud.spanner_admin_instance_v1.types.Policy"><em>Policy</em></a><em>]</em>) – REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of
-the policy is limited to a few 10s of KB. An empty policy is a
+<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Policy" title="google.cloud.spanner_admin_instance_v1.types.Policy"><em>Policy</em></a><em>]</em>) – <p>REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The
+size of the policy is limited to a few 10s of KB. An empty policy is a
 valid policy but certain Cloud Platform services (such as Projects)
-might reject them.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Policy" title="google.cloud.spanner_admin_instance_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></li>
+might reject them.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Policy" title="google.cloud.spanner_admin_instance_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -701,11 +695,12 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.test_iam_permissions">
 <code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.test_iam_permissions" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns permissions that the caller has on the specified instance resource.</p>
-<p>Attempting this RPC on a non-existent Cloud Spanner instance resource will
-result in a NOT_FOUND error if the user has <code class="docutils literal notranslate"><span class="pre">spanner.instances.list</span></code>
-permission on the containing Google Cloud Project. Otherwise returns an
-empty set of permissions.</p>
+<dd><p>Returns permissions that the caller has on the specified instance
+resource.</p>
+<p>Attempting this RPC on a non-existent Cloud Spanner instance resource
+will result in a NOT_FOUND error if the user has
+<code class="docutils literal notranslate"><span class="pre">spanner.instances.list</span></code> permission on the containing Google Cloud
+Project. Otherwise returns an empty set of permissions.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -713,7 +708,7 @@ empty set of permissions.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``permissions``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `permissions`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="p">)</span>
@@ -729,8 +724,8 @@ empty set of permissions.</p>
 resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
 <li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. Permissions with
 wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
-information see
-<a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</li>
+information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM
+Overview</a>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -761,10 +756,9 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.update_instance">
 <code class="descname">update_instance</code><span class="sig-paren">(</span><em>instance</em>, <em>field_mask</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.update_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.update_instance" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates an instance, and begins allocating or releasing resources
-as requested. The returned [long-running
-operation][google.longrunning.Operation] can be used to track the
-progress of updating the instance. If the named instance does not
+<dd><p>Updates an instance, and begins allocating or releasing resources as
+requested. The returned <code class="docutils literal notranslate"><span class="pre">long-running</span>&#160; <span class="pre">operation</span></code> can be used to track
+the progress of updating the instance. If the named instance does not
 exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.</p>
 <p>Immediately upon completion of this request:</p>
 <ul class="simple">
@@ -773,11 +767,10 @@ has been requested, billing is based on the newly-requested level.</li>
 </ul>
 <p>Until completion of the returned operation:</p>
 <ul class="simple">
-<li>Cancelling the operation sets its metadata’s
-[cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time],
-and begins restoring resources to their pre-request values.
-The operation is guaranteed to succeed at undoing all resource
-changes, after which point it terminates with a <cite>CANCELLED</cite> status.</li>
+<li>Cancelling the operation sets its metadata’s <code class="docutils literal notranslate"><span class="pre">cancel_time</span></code>, and
+begins restoring resources to their pre-request values. The operation
+is guaranteed to succeed at undoing all resource changes, after which
+point it terminates with a <code class="docutils literal notranslate"><span class="pre">CANCELLED</span></code> status.</li>
 <li>All other attempts to modify the instance are rejected.</li>
 <li>Reading the instance via the API continues to give the pre-request
 resource levels.</li>
@@ -790,13 +783,11 @@ may have lower than the requested levels).</li>
 tables.</li>
 <li>The instance’s new resource levels are readable via the API.</li>
 </ul>
-<p>The returned <code class="docutils literal notranslate"><span class="pre">long-running</span> <span class="pre">operation</span></code> will
-have a name of the format <code class="docutils literal notranslate"><span class="pre">&lt;instance_name&gt;/operations/&lt;operation_id&gt;</span></code> and
-can be used to track the instance modification.  The
-<code class="docutils literal notranslate"><span class="pre">metadata</span></code> field type is
-<code class="docutils literal notranslate"><span class="pre">UpdateInstanceMetadata</span></code>.
-The <code class="docutils literal notranslate"><span class="pre">response</span></code> field type is
-<code class="docutils literal notranslate"><span class="pre">Instance</span></code>, if successful.</p>
+<p>The returned <code class="docutils literal notranslate"><span class="pre">long-running</span> <span class="pre">operation</span></code> will have a name of the format
+<code class="docutils literal notranslate"><span class="pre">&lt;instance_name&gt;/operations/&lt;operation_id&gt;</span></code> and can be used to track
+the instance modification. The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> field type is
+<code class="docutils literal notranslate"><span class="pre">UpdateInstanceMetadata</span></code>. The <code class="docutils literal notranslate"><span class="pre">response</span></code> field type is <code class="docutils literal notranslate"><span class="pre">Instance</span></code>,
+if successful.</p>
 <p>Authorization requires <code class="docutils literal notranslate"><span class="pre">spanner.instances.update</span></code> permission on
 resource <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
 <p class="rubric">Example</p>
@@ -804,10 +795,10 @@ resource <code class="docutils literal notranslate"><span class="pre">name</span
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``instance``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `instance`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">instance</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``field_mask``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `field_mask`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">field_mask</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_instance</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">field_mask</span><span class="p">)</span>
@@ -827,16 +818,22 @@ resource <code class="docutils literal notranslate"><span class="pre">name</span
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>instance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><em>Instance</em></a><em>]</em>) – Required. The instance to update, which must always include the instance
-name.  Otherwise, only fields mentioned in [][google.spanner.admin.instance.v1.UpdateInstanceRequest.field_mask] need be included.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a></li>
-<li><strong>field_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.FieldMask" title="google.cloud.spanner_admin_instance_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Required. A mask specifying which fields in [][google.spanner.admin.instance.v1.UpdateInstanceRequest.instance] should be updated.
-The field mask must always be specified; this prevents any future fields in
-[][google.spanner.admin.instance.v1.Instance] from being erased accidentally by clients that do not know
-about them.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.FieldMask" title="google.cloud.spanner_admin_instance_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>instance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><em>Instance</em></a><em>]</em>) – <p>Required. The instance to update, which must always include the instance
+name. Otherwise, only fields mentioned in
+[][google.spanner.admin.instance.v1.UpdateInstanceRequest.field_mask]
+need be included.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a></p>
+</li>
+<li><strong>field_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.FieldMask" title="google.cloud.spanner_admin_instance_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Required. A mask specifying which fields in
+[][google.spanner.admin.instance.v1.UpdateInstanceRequest.instance]
+should be updated. The field mask must always be specified; this
+prevents any future fields in
+[][google.spanner.admin.instance.v1.Instance] from being erased
+accidentally by clients that do not know about them.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.FieldMask" title="google.cloud.spanner_admin_instance_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>

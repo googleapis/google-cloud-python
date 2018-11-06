@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client &#8212; google-cloud 20a4b5d documentation</title>
+    <title>google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client &#8212; google-cloud c566550 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -89,7 +89,7 @@
 <span class="sd">    modify and list instances. Instances are dedicated Cloud Spanner serving</span>
 <span class="sd">    and storage resources to be used by Cloud Spanner databases.</span>
 
-<span class="sd">    Each instance has a \&quot;configuration\&quot;, which dictates where the</span>
+<span class="sd">    Each instance has a &quot;configuration&quot;, which dictates where the</span>
 <span class="sd">    serving resources for the Cloud Spanner instance are located (e.g.,</span>
 <span class="sd">    US-central, Europe). Configurations are created by Google based on</span>
 <span class="sd">    resource availability.</span>
@@ -229,9 +229,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -273,7 +274,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_instance_configs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_instance_configs(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -357,8 +358,8 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_instance_config(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required. The name of the requested instance configuration. Values are of</span>
-<span class="sd">                the form ``projects/&lt;project&gt;/instanceConfigs/&lt;config&gt;``.</span>
+<span class="sd">            name (str): Required. The name of the requested instance configuration. Values are</span>
+<span class="sd">                of the form ``projects/&lt;project&gt;/instanceConfigs/&lt;config&gt;``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -421,7 +422,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_instances(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_instances(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -437,22 +438,21 @@
 <span class="sd">            filter_ (str): An expression for filtering the results of the request. Filter rules are</span>
 <span class="sd">                case insensitive. The fields eligible for filtering are:</span>
 
-<span class="sd">                  * ``name``</span>
-<span class="sd">                  * ``display_name``</span>
-<span class="sd">                  * ``labels.key`` where key is the name of a label</span>
+<span class="sd">                -  ``name``</span>
+<span class="sd">                -  ``display_name``</span>
+<span class="sd">                -  ``labels.key`` where key is the name of a label</span>
 
 <span class="sd">                Some examples of using filters are:</span>
 
-<span class="sd">                  * ``name:*`` --&gt; The instance has a name.</span>
-<span class="sd">                  * ``name:Howl`` --&gt; The instance&#39;s name contains the string \&quot;howl\&quot;.</span>
-<span class="sd">                  * ``name:HOWL`` --&gt; Equivalent to above.</span>
-<span class="sd">                  * ``NAME:howl`` --&gt; Equivalent to above.</span>
-<span class="sd">                  * ``labels.env:*`` --&gt; The instance has the label \&quot;env\&quot;.</span>
-<span class="sd">                  * ``labels.env:dev`` --&gt; The instance has the label \&quot;env\&quot;</span>
-<span class="sd">                    and the value of the label contains the string \&quot;dev\&quot;.</span>
-<span class="sd">                  * ``name:howl labels.env:dev`` --&gt; The instance&#39;s name</span>
-<span class="sd">                    contains \&quot;howl\&quot; and it has the label \&quot;env\&quot; with</span>
-<span class="sd">                    its value containing \&quot;dev\&quot;.</span>
+<span class="sd">                -  ``name:*`` --&gt; The instance has a name.</span>
+<span class="sd">                -  ``name:Howl`` --&gt; The instance&#39;s name contains the string &quot;howl&quot;.</span>
+<span class="sd">                -  ``name:HOWL`` --&gt; Equivalent to above.</span>
+<span class="sd">                -  ``NAME:howl`` --&gt; Equivalent to above.</span>
+<span class="sd">                -  ``labels.env:*`` --&gt; The instance has the label &quot;env&quot;.</span>
+<span class="sd">                -  ``labels.env:dev`` --&gt; The instance has the label &quot;env&quot; and the value</span>
+<span class="sd">                   of the label contains the string &quot;dev&quot;.</span>
+<span class="sd">                -  ``name:howl labels.env:dev`` --&gt; The instance&#39;s name contains &quot;howl&quot;</span>
+<span class="sd">                   and it has the label &quot;env&quot; with its value containing &quot;dev&quot;.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -568,39 +568,36 @@
                         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates an instance and begins preparing it to begin serving. The</span>
-<span class="sd">        returned ``long-running operation``</span>
-<span class="sd">        can be used to track the progress of preparing the new</span>
-<span class="sd">        instance. The instance name is assigned by the caller. If the</span>
-<span class="sd">        named instance already exists, ``CreateInstance`` returns</span>
+<span class="sd">        returned ``long-running operation`` can be used to track the progress of</span>
+<span class="sd">        preparing the new instance. The instance name is assigned by the caller.</span>
+<span class="sd">        If the named instance already exists, ``CreateInstance`` returns</span>
 <span class="sd">        ``ALREADY_EXISTS``.</span>
 
 <span class="sd">        Immediately upon completion of this request:</span>
 
-<span class="sd">        * The instance is readable via the API, with all requested attributes</span>
-<span class="sd">          but no allocated resources. Its state is `CREATING`.</span>
+<span class="sd">        -  The instance is readable via the API, with all requested attributes</span>
+<span class="sd">           but no allocated resources. Its state is ``CREATING``.</span>
 
 <span class="sd">        Until completion of the returned operation:</span>
 
-<span class="sd">        * Cancelling the operation renders the instance immediately unreadable</span>
-<span class="sd">          via the API.</span>
-<span class="sd">        * The instance can be deleted.</span>
-<span class="sd">        * All other attempts to modify the instance are rejected.</span>
+<span class="sd">        -  Cancelling the operation renders the instance immediately unreadable</span>
+<span class="sd">           via the API.</span>
+<span class="sd">        -  The instance can be deleted.</span>
+<span class="sd">        -  All other attempts to modify the instance are rejected.</span>
 
 <span class="sd">        Upon completion of the returned operation:</span>
 
-<span class="sd">        * Billing for all successfully-allocated resources begins (some types</span>
-<span class="sd">          may have lower than the requested levels).</span>
-<span class="sd">        * Databases can be created in the instance.</span>
-<span class="sd">        * The instance&#39;s allocated resource levels are readable via the API.</span>
-<span class="sd">        * The instance&#39;s state becomes ``READY``.</span>
+<span class="sd">        -  Billing for all successfully-allocated resources begins (some types</span>
+<span class="sd">           may have lower than the requested levels).</span>
+<span class="sd">        -  Databases can be created in the instance.</span>
+<span class="sd">        -  The instance&#39;s allocated resource levels are readable via the API.</span>
+<span class="sd">        -  The instance&#39;s state becomes ``READY``.</span>
 
-<span class="sd">        The returned ``long-running operation`` will</span>
-<span class="sd">        have a name of the format ``&lt;instance_name&gt;/operations/&lt;operation_id&gt;`` and</span>
-<span class="sd">        can be used to track creation of the instance.  The</span>
-<span class="sd">        ``metadata`` field type is</span>
-<span class="sd">        ``CreateInstanceMetadata``.</span>
-<span class="sd">        The ``response`` field type is</span>
-<span class="sd">        ``Instance``, if successful.</span>
+<span class="sd">        The returned ``long-running operation`` will have a name of the format</span>
+<span class="sd">        ``&lt;instance_name&gt;/operations/&lt;operation_id&gt;`` and can be used to track</span>
+<span class="sd">        creation of the instance. The ``metadata`` field type is</span>
+<span class="sd">        ``CreateInstanceMetadata``. The ``response`` field type is ``Instance``,</span>
+<span class="sd">        if successful.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import spanner_admin_instance_v1</span>
@@ -609,10 +606,10 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``instance_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `instance_id`:</span>
 <span class="sd">            &gt;&gt;&gt; instance_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``instance``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `instance`:</span>
 <span class="sd">            &gt;&gt;&gt; instance = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_instance(parent, instance_id, instance)</span>
@@ -627,13 +624,14 @@
 <span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required. The name of the project in which to create the instance. Values</span>
-<span class="sd">                are of the form ``projects/&lt;project&gt;``.</span>
-<span class="sd">            instance_id (str): Required. The ID of the instance to create.  Valid identifiers are of the</span>
-<span class="sd">                form ``[a-z][-a-z0-9]*[a-z0-9]`` and must be between 6 and 30 characters in</span>
-<span class="sd">                length.</span>
-<span class="sd">            instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to create.  The name may be omitted, but if</span>
+<span class="sd">            parent (str): Required. The name of the project in which to create the instance.</span>
+<span class="sd">                Values are of the form ``projects/&lt;project&gt;``.</span>
+<span class="sd">            instance_id (str): Required. The ID of the instance to create. Valid identifiers are of the</span>
+<span class="sd">                form ``[a-z][-a-z0-9]*[a-z0-9]`` and must be between 6 and 30 characters</span>
+<span class="sd">                in length.</span>
+<span class="sd">            instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to create. The name may be omitted, but if</span>
 <span class="sd">                specified must be ``&lt;parent&gt;/instances/&lt;instance_id&gt;``.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -687,43 +685,39 @@
                         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Updates an instance, and begins allocating or releasing resources</span>
-<span class="sd">        as requested. The returned [long-running</span>
-<span class="sd">        operation][google.longrunning.Operation] can be used to track the</span>
-<span class="sd">        progress of updating the instance. If the named instance does not</span>
+<span class="sd">        Updates an instance, and begins allocating or releasing resources as</span>
+<span class="sd">        requested. The returned ``long-running  operation`` can be used to track</span>
+<span class="sd">        the progress of updating the instance. If the named instance does not</span>
 <span class="sd">        exist, returns ``NOT_FOUND``.</span>
 
 <span class="sd">        Immediately upon completion of this request:</span>
 
-<span class="sd">        * For resource types for which a decrease in the instance&#39;s allocation</span>
-<span class="sd">          has been requested, billing is based on the newly-requested level.</span>
+<span class="sd">        -  For resource types for which a decrease in the instance&#39;s allocation</span>
+<span class="sd">           has been requested, billing is based on the newly-requested level.</span>
 
 <span class="sd">        Until completion of the returned operation:</span>
 
-<span class="sd">        * Cancelling the operation sets its metadata&#39;s</span>
-<span class="sd">          [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time],</span>
-<span class="sd">          and begins restoring resources to their pre-request values.</span>
-<span class="sd">          The operation is guaranteed to succeed at undoing all resource</span>
-<span class="sd">          changes, after which point it terminates with a `CANCELLED` status.</span>
-<span class="sd">        * All other attempts to modify the instance are rejected.</span>
-<span class="sd">        * Reading the instance via the API continues to give the pre-request</span>
-<span class="sd">          resource levels.</span>
+<span class="sd">        -  Cancelling the operation sets its metadata&#39;s ``cancel_time``, and</span>
+<span class="sd">           begins restoring resources to their pre-request values. The operation</span>
+<span class="sd">           is guaranteed to succeed at undoing all resource changes, after which</span>
+<span class="sd">           point it terminates with a ``CANCELLED`` status.</span>
+<span class="sd">        -  All other attempts to modify the instance are rejected.</span>
+<span class="sd">        -  Reading the instance via the API continues to give the pre-request</span>
+<span class="sd">           resource levels.</span>
 
 <span class="sd">        Upon completion of the returned operation:</span>
 
-<span class="sd">        * Billing begins for all successfully-allocated resources (some types</span>
-<span class="sd">          may have lower than the requested levels).</span>
-<span class="sd">        * All newly-reserved resources are available for serving the instance&#39;s</span>
-<span class="sd">          tables.</span>
-<span class="sd">        * The instance&#39;s new resource levels are readable via the API.</span>
+<span class="sd">        -  Billing begins for all successfully-allocated resources (some types</span>
+<span class="sd">           may have lower than the requested levels).</span>
+<span class="sd">        -  All newly-reserved resources are available for serving the instance&#39;s</span>
+<span class="sd">           tables.</span>
+<span class="sd">        -  The instance&#39;s new resource levels are readable via the API.</span>
 
-<span class="sd">        The returned ``long-running operation`` will</span>
-<span class="sd">        have a name of the format ``&lt;instance_name&gt;/operations/&lt;operation_id&gt;`` and</span>
-<span class="sd">        can be used to track the instance modification.  The</span>
-<span class="sd">        ``metadata`` field type is</span>
-<span class="sd">        ``UpdateInstanceMetadata``.</span>
-<span class="sd">        The ``response`` field type is</span>
-<span class="sd">        ``Instance``, if successful.</span>
+<span class="sd">        The returned ``long-running operation`` will have a name of the format</span>
+<span class="sd">        ``&lt;instance_name&gt;/operations/&lt;operation_id&gt;`` and can be used to track</span>
+<span class="sd">        the instance modification. The ``metadata`` field type is</span>
+<span class="sd">        ``UpdateInstanceMetadata``. The ``response`` field type is ``Instance``,</span>
+<span class="sd">        if successful.</span>
 
 <span class="sd">        Authorization requires ``spanner.instances.update`` permission on</span>
 <span class="sd">        resource ``name``.</span>
@@ -733,10 +727,10 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = spanner_admin_instance_v1.InstanceAdminClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``instance``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `instance`:</span>
 <span class="sd">            &gt;&gt;&gt; instance = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``field_mask``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `field_mask`:</span>
 <span class="sd">            &gt;&gt;&gt; field_mask = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_instance(instance, field_mask)</span>
@@ -752,13 +746,19 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to update, which must always include the instance</span>
-<span class="sd">                name.  Otherwise, only fields mentioned in [][google.spanner.admin.instance.v1.UpdateInstanceRequest.field_mask] need be included.</span>
+<span class="sd">                name. Otherwise, only fields mentioned in</span>
+<span class="sd">                [][google.spanner.admin.instance.v1.UpdateInstanceRequest.field\_mask]</span>
+<span class="sd">                need be included.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`</span>
-<span class="sd">            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): Required. A mask specifying which fields in [][google.spanner.admin.instance.v1.UpdateInstanceRequest.instance] should be updated.</span>
-<span class="sd">                The field mask must always be specified; this prevents any future fields in</span>
-<span class="sd">                [][google.spanner.admin.instance.v1.Instance] from being erased accidentally by clients that do not know</span>
-<span class="sd">                about them.</span>
+<span class="sd">            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): Required. A mask specifying which fields in</span>
+<span class="sd">                [][google.spanner.admin.instance.v1.UpdateInstanceRequest.instance]</span>
+<span class="sd">                should be updated. The field mask must always be specified; this</span>
+<span class="sd">                prevents any future fields in</span>
+<span class="sd">                [][google.spanner.admin.instance.v1.Instance] from being erased</span>
+<span class="sd">                accidentally by clients that do not know about them.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.spanner_admin_instance_v1.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -814,13 +814,13 @@
 
 <span class="sd">        Immediately upon completion of the request:</span>
 
-<span class="sd">        * Billing ceases for all of the instance&#39;s reserved resources.</span>
+<span class="sd">        -  Billing ceases for all of the instance&#39;s reserved resources.</span>
 
 <span class="sd">        Soon afterward:</span>
 
-<span class="sd">        * The instance and *all of its databases* immediately and</span>
-<span class="sd">          irrevocably disappear from the API. All data in the databases</span>
-<span class="sd">          is permanently deleted.</span>
+<span class="sd">        -  The instance and *all of its databases* immediately and irrevocably</span>
+<span class="sd">           disappear from the API. All data in the databases is permanently</span>
+<span class="sd">           deleted.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import spanner_admin_instance_v1</span>
@@ -885,7 +885,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.instance_path(&#39;[PROJECT]&#39;, &#39;[INSTANCE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``policy``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `policy`:</span>
 <span class="sd">            &gt;&gt;&gt; policy = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_iam_policy(resource, policy)</span>
@@ -894,10 +894,11 @@
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy is being specified.</span>
 <span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
-<span class="sd">            policy (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The size of</span>
-<span class="sd">                the policy is limited to a few 10s of KB. An empty policy is a</span>
+<span class="sd">            policy (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The</span>
+<span class="sd">                size of the policy is limited to a few 10s of KB. An empty policy is a</span>
 <span class="sd">                valid policy but certain Cloud Platform services (such as Projects)</span>
 <span class="sd">                might reject them.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.spanner_admin_instance_v1.types.Policy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -943,8 +944,8 @@
                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets the access control policy for an instance resource. Returns an empty</span>
-<span class="sd">        policy if an instance exists but does not have a policy set.</span>
+<span class="sd">        Gets the access control policy for an instance resource. Returns an</span>
+<span class="sd">        empty policy if an instance exists but does not have a policy set.</span>
 
 <span class="sd">        Authorization requires ``spanner.instances.getIamPolicy`` on</span>
 <span class="sd">        ``resource``.</span>
@@ -1003,12 +1004,13 @@
                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns permissions that the caller has on the specified instance resource.</span>
+<span class="sd">        Returns permissions that the caller has on the specified instance</span>
+<span class="sd">        resource.</span>
 
-<span class="sd">        Attempting this RPC on a non-existent Cloud Spanner instance resource will</span>
-<span class="sd">        result in a NOT_FOUND error if the user has ``spanner.instances.list``</span>
-<span class="sd">        permission on the containing Google Cloud Project. Otherwise returns an</span>
-<span class="sd">        empty set of permissions.</span>
+<span class="sd">        Attempting this RPC on a non-existent Cloud Spanner instance resource</span>
+<span class="sd">        will result in a NOT\_FOUND error if the user has</span>
+<span class="sd">        ``spanner.instances.list`` permission on the containing Google Cloud</span>
+<span class="sd">        Project. Otherwise returns an empty set of permissions.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import spanner_admin_instance_v1</span>
@@ -1017,7 +1019,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.instance_path(&#39;[PROJECT]&#39;, &#39;[INSTANCE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``permissions``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `permissions`:</span>
 <span class="sd">            &gt;&gt;&gt; permissions = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.test_iam_permissions(resource, permissions)</span>
@@ -1028,8 +1030,8 @@
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
 <span class="sd">            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with</span>
 <span class="sd">                wildcards (such as &#39;*&#39; or &#39;storage.*&#39;) are not allowed. For more</span>
-<span class="sd">                information see</span>
-<span class="sd">                `IAM Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`_.</span>
+<span class="sd">                information see `IAM</span>
+<span class="sd">                Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`__.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>

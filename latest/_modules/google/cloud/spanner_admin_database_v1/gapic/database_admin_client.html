@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_admin_database_v1.gapic.database_admin_client &#8212; google-cloud 20a4b5d documentation</title>
+    <title>google.cloud.spanner_admin_database_v1.gapic.database_admin_client &#8212; google-cloud c566550 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -205,9 +205,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -249,14 +250,14 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_databases(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_databases(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required. The instance whose databases should be listed.</span>
-<span class="sd">                Values are of the form ``projects/&lt;project&gt;/instances/&lt;instance&gt;``.</span>
+<span class="sd">            parent (str): Required. The instance whose databases should be listed. Values are of</span>
+<span class="sd">                the form ``projects/&lt;project&gt;/instances/&lt;instance&gt;``.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -321,14 +322,12 @@
                         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new Cloud Spanner database and starts to prepare it for serving.</span>
-<span class="sd">        The returned ``long-running operation`` will</span>
-<span class="sd">        have a name of the format ``&lt;database_name&gt;/operations/&lt;operation_id&gt;`` and</span>
-<span class="sd">        can be used to track preparation of the database. The</span>
-<span class="sd">        ``metadata`` field type is</span>
-<span class="sd">        ``CreateDatabaseMetadata``. The</span>
-<span class="sd">        ``response`` field type is</span>
-<span class="sd">        ``Database``, if successful.</span>
+<span class="sd">        Creates a new Cloud Spanner database and starts to prepare it for</span>
+<span class="sd">        serving. The returned ``long-running operation`` will have a name of the</span>
+<span class="sd">        format ``&lt;database_name&gt;/operations/&lt;operation_id&gt;`` and can be used to</span>
+<span class="sd">        track preparation of the database. The ``metadata`` field type is</span>
+<span class="sd">        ``CreateDatabaseMetadata``. The ``response`` field type is ``Database``,</span>
+<span class="sd">        if successful.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import spanner_admin_database_v1</span>
@@ -337,7 +336,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.instance_path(&#39;[PROJECT]&#39;, &#39;[INSTANCE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``create_statement``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `create_statement`:</span>
 <span class="sd">            &gt;&gt;&gt; create_statement = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_database(parent, create_statement)</span>
@@ -355,10 +354,10 @@
 <span class="sd">            parent (str): Required. The name of the instance that will serve the new database.</span>
 <span class="sd">                Values are of the form ``projects/&lt;project&gt;/instances/&lt;instance&gt;``.</span>
 <span class="sd">            create_statement (str): Required. A ``CREATE DATABASE`` statement, which specifies the ID of the</span>
-<span class="sd">                new database.  The database ID must conform to the regular expression</span>
-<span class="sd">                ``[a-z][a-z0-9_\-]*[a-z0-9]`` and be between 2 and 30 characters in length.</span>
-<span class="sd">                If the database ID is a reserved word or if it contains a hyphen, the</span>
-<span class="sd">                database ID must be enclosed in backticks.</span>
+<span class="sd">                new database. The database ID must conform to the regular expression</span>
+<span class="sd">                ``[a-z][a-z0-9_\-]*[a-z0-9]`` and be between 2 and 30 characters in</span>
+<span class="sd">                length. If the database ID is a reserved word or if it contains a</span>
+<span class="sd">                hyphen, the database ID must be enclosed in backticks (`````).</span>
 <span class="sd">            extra_statements (list[str]): An optional list of DDL statements to run inside the newly created</span>
 <span class="sd">                database. Statements can create tables, indexes, etc. These</span>
 <span class="sd">                statements execute atomically with the creation of the database:</span>
@@ -471,11 +470,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates the schema of a Cloud Spanner database by</span>
 <span class="sd">        creating/altering/dropping tables, columns, indexes, etc. The returned</span>
-<span class="sd">        ``long-running operation`` will have a name of</span>
-<span class="sd">        the format ``&lt;database_name&gt;/operations/&lt;operation_id&gt;`` and can be used to</span>
-<span class="sd">        track execution of the schema change(s). The</span>
-<span class="sd">        ``metadata`` field type is</span>
-<span class="sd">        ``UpdateDatabaseDdlMetadata``.  The operation has no response.</span>
+<span class="sd">        ``long-running operation`` will have a name of the format</span>
+<span class="sd">        ``&lt;database_name&gt;/operations/&lt;operation_id&gt;`` and can be used to track</span>
+<span class="sd">        execution of the schema change(s). The ``metadata`` field type is</span>
+<span class="sd">        ``UpdateDatabaseDdlMetadata``. The operation has no response.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import spanner_admin_database_v1</span>
@@ -484,7 +482,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; database = client.database_path(&#39;[PROJECT]&#39;, &#39;[INSTANCE]&#39;, &#39;[DATABASE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``statements``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `statements`:</span>
 <span class="sd">            &gt;&gt;&gt; statements = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_database_ddl(database, statements)</span>
@@ -501,25 +499,21 @@
 <span class="sd">        Args:</span>
 <span class="sd">            database (str): Required. The database to update.</span>
 <span class="sd">            statements (list[str]): DDL statements to be applied to the database.</span>
-<span class="sd">            operation_id (str): If empty, the new update request is assigned an</span>
-<span class="sd">                automatically-generated operation ID. Otherwise, ``operation_id``</span>
-<span class="sd">                is used to construct the name of the resulting</span>
-<span class="sd">                ``Operation``.</span>
+<span class="sd">            operation_id (str): If empty, the new update request is assigned an automatically-generated</span>
+<span class="sd">                operation ID. Otherwise, ``operation_id`` is used to construct the name</span>
+<span class="sd">                of the resulting ``Operation``.</span>
 
-<span class="sd">                Specifying an explicit operation ID simplifies determining</span>
-<span class="sd">                whether the statements were executed in the event that the</span>
-<span class="sd">                ``UpdateDatabaseDdl`` call is replayed,</span>
-<span class="sd">                or the return value is otherwise lost: the ``database`` and</span>
-<span class="sd">                ``operation_id`` fields can be combined to form the</span>
-<span class="sd">                ``name`` of the resulting</span>
-<span class="sd">                ``longrunning.Operation``: ``&lt;database&gt;/operations/&lt;operation_id&gt;``.</span>
+<span class="sd">                Specifying an explicit operation ID simplifies determining whether the</span>
+<span class="sd">                statements were executed in the event that the ``UpdateDatabaseDdl``</span>
+<span class="sd">                call is replayed, or the return value is otherwise lost: the</span>
+<span class="sd">                ``database`` and ``operation_id`` fields can be combined to form the</span>
+<span class="sd">                ``name`` of the resulting ``longrunning.Operation``:</span>
+<span class="sd">                ``&lt;database&gt;/operations/&lt;operation_id&gt;``.</span>
 
-<span class="sd">                ``operation_id`` should be unique within the database, and must be</span>
-<span class="sd">                a valid identifier: ``[a-z][a-z0-9_]*``. Note that</span>
-<span class="sd">                automatically-generated operation IDs always begin with an</span>
-<span class="sd">                underscore. If the named operation already exists,</span>
-<span class="sd">                ``UpdateDatabaseDdl`` returns</span>
-<span class="sd">                ``ALREADY_EXISTS``.</span>
+<span class="sd">                ``operation_id`` should be unique within the database, and must be a</span>
+<span class="sd">                valid identifier: ``[a-z][a-z0-9_]*``. Note that automatically-generated</span>
+<span class="sd">                operation IDs always begin with an underscore. If the named operation</span>
+<span class="sd">                already exists, ``UpdateDatabaseDdl`` returns ``ALREADY_EXISTS``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -623,8 +617,8 @@
                          <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the schema of a Cloud Spanner database as a list of formatted</span>
-<span class="sd">        DDL statements. This method does not show pending schema updates, those may</span>
-<span class="sd">        be queried using the ``Operations`` API.</span>
+<span class="sd">        DDL statements. This method does not show pending schema updates, those</span>
+<span class="sd">        may be queried using the ``Operations`` API.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import spanner_admin_database_v1</span>
@@ -692,7 +686,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.database_path(&#39;[PROJECT]&#39;, &#39;[INSTANCE]&#39;, &#39;[DATABASE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``policy``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `policy`:</span>
 <span class="sd">            &gt;&gt;&gt; policy = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_iam_policy(resource, policy)</span>
@@ -701,10 +695,11 @@
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy is being specified.</span>
 <span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
-<span class="sd">            policy (Union[dict, ~google.cloud.spanner_admin_database_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The size of</span>
-<span class="sd">                the policy is limited to a few 10s of KB. An empty policy is a</span>
+<span class="sd">            policy (Union[dict, ~google.cloud.spanner_admin_database_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The</span>
+<span class="sd">                size of the policy is limited to a few 10s of KB. An empty policy is a</span>
 <span class="sd">                valid policy but certain Cloud Platform services (such as Projects)</span>
 <span class="sd">                might reject them.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.spanner_admin_database_v1.types.Policy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -810,12 +805,13 @@
                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns permissions that the caller has on the specified database resource.</span>
+<span class="sd">        Returns permissions that the caller has on the specified database</span>
+<span class="sd">        resource.</span>
 
-<span class="sd">        Attempting this RPC on a non-existent Cloud Spanner database will result in</span>
-<span class="sd">        a NOT_FOUND error if the user has ``spanner.databases.list`` permission on</span>
-<span class="sd">        the containing Cloud Spanner instance. Otherwise returns an empty set of</span>
-<span class="sd">        permissions.</span>
+<span class="sd">        Attempting this RPC on a non-existent Cloud Spanner database will result</span>
+<span class="sd">        in a NOT\_FOUND error if the user has ``spanner.databases.list``</span>
+<span class="sd">        permission on the containing Cloud Spanner instance. Otherwise returns</span>
+<span class="sd">        an empty set of permissions.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import spanner_admin_database_v1</span>
@@ -824,7 +820,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.database_path(&#39;[PROJECT]&#39;, &#39;[INSTANCE]&#39;, &#39;[DATABASE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``permissions``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `permissions`:</span>
 <span class="sd">            &gt;&gt;&gt; permissions = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.test_iam_permissions(resource, permissions)</span>
@@ -835,8 +831,8 @@
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
 <span class="sd">            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with</span>
 <span class="sd">                wildcards (such as &#39;*&#39; or &#39;storage.*&#39;) are not allowed. For more</span>
-<span class="sd">                information see</span>
-<span class="sd">                `IAM Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`_.</span>
+<span class="sd">                information see `IAM</span>
+<span class="sd">                Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`__.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>

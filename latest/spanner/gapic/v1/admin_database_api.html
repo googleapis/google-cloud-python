@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Admin Database Client API &#8212; google-cloud 20a4b5d documentation</title>
+    <title>Spanner Admin Database Client API &#8212; google-cloud c566550 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -82,14 +82,12 @@ your own client library.</li>
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.create_database">
 <code class="descname">create_database</code><span class="sig-paren">(</span><em>parent</em>, <em>create_statement</em>, <em>extra_statements=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.create_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.create_database" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a new Cloud Spanner database and starts to prepare it for serving.
-The returned <code class="docutils literal notranslate"><span class="pre">long-running</span> <span class="pre">operation</span></code> will
-have a name of the format <code class="docutils literal notranslate"><span class="pre">&lt;database_name&gt;/operations/&lt;operation_id&gt;</span></code> and
-can be used to track preparation of the database. The
-<code class="docutils literal notranslate"><span class="pre">metadata</span></code> field type is
-<code class="docutils literal notranslate"><span class="pre">CreateDatabaseMetadata</span></code>. The
-<code class="docutils literal notranslate"><span class="pre">response</span></code> field type is
-<code class="docutils literal notranslate"><span class="pre">Database</span></code>, if successful.</p>
+<dd><p>Creates a new Cloud Spanner database and starts to prepare it for
+serving. The returned <code class="docutils literal notranslate"><span class="pre">long-running</span> <span class="pre">operation</span></code> will have a name of the
+format <code class="docutils literal notranslate"><span class="pre">&lt;database_name&gt;/operations/&lt;operation_id&gt;</span></code> and can be used to
+track preparation of the database. The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> field type is
+<code class="docutils literal notranslate"><span class="pre">CreateDatabaseMetadata</span></code>. The <code class="docutils literal notranslate"><span class="pre">response</span></code> field type is <code class="docutils literal notranslate"><span class="pre">Database</span></code>,
+if successful.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_database_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -97,7 +95,7 @@ can be used to track preparation of the database. The
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``create_statement``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `create_statement`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">create_statement</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_database</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">create_statement</span><span class="p">)</span>
@@ -120,10 +118,10 @@ can be used to track preparation of the database. The
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The name of the instance that will serve the new database.
 Values are of the form <code class="docutils literal notranslate"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;</span></code>.</li>
 <li><strong>create_statement</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. A <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">DATABASE</span></code> statement, which specifies the ID of the
-new database.  The database ID must conform to the regular expression
-<code class="docutils literal notranslate"><span class="pre">[a-z][a-z0-9_\-]*[a-z0-9]</span></code> and be between 2 and 30 characters in length.
-If the database ID is a reserved word or if it contains a hyphen, the
-database ID must be enclosed in backticks.</li>
+new database. The database ID must conform to the regular expression
+<code class="docutils literal notranslate"><span class="pre">[a-z][a-z0-9_\-]*[a-z0-9]</span></code> and be between 2 and 30 characters in
+length. If the database ID is a reserved word or if it contains a
+hyphen, the database ID must be enclosed in backticks (<code class="docutils literal notranslate"><span class="pre">`</span></code>).</li>
 <li><strong>extra_statements</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – An optional list of DDL statements to run inside the newly created
 database. Statements can create tables, indexes, etc. These
 statements execute atomically with the creation of the database:
@@ -316,8 +314,8 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_database_ddl">
 <code class="descname">get_database_ddl</code><span class="sig-paren">(</span><em>database</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.get_database_ddl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_database_ddl" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the schema of a Cloud Spanner database as a list of formatted
-DDL statements. This method does not show pending schema updates, those may
-be queried using the <code class="docutils literal notranslate"><span class="pre">Operations</span></code> API.</p>
+DDL statements. This method does not show pending schema updates, those
+may be queried using the <code class="docutils literal notranslate"><span class="pre">Operations</span></code> API.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_database_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -439,7 +437,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_databases</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_databases</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -450,8 +448,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The instance whose databases should be listed.
-Values are of the form <code class="docutils literal notranslate"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;</span></code>.</li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The instance whose databases should be listed. Values are of
+the form <code class="docutils literal notranslate"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;</span></code>.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
@@ -501,7 +499,7 @@ existing policy.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">database_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">,</span> <span class="s1">&#39;[DATABASE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``policy``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `policy`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
@@ -515,12 +513,13 @@ existing policy.</p>
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being specified.
 <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
 resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
-<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_database_types.html#google.cloud.spanner_admin_database_v1.types.Policy" title="google.cloud.spanner_admin_database_v1.types.Policy"><em>Policy</em></a><em>]</em>) – REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of
-the policy is limited to a few 10s of KB. An empty policy is a
+<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_database_types.html#google.cloud.spanner_admin_database_v1.types.Policy" title="google.cloud.spanner_admin_database_v1.types.Policy"><em>Policy</em></a><em>]</em>) – <p>REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The
+size of the policy is limited to a few 10s of KB. An empty policy is a
 valid policy but certain Cloud Platform services (such as Projects)
-might reject them.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="admin_database_types.html#google.cloud.spanner_admin_database_v1.types.Policy" title="google.cloud.spanner_admin_database_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></li>
+might reject them.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="admin_database_types.html#google.cloud.spanner_admin_database_v1.types.Policy" title="google.cloud.spanner_admin_database_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -551,11 +550,12 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.test_iam_permissions">
 <code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.test_iam_permissions" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns permissions that the caller has on the specified database resource.</p>
-<p>Attempting this RPC on a non-existent Cloud Spanner database will result in
-a NOT_FOUND error if the user has <code class="docutils literal notranslate"><span class="pre">spanner.databases.list</span></code> permission on
-the containing Cloud Spanner instance. Otherwise returns an empty set of
-permissions.</p>
+<dd><p>Returns permissions that the caller has on the specified database
+resource.</p>
+<p>Attempting this RPC on a non-existent Cloud Spanner database will result
+in a NOT_FOUND error if the user has <code class="docutils literal notranslate"><span class="pre">spanner.databases.list</span></code>
+permission on the containing Cloud Spanner instance. Otherwise returns
+an empty set of permissions.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_database_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -563,7 +563,7 @@ permissions.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">database_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">,</span> <span class="s1">&#39;[DATABASE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``permissions``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `permissions`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="p">)</span>
@@ -579,8 +579,8 @@ permissions.</p>
 resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
 <li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. Permissions with
 wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
-information see
-<a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</li>
+information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM
+Overview</a>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -613,11 +613,10 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">update_database_ddl</code><span class="sig-paren">(</span><em>database</em>, <em>statements</em>, <em>operation_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.update_database_ddl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.update_database_ddl" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the schema of a Cloud Spanner database by
 creating/altering/dropping tables, columns, indexes, etc. The returned
-<code class="docutils literal notranslate"><span class="pre">long-running</span> <span class="pre">operation</span></code> will have a name of
-the format <code class="docutils literal notranslate"><span class="pre">&lt;database_name&gt;/operations/&lt;operation_id&gt;</span></code> and can be used to
-track execution of the schema change(s). The
-<code class="docutils literal notranslate"><span class="pre">metadata</span></code> field type is
-<code class="docutils literal notranslate"><span class="pre">UpdateDatabaseDdlMetadata</span></code>.  The operation has no response.</p>
+<code class="docutils literal notranslate"><span class="pre">long-running</span> <span class="pre">operation</span></code> will have a name of the format
+<code class="docutils literal notranslate"><span class="pre">&lt;database_name&gt;/operations/&lt;operation_id&gt;</span></code> and can be used to track
+execution of the schema change(s). The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> field type is
+<code class="docutils literal notranslate"><span class="pre">UpdateDatabaseDdlMetadata</span></code>. The operation has no response.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_database_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -625,7 +624,7 @@ track execution of the schema change(s). The
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">database</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">database_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">,</span> <span class="s1">&#39;[DATABASE]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``statements``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `statements`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">statements</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_database_ddl</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">statements</span><span class="p">)</span>
@@ -647,23 +646,19 @@ track execution of the schema change(s). The
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>database</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The database to update.</li>
 <li><strong>statements</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – DDL statements to be applied to the database.</li>
-<li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>If empty, the new update request is assigned an
-automatically-generated operation ID. Otherwise, <code class="docutils literal notranslate"><span class="pre">operation_id</span></code>
-is used to construct the name of the resulting
-<code class="docutils literal notranslate"><span class="pre">Operation</span></code>.</p>
-<p>Specifying an explicit operation ID simplifies determining
-whether the statements were executed in the event that the
-<code class="docutils literal notranslate"><span class="pre">UpdateDatabaseDdl</span></code> call is replayed,
-or the return value is otherwise lost: the <code class="docutils literal notranslate"><span class="pre">database</span></code> and
-<code class="docutils literal notranslate"><span class="pre">operation_id</span></code> fields can be combined to form the
-<code class="docutils literal notranslate"><span class="pre">name</span></code> of the resulting
-<code class="docutils literal notranslate"><span class="pre">longrunning.Operation</span></code>: <code class="docutils literal notranslate"><span class="pre">&lt;database&gt;/operations/&lt;operation_id&gt;</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">operation_id</span></code> should be unique within the database, and must be
-a valid identifier: <code class="docutils literal notranslate"><span class="pre">[a-z][a-z0-9_]*</span></code>. Note that
-automatically-generated operation IDs always begin with an
-underscore. If the named operation already exists,
-<code class="docutils literal notranslate"><span class="pre">UpdateDatabaseDdl</span></code> returns
-<code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.</p>
+<li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>If empty, the new update request is assigned an automatically-generated
+operation ID. Otherwise, <code class="docutils literal notranslate"><span class="pre">operation_id</span></code> is used to construct the name
+of the resulting <code class="docutils literal notranslate"><span class="pre">Operation</span></code>.</p>
+<p>Specifying an explicit operation ID simplifies determining whether the
+statements were executed in the event that the <code class="docutils literal notranslate"><span class="pre">UpdateDatabaseDdl</span></code>
+call is replayed, or the return value is otherwise lost: the
+<code class="docutils literal notranslate"><span class="pre">database</span></code> and <code class="docutils literal notranslate"><span class="pre">operation_id</span></code> fields can be combined to form the
+<code class="docutils literal notranslate"><span class="pre">name</span></code> of the resulting <code class="docutils literal notranslate"><span class="pre">longrunning.Operation</span></code>:
+<code class="docutils literal notranslate"><span class="pre">&lt;database&gt;/operations/&lt;operation_id&gt;</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">operation_id</span></code> should be unique within the database, and must be a
+valid identifier: <code class="docutils literal notranslate"><span class="pre">[a-z][a-z0-9_]*</span></code>. Note that automatically-generated
+operation IDs always begin with an underscore. If the named operation
+already exists, <code class="docutils literal notranslate"><span class="pre">UpdateDatabaseDdl</span></code> returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
