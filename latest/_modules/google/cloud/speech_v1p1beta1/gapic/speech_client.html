@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.speech_v1p1beta1.gapic.speech_client &#8212; google-cloud c566550 documentation</title>
+    <title>google.cloud.speech_v1p1beta1.gapic.speech_client &#8212; google-cloud 3964ad2 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -174,9 +174,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -221,9 +222,11 @@
 <span class="sd">        Args:</span>
 <span class="sd">            config (Union[dict, ~google.cloud.speech_v1p1beta1.types.RecognitionConfig]): *Required* Provides information to the recognizer that specifies how to</span>
 <span class="sd">                process the request.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.speech_v1p1beta1.types.RecognitionConfig`</span>
 <span class="sd">            audio (Union[dict, ~google.cloud.speech_v1p1beta1.types.RecognitionAudio]): *Required* The audio data to be recognized.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.speech_v1p1beta1.types.RecognitionAudio`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -271,8 +274,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs asynchronous speech recognition: receive results via the</span>
 <span class="sd">        google.longrunning.Operations interface. Returns either an</span>
-<span class="sd">        ``Operation.error`` or an ``Operation.response`` which contains</span>
-<span class="sd">        a ``LongRunningRecognizeResponse`` message.</span>
+<span class="sd">        ``Operation.error`` or an ``Operation.response`` which contains a</span>
+<span class="sd">        ``LongRunningRecognizeResponse`` message.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import speech_v1p1beta1</span>
@@ -301,9 +304,11 @@
 <span class="sd">        Args:</span>
 <span class="sd">            config (Union[dict, ~google.cloud.speech_v1p1beta1.types.RecognitionConfig]): *Required* Provides information to the recognizer that specifies how to</span>
 <span class="sd">                process the request.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.speech_v1p1beta1.types.RecognitionConfig`</span>
 <span class="sd">            audio (Union[dict, ~google.cloud.speech_v1p1beta1.types.RecognitionAudio]): *Required* The audio data to be recognized.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.speech_v1p1beta1.types.RecognitionAudio`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Speech API &#8212; google-cloud c566550 documentation</title>
+    <title>Client for Cloud Speech API &#8212; google-cloud 3964ad2 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,7 +39,7 @@
 <span id="client-for-cloud-speech-api"></span><h1>Client for Cloud Speech API<a class="headerlink" href="#module-google.cloud.speech_v1" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.speech_v1.SpeechClient">
-<em class="property">class </em><code class="descclassname">google.cloud.speech_v1.</code><code class="descname">SpeechClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.cloud.speech.v1.Speech': {'methods': {'LongRunningRecognize': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'Recognize': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 1000000}, 'StreamingRecognize': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 1000000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 1000000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 1000000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 5000000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/speech_v1.html#SpeechClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech_v1.SpeechClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.speech_v1.</code><code class="descname">SpeechClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.cloud.speech.v1.Speech': {'methods': {'LongRunningRecognize': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 200000}, 'Recognize': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 200000}, 'StreamingRecognize': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 200000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 1000000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 1000000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 5000000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/speech_v1.html#SpeechClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech_v1.SpeechClient" title="Permalink to this definition">#</a></dt>
 <dd><p>Service that implements Google Cloud Speech API.</p>
 <p>Constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -140,8 +140,8 @@ file.</li>
 <code class="descname">long_running_recognize</code><span class="sig-paren">(</span><em>config</em>, <em>audio</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/speech_v1/gapic/speech_client.html#SpeechClient.long_running_recognize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech_v1.SpeechClient.long_running_recognize" title="Permalink to this definition">#</a></dt>
 <dd><p>Performs asynchronous speech recognition: receive results via the
 google.longrunning.Operations interface. Returns either an
-<code class="docutils literal notranslate"><span class="pre">Operation.error</span></code> or an <code class="docutils literal notranslate"><span class="pre">Operation.response</span></code> which contains
-a <code class="docutils literal notranslate"><span class="pre">LongRunningRecognizeResponse</span></code> message.</p>
+<code class="docutils literal notranslate"><span class="pre">Operation.error</span></code> or an <code class="docutils literal notranslate"><span class="pre">Operation.response</span></code> which contains a
+<code class="docutils literal notranslate"><span class="pre">LongRunningRecognizeResponse</span></code> message.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">speech_v1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.speech_v1</span> <span class="k">import</span> <span class="n">enums</span>
@@ -172,13 +172,15 @@ a <code class="docutils literal notranslate"><span class="pre">LongRunningRecogn
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionConfig" title="google.cloud.speech_v1.types.RecognitionConfig"><em>RecognitionConfig</em></a><em>]</em>) – <em>Required</em> Provides information to the recognizer that specifies how to
-process the request.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionConfig" title="google.cloud.speech_v1.types.RecognitionConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecognitionConfig</span></code></a></li>
-<li><strong>audio</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionAudio" title="google.cloud.speech_v1.types.RecognitionAudio"><em>RecognitionAudio</em></a><em>]</em>) – <em>Required</em> The audio data to be recognized.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionAudio" title="google.cloud.speech_v1.types.RecognitionAudio"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecognitionAudio</span></code></a></li>
+<li><strong>config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionConfig" title="google.cloud.speech_v1.types.RecognitionConfig"><em>RecognitionConfig</em></a><em>]</em>) – <p><em>Required</em> Provides information to the recognizer that specifies how to
+process the request.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionConfig" title="google.cloud.speech_v1.types.RecognitionConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecognitionConfig</span></code></a></p>
+</li>
+<li><strong>audio</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionAudio" title="google.cloud.speech_v1.types.RecognitionAudio"><em>RecognitionAudio</em></a><em>]</em>) – <p><em>Required</em> The audio data to be recognized.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionAudio" title="google.cloud.speech_v1.types.RecognitionAudio"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecognitionAudio</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -232,13 +234,15 @@ has been sent and processed.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionConfig" title="google.cloud.speech_v1.types.RecognitionConfig"><em>RecognitionConfig</em></a><em>]</em>) – <em>Required</em> Provides information to the recognizer that specifies how to
-process the request.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionConfig" title="google.cloud.speech_v1.types.RecognitionConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecognitionConfig</span></code></a></li>
-<li><strong>audio</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionAudio" title="google.cloud.speech_v1.types.RecognitionAudio"><em>RecognitionAudio</em></a><em>]</em>) – <em>Required</em> The audio data to be recognized.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionAudio" title="google.cloud.speech_v1.types.RecognitionAudio"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecognitionAudio</span></code></a></li>
+<li><strong>config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionConfig" title="google.cloud.speech_v1.types.RecognitionConfig"><em>RecognitionConfig</em></a><em>]</em>) – <p><em>Required</em> Provides information to the recognizer that specifies how to
+process the request.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionConfig" title="google.cloud.speech_v1.types.RecognitionConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecognitionConfig</span></code></a></p>
+</li>
+<li><strong>audio</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionAudio" title="google.cloud.speech_v1.types.RecognitionAudio"><em>RecognitionAudio</em></a><em>]</em>) – <p><em>Required</em> The audio data to be recognized.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.speech_v1.types.RecognitionAudio" title="google.cloud.speech_v1.types.RecognitionAudio"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecognitionAudio</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
