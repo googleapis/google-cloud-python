@@ -147,10 +147,11 @@ class JobControllerGrpcTransport(object):
     def cancel_job(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Starts a job cancellation request. To access the job resource
-        after cancellation, call
-        `regions/{region}/jobs.list <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/list>`_ or
-        `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/get>`_.
+        Starts a job cancellation request. To access the job resource after
+        cancellation, call
+        `regions/{region}/jobs.list <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/list>`__
+        or
+        `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/get>`__.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -163,8 +164,8 @@ class JobControllerGrpcTransport(object):
     def delete_job(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Deletes the job from the project. If the job is active, the delete fails,
-        and the response returns ``FAILED_PRECONDITION``.
+        Deletes the job from the project. If the job is active, the delete
+        fails, and the response returns ``FAILED_PRECONDITION``.
 
         Returns:
             Callable: A callable which accepts the appropriate
