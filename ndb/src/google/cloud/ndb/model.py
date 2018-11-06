@@ -336,6 +336,151 @@ class _BaseValue:
 
 
 class Property(ModelAttribute):
+    """A class describing a typed, persisted attribute of an entity.
+
+    .. warning::
+
+        This is not to be confused with Python's ``@property`` built-in.
+
+    .. note::
+
+        This is just a base class; there are specific subclasses that
+        describe properties of various types (and :class:`GenericProperty`
+        which describes a dynamically typed property).
+
+    The :class:`Property` does not reserve any "public" names (i.e. names
+    that don't start with an underscore). This is intentional; the subclass
+    :class:`StructuredProperty` uses the public attribute namespace to refer to
+    nested property names (this is essential for specifying queries on
+    subproperties).
+
+    The :meth:`IN` attribute is provided as an alias for ``_IN``, but ``IN``
+    can be overridden if a subproperty has the same name.
+
+    The :class:`Property` class and its predefined subclasses allow easy
+    subclassing using composable (or stackable) validation and
+    conversion APIs. These require some terminology definitions:
+
+    * A **user value** is a value such as would be set and accessed by the
+      application code using standard attributes on the entity.
+    * A **base value** is a value such as would be serialized to
+      and deserialized from Cloud Datastore.
+
+    A property will be a member of a :class:`Model` and will be used to help
+    store values in an ``entity`` (i.e. instance of a model subclass). The
+    underlying stored values can be either user values or base values.
+
+    To interact with the composable conversion and validation API, a
+    :class:`Property` subclass can define
+
+    * ``_to_base_type()``
+    * ``_from_base_type()``
+    * ``_validate()``
+
+    These should **not** call their ``super()`` method, since the methods
+    are meant to be composed. For example with composable validation:
+
+    .. code-block:: python
+
+        class Positive(ndb.IntegerProperty):
+            def _validate(self, value):
+                if value < 1:
+                    raise ndb.exceptions.BadValueError("Non-positive", value)
+
+
+        class SingleDigit(Positive):
+            def _validate(self, value):
+                if value > 9:
+                    raise ndb.exceptions.BadValueError("Multi-digit", value)
+
+    neither ``_validate()`` method calls ``super()``. Instead, when a
+    ``SingleDigit`` property validates a value, it composes all validation
+    calls in order:
+
+    * ``SingleDigit._validate``
+    * ``Positive._validate``
+    * ``IntegerProperty._validate``
+
+    The API supports "stacking" classes with ever more sophisticated
+    user / base conversions:
+
+    * the user to base conversion goes from more sophisticated to less
+      sophisticated
+    * the base to user conversion goes from less sophisticated to more
+      sophisticated
+
+    For example, see the relationship between :class:`BlobProperty`,
+    :class:`TextProperty` and :class:`StringProperty`.
+
+    The validation API distinguishes between "lax" and "strict" user values.
+    The set of lax values is a superset of the set of strict values. The
+    ``_validate()`` method takes a lax value and if necessary converts it to
+    a strict value. For example, an integer (lax) can be converted to a
+    floating point (strict) value. This means that when setting the property
+    value, lax values are accepted, while when getting the property value, only
+    strict values will be returned. If no conversion is needed, ``_validate()``
+    may return :data:`None`. If the argument is outside the set of accepted lax
+    values, ``_validate()`` should raise an exception, preferably
+    :exc:`TypeError` or :exc:`.BadValueError`.
+
+    A class utilizing all three may resemble:
+
+    .. code-block:: python
+
+        class WidgetProperty(ndb.Property):
+
+            def _validate(self, value):
+                # Lax user value to strict user value.
+                if not isinstance(value, Widget):
+                    raise nbd.exceptions.BadValueError(value)
+
+            def _to_base_type(self, value):
+                # (Strict) user value to base value.
+                if isinstance(value, Widget):
+                    return value.to_internal()
+
+            def _from_base_type(self, value):
+                # Base value to (strict) user value.'
+                if not isinstance(value, _WidgetInternal):
+                    return Widget(value)
+
+    There are some things that ``_validate()``, ``_to_base_type()`` and
+    ``_from_base_type()`` do **not** need to handle:
+
+    * :data:`None`: They will not be called with :data:`None` (and if they
+      return :data:`None`, this means that the value does not need conversion).
+    * Repeated values: The infrastructure takes care of calling
+      ``_from_base_type()`` or ``_to_base_type()`` for each list item in a
+      repeated value.
+    * Wrapping "base" values: The wrapping and unwrapping is taken care of by
+      the infrastructure that calls the composable APIs.
+    * Comparisons: The comparison operations call ``_to_base_type()`` on
+      their operand.
+    * Distinguishing between user and base values: the infrastructure
+      guarantees that ``_from_base_type()`` will be called with an
+      (unwrapped) base value, and that ``_to_base_type()`` will be called
+      with a user value.
+    * Returning the original value: if any of these return :data:`None`, the
+      original value is kept. (Returning a different value not equal to
+      :data:`None` will substitute the different value.)
+
+    Args:
+        name (str): The name of the property.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (Any): The default value for this property.
+        choices (Iterable[Any]): A container of allowed values for this
+            property.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+    """
+
     # Instance default fallbacks provided by class.
     _code_name = None
     _name = None
@@ -693,7 +838,7 @@ class Property(ModelAttribute):
         This transforms the ``value`` via:
 
         * Calling the derived ``_validate()`` method(s) (on subclasses that
-          don't define ``_to_base_type``),
+          don't define ``_to_base_type()``),
         * Calling the custom validator function
 
         After transforming, it checks if the transformed value is in
@@ -752,7 +897,7 @@ class Property(ModelAttribute):
         which the current property is assigned (a.k.a. the code name). Note
         that this means that each property instance must be assigned to (at
         most) one class attribute. E.g. to declare three strings, you must
-        call create three :class`StringProperty` instances:
+        call create three :class:`StringProperty` instances:
 
         .. code-block:: python
 
@@ -905,7 +1050,7 @@ class Property(ModelAttribute):
             return [wrapped.b_val]
 
     def _opt_call_from_base_type(self, value):
-        """Call :meth:`_from_base_type` if necessary.
+        """Call ``_from_base_type()`` if necessary.
 
         If ``value`` is a :class:`_BaseValue`, unwrap it and call all
         :math:`_from_base_type` methods. Otherwise, return the value
@@ -942,10 +1087,10 @@ class Property(ModelAttribute):
         return repr(val)
 
     def _opt_call_to_base_type(self, value):
-        """Call :meth:`_to_base_type` if necessary.
+        """Call ``_to_base_type()`` if necessary.
 
         If ``value`` is a :class:`_BaseValue`, return it unchanged.
-        Otherwise, call all :meth:`_validate` and :meth:`_to_base_type` methods
+        Otherwise, call all ``_validate()`` and ``_to_base_type()`` methods
         and wrap it in a :class:`_BaseValue`.
 
         Args:
@@ -1055,7 +1200,7 @@ class Property(ModelAttribute):
         * ``A._to_base_type()``
 
         whereas the full list of methods (in order) called here stops once
-        a ``_to_base_type`` method is encountered:
+        a ``_to_base_type()`` method is encountered:
 
         * ``C._validate()``
         * ``B._validate()``
@@ -1068,7 +1213,7 @@ class Property(ModelAttribute):
         """
         methods = []
         for method in self._find_methods("_validate", "_to_base_type"):
-            # Stop if ``_to_base_type`` is encountered.
+            # Stop if ``_to_base_type()`` is encountered.
             if method.__name__ != "_validate":
                 break
             methods.append(method)
