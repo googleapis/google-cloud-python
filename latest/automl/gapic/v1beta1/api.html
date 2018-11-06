@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud AutoML API &#8212; google-cloud 4b51f93 documentation</title>
+    <title>Client for Cloud AutoML API &#8212; google-cloud 48b5a6c documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -152,7 +152,7 @@ file.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">model_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[MODEL]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``payload``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `payload`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
@@ -164,19 +164,18 @@ file.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the model requested to serve the prediction.</li>
-<li><strong>payload</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.ExamplePayload" title="google.cloud.automl_v1beta1.types.ExamplePayload"><em>ExamplePayload</em></a><em>]</em>) – Required.
+<li><strong>payload</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.ExamplePayload" title="google.cloud.automl_v1beta1.types.ExamplePayload"><em>ExamplePayload</em></a><em>]</em>) – <p>Required.
 Payload to perform a prediction on. The payload must match the
-problem type that the model was trained to solve.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.ExamplePayload" title="google.cloud.automl_v1beta1.types.ExamplePayload"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExamplePayload</span></code></a></li>
+problem type that the model was trained to solve.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.ExamplePayload" title="google.cloud.automl_v1beta1.types.ExamplePayload"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExamplePayload</span></code></a></p>
+</li>
 <li><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – <p>Additional domain-specific parameters, any string must be up to 25000
 characters long.</p>
 <ul>
-<li>For Image Classification:<p><code class="docutils literal notranslate"><span class="pre">score_threshold</span></code> - (float) A value from 0.0 to 1.0. When the model</p>
-<blockquote>
-<div>makes predictions for an
-image, it will only produce results that have at least this confidence
-score threshold. The default is 0.5.</div></blockquote>
+<li>For Image Classification:<p><code class="docutils literal notranslate"><span class="pre">score_threshold</span></code> - (float) A value from 0.0 to 1.0. When the model
+makes predictions for an image, it will only produce results that
+have at least this confidence score threshold. The default is 0.5.</p>
 </li>
 </ul>
 </li>
@@ -213,12 +212,12 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.automl_v1beta1.AutoMlClient">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.</code><code class="descname">AutoMlClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.cloud.automl.v1beta1.AutoMl': {'methods': {'CreateDataset': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'CreateModel': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'DeleteDataset': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'DeleteModel': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'DeployModel': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'ExportData': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'GetDataset': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'GetModel': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'GetModelEvaluation': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'ImportData': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'ListDatasets': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'ListModelEvaluations': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'ListModels': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}, 'UndeployModel': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 5000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1.html#AutoMlClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.AutoMlClient" title="Permalink to this definition">#</a></dt>
 <dd><p>AutoML Server API.</p>
-<p>The resource names are assigned by the server.
-The server never reuses names that it has created after the resources with
-those names are deleted.</p>
+<p>The resource names are assigned by the server. The server never reuses
+names that it has created after the resources with those names are
+deleted.</p>
 <p>An ID of a resource is the last element of the item’s resource name. For
-<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locations/{location_id}/datasets/{dataset_id}</span></code>, then
-the id for the item is <code class="docutils literal notranslate"><span class="pre">{dataset_id}</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locations/{location_id}/datasets/{dataset_id}</span></code>,
+then the id for the item is <code class="docutils literal notranslate"><span class="pre">{dataset_id}</span></code>.</p>
 <p>Constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -265,7 +264,7 @@ your own client library.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``dataset``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `dataset`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
@@ -277,9 +276,10 @@ your own client library.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The resource name of the project to create the dataset for.</li>
-<li><strong>dataset</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The dataset to create.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a></li>
+<li><strong>dataset</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – <p>The dataset to create.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -310,11 +310,10 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.automl_v1beta1.AutoMlClient.create_model">
 <code class="descname">create_model</code><span class="sig-paren">(</span><em>parent</em>, <em>model</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/gapic/auto_ml_client.html#AutoMlClient.create_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.AutoMlClient.create_model" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a model.
-Returns a Model in the <code class="docutils literal notranslate"><span class="pre">response</span></code>
-field when it completes.
-When you create a model, several model evaluations are created for it:
-a global evaluation, and one evaluation for each annotation spec.</p>
+<dd><p>Creates a model. Returns a Model in the <code class="docutils literal notranslate"><span class="pre">response</span></code> field when it
+completes. When you create a model, several model evaluations are
+created for it: a global evaluation, and one evaluation for each
+annotation spec.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -322,7 +321,7 @@ a global evaluation, and one evaluation for each annotation spec.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``model``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `model`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
@@ -343,9 +342,10 @@ a global evaluation, and one evaluation for each annotation spec.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of the parent project where the model is being created.</li>
-<li><strong>model</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Model" title="google.cloud.automl_v1beta1.types.Model"><em>Model</em></a><em>]</em>) – The model to create.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Model" title="google.cloud.automl_v1beta1.types.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></li>
+<li><strong>model</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Model" title="google.cloud.automl_v1beta1.types.Model"><em>Model</em></a><em>]</em>) – <p>The model to create.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Model" title="google.cloud.automl_v1beta1.types.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -382,10 +382,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.automl_v1beta1.AutoMlClient.delete_dataset">
 <code class="descname">delete_dataset</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/gapic/auto_ml_client.html#AutoMlClient.delete_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.AutoMlClient.delete_dataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes a dataset and all of its contents.
-Returns empty response in the
-<code class="docutils literal notranslate"><span class="pre">response</span></code> field when it completes,
-and <code class="docutils literal notranslate"><span class="pre">delete_details</span></code> in the
+<dd><p>Deletes a dataset and all of its contents. Returns empty response in the
+<code class="docutils literal notranslate"><span class="pre">response</span></code> field when it completes, and <code class="docutils literal notranslate"><span class="pre">delete_details</span></code> in the
 <code class="docutils literal notranslate"><span class="pre">metadata</span></code> field.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
@@ -442,13 +440,10 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.automl_v1beta1.AutoMlClient.delete_model">
 <code class="descname">delete_model</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/gapic/auto_ml_client.html#AutoMlClient.delete_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.AutoMlClient.delete_model" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes a model.
-If a model is already deployed, this only deletes the model in AutoML BE,
-and does not change the status of the deployed model in the production
-environment.
-Returns <code class="docutils literal notranslate"><span class="pre">google.protobuf.Empty</span></code> in the
-<code class="docutils literal notranslate"><span class="pre">response</span></code> field when it completes,
-and <code class="docutils literal notranslate"><span class="pre">delete_details</span></code> in the
+<dd><p>Deletes a model. If a model is already deployed, this only deletes the
+model in AutoML BE, and does not change the status of the deployed model
+in the production environment. Returns <code class="docutils literal notranslate"><span class="pre">google.protobuf.Empty</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">response</span></code> field when it completes, and <code class="docutils literal notranslate"><span class="pre">delete_details</span></code> in the
 <code class="docutils literal notranslate"><span class="pre">metadata</span></code> field.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
@@ -505,9 +500,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.automl_v1beta1.AutoMlClient.deploy_model">
 <code class="descname">deploy_model</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/gapic/auto_ml_client.html#AutoMlClient.deploy_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.AutoMlClient.deploy_model" title="Permalink to this definition">#</a></dt>
-<dd><p>Deploys model.
-Returns a <code class="docutils literal notranslate"><span class="pre">DeployModelResponse</span></code> in the
-<code class="docutils literal notranslate"><span class="pre">response</span></code> field when it completes.</p>
+<dd><p>Deploys model. Returns a <code class="docutils literal notranslate"><span class="pre">DeployModelResponse</span></code> in the <code class="docutils literal notranslate"><span class="pre">response</span></code>
+field when it completes.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -559,9 +553,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.automl_v1beta1.AutoMlClient.export_data">
 <code class="descname">export_data</code><span class="sig-paren">(</span><em>name</em>, <em>output_config</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/gapic/auto_ml_client.html#AutoMlClient.export_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.AutoMlClient.export_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Exports dataset’s data to a Google Cloud Storage bucket.
-Returns an empty response in the
-<code class="docutils literal notranslate"><span class="pre">response</span></code> field when it completes.</p>
+<dd><p>Exports dataset’s data to a Google Cloud Storage bucket. Returns an
+empty response in the <code class="docutils literal notranslate"><span class="pre">response</span></code> field when it completes.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -569,7 +562,7 @@ Returns an empty response in the
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[DATASET]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``output_config``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `output_config`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">export_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">output_config</span><span class="p">)</span>
@@ -590,9 +583,10 @@ Returns an empty response in the
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The resource name of the dataset.</li>
-<li><strong>output_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.OutputConfig" title="google.cloud.automl_v1beta1.types.OutputConfig"><em>OutputConfig</em></a><em>]</em>) – Required. The desired output location.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.OutputConfig" title="google.cloud.automl_v1beta1.types.OutputConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">OutputConfig</span></code></a></li>
+<li><strong>output_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.OutputConfig" title="google.cloud.automl_v1beta1.types.OutputConfig"><em>OutputConfig</em></a><em>]</em>) – <p>Required. The desired output location.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.OutputConfig" title="google.cloud.automl_v1beta1.types.OutputConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">OutputConfig</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -818,8 +812,7 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.automl_v1beta1.AutoMlClient.import_data">
 <code class="descname">import_data</code><span class="sig-paren">(</span><em>name</em>, <em>input_config</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/gapic/auto_ml_client.html#AutoMlClient.import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.AutoMlClient.import_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Imports data into a dataset.
-Returns an empty response in the
+<dd><p>Imports data into a dataset. Returns an empty response in the
 <code class="docutils literal notranslate"><span class="pre">response</span></code> field when it completes.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
@@ -828,7 +821,7 @@ Returns an empty response in the
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[DATASET]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``input_config``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `input_config`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">input_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">input_config</span><span class="p">)</span>
@@ -850,9 +843,10 @@ Returns an empty response in the
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. Dataset name. Dataset must already exist. All imported
 annotations and examples will be added.</li>
-<li><strong>input_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.InputConfig" title="google.cloud.automl_v1beta1.types.InputConfig"><em>InputConfig</em></a><em>]</em>) – Required. The desired input location.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.InputConfig" title="google.cloud.automl_v1beta1.types.InputConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputConfig</span></code></a></li>
+<li><strong>input_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.InputConfig" title="google.cloud.automl_v1beta1.types.InputConfig"><em>InputConfig</em></a><em>]</em>) – <p>Required. The desired input location.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.InputConfig" title="google.cloud.automl_v1beta1.types.InputConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputConfig</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -900,7 +894,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -913,19 +907,14 @@ to a retryable error and retry attempts failed.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The resource name of the project from which to list datasets.</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>An expression for filtering the results of the request.</p>
-<blockquote>
-<div><ul>
+<ul>
 <li><code class="docutils literal notranslate"><span class="pre">dataset_metadata</span></code> - for existence of the case.</li>
 </ul>
-</div></blockquote>
 <p>An example of using the filter is:</p>
-<blockquote>
-<div><ul>
+<ul>
 <li><code class="docutils literal notranslate"><span class="pre">translation_dataset_metadata:*</span></code> –&gt; The dataset has
-::
 translation_dataset_metadata.</li>
 </ul>
-</div></blockquote>
 </li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
@@ -982,7 +971,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_model_evaluations</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_model_evaluations</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -997,24 +986,17 @@ to a retryable error and retry attempts failed.</li>
 If modelId is set as “-“, this will list model evaluations from across all
 models of the parent location.</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>An expression for filtering the results of the request.</p>
-<blockquote>
-<div><ul>
-<li><code class="docutils literal notranslate"><span class="pre">annotation_spec_id</span></code> - for =, !=  or existence. See example below for
-::
-the last.</li>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">annotation_spec_id</span></code> - for =, != or existence. See example below
+for the last.</li>
 </ul>
-</div></blockquote>
 <p>Some examples of using the filter are:</p>
-<blockquote>
-<div><ul>
+<ul>
 <li><code class="docutils literal notranslate"><span class="pre">annotation_spec_id!=4</span></code> –&gt; The model evaluation was done for
-::
 annotation spec with ID different than 4.</li>
 <li><code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">annotation_spec_id:*</span></code> –&gt; The model evaluation was done for
-::
 aggregate of all annotation specs.</li>
 </ul>
-</div></blockquote>
 </li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
@@ -1071,7 +1053,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_models</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_models</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -1084,23 +1066,17 @@ to a retryable error and retry attempts failed.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of the project, from which to list the models.</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>An expression for filtering the results of the request.</p>
-<blockquote>
-<div><ul>
+<ul>
 <li><code class="docutils literal notranslate"><span class="pre">model_metadata</span></code> - for existence of the case.</li>
 <li><code class="docutils literal notranslate"><span class="pre">dataset_id</span></code> - for = or !=.</li>
 </ul>
-</div></blockquote>
 <p>Some examples of using the filter are:</p>
-<blockquote>
-<div><ul>
+<ul>
 <li><code class="docutils literal notranslate"><span class="pre">image_classification_model_metadata:*</span></code> –&gt; The model has
-::
 image_classification_model_metadata.</li>
-<li><code class="docutils literal notranslate"><span class="pre">dataset_id=5</span></code> –&gt; The model was created from a sibling dataset with
-::
-ID 5.</li>
+<li><code class="docutils literal notranslate"><span class="pre">dataset_id=5</span></code> –&gt; The model was created from a sibling dataset
+with ID 5.</li>
 </ul>
-</div></blockquote>
 </li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
@@ -1158,8 +1134,7 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.automl_v1beta1.AutoMlClient.undeploy_model">
 <code class="descname">undeploy_model</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/gapic/auto_ml_client.html#AutoMlClient.undeploy_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.AutoMlClient.undeploy_model" title="Permalink to this definition">#</a></dt>
-<dd><p>Undeploys model.
-Returns an <code class="docutils literal notranslate"><span class="pre">UndeployModelResponse</span></code> in the
+<dd><p>Undeploys model. Returns an <code class="docutils literal notranslate"><span class="pre">UndeployModelResponse</span></code> in the
 <code class="docutils literal notranslate"><span class="pre">response</span></code> field when it completes.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>

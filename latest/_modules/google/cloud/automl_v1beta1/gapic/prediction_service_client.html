@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.automl_v1beta1.gapic.prediction_service_client &#8212; google-cloud 4b51f93 documentation</title>
+    <title>google.cloud.automl_v1beta1.gapic.prediction_service_client &#8212; google-cloud 48b5a6c documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -183,9 +183,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -219,7 +220,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.model_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[MODEL]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``payload``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `payload`:</span>
 <span class="sd">            &gt;&gt;&gt; payload = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.predict(name, payload)</span>
@@ -229,19 +230,17 @@
 <span class="sd">            payload (Union[dict, ~google.cloud.automl_v1beta1.types.ExamplePayload]): Required.</span>
 <span class="sd">                Payload to perform a prediction on. The payload must match the</span>
 <span class="sd">                problem type that the model was trained to solve.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.automl_v1beta1.types.ExamplePayload`</span>
 <span class="sd">            params (dict[str -&gt; str]): Additional domain-specific parameters, any string must be up to 25000</span>
 <span class="sd">                characters long.</span>
 
-<span class="sd">                *  For Image Classification:</span>
+<span class="sd">                -  For Image Classification:</span>
 
 <span class="sd">                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model</span>
-
-
-<span class="sd">                    makes predictions for an</span>
-<span class="sd">                    image, it will only produce results that have at least this confidence</span>
-<span class="sd">                    score threshold. The default is 0.5.</span>
+<span class="sd">                   makes predictions for an image, it will only produce results that</span>
+<span class="sd">                   have at least this confidence score threshold. The default is 0.5.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>

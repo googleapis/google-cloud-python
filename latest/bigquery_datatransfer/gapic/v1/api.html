@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for BigQuery Data Transfer API &#8212; google-cloud 4b51f93 documentation</title>
+    <title>Client for BigQuery Data Transfer API &#8212; google-cloud 48b5a6c documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -143,7 +143,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``transfer_config``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `transfer_config`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transfer_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_transfer_config</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">transfer_config</span><span class="p">)</span>
@@ -154,29 +154,32 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The BigQuery project id where the transfer configuration should be created.
-Must be in the format /projects/{project_id}/locations/{location_id}
-If specified location and location of the destination bigquery dataset
-do not match - the request will fail.</li>
-<li><strong>transfer_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="google.cloud.bigquery_datatransfer_v1.types.TransferConfig"><em>TransferConfig</em></a><em>]</em>) – Data transfer configuration to create.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="google.cloud.bigquery_datatransfer_v1.types.TransferConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransferConfig</span></code></a></li>
-<li><strong>authorization_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional OAuth2 authorization code to use with this transfer configuration.
-This is required if new credentials are needed, as indicated by
-<code class="docutils literal notranslate"><span class="pre">CheckValidCreds</span></code>.
-In order to obtain authorization_code, please make a
-request to
-<a class="reference external" href="https://www.gstatic.com/bigquerydatatransfer/oauthz/auth">https://www.gstatic.com/bigquerydatatransfer/oauthz/auth</a>?client_id=&lt;datatransferapiclientid&gt;&amp;scope=&lt;data_source_scopes&gt;&amp;redirect_uri=&lt;redirect_uri&gt;</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The BigQuery project id where the transfer configuration should be
+created. Must be in the format
+/projects/{project_id}/locations/{location_id} If specified location
+and location of the destination bigquery dataset do not match - the
+request will fail.</li>
+<li><strong>transfer_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="google.cloud.bigquery_datatransfer_v1.types.TransferConfig"><em>TransferConfig</em></a><em>]</em>) – <p>Data transfer configuration to create.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="google.cloud.bigquery_datatransfer_v1.types.TransferConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransferConfig</span></code></a></p>
+</li>
+<li><strong>authorization_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional OAuth2 authorization code to use with this transfer
+configuration. This is required if new credentials are needed, as
+indicated by <code class="docutils literal notranslate"><span class="pre">CheckValidCreds</span></code>. In order to obtain
+authorization_code, please make a request to
+<a class="reference external" href="https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=&amp;scope=&amp;redirect_uri=">https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=&amp;scope=&amp;redirect_uri=</a></p>
 <ul>
-<li>client_id should be OAuth client_id of BigQuery DTS API for the given
-data source returned by ListDataSources method.</li>
-<li>data_source_scopes are the scopes returned by ListDataSources method.</li>
+<li>client_id should be OAuth client_id of BigQuery DTS API for the
+given data source returned by ListDataSources method.</li>
+<li>data_source_scopes are the scopes returned by ListDataSources
+method.</li>
 <li>redirect_uri is an optional parameter. If not specified, then
-authorization code is posted to the opener of authorization flow window.
-Otherwise it will be sent to the redirect uri. A special value of
-<a class="reference external" href="urn:ietf:wg:oauth:2.0:oob">urn:ietf:wg:oauth:2.0:oob</a> means that authorization code should be
-returned in the title bar of the browser, with the page text prompting
-the user to copy the code and paste it in the application.</li>
+authorization code is posted to the opener of authorization flow
+window. Otherwise it will be sent to the redirect uri. A special
+value of <a class="reference external" href="urn:ietf:wg:oauth:2.0:oob">urn:ietf:wg:oauth:2.0:oob</a> means that authorization code
+should be returned in the title bar of the browser, with the page
+text prompting the user to copy the code and paste it in the
+application.</li>
 </ul>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -522,7 +525,7 @@ which can be used for UI rendering.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_data_sources</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_data_sources</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -533,8 +536,8 @@ which can be used for UI rendering.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The BigQuery project id for which data sources should be returned.
-Must be in the form: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span></code></li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The BigQuery project id for which data sources should be returned. Must
+be in the form: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span></code></li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
@@ -590,7 +593,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_configs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_configs</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -601,8 +604,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The BigQuery project id for which data sources
-should be returned: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span></code>.</li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The BigQuery project id for which data sources should be returned:
+<code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span></code>.</li>
 <li><strong>data_source_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – When specified, only configurations of requested data sources are returned.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
@@ -659,7 +662,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_logs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_logs</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -729,7 +732,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_runs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_transfer_runs</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -740,8 +743,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of transfer configuration for which transfer runs should be retrieved.
-Format of transfer configuration resource name is:
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of transfer configuration for which transfer runs should be
+retrieved. Format of transfer configuration resource name is:
 <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/transferConfigs/{config_id}</span></code>.</li>
 <li><strong>states</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>TransferState</em><em>]</em>) – When specified, only transfer runs with requested states are returned.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
@@ -807,10 +810,10 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.schedule_transfer_runs">
 <code class="descname">schedule_transfer_runs</code><span class="sig-paren">(</span><em>parent</em>, <em>start_time</em>, <em>end_time</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html#DataTransferServiceClient.schedule_transfer_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.DataTransferServiceClient.schedule_transfer_runs" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates transfer runs for a time range [start_time, end_time].
-For each date - or whatever granularity the data source supports - in the
-range, one transfer run is created.
-Note that runs are created per UTC time in the time range.</p>
+<dd><p>Creates transfer runs for a time range [start_time, end_time]. For
+each date - or whatever granularity the data source supports - in the
+range, one transfer run is created. Note that runs are created per UTC
+time in the time range.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_datatransfer_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -818,10 +821,10 @@ Note that runs are created per UTC time in the time range.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_transfer_config_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TRANSFER_CONFIG]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``start_time``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `start_time`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``end_time``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `end_time`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">end_time</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">schedule_transfer_runs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)</span>
@@ -834,14 +837,16 @@ Note that runs are created per UTC time in the time range.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Transfer configuration name in the form:
 <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/transferConfigs/{config_id}</span></code>.</li>
-<li><strong>start_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.Timestamp" title="google.cloud.bigquery_datatransfer_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – Start time of the range of transfer runs. For example,
-<code class="docutils literal notranslate"><span class="pre">&quot;2017-05-25T00:00:00+00:00&quot;</span></code>.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.Timestamp" title="google.cloud.bigquery_datatransfer_v1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
-<li><strong>end_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.Timestamp" title="google.cloud.bigquery_datatransfer_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – End time of the range of transfer runs. For example,
-<code class="docutils literal notranslate"><span class="pre">&quot;2017-05-30T00:00:00+00:00&quot;</span></code>.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.Timestamp" title="google.cloud.bigquery_datatransfer_v1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
+<li><strong>start_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.Timestamp" title="google.cloud.bigquery_datatransfer_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Start time of the range of transfer runs. For example,
+<code class="docutils literal notranslate"><span class="pre">&quot;2017-05-25T00:00:00+00:00&quot;</span></code>.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.Timestamp" title="google.cloud.bigquery_datatransfer_v1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+</li>
+<li><strong>end_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.Timestamp" title="google.cloud.bigquery_datatransfer_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>End time of the range of transfer runs. For example,
+<code class="docutils literal notranslate"><span class="pre">&quot;2017-05-30T00:00:00+00:00&quot;</span></code>.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.Timestamp" title="google.cloud.bigquery_datatransfer_v1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -879,10 +884,10 @@ All fields must be set, even if they are not updated.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery_datatransfer_v1</span><span class="o">.</span><span class="n">DataTransferServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``transfer_config``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `transfer_config`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transfer_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``update_mask``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `update_mask`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">update_mask</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_transfer_config</span><span class="p">(</span><span class="n">transfer_config</span><span class="p">,</span> <span class="n">update_mask</span><span class="p">)</span>
@@ -893,28 +898,31 @@ All fields must be set, even if they are not updated.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>transfer_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="google.cloud.bigquery_datatransfer_v1.types.TransferConfig"><em>TransferConfig</em></a><em>]</em>) – Data transfer configuration to create.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="google.cloud.bigquery_datatransfer_v1.types.TransferConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransferConfig</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.FieldMask" title="google.cloud.bigquery_datatransfer_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Required list of fields to be updated in this request.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.FieldMask" title="google.cloud.bigquery_datatransfer_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
-<li><strong>authorization_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional OAuth2 authorization code to use with this transfer configuration.
-If it is provided, the transfer configuration will be associated with the
-authorizing user.
-In order to obtain authorization_code, please make a
-request to
-<a class="reference external" href="https://www.gstatic.com/bigquerydatatransfer/oauthz/auth">https://www.gstatic.com/bigquerydatatransfer/oauthz/auth</a>?client_id=&lt;datatransferapiclientid&gt;&amp;scope=&lt;data_source_scopes&gt;&amp;redirect_uri=&lt;redirect_uri&gt;</p>
+<li><strong>transfer_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="google.cloud.bigquery_datatransfer_v1.types.TransferConfig"><em>TransferConfig</em></a><em>]</em>) – <p>Data transfer configuration to create.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="google.cloud.bigquery_datatransfer_v1.types.TransferConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransferConfig</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.FieldMask" title="google.cloud.bigquery_datatransfer_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Required list of fields to be updated in this request.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.bigquery_datatransfer_v1.types.FieldMask" title="google.cloud.bigquery_datatransfer_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
+<li><strong>authorization_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional OAuth2 authorization code to use with this transfer
+configuration. If it is provided, the transfer configuration will be
+associated with the authorizing user. In order to obtain
+authorization_code, please make a request to
+<a class="reference external" href="https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=&amp;scope=&amp;redirect_uri=">https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=&amp;scope=&amp;redirect_uri=</a></p>
 <ul>
-<li>client_id should be OAuth client_id of BigQuery DTS API for the given
-data source returned by ListDataSources method.</li>
-<li>data_source_scopes are the scopes returned by ListDataSources method.</li>
+<li>client_id should be OAuth client_id of BigQuery DTS API for the
+given data source returned by ListDataSources method.</li>
+<li>data_source_scopes are the scopes returned by ListDataSources
+method.</li>
 <li>redirect_uri is an optional parameter. If not specified, then
-authorization code is posted to the opener of authorization flow window.
-Otherwise it will be sent to the redirect uri. A special value of
-<a class="reference external" href="urn:ietf:wg:oauth:2.0:oob">urn:ietf:wg:oauth:2.0:oob</a> means that authorization code should be
-returned in the title bar of the browser, with the page text prompting
-the user to copy the code and paste it in the application.</li>
+authorization code is posted to the opener of authorization flow
+window. Otherwise it will be sent to the redirect uri. A special
+value of <a class="reference external" href="urn:ietf:wg:oauth:2.0:oob">urn:ietf:wg:oauth:2.0:oob</a> means that authorization code
+should be returned in the title bar of the browser, with the page
+text prompting the user to copy the code and paste it in the
+application.</li>
 </ul>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used

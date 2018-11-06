@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.automl_v1beta1.gapic.auto_ml_client &#8212; google-cloud 4b51f93 documentation</title>
+    <title>google.cloud.automl_v1beta1.gapic.auto_ml_client &#8212; google-cloud 48b5a6c documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -90,13 +90,13 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    AutoML Server API.</span>
 
-<span class="sd">    The resource names are assigned by the server.</span>
-<span class="sd">    The server never reuses names that it has created after the resources with</span>
-<span class="sd">    those names are deleted.</span>
+<span class="sd">    The resource names are assigned by the server. The server never reuses</span>
+<span class="sd">    names that it has created after the resources with those names are</span>
+<span class="sd">    deleted.</span>
 
 <span class="sd">    An ID of a resource is the last element of the item&#39;s resource name. For</span>
-<span class="sd">    ``projects/{project_id}/locations/{location_id}/datasets/{dataset_id}``, then</span>
-<span class="sd">    the id for the item is ``{dataset_id}``.</span>
+<span class="sd">    ``projects/{project_id}/locations/{location_id}/datasets/{dataset_id}``,</span>
+<span class="sd">    then the id for the item is ``{dataset_id}``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;automl.googleapis.com:443&#39;</span>
@@ -235,9 +235,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -270,7 +271,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``dataset``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `dataset`:</span>
 <span class="sd">            &gt;&gt;&gt; dataset = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_dataset(parent, dataset)</span>
@@ -278,6 +279,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The resource name of the project to create the dataset for.</span>
 <span class="sd">            dataset (Union[dict, ~google.cloud.automl_v1beta1.types.Dataset]): The dataset to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.automl_v1beta1.types.Dataset`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -395,7 +397,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_datasets(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_datasets(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -404,13 +406,12 @@
 <span class="sd">            parent (str): The resource name of the project from which to list datasets.</span>
 <span class="sd">            filter_ (str): An expression for filtering the results of the request.</span>
 
-<span class="sd">                  * ``dataset_metadata`` - for existence of the case.</span>
+<span class="sd">                -  ``dataset_metadata`` - for existence of the case.</span>
 
 <span class="sd">                An example of using the filter is:</span>
 
-<span class="sd">                  * ``translation_dataset_metadata:*`` --&gt; The dataset has</span>
-<span class="sd">                    ::</span>
-<span class="sd">                    translation_dataset_metadata.</span>
+<span class="sd">                -  ``translation_dataset_metadata:*`` --&gt; The dataset has</span>
+<span class="sd">                   translation\_dataset\_metadata.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -474,10 +475,8 @@
                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deletes a dataset and all of its contents.</span>
-<span class="sd">        Returns empty response in the</span>
-<span class="sd">        ``response`` field when it completes,</span>
-<span class="sd">        and ``delete_details`` in the</span>
+<span class="sd">        Deletes a dataset and all of its contents. Returns empty response in the</span>
+<span class="sd">        ``response`` field when it completes, and ``delete_details`` in the</span>
 <span class="sd">        ``metadata`` field.</span>
 
 <span class="sd">        Example:</span>
@@ -547,8 +546,7 @@
                     <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                     <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Imports data into a dataset.</span>
-<span class="sd">        Returns an empty response in the</span>
+<span class="sd">        Imports data into a dataset. Returns an empty response in the</span>
 <span class="sd">        ``response`` field when it completes.</span>
 
 <span class="sd">        Example:</span>
@@ -558,7 +556,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.dataset_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[DATASET]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``input_config``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `input_config`:</span>
 <span class="sd">            &gt;&gt;&gt; input_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.import_data(name, input_config)</span>
@@ -576,6 +574,7 @@
 <span class="sd">            name (str): Required. Dataset name. Dataset must already exist. All imported</span>
 <span class="sd">                annotations and examples will be added.</span>
 <span class="sd">            input_config (Union[dict, ~google.cloud.automl_v1beta1.types.InputConfig]): Required. The desired input location.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.automl_v1beta1.types.InputConfig`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -627,9 +626,8 @@
                     <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                     <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Exports dataset&#39;s data to a Google Cloud Storage bucket.</span>
-<span class="sd">        Returns an empty response in the</span>
-<span class="sd">        ``response`` field when it completes.</span>
+<span class="sd">        Exports dataset&#39;s data to a Google Cloud Storage bucket. Returns an</span>
+<span class="sd">        empty response in the ``response`` field when it completes.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import automl_v1beta1</span>
@@ -638,7 +636,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.dataset_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[DATASET]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``output_config``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `output_config`:</span>
 <span class="sd">            &gt;&gt;&gt; output_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.export_data(name, output_config)</span>
@@ -655,6 +653,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Required. The resource name of the dataset.</span>
 <span class="sd">            output_config (Union[dict, ~google.cloud.automl_v1beta1.types.OutputConfig]): Required. The desired output location.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.automl_v1beta1.types.OutputConfig`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -706,11 +705,10 @@
                      <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                      <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a model.</span>
-<span class="sd">        Returns a Model in the ``response``</span>
-<span class="sd">        field when it completes.</span>
-<span class="sd">        When you create a model, several model evaluations are created for it:</span>
-<span class="sd">        a global evaluation, and one evaluation for each annotation spec.</span>
+<span class="sd">        Creates a model. Returns a Model in the ``response`` field when it</span>
+<span class="sd">        completes. When you create a model, several model evaluations are</span>
+<span class="sd">        created for it: a global evaluation, and one evaluation for each</span>
+<span class="sd">        annotation spec.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import automl_v1beta1</span>
@@ -719,7 +717,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``model``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `model`:</span>
 <span class="sd">            &gt;&gt;&gt; model = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_model(parent, model)</span>
@@ -736,6 +734,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Resource name of the parent project where the model is being created.</span>
 <span class="sd">            model (Union[dict, ~google.cloud.automl_v1beta1.types.Model]): The model to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.automl_v1beta1.types.Model`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -859,7 +858,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_models(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_models(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -868,17 +867,15 @@
 <span class="sd">            parent (str): Resource name of the project, from which to list the models.</span>
 <span class="sd">            filter_ (str): An expression for filtering the results of the request.</span>
 
-<span class="sd">                  * ``model_metadata`` - for existence of the case.</span>
-<span class="sd">                  * ``dataset_id`` - for = or !=.</span>
+<span class="sd">                -  ``model_metadata`` - for existence of the case.</span>
+<span class="sd">                -  ``dataset_id`` - for = or !=.</span>
 
 <span class="sd">                Some examples of using the filter are:</span>
 
-<span class="sd">                  * ``image_classification_model_metadata:*`` --&gt; The model has</span>
-<span class="sd">                    ::</span>
-<span class="sd">                    image_classification_model_metadata.</span>
-<span class="sd">                  * ``dataset_id=5`` --&gt; The model was created from a sibling dataset with</span>
-<span class="sd">                    ::</span>
-<span class="sd">                    ID 5.</span>
+<span class="sd">                -  ``image_classification_model_metadata:*`` --&gt; The model has</span>
+<span class="sd">                   image\_classification\_model\_metadata.</span>
+<span class="sd">                -  ``dataset_id=5`` --&gt; The model was created from a sibling dataset</span>
+<span class="sd">                   with ID 5.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -941,13 +938,10 @@
                      <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                      <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deletes a model.</span>
-<span class="sd">        If a model is already deployed, this only deletes the model in AutoML BE,</span>
-<span class="sd">        and does not change the status of the deployed model in the production</span>
-<span class="sd">        environment.</span>
-<span class="sd">        Returns ``google.protobuf.Empty`` in the</span>
-<span class="sd">        ``response`` field when it completes,</span>
-<span class="sd">        and ``delete_details`` in the</span>
+<span class="sd">        Deletes a model. If a model is already deployed, this only deletes the</span>
+<span class="sd">        model in AutoML BE, and does not change the status of the deployed model</span>
+<span class="sd">        in the production environment. Returns ``google.protobuf.Empty`` in the</span>
+<span class="sd">        ``response`` field when it completes, and ``delete_details`` in the</span>
 <span class="sd">        ``metadata`` field.</span>
 
 <span class="sd">        Example:</span>
@@ -1016,9 +1010,8 @@
                      <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                      <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deploys model.</span>
-<span class="sd">        Returns a ``DeployModelResponse`` in the</span>
-<span class="sd">        ``response`` field when it completes.</span>
+<span class="sd">        Deploys model. Returns a ``DeployModelResponse`` in the ``response``</span>
+<span class="sd">        field when it completes.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import automl_v1beta1</span>
@@ -1071,8 +1064,7 @@
                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Undeploys model.</span>
-<span class="sd">        Returns an ``UndeployModelResponse`` in the</span>
+<span class="sd">        Undeploys model. Returns an ``UndeployModelResponse`` in the</span>
 <span class="sd">        ``response`` field when it completes.</span>
 
 <span class="sd">        Example:</span>
@@ -1200,29 +1192,26 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_model_evaluations(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_model_evaluations(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Resource name of the model to list the model evaluations for.</span>
-<span class="sd">                If modelId is set as \&quot;-\&quot;, this will list model evaluations from across all</span>
+<span class="sd">                If modelId is set as &quot;-&quot;, this will list model evaluations from across all</span>
 <span class="sd">                models of the parent location.</span>
 <span class="sd">            filter_ (str): An expression for filtering the results of the request.</span>
 
-<span class="sd">                  * ``annotation_spec_id`` - for =, !=  or existence. See example below for</span>
-<span class="sd">                    ::</span>
-<span class="sd">                    the last.</span>
+<span class="sd">                -  ``annotation_spec_id`` - for =, != or existence. See example below</span>
+<span class="sd">                   for the last.</span>
 
 <span class="sd">                Some examples of using the filter are:</span>
 
-<span class="sd">                  * ``annotation_spec_id!=4`` --&gt; The model evaluation was done for</span>
-<span class="sd">                    ::</span>
-<span class="sd">                    annotation spec with ID different than 4.</span>
-<span class="sd">                  * ``NOT annotation_spec_id:*`` --&gt; The model evaluation was done for</span>
-<span class="sd">                    ::</span>
-<span class="sd">                    aggregate of all annotation specs.</span>
+<span class="sd">                -  ``annotation_spec_id!=4`` --&gt; The model evaluation was done for</span>
+<span class="sd">                   annotation spec with ID different than 4.</span>
+<span class="sd">                -  ``NOT annotation_spec_id:*`` --&gt; The model evaluation was done for</span>
+<span class="sd">                   aggregate of all annotation specs.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>

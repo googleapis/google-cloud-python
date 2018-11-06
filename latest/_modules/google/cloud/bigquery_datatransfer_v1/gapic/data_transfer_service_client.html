@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery_datatransfer_v1.gapic.data_transfer_service_client &#8212; google-cloud 4b51f93 documentation</title>
+    <title>google.cloud.bigquery_datatransfer_v1.gapic.data_transfer_service_client &#8212; google-cloud 48b5a6c documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -221,9 +221,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -333,14 +334,14 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_data_sources(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_data_sources(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): The BigQuery project id for which data sources should be returned.</span>
-<span class="sd">                Must be in the form: ``projects/{project_id}``</span>
+<span class="sd">            parent (str): The BigQuery project id for which data sources should be returned. Must</span>
+<span class="sd">                be in the form: ``projects/{project_id}``</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -427,35 +428,38 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``transfer_config``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `transfer_config`:</span>
 <span class="sd">            &gt;&gt;&gt; transfer_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_transfer_config(parent, transfer_config)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): The BigQuery project id where the transfer configuration should be created.</span>
-<span class="sd">                Must be in the format /projects/{project_id}/locations/{location_id}</span>
-<span class="sd">                If specified location and location of the destination bigquery dataset</span>
-<span class="sd">                do not match - the request will fail.</span>
+<span class="sd">            parent (str): The BigQuery project id where the transfer configuration should be</span>
+<span class="sd">                created. Must be in the format</span>
+<span class="sd">                /projects/{project\_id}/locations/{location\_id} If specified location</span>
+<span class="sd">                and location of the destination bigquery dataset do not match - the</span>
+<span class="sd">                request will fail.</span>
 <span class="sd">            transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig`</span>
-<span class="sd">            authorization_code (str): Optional OAuth2 authorization code to use with this transfer configuration.</span>
-<span class="sd">                This is required if new credentials are needed, as indicated by</span>
-<span class="sd">                ``CheckValidCreds``.</span>
-<span class="sd">                In order to obtain authorization_code, please make a</span>
-<span class="sd">                request to</span>
-<span class="sd">                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=&lt;datatransferapiclientid&gt;&amp;scope=&lt;data_source_scopes&gt;&amp;redirect_uri=&lt;redirect_uri&gt;</span>
+<span class="sd">            authorization_code (str): Optional OAuth2 authorization code to use with this transfer</span>
+<span class="sd">                configuration. This is required if new credentials are needed, as</span>
+<span class="sd">                indicated by ``CheckValidCreds``. In order to obtain</span>
+<span class="sd">                authorization\_code, please make a request to</span>
+<span class="sd">                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&amp;scope=&amp;redirect\_uri=</span>
 
-<span class="sd">                * client_id should be OAuth client_id of BigQuery DTS API for the given</span>
-<span class="sd">                  data source returned by ListDataSources method.</span>
-<span class="sd">                * data_source_scopes are the scopes returned by ListDataSources method.</span>
-<span class="sd">                * redirect_uri is an optional parameter. If not specified, then</span>
-<span class="sd">                  authorization code is posted to the opener of authorization flow window.</span>
-<span class="sd">                  Otherwise it will be sent to the redirect uri. A special value of</span>
-<span class="sd">                  urn:ietf:wg:oauth:2.0:oob means that authorization code should be</span>
-<span class="sd">                  returned in the title bar of the browser, with the page text prompting</span>
-<span class="sd">                  the user to copy the code and paste it in the application.</span>
+<span class="sd">                -  client\_id should be OAuth client\_id of BigQuery DTS API for the</span>
+<span class="sd">                   given data source returned by ListDataSources method.</span>
+<span class="sd">                -  data\_source\_scopes are the scopes returned by ListDataSources</span>
+<span class="sd">                   method.</span>
+<span class="sd">                -  redirect\_uri is an optional parameter. If not specified, then</span>
+<span class="sd">                   authorization code is posted to the opener of authorization flow</span>
+<span class="sd">                   window. Otherwise it will be sent to the redirect uri. A special</span>
+<span class="sd">                   value of urn:ietf:wg:oauth:2.0:oob means that authorization code</span>
+<span class="sd">                   should be returned in the title bar of the browser, with the page</span>
+<span class="sd">                   text prompting the user to copy the code and paste it in the</span>
+<span class="sd">                   application.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -523,37 +527,40 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = bigquery_datatransfer_v1.DataTransferServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``transfer_config``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `transfer_config`:</span>
 <span class="sd">            &gt;&gt;&gt; transfer_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``update_mask``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `update_mask`:</span>
 <span class="sd">            &gt;&gt;&gt; update_mask = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_transfer_config(transfer_config, update_mask)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.FieldMask]): Required list of fields to be updated in this request.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.bigquery_datatransfer_v1.types.FieldMask`</span>
-<span class="sd">            authorization_code (str): Optional OAuth2 authorization code to use with this transfer configuration.</span>
-<span class="sd">                If it is provided, the transfer configuration will be associated with the</span>
-<span class="sd">                authorizing user.</span>
-<span class="sd">                In order to obtain authorization_code, please make a</span>
-<span class="sd">                request to</span>
-<span class="sd">                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=&lt;datatransferapiclientid&gt;&amp;scope=&lt;data_source_scopes&gt;&amp;redirect_uri=&lt;redirect_uri&gt;</span>
+<span class="sd">            authorization_code (str): Optional OAuth2 authorization code to use with this transfer</span>
+<span class="sd">                configuration. If it is provided, the transfer configuration will be</span>
+<span class="sd">                associated with the authorizing user. In order to obtain</span>
+<span class="sd">                authorization\_code, please make a request to</span>
+<span class="sd">                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&amp;scope=&amp;redirect\_uri=</span>
 
-<span class="sd">                * client_id should be OAuth client_id of BigQuery DTS API for the given</span>
-<span class="sd">                  data source returned by ListDataSources method.</span>
-<span class="sd">                * data_source_scopes are the scopes returned by ListDataSources method.</span>
-<span class="sd">                * redirect_uri is an optional parameter. If not specified, then</span>
-<span class="sd">                  authorization code is posted to the opener of authorization flow window.</span>
-<span class="sd">                  Otherwise it will be sent to the redirect uri. A special value of</span>
-<span class="sd">                  urn:ietf:wg:oauth:2.0:oob means that authorization code should be</span>
-<span class="sd">                  returned in the title bar of the browser, with the page text prompting</span>
-<span class="sd">                  the user to copy the code and paste it in the application.</span>
+<span class="sd">                -  client\_id should be OAuth client\_id of BigQuery DTS API for the</span>
+<span class="sd">                   given data source returned by ListDataSources method.</span>
+<span class="sd">                -  data\_source\_scopes are the scopes returned by ListDataSources</span>
+<span class="sd">                   method.</span>
+<span class="sd">                -  redirect\_uri is an optional parameter. If not specified, then</span>
+<span class="sd">                   authorization code is posted to the opener of authorization flow</span>
+<span class="sd">                   window. Otherwise it will be sent to the redirect uri. A special</span>
+<span class="sd">                   value of urn:ietf:wg:oauth:2.0:oob means that authorization code</span>
+<span class="sd">                   should be returned in the title bar of the browser, with the page</span>
+<span class="sd">                   text prompting the user to copy the code and paste it in the</span>
+<span class="sd">                   application.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -763,14 +770,14 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_transfer_configs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_transfer_configs(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): The BigQuery project id for which data sources</span>
-<span class="sd">                should be returned: ``projects/{project_id}``.</span>
+<span class="sd">            parent (str): The BigQuery project id for which data sources should be returned:</span>
+<span class="sd">                ``projects/{project_id}``.</span>
 <span class="sd">            data_source_ids (list[str]): When specified, only configurations of requested data sources are returned.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
@@ -850,10 +857,10 @@
                                <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                                <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates transfer runs for a time range [start_time, end_time].</span>
-<span class="sd">        For each date - or whatever granularity the data source supports - in the</span>
-<span class="sd">        range, one transfer run is created.</span>
-<span class="sd">        Note that runs are created per UTC time in the time range.</span>
+<span class="sd">        Creates transfer runs for a time range [start\_time, end\_time]. For</span>
+<span class="sd">        each date - or whatever granularity the data source supports - in the</span>
+<span class="sd">        range, one transfer run is created. Note that runs are created per UTC</span>
+<span class="sd">        time in the time range.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import bigquery_datatransfer_v1</span>
@@ -862,10 +869,10 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.project_transfer_config_path(&#39;[PROJECT]&#39;, &#39;[TRANSFER_CONFIG]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``start_time``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `start_time`:</span>
 <span class="sd">            &gt;&gt;&gt; start_time = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``end_time``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `end_time`:</span>
 <span class="sd">            &gt;&gt;&gt; end_time = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.schedule_transfer_runs(parent, start_time, end_time)</span>
@@ -874,11 +881,13 @@
 <span class="sd">            parent (str): Transfer configuration name in the form:</span>
 <span class="sd">                ``projects/{project_id}/transferConfigs/{config_id}``.</span>
 <span class="sd">            start_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): Start time of the range of transfer runs. For example,</span>
-<span class="sd">                ``\&quot;2017-05-25T00:00:00+00:00\&quot;``.</span>
+<span class="sd">                ``&quot;2017-05-25T00:00:00+00:00&quot;``.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.bigquery_datatransfer_v1.types.Timestamp`</span>
 <span class="sd">            end_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): End time of the range of transfer runs. For example,</span>
-<span class="sd">                ``\&quot;2017-05-30T00:00:00+00:00\&quot;``.</span>
+<span class="sd">                ``&quot;2017-05-30T00:00:00+00:00&quot;``.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.bigquery_datatransfer_v1.types.Timestamp`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1089,14 +1098,14 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_transfer_runs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_transfer_runs(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Name of transfer configuration for which transfer runs should be retrieved.</span>
-<span class="sd">                Format of transfer configuration resource name is:</span>
+<span class="sd">            parent (str): Name of transfer configuration for which transfer runs should be</span>
+<span class="sd">                retrieved. Format of transfer configuration resource name is:</span>
 <span class="sd">                ``projects/{project_id}/transferConfigs/{config_id}``.</span>
 <span class="sd">            states (list[~google.cloud.bigquery_datatransfer_v1.types.TransferState]): When specified, only transfer runs with requested states are returned.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
@@ -1197,7 +1206,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_transfer_logs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_transfer_logs(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
