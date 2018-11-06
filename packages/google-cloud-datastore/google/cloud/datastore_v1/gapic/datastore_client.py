@@ -145,9 +145,10 @@ class DatastoreClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -179,10 +180,10 @@ class DatastoreClient(object):
             >>>
             >>> client = datastore_v1.DatastoreClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``keys``:
+            >>> # TODO: Initialize `keys`:
             >>> keys = []
             >>>
             >>> response = client.lookup(project_id, keys)
@@ -190,9 +191,11 @@ class DatastoreClient(object):
         Args:
             project_id (str): The ID of the project against which to make the request.
             keys (list[Union[dict, ~google.cloud.datastore_v1.types.Key]]): Keys of entities to look up.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.Key`
             read_options (Union[dict, ~google.cloud.datastore_v1.types.ReadOptions]): The options for this lookup request.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.ReadOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -249,10 +252,10 @@ class DatastoreClient(object):
             >>>
             >>> client = datastore_v1.DatastoreClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``partition_id``:
+            >>> # TODO: Initialize `partition_id`:
             >>> partition_id = {}
             >>>
             >>> response = client.run_query(project_id, partition_id)
@@ -263,15 +266,19 @@ class DatastoreClient(object):
                 Queries are scoped to a single partition.
                 This partition ID is normalized with the standard default context
                 partition ID.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.PartitionId`
             read_options (Union[dict, ~google.cloud.datastore_v1.types.ReadOptions]): The options for this query.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.ReadOptions`
             query (Union[dict, ~google.cloud.datastore_v1.types.Query]): The query to run.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.Query`
             gql_query (Union[dict, ~google.cloud.datastore_v1.types.GqlQuery]): The GQL query to run.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.GqlQuery`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -334,7 +341,7 @@ class DatastoreClient(object):
             >>>
             >>> client = datastore_v1.DatastoreClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
             >>> response = client.begin_transaction(project_id)
@@ -342,6 +349,7 @@ class DatastoreClient(object):
         Args:
             project_id (str): The ID of the project against which to make the request.
             transaction_options (Union[dict, ~google.cloud.datastore_v1.types.TransactionOptions]): Options for a new transaction.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.TransactionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -400,13 +408,13 @@ class DatastoreClient(object):
             >>>
             >>> client = datastore_v1.DatastoreClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``mode``:
+            >>> # TODO: Initialize `mode`:
             >>> mode = enums.CommitRequest.Mode.MODE_UNSPECIFIED
             >>>
-            >>> # TODO: Initialize ``mutations``:
+            >>> # TODO: Initialize `mutations`:
             >>> mutations = []
             >>>
             >>> response = client.commit(project_id, mode, mutations)
@@ -417,16 +425,17 @@ class DatastoreClient(object):
             mutations (list[Union[dict, ~google.cloud.datastore_v1.types.Mutation]]): The mutations to perform.
 
                 When mode is ``TRANSACTIONAL``, mutations affecting a single entity are
-                applied in order. The following sequences of mutations affecting a single
-                entity are not permitted in a single ``Commit`` request:
+                applied in order. The following sequences of mutations affecting a
+                single entity are not permitted in a single ``Commit`` request:
 
-                - ``insert`` followed by ``insert``
-                - ``update`` followed by ``insert``
-                - ``upsert`` followed by ``insert``
-                - ``delete`` followed by ``update``
+                -  ``insert`` followed by ``insert``
+                -  ``update`` followed by ``insert``
+                -  ``upsert`` followed by ``insert``
+                -  ``delete`` followed by ``update``
 
                 When mode is ``NON_TRANSACTIONAL``, no two mutations may affect a single
                 entity.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.Mutation`
             transaction (bytes): The identifier of the transaction associated with the commit. A
@@ -488,10 +497,10 @@ class DatastoreClient(object):
             >>>
             >>> client = datastore_v1.DatastoreClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``transaction``:
+            >>> # TODO: Initialize `transaction`:
             >>> transaction = b''
             >>>
             >>> response = client.rollback(project_id, transaction)
@@ -551,10 +560,10 @@ class DatastoreClient(object):
             >>>
             >>> client = datastore_v1.DatastoreClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``keys``:
+            >>> # TODO: Initialize `keys`:
             >>> keys = []
             >>>
             >>> response = client.allocate_ids(project_id, keys)
@@ -563,6 +572,7 @@ class DatastoreClient(object):
             project_id (str): The ID of the project against which to make the request.
             keys (list[Union[dict, ~google.cloud.datastore_v1.types.Key]]): A list of keys with incomplete key paths for which to allocate IDs.
                 No key may be reserved/read-only.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.Key`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -618,10 +628,10 @@ class DatastoreClient(object):
             >>>
             >>> client = datastore_v1.DatastoreClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``keys``:
+            >>> # TODO: Initialize `keys`:
             >>> keys = []
             >>>
             >>> response = client.reserve_ids(project_id, keys)
@@ -630,6 +640,7 @@ class DatastoreClient(object):
             project_id (str): The ID of the project against which to make the request.
             keys (list[Union[dict, ~google.cloud.datastore_v1.types.Key]]): A list of keys with complete key paths whose numeric IDs should not be
                 auto-allocated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.Key`
             database_id (str): If not empty, the ID of the database against which to make the request.

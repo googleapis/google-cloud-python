@@ -20,10 +20,10 @@ import enum
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for the
-    ``Value`` type union.
+    ``NullValue`` is a singleton enumeration to represent the null value for
+    the ``Value`` type union.
 
-     The JSON representation for ``NullValue`` is JSON ``null``.
+    The JSON representation for ``NullValue`` is JSON ``null``.
 
     Attributes:
       NULL_VALUE (int): Null value.
@@ -34,11 +34,12 @@ class NullValue(enum.IntEnum):
 class EntityResult(object):
     class ResultType(enum.IntEnum):
         """
-        Specifies what data the 'entity' field contains.
-        A ``ResultType`` is either implied (for example, in ``LookupResponse.missing``
-        from ``datastore.proto``, it is always ``KEY_ONLY``) or specified by context
-        (for example, in message ``QueryResultBatch``, field ``entity_result_type``
-        specifies a ``ResultType`` for all the values in field ``entity_results``).
+        Specifies what data the 'entity' field contains. A ``ResultType`` is
+        either implied (for example, in ``LookupResponse.missing`` from
+        ``datastore.proto``, it is always ``KEY_ONLY``) or specified by context
+        (for example, in message ``QueryResultBatch``, field
+        ``entity_result_type`` specifies a ``ResultType`` for all the values in
+        field ``entity_results``).
 
         Attributes:
           RESULT_TYPE_UNSPECIFIED (int): Unspecified. This value is never used.
@@ -130,8 +131,9 @@ class CommitRequest(object):
 
         Attributes:
           MODE_UNSPECIFIED (int): Unspecified. This value must not be used.
-          TRANSACTIONAL (int): Transactional: The mutations are either all applied, or none are applied.
-          Learn about transactions `here <https://cloud.google.com/datastore/docs/concepts/transactions>`_.
+          TRANSACTIONAL (int): Transactional: The mutations are either all applied, or none are
+          applied. Learn about transactions
+          `here <https://cloud.google.com/datastore/docs/concepts/transactions>`__.
           NON_TRANSACTIONAL (int): Non-transactional: The mutations may not apply as all or none.
         """
         MODE_UNSPECIFIED = 0
