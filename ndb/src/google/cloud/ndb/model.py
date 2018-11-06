@@ -1883,7 +1883,7 @@ class BlobProperty(Property):
 
 
 class TextProperty(BlobProperty):
-    """A property that contains text values unlimited length.
+    """A property that contains UTF-8 encoded text values.
 
     .. note::
 
@@ -1971,6 +1971,14 @@ class TextProperty(BlobProperty):
                 return value.decode("utf-8")
             except UnicodeError:
                 pass
+
+    def _db_set_uncompressed_meaning(self, p):
+        """Helper for :meth:`_db_set_value`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
 
 
 class StringProperty(TextProperty):

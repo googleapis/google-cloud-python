@@ -1620,6 +1620,12 @@ class TestTextProperty:
         value = b"\x80abc"
         assert prop._from_base_type(value) is None
 
+    @staticmethod
+    def test__db_set_uncompressed_meaning():
+        prop = model.TextProperty(name="text")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_uncompressed_meaning(None)
+
 
 class TestStringProperty:
     @staticmethod
