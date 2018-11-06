@@ -1324,9 +1324,34 @@ class TestBooleanProperty:
 
 class TestIntegerProperty:
     @staticmethod
-    def test_constructor():
+    def test__validate():
+        prop = model.IntegerProperty(name="count")
+        value = 829038402384
+        assert prop._validate(value) is value
+
+    @staticmethod
+    def test__validate_bool():
+        prop = model.IntegerProperty(name="count")
+        value = True
+        assert prop._validate(value) == 1
+
+    @staticmethod
+    def test__validate_bad_value():
+        prop = model.IntegerProperty(name="count")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.IntegerProperty(name="count")
         with pytest.raises(NotImplementedError):
-            model.IntegerProperty()
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.IntegerProperty(name="count")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestFloatProperty:
