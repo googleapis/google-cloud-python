@@ -168,9 +168,8 @@ class ClusterControllerGrpcTransport(object):
     def diagnose_cluster(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Gets cluster diagnostic information.
-        After the operation completes, the Operation.response field
-        contains ``DiagnoseClusterOutputLocation``.
+        Gets cluster diagnostic information. After the operation completes, the
+        Operation.response field contains ``DiagnoseClusterOutputLocation``.
 
         Returns:
             Callable: A callable which accepts the appropriate
