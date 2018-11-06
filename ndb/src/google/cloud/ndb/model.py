@@ -1431,7 +1431,7 @@ class IntegerProperty(Property):
 
     .. note::
 
-        If a value is a :class:`bool`, it will be treated as ``0`` (for
+        If a value is a :class:`bool`, it will be coerced to ``0`` (for
         :data:`False`) or ``1`` (for :data:`True`).
 
     .. automethod:: _validate
