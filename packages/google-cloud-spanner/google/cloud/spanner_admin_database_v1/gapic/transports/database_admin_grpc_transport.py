@@ -119,14 +119,12 @@ class DatabaseAdminGrpcTransport(object):
     def create_database(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Creates a new Cloud Spanner database and starts to prepare it for serving.
-        The returned ``long-running operation`` will
-        have a name of the format ``<database_name>/operations/<operation_id>`` and
-        can be used to track preparation of the database. The
-        ``metadata`` field type is
-        ``CreateDatabaseMetadata``. The
-        ``response`` field type is
-        ``Database``, if successful.
+        Creates a new Cloud Spanner database and starts to prepare it for
+        serving. The returned ``long-running operation`` will have a name of the
+        format ``<database_name>/operations/<operation_id>`` and can be used to
+        track preparation of the database. The ``metadata`` field type is
+        ``CreateDatabaseMetadata``. The ``response`` field type is ``Database``,
+        if successful.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -154,11 +152,10 @@ class DatabaseAdminGrpcTransport(object):
 
         Updates the schema of a Cloud Spanner database by
         creating/altering/dropping tables, columns, indexes, etc. The returned
-        ``long-running operation`` will have a name of
-        the format ``<database_name>/operations/<operation_id>`` and can be used to
-        track execution of the schema change(s). The
-        ``metadata`` field type is
-        ``UpdateDatabaseDdlMetadata``.  The operation has no response.
+        ``long-running operation`` will have a name of the format
+        ``<database_name>/operations/<operation_id>`` and can be used to track
+        execution of the schema change(s). The ``metadata`` field type is
+        ``UpdateDatabaseDdlMetadata``. The operation has no response.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -185,8 +182,8 @@ class DatabaseAdminGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Returns the schema of a Cloud Spanner database as a list of formatted
-        DDL statements. This method does not show pending schema updates, those may
-        be queried using the ``Operations`` API.
+        DDL statements. This method does not show pending schema updates, those
+        may be queried using the ``Operations`` API.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -233,12 +230,13 @@ class DatabaseAdminGrpcTransport(object):
     def test_iam_permissions(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Returns permissions that the caller has on the specified database resource.
+        Returns permissions that the caller has on the specified database
+        resource.
 
-        Attempting this RPC on a non-existent Cloud Spanner database will result in
-        a NOT_FOUND error if the user has ``spanner.databases.list`` permission on
-        the containing Cloud Spanner instance. Otherwise returns an empty set of
-        permissions.
+        Attempting this RPC on a non-existent Cloud Spanner database will result
+        in a NOT\_FOUND error if the user has ``spanner.databases.list``
+        permission on the containing Cloud Spanner instance. Otherwise returns
+        an empty set of permissions.
 
         Returns:
             Callable: A callable which accepts the appropriate
