@@ -92,34 +92,3 @@ s.replace(
 
     r"""
                 fields from ``Instance``: ``displayName``, ``labels``, ``memorySizeGb``, and ``redisConfig``.""",)
-
-# Set Release Status
-release_status = 'Development Status :: 3 - Alpha'
-s.replace('setup.py',
-          '(release_status = )(.*)$',
-          f"\\1'{release_status}'")
-
-# Fix the enable API link
-s.replace(
-    'README.rst',
-    r'.. _Enable the Google Cloud Memorystore for Redis API.:  https://cloud.google.com/redis',
-    '.. _Enable the Google Cloud Memorystore for Redis API.:  https://console.cloud.google.com/apis/'
-    'library/redis.googleapis.com')
-
-# Fix link to product page
-s.replace(
-    'README.rst',
-    r'https://cloud.google.com/redis',
-    'https://cloud.google.com/memorystore/')
-
-# Fix link to Client Library Documentation
-s.replace(
-    'README.rst',
-    r'https://googlecloudplatform.github.io/google-cloud-python/stable/redis/usage.html',
-    'https://googlecloudplatform.github.io/google-cloud-python/latest/redis/index.html')
-
-# Fix link to Auth instructions
-s.replace(
-    'README.rst',
-    r'https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html',
-    'https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html')
