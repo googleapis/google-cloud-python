@@ -136,9 +136,10 @@ class ClusterManagerClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -170,20 +171,20 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
             >>> response = client.list_clusters(project_id, zone)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides, or \"-\" for all zones.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides, or "-" for all zones.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -236,23 +237,23 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
             >>> response = client.get_cluster(project_id, zone, cluster_id)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to retrieve.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -302,13 +303,12 @@ class ClusterManagerClient(object):
         Creates a cluster, consisting of the specified number and type of Google
         Compute Engine instances.
 
-        By default, the cluster is created in the project's
-        `default network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`_.
+        By default, the cluster is created in the project's `default
+        network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
 
-        One firewall is added for the cluster. After cluster creation,
-        the cluster creates routes for each node to allow the containers
-        on that node to communicate with all other instances in the
-        cluster.
+        One firewall is added for the cluster. After cluster creation, the
+        cluster creates routes for each node to allow the containers on that
+        node to communicate with all other instances in the cluster.
 
         Finally, an entry is added to the project's global metadata indicating
         which CIDR range is being used by the cluster.
@@ -318,25 +318,26 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster``:
+            >>> # TODO: Initialize `cluster`:
             >>> cluster = {}
             >>>
             >>> response = client.create_cluster(project_id, zone, cluster)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
-            cluster (Union[dict, ~google.cloud.container_v1.types.Cluster]): A [cluster
-                resource](/container-engine/reference/rest/v1/projects.zones.clusters)
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
+            cluster (Union[dict, ~google.cloud.container_v1.types.Cluster]): A `cluster
+                resource <https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters>`__
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.Cluster`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -393,28 +394,29 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``update``:
+            >>> # TODO: Initialize `update`:
             >>> update = {}
             >>>
             >>> response = client.update_cluster(project_id, zone, cluster_id, update)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to upgrade.
             update (Union[dict, ~google.cloud.container_v1.types.ClusterUpdate]): A description of the update.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.ClusterUpdate`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -474,37 +476,36 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``node_pool_id``:
+            >>> # TODO: Initialize `node_pool_id`:
             >>> node_pool_id = ''
             >>>
-            >>> # TODO: Initialize ``node_version``:
+            >>> # TODO: Initialize `node_version`:
             >>> node_version = ''
             >>>
-            >>> # TODO: Initialize ``image_type``:
+            >>> # TODO: Initialize `image_type`:
             >>> image_type = ''
             >>>
             >>> response = client.update_node_pool(project_id, zone, cluster_id, node_pool_id, node_version, image_type)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to upgrade.
             node_pool_id (str): The name of the node pool to upgrade.
-            node_version (str): The Kubernetes version to change the nodes to (typically an
-                upgrade). Use ``-`` to upgrade to the latest version supported by
-                the server.
+            node_version (str): The Kubernetes version to change the nodes to (typically an upgrade).
+                Use ``-`` to upgrade to the latest version supported by the server.
             image_type (str): The desired image type for the node pool.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -565,32 +566,33 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``node_pool_id``:
+            >>> # TODO: Initialize `node_pool_id`:
             >>> node_pool_id = ''
             >>>
-            >>> # TODO: Initialize ``autoscaling``:
+            >>> # TODO: Initialize `autoscaling`:
             >>> autoscaling = {}
             >>>
             >>> response = client.set_node_pool_autoscaling(project_id, zone, cluster_id, node_pool_id, autoscaling)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to upgrade.
             node_pool_id (str): The name of the node pool to upgrade.
             autoscaling (Union[dict, ~google.cloud.container_v1.types.NodePoolAutoscaling]): Autoscaling configuration for the node pool.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.NodePoolAutoscaling`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -650,32 +652,32 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``logging_service``:
+            >>> # TODO: Initialize `logging_service`:
             >>> logging_service = ''
             >>>
             >>> response = client.set_logging_service(project_id, zone, cluster_id, logging_service)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to upgrade.
-            logging_service (str): The logging service the cluster should use to write metrics.
-                Currently available options:
+            logging_service (str): The logging service the cluster should use to write metrics. Currently
+                available options:
 
-                * \"logging.googleapis.com\" - the Google Cloud Logging service
-                * \"none\" - no metrics will be exported from the cluster
+                -  "logging.googleapis.com" - the Google Cloud Logging service
+                -  "none" - no metrics will be exported from the cluster
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -732,32 +734,32 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``monitoring_service``:
+            >>> # TODO: Initialize `monitoring_service`:
             >>> monitoring_service = ''
             >>>
             >>> response = client.set_monitoring_service(project_id, zone, cluster_id, monitoring_service)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to upgrade.
             monitoring_service (str): The monitoring service the cluster should use to write metrics.
                 Currently available options:
 
-                * \"monitoring.googleapis.com\" - the Google Cloud Monitoring service
-                * \"none\" - no metrics will be exported from the cluster
+                -  "monitoring.googleapis.com" - the Google Cloud Monitoring service
+                -  "none" - no metrics will be exported from the cluster
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -814,29 +816,30 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``addons_config``:
+            >>> # TODO: Initialize `addons_config`:
             >>> addons_config = {}
             >>>
             >>> response = client.set_addons_config(project_id, zone, cluster_id, addons_config)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to upgrade.
             addons_config (Union[dict, ~google.cloud.container_v1.types.AddonsConfig]): The desired configurations for the various addons available to run in the
                 cluster.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.AddonsConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -895,32 +898,32 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``locations``:
+            >>> # TODO: Initialize `locations`:
             >>> locations = []
             >>>
             >>> response = client.set_locations(project_id, zone, cluster_id, locations)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to upgrade.
             locations (list[str]): The desired list of Google Compute Engine
-                `locations <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster's nodes
-                should be located. Changing the locations a cluster is in will result
-                in nodes being either created or removed from the cluster, depending on
-                whether locations are being added or removed.
+                `locations <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster's nodes should be located. Changing the locations a
+                cluster is in will result in nodes being either created or removed from
+                the cluster, depending on whether locations are being added or removed.
 
                 This list must always include the cluster's primary zone.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -978,29 +981,29 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``master_version``:
+            >>> # TODO: Initialize `master_version`:
             >>> master_version = ''
             >>>
             >>> response = client.update_master(project_id, zone, cluster_id, master_version)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to upgrade.
             master_version (str): The Kubernetes version to change the master to. The only valid value is the
-                latest supported version. Use \"-\" to have the server automatically select
+                latest supported version. Use "-" to have the server automatically select
                 the latest version.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -1061,32 +1064,33 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``action``:
+            >>> # TODO: Initialize `action`:
             >>> action = enums.SetMasterAuthRequest.Action.UNKNOWN
             >>>
-            >>> # TODO: Initialize ``update``:
+            >>> # TODO: Initialize `update`:
             >>> update = {}
             >>>
             >>> response = client.set_master_auth(project_id, zone, cluster_id, action, update)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to upgrade.
             action (~google.cloud.container_v1.types.Action): The exact form of action to be taken on the master auth.
             update (Union[dict, ~google.cloud.container_v1.types.MasterAuth]): A description of the update.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.MasterAuth`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1152,23 +1156,23 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
             >>> response = client.delete_cluster(project_id, zone, cluster_id)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to delete.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -1222,19 +1226,20 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
             >>> response = client.list_operations(project_id, zone)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine `zone <https://cloud.google.com/compute/docs/zones#available>`_
-                to return operations for, or ``-`` for all zones.
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
+            zone (str): The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ to
+                return operations for, or ``-`` for all zones.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1287,23 +1292,23 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``operation_id``:
+            >>> # TODO: Initialize `operation_id`:
             >>> operation_id = ''
             >>>
             >>> response = client.get_operation(project_id, zone, operation_id)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             operation_id (str): The server-assigned ``name`` of the operation.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -1358,22 +1363,23 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``operation_id``:
+            >>> # TODO: Initialize `operation_id`:
             >>> operation_id = ''
             >>>
             >>> client.cancel_operation(project_id, zone, operation_id)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the operation resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the operation resides.
             operation_id (str): The server-assigned ``name`` of the operation.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -1425,19 +1431,20 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
             >>> response = client.get_server_config(project_id, zone)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
-            zone (str): The name of the Google Compute Engine `zone <https://cloud.google.com/compute/docs/zones#available>`_
-                to return operations for.
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
+            zone (str): The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ to
+                return operations for.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1491,23 +1498,23 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
             >>> response = client.list_node_pools(project_id, zone, cluster_id)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://developers.google.com/console/help/new/#projectnumber>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -1563,26 +1570,26 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``node_pool_id``:
+            >>> # TODO: Initialize `node_pool_id`:
             >>> node_pool_id = ''
             >>>
             >>> response = client.get_node_pool(project_id, zone, cluster_id, node_pool_id)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://developers.google.com/console/help/new/#projectnumber>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster.
             node_pool_id (str): The name of the node pool.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1640,28 +1647,29 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``node_pool``:
+            >>> # TODO: Initialize `node_pool`:
             >>> node_pool = {}
             >>>
             >>> response = client.create_node_pool(project_id, zone, cluster_id, node_pool)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://developers.google.com/console/help/new/#projectnumber>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster.
             node_pool (Union[dict, ~google.cloud.container_v1.types.NodePool]): The node pool to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.NodePool`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1719,26 +1727,26 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``node_pool_id``:
+            >>> # TODO: Initialize `node_pool_id`:
             >>> node_pool_id = ''
             >>>
             >>> response = client.delete_node_pool(project_id, zone, cluster_id, node_pool_id)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://developers.google.com/console/help/new/#projectnumber>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster.
             node_pool_id (str): The name of the node pool to delete.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1798,26 +1806,26 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``node_pool_id``:
+            >>> # TODO: Initialize `node_pool_id`:
             >>> node_pool_id = ''
             >>>
             >>> response = client.rollback_node_pool_upgrade(project_id, zone, cluster_id, node_pool_id)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to rollback.
             node_pool_id (str): The name of the node pool to rollback.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1878,32 +1886,33 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``node_pool_id``:
+            >>> # TODO: Initialize `node_pool_id`:
             >>> node_pool_id = ''
             >>>
-            >>> # TODO: Initialize ``management``:
+            >>> # TODO: Initialize `management`:
             >>> management = {}
             >>>
             >>> response = client.set_node_pool_management(project_id, zone, cluster_id, node_pool_id, management)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to update.
             node_pool_id (str): The name of the node pool to update.
             management (Union[dict, ~google.cloud.container_v1.types.NodeManagement]): NodeManagement configuration for the node pool.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.NodeManagement`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1964,29 +1973,29 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``resource_labels``:
+            >>> # TODO: Initialize `resource_labels`:
             >>> resource_labels = {}
             >>>
-            >>> # TODO: Initialize ``label_fingerprint``:
+            >>> # TODO: Initialize `label_fingerprint`:
             >>> label_fingerprint = ''
             >>>
             >>> response = client.set_labels(project_id, zone, cluster_id, resource_labels, label_fingerprint)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://developers.google.com/console/help/new/#projectnumber>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster.
             resource_labels (dict[str -> str]): The labels to set for that cluster.
             label_fingerprint (str): The fingerprint of the previous set of labels for this resource,
@@ -2050,26 +2059,26 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``enabled``:
+            >>> # TODO: Initialize `enabled`:
             >>> enabled = False
             >>>
             >>> response = client.set_legacy_abac(project_id, zone, cluster_id, enabled)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to update.
             enabled (bool): Whether ABAC authorization will be enabled in the cluster.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -2126,23 +2135,23 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
             >>> response = client.start_i_p_rotation(project_id, zone, cluster_id)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://developers.google.com/console/help/new/#projectnumber>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -2198,23 +2207,23 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
             >>> response = client.complete_i_p_rotation(project_id, zone, cluster_id)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://developers.google.com/console/help/new/#projectnumber>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -2272,29 +2281,29 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``node_pool_id``:
+            >>> # TODO: Initialize `node_pool_id`:
             >>> node_pool_id = ''
             >>>
-            >>> # TODO: Initialize ``node_count``:
+            >>> # TODO: Initialize `node_count`:
             >>> node_count = 0
             >>>
             >>> response = client.set_node_pool_size(project_id, zone, cluster_id, node_pool_id, node_count)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to update.
             node_pool_id (str): The name of the node pool to update.
             node_count (int): The desired node count for the pool.
@@ -2355,28 +2364,29 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``network_policy``:
+            >>> # TODO: Initialize `network_policy`:
             >>> network_policy = {}
             >>>
             >>> response = client.set_network_policy(project_id, zone, cluster_id, network_policy)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://developers.google.com/console/help/new/#projectnumber).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://developers.google.com/console/help/new/#projectnumber>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster.
             network_policy (Union[dict, ~google.cloud.container_v1.types.NetworkPolicy]): Configuration options for the NetworkPolicy feature.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.NetworkPolicy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -2435,29 +2445,30 @@ class ClusterManagerClient(object):
             >>>
             >>> client = container_v1.ClusterManagerClient()
             >>>
-            >>> # TODO: Initialize ``project_id``:
+            >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize ``zone``:
+            >>> # TODO: Initialize `zone`:
             >>> zone = ''
             >>>
-            >>> # TODO: Initialize ``cluster_id``:
+            >>> # TODO: Initialize `cluster_id`:
             >>> cluster_id = ''
             >>>
-            >>> # TODO: Initialize ``maintenance_policy``:
+            >>> # TODO: Initialize `maintenance_policy`:
             >>> maintenance_policy = {}
             >>>
             >>> response = client.set_maintenance_policy(project_id, zone, cluster_id, maintenance_policy)
 
         Args:
-            project_id (str): The Google Developers Console [project ID or project
-                number](https://support.google.com/cloud/answer/6158840).
+            project_id (str): The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__.
             zone (str): The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`_ in which the cluster
-                resides.
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides.
             cluster_id (str): The name of the cluster to update.
             maintenance_policy (Union[dict, ~google.cloud.container_v1.types.MaintenancePolicy]): The maintenance policy to be set for the cluster. An empty field
                 clears the existing maintenance policy.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1.types.MaintenancePolicy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
