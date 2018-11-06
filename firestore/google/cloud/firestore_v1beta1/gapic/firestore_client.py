@@ -51,26 +51,19 @@ class FirestoreClient(object):
 
     This service exposes several types of comparable timestamps:
 
-    *    ``create_time`` - The time at which a document was created. Changes only
-    ::
-
-         when a document is deleted, then re-created. Increases in a strict
-          monotonic fashion.
-    *    ``update_time`` - The time at which a document was last updated. Changes
-    ::
-
-         every time a document is modified. Does not change when a write results
-         in no modifications. Increases in a strict monotonic fashion.
-    *    ``read_time`` - The time at which a particular state was observed. Used
-    ::
-
-         to denote a consistent snapshot of the database or the time at which a
-         Document was observed to not exist.
-    *    ``commit_time`` - The time at which the writes in a transaction were
-    ::
-
-         committed. Any read with an equal or greater `read_time` is guaranteed
-         to see the effects of the transaction.
+    -  ``create_time`` - The time at which a document was created. Changes
+       only when a document is deleted, then re-created. Increases in a
+       strict monotonic fashion.
+    -  ``update_time`` - The time at which a document was last updated.
+       Changes every time a document is modified. Does not change when a
+       write results in no modifications. Increases in a strict monotonic
+       fashion.
+    -  ``read_time`` - The time at which a particular state was observed.
+       Used to denote a consistent snapshot of the database or the time at
+       which a Document was observed to not exist.
+    -  ``commit_time`` - The time at which the writes in a transaction were
+       committed. Any read with an equal or greater ``read_time`` is
+       guaranteed to see the effects of the transaction.
     """
 
     SERVICE_ADDRESS = 'firestore.googleapis.com:443'
@@ -209,9 +202,10 @@ class FirestoreClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -255,11 +249,13 @@ class FirestoreClient(object):
 
                 If the document has a field that is not present in this mask, that field
                 will not be returned in the response.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.DocumentMask`
             transaction (bytes): Reads the document in a transaction.
             read_time (Union[dict, ~google.cloud.firestore_v1beta1.types.Timestamp]): Reads the version of the document at the given time.
                 This may not be older than 60 seconds.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.Timestamp`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -330,7 +326,7 @@ class FirestoreClient(object):
             >>>
             >>> parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]', '[ANY_PATH]')
             >>>
-            >>> # TODO: Initialize ``collection_id``:
+            >>> # TODO: Initialize `collection_id`:
             >>> collection_id = ''
             >>>
             >>> # Iterate over all results
@@ -342,7 +338,7 @@ class FirestoreClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_documents(parent, collection_id, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_documents(parent, collection_id).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -351,11 +347,10 @@ class FirestoreClient(object):
             parent (str): The parent resource name. In the format:
                 ``projects/{project_id}/databases/{database_id}/documents`` or
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
-                For example:
-                ``projects/my-project/databases/my-database/documents`` or
+                For example: ``projects/my-project/databases/my-database/documents`` or
                 ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
-            collection_id (str): The collection ID, relative to ``parent``, to list. For example: ``chatrooms``
-                or ``messages``.
+            collection_id (str): The collection ID, relative to ``parent``, to list. For example:
+                ``chatrooms`` or ``messages``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -366,17 +361,19 @@ class FirestoreClient(object):
 
                 If a document has a field that is not present in this mask, that field
                 will not be returned in the response.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.DocumentMask`
             transaction (bytes): Reads documents in a transaction.
             read_time (Union[dict, ~google.cloud.firestore_v1beta1.types.Timestamp]): Reads documents as they were at the given time.
                 This may not be older than 60 seconds.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.Timestamp`
             show_missing (bool): If the list should show missing documents. A missing document is a
                 document that does not exist but has sub-documents. These documents will
-                be returned with a key but will not have fields, ``Document.create_time``,
-                or ``Document.update_time`` set.
+                be returned with a key but will not have fields,
+                ``Document.create_time``, or ``Document.update_time`` set.
 
                 Requests with ``show_missing`` may not specify ``where`` or
                 ``order_by``.
@@ -463,13 +460,13 @@ class FirestoreClient(object):
             >>>
             >>> parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]', '[ANY_PATH]')
             >>>
-            >>> # TODO: Initialize ``collection_id``:
+            >>> # TODO: Initialize `collection_id`:
             >>> collection_id = ''
             >>>
-            >>> # TODO: Initialize ``document_id``:
+            >>> # TODO: Initialize `document_id`:
             >>> document_id = ''
             >>>
-            >>> # TODO: Initialize ``document``:
+            >>> # TODO: Initialize `document`:
             >>> document = {}
             >>>
             >>> response = client.create_document(parent, collection_id, document_id, document)
@@ -478,17 +475,20 @@ class FirestoreClient(object):
             parent (str): The parent resource. For example:
                 ``projects/{project_id}/databases/{database_id}/documents`` or
                 ``projects/{project_id}/databases/{database_id}/documents/chatrooms/{chatroom_id}``
-            collection_id (str): The collection ID, relative to ``parent``, to list. For example: ``chatrooms``.
+            collection_id (str): The collection ID, relative to ``parent``, to list. For example:
+                ``chatrooms``.
             document_id (str): The client-assigned document ID to use for this document.
 
                 Optional. If not specified, an ID will be assigned by the service.
             document (Union[dict, ~google.cloud.firestore_v1beta1.types.Document]): The document to create. ``name`` must not be set.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.Document`
             mask (Union[dict, ~google.cloud.firestore_v1beta1.types.DocumentMask]): The fields to return. If not set, returns all fields.
 
                 If the document has a field that is not present in this mask, that field
                 will not be returned in the response.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.DocumentMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -547,10 +547,10 @@ class FirestoreClient(object):
             >>>
             >>> client = firestore_v1beta1.FirestoreClient()
             >>>
-            >>> # TODO: Initialize ``document``:
+            >>> # TODO: Initialize `document`:
             >>> document = {}
             >>>
-            >>> # TODO: Initialize ``update_mask``:
+            >>> # TODO: Initialize `update_mask`:
             >>> update_mask = {}
             >>>
             >>> response = client.update_document(document, update_mask)
@@ -558,6 +558,7 @@ class FirestoreClient(object):
         Args:
             document (Union[dict, ~google.cloud.firestore_v1beta1.types.Document]): The updated document.
                 Creates the document if it does not already exist.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.Document`
             update_mask (Union[dict, ~google.cloud.firestore_v1beta1.types.DocumentMask]): The fields to update.
@@ -567,16 +568,19 @@ class FirestoreClient(object):
                 mask, they are left unchanged.
                 Fields referenced in the mask, but not present in the input document, are
                 deleted from the document on the server.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.DocumentMask`
             mask (Union[dict, ~google.cloud.firestore_v1beta1.types.DocumentMask]): The fields to return. If not set, returns all fields.
 
                 If the document has a field that is not present in this mask, that field
                 will not be returned in the response.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.DocumentMask`
             current_document (Union[dict, ~google.cloud.firestore_v1beta1.types.Precondition]): An optional precondition on the document.
                 The request will fail if this is set and not met by the target document.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.Precondition`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -641,6 +645,7 @@ class FirestoreClient(object):
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
             current_document (Union[dict, ~google.cloud.firestore_v1beta1.types.Precondition]): An optional precondition on the document.
                 The request will fail if this is set and not met by the target document.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.Precondition`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -700,7 +705,7 @@ class FirestoreClient(object):
             >>>
             >>> database = client.database_root_path('[PROJECT]', '[DATABASE]')
             >>>
-            >>> # TODO: Initialize ``documents``:
+            >>> # TODO: Initialize `documents`:
             >>> documents = []
             >>>
             >>> for element in client.batch_get_documents(database, documents):
@@ -712,12 +717,13 @@ class FirestoreClient(object):
                 ``projects/{project_id}/databases/{database_id}``.
             documents (list[str]): The names of the documents to retrieve. In the format:
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
-                The request will fail if any of the document is not a child resource of the
-                given ``database``. Duplicate names will be elided.
+                The request will fail if any of the document is not a child resource of
+                the given ``database``. Duplicate names will be elided.
             mask (Union[dict, ~google.cloud.firestore_v1beta1.types.DocumentMask]): The fields to return. If not set, returns all fields.
 
                 If a document has a field that is not present in this mask, that field will
                 not be returned in the response.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.DocumentMask`
             transaction (bytes): Reads documents in a transaction.
@@ -725,10 +731,12 @@ class FirestoreClient(object):
                 Defaults to a read-only transaction.
                 The new transaction ID will be returned as the first response in the
                 stream.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.TransactionOptions`
             read_time (Union[dict, ~google.cloud.firestore_v1beta1.types.Timestamp]): Reads documents as they were at the given time.
                 This may not be older than 60 seconds.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.Timestamp`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -804,6 +812,7 @@ class FirestoreClient(object):
                 ``projects/{project_id}/databases/{database_id}``.
             options_ (Union[dict, ~google.cloud.firestore_v1beta1.types.TransactionOptions]): The options for the transaction.
                 Defaults to a read-write transaction.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.TransactionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -861,7 +870,7 @@ class FirestoreClient(object):
             >>>
             >>> database = client.database_root_path('[PROJECT]', '[DATABASE]')
             >>>
-            >>> # TODO: Initialize ``writes``:
+            >>> # TODO: Initialize `writes`:
             >>> writes = []
             >>>
             >>> response = client.commit(database, writes)
@@ -872,6 +881,7 @@ class FirestoreClient(object):
             writes (list[Union[dict, ~google.cloud.firestore_v1beta1.types.Write]]): The writes to apply.
 
                 Always executed atomically and in order.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.Write`
             transaction (bytes): If set, applies all writes in this transaction, and commits it.
@@ -928,7 +938,7 @@ class FirestoreClient(object):
             >>>
             >>> database = client.database_root_path('[PROJECT]', '[DATABASE]')
             >>>
-            >>> # TODO: Initialize ``transaction``:
+            >>> # TODO: Initialize `transaction`:
             >>> transaction = b''
             >>>
             >>> client.rollback(database, transaction)
@@ -997,10 +1007,10 @@ class FirestoreClient(object):
             parent (str): The parent resource name. In the format:
                 ``projects/{project_id}/databases/{database_id}/documents`` or
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
-                For example:
-                ``projects/my-project/databases/my-database/documents`` or
+                For example: ``projects/my-project/databases/my-database/documents`` or
                 ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
             structured_query (Union[dict, ~google.cloud.firestore_v1beta1.types.StructuredQuery]): A structured query.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.StructuredQuery`
             transaction (bytes): Reads documents in a transaction.
@@ -1008,10 +1018,12 @@ class FirestoreClient(object):
                 Defaults to a read-only transaction.
                 The new transaction ID will be returned as the first response in the
                 stream.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.TransactionOptions`
             read_time (Union[dict, ~google.cloud.firestore_v1beta1.types.Timestamp]): Reads documents as they were at the given time.
                 This may not be older than 60 seconds.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1beta1.types.Timestamp`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1207,7 +1219,7 @@ class FirestoreClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_collection_ids(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_collection_ids(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
