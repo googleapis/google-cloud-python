@@ -7,7 +7,6 @@ config = {
                     "DEADLINE_EXCEEDED", "INTERNAL", "RESOURCE_EXHAUSTED",
                     "UNAVAILABLE"
                 ],
-                "http_get": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": []
             },
             "retry_params": {
