@@ -1298,9 +1298,28 @@ class TestModelKey:
 
 class TestBooleanProperty:
     @staticmethod
-    def test_constructor():
+    def test__validate():
+        prop = model.BooleanProperty(name="certify")
+        value = True
+        assert prop._validate(value) is value
+
+    @staticmethod
+    def test__validate_bad_value():
+        prop = model.BooleanProperty(name="certify")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.BooleanProperty(name="certify")
         with pytest.raises(NotImplementedError):
-            model.BooleanProperty()
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.BooleanProperty(name="certify")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestIntegerProperty:
