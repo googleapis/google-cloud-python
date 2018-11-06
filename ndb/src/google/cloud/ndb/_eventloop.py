@@ -17,10 +17,12 @@
 This should handle both asynchronous ``ndb`` objects and arbitrary callbacks.
 """
 import collections
+import threading
 import time
 
 __all__ = [
     "add_idle",
+    "contexts",
     "EventLoop",
     "get_event_loop",
     "queue_call",
@@ -257,6 +259,28 @@ class EventLoop:
         while True:
             if not self.run1():
                 break
+
+
+class _LocalContexts(threading.local):
+    """Maintain a thread local stack of event loops."""
+
+    def __init__(self):
+        self.stack = []
+
+    def push(self):
+        loop = EventLoop()
+        self.stack.append(loop)
+        return loop
+
+    def pop(self):
+        return self.stack.pop(-1)
+
+    def current(self):
+        if self.stack:
+            return self.stack[-1]
+
+
+contexts = _LocalContexts()
 
 
 def add_idle(*args, **kwargs):
