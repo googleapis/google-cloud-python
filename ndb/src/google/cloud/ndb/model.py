@@ -382,7 +382,7 @@ class Property(ModelAttribute):
     call :meth:`_store_value`.
 
     A :class:`Property` subclass that wants to implement a specific
-    transformation between user values and serialiazble values should
+    transformation between user values and serializable values should
     implement two methods, ``_to_base_type()`` and ``_from_base_type()``.
     These should **not** call their ``super()`` method; super calls are taken
     care of by :meth:`_call_to_base_type` and :meth:`_call_from_base_type`.
@@ -404,18 +404,18 @@ class Property(ModelAttribute):
     a strict value. This means that when setting the property value, lax values
     are accepted, while when getting the property value, only strict values
     will be returned. If no conversion is needed, ``_validate()`` may return
-    :data`None`. If the argument is outside the set of accepted lax values,
+    :data:`None`. If the argument is outside the set of accepted lax values,
     ``_validate()`` should raise an exception, preferably :exc:`TypeError` or
     :exc:`.BadValueError`.
 
-    Example/boilerplate:
+    Example / boilerplate:
 
     .. code-block:: python
 
         def _validate(self, value):
             # Lax user value to strict user value.
-            if not isinstance(value, <top type>):
-                raise TypeError(...)  # Or datastore_errors.BadValueError(...).
+            if not isinstance(value, TopType):
+                raise TypeError(value)  # Or BadValueError(...).
 
         def _to_base_type(self, value):
             # (Strict) user value to base value.
