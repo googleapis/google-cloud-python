@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud b7a23bd documentation</title>
+    <title>Changelog &#8212; google-cloud 3cea895 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,22 +39,60 @@
 <span id="changelog"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-bigquery/#history">PyPI History</a></p>
 <div class="section" id="">
-<span id="id1"></span><h2>1.6.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>1.7.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<p>11-05-2018 16:41 PST</p>
+<div class="section" id="implementation-changes">
+<span id="implementation-changes"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Add destination table properties to <code class="docutils literal notranslate"><span class="pre">LoadJobConfig</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6202">#6202</a>)</li>
+<li>Allow strings or references in <code class="docutils literal notranslate"><span class="pre">create_dataset</span></code> and <code class="docutils literal notranslate"><span class="pre">create_table</span></code> (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6199">#6199</a>)</li>
+<li>Fix swallowed error message (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6168">#6168</a>)</li>
+</ul>
+</div>
 <div class="section" id="new-features">
 <span id="new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Add <code class="docutils literal notranslate"><span class="pre">--params</span> <span class="pre">option</span></code> to <code class="docutils literal notranslate"><span class="pre">%%bigquery</span></code> magic (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6277">#6277</a>)</li>
+<li>Expose <code class="docutils literal notranslate"><span class="pre">to_api_repr</span></code> method for jobs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6176">#6176</a>)</li>
+<li>Allow string in addition to DatasetReference / TableReference in Client methods. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6164">#6164</a>)</li>
+<li>Add keyword arguments to job config constructors for setting properties (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6397">#6397</a>)</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Update README service links in quickstart guides. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6322">#6322</a>)</li>
+<li>Move usage guides to their own docs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6238">#6238</a>)</li>
+<li>Normalize use of support level badges (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6159">#6159</a>)</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Deprecation cleanups (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6304">#6304</a>)</li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">_get_sub_prop</span></code> helper so missing load stats don’t raise. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6269">#6269</a>)</li>
+<li>Use new Nox (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6175">#6175</a>)</li>
+<li>Harden snippets against transient GCS errors. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6184">#6184</a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="">
+<span id="id2"></span><h2>1.6.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<div class="section" id="new-features">
+<span id="id3"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add support for <code class="docutils literal notranslate"><span class="pre">GEOGRAPHY</span></code> type (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6147">#6147</a>)</li>
 <li>Add default QueryJobConfig to Client (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6088">#6088</a>)</li>
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id4"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Remove unused “append” samples (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6100">#6100</a>)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id5"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Address dataset leaks, conflicts in systests (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6099">#6099</a>)</li>
 <li>Harden bucket teardown against <code class="docutils literal notranslate"><span class="pre">429</span> <span class="pre">Too</span> <span class="pre">Many</span> <span class="pre">Requests</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6101">#6101</a>)</li>
@@ -62,9 +100,9 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id2"></span><h2>1.5.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id6"></span><h2>1.5.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="implementation-changes">
-<span id="implementation-changes"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id7"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Retry ‘502 Bad Gateway’ errors by default. (#5930)</li>
 <li>Avoid pulling entire result set into memory when constructing dataframe. (#5870)</li>
@@ -73,14 +111,14 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id3"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id8"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Prepare documentation for repo split (#5955)</li>
 <li>Fix leakage of bigquery/spanner sections into sidebar menu. (#5986)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="id4"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id9"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Test pandas support under Python 3.7. (#5857)</li>
 <li>Nox: use inplace installs (#5865)</li>
@@ -89,15 +127,15 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id5"></span><h2>1.5.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id10"></span><h2>1.5.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="implementation-changes">
-<span id="id6"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id11"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Make ‘Table.location’ read-only. (#5687)</li>
 </ul>
 </div>
 <div class="section" id="new-features">
-<span id="id7"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="id12"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add ‘clustering_fields’ properties. (#5630)</li>
 <li>Add support for job labels (#5654)</li>
@@ -108,13 +146,13 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id8"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id13"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Fix typo in CopyJob sources docstring (#5690)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="id9"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id14"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add/refactor snippets for managing BigQuery jobs (#5631)</li>
 <li>Reenable systests for ‘dataset.update’/’table.update’. (#5732)</li>
@@ -122,16 +160,16 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id10"></span><h2>1.4.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id15"></span><h2>1.4.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="implementation-changes">
-<span id="id11"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id16"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add ‘internalError’ to retryable error reasons. (#5599)</li>
 <li>Don’t raise exception if viewing CREATE VIEW DDL results (#5602)</li>
 </ul>
 </div>
 <div class="section" id="new-features">
-<span id="id12"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="id17"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add Orc source format support and samples (#5500)</li>
 <li>Move ‘DEFAULT_RETRY’ (w/ its predicate) to a new public ‘retry’ module. (#5552)</li>
@@ -139,7 +177,7 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id13"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id18"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add load_table_from_dataframe() to usage docs and changelog and dedents snippets in usage page (#5501)</li>
 <li>Add samples for query external data sources (GCS &amp; Sheets) (#5491)</li>
@@ -148,7 +186,7 @@
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="id14"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id19"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add missing explict coverage for ‘_helpers’ (#5550)</li>
 <li>Skip update_table and update_dataset tests until etag issue is resolved. (#5590)</li>
@@ -156,9 +194,9 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id15"></span><h2>1.3.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id20"></span><h2>1.3.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="new-features">
-<span id="id16"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="id21"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>NUMERIC type support (#5331)</li>
 <li>Add timeline and top-level slot-millis to query statistics. (#5312)</li>
@@ -167,14 +205,14 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id17"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id22"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Use autosummary to split up API reference docs (#5340)</li>
 <li>Fix typo in Client docstrings (#5342)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="id18"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id23"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Prune systests identified as reduntant to snippets. (#5365)</li>
 <li>Modify system tests to use prerelease versions of grpcio (#5304)</li>
@@ -183,16 +221,16 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id19"></span><h2>1.2.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id24"></span><h2>1.2.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="implementation-changes">
-<span id="id20"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id25"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Switch <code class="docutils literal notranslate"><span class="pre">list_partitions</span></code> helper to a direct metatable read (#5273)</li>
 <li>Fix typo in <code class="docutils literal notranslate"><span class="pre">Encoding.ISO_8859_1</span></code> enum value (#5211)</li>
 </ul>
 </div>
 <div class="section" id="new-features">
-<span id="id21"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="id26"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add UnknownJob type for redacted jobs. (#5281)</li>
 <li>Add project parameter to <code class="docutils literal notranslate"><span class="pre">list_datasets</span></code> and <code class="docutils literal notranslate"><span class="pre">list_jobs</span></code> (#5217)</li>
@@ -201,35 +239,35 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id22"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id27"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Standardize docstrings for constants (#5289)</li>
 <li>Fix docstring / impl of <code class="docutils literal notranslate"><span class="pre">ExtractJob.destination_uri_file_counts</span></code>. (#5245)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="id23"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id28"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add testing support for Python 3.7; remove testing support for Python 3.4. (#5295)</li>
 </ul>
 </div>
 </div>
 <div class="section" id="">
-<span id="id24"></span><h2>1.1.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id29"></span><h2>1.1.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="new-features">
-<span id="id25"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="id30"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add <code class="docutils literal notranslate"><span class="pre">client.get_service_account_email</span></code> (#5203)</li>
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id26"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id31"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Update samples and standardize region tags (#5195)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="id27"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id32"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Fix trove classifier to be Production/Stable</li>
 <li>Don’t suppress ‘dots’ output on test (#5202)</li>
@@ -237,16 +275,16 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id28"></span><h2>1.0.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id33"></span><h2>1.0.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="implementation-changes">
-<span id="id29"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id34"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Remove deprecated Client methods (#5182)</li>
 </ul>
 </div>
 </div>
 <div class="section" id="">
-<span id="id30"></span><h2>0.32.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id35"></span><h2>0.32.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="warning-interface-changes">
 <span id="warning-interface-changes"></span><h3>:warning: Interface changes<a class="headerlink" href="#warning-interface-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -261,13 +299,13 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id31"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id36"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add job string constant parameters in init and snippets documentation (#4987)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="id32"></span><h3>Internal / Testing changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id37"></span><h3>Internal / Testing changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Specify IPython version 5.5 when running Python 2.7 tests (#5145)</li>
 <li>Move all Dataset property conversion logic into properties (#5130)</li>
@@ -288,15 +326,15 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id33"></span><h2>0.31.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id38"></span><h2>0.31.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="interface-additions">
-<span id="id34"></span><h3>Interface additions<a class="headerlink" href="#interface-additions" title="Permalink to this headline">#</a></h3>
+<span id="id39"></span><h3>Interface additions<a class="headerlink" href="#interface-additions" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add support for <code class="docutils literal notranslate"><span class="pre">EncryptionConfiguration</span></code> (#4845)</li>
 </ul>
 </div>
 <div class="section" id="implementation-changes">
-<span id="id35"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<span id="id40"></span><h3>Implementation changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Allow listing/getting jobs even when there is an “invalid” job. (#4786)</li>
 </ul>
@@ -308,7 +346,7 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id36"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id41"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Update format in <code class="docutils literal notranslate"><span class="pre">Table.full_table_id</span></code> and <code class="docutils literal notranslate"><span class="pre">TableListItem.full_table_id</span></code> docstrings. (#4906)</li>
 </ul>
@@ -325,7 +363,7 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id37"></span><h2>0.30.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id42"></span><h2>0.30.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <p>This is the release candidate for v1.0.0.</p>
 <div class="section" id="interface-changes-additions">
 <span id="interface-changes-additions"></span><h3>Interface changes / additions<a class="headerlink" href="#interface-changes-additions" title="Permalink to this headline">#</a></h3>
@@ -341,16 +379,16 @@
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="id38"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id43"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Minor documentation and typo fixes. (#4782, #4718, #4784, #4835, #4836)</li>
 </ul>
 </div>
 </div>
 <div class="section" id="">
-<span id="id39"></span><h2>0.29.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id44"></span><h2>0.29.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="interface-changes-additions">
-<span id="id40"></span><h3>Interface changes / additions<a class="headerlink" href="#interface-changes-additions" title="Permalink to this headline">#</a></h3>
+<span id="id45"></span><h3>Interface changes / additions<a class="headerlink" href="#interface-changes-additions" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add <code class="docutils literal notranslate"><span class="pre">to_dataframe()</span></code> method to row iterators. When Pandas is installed this
 method returns a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> containing the query’s or table’s rows.
@@ -389,7 +427,7 @@ only returns a subset of properties of a dataset when listing.
 </div>
 </div>
 <div class="section" id="">
-<span id="id41"></span><h2>0.28.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id46"></span><h2>0.28.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <p><strong>0.28.0 significantly changes the interface for this package.</strong> For examples
 of the differences between 0.28.0 and previous versions, see
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/python-client-migration">Migrating to the BigQuery Python client library 0.28</a>.
@@ -413,7 +451,7 @@ client class.</li>
 </ul>
 </div>
 <div class="section" id="interface-changes-additions">
-<span id="id42"></span><h3>Interface changes / additions<a class="headerlink" href="#interface-changes-additions" title="Permalink to this headline">#</a></h3>
+<span id="id47"></span><h3>Interface changes / additions<a class="headerlink" href="#interface-changes-additions" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Support external table configuration (#4182) in query jobs (#4191) and
 tables (#4193).</li>
@@ -439,7 +477,7 @@ index like a dictionary, or attribute access like an object. (#4149)</li>
 </ul>
 </div>
 <div class="section" id="interface-changes-breaking-changes">
-<span id="id43"></span><h3>Interface changes / breaking changes<a class="headerlink" href="#interface-changes-breaking-changes" title="Permalink to this headline">#</a></h3>
+<span id="id48"></span><h3>Interface changes / breaking changes<a class="headerlink" href="#interface-changes-breaking-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Remove <code class="docutils literal notranslate"><span class="pre">client.run_async_query()</span></code>, use <code class="docutils literal notranslate"><span class="pre">client.query()</span></code> instead. (#4130)</li>
 <li>Remove <code class="docutils literal notranslate"><span class="pre">client.run_sync_query()</span></code>, use <code class="docutils literal notranslate"><span class="pre">client.query_rows()</span></code> instead. (#4065, #4248)</li>
@@ -502,7 +540,7 @@ Method starts the extract job immediately. (#3991, #4177)</li>
 </div>
 </div>
 <div class="section" id="dependencies">
-<span id="id44"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<span id="id49"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Updating to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">~=</span> <span class="pre">0.28</span></code>, in particular, the
 <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> package has been moved out of <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span></code>. (#4221)</li>
@@ -511,7 +549,7 @@ Method starts the extract job immediately. (#3991, #4177)</li>
 </div>
 </div>
 <div class="section" id="">
-<span id="id45"></span><h2>0.27.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id50"></span><h2>0.27.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li>Remove client-side enum validation. (#3735)</li>
 <li>Add <code class="docutils literal notranslate"><span class="pre">Table.row_from_mapping</span></code> helper. (#3425)</li>
@@ -529,7 +567,7 @@ Method starts the extract job immediately. (#3991, #4177)</li>
 <p>PyPI: https://pypi.org/project/google-cloud-bigquery/0.27.0/</p>
 </div>
 <div class="section" id="">
-<span id="id46"></span><h2>0.26.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id51"></span><h2>0.26.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="notable-implementation-changes">
 <span id="notable-implementation-changes"></span><h3>Notable implementation changes<a class="headerlink" href="#notable-implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -539,7 +577,7 @@ Method starts the extract job immediately. (#3991, #4177)</li>
 </ul>
 </div>
 <div class="section" id="interface-changes-additions">
-<span id="id47"></span><h3>Interface changes / additions<a class="headerlink" href="#interface-changes-additions" title="Permalink to this headline">#</a></h3>
+<span id="id52"></span><h3>Interface changes / additions<a class="headerlink" href="#interface-changes-additions" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Adding <code class="docutils literal notranslate"><span class="pre">autodetect</span></code> property on <code class="docutils literal notranslate"><span class="pre">LoadTableFromStorageJob</span></code> to enable schema
 autodetection. (#3648)</li>
@@ -557,7 +595,7 @@ with legacy or standard SQL. (#3514)</li>
 </ul>
 </div>
 <div class="section" id="interface-changes-breaking-changes">
-<span id="id48"></span><h3>Interface changes / breaking changes<a class="headerlink" href="#interface-changes-breaking-changes" title="Permalink to this headline">#</a></h3>
+<span id="id53"></span><h3>Interface changes / breaking changes<a class="headerlink" href="#interface-changes-breaking-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Removing <code class="docutils literal notranslate"><span class="pre">results()</span></code> method from the <code class="docutils literal notranslate"><span class="pre">QueryJob</span></code> class. Use
 <code class="docutils literal notranslate"><span class="pre">query_results()</span></code> instead. (#3661)</li>
@@ -566,7 +604,7 @@ in sets. (#3601)</li>
 </ul>
 </div>
 <div class="section" id="dependencies">
-<span id="id49"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<span id="id54"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Updating to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">~=</span> <span class="pre">0.26</span></code>, in particular, the underlying HTTP
 transport switched from <code class="docutils literal notranslate"><span class="pre">httplib2</span></code> to <code class="docutils literal notranslate"><span class="pre">requests</span></code> (#3654, #3674)</li>
