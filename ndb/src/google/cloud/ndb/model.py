@@ -1713,6 +1713,10 @@ class BlobProperty(Property):
         Unlike most property types, a :class:`BlobProperty` is **not**
         indexed by default.
 
+    .. automethod:: _to_base_type
+    .. automethod:: _from_base_type
+    .. automethod:: _validate
+
     Args:
         name (str): The name of the property.
         compressed (bool): Indicates if the value should be compressed (via
@@ -1725,8 +1729,8 @@ class BlobProperty(Property):
         default (bytes): The default value for this property.
         choices (Iterable[bytes]): A container of allowed values for this
             property.
-        validator (Callable[[Property, Any], bool]): A validator to be used
-            to check values.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
         verbose_name (str): A longer, user-friendly name for this property.
         write_empty_list (bool): Indicates if an empty list should be written
             to the datastore.
