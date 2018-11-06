@@ -10,27 +10,27 @@
 
 ### Implementation Changes
 
-- Add destination table properties to 'LoadJobConfig'. ([#6202](https://github.com/googleapis/google-cloud-python/pull/6202))
-- Allow strings or references in create_dataset and create_table ([#6199](https://github.com/googleapis/google-cloud-python/pull/6199))
+- Add destination table properties to `LoadJobConfig`. ([#6202](https://github.com/googleapis/google-cloud-python/pull/6202))
+- Allow strings or references in `create_dataset` and `create_table` ([#6199](https://github.com/googleapis/google-cloud-python/pull/6199))
 - Fix swallowed error message ([#6168](https://github.com/googleapis/google-cloud-python/pull/6168))
 
 ### New Features
 
-- Add --params option to %%bigquery magic ([#6277](https://github.com/googleapis/google-cloud-python/pull/6277))
-- Expose 'to_api_repr' method for jobs. ([#6176](https://github.com/googleapis/google-cloud-python/pull/6176))
-- Allow string in addition to DatasetReference / TableReference in Clie… ([#6164](https://github.com/googleapis/google-cloud-python/pull/6164))
+- Add `--params option` to `%%bigquery` magic ([#6277](https://github.com/googleapis/google-cloud-python/pull/6277))
+- Expose `to_api_repr` method for jobs. ([#6176](https://github.com/googleapis/google-cloud-python/pull/6176))
+- Allow string in addition to DatasetReference / TableReference in Client methods. ([#6164](https://github.com/googleapis/google-cloud-python/pull/6164))
 - Add keyword arguments to job config constructors for setting properties ([#6397](https://github.com/googleapis/google-cloud-python/pull/6397))
 
 ### Documentation
 
-- Fix [#6321](https://github.com/googleapis/google-cloud-python/pull/6321) Update README service links in quickstart guides. ([#6322](https://github.com/googleapis/google-cloud-python/pull/6322))
+- Update README service links in quickstart guides. ([#6322](https://github.com/googleapis/google-cloud-python/pull/6322))
 - Move usage guides to their own docs. ([#6238](https://github.com/googleapis/google-cloud-python/pull/6238))
 - Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
 
 ### Internal / Testing Changes
 
 - Deprecation cleanups ([#6304](https://github.com/googleapis/google-cloud-python/pull/6304))
-- Use _get_sub_prop helper so missing load stats don't raise. ([#6269](https://github.com/googleapis/google-cloud-python/pull/6269))
+- Use `_get_sub_prop` helper so missing load stats don't raise. ([#6269](https://github.com/googleapis/google-cloud-python/pull/6269))
 - Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
 - Harden snippets against transient GCS errors. ([#6184](https://github.com/googleapis/google-cloud-python/pull/6184))
 
