@@ -90,6 +90,11 @@ The primary differences come from:
   implementation is sufficient. The original implementation wrapped a byte
   string in a `google.appengine.api.datastore_types.ByteString` instance, but
   that type was mostly an alias for `str` in Python 2
+- `BlobProperty._validate` used to special case for "too long when indexed"
+  if `isinstance(self, TextProperty)`. We have removed this check since
+  the implementation does the same check in `TextProperty._validate`.
+- The `BlobProperty` constructor only sets `_compressed` if explicitly
+  passed. The original set always (and used `False` as default)
 
 ## Comments
 

@@ -1412,8 +1412,8 @@ class TestBlobProperty:
     @staticmethod
     def test_constructor_defaults():
         prop = model.BlobProperty()
-        # Check that only one of the constructor defaults was used.
-        assert prop.__dict__ == {"_compressed": False}
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {}
 
     @staticmethod
     def test_constructor_explicit():

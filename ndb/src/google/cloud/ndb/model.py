@@ -1550,7 +1550,7 @@ class BlobProperty(Property):
     def __init__(
         self,
         name=None,
-        compressed=False,
+        compressed=None,
         *,
         indexed=None,
         repeated=None,
@@ -1572,8 +1572,9 @@ class BlobProperty(Property):
             verbose_name=verbose_name,
             write_empty_list=write_empty_list,
         )
-        self._compressed = compressed
-        if compressed and self._indexed:
+        if compressed is not None:
+            self._compressed = compressed
+        if self._compressed and self._indexed:
             raise NotImplementedError(
                 "BlobProperty {} cannot be compressed and "
                 "indexed at the same time.".format(self._name)
@@ -1616,11 +1617,7 @@ class BlobProperty(Property):
                 "Expected bytes, got {!r}".format(value)
             )
 
-        if (
-            self._indexed
-            and not isinstance(self, TextProperty)
-            and len(value) > _MAX_STRING_LENGTH
-        ):
+        if self._indexed and len(value) > _MAX_STRING_LENGTH:
             raise exceptions.BadValueError(
                 "Indexed value {} must be at most {:d} "
                 "bytes".format(self._name, _MAX_STRING_LENGTH)
