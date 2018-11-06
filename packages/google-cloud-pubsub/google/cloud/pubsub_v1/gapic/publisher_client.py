@@ -168,9 +168,10 @@ class PublisherClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -195,8 +196,8 @@ class PublisherClient(object):
                      timeout=google.api_core.gapic_v1.method.DEFAULT,
                      metadata=None):
         """
-        Creates the given topic with the given name. See the
-        <a href=\"/pubsub/docs/admin#resource_names\"> resource name rules</a>.
+        Creates the given topic with the given name. See the resource name
+        rules.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -209,18 +210,19 @@ class PublisherClient(object):
 
         Args:
             name (str): The name of the topic. It must have the format
-                ``\"projects/{project}/topics/{topic}\"``. ``{topic}`` must start with a letter,
-                and contain only letters (``[A-Za-z]``), numbers (``[0-9]``), dashes (``-``),
-                underscores (``_``), periods (``.``), tildes (``~``), plus (``+``) or percent
-                signs (``%``). It must be between 3 and 255 characters in length, and it
-                must not start with ``\"goog\"``.
-            labels (dict[str -> str]): See <a href=\"/pubsub/docs/labels\"> Creating and managing labels</a>.
+                `"projects/{project}/topics/{topic}"`. `{topic}` must start with a letter,
+                and contain only letters (`[A-Za-z]`), numbers (`[0-9]`), dashes (`-`),
+                underscores (`_`), periods (`.`), tildes (`~`), plus (`+`) or percent
+                signs (`%`). It must be between 3 and 255 characters in length, and it
+                must not start with `"goog"`.
+            labels (dict[str -> str]): See <a href="/pubsub/docs/labels"> Creating and managing labels</a>.
             message_storage_policy (Union[dict, ~google.cloud.pubsub_v1.types.MessageStoragePolicy]): Policy constraining how messages published to the topic may be stored. It
                 is determined when the topic is created based on the policy configured at
                 the project level. It must not be set by the caller in the request to
                 CreateTopic or to UpdateTopic. This field will be populated in the
                 responses for GetTopic, CreateTopic, and UpdateTopic: if not present in the
                 response, then no constraints are in effect.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.MessageStoragePolicy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -276,23 +278,26 @@ class PublisherClient(object):
             >>>
             >>> client = pubsub_v1.PublisherClient()
             >>>
-            >>> # TODO: Initialize ``topic``:
+            >>> # TODO: Initialize `topic`:
             >>> topic = {}
             >>>
-            >>> # TODO: Initialize ``update_mask``:
+            >>> # TODO: Initialize `update_mask`:
             >>> update_mask = {}
             >>>
             >>> response = client.update_topic(topic, update_mask)
 
         Args:
             topic (Union[dict, ~google.cloud.pubsub_v1.types.Topic]): The updated topic object.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Topic`
-            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided topic to update. Must be specified
-                and non-empty. Note that if ``update_mask`` contains
-                \"message_storage_policy\" then the new value will be determined based on the
-                policy configured at the project or organization level. The
-                ``message_storage_policy`` must not be set in the ``topic`` provided above.
+            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided topic to update. Must be
+                specified and non-empty. Note that if ``update_mask`` contains
+                "message\_storage\_policy" then the new value will be determined based
+                on the policy configured at the project or organization level. The
+                ``message_storage_policy`` must not be set in the ``topic`` provided
+                above.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -339,8 +344,8 @@ class PublisherClient(object):
                 timeout=google.api_core.gapic_v1.method.DEFAULT,
                 metadata=None):
         """
-        Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the topic
-        does not exist.
+        Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the
+        topic does not exist.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -355,9 +360,10 @@ class PublisherClient(object):
             >>> response = client.publish(topic, messages)
 
         Args:
-            topic (str): The messages in the request will be published on this topic.
-                Format is ``projects/{project}/topics/{topic}``.
+            topic (str): The messages in the request will be published on this topic. Format is
+                ``projects/{project}/topics/{topic}``.
             messages (list[Union[dict, ~google.cloud.pubsub_v1.types.PubsubMessage]]): The messages to publish.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.PubsubMessage`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -414,8 +420,8 @@ class PublisherClient(object):
             >>> response = client.get_topic(topic)
 
         Args:
-            topic (str): The name of the topic to get.
-                Format is ``projects/{project}/topics/{topic}``.
+            topic (str): The name of the topic to get. Format is
+                ``projects/{project}/topics/{topic}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -474,14 +480,14 @@ class PublisherClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_topics(project, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_topics(project).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            project (str): The name of the project in which to list topics.
-                Format is ``projects/{project-id}``.
+            project (str): The name of the project in which to list topics. Format is
+                ``projects/{project-id}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -563,14 +569,14 @@ class PublisherClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_topic_subscriptions(topic, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_topic_subscriptions(topic).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            topic (str): The name of the topic that subscriptions are attached to.
-                Format is ``projects/{project}/topics/{topic}``.
+            topic (str): The name of the topic that subscriptions are attached to. Format is
+                ``projects/{project}/topics/{topic}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -634,11 +640,12 @@ class PublisherClient(object):
                      timeout=google.api_core.gapic_v1.method.DEFAULT,
                      metadata=None):
         """
-        Deletes the topic with the given name. Returns ``NOT_FOUND`` if the topic
-        does not exist. After a topic is deleted, a new topic may be created with
-        the same name; this is an entirely new topic with none of the old
-        configuration or subscriptions. Existing subscriptions to this topic are
-        not deleted, but their ``topic`` field is set to ``_deleted-topic_``.
+        Deletes the topic with the given name. Returns ``NOT_FOUND`` if the
+        topic does not exist. After a topic is deleted, a new topic may be
+        created with the same name; this is an entirely new topic with none of
+        the old configuration or subscriptions. Existing subscriptions to this
+        topic are not deleted, but their ``topic`` field is set to
+        ``_deleted-topic_``.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -650,8 +657,8 @@ class PublisherClient(object):
             >>> client.delete_topic(topic)
 
         Args:
-            topic (str): Name of the topic to delete.
-                Format is ``projects/{project}/topics/{topic}``.
+            topic (str): Name of the topic to delete. Format is
+                ``projects/{project}/topics/{topic}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -700,7 +707,7 @@ class PublisherClient(object):
             >>>
             >>> resource = client.topic_path('[PROJECT]', '[TOPIC]')
             >>>
-            >>> # TODO: Initialize ``policy``:
+            >>> # TODO: Initialize `policy`:
             >>> policy = {}
             >>>
             >>> response = client.set_iam_policy(resource, policy)
@@ -709,10 +716,11 @@ class PublisherClient(object):
             resource (str): REQUIRED: The resource for which the policy is being specified.
                 ``resource`` is usually specified as a path. For example, a Project
                 resource is specified as ``projects/{project}``.
-            policy (Union[dict, ~google.cloud.pubsub_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The size of
-                the policy is limited to a few 10s of KB. An empty policy is a
+            policy (Union[dict, ~google.cloud.pubsub_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
+                size of the policy is limited to a few 10s of KB. An empty policy is a
                 valid policy but certain Cloud Platform services (such as Projects)
                 might reject them.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -816,9 +824,9 @@ class PublisherClient(object):
                              timeout=google.api_core.gapic_v1.method.DEFAULT,
                              metadata=None):
         """
-        Returns permissions that a caller has on the specified resource.
-        If the resource does not exist, this will return an empty set of
-        permissions, not a NOT_FOUND error.
+        Returns permissions that a caller has on the specified resource. If the
+        resource does not exist, this will return an empty set of permissions,
+        not a NOT\_FOUND error.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -827,7 +835,7 @@ class PublisherClient(object):
             >>>
             >>> resource = client.topic_path('[PROJECT]', '[TOPIC]')
             >>>
-            >>> # TODO: Initialize ``permissions``:
+            >>> # TODO: Initialize `permissions`:
             >>> permissions = []
             >>>
             >>> response = client.test_iam_permissions(resource, permissions)
@@ -838,8 +846,8 @@ class PublisherClient(object):
                 resource is specified as ``projects/{project}``.
             permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
                 wildcards (such as '*' or 'storage.*') are not allowed. For more
-                information see
-                `IAM Overview <https://cloud.google.com/iam/docs/overview#permissions>`_.
+                information see `IAM
+                Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.

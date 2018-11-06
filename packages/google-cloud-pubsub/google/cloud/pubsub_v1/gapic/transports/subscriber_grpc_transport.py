@@ -100,17 +100,16 @@ class SubscriberGrpcTransport(object):
     def create_subscription(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Creates a subscription to a given topic. See the
-        <a href=\"/pubsub/docs/admin#resource_names\"> resource name rules</a>.
-        If the subscription already exists, returns ``ALREADY_EXISTS``.
-        If the corresponding topic doesn't exist, returns ``NOT_FOUND``.
+        Creates a subscription to a given topic. See the resource name rules. If
+        the subscription already exists, returns ``ALREADY_EXISTS``. If the
+        corresponding topic doesn't exist, returns ``NOT_FOUND``.
 
-        If the name is not provided in the request, the server will assign a random
-        name for this subscription on the same project as the topic, conforming
-        to the
-        `resource name format <https://cloud.google.com/pubsub/docs/overview#names>`_.
-        The generated name is populated in the returned Subscription object.
-        Note that for REST API requests, you must specify a name in the request.
+        If the name is not provided in the request, the server will assign a
+        random name for this subscription on the same project as the topic,
+        conforming to the `resource name
+        format <https://cloud.google.com/pubsub/docs/overview#names>`__. The
+        generated name is populated in the returned Subscription object. Note
+        that for REST API requests, you must specify a name in the request.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -163,11 +162,12 @@ class SubscriberGrpcTransport(object):
     def delete_subscription(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Deletes an existing subscription. All messages retained in the subscription
-        are immediately dropped. Calls to ``Pull`` after deletion will return
-        ``NOT_FOUND``. After a subscription is deleted, a new one may be created with
-        the same name, but the new one has no association with the old
-        subscription or its topic unless the same topic is specified.
+        Deletes an existing subscription. All messages retained in the
+        subscription are immediately dropped. Calls to ``Pull`` after deletion
+        will return ``NOT_FOUND``. After a subscription is deleted, a new one
+        may be created with the same name, but the new one has no association
+        with the old subscription or its topic unless the same topic is
+        specified.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -198,11 +198,11 @@ class SubscriberGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Acknowledges the messages associated with the ``ack_ids`` in the
-        ``AcknowledgeRequest``. The Pub/Sub system can remove the relevant messages
-        from the subscription.
+        ``AcknowledgeRequest``. The Pub/Sub system can remove the relevant
+        messages from the subscription.
 
-        Acknowledging a message whose ack deadline has expired may succeed,
-        but such a message may be redelivered later. Acknowledging a message more
+        Acknowledging a message whose ack deadline has expired may succeed, but
+        such a message may be redelivered later. Acknowledging a message more
         than once will not result in an error.
 
         Returns:
@@ -232,12 +232,12 @@ class SubscriberGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Establishes a stream with the server, which sends messages down to the
-        client. The client streams acknowledgements and ack deadline modifications
-        back to the server. The server will close the stream and return the status
-        on any error. The server may close the stream with status ``UNAVAILABLE`` to
-        reassign server-side resources, in which case, the client should
-        re-establish the stream. Flow control can be achieved by configuring the
-        underlying RPC channel.
+        client. The client streams acknowledgements and ack deadline
+        modifications back to the server. The server will close the stream and
+        return the status on any error. The server may close the stream with
+        status ``UNAVAILABLE`` to reassign server-side resources, in which case,
+        the client should re-establish the stream. Flow control can be achieved
+        by configuring the underlying RPC channel.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -252,10 +252,11 @@ class SubscriberGrpcTransport(object):
 
         Modifies the ``PushConfig`` for a specified subscription.
 
-        This may be used to change a push subscription to a pull one (signified by
-        an empty ``PushConfig``) or vice versa, or change the endpoint URL and other
-        attributes of a push subscription. Messages will accumulate for delivery
-        continuously through the call regardless of changes to the ``PushConfig``.
+        This may be used to change a push subscription to a pull one (signified
+        by an empty ``PushConfig``) or vice versa, or change the endpoint URL
+        and other attributes of a push subscription. Messages will accumulate
+        for delivery continuously through the call regardless of changes to the
+        ``PushConfig``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -284,21 +285,20 @@ class SubscriberGrpcTransport(object):
     def create_snapshot(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Creates a snapshot from the requested subscription.<br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
-        changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.<br><br>
-        If the snapshot already exists, returns ``ALREADY_EXISTS``.
-        If the requested subscription doesn't exist, returns ``NOT_FOUND``.
-        If the backlog in the subscription is too old -- and the resulting snapshot
-        would expire in less than 1 hour -- then ``FAILED_PRECONDITION`` is returned.
-        See also the ``Snapshot.expire_time`` field. If the name is not provided in
-        the request, the server will assign a random
-        name for this snapshot on the same project as the subscription, conforming
-        to the `resource name format <https://cloud.google.com/pubsub/docs/overview#names>`_.
-        The generated
-        name is populated in the returned Snapshot object. Note that for REST API
-        requests, you must specify a name in the request.
+        Creates a snapshot from the requested subscription. ALPHA: This feature
+        is part of an alpha release. This API might be changed in
+        backward-incompatible ways and is not recommended for production use. It
+        is not subject to any SLA or deprecation policy. If the snapshot already
+        exists, returns ``ALREADY_EXISTS``. If the requested subscription
+        doesn't exist, returns ``NOT_FOUND``. If the backlog in the subscription
+        is too old -- and the resulting snapshot would expire in less than 1
+        hour -- then ``FAILED_PRECONDITION`` is returned. See also the
+        ``Snapshot.expire_time`` field. If the name is not provided in the
+        request, the server will assign a random name for this snapshot on the
+        same project as the subscription, conforming to the `resource name
+        format <https://cloud.google.com/pubsub/docs/overview#names>`__. The
+        generated name is populated in the returned Snapshot object. Note that
+        for REST API requests, you must specify a name in the request.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -394,9 +394,9 @@ class SubscriberGrpcTransport(object):
     def test_iam_permissions(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Returns permissions that a caller has on the specified resource.
-        If the resource does not exist, this will return an empty set of
-        permissions, not a NOT_FOUND error.
+        Returns permissions that a caller has on the specified resource. If the
+        resource does not exist, this will return an empty set of permissions,
+        not a NOT\_FOUND error.
 
         Returns:
             Callable: A callable which accepts the appropriate
