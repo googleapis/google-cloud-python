@@ -135,9 +135,10 @@ class TextToSpeechClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -160,8 +161,7 @@ class TextToSpeechClient(object):
                     timeout=google.api_core.gapic_v1.method.DEFAULT,
                     metadata=None):
         """
-        Returns a list of ``Voice``
-        supported for synthesis.
+        Returns a list of ``Voice`` supported for synthesis.
 
         Example:
             >>> from google.cloud import texttospeech_v1beta1
@@ -172,13 +172,13 @@ class TextToSpeechClient(object):
 
         Args:
             language_code (str): Optional (but recommended)
-                `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`_ language tag. If
-                specified, the ListVoices call will only return voices that can be used to
-                synthesize this language_code. E.g. when specifying \"en-NZ\", you will get
-                supported "en-\*" voices; when specifying \"no\", you will get supported
-                "no-\*" (Norwegian) and "nb-\*" (Norwegian Bokmal) voices; specifying \"zh\"
-                will also get supported "cmn-\*" voices; specifying \"zh-hk\" will also get
-                supported "yue-\*" voices.
+                `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__ language tag.
+                If specified, the ListVoices call will only return voices that can be
+                used to synthesize this language\_code. E.g. when specifying "en-NZ",
+                you will get supported "en-*" voices; when specifying "no", you will get
+                supported "no-*" (Norwegian) and "nb-*" (Norwegian Bokmal) voices;
+                specifying "zh" will also get supported "cmn-*" voices; specifying
+                "zh-hk" will also get supported "yue-\*" voices.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -229,25 +229,28 @@ class TextToSpeechClient(object):
             >>>
             >>> client = texttospeech_v1beta1.TextToSpeechClient()
             >>>
-            >>> # TODO: Initialize ``input_``:
+            >>> # TODO: Initialize `input_`:
             >>> input_ = {}
             >>>
-            >>> # TODO: Initialize ``voice``:
+            >>> # TODO: Initialize `voice`:
             >>> voice = {}
             >>>
-            >>> # TODO: Initialize ``audio_config``:
+            >>> # TODO: Initialize `audio_config`:
             >>> audio_config = {}
             >>>
             >>> response = client.synthesize_speech(input_, voice, audio_config)
 
         Args:
             input_ (Union[dict, ~google.cloud.texttospeech_v1beta1.types.SynthesisInput]): Required. The Synthesizer requires either plain text or SSML as input.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.texttospeech_v1beta1.types.SynthesisInput`
             voice (Union[dict, ~google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams]): Required. The desired voice of the synthesized audio.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams`
             audio_config (Union[dict, ~google.cloud.texttospeech_v1beta1.types.AudioConfig]): Required. The configuration of the synthesized audio.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.texttospeech_v1beta1.types.AudioConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
