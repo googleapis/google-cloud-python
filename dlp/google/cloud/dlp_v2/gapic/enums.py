@@ -186,8 +186,8 @@ class StoredInfoTypeState(enum.IntEnum):
       STORED_INFO_TYPE_STATE_UNSPECIFIED (int)
       PENDING (int): StoredInfoType version is being created.
       READY (int): StoredInfoType version is ready for use.
-      FAILED (int): StoredInfoType creation failed. All relevant error messages are returned in
-      the ``StoredInfoTypeVersion`` message.
+      FAILED (int): StoredInfoType creation failed. All relevant error messages are returned
+      in the ``StoredInfoTypeVersion`` message.
       INVALID (int): StoredInfoType is no longer valid because artifacts stored in
       user-controlled storage were modified. To fix an invalid StoredInfoType,
       use the ``UpdateStoredInfoType`` method to create a new version.
@@ -214,15 +214,15 @@ class CustomInfoType(object):
 class CloudStorageOptions(object):
     class SampleMethod(enum.IntEnum):
         """
-        How to sample bytes if not all bytes are scanned. Meaningful only when used
-        in conjunction with bytes_limit_per_file. If not specified, scanning would
-        start from the top.
+        How to sample bytes if not all bytes are scanned. Meaningful only when
+        used in conjunction with bytes\_limit\_per\_file. If not specified,
+        scanning would start from the top.
 
         Attributes:
           SAMPLE_METHOD_UNSPECIFIED (int)
           TOP (int): Scan from the top (default).
-          RANDOM_START (int): For each file larger than bytes_limit_per_file, randomly pick the offset
-          to start scanning. The scanned bytes are contiguous.
+          RANDOM_START (int): For each file larger than bytes\_limit\_per\_file, randomly pick the
+          offset to start scanning. The scanned bytes are contiguous.
         """
         SAMPLE_METHOD_UNSPECIFIED = 0
         TOP = 1
@@ -232,9 +232,9 @@ class CloudStorageOptions(object):
 class BigQueryOptions(object):
     class SampleMethod(enum.IntEnum):
         """
-        How to sample rows if not all rows are scanned. Meaningful only when used
-        in conjunction with rows_limit. If not specified, scanning would start
-        from the top.
+        How to sample rows if not all rows are scanned. Meaningful only when
+        used in conjunction with rows\_limit. If not specified, scanning would
+        start from the top.
 
         Attributes:
           SAMPLE_METHOD_UNSPECIFIED (int)
@@ -318,8 +318,9 @@ class CharsToIgnore(object):
           NUMERIC (int): 0-9
           ALPHA_UPPER_CASE (int): A-Z
           ALPHA_LOWER_CASE (int): a-z
-          PUNCTUATION (int): US Punctuation, one of !\"#$%&'()*+,-./:;<=>?@[\]^_``{|}~
-          WHITESPACE (int): Whitespace character, one of [ \t\n\x0B\f\r]
+          PUNCTUATION (int): US Punctuation, one of !"#$%&'()\*+,-./:;<=>?@[]^\_\`{\|}~
+          WHITESPACE (int): Whitespace character, one of [
+          :raw-latex:`\t`:raw-latex:`\n`:raw-latex:`\x`0B:raw-latex:`\f`:raw-latex:`\r`]
         """
         COMMON_CHARS_TO_IGNORE_UNSPECIFIED = 0
         NUMERIC = 1
@@ -334,7 +335,7 @@ class CryptoReplaceFfxFpeConfig(object):
         """
         These are commonly used subsets of the alphabet that the FFX mode
         natively supports. In the algorithm, the alphabet is selected using
-        the \"radix\". Therefore each corresponds to particular radix.
+        the "radix". Therefore each corresponds to particular radix.
 
         Attributes:
           FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED (int)

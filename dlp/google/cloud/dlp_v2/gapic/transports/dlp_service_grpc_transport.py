@@ -155,9 +155,8 @@ class DlpServiceGrpcTransport(object):
     def reidentify_content(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Re-identifies content that has been de-identified.
-        See
-        https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
+        Re-identifies content that has been de-identified. See
+        https://cloud.google.com/dlp/docs/pseudonymization#re-identification\_in\_free\_text\_code\_example
         to learn more.
 
         Returns:

@@ -242,9 +242,10 @@ class DlpServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -291,18 +292,20 @@ class DlpServiceClient(object):
 
         Args:
             parent (str): The parent resource name, for example projects/my-project-id.
-            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector. What specified here will override
-                the template referenced by the inspect_template_name argument.
+            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector. What specified here will override the
+                template referenced by the inspect\_template\_name argument.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectConfig`
             item (Union[dict, ~google.cloud.dlp_v2.types.ContentItem]): The item to inspect.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.ContentItem`
             inspect_template_name (str): Optional template to use. Any configuration directly specified in
-                inspect_config will override those set in the template. Singular fields
-                that are set in this request will replace their corresponding fields in the
-                template. Repeated fields are appended. Singular sub-messages and groups
-                are recursively merged.
+                inspect\_config will override those set in the template. Singular fields
+                that are set in this request will replace their corresponding fields in
+                the template. Repeated fields are appended. Singular sub-messages and
+                groups are recursively merged.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -373,14 +376,17 @@ class DlpServiceClient(object):
         Args:
             parent (str): The parent resource name, for example projects/my-project-id.
             inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectConfig`
             image_redaction_configs (list[Union[dict, ~google.cloud.dlp_v2.types.ImageRedactionConfig]]): The configuration for specifying what content to redact from images.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.ImageRedactionConfig`
             include_findings (bool): Whether the response should include findings along with the redacted
                 image.
             byte_item (Union[dict, ~google.cloud.dlp_v2.types.ByteContentItem]): The content must be PNG, JPEG, SVG or BMP.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.ByteContentItem`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -454,29 +460,31 @@ class DlpServiceClient(object):
 
         Args:
             parent (str): The parent resource name, for example projects/my-project-id.
-            deidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the de-identification of the content item.
-                Items specified here will override the template referenced by the
-                deidentify_template_name argument.
+            deidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the de-identification of the content item. Items
+                specified here will override the template referenced by the
+                deidentify\_template\_name argument.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`
-            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.
-                Items specified here will override the template referenced by the
-                inspect_template_name argument.
+            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector. Items specified here will override the
+                template referenced by the inspect\_template\_name argument.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectConfig`
             item (Union[dict, ~google.cloud.dlp_v2.types.ContentItem]): The item to de-identify. Will be treated as text.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.ContentItem`
             inspect_template_name (str): Optional template to use. Any configuration directly specified in
-                inspect_config will override those set in the template. Singular fields
-                that are set in this request will replace their corresponding fields in the
-                template. Repeated fields are appended. Singular sub-messages and groups
-                are recursively merged.
+                inspect\_config will override those set in the template. Singular fields
+                that are set in this request will replace their corresponding fields in
+                the template. Repeated fields are appended. Singular sub-messages and
+                groups are recursively merged.
             deidentify_template_name (str): Optional template to use. Any configuration directly specified in
-                deidentify_config will override those set in the template. Singular fields
-                that are set in this request will replace their corresponding fields in the
-                template. Repeated fields are appended. Singular sub-messages and groups
-                are recursively merged.
+                deidentify\_config will override those set in the template. Singular
+                fields that are set in this request will replace their corresponding
+                fields in the template. Repeated fields are appended. Singular
+                sub-messages and groups are recursively merged.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -530,9 +538,8 @@ class DlpServiceClient(object):
                            timeout=google.api_core.gapic_v1.method.DEFAULT,
                            metadata=None):
         """
-        Re-identifies content that has been de-identified.
-        See
-        https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
+        Re-identifies content that has been de-identified. See
+        https://cloud.google.com/dlp/docs/pseudonymization#re-identification\_in\_free\_text\_code\_example
         to learn more.
 
         Example:
@@ -546,34 +553,37 @@ class DlpServiceClient(object):
 
         Args:
             parent (str): The parent resource name.
-            reidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the re-identification of the content item.
-                This field shares the same proto message type that is used for
-                de-identification, however its usage here is for the reversal of the
-                previous de-identification. Re-identification is performed by examining
-                the transformations used to de-identify the items and executing the
-                reverse. This requires that only reversible transformations
-                be provided here. The reversible transformations are:
+            reidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the re-identification of the content item. This field
+                shares the same proto message type that is used for de-identification,
+                however its usage here is for the reversal of the previous
+                de-identification. Re-identification is performed by examining the
+                transformations used to de-identify the items and executing the reverse.
+                This requires that only reversible transformations be provided here. The
+                reversible transformations are:
 
-                 - ``CryptoReplaceFfxFpeConfig``
-                   If a dict is provided, it must be of the same form as the protobuf
-                   message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`
+                -  ``CryptoReplaceFfxFpeConfig``
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`
             inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectConfig`
             item (Union[dict, ~google.cloud.dlp_v2.types.ContentItem]): The item to re-identify. Will be treated as text.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.ContentItem`
             inspect_template_name (str): Optional template to use. Any configuration directly specified in
-                ``inspect_config`` will override those set in the template. Singular fields
-                that are set in this request will replace their corresponding fields in the
-                template. Repeated fields are appended. Singular sub-messages and groups
-                are recursively merged.
-            reidentify_template_name (str): Optional template to use. References an instance of ``DeidentifyTemplate``.
-                Any configuration directly specified in ``reidentify_config`` or
-                ``inspect_config`` will override those set in the template. Singular fields
-                that are set in this request will replace their corresponding fields in the
-                template. Repeated fields are appended. Singular sub-messages and groups
-                are recursively merged.
+                ``inspect_config`` will override those set in the template. Singular
+                fields that are set in this request will replace their corresponding
+                fields in the template. Repeated fields are appended. Singular
+                sub-messages and groups are recursively merged.
+            reidentify_template_name (str): Optional template to use. References an instance of
+                ``DeidentifyTemplate``. Any configuration directly specified in
+                ``reidentify_config`` or ``inspect_config`` will override those set in
+                the template. Singular fields that are set in this request will replace
+                their corresponding fields in the template. Repeated fields are
+                appended. Singular sub-messages and groups are recursively merged.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -638,8 +648,8 @@ class DlpServiceClient(object):
             language_code (str): Optional BCP-47 language code for localized infoType friendly
                 names. If omitted, or if localized strings are not available,
                 en-US strings will be returned.
-            filter_ (str): Optional filter to only return infoTypes supported by certain parts of the
-                API. Defaults to supported_by=INSPECT.
+            filter_ (str): Optional filter to only return infoTypes supported by certain parts of
+                the API. Defaults to supported\_by=INSPECT.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -703,12 +713,13 @@ class DlpServiceClient(object):
             parent (str): The parent resource name, for example projects/my-project-id or
                 organizations/my-org-id.
             inspect_template (Union[dict, ~google.cloud.dlp_v2.types.InspectTemplate]): The InspectTemplate to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectTemplate`
-            template_id (str): The template id can contain uppercase and lowercase letters,
-                numbers, and hyphens; that is, it must match the regular
-                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100
-                characters. Can be empty to allow the system to generate one.
+            template_id (str): The template id can contain uppercase and lowercase letters, numbers,
+                and hyphens; that is, it must match the regular expression:
+                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to
+                allow the system to generate one.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -774,9 +785,11 @@ class DlpServiceClient(object):
                 example ``organizations/433245324/inspectTemplates/432452342`` or
                 projects/project-id/inspectTemplates/432452342.
             inspect_template (Union[dict, ~google.cloud.dlp_v2.types.InspectTemplate]): New InspectTemplate value.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectTemplate`
             update_mask (Union[dict, ~google.cloud.dlp_v2.types.FieldMask]): Mask to control which fields get updated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -900,7 +913,7 @@ class DlpServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_inspect_templates(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_inspect_templates(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -913,19 +926,18 @@ class DlpServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            order_by (str): Optional comma separated list of fields to order by,
-                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,
-                default sorting order is ascending, redundant space characters are
-                insignificant.
+            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``
+                or ``desc`` postfix. This list is case-insensitive, default sorting
+                order is ascending, redundant space characters are insignificant.
 
                 Example: ``name asc,update_time, create_time desc``
 
                 Supported fields are:
 
-                - ``create_time``: corresponds to time the template was created.
-                - ``update_time``: corresponds to time the template was last updated.
-                - ``name``: corresponds to template's name.
-                - ``display_name``: corresponds to template's display name.
+                -  ``create_time``: corresponds to time the template was created.
+                -  ``update_time``: corresponds to time the template was last updated.
+                -  ``name``: corresponds to template's name.
+                -  ``display_name``: corresponds to template's display name.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1061,12 +1073,13 @@ class DlpServiceClient(object):
             parent (str): The parent resource name, for example projects/my-project-id or
                 organizations/my-org-id.
             deidentify_template (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyTemplate]): The DeidentifyTemplate to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate`
-            template_id (str): The template id can contain uppercase and lowercase letters,
-                numbers, and hyphens; that is, it must match the regular
-                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100
-                characters. Can be empty to allow the system to generate one.
+            template_id (str): The template id can contain uppercase and lowercase letters, numbers,
+                and hyphens; that is, it must match the regular expression:
+                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to
+                allow the system to generate one.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1133,9 +1146,11 @@ class DlpServiceClient(object):
                 example ``organizations/433245324/deidentifyTemplates/432452342`` or
                 projects/project-id/deidentifyTemplates/432452342.
             deidentify_template (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyTemplate]): New DeidentifyTemplate value.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate`
             update_mask (Union[dict, ~google.cloud.dlp_v2.types.FieldMask]): Mask to control which fields get updated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1198,8 +1213,8 @@ class DlpServiceClient(object):
             >>> response = client.get_deidentify_template(name)
 
         Args:
-            name (str): Resource name of the organization and deidentify template to be read, for
-                example ``organizations/433245324/deidentifyTemplates/432452342`` or
+            name (str): Resource name of the organization and deidentify template to be read,
+                for example ``organizations/433245324/deidentifyTemplates/432452342`` or
                 projects/project-id/deidentifyTemplates/432452342.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -1265,7 +1280,7 @@ class DlpServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_deidentify_templates(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_deidentify_templates(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -1278,19 +1293,18 @@ class DlpServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            order_by (str): Optional comma separated list of fields to order by,
-                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,
-                default sorting order is ascending, redundant space characters are
-                insignificant.
+            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``
+                or ``desc`` postfix. This list is case-insensitive, default sorting
+                order is ascending, redundant space characters are insignificant.
 
                 Example: ``name asc,update_time, create_time desc``
 
                 Supported fields are:
 
-                - ``create_time``: corresponds to time the template was created.
-                - ``update_time``: corresponds to time the template was last updated.
-                - ``name``: corresponds to template's name.
-                - ``display_name``: corresponds to template's display name.
+                -  ``create_time``: corresponds to time the template was created.
+                -  ``update_time``: corresponds to time the template was last updated.
+                -  ``name``: corresponds to template's name.
+                -  ``display_name``: corresponds to template's display name.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1428,14 +1442,16 @@ class DlpServiceClient(object):
 
         Args:
             parent (str): The parent resource name, for example projects/my-project-id.
-            inspect_job (Union[dict, ~google.cloud.dlp_v2.types.InspectJobConfig]): If a dict is provided, it must be of the same form as the protobuf
+            inspect_job (Union[dict, ~google.cloud.dlp_v2.types.InspectJobConfig]):
+                If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectJobConfig`
-            risk_job (Union[dict, ~google.cloud.dlp_v2.types.RiskAnalysisJobConfig]): If a dict is provided, it must be of the same form as the protobuf
+            risk_job (Union[dict, ~google.cloud.dlp_v2.types.RiskAnalysisJobConfig]):
+                If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.RiskAnalysisJobConfig`
-            job_id (str): The job id can contain uppercase and lowercase letters,
-                numbers, and hyphens; that is, it must match the regular
-                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100
-                characters. Can be empty to allow the system to generate one.
+            job_id (str): The job id can contain uppercase and lowercase letters, numbers, and
+                hyphens; that is, it must match the regular expression:
+                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to
+                allow the system to generate one.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1512,7 +1528,7 @@ class DlpServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_dlp_jobs(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_dlp_jobs(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -1523,23 +1539,29 @@ class DlpServiceClient(object):
 
                 Supported syntax:
 
-                * Filter expressions are made up of one or more restrictions.
-                * Restrictions can be combined by ``AND`` or ``OR`` logical operators. A
-                  sequence of restrictions implicitly uses ``AND``.
-                * A restriction has the form of ``<field> <operator> <value>``.
-                * Supported fields/values for inspect jobs:
-                  - `state` - PENDING|RUNNING|CANCELED|FINISHED|FAILED
-                  - `inspected_storage` - DATASTORE|CLOUD_STORAGE|BIGQUERY
-                  - `trigger_name` - The resource name of the trigger that created job.
-                * Supported fields for risk analysis jobs:
-                  - `state` - RUNNING|CANCELED|FINISHED|FAILED
-                * The operator must be ``=`` or ``!=``.
+                -  Filter expressions are made up of one or more restrictions.
+                -  Restrictions can be combined by ``AND`` or ``OR`` logical operators.
+                   A sequence of restrictions implicitly uses ``AND``.
+                -  A restriction has the form of ``<field> <operator> <value>``.
+                -  Supported fields/values for inspect jobs:
+
+                   -  ``state`` - PENDING\|RUNNING\|CANCELED\|FINISHED\|FAILED
+                   -  ``inspected_storage`` - DATASTORE\|CLOUD\_STORAGE\|BIGQUERY
+                   -  ``trigger_name`` - The resource name of the trigger that created
+                      job.
+
+                -  Supported fields for risk analysis jobs:
+
+                   -  ``state`` - RUNNING\|CANCELED\|FINISHED\|FAILED
+
+                -  The operator must be ``=`` or ``!=``.
 
                 Examples:
 
-                * inspected_storage = cloud_storage AND state = done
-                * inspected_storage = cloud_storage OR inspected_storage = bigquery
-                * inspected_storage = cloud_storage AND (state = done OR state = canceled)
+                -  inspected\_storage = cloud\_storage AND state = done
+                -  inspected\_storage = cloud\_storage OR inspected\_storage = bigquery
+                -  inspected\_storage = cloud\_storage AND (state = done OR state =
+                   canceled)
 
                 The length of this field should be no more than 500 characters.
             page_size (int): The maximum number of resources contained in the
@@ -1548,19 +1570,18 @@ class DlpServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             type_ (~google.cloud.dlp_v2.types.DlpJobType): The type of job. Defaults to ``DlpJobType.INSPECT``
-            order_by (str): Optional comma separated list of fields to order by,
-                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,
-                default sorting order is ascending, redundant space characters are
-                insignificant.
+            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``
+                or ``desc`` postfix. This list is case-insensitive, default sorting
+                order is ascending, redundant space characters are insignificant.
 
                 Example: ``name asc, end_time asc, create_time desc``
 
                 Supported fields are:
 
-                - ``create_time``: corresponds to time the job was created.
-                - ``end_time``: corresponds to time the job ended.
-                - ``name``: corresponds to job's name.
-                - ``state``: corresponds to ``state``
+                -  ``create_time``: corresponds to time the job was created.
+                -  ``end_time``: corresponds to time the job ended.
+                -  ``name``: corresponds to job's name.
+                -  ``state``: corresponds to ``state``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1804,7 +1825,7 @@ class DlpServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_job_triggers(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_job_triggers(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -1825,11 +1846,11 @@ class DlpServiceClient(object):
 
                 Supported fields are:
 
-                - ``create_time``: corresponds to time the JobTrigger was created.
-                - ``update_time``: corresponds to time the JobTrigger was last updated.
-                - ``name``: corresponds to JobTrigger's name.
-                - ``display_name``: corresponds to JobTrigger's display name.
-                - ``status``: corresponds to JobTrigger's status.
+                -  ``create_time``: corresponds to time the JobTrigger was created.
+                -  ``update_time``: corresponds to time the JobTrigger was last updated.
+                -  ``name``: corresponds to JobTrigger's name.
+                -  ``display_name``: corresponds to JobTrigger's display name.
+                -  ``status``: corresponds to JobTrigger's status.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1952,7 +1973,7 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> # TODO: Initialize ``name``:
+            >>> # TODO: Initialize `name`:
             >>> name = ''
             >>>
             >>> client.delete_job_trigger(name)
@@ -2016,9 +2037,11 @@ class DlpServiceClient(object):
             name (str): Resource name of the project and the triggeredJob, for example
                 ``projects/dlp-test-project/jobTriggers/53234423``.
             job_trigger (Union[dict, ~google.cloud.dlp_v2.types.JobTrigger]): New JobTrigger value.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.JobTrigger`
             update_mask (Union[dict, ~google.cloud.dlp_v2.types.FieldMask]): Mask to control which fields get updated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -2084,12 +2107,13 @@ class DlpServiceClient(object):
         Args:
             parent (str): The parent resource name, for example projects/my-project-id.
             job_trigger (Union[dict, ~google.cloud.dlp_v2.types.JobTrigger]): The JobTrigger to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.JobTrigger`
-            trigger_id (str): The trigger id can contain uppercase and lowercase letters,
-                numbers, and hyphens; that is, it must match the regular
-                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100
-                characters. Can be empty to allow the system to generate one.
+            trigger_id (str): The trigger id can contain uppercase and lowercase letters, numbers, and
+                hyphens; that is, it must match the regular expression:
+                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to
+                allow the system to generate one.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2155,12 +2179,13 @@ class DlpServiceClient(object):
             parent (str): The parent resource name, for example projects/my-project-id or
                 organizations/my-org-id.
             config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Configuration of the storedInfoType to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.StoredInfoTypeConfig`
             stored_info_type_id (str): The storedInfoType ID can contain uppercase and lowercase letters,
-                numbers, and hyphens; that is, it must match the regular
-                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100
-                characters. Can be empty to allow the system to generate one.
+                numbers, and hyphens; that is, it must match the regular expression:
+                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to
+                allow the system to generate one.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2230,9 +2255,11 @@ class DlpServiceClient(object):
             config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Updated configuration for the storedInfoType. If not provided, a new
                 version of the storedInfoType will be created with the existing
                 configuration.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.StoredInfoTypeConfig`
             update_mask (Union[dict, ~google.cloud.dlp_v2.types.FieldMask]): Mask to control which fields get updated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -2360,7 +2387,7 @@ class DlpServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_stored_info_types(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_stored_info_types(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -2373,20 +2400,19 @@ class DlpServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            order_by (str): Optional comma separated list of fields to order by,
-                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,
-                default sorting order is ascending, redundant space characters are
-                insignificant.
+            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``
+                or ``desc`` postfix. This list is case-insensitive, default sorting
+                order is ascending, redundant space characters are insignificant.
 
                 Example: ``name asc, display_name, create_time desc``
 
                 Supported fields are:
 
-                - ``create_time``: corresponds to time the most recent version of the
-                  resource was created.
-                - ``state``: corresponds to the state of the resource.
-                - ``name``: corresponds to resource name.
-                - ``display_name``: corresponds to info type's display name.
+                -  ``create_time``: corresponds to time the most recent version of the
+                     resource was created.
+                -  ``state``: corresponds to the state of the resource.
+                -  ``name``: corresponds to resource name.
+                -  ``display_name``: corresponds to info type's display name.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
