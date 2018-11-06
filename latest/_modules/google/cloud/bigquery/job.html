@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 6ad3c60 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud b7a23bd documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -755,9 +755,11 @@
 <span class="sd">        job_type (str): The key to use for the job configuration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span> <span class="o">=</span> <span class="n">job_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="n">job_type</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="k">for</span> <span class="n">prop</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -798,7 +800,7 @@
 <span class="sd">                 ``self._properties[self._job_type]`` dictionary.</span>
 <span class="sd">            default (object):</span>
 <span class="sd">                (Optional) Default value to return if the key is not found.</span>
-<span class="sd">                Defaults to ``None``.</span>
+<span class="sd">                Defaults to :data:`None`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            object: The value if present or the default.</span>
@@ -829,7 +831,7 @@
         <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">,</span> <span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_del_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reove ``key`` from the ``self._properties[self._job_type]`` dict.</span>
+        <span class="sd">&quot;&quot;&quot;Remove ``key`` from the ``self._properties[self._job_type]`` dict.</span>
 
 <span class="sd">        Most job properties are inside the dictionary related to the job type</span>
 <span class="sd">        (e.g. &#39;copy&#39;, &#39;extract&#39;, &#39;load&#39;, &#39;query&#39;). Use this method to clear</span>
@@ -910,12 +912,13 @@
 <div class="viewcode-block" id="LoadJobConfig"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.LoadJobConfig.html#google.cloud.bigquery.job.LoadJobConfig">[docs]</a><span class="k">class</span> <span class="nc">LoadJobConfig</span><span class="p">(</span><span class="n">_JobConfig</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configuration options for load jobs.</span>
 
-<span class="sd">    All properties in this class are optional. Values which are ``None`` -&gt;</span>
-<span class="sd">    server defaults.</span>
+<span class="sd">    All properties in this class are optional. Values which are :data:`None` -&gt;</span>
+<span class="sd">    server defaults. Set properties on the constructed configuration by using</span>
+<span class="sd">    the property name as the name of a keyword argument.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">LoadJobConfig</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;load&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LoadJobConfig</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">allow_jagged_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1003,7 +1006,7 @@
         <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
 <span class="sd">        encryption configuration for the destination table.</span>
 
-<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``</span>
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`</span>
 <span class="sd">        if using default encryption.</span>
 
 <span class="sd">        See</span>
@@ -1374,7 +1377,7 @@
 <span class="sd">        encryption configuration for the destination table.</span>
 
 <span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys)</span>
-<span class="sd">        or ``None`` if using default encryption.</span>
+<span class="sd">        or :data:`None` if using default encryption.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        :attr:`google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration`.</span>
@@ -1505,12 +1508,13 @@
 <div class="viewcode-block" id="CopyJobConfig"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.CopyJobConfig.html#google.cloud.bigquery.job.CopyJobConfig">[docs]</a><span class="k">class</span> <span class="nc">CopyJobConfig</span><span class="p">(</span><span class="n">_JobConfig</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configuration options for copy jobs.</span>
 
-<span class="sd">    All properties in this class are optional. Values which are ``None`` -&gt;</span>
-<span class="sd">    server defaults.</span>
+<span class="sd">    All properties in this class are optional. Values which are :data:`None` -&gt;</span>
+<span class="sd">    server defaults. Set properties on the constructed configuration by using</span>
+<span class="sd">    the property name as the name of a keyword argument.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">CopyJobConfig</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;copy&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CopyJobConfig</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;copy&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">create_disposition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1545,7 +1549,7 @@
         <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
 <span class="sd">        encryption configuration for the destination table.</span>
 
-<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``</span>
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`</span>
 <span class="sd">        if using default encryption.</span>
 
 <span class="sd">        See</span>
@@ -1615,7 +1619,7 @@
         <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
 <span class="sd">        encryption configuration for the destination table.</span>
 
-<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``</span>
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`</span>
 <span class="sd">        if using default encryption.</span>
 
 <span class="sd">        See</span>
@@ -1698,12 +1702,13 @@
 <div class="viewcode-block" id="ExtractJobConfig"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.ExtractJobConfig.html#google.cloud.bigquery.job.ExtractJobConfig">[docs]</a><span class="k">class</span> <span class="nc">ExtractJobConfig</span><span class="p">(</span><span class="n">_JobConfig</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configuration options for extract jobs.</span>
 
-<span class="sd">    All properties in this class are optional. Values which are ``None`` -&gt;</span>
-<span class="sd">    server defaults.</span>
+<span class="sd">    All properties in this class are optional. Values which are :data:`None` -&gt;</span>
+<span class="sd">    server defaults. Set properties on the constructed configuration by using</span>
+<span class="sd">    the property name as the name of a keyword argument.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ExtractJobConfig</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;extract&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ExtractJobConfig</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">compression</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1942,19 +1947,20 @@
 <div class="viewcode-block" id="QueryJobConfig"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.QueryJobConfig.html#google.cloud.bigquery.job.QueryJobConfig">[docs]</a><span class="k">class</span> <span class="nc">QueryJobConfig</span><span class="p">(</span><span class="n">_JobConfig</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configuration options for query jobs.</span>
 
-<span class="sd">    All properties in this class are optional. Values which are ``None`` -&gt;</span>
-<span class="sd">    server defaults.</span>
+<span class="sd">    All properties in this class are optional. Values which are :data:`None` -&gt;</span>
+<span class="sd">    server defaults. Set properties on the constructed configuration by using</span>
+<span class="sd">    the property name as the name of a keyword argument.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">QueryJobConfig</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;query&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">QueryJobConfig</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;query&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">destination_encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
 <span class="sd">        encryption configuration for the destination table.</span>
 
-<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``</span>
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`</span>
 <span class="sd">        if using default encryption.</span>
 
 <span class="sd">        See</span>
@@ -2002,7 +2008,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">default_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.dataset.DatasetReference: the default dataset</span>
-<span class="sd">        to use for unqualified table names in the query or ``None`` if not set.</span>
+<span class="sd">        to use for unqualified table names in the query or :data:`None` if not</span>
+<span class="sd">        set.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset</span>
@@ -2022,7 +2029,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">destination</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.TableReference: table where results are</span>
-<span class="sd">        written or ``None`` if not set.</span>
+<span class="sd">        written or :data:`None` if not set.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable</span>
@@ -2041,7 +2048,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dry_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;bool: ``True`` if this query should be a dry run to estimate costs.</span>
+        <span class="sd">&quot;&quot;&quot;bool: :data:`True` if this query should be a dry run to estimate</span>
+<span class="sd">        costs.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun</span>
@@ -2081,7 +2089,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">maximum_bytes_billed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;int: Maximum bytes to be billed for this job or ``None`` if not set.</span>
+        <span class="sd">&quot;&quot;&quot;int: Maximum bytes to be billed for this job or :data:`None` if not set.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled</span>
@@ -2183,7 +2191,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table_definitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Dict[str, google.cloud.bigquery.external_config.ExternalConfig]:</span>
-<span class="sd">        Definitions for external tables or ``None`` if not set.</span>
+<span class="sd">        Definitions for external tables or :data:`None` if not set.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions</span>
@@ -2341,7 +2349,7 @@
         <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
 <span class="sd">        encryption configuration for the destination table.</span>
 
-<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``</span>
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`</span>
 <span class="sd">        if using default encryption.</span>
 
 <span class="sd">        See</span>
