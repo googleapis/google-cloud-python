@@ -1534,7 +1534,10 @@ class ModelKey(Property):
 
 
 class BooleanProperty(Property):
-    """A property that contains values of type bool."""
+    """A property that contains values of type bool.
+
+    .. automethod:: _validate
+    """
 
     __slots__ = ()
 
@@ -1623,17 +1626,20 @@ class IntegerProperty(Property):
 
 
 class FloatProperty(Property):
-    """A property that contains values of type float."""
+    """A property that contains values of type float.
+
+    .. note::
+
+        If a value is a :class:`bool` or :class:`int`, it will be
+        coerced to a floating point value.
+
+    .. automethod:: _validate
+    """
 
     __slots__ = ()
 
     def _validate(self, value):
         """Validate a ``value`` before setting it.
-
-        .. note::
-
-            If ``value`` is a :class:`bool` or :class:`int`, it will be
-            converted to a floating point value.
 
         Args:
             value (Union[float, int, bool]): The value to check.
