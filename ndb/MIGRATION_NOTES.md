@@ -57,7 +57,7 @@ The primary differences come from:
   the limit has been raised by the backend. (FWIW, Danny's opinion is that
   the backend should enforce these limits, not the library.)
 - `Property.__creation_counter_global` has been removed as it seems to have
-  been included for a feature that was never implemented. See 
+  been included for a feature that was never implemented. See
   [Issue #175][1] for original rationale for including it and [Issue #6317][2]
   for discussion of its removal.
 - `ndb` uses "private" instance attributes in many places, e.g. `Key.__app`.
@@ -86,6 +86,15 @@ The primary differences come from:
 - `eventloop` has been renamed to `_eventloop`. It is believed that `eventloop`
   was previously a *de facto* private module, so we've just made that
   explicit.
+- `BlobProperty._datastore_type` has not been implemented; the base class
+  implementation is sufficient. The original implementation wrapped a byte
+  string in a `google.appengine.api.datastore_types.ByteString` instance, but
+  that type was mostly an alias for `str` in Python 2
+- `BlobProperty._validate` used to special case for "too long when indexed"
+  if `isinstance(self, TextProperty)`. We have removed this check since
+  the implementation does the same check in `TextProperty._validate`.
+- The `BlobProperty` constructor only sets `_compressed` if explicitly
+  passed. The original set always (and used `False` as default)
 
 ## Comments
 
