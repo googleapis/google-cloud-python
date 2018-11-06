@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Text-to-Speech API &#8212; google-cloud 15f2c36 documentation</title>
+    <title>Client for Cloud Text-to-Speech API &#8212; google-cloud 60e4a23 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -138,8 +138,7 @@ file.</li>
 <dl class="method">
 <dt id="google.cloud.texttospeech_v1beta1.TextToSpeechClient.list_voices">
 <code class="descname">list_voices</code><span class="sig-paren">(</span><em>language_code=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/texttospeech_v1beta1/gapic/text_to_speech_client.html#TextToSpeechClient.list_voices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.TextToSpeechClient.list_voices" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a list of <code class="docutils literal notranslate"><span class="pre">Voice</span></code>
-supported for synthesis.</p>
+<dd><p>Returns a list of <code class="docutils literal notranslate"><span class="pre">Voice</span></code> supported for synthesis.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">texttospeech_v1beta1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -154,13 +153,13 @@ supported for synthesis.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional (but recommended)
-<a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag. If
-specified, the ListVoices call will only return voices that can be used to
-synthesize this language_code. E.g. when specifying “en-NZ”, you will get
-supported “en-*” voices; when specifying “no”, you will get supported
-“no-*” (Norwegian) and “nb-*” (Norwegian Bokmal) voices; specifying “zh”
-will also get supported “cmn-*” voices; specifying “zh-hk” will also get
-supported “yue-*” voices.</li>
+<a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag.
+If specified, the ListVoices call will only return voices that can be
+used to synthesize this language_code. E.g. when specifying “en-NZ”,
+you will get supported “en-<em>” voices; when specifying “no”, you will get
+supported “no-</em>” (Norwegian) and “nb-<em>” (Norwegian Bokmal) voices;
+specifying “zh” will also get supported “cmn-</em>” voices; specifying
+“zh-hk” will also get supported “yue-*” voices.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -198,13 +197,13 @@ has been processed.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">texttospeech_v1beta1</span><span class="o">.</span><span class="n">TextToSpeechClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``input_``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `input_`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">input_</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``voice``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `voice`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">voice</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``audio_config``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `audio_config`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">audio_config</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span><span class="n">input_</span><span class="p">,</span> <span class="n">voice</span><span class="p">,</span> <span class="n">audio_config</span><span class="p">)</span>
@@ -215,15 +214,18 @@ has been processed.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>input</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.SynthesisInput" title="google.cloud.texttospeech_v1beta1.types.SynthesisInput"><em>SynthesisInput</em></a><em>]</em>) – Required. The Synthesizer requires either plain text or SSML as input.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.SynthesisInput" title="google.cloud.texttospeech_v1beta1.types.SynthesisInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">SynthesisInput</span></code></a></li>
-<li><strong>voice</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams" title="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams"><em>VoiceSelectionParams</em></a><em>]</em>) – Required. The desired voice of the synthesized audio.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams" title="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">VoiceSelectionParams</span></code></a></li>
-<li><strong>audio_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.AudioConfig" title="google.cloud.texttospeech_v1beta1.types.AudioConfig"><em>AudioConfig</em></a><em>]</em>) – Required. The configuration of the synthesized audio.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.AudioConfig" title="google.cloud.texttospeech_v1beta1.types.AudioConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioConfig</span></code></a></li>
+<li><strong>input</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.SynthesisInput" title="google.cloud.texttospeech_v1beta1.types.SynthesisInput"><em>SynthesisInput</em></a><em>]</em>) – <p>Required. The Synthesizer requires either plain text or SSML as input.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.SynthesisInput" title="google.cloud.texttospeech_v1beta1.types.SynthesisInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">SynthesisInput</span></code></a></p>
+</li>
+<li><strong>voice</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams" title="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams"><em>VoiceSelectionParams</em></a><em>]</em>) – <p>Required. The desired voice of the synthesized audio.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams" title="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">VoiceSelectionParams</span></code></a></p>
+</li>
+<li><strong>audio_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.AudioConfig" title="google.cloud.texttospeech_v1beta1.types.AudioConfig"><em>AudioConfig</em></a><em>]</em>) – <p>Required. The configuration of the synthesized audio.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.texttospeech_v1beta1.types.AudioConfig" title="google.cloud.texttospeech_v1beta1.types.AudioConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioConfig</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>

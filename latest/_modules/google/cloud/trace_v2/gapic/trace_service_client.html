@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.trace_v2.gapic.trace_service_client &#8212; google-cloud 15f2c36 documentation</title>
+    <title>google.cloud.trace_v2.gapic.trace_service_client &#8212; google-cloud 60e4a23 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -201,9 +201,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -237,7 +238,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``spans``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `spans`:</span>
 <span class="sd">            &gt;&gt;&gt; spans = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.batch_write_spans(name, spans)</span>
@@ -247,6 +248,7 @@
 <span class="sd">                ``projects/[PROJECT_ID]``.</span>
 <span class="sd">            spans (list[Union[dict, ~google.cloud.trace_v2.types.Span]]): A list of new spans. The span names must not match existing</span>
 <span class="sd">                spans, or the results are undefined.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.Span`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -311,16 +313,16 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.span_path(&#39;[PROJECT]&#39;, &#39;[TRACE]&#39;, &#39;[SPAN]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``span_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `span_id`:</span>
 <span class="sd">            &gt;&gt;&gt; span_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``display_name``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `display_name`:</span>
 <span class="sd">            &gt;&gt;&gt; display_name = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``start_time``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `start_time`:</span>
 <span class="sd">            &gt;&gt;&gt; start_time = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``end_time``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `end_time`:</span>
 <span class="sd">            &gt;&gt;&gt; end_time = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_span(name, span_id, display_name, start_time, end_time)</span>
@@ -330,60 +332,70 @@
 
 <span class="sd">                ::</span>
 
-<span class="sd">                    projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]</span>
+<span class="sd">                     projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]</span>
 
-<span class="sd">                [TRACE_ID] is a unique identifier for a trace within a project;</span>
-<span class="sd">                it is a 32-character hexadecimal encoding of a 16-byte array.</span>
+<span class="sd">                [TRACE\_ID] is a unique identifier for a trace within a project; it is a</span>
+<span class="sd">                32-character hexadecimal encoding of a 16-byte array.</span>
 
-<span class="sd">                [SPAN_ID] is a unique identifier for a span within a trace; it</span>
-<span class="sd">                is a 16-character hexadecimal encoding of an 8-byte array.</span>
-<span class="sd">            span_id (str): The [SPAN_ID] portion of the span&#39;s resource name.</span>
-<span class="sd">            display_name (Union[dict, ~google.cloud.trace_v2.types.TruncatableString]): A description of the span&#39;s operation (up to 128 bytes).</span>
-<span class="sd">                Stackdriver Trace displays the description in the</span>
-<span class="sd">                {% dynamic print site_values.console_name %}.</span>
-<span class="sd">                For example, the display name can be a qualified method name or a file name</span>
-<span class="sd">                and a line number where the operation is called. A best practice is to use</span>
-<span class="sd">                the same display name within an application and at the same call point.</span>
-<span class="sd">                This makes it easier to correlate spans in different traces.</span>
+<span class="sd">                [SPAN\_ID] is a unique identifier for a span within a trace; it is a</span>
+<span class="sd">                16-character hexadecimal encoding of an 8-byte array.</span>
+<span class="sd">            span_id (str): The [SPAN\_ID] portion of the span&#39;s resource name.</span>
+<span class="sd">            display_name (Union[dict, ~google.cloud.trace_v2.types.TruncatableString]): A description of the span&#39;s operation (up to 128 bytes). Stackdriver</span>
+<span class="sd">                Trace displays the description in the {% dynamic print</span>
+<span class="sd">                site\_values.console\_name %}. For example, the display name can be a</span>
+<span class="sd">                qualified method name or a file name and a line number where the</span>
+<span class="sd">                operation is called. A best practice is to use the same display name</span>
+<span class="sd">                within an application and at the same call point. This makes it easier</span>
+<span class="sd">                to correlate spans in different traces.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.TruncatableString`</span>
 <span class="sd">            start_time (Union[dict, ~google.cloud.trace_v2.types.Timestamp]): The start time of the span. On the client side, this is the time kept by</span>
 <span class="sd">                the local machine where the span execution starts. On the server side, this</span>
 <span class="sd">                is the time when the server&#39;s application handler starts running.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.Timestamp`</span>
 <span class="sd">            end_time (Union[dict, ~google.cloud.trace_v2.types.Timestamp]): The end time of the span. On the client side, this is the time kept by</span>
 <span class="sd">                the local machine where the span execution ends. On the server side, this</span>
 <span class="sd">                is the time when the server application handler stops running.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.Timestamp`</span>
-<span class="sd">            parent_span_id (str): The [SPAN_ID] of this span&#39;s parent span. If this is a root span,</span>
-<span class="sd">                then this field must be empty.</span>
+<span class="sd">            parent_span_id (str): The [SPAN\_ID] of this span&#39;s parent span. If this is a root span, then</span>
+<span class="sd">                this field must be empty.</span>
 <span class="sd">            attributes (Union[dict, ~google.cloud.trace_v2.types.Attributes]): A set of attributes on the span. You can have up to 32 attributes per</span>
 <span class="sd">                span.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.Attributes`</span>
 <span class="sd">            stack_trace (Union[dict, ~google.cloud.trace_v2.types.StackTrace]): Stack trace captured at the start of the span.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.StackTrace`</span>
 <span class="sd">            time_events (Union[dict, ~google.cloud.trace_v2.types.TimeEvents]): A set of time events. You can have up to 32 annotations and 128 message</span>
 <span class="sd">                events per span.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.TimeEvents`</span>
 <span class="sd">            links (Union[dict, ~google.cloud.trace_v2.types.Links]): Links associated with the span. You can have up to 128 links per Span.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.Links`</span>
 <span class="sd">            status (Union[dict, ~google.cloud.trace_v2.types.Status]): An optional final status for this span.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.Status`</span>
 <span class="sd">            same_process_as_parent_span (Union[dict, ~google.cloud.trace_v2.types.BoolValue]): (Optional) Set this parameter to indicate whether this span is in</span>
 <span class="sd">                the same process as its parent. If you do not set this parameter,</span>
 <span class="sd">                Stackdriver Trace is unable to take advantage of this helpful</span>
 <span class="sd">                information.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.BoolValue`</span>
 <span class="sd">            child_span_count (Union[dict, ~google.cloud.trace_v2.types.Int32Value]): An optional number of child spans that were generated while this span</span>
 <span class="sd">                was active. If set, allows implementation to detect missing child spans.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v2.types.Int32Value`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>

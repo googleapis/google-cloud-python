@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.texttospeech_v1beta1.gapic.text_to_speech_client &#8212; google-cloud 15f2c36 documentation</title>
+    <title>google.cloud.texttospeech_v1beta1.gapic.text_to_speech_client &#8212; google-cloud 60e4a23 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -171,9 +171,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -196,8 +197,7 @@
                     <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                     <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a list of ``Voice``</span>
-<span class="sd">        supported for synthesis.</span>
+<span class="sd">        Returns a list of ``Voice`` supported for synthesis.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import texttospeech_v1beta1</span>
@@ -208,13 +208,13 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            language_code (str): Optional (but recommended)</span>
-<span class="sd">                `BCP-47 &lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;`_ language tag. If</span>
-<span class="sd">                specified, the ListVoices call will only return voices that can be used to</span>
-<span class="sd">                synthesize this language_code. E.g. when specifying \&quot;en-NZ\&quot;, you will get</span>
-<span class="sd">                supported &quot;en-\*&quot; voices; when specifying \&quot;no\&quot;, you will get supported</span>
-<span class="sd">                &quot;no-\*&quot; (Norwegian) and &quot;nb-\*&quot; (Norwegian Bokmal) voices; specifying \&quot;zh\&quot;</span>
-<span class="sd">                will also get supported &quot;cmn-\*&quot; voices; specifying \&quot;zh-hk\&quot; will also get</span>
-<span class="sd">                supported &quot;yue-\*&quot; voices.</span>
+<span class="sd">                `BCP-47 &lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;`__ language tag.</span>
+<span class="sd">                If specified, the ListVoices call will only return voices that can be</span>
+<span class="sd">                used to synthesize this language\_code. E.g. when specifying &quot;en-NZ&quot;,</span>
+<span class="sd">                you will get supported &quot;en-*&quot; voices; when specifying &quot;no&quot;, you will get</span>
+<span class="sd">                supported &quot;no-*&quot; (Norwegian) and &quot;nb-*&quot; (Norwegian Bokmal) voices;</span>
+<span class="sd">                specifying &quot;zh&quot; will also get supported &quot;cmn-*&quot; voices; specifying</span>
+<span class="sd">                &quot;zh-hk&quot; will also get supported &quot;yue-\*&quot; voices.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -265,25 +265,28 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = texttospeech_v1beta1.TextToSpeechClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``input_``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `input_`:</span>
 <span class="sd">            &gt;&gt;&gt; input_ = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``voice``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `voice`:</span>
 <span class="sd">            &gt;&gt;&gt; voice = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``audio_config``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `audio_config`:</span>
 <span class="sd">            &gt;&gt;&gt; audio_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.synthesize_speech(input_, voice, audio_config)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            input_ (Union[dict, ~google.cloud.texttospeech_v1beta1.types.SynthesisInput]): Required. The Synthesizer requires either plain text or SSML as input.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.texttospeech_v1beta1.types.SynthesisInput`</span>
 <span class="sd">            voice (Union[dict, ~google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams]): Required. The desired voice of the synthesized audio.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams`</span>
 <span class="sd">            audio_config (Union[dict, ~google.cloud.texttospeech_v1beta1.types.AudioConfig]): Required. The configuration of the synthesized audio.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.texttospeech_v1beta1.types.AudioConfig`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>

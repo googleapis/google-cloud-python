@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.trace_v1.gapic.trace_service_client &#8212; google-cloud 15f2c36 documentation</title>
+    <title>google.cloud.trace_v1.gapic.trace_service_client &#8212; google-cloud 60e4a23 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -181,9 +181,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -218,10 +219,10 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = trace_v1.TraceServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``traces``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `traces`:</span>
 <span class="sd">            &gt;&gt;&gt; traces = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.patch_traces(project_id, traces)</span>
@@ -229,6 +230,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            project_id (str): ID of the Cloud project where the trace data is stored.</span>
 <span class="sd">            traces (Union[dict, ~google.cloud.trace_v1.types.Traces]): The body of the message.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v1.types.Traces`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -279,10 +281,10 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = trace_v1.TraceServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``trace_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `trace_id`:</span>
 <span class="sd">            &gt;&gt;&gt; trace_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.get_trace(project_id, trace_id)</span>
@@ -345,7 +347,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = trace_v1.TraceServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``project_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `project_id`:</span>
 <span class="sd">            &gt;&gt;&gt; project_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
@@ -357,7 +359,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_traces(project_id, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_traces(project_id).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -371,53 +373,55 @@
 <span class="sd">                return fewer traces than the requested page size. Optional.</span>
 <span class="sd">            start_time (Union[dict, ~google.cloud.trace_v1.types.Timestamp]): Start of the time interval (inclusive) during which the trace data was</span>
 <span class="sd">                collected from the application.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v1.types.Timestamp`</span>
 <span class="sd">            end_time (Union[dict, ~google.cloud.trace_v1.types.Timestamp]): End of the time interval (inclusive) during which the trace data was</span>
 <span class="sd">                collected from the application.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.trace_v1.types.Timestamp`</span>
 <span class="sd">            filter_ (str): An optional filter against labels for the request.</span>
 
-<span class="sd">                By default, searches use prefix matching. To specify exact match, prepend</span>
-<span class="sd">                a plus symbol (``+``) to the search term.</span>
-<span class="sd">                Multiple terms are ANDed. Syntax:</span>
+<span class="sd">                By default, searches use prefix matching. To specify exact match,</span>
+<span class="sd">                prepend a plus symbol (``+``) to the search term. Multiple terms are</span>
+<span class="sd">                ANDed. Syntax:</span>
 
-<span class="sd">                *   ``root:NAME_PREFIX`` or ``NAME_PREFIX``: Return traces where any root</span>
-<span class="sd">                    span starts with `NAME_PREFIX`.</span>
-<span class="sd">                *   ``+root:NAME`` or ``+NAME``: Return traces where any root span&#39;s name is</span>
-<span class="sd">                    exactly `NAME`.</span>
-<span class="sd">                *   ``span:NAME_PREFIX``: Return traces where any span starts with</span>
-<span class="sd">                    `NAME_PREFIX`.</span>
-<span class="sd">                *   ``+span:NAME``: Return traces where any span&#39;s name is exactly</span>
-<span class="sd">                    `NAME`.</span>
-<span class="sd">                *   ``latency:DURATION``: Return traces whose overall latency is</span>
-<span class="sd">                    greater or equal to than `DURATION`. Accepted units are nanoseconds</span>
-<span class="sd">                    (`ns`), milliseconds (`ms`), and seconds (`s`). Default is `ms`. For</span>
-<span class="sd">                    example, `latency:24ms` returns traces whose overall latency</span>
-<span class="sd">                    is greater than or equal to 24 milliseconds.</span>
-<span class="sd">                *   ``label:LABEL_KEY``: Return all traces containing the specified</span>
-<span class="sd">                    label key (exact match, case-sensitive) regardless of the key:value</span>
-<span class="sd">                    pair&#39;s value (including empty values).</span>
-<span class="sd">                *   ``LABEL_KEY:VALUE_PREFIX``: Return all traces containing the specified</span>
-<span class="sd">                    label key (exact match, case-sensitive) whose value starts with</span>
-<span class="sd">                    `VALUE_PREFIX`. Both a key and a value must be specified.</span>
-<span class="sd">                *   ``+LABEL_KEY:VALUE``: Return all traces containing a key:value pair</span>
-<span class="sd">                    exactly matching the specified text. Both a key and a value must be</span>
-<span class="sd">                    specified.</span>
-<span class="sd">                *   ``method:VALUE``: Equivalent to ``/http/method:VALUE``.</span>
-<span class="sd">                *   ``url:VALUE``: Equivalent to ``/http/url:VALUE``.</span>
-<span class="sd">            order_by (str): Field used to sort the returned traces. Optional.</span>
-<span class="sd">                Can be one of the following:</span>
+<span class="sd">                -  ``root:NAME_PREFIX`` or ``NAME_PREFIX``: Return traces where any root</span>
+<span class="sd">                   span starts with ``NAME_PREFIX``.</span>
+<span class="sd">                -  ``+root:NAME`` or ``+NAME``: Return traces where any root span&#39;s name</span>
+<span class="sd">                   is exactly ``NAME``.</span>
+<span class="sd">                -  ``span:NAME_PREFIX``: Return traces where any span starts with</span>
+<span class="sd">                   ``NAME_PREFIX``.</span>
+<span class="sd">                -  ``+span:NAME``: Return traces where any span&#39;s name is exactly</span>
+<span class="sd">                   ``NAME``.</span>
+<span class="sd">                -  ``latency:DURATION``: Return traces whose overall latency is greater</span>
+<span class="sd">                   or equal to than ``DURATION``. Accepted units are nanoseconds</span>
+<span class="sd">                   (``ns``), milliseconds (``ms``), and seconds (``s``). Default is</span>
+<span class="sd">                   ``ms``. For example, ``latency:24ms`` returns traces whose overall</span>
+<span class="sd">                   latency is greater than or equal to 24 milliseconds.</span>
+<span class="sd">                -  ``label:LABEL_KEY``: Return all traces containing the specified label</span>
+<span class="sd">                   key (exact match, case-sensitive) regardless of the key:value pair&#39;s</span>
+<span class="sd">                   value (including empty values).</span>
+<span class="sd">                -  ``LABEL_KEY:VALUE_PREFIX``: Return all traces containing the</span>
+<span class="sd">                   specified label key (exact match, case-sensitive) whose value starts</span>
+<span class="sd">                   with ``VALUE_PREFIX``. Both a key and a value must be specified.</span>
+<span class="sd">                -  ``+LABEL_KEY:VALUE``: Return all traces containing a key:value pair</span>
+<span class="sd">                   exactly matching the specified text. Both a key and a value must be</span>
+<span class="sd">                   specified.</span>
+<span class="sd">                -  ``method:VALUE``: Equivalent to ``/http/method:VALUE``.</span>
+<span class="sd">                -  ``url:VALUE``: Equivalent to ``/http/url:VALUE``.</span>
+<span class="sd">            order_by (str): Field used to sort the returned traces. Optional. Can be one of the</span>
+<span class="sd">                following:</span>
 
-<span class="sd">                *   ``trace_id``</span>
-<span class="sd">                *   ``name`` (``name`` field of root span in the trace)</span>
-<span class="sd">                *   ``duration`` (difference between ``end_time`` and ``start_time`` fields of</span>
-<span class="sd">                     the root span)</span>
-<span class="sd">                *   ``start`` (``start_time`` field of the root span)</span>
+<span class="sd">                -  ``trace_id``</span>
+<span class="sd">                -  ``name`` (``name`` field of root span in the trace)</span>
+<span class="sd">                -  ``duration`` (difference between ``end_time`` and ``start_time``</span>
+<span class="sd">                   fields of the root span)</span>
+<span class="sd">                -  ``start`` (``start_time`` field of the root span)</span>
 
-<span class="sd">                Descending order can be specified by appending ``desc`` to the sort field</span>
-<span class="sd">                (for example, ``name desc``).</span>
+<span class="sd">                Descending order can be specified by appending ``desc`` to the sort</span>
+<span class="sd">                field (for example, ``name desc``).</span>
 
 <span class="sd">                Only one sort field is permitted.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
