@@ -49,17 +49,16 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 class GroupServiceClient(object):
     """
     The Group API lets you inspect and manage your
-    `groups <https://cloud.google.com#google.monitoring.v3.Group>`_.
+    `groups <#google.monitoring.v3.Group>`__.
 
-    A group is a named filter that is used to identify
-    a collection of monitored resources. Groups are typically used to
-    mirror the physical and/or logical topology of the environment.
-    Because group membership is computed dynamically, monitored
-    resources that are started in the future are automatically placed
-    in matching groups. By using a group to name monitored resources in,
-    for example, an alert policy, the target of that alert policy is
-    updated automatically as monitored resources are added and removed
-    from the infrastructure.
+    A group is a named filter that is used to identify a collection of
+    monitored resources. Groups are typically used to mirror the physical
+    and/or logical topology of the environment. Because group membership is
+    computed dynamically, monitored resources that are started in the future
+    are automatically placed in matching groups. By using a group to name
+    monitored resources in, for example, an alert policy, the target of that
+    alert policy is updated automatically as monitored resources are added
+    and removed from the infrastructure.
     """
 
     SERVICE_ADDRESS = 'monitoring.googleapis.com:443'
@@ -176,9 +175,10 @@ class GroupServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -223,24 +223,24 @@ class GroupServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_groups(name, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_groups(name).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
             name (str): The project whose groups are to be listed. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            children_of_group (str): A group name: ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
-                Returns groups whose ``parentName`` field contains the group
-                name.  If no groups have this parent, the results are empty.
-            ancestors_of_group (str): A group name: ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
-                Returns groups that are ancestors of the specified group.
-                The groups are returned in order, starting with the immediate parent and
-                ending with the most distant ancestor.  If the specified group has no
-                immediate parent, the results are empty.
-            descendants_of_group (str): A group name: ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
-                Returns the descendants of the specified group.  This is a superset of
+                ``"projects/{project_id_or_number}"``.
+            children_of_group (str): A group name: ``"projects/{project_id_or_number}/groups/{group_id}"``.
+                Returns groups whose ``parentName`` field contains the group name. If no
+                groups have this parent, the results are empty.
+            ancestors_of_group (str): A group name: ``"projects/{project_id_or_number}/groups/{group_id}"``.
+                Returns groups that are ancestors of the specified group. The groups are
+                returned in order, starting with the immediate parent and ending with
+                the most distant ancestor. If the specified group has no immediate
+                parent, the results are empty.
+            descendants_of_group (str): A group name: ``"projects/{project_id_or_number}/groups/{group_id}"``.
+                Returns the descendants of the specified group. This is a superset of
                 the results returned by the ``childrenOfGroup`` filter, and includes
                 children-of-children, and so forth.
             page_size (int): The maximum number of resources contained in the
@@ -331,7 +331,7 @@ class GroupServiceClient(object):
 
         Args:
             name (str): The group to retrieve. The format is
-                ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
+                ``"projects/{project_id_or_number}/groups/{group_id}"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -385,16 +385,17 @@ class GroupServiceClient(object):
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``group``:
+            >>> # TODO: Initialize `group`:
             >>> group = {}
             >>>
             >>> response = client.create_group(name, group)
 
         Args:
             name (str): The project in which to create the group. The format is
-                ``\"projects/{project_id_or_number}\"``.
+                ``"projects/{project_id_or_number}"``.
             group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): A group definition. It is an error to define the ``name`` field because
                 the system assigns the name.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.Group`
             validate_only (bool): If true, validate this request but do not create the group.
@@ -446,22 +447,24 @@ class GroupServiceClient(object):
                      timeout=google.api_core.gapic_v1.method.DEFAULT,
                      metadata=None):
         """
-        Updates an existing group.
-        You can change any group attributes except ``name``.
+        Updates an existing group. You can change any group attributes except
+        ``name``.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
             >>> client = monitoring_v3.GroupServiceClient()
             >>>
-            >>> # TODO: Initialize ``group``:
+            >>> # TODO: Initialize `group`:
             >>> group = {}
             >>>
             >>> response = client.update_group(group)
 
         Args:
-            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): The new definition of the group.  All fields of the existing group,
-                excepting ``name``, are replaced with the corresponding fields of this group.
+            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): The new definition of the group. All fields of the existing group,
+                excepting ``name``, are replaced with the corresponding fields of this
+                group.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.Group`
             validate_only (bool): If true, validate this request but do not update the existing group.
@@ -524,7 +527,7 @@ class GroupServiceClient(object):
 
         Args:
             name (str): The group to delete. The format is
-                ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
+                ``"projects/{project_id_or_number}/groups/{group_id}"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -586,32 +589,34 @@ class GroupServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_group_members(name, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_group_members(name).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
             name (str): The group whose members are listed. The format is
-                ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
+                ``"projects/{project_id_or_number}/groups/{group_id}"``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            filter_ (str): An optional `list filter <https://cloud.google.com/monitoring/api/learn_more#filtering>`_ describing
-                the members to be returned.  The filter may reference the type, labels, and
-                metadata of monitored resources that comprise the group.
-                For example, to return only resources representing Compute Engine VM
-                instances, use this filter:
+            filter_ (str): An optional `list
+                filter <https://cloud.google.com/monitoring/api/learn_more#filtering>`__
+                describing the members to be returned. The filter may reference the
+                type, labels, and metadata of monitored resources that comprise the
+                group. For example, to return only resources representing Compute Engine
+                VM instances, use this filter:
 
                 ::
 
-                    resource.type = \"gce_instance\"
+                     resource.type = "gce_instance"
             interval (Union[dict, ~google.cloud.monitoring_v3.types.TimeInterval]): An optional time interval for which results should be returned. Only
                 members that were part of the group during the specified interval are
                 included in the response.  If no interval is provided then the group
                 membership over the last minute is returned.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.TimeInterval`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
