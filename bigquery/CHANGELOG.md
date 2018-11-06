@@ -19,6 +19,7 @@
 - Add --params option to %%bigquery magic ([#6277](https://github.com/googleapis/google-cloud-python/pull/6277))
 - Expose 'to_api_repr' method for jobs. ([#6176](https://github.com/googleapis/google-cloud-python/pull/6176))
 - Allow string in addition to DatasetReference / TableReference in Clie… ([#6164](https://github.com/googleapis/google-cloud-python/pull/6164))
+- Add keyword arguments to job config constructors for setting properties ([#6397](https://github.com/googleapis/google-cloud-python/pull/6397))
 
 ### Documentation
 
