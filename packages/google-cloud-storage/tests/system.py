@@ -194,7 +194,7 @@ class TestStorageBuckets(unittest.TestCase):
     @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_crud_bucket_with_requester_pays(self):
         new_bucket_name = 'w-requester-pays' + unique_resource_id('-')
-        created = Config.CLIENT.create_bucket(
+        created = retry_429(Config.CLIENT.create_bucket)(
             new_bucket_name, requester_pays=True)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
@@ -235,7 +235,7 @@ class TestStorageBuckets(unittest.TestCase):
     @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_bucket_acls_iam_with_user_project(self):
         new_bucket_name = 'acl-w-user-project' + unique_resource_id('-')
-        Config.CLIENT.create_bucket(
+        retry_429(Config.CLIENT.create_bucket)(
             new_bucket_name, requester_pays=True)
         self.case_buckets_to_delete.append(new_bucket_name)
 
@@ -273,7 +273,7 @@ class TestStorageBuckets(unittest.TestCase):
     @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_copy_existing_file_with_user_project(self):
         new_bucket_name = 'copy-w-requester-pays' + unique_resource_id('-')
-        created = Config.CLIENT.create_bucket(
+        created = retry_429(Config.CLIENT.create_bucket)(
             new_bucket_name, requester_pays=True)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
@@ -302,7 +302,7 @@ class TestStorageBuckets(unittest.TestCase):
     def test_bucket_get_blob_with_user_project(self):
         new_bucket_name = 'w-requester-pays' + unique_resource_id('-')
         data = b'DEADBEEF'
-        created = Config.CLIENT.create_bucket(
+        created = retry_429(Config.CLIENT.create_bucket)(
             new_bucket_name, requester_pays=True)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
@@ -832,7 +832,7 @@ class TestStorageCompose(TestStorageFiles):
     @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_compose_with_user_project(self):
         new_bucket_name = 'compose-user-project' + unique_resource_id('-')
-        created = Config.CLIENT.create_bucket(
+        created = retry_429(Config.CLIENT.create_bucket)(
             new_bucket_name, requester_pays=True)
         try:
             SOURCE_1 = b'AAA\n'
@@ -908,7 +908,7 @@ class TestStorageRewrite(TestStorageFiles):
     def test_rewrite_add_key_with_user_project(self):
         file_data = self.FILES['simple']
         new_bucket_name = 'rewrite-key-up' + unique_resource_id('-')
-        created = Config.CLIENT.create_bucket(
+        created = retry_429(Config.CLIENT.create_bucket)(
             new_bucket_name, requester_pays=True)
         try:
             with_user_project = Config.CLIENT.bucket(
@@ -936,7 +936,7 @@ class TestStorageRewrite(TestStorageFiles):
         BLOB_NAME = 'rotating-keys'
         file_data = self.FILES['simple']
         new_bucket_name = 'rewrite-rotate-up' + unique_resource_id('-')
-        created = Config.CLIENT.create_bucket(
+        created = retry_429(Config.CLIENT.create_bucket)(
             new_bucket_name, requester_pays=True)
         try:
             with_user_project = Config.CLIENT.bucket(
@@ -1293,7 +1293,7 @@ class TestRetentionPolicy(unittest.TestCase):
         period_secs = 10
 
         new_bucket_name = 'w-retention-period' + unique_resource_id('-')
-        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        bucket = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
 
         bucket.retention_period = period_secs
@@ -1343,7 +1343,7 @@ class TestRetentionPolicy(unittest.TestCase):
         new_bucket_name = 'w-def-ebh' + unique_resource_id('-')
         self.assertRaises(exceptions.NotFound,
                           Config.CLIENT.get_bucket, new_bucket_name)
-        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        bucket = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
 
         bucket.default_event_based_hold = True
@@ -1394,7 +1394,7 @@ class TestRetentionPolicy(unittest.TestCase):
         new_bucket_name = 'w-tmp-hold' + unique_resource_id('-')
         self.assertRaises(exceptions.NotFound,
                           Config.CLIENT.get_bucket, new_bucket_name)
-        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        bucket = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
 
         blob_name = 'test-blob'
@@ -1427,7 +1427,7 @@ class TestRetentionPolicy(unittest.TestCase):
         new_bucket_name = 'loc-ret-policy' + unique_resource_id('-')
         self.assertRaises(exceptions.NotFound,
                           Config.CLIENT.get_bucket, new_bucket_name)
-        bucket = Config.CLIENT.create_bucket(new_bucket_name)
+        bucket = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
 
         bucket.retention_period = period_secs
