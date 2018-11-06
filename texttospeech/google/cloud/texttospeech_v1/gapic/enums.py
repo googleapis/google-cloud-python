@@ -20,8 +20,8 @@ import enum
 
 class SsmlVoiceGender(enum.IntEnum):
     """
-    Gender of the voice as described in
-    `SSML voice element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`_.
+    Gender of the voice as described in `SSML voice
+    element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`__.
 
     Attributes:
       SSML_VOICE_GENDER_UNSPECIFIED (int): An unspecified gender.
