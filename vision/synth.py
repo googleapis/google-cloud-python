@@ -70,21 +70,3 @@ s.replace(
     'import google.api_core.operations_v1',
     'from google.api_core import operations_v1',
 )
-
-# under indented second line of docstring
-s.replace(
-    "google/cloud/vision_*/gapic/product_search_client.py",
-    "    (- The API has a collection of ``ProductSet.*\n)"
-    "\s+(``project.*\n)\s+(products.*)",
-    "    \g<1>      \g<2>      \g<3>")
-
-s.replace(
-    'google/cloud/vision_*/gapic/product_search_client.py',
-    '(        \* .*\n        )([^\s*])',
-    '\g<1>  \g<2>')
-
-# Blank line needed after bullet list
-s.replace(
-    'google/cloud/vision_v1p3beta1/gapic/product_search_client.py',
-    "(- Each ``Product`` has a collection .*\n.*\n)(\s+\"\"\")",
-    '\g<1>\n\g<2>')

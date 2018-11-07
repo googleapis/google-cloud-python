@@ -110,10 +110,11 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if display_name is missing or longer than 4096
-        characters.
-        * Returns INVALID_ARGUMENT if description is longer than 4096 characters.
-        * Returns INVALID_ARGUMENT if product_category is missing or invalid.
+        -  Returns INVALID\_ARGUMENT if display\_name is missing or longer than
+           4096 characters.
+        -  Returns INVALID\_ARGUMENT if description is longer than 4096
+           characters.
+        -  Returns INVALID\_ARGUMENT if product\_category is missing or invalid.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -130,7 +131,8 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
+        -  Returns INVALID\_ARGUMENT if page\_size is greater than 100 or less
+           than 1.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -147,7 +149,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the Product does not exist.
+        -  Returns NOT\_FOUND if the Product does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -160,21 +162,21 @@ class ProductSearchGrpcTransport(object):
     def update_product(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Makes changes to a Product resource.
-        Only the ``display_name``, ``description``, and ``labels`` fields can be updated
-        right now.
+        Makes changes to a Product resource. Only the ``display_name``,
+        ``description``, and ``labels`` fields can be updated right now.
 
         If labels are updated, the change will not be reflected in queries until
         the next index time.
 
         Possible errors:
 
-        * Returns NOT_FOUND if the Product does not exist.
-        * Returns INVALID_ARGUMENT if display_name is present in update_mask but is
-        missing from the request or longer than 4096 characters.
-        * Returns INVALID_ARGUMENT if description is present in update_mask but is
-        longer than 4096 characters.
-        * Returns INVALID_ARGUMENT if product_category is present in update_mask.
+        -  Returns NOT\_FOUND if the Product does not exist.
+        -  Returns INVALID\_ARGUMENT if display\_name is present in update\_mask
+           but is missing from the request or longer than 4096 characters.
+        -  Returns INVALID\_ARGUMENT if description is present in update\_mask
+           but is longer than 4096 characters.
+        -  Returns INVALID\_ARGUMENT if product\_category is present in
+           update\_mask.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -189,13 +191,13 @@ class ProductSearchGrpcTransport(object):
 
         Permanently deletes a product and its reference images.
 
-        Metadata of the product and all its images will be deleted right away, but
-        search queries against ProductSets containing the product may still work
-        until all related caches are refreshed.
+        Metadata of the product and all its images will be deleted right away,
+        but search queries against ProductSets containing the product may still
+        work until all related caches are refreshed.
 
         Possible errors:
 
-        * Returns NOT_FOUND if the product does not exist.
+        -  Returns NOT\_FOUND if the product does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -212,9 +214,9 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the parent product does not exist.
-        * Returns INVALID_ARGUMENT if the page_size is greater than 100, or less
-        than 1.
+        -  Returns NOT\_FOUND if the parent product does not exist.
+        -  Returns INVALID\_ARGUMENT if the page\_size is greater than 100, or
+           less than 1.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -231,7 +233,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the specified image does not exist.
+        -  Returns NOT\_FOUND if the specified image does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -247,14 +249,14 @@ class ProductSearchGrpcTransport(object):
         Permanently deletes a reference image.
 
         The image metadata will be deleted right away, but search queries
-        against ProductSets containing the image may still work until all related
-        caches are refreshed.
+        against ProductSets containing the image may still work until all
+        related caches are refreshed.
 
         The actual image files are not deleted from Google Cloud Storage.
 
         Possible errors:
 
-        * Returns NOT_FOUND if the reference image does not exist.
+        -  Returns NOT\_FOUND if the reference image does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -269,23 +271,25 @@ class ProductSearchGrpcTransport(object):
 
         Creates and returns a new ReferenceImage resource.
 
-        The ``bounding_poly`` field is optional. If ``bounding_poly`` is not specified,
-        the system will try to detect regions of interest in the image that are
-        compatible with the product_category on the parent product. If it is
-        specified, detection is ALWAYS skipped. The system converts polygons into
-        non-rotated rectangles.
+        The ``bounding_poly`` field is optional. If ``bounding_poly`` is not
+        specified, the system will try to detect regions of interest in the
+        image that are compatible with the product\_category on the parent
+        product. If it is specified, detection is ALWAYS skipped. The system
+        converts polygons into non-rotated rectangles.
 
-        Note that the pipeline will resize the image if the image resolution is too
-        large to process (above 50MP).
+        Note that the pipeline will resize the image if the image resolution is
+        too large to process (above 50MP).
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if the image_uri is missing or longer than 4096
-        characters.
-        * Returns INVALID_ARGUMENT if the product does not exist.
-        * Returns INVALID_ARGUMENT if bounding_poly is not provided, and nothing
-        compatible with the parent product's product_category is detected.
-        * Returns INVALID_ARGUMENT if bounding_poly contains more than 10 polygons.
+        -  Returns INVALID\_ARGUMENT if the image\_uri is missing or longer than
+           4096 characters.
+        -  Returns INVALID\_ARGUMENT if the product does not exist.
+        -  Returns INVALID\_ARGUMENT if bounding\_poly is not provided, and
+           nothing compatible with the parent product's product\_category is
+           detected.
+        -  Returns INVALID\_ARGUMENT if bounding\_poly contains more than 10
+           polygons.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -302,8 +306,8 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if display_name is missing, or is longer than
-        4096 characters.
+        -  Returns INVALID\_ARGUMENT if display\_name is missing, or is longer
+           than 4096 characters.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -320,8 +324,8 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if page_size is greater than 100, or less
-        than 1.
+        -  Returns INVALID\_ARGUMENT if page\_size is greater than 100, or less
+           than 1.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -338,7 +342,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns NOT\_FOUND if the ProductSet does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -351,14 +355,14 @@ class ProductSearchGrpcTransport(object):
     def update_product_set(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Makes changes to a ProductSet resource.
-        Only display_name can be updated currently.
+        Makes changes to a ProductSet resource. Only display\_name can be
+        updated currently.
 
         Possible errors:
 
-        * Returns NOT_FOUND if the ProductSet does not exist.
-        * Returns INVALID_ARGUMENT if display_name is present in update_mask but
-        missing from the request or longer than 4096 characters.
+        -  Returns NOT\_FOUND if the ProductSet does not exist.
+        -  Returns INVALID\_ARGUMENT if display\_name is present in update\_mask
+           but missing from the request or longer than 4096 characters.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -371,14 +375,14 @@ class ProductSearchGrpcTransport(object):
     def delete_product_set(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Permanently deletes a ProductSet. All Products and ReferenceImages in the
-        ProductSet will be deleted.
+        Permanently deletes a ProductSet. All Products and ReferenceImages in
+        the ProductSet will be deleted.
 
         The actual image files are not deleted from Google Cloud Storage.
 
         Possible errors:
 
-        * Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns NOT\_FOUND if the ProductSet does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -398,7 +402,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the Product or the ProductSet doesn't exist.
+        -  Returns NOT\_FOUND if the Product or the ProductSet doesn't exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -415,7 +419,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns NOT_FOUND If the Product is not found under the ProductSet.
+        -  Returns NOT\_FOUND If the Product is not found under the ProductSet.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -434,7 +438,8 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
+        -  Returns INVALID\_ARGUMENT if page\_size is greater than 100 or less
+           than 1.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -450,10 +455,10 @@ class ProductSearchGrpcTransport(object):
         Asynchronous API that imports a list of reference images to specified
         product sets based on a list of image information.
 
-        The ``google.longrunning.Operation`` API can be used to keep track of the
-        progress and results of the request.
-        ``Operation.metadata`` contains ``BatchOperationMetadata``. (progress)
-        ``Operation.response`` contains ``ImportProductSetsResponse``. (results)
+        The ``google.longrunning.Operation`` API can be used to keep track of
+        the progress and results of the request. ``Operation.metadata`` contains
+        ``BatchOperationMetadata``. (progress) ``Operation.response`` contains
+        ``ImportProductSetsResponse``. (results)
 
         The input source of this method is a csv file on Google Cloud Storage.
         For the format of the csv file please see

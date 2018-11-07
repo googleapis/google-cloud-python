@@ -96,7 +96,7 @@ class Feature(object):
           LABEL_DETECTION (int): Run label detection.
           TEXT_DETECTION (int): Run OCR.
           DOCUMENT_TEXT_DETECTION (int): Run dense text document OCR. Takes precedence when both
-          DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
+          DOCUMENT\_TEXT\_DETECTION and TEXT\_DETECTION are present.
           SAFE_SEARCH_DETECTION (int): Run computer vision models to compute image safe-search properties.
           IMAGE_PROPERTIES (int): Compute a set of image properties, such as the image's dominant colors.
           CROP_HINTS (int): Run crop hints.
@@ -119,10 +119,10 @@ class FaceAnnotation(object):
     class Landmark(object):
         class Type(enum.IntEnum):
             """
-            Face landmark (feature) type.
-            Left and right are defined from the vantage of the viewer of the image
-            without considering mirror projections typical of photos. So, ``LEFT_EYE``,
-            typically, is the person's right eye.
+            Face landmark (feature) type. Left and right are defined from the
+            vantage of the viewer of the image without considering mirror
+            projections typical of photos. So, ``LEFT_EYE``, typically, is the
+            person's right eye.
 
             Attributes:
               UNKNOWN_LANDMARK (int): Unknown face landmark detected. Should not be filled.

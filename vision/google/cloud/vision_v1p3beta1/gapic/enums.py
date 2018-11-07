@@ -37,8 +37,8 @@ class ProductSearchResultsView(enum.IntEnum):
     Specifies the fields to include in product search results.
 
     Attributes:
-      BASIC (int): Product search results contain only ``product_category`` and ``product_id``.
-      Default value.
+      BASIC (int): Product search results contain only ``product_category`` and
+      ``product_id``. Default value.
       FULL (int): Product search results contain ``product_category``, ``product_id``,
       ``image_uri``, and ``score``.
     """
@@ -145,8 +145,8 @@ class Feature(object):
           LOGO_DETECTION (int): Run logo detection.
           LABEL_DETECTION (int): Run label detection.
           TEXT_DETECTION (int): Run text detection / optical character recognition (OCR). Text detection
-          is optimized for areas of text within a larger image; if the image is
-          a document, use ``DOCUMENT_TEXT_DETECTION`` instead.
+          is optimized for areas of text within a larger image; if the image is a
+          document, use ``DOCUMENT_TEXT_DETECTION`` instead.
           DOCUMENT_TEXT_DETECTION (int): Run dense text document OCR. Takes precedence when both
           ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` are present.
           SAFE_SEARCH_DETECTION (int): Run Safe Search to detect potentially unsafe
@@ -177,10 +177,10 @@ class FaceAnnotation(object):
     class Landmark(object):
         class Type(enum.IntEnum):
             """
-            Face landmark (feature) type.
-            Left and right are defined from the vantage of the viewer of the image
-            without considering mirror projections typical of photos. So, ``LEFT_EYE``,
-            typically, is the person's right eye.
+            Face landmark (feature) type. Left and right are defined from the
+            vantage of the viewer of the image without considering mirror
+            projections typical of photos. So, ``LEFT_EYE``, typically, is the
+            person's right eye.
 
             Attributes:
               UNKNOWN_LANDMARK (int): Unknown face landmark detected. Should not be filled.
