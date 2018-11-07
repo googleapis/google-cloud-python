@@ -285,11 +285,13 @@ contexts = _LocalContexts()
 
 @contextlib.contextmanager
 def async_context():
-    """Establish a context for a set of asynchronous API calls.
+    """Establish an asynchronous context for a set of asynchronous API calls.
 
     This function provides a context manager which establishes the event loop
     that will be used for any asynchronous NDB calls that occur in the context.
-    For example::
+    For example:
+
+    .. code-block:: python
 
         from google.cloud.ndb import async_context
 
@@ -302,11 +304,11 @@ def async_context():
     context.  Upon exiting the context, execution will block until all
     asynchronous calls loaded onto the event loop have finished execution.
 
-    Code within an ``async_context`` should be single threaded. Internally, a
-    ``threading.local`` instance is used to track the current event loop.
+    Code within an asynchronous context should be single threaded. Internally, a
+    :class:`threading.local` instance is used to track the current event loop.
 
     In the context of a web application, it is recommended that a single
-    ``async_context`` be used per HTTP request. This can typically be
+    asynchronous context be used per HTTP request. This can typically be
     accomplished in a middleware layer.
     """
     loop = EventLoop()
