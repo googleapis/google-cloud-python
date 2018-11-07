@@ -134,7 +134,7 @@ $ venv/bin/pip install -e .
 $ venv/bin/py.test tests/
 ============================= test session starts ==============================
 platform linux -- Python 3.6.7, pytest-3.10.0, py-1.7.0, pluggy-0.8.0
-rootdir: /home/tseaver/projects/agendaless/Google/src/py-crc32c, inifile:
+rootdir: ..., inifile:
 collected 9 items                                                              
 
 tests/test___init__.py .........                                         [100%]
