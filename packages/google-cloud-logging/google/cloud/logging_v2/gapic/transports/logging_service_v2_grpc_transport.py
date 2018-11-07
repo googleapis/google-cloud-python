@@ -137,9 +137,9 @@ class LoggingServiceV2GrpcTransport(object):
     def list_log_entries(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Lists log entries.  Use this method to retrieve log entries from
-        Logging.  For ways to export log entries, see
-        `Exporting Logs <https://cloud.google.com/logging/docs/export>`_.
+        Lists log entries. Use this method to retrieve log entries from Logging.
+        For ways to export log entries, see `Exporting
+        Logs <https://cloud.google.com/logging/docs/export>`__.
 
         Returns:
             Callable: A callable which accepts the appropriate

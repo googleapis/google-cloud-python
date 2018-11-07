@@ -128,10 +128,10 @@ class ConfigServiceV2GrpcTransport(object):
     def create_sink(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Creates a sink that exports specified log entries to a destination.  The
-        export of newly-ingested log entries begins immediately, unless the sink's
-        ``writer_identity`` is not permitted to write to the destination.  A sink can
-        export log entries only from the resource owning the sink.
+        Creates a sink that exports specified log entries to a destination. The
+        export of newly-ingested log entries begins immediately, unless the
+        sink's ``writer_identity`` is not permitted to write to the destination.
+        A sink can export log entries only from the resource owning the sink.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -144,10 +144,10 @@ class ConfigServiceV2GrpcTransport(object):
     def update_sink(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Updates a sink.  This method replaces the following fields in the existing
-        sink with values from the new sink: ``destination``, and ``filter``.
-        The updated sink might also have a new ``writer_identity``; see the
-        ``unique_writer_identity`` field.
+        Updates a sink. This method replaces the following fields in the
+        existing sink with values from the new sink: ``destination``, and
+        ``filter``. The updated sink might also have a new ``writer_identity``;
+        see the ``unique_writer_identity`` field.
 
         Returns:
             Callable: A callable which accepts the appropriate

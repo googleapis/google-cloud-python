@@ -173,9 +173,10 @@ class ConfigServiceV2Client(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -217,7 +218,7 @@ class ConfigServiceV2Client(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_sinks(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_sinks(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -227,10 +228,10 @@ class ConfigServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]\"
-                    \"organizations/[ORGANIZATION_ID]\"
-                    \"billingAccounts/[BILLING_ACCOUNT_ID]\"
-                    \"folders/[FOLDER_ID]\"
+                     "projects/[PROJECT_ID]"
+                     "organizations/[ORGANIZATION_ID]"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]"
+                     "folders/[FOLDER_ID]"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -308,12 +309,12 @@ class ConfigServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]/sinks/[SINK_ID]\"
-                    \"organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]\"
-                    \"billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]\"
-                    \"folders/[FOLDER_ID]/sinks/[SINK_ID]\"
+                     "projects/[PROJECT_ID]/sinks/[SINK_ID]"
+                     "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
+                     "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
-                Example: ``\"projects/my-project-id/sinks/my-sink-id\"``.
+                Example: ``"projects/my-project-id/sinks/my-sink-id"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -355,10 +356,10 @@ class ConfigServiceV2Client(object):
                     timeout=google.api_core.gapic_v1.method.DEFAULT,
                     metadata=None):
         """
-        Creates a sink that exports specified log entries to a destination.  The
-        export of newly-ingested log entries begins immediately, unless the sink's
-        ``writer_identity`` is not permitted to write to the destination.  A sink can
-        export log entries only from the resource owning the sink.
+        Creates a sink that exports specified log entries to a destination. The
+        export of newly-ingested log entries begins immediately, unless the
+        sink's ``writer_identity`` is not permitted to write to the destination.
+        A sink can export log entries only from the resource owning the sink.
 
         Example:
             >>> from google.cloud import logging_v2
@@ -367,7 +368,7 @@ class ConfigServiceV2Client(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``sink``:
+            >>> # TODO: Initialize `sink`:
             >>> sink = {}
             >>>
             >>> response = client.create_sink(parent, sink)
@@ -377,27 +378,29 @@ class ConfigServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]\"
-                    \"organizations/[ORGANIZATION_ID]\"
-                    \"billingAccounts/[BILLING_ACCOUNT_ID]\"
-                    \"folders/[FOLDER_ID]\"
+                     "projects/[PROJECT_ID]"
+                     "organizations/[ORGANIZATION_ID]"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]"
+                     "folders/[FOLDER_ID]"
 
-                Examples: ``\"projects/my-logging-project\"``, ``\"organizations/123456789\"``.
-            sink (Union[dict, ~google.cloud.logging_v2.types.LogSink]): Required. The new sink, whose ``name`` parameter is a sink identifier that
-                is not already in use.
+                Examples: ``"projects/my-logging-project"``,
+                ``"organizations/123456789"``.
+            sink (Union[dict, ~google.cloud.logging_v2.types.LogSink]): Required. The new sink, whose ``name`` parameter is a sink identifier
+                that is not already in use.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogSink`
-            unique_writer_identity (bool): Optional. Determines the kind of IAM identity returned as ``writer_identity``
-                in the new sink.  If this value is omitted or set to false, and if the
-                sink's parent is a project, then the value returned as ``writer_identity`` is
-                the same group or service account used by Logging before the
-                addition of writer identities to this API. The sink's destination must be
-                in the same project as the sink itself.
+            unique_writer_identity (bool): Optional. Determines the kind of IAM identity returned as
+                ``writer_identity`` in the new sink. If this value is omitted or set to
+                false, and if the sink's parent is a project, then the value returned as
+                ``writer_identity`` is the same group or service account used by Logging
+                before the addition of writer identities to this API. The sink's
+                destination must be in the same project as the sink itself.
 
                 If this field is set to true, or if the sink is owned by a non-project
-                resource such as an organization, then the value of ``writer_identity`` will
-                be a unique service account used only for exports from the new sink.  For
-                more information, see ``writer_identity`` in ``LogSink``.
+                resource such as an organization, then the value of ``writer_identity``
+                will be a unique service account used only for exports from the new
+                sink. For more information, see ``writer_identity`` in ``LogSink``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -444,10 +447,10 @@ class ConfigServiceV2Client(object):
                     timeout=google.api_core.gapic_v1.method.DEFAULT,
                     metadata=None):
         """
-        Updates a sink.  This method replaces the following fields in the existing
-        sink with values from the new sink: ``destination``, and ``filter``.
-        The updated sink might also have a new ``writer_identity``; see the
-        ``unique_writer_identity`` field.
+        Updates a sink. This method replaces the following fields in the
+        existing sink with values from the new sink: ``destination``, and
+        ``filter``. The updated sink might also have a new ``writer_identity``;
+        see the ``unique_writer_identity`` field.
 
         Example:
             >>> from google.cloud import logging_v2
@@ -456,7 +459,7 @@ class ConfigServiceV2Client(object):
             >>>
             >>> sink_name = client.sink_path('[PROJECT]', '[SINK]')
             >>>
-            >>> # TODO: Initialize ``sink``:
+            >>> # TODO: Initialize `sink`:
             >>> sink = {}
             >>>
             >>> response = client.update_sink(sink_name, sink)
@@ -467,41 +470,35 @@ class ConfigServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]/sinks/[SINK_ID]\"
-                    \"organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]\"
-                    \"billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]\"
-                    \"folders/[FOLDER_ID]/sinks/[SINK_ID]\"
+                     "projects/[PROJECT_ID]/sinks/[SINK_ID]"
+                     "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
+                     "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
-                Example: ``\"projects/my-project-id/sinks/my-sink-id\"``.
-            sink (Union[dict, ~google.cloud.logging_v2.types.LogSink]): Required. The updated sink, whose name is the same identifier that appears
-                as part of ``sink_name``.
+                Example: ``"projects/my-project-id/sinks/my-sink-id"``.
+            sink (Union[dict, ~google.cloud.logging_v2.types.LogSink]): Required. The updated sink, whose name is the same identifier that
+                appears as part of ``sink_name``.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogSink`
             unique_writer_identity (bool): Optional. See
-                `sinks.create <https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/create>`_
-                for a description of this field.  When updating a sink, the effect of this
-                field on the value of ``writer_identity`` in the updated sink depends on both
-                the old and new values of this field:
+                `sinks.create <https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/create>`__
+                for a description of this field. When updating a sink, the effect of
+                this field on the value of ``writer_identity`` in the updated sink
+                depends on both the old and new values of this field:
 
-                +   If the old and new values of this field are both false or both true,
-                ::
-
-                    then there is no change to the sink's `writer_identity`.
-                +   If the old value is false and the new value is true, then
-                ::
-
-                    `writer_identity` is changed to a unique service account.
-                +   It is an error if the old value is true and the new value is
-                ::
-
-                    set to false or defaulted to false.
-            update_mask (Union[dict, ~google.cloud.logging_v2.types.FieldMask]): Optional. Field mask that specifies the fields in ``sink`` that need
-                an update. A sink field will be overwritten if, and only if, it is
-                in the update mask.  ``name`` and output only fields cannot be updated.
+                -  If the old and new values of this field are both false or both true,
+                   then there is no change to the sink's ``writer_identity``.
+                -  If the old value is false and the new value is true, then
+                   ``writer_identity`` is changed to a unique service account.
+                -  It is an error if the old value is true and the new value is set to
+                   false or defaulted to false.
+            update_mask (Union[dict, ~google.cloud.logging_v2.types.FieldMask]): Optional. Field mask that specifies the fields in ``sink`` that need an
+                update. A sink field will be overwritten if, and only if, it is in the
+                update mask. ``name`` and output only fields cannot be updated.
 
                 An empty updateMask is temporarily treated as using the following mask
-                for backwards compatibility purposes:
-                  destination,filter,includeChildren
+                for backwards compatibility purposes: destination,filter,includeChildren
                 At some point in the future, behavior will be removed and specifying an
                 empty updateMask will be an error.
 
@@ -509,6 +506,7 @@ class ConfigServiceV2Client(object):
                 https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
 
                 Example: ``updateMask=filter``.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -573,12 +571,12 @@ class ConfigServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]/sinks/[SINK_ID]\"
-                    \"organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]\"
-                    \"billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]\"
-                    \"folders/[FOLDER_ID]/sinks/[SINK_ID]\"
+                     "projects/[PROJECT_ID]/sinks/[SINK_ID]"
+                     "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
+                     "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
-                Example: ``\"projects/my-project-id/sinks/my-sink-id\"``.
+                Example: ``"projects/my-project-id/sinks/my-sink-id"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -634,7 +632,7 @@ class ConfigServiceV2Client(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_exclusions(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_exclusions(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -644,10 +642,10 @@ class ConfigServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]\"
-                    \"organizations/[ORGANIZATION_ID]\"
-                    \"billingAccounts/[BILLING_ACCOUNT_ID]\"
-                    \"folders/[FOLDER_ID]\"
+                     "projects/[PROJECT_ID]"
+                     "organizations/[ORGANIZATION_ID]"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]"
+                     "folders/[FOLDER_ID]"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -726,12 +724,12 @@ class ConfigServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]\"
-                    \"organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]\"
-                    \"billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]\"
-                    \"folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]\"
+                     "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
+                     "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
+                     "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
 
-                Example: ``\"projects/my-project-id/exclusions/my-exclusion-id\"``.
+                Example: ``"projects/my-project-id/exclusions/my-exclusion-id"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -784,7 +782,7 @@ class ConfigServiceV2Client(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``exclusion``:
+            >>> # TODO: Initialize `exclusion`:
             >>> exclusion = {}
             >>>
             >>> response = client.create_exclusion(parent, exclusion)
@@ -794,14 +792,16 @@ class ConfigServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]\"
-                    \"organizations/[ORGANIZATION_ID]\"
-                    \"billingAccounts/[BILLING_ACCOUNT_ID]\"
-                    \"folders/[FOLDER_ID]\"
+                     "projects/[PROJECT_ID]"
+                     "organizations/[ORGANIZATION_ID]"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]"
+                     "folders/[FOLDER_ID]"
 
-                Examples: ``\"projects/my-logging-project\"``, ``\"organizations/123456789\"``.
-            exclusion (Union[dict, ~google.cloud.logging_v2.types.LogExclusion]): Required. The new exclusion, whose ``name`` parameter is an exclusion name
-                that is not already used in the parent resource.
+                Examples: ``"projects/my-logging-project"``,
+                ``"organizations/123456789"``.
+            exclusion (Union[dict, ~google.cloud.logging_v2.types.LogExclusion]): Required. The new exclusion, whose ``name`` parameter is an exclusion
+                name that is not already used in the parent resource.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogExclusion`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -859,10 +859,10 @@ class ConfigServiceV2Client(object):
             >>>
             >>> name = client.exclusion_path('[PROJECT]', '[EXCLUSION]')
             >>>
-            >>> # TODO: Initialize ``exclusion``:
+            >>> # TODO: Initialize `exclusion`:
             >>> exclusion = {}
             >>>
-            >>> # TODO: Initialize ``update_mask``:
+            >>> # TODO: Initialize `update_mask`:
             >>> update_mask = {}
             >>>
             >>> response = client.update_exclusion(name, exclusion, update_mask)
@@ -872,14 +872,15 @@ class ConfigServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]\"
-                    \"organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]\"
-                    \"billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]\"
-                    \"folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]\"
+                     "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
+                     "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
+                     "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
 
-                Example: ``\"projects/my-project-id/exclusions/my-exclusion-id\"``.
-            exclusion (Union[dict, ~google.cloud.logging_v2.types.LogExclusion]): Required. New values for the existing exclusion. Only the fields specified
-                in ``update_mask`` are relevant.
+                Example: ``"projects/my-project-id/exclusions/my-exclusion-id"``.
+            exclusion (Union[dict, ~google.cloud.logging_v2.types.LogExclusion]): Required. New values for the existing exclusion. Only the fields
+                specified in ``update_mask`` are relevant.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogExclusion`
             update_mask (Union[dict, ~google.cloud.logging_v2.types.FieldMask]): Required. A nonempty list of fields to change in the existing exclusion.
@@ -888,7 +889,8 @@ class ConfigServiceV2Client(object):
                 ``update_mask`` are not changed and are ignored in the request.
 
                 For example, to change the filter and description of an exclusion,
-                specify an ``update_mask`` of ``\"filter,description\"``.
+                specify an ``update_mask`` of ``"filter,description"``.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -952,12 +954,12 @@ class ConfigServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]\"
-                    \"organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]\"
-                    \"billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]\"
-                    \"folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]\"
+                     "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
+                     "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
+                     "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
 
-                Example: ``\"projects/my-project-id/exclusions/my-exclusion-id\"``.
+                Example: ``"projects/my-project-id/exclusions/my-exclusion-id"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
