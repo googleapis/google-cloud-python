@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Data Loss Prevention (DLP) API &#8212; google-cloud 543f36b documentation</title>
+    <title>Client for Cloud Data Loss Prevention (DLP) API &#8212; google-cloud 11a5008 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -155,13 +155,14 @@ more.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent resource name, for example projects/my-project-id or
 organizations/my-org-id.</li>
-<li><strong>deidentify_template</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyTemplate" title="google.cloud.dlp_v2.types.DeidentifyTemplate"><em>DeidentifyTemplate</em></a><em>]</em>) – The DeidentifyTemplate to create.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyTemplate" title="google.cloud.dlp_v2.types.DeidentifyTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeidentifyTemplate</span></code></a></li>
-<li><strong>template_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The template id can contain uppercase and lowercase letters,
-numbers, and hyphens; that is, it must match the regular
-expression: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100
-characters. Can be empty to allow the system to generate one.</li>
+<li><strong>deidentify_template</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyTemplate" title="google.cloud.dlp_v2.types.DeidentifyTemplate"><em>DeidentifyTemplate</em></a><em>]</em>) – <p>The DeidentifyTemplate to create.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyTemplate" title="google.cloud.dlp_v2.types.DeidentifyTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeidentifyTemplate</span></code></a></p>
+</li>
+<li><strong>template_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The template id can contain uppercase and lowercase letters, numbers,
+and hyphens; that is, it must match the regular expression:
+<code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100 characters. Can be empty to
+allow the system to generate one.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -218,10 +219,10 @@ be all types, but may change over time as detectors are updated.</p>
 message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectJobConfig" title="google.cloud.dlp_v2.types.InspectJobConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectJobConfig</span></code></a></li>
 <li><strong>risk_job</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.RiskAnalysisJobConfig" title="google.cloud.dlp_v2.types.RiskAnalysisJobConfig"><em>RiskAnalysisJobConfig</em></a><em>]</em>) – If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.RiskAnalysisJobConfig" title="google.cloud.dlp_v2.types.RiskAnalysisJobConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">RiskAnalysisJobConfig</span></code></a></li>
-<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The job id can contain uppercase and lowercase letters,
-numbers, and hyphens; that is, it must match the regular
-expression: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100
-characters. Can be empty to allow the system to generate one.</li>
+<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The job id can contain uppercase and lowercase letters, numbers, and
+hyphens; that is, it must match the regular expression:
+<code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100 characters. Can be empty to
+allow the system to generate one.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -272,13 +273,14 @@ See <a class="reference external" href="https://cloud.google.com/dlp/docs/creati
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent resource name, for example projects/my-project-id or
 organizations/my-org-id.</li>
-<li><strong>inspect_template</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectTemplate" title="google.cloud.dlp_v2.types.InspectTemplate"><em>InspectTemplate</em></a><em>]</em>) – The InspectTemplate to create.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectTemplate" title="google.cloud.dlp_v2.types.InspectTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectTemplate</span></code></a></li>
-<li><strong>template_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The template id can contain uppercase and lowercase letters,
-numbers, and hyphens; that is, it must match the regular
-expression: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100
-characters. Can be empty to allow the system to generate one.</li>
+<li><strong>inspect_template</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectTemplate" title="google.cloud.dlp_v2.types.InspectTemplate"><em>InspectTemplate</em></a><em>]</em>) – <p>The InspectTemplate to create.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectTemplate" title="google.cloud.dlp_v2.types.InspectTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectTemplate</span></code></a></p>
+</li>
+<li><strong>template_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The template id can contain uppercase and lowercase letters, numbers,
+and hyphens; that is, it must match the regular expression:
+<code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100 characters. Can be empty to
+allow the system to generate one.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -328,13 +330,14 @@ See <a class="reference external" href="https://cloud.google.com/dlp/docs/creati
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent resource name, for example projects/my-project-id.</li>
-<li><strong>job_trigger</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.JobTrigger" title="google.cloud.dlp_v2.types.JobTrigger"><em>JobTrigger</em></a><em>]</em>) – The JobTrigger to create.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.JobTrigger" title="google.cloud.dlp_v2.types.JobTrigger"><code class="xref py py-class docutils literal notranslate"><span class="pre">JobTrigger</span></code></a></li>
-<li><strong>trigger_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The trigger id can contain uppercase and lowercase letters,
-numbers, and hyphens; that is, it must match the regular
-expression: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100
-characters. Can be empty to allow the system to generate one.</li>
+<li><strong>job_trigger</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.JobTrigger" title="google.cloud.dlp_v2.types.JobTrigger"><em>JobTrigger</em></a><em>]</em>) – <p>The JobTrigger to create.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.JobTrigger" title="google.cloud.dlp_v2.types.JobTrigger"><code class="xref py py-class docutils literal notranslate"><span class="pre">JobTrigger</span></code></a></p>
+</li>
+<li><strong>trigger_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The trigger id can contain uppercase and lowercase letters, numbers, and
+hyphens; that is, it must match the regular expression:
+<code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100 characters. Can be empty to
+allow the system to generate one.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -385,13 +388,14 @@ learn more.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent resource name, for example projects/my-project-id or
 organizations/my-org-id.</li>
-<li><strong>config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.StoredInfoTypeConfig" title="google.cloud.dlp_v2.types.StoredInfoTypeConfig"><em>StoredInfoTypeConfig</em></a><em>]</em>) – Configuration of the storedInfoType to create.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.StoredInfoTypeConfig" title="google.cloud.dlp_v2.types.StoredInfoTypeConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoredInfoTypeConfig</span></code></a></li>
+<li><strong>config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.StoredInfoTypeConfig" title="google.cloud.dlp_v2.types.StoredInfoTypeConfig"><em>StoredInfoTypeConfig</em></a><em>]</em>) – <p>Configuration of the storedInfoType to create.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.StoredInfoTypeConfig" title="google.cloud.dlp_v2.types.StoredInfoTypeConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoredInfoTypeConfig</span></code></a></p>
+</li>
 <li><strong>stored_info_type_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The storedInfoType ID can contain uppercase and lowercase letters,
-numbers, and hyphens; that is, it must match the regular
-expression: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100
-characters. Can be empty to allow the system to generate one.</li>
+numbers, and hyphens; that is, it must match the regular expression:
+<code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100 characters. Can be empty to
+allow the system to generate one.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -445,29 +449,31 @@ be all types, but may change over time as detectors are updated.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent resource name, for example projects/my-project-id.</li>
-<li><strong>deidentify_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyConfig" title="google.cloud.dlp_v2.types.DeidentifyConfig"><em>DeidentifyConfig</em></a><em>]</em>) – Configuration for the de-identification of the content item.
-Items specified here will override the template referenced by the
-deidentify_template_name argument.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyConfig" title="google.cloud.dlp_v2.types.DeidentifyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeidentifyConfig</span></code></a></li>
-<li><strong>inspect_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><em>InspectConfig</em></a><em>]</em>) – Configuration for the inspector.
-Items specified here will override the template referenced by the
-inspect_template_name argument.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectConfig</span></code></a></li>
-<li><strong>item</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><em>ContentItem</em></a><em>]</em>) – The item to de-identify. Will be treated as text.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentItem</span></code></a></li>
+<li><strong>deidentify_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyConfig" title="google.cloud.dlp_v2.types.DeidentifyConfig"><em>DeidentifyConfig</em></a><em>]</em>) – <p>Configuration for the de-identification of the content item. Items
+specified here will override the template referenced by the
+deidentify_template_name argument.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyConfig" title="google.cloud.dlp_v2.types.DeidentifyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeidentifyConfig</span></code></a></p>
+</li>
+<li><strong>inspect_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><em>InspectConfig</em></a><em>]</em>) – <p>Configuration for the inspector. Items specified here will override the
+template referenced by the inspect_template_name argument.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectConfig</span></code></a></p>
+</li>
+<li><strong>item</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><em>ContentItem</em></a><em>]</em>) – <p>The item to de-identify. Will be treated as text.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentItem</span></code></a></p>
+</li>
 <li><strong>inspect_template_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional template to use. Any configuration directly specified in
 inspect_config will override those set in the template. Singular fields
-that are set in this request will replace their corresponding fields in the
-template. Repeated fields are appended. Singular sub-messages and groups
-are recursively merged.</li>
+that are set in this request will replace their corresponding fields in
+the template. Repeated fields are appended. Singular sub-messages and
+groups are recursively merged.</li>
 <li><strong>deidentify_template_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional template to use. Any configuration directly specified in
-deidentify_config will override those set in the template. Singular fields
-that are set in this request will replace their corresponding fields in the
-template. Repeated fields are appended. Singular sub-messages and groups
-are recursively merged.</li>
+deidentify_config will override those set in the template. Singular
+fields that are set in this request will replace their corresponding
+fields in the template. Repeated fields are appended. Singular
+sub-messages and groups are recursively merged.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -648,7 +654,7 @@ See <a class="reference external" href="https://cloud.google.com/dlp/docs/creati
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dlp_v2</span><span class="o">.</span><span class="n">DlpServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``name``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `name`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">delete_job_trigger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -819,8 +825,8 @@ more.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of the organization and deidentify template to be read, for
-example <code class="docutils literal notranslate"><span class="pre">organizations/433245324/deidentifyTemplates/432452342</span></code> or
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of the organization and deidentify template to be read,
+for example <code class="docutils literal notranslate"><span class="pre">organizations/433245324/deidentifyTemplates/432452342</span></code> or
 projects/project-id/deidentifyTemplates/432452342.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
@@ -1072,18 +1078,20 @@ and <a class="reference external" href="https://cloud.google.com/dlp/docs/inspec
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent resource name, for example projects/my-project-id.</li>
-<li><strong>inspect_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><em>InspectConfig</em></a><em>]</em>) – Configuration for the inspector. What specified here will override
-the template referenced by the inspect_template_name argument.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectConfig</span></code></a></li>
-<li><strong>item</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><em>ContentItem</em></a><em>]</em>) – The item to inspect.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentItem</span></code></a></li>
+<li><strong>inspect_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><em>InspectConfig</em></a><em>]</em>) – <p>Configuration for the inspector. What specified here will override the
+template referenced by the inspect_template_name argument.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectConfig</span></code></a></p>
+</li>
+<li><strong>item</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><em>ContentItem</em></a><em>]</em>) – <p>The item to inspect.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentItem</span></code></a></p>
+</li>
 <li><strong>inspect_template_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional template to use. Any configuration directly specified in
 inspect_config will override those set in the template. Singular fields
-that are set in this request will replace their corresponding fields in the
-template. Repeated fields are appended. Singular sub-messages and groups
-are recursively merged.</li>
+that are set in this request will replace their corresponding fields in
+the template. Repeated fields are appended. Singular sub-messages and
+groups are recursively merged.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1133,7 +1141,7 @@ more.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_deidentify_templates</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_deidentify_templates</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -1151,10 +1159,9 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional comma separated list of fields to order by,
-followed by <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive,
-default sorting order is ascending, redundant space characters are
-insignificant.</p>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional comma separated list of fields to order by, followed by <code class="docutils literal notranslate"><span class="pre">asc</span></code>
+or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive, default sorting
+order is ascending, redundant space characters are insignificant.</p>
 <p>Example: <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">asc,update_time,</span> <span class="pre">create_time</span> <span class="pre">desc</span></code></p>
 <p>Supported fields are:</p>
 <ul>
@@ -1216,7 +1223,7 @@ See <a class="reference external" href="https://cloud.google.com/dlp/docs/inspec
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_dlp_jobs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_dlp_jobs</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -1232,22 +1239,28 @@ See <a class="reference external" href="https://cloud.google.com/dlp/docs/inspec
 <p>Supported syntax:</p>
 <ul>
 <li>Filter expressions are made up of one or more restrictions.</li>
-<li>Restrictions can be combined by <code class="docutils literal notranslate"><span class="pre">AND</span></code> or <code class="docutils literal notranslate"><span class="pre">OR</span></code> logical operators. A
-sequence of restrictions implicitly uses <code class="docutils literal notranslate"><span class="pre">AND</span></code>.</li>
+<li>Restrictions can be combined by <code class="docutils literal notranslate"><span class="pre">AND</span></code> or <code class="docutils literal notranslate"><span class="pre">OR</span></code> logical operators.
+A sequence of restrictions implicitly uses <code class="docutils literal notranslate"><span class="pre">AND</span></code>.</li>
 <li>A restriction has the form of <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span> <span class="pre">&lt;operator&gt;</span> <span class="pre">&lt;value&gt;</span></code>.</li>
-<li>Supported fields/values for inspect jobs:
-- <cite>state</cite> - PENDING|RUNNING|CANCELED|FINISHED|FAILED
-- <cite>inspected_storage</cite> - DATASTORE|CLOUD_STORAGE|BIGQUERY
-- <cite>trigger_name</cite> - The resource name of the trigger that created job.</li>
-<li>Supported fields for risk analysis jobs:
-- <cite>state</cite> - RUNNING|CANCELED|FINISHED|FAILED</li>
+<li>Supported fields/values for inspect jobs:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">state</span></code> - PENDING|RUNNING|CANCELED|FINISHED|FAILED</li>
+<li><code class="docutils literal notranslate"><span class="pre">inspected_storage</span></code> - DATASTORE|CLOUD_STORAGE|BIGQUERY</li>
+<li><code class="docutils literal notranslate"><span class="pre">trigger_name</span></code> - The resource name of the trigger that created
+job.</li>
+</ul>
+</li>
+<li>Supported fields for risk analysis jobs:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">state</span></code> - RUNNING|CANCELED|FINISHED|FAILED</li>
+</ul>
+</li>
 <li>The operator must be <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">!=</span></code>.</li>
 </ul>
 <p>Examples:</p>
 <ul>
 <li>inspected_storage = cloud_storage AND state = done</li>
 <li>inspected_storage = cloud_storage OR inspected_storage = bigquery</li>
-<li>inspected_storage = cloud_storage AND (state = done OR state = canceled)</li>
+<li>inspected_storage = cloud_storage AND (state = done OR state =
+canceled)</li>
 </ul>
 <p>The length of this field should be no more than 500 characters.</p>
 </li>
@@ -1257,10 +1270,9 @@ resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
 <li><strong>type</strong> (<em>DlpJobType</em>) – The type of job. Defaults to <code class="docutils literal notranslate"><span class="pre">DlpJobType.INSPECT</span></code></li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional comma separated list of fields to order by,
-followed by <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive,
-default sorting order is ascending, redundant space characters are
-insignificant.</p>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional comma separated list of fields to order by, followed by <code class="docutils literal notranslate"><span class="pre">asc</span></code>
+or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive, default sorting
+order is ascending, redundant space characters are insignificant.</p>
 <p>Example: <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">asc,</span> <span class="pre">end_time</span> <span class="pre">asc,</span> <span class="pre">create_time</span> <span class="pre">desc</span></code></p>
 <p>Supported fields are:</p>
 <ul>
@@ -1322,8 +1334,8 @@ learn more.</p>
 <li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional BCP-47 language code for localized infoType friendly
 names. If omitted, or if localized strings are not available,
 en-US strings will be returned.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional filter to only return infoTypes supported by certain parts of the
-API. Defaults to supported_by=INSPECT.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional filter to only return infoTypes supported by certain parts of
+the API. Defaults to supported_by=INSPECT.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1372,7 +1384,7 @@ See <a class="reference external" href="https://cloud.google.com/dlp/docs/creati
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_inspect_templates</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_inspect_templates</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -1390,10 +1402,9 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional comma separated list of fields to order by,
-followed by <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive,
-default sorting order is ascending, redundant space characters are
-insignificant.</p>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional comma separated list of fields to order by, followed by <code class="docutils literal notranslate"><span class="pre">asc</span></code>
+or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive, default sorting
+order is ascending, redundant space characters are insignificant.</p>
 <p>Example: <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">asc,update_time,</span> <span class="pre">create_time</span> <span class="pre">desc</span></code></p>
 <p>Supported fields are:</p>
 <ul>
@@ -1454,7 +1465,7 @@ See <a class="reference external" href="https://cloud.google.com/dlp/docs/creati
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_job_triggers</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_job_triggers</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -1537,7 +1548,7 @@ learn more.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_stored_info_types</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_stored_info_types</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
 <span class="gp">... </span>        <span class="k">pass</span>
@@ -1555,15 +1566,17 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional comma separated list of fields to order by,
-followed by <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive,
-default sorting order is ascending, redundant space characters are
-insignificant.</p>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional comma separated list of fields to order by, followed by <code class="docutils literal notranslate"><span class="pre">asc</span></code>
+or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive, default sorting
+order is ascending, redundant space characters are insignificant.</p>
 <p>Example: <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">asc,</span> <span class="pre">display_name,</span> <span class="pre">create_time</span> <span class="pre">desc</span></code></p>
 <p>Supported fields are:</p>
 <ul>
-<li><code class="docutils literal notranslate"><span class="pre">create_time</span></code>: corresponds to time the most recent version of the
-resource was created.</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">create_time</span></code>: corresponds to time the most recent version of the</dt>
+<dd>resource was created.</dd>
+</dl>
+</li>
 <li><code class="docutils literal notranslate"><span class="pre">state</span></code>: corresponds to the state of the resource.</li>
 <li><code class="docutils literal notranslate"><span class="pre">name</span></code>: corresponds to resource name.</li>
 <li><code class="docutils literal notranslate"><span class="pre">display_name</span></code>: corresponds to info type’s display name.</li>
@@ -1679,17 +1692,20 @@ be all types, but may change over time as detectors are updated.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent resource name, for example projects/my-project-id.</li>
-<li><strong>inspect_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><em>InspectConfig</em></a><em>]</em>) – Configuration for the inspector.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectConfig</span></code></a></li>
-<li><strong>image_redaction_configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>ImageRedactionConfig</em><em>]</em><em>]</em>) – The configuration for specifying what content to redact from images.
-If a dict is provided, it must be of the same form as the protobuf
-message <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageRedactionConfig</span></code></li>
+<li><strong>inspect_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><em>InspectConfig</em></a><em>]</em>) – <p>Configuration for the inspector.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectConfig</span></code></a></p>
+</li>
+<li><strong>image_redaction_configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>ImageRedactionConfig</em><em>]</em><em>]</em>) – <p>The configuration for specifying what content to redact from images.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageRedactionConfig</span></code></p>
+</li>
 <li><strong>include_findings</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether the response should include findings along with the redacted
 image.</li>
-<li><strong>byte_item</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ByteContentItem" title="google.cloud.dlp_v2.types.ByteContentItem"><em>ByteContentItem</em></a><em>]</em>) – The content must be PNG, JPEG, SVG or BMP.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ByteContentItem" title="google.cloud.dlp_v2.types.ByteContentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ByteContentItem</span></code></a></li>
+<li><strong>byte_item</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ByteContentItem" title="google.cloud.dlp_v2.types.ByteContentItem"><em>ByteContentItem</em></a><em>]</em>) – <p>The content must be PNG, JPEG, SVG or BMP.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ByteContentItem" title="google.cloud.dlp_v2.types.ByteContentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ByteContentItem</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1720,8 +1736,7 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.reidentify_content">
 <code class="descname">reidentify_content</code><span class="sig-paren">(</span><em>parent</em>, <em>reidentify_config=None</em>, <em>inspect_config=None</em>, <em>item=None</em>, <em>inspect_template_name=None</em>, <em>reidentify_template_name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.reidentify_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.reidentify_content" title="Permalink to this definition">#</a></dt>
-<dd><p>Re-identifies content that has been de-identified.
-See
+<dd><p>Re-identifies content that has been de-identified. See
 <a class="reference external" href="https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example">https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example</a>
 to learn more.</p>
 <p class="rubric">Example</p>
@@ -1740,38 +1755,38 @@ to learn more.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent resource name.</li>
-<li><strong>reidentify_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyConfig" title="google.cloud.dlp_v2.types.DeidentifyConfig"><em>DeidentifyConfig</em></a><em>]</em>) – <p>Configuration for the re-identification of the content item.
-This field shares the same proto message type that is used for
-de-identification, however its usage here is for the reversal of the
-previous de-identification. Re-identification is performed by examining
-the transformations used to de-identify the items and executing the
-reverse. This requires that only reversible transformations
-be provided here. The reversible transformations are:</p>
-<blockquote>
-<div><ul>
-<li><code class="docutils literal notranslate"><span class="pre">CryptoReplaceFfxFpeConfig</span></code>
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyConfig" title="google.cloud.dlp_v2.types.DeidentifyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeidentifyConfig</span></code></a></li>
+<li><strong>reidentify_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyConfig" title="google.cloud.dlp_v2.types.DeidentifyConfig"><em>DeidentifyConfig</em></a><em>]</em>) – <p>Configuration for the re-identification of the content item. This field
+shares the same proto message type that is used for de-identification,
+however its usage here is for the reversal of the previous
+de-identification. Re-identification is performed by examining the
+transformations used to de-identify the items and executing the reverse.
+This requires that only reversible transformations be provided here. The
+reversible transformations are:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">CryptoReplaceFfxFpeConfig</span></code></li>
 </ul>
-</div></blockquote>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyConfig" title="google.cloud.dlp_v2.types.DeidentifyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeidentifyConfig</span></code></a></p>
 </li>
-<li><strong>inspect_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><em>InspectConfig</em></a><em>]</em>) – Configuration for the inspector.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectConfig</span></code></a></li>
-<li><strong>item</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><em>ContentItem</em></a><em>]</em>) – The item to re-identify. Will be treated as text.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentItem</span></code></a></li>
+<li><strong>inspect_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><em>InspectConfig</em></a><em>]</em>) – <p>Configuration for the inspector.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectConfig</span></code></a></p>
+</li>
+<li><strong>item</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><em>ContentItem</em></a><em>]</em>) – <p>The item to re-identify. Will be treated as text.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ContentItem" title="google.cloud.dlp_v2.types.ContentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentItem</span></code></a></p>
+</li>
 <li><strong>inspect_template_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional template to use. Any configuration directly specified in
-<code class="docutils literal notranslate"><span class="pre">inspect_config</span></code> will override those set in the template. Singular fields
-that are set in this request will replace their corresponding fields in the
-template. Repeated fields are appended. Singular sub-messages and groups
-are recursively merged.</li>
-<li><strong>reidentify_template_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional template to use. References an instance of <code class="docutils literal notranslate"><span class="pre">DeidentifyTemplate</span></code>.
-Any configuration directly specified in <code class="docutils literal notranslate"><span class="pre">reidentify_config</span></code> or
-<code class="docutils literal notranslate"><span class="pre">inspect_config</span></code> will override those set in the template. Singular fields
-that are set in this request will replace their corresponding fields in the
-template. Repeated fields are appended. Singular sub-messages and groups
-are recursively merged.</li>
+<code class="docutils literal notranslate"><span class="pre">inspect_config</span></code> will override those set in the template. Singular
+fields that are set in this request will replace their corresponding
+fields in the template. Repeated fields are appended. Singular
+sub-messages and groups are recursively merged.</li>
+<li><strong>reidentify_template_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional template to use. References an instance of
+<code class="docutils literal notranslate"><span class="pre">DeidentifyTemplate</span></code>. Any configuration directly specified in
+<code class="docutils literal notranslate"><span class="pre">reidentify_config</span></code> or <code class="docutils literal notranslate"><span class="pre">inspect_config</span></code> will override those set in
+the template. Singular fields that are set in this request will replace
+their corresponding fields in the template. Repeated fields are
+appended. Singular sub-messages and groups are recursively merged.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1823,12 +1838,14 @@ more.</p>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of organization and deidentify template to be updated, for
 example <code class="docutils literal notranslate"><span class="pre">organizations/433245324/deidentifyTemplates/432452342</span></code> or
 projects/project-id/deidentifyTemplates/432452342.</li>
-<li><strong>deidentify_template</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyTemplate" title="google.cloud.dlp_v2.types.DeidentifyTemplate"><em>DeidentifyTemplate</em></a><em>]</em>) – New DeidentifyTemplate value.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyTemplate" title="google.cloud.dlp_v2.types.DeidentifyTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeidentifyTemplate</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Mask to control which fields get updated.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>deidentify_template</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyTemplate" title="google.cloud.dlp_v2.types.DeidentifyTemplate"><em>DeidentifyTemplate</em></a><em>]</em>) – <p>New DeidentifyTemplate value.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyTemplate" title="google.cloud.dlp_v2.types.DeidentifyTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeidentifyTemplate</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Mask to control which fields get updated.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1879,12 +1896,14 @@ See <a class="reference external" href="https://cloud.google.com/dlp/docs/creati
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of organization and inspectTemplate to be updated, for
 example <code class="docutils literal notranslate"><span class="pre">organizations/433245324/inspectTemplates/432452342</span></code> or
 projects/project-id/inspectTemplates/432452342.</li>
-<li><strong>inspect_template</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectTemplate" title="google.cloud.dlp_v2.types.InspectTemplate"><em>InspectTemplate</em></a><em>]</em>) – New InspectTemplate value.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectTemplate" title="google.cloud.dlp_v2.types.InspectTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectTemplate</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Mask to control which fields get updated.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>inspect_template</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectTemplate" title="google.cloud.dlp_v2.types.InspectTemplate"><em>InspectTemplate</em></a><em>]</em>) – <p>New InspectTemplate value.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectTemplate" title="google.cloud.dlp_v2.types.InspectTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">InspectTemplate</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Mask to control which fields get updated.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1934,12 +1953,14 @@ See <a class="reference external" href="https://cloud.google.com/dlp/docs/creati
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of the project and the triggeredJob, for example
 <code class="docutils literal notranslate"><span class="pre">projects/dlp-test-project/jobTriggers/53234423</span></code>.</li>
-<li><strong>job_trigger</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.JobTrigger" title="google.cloud.dlp_v2.types.JobTrigger"><em>JobTrigger</em></a><em>]</em>) – New JobTrigger value.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.JobTrigger" title="google.cloud.dlp_v2.types.JobTrigger"><code class="xref py py-class docutils literal notranslate"><span class="pre">JobTrigger</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Mask to control which fields get updated.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+<li><strong>job_trigger</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.JobTrigger" title="google.cloud.dlp_v2.types.JobTrigger"><em>JobTrigger</em></a><em>]</em>) – <p>New JobTrigger value.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.JobTrigger" title="google.cloud.dlp_v2.types.JobTrigger"><code class="xref py py-class docutils literal notranslate"><span class="pre">JobTrigger</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Mask to control which fields get updated.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1992,14 +2013,16 @@ learn more.</p>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Resource name of organization and storedInfoType to be updated, for
 example <code class="docutils literal notranslate"><span class="pre">organizations/433245324/storedInfoTypes/432452342</span></code> or
 projects/project-id/storedInfoTypes/432452342.</li>
-<li><strong>config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.StoredInfoTypeConfig" title="google.cloud.dlp_v2.types.StoredInfoTypeConfig"><em>StoredInfoTypeConfig</em></a><em>]</em>) – Updated configuration for the storedInfoType. If not provided, a new
+<li><strong>config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.StoredInfoTypeConfig" title="google.cloud.dlp_v2.types.StoredInfoTypeConfig"><em>StoredInfoTypeConfig</em></a><em>]</em>) – <p>Updated configuration for the storedInfoType. If not provided, a new
 version of the storedInfoType will be created with the existing
-configuration.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.StoredInfoTypeConfig" title="google.cloud.dlp_v2.types.StoredInfoTypeConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoredInfoTypeConfig</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Mask to control which fields get updated.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
+configuration.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.StoredInfoTypeConfig" title="google.cloud.dlp_v2.types.StoredInfoTypeConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoredInfoTypeConfig</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Mask to control which fields get updated.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.FieldMask" title="google.cloud.dlp_v2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>

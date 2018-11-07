@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dlp_v2.gapic.dlp_service_client &#8212; google-cloud 543f36b documentation</title>
+    <title>google.cloud.dlp_v2.gapic.dlp_service_client &#8212; google-cloud 11a5008 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -278,9 +278,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -327,18 +328,20 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The parent resource name, for example projects/my-project-id.</span>
-<span class="sd">            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector. What specified here will override</span>
-<span class="sd">                the template referenced by the inspect_template_name argument.</span>
+<span class="sd">            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector. What specified here will override the</span>
+<span class="sd">                template referenced by the inspect\_template\_name argument.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.InspectConfig`</span>
 <span class="sd">            item (Union[dict, ~google.cloud.dlp_v2.types.ContentItem]): The item to inspect.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.ContentItem`</span>
 <span class="sd">            inspect_template_name (str): Optional template to use. Any configuration directly specified in</span>
-<span class="sd">                inspect_config will override those set in the template. Singular fields</span>
-<span class="sd">                that are set in this request will replace their corresponding fields in the</span>
-<span class="sd">                template. Repeated fields are appended. Singular sub-messages and groups</span>
-<span class="sd">                are recursively merged.</span>
+<span class="sd">                inspect\_config will override those set in the template. Singular fields</span>
+<span class="sd">                that are set in this request will replace their corresponding fields in</span>
+<span class="sd">                the template. Repeated fields are appended. Singular sub-messages and</span>
+<span class="sd">                groups are recursively merged.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -409,14 +412,17 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The parent resource name, for example projects/my-project-id.</span>
 <span class="sd">            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.InspectConfig`</span>
 <span class="sd">            image_redaction_configs (list[Union[dict, ~google.cloud.dlp_v2.types.ImageRedactionConfig]]): The configuration for specifying what content to redact from images.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.ImageRedactionConfig`</span>
 <span class="sd">            include_findings (bool): Whether the response should include findings along with the redacted</span>
 <span class="sd">                image.</span>
 <span class="sd">            byte_item (Union[dict, ~google.cloud.dlp_v2.types.ByteContentItem]): The content must be PNG, JPEG, SVG or BMP.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.ByteContentItem`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -490,29 +496,31 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The parent resource name, for example projects/my-project-id.</span>
-<span class="sd">            deidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the de-identification of the content item.</span>
-<span class="sd">                Items specified here will override the template referenced by the</span>
-<span class="sd">                deidentify_template_name argument.</span>
+<span class="sd">            deidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the de-identification of the content item. Items</span>
+<span class="sd">                specified here will override the template referenced by the</span>
+<span class="sd">                deidentify\_template\_name argument.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`</span>
-<span class="sd">            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.</span>
-<span class="sd">                Items specified here will override the template referenced by the</span>
-<span class="sd">                inspect_template_name argument.</span>
+<span class="sd">            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector. Items specified here will override the</span>
+<span class="sd">                template referenced by the inspect\_template\_name argument.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.InspectConfig`</span>
 <span class="sd">            item (Union[dict, ~google.cloud.dlp_v2.types.ContentItem]): The item to de-identify. Will be treated as text.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.ContentItem`</span>
 <span class="sd">            inspect_template_name (str): Optional template to use. Any configuration directly specified in</span>
-<span class="sd">                inspect_config will override those set in the template. Singular fields</span>
-<span class="sd">                that are set in this request will replace their corresponding fields in the</span>
-<span class="sd">                template. Repeated fields are appended. Singular sub-messages and groups</span>
-<span class="sd">                are recursively merged.</span>
+<span class="sd">                inspect\_config will override those set in the template. Singular fields</span>
+<span class="sd">                that are set in this request will replace their corresponding fields in</span>
+<span class="sd">                the template. Repeated fields are appended. Singular sub-messages and</span>
+<span class="sd">                groups are recursively merged.</span>
 <span class="sd">            deidentify_template_name (str): Optional template to use. Any configuration directly specified in</span>
-<span class="sd">                deidentify_config will override those set in the template. Singular fields</span>
-<span class="sd">                that are set in this request will replace their corresponding fields in the</span>
-<span class="sd">                template. Repeated fields are appended. Singular sub-messages and groups</span>
-<span class="sd">                are recursively merged.</span>
+<span class="sd">                deidentify\_config will override those set in the template. Singular</span>
+<span class="sd">                fields that are set in this request will replace their corresponding</span>
+<span class="sd">                fields in the template. Repeated fields are appended. Singular</span>
+<span class="sd">                sub-messages and groups are recursively merged.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -566,9 +574,8 @@
                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Re-identifies content that has been de-identified.</span>
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example</span>
+<span class="sd">        Re-identifies content that has been de-identified. See</span>
+<span class="sd">        https://cloud.google.com/dlp/docs/pseudonymization#re-identification\_in\_free\_text\_code\_example</span>
 <span class="sd">        to learn more.</span>
 
 <span class="sd">        Example:</span>
@@ -582,34 +589,37 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The parent resource name.</span>
-<span class="sd">            reidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the re-identification of the content item.</span>
-<span class="sd">                This field shares the same proto message type that is used for</span>
-<span class="sd">                de-identification, however its usage here is for the reversal of the</span>
-<span class="sd">                previous de-identification. Re-identification is performed by examining</span>
-<span class="sd">                the transformations used to de-identify the items and executing the</span>
-<span class="sd">                reverse. This requires that only reversible transformations</span>
-<span class="sd">                be provided here. The reversible transformations are:</span>
+<span class="sd">            reidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the re-identification of the content item. This field</span>
+<span class="sd">                shares the same proto message type that is used for de-identification,</span>
+<span class="sd">                however its usage here is for the reversal of the previous</span>
+<span class="sd">                de-identification. Re-identification is performed by examining the</span>
+<span class="sd">                transformations used to de-identify the items and executing the reverse.</span>
+<span class="sd">                This requires that only reversible transformations be provided here. The</span>
+<span class="sd">                reversible transformations are:</span>
 
-<span class="sd">                 - ``CryptoReplaceFfxFpeConfig``</span>
-<span class="sd">                   If a dict is provided, it must be of the same form as the protobuf</span>
-<span class="sd">                   message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`</span>
+<span class="sd">                -  ``CryptoReplaceFfxFpeConfig``</span>
+
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`</span>
 <span class="sd">            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.InspectConfig`</span>
 <span class="sd">            item (Union[dict, ~google.cloud.dlp_v2.types.ContentItem]): The item to re-identify. Will be treated as text.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.ContentItem`</span>
 <span class="sd">            inspect_template_name (str): Optional template to use. Any configuration directly specified in</span>
-<span class="sd">                ``inspect_config`` will override those set in the template. Singular fields</span>
-<span class="sd">                that are set in this request will replace their corresponding fields in the</span>
-<span class="sd">                template. Repeated fields are appended. Singular sub-messages and groups</span>
-<span class="sd">                are recursively merged.</span>
-<span class="sd">            reidentify_template_name (str): Optional template to use. References an instance of ``DeidentifyTemplate``.</span>
-<span class="sd">                Any configuration directly specified in ``reidentify_config`` or</span>
-<span class="sd">                ``inspect_config`` will override those set in the template. Singular fields</span>
-<span class="sd">                that are set in this request will replace their corresponding fields in the</span>
-<span class="sd">                template. Repeated fields are appended. Singular sub-messages and groups</span>
-<span class="sd">                are recursively merged.</span>
+<span class="sd">                ``inspect_config`` will override those set in the template. Singular</span>
+<span class="sd">                fields that are set in this request will replace their corresponding</span>
+<span class="sd">                fields in the template. Repeated fields are appended. Singular</span>
+<span class="sd">                sub-messages and groups are recursively merged.</span>
+<span class="sd">            reidentify_template_name (str): Optional template to use. References an instance of</span>
+<span class="sd">                ``DeidentifyTemplate``. Any configuration directly specified in</span>
+<span class="sd">                ``reidentify_config`` or ``inspect_config`` will override those set in</span>
+<span class="sd">                the template. Singular fields that are set in this request will replace</span>
+<span class="sd">                their corresponding fields in the template. Repeated fields are</span>
+<span class="sd">                appended. Singular sub-messages and groups are recursively merged.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -674,8 +684,8 @@
 <span class="sd">            language_code (str): Optional BCP-47 language code for localized infoType friendly</span>
 <span class="sd">                names. If omitted, or if localized strings are not available,</span>
 <span class="sd">                en-US strings will be returned.</span>
-<span class="sd">            filter_ (str): Optional filter to only return infoTypes supported by certain parts of the</span>
-<span class="sd">                API. Defaults to supported_by=INSPECT.</span>
+<span class="sd">            filter_ (str): Optional filter to only return infoTypes supported by certain parts of</span>
+<span class="sd">                the API. Defaults to supported\_by=INSPECT.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -739,12 +749,13 @@
 <span class="sd">            parent (str): The parent resource name, for example projects/my-project-id or</span>
 <span class="sd">                organizations/my-org-id.</span>
 <span class="sd">            inspect_template (Union[dict, ~google.cloud.dlp_v2.types.InspectTemplate]): The InspectTemplate to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.InspectTemplate`</span>
-<span class="sd">            template_id (str): The template id can contain uppercase and lowercase letters,</span>
-<span class="sd">                numbers, and hyphens; that is, it must match the regular</span>
-<span class="sd">                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100</span>
-<span class="sd">                characters. Can be empty to allow the system to generate one.</span>
+<span class="sd">            template_id (str): The template id can contain uppercase and lowercase letters, numbers,</span>
+<span class="sd">                and hyphens; that is, it must match the regular expression:</span>
+<span class="sd">                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to</span>
+<span class="sd">                allow the system to generate one.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -810,9 +821,11 @@
 <span class="sd">                example ``organizations/433245324/inspectTemplates/432452342`` or</span>
 <span class="sd">                projects/project-id/inspectTemplates/432452342.</span>
 <span class="sd">            inspect_template (Union[dict, ~google.cloud.dlp_v2.types.InspectTemplate]): New InspectTemplate value.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.InspectTemplate`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.dlp_v2.types.FieldMask]): Mask to control which fields get updated.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -936,7 +949,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_inspect_templates(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_inspect_templates(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -949,19 +962,18 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            order_by (str): Optional comma separated list of fields to order by,</span>
-<span class="sd">                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,</span>
-<span class="sd">                default sorting order is ascending, redundant space characters are</span>
-<span class="sd">                insignificant.</span>
+<span class="sd">            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``</span>
+<span class="sd">                or ``desc`` postfix. This list is case-insensitive, default sorting</span>
+<span class="sd">                order is ascending, redundant space characters are insignificant.</span>
 
 <span class="sd">                Example: ``name asc,update_time, create_time desc``</span>
 
 <span class="sd">                Supported fields are:</span>
 
-<span class="sd">                - ``create_time``: corresponds to time the template was created.</span>
-<span class="sd">                - ``update_time``: corresponds to time the template was last updated.</span>
-<span class="sd">                - ``name``: corresponds to template&#39;s name.</span>
-<span class="sd">                - ``display_name``: corresponds to template&#39;s display name.</span>
+<span class="sd">                -  ``create_time``: corresponds to time the template was created.</span>
+<span class="sd">                -  ``update_time``: corresponds to time the template was last updated.</span>
+<span class="sd">                -  ``name``: corresponds to template&#39;s name.</span>
+<span class="sd">                -  ``display_name``: corresponds to template&#39;s display name.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1097,12 +1109,13 @@
 <span class="sd">            parent (str): The parent resource name, for example projects/my-project-id or</span>
 <span class="sd">                organizations/my-org-id.</span>
 <span class="sd">            deidentify_template (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyTemplate]): The DeidentifyTemplate to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate`</span>
-<span class="sd">            template_id (str): The template id can contain uppercase and lowercase letters,</span>
-<span class="sd">                numbers, and hyphens; that is, it must match the regular</span>
-<span class="sd">                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100</span>
-<span class="sd">                characters. Can be empty to allow the system to generate one.</span>
+<span class="sd">            template_id (str): The template id can contain uppercase and lowercase letters, numbers,</span>
+<span class="sd">                and hyphens; that is, it must match the regular expression:</span>
+<span class="sd">                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to</span>
+<span class="sd">                allow the system to generate one.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1169,9 +1182,11 @@
 <span class="sd">                example ``organizations/433245324/deidentifyTemplates/432452342`` or</span>
 <span class="sd">                projects/project-id/deidentifyTemplates/432452342.</span>
 <span class="sd">            deidentify_template (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyTemplate]): New DeidentifyTemplate value.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.dlp_v2.types.FieldMask]): Mask to control which fields get updated.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1234,8 +1249,8 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_deidentify_template(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Resource name of the organization and deidentify template to be read, for</span>
-<span class="sd">                example ``organizations/433245324/deidentifyTemplates/432452342`` or</span>
+<span class="sd">            name (str): Resource name of the organization and deidentify template to be read,</span>
+<span class="sd">                for example ``organizations/433245324/deidentifyTemplates/432452342`` or</span>
 <span class="sd">                projects/project-id/deidentifyTemplates/432452342.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -1301,7 +1316,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_deidentify_templates(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_deidentify_templates(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -1314,19 +1329,18 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            order_by (str): Optional comma separated list of fields to order by,</span>
-<span class="sd">                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,</span>
-<span class="sd">                default sorting order is ascending, redundant space characters are</span>
-<span class="sd">                insignificant.</span>
+<span class="sd">            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``</span>
+<span class="sd">                or ``desc`` postfix. This list is case-insensitive, default sorting</span>
+<span class="sd">                order is ascending, redundant space characters are insignificant.</span>
 
 <span class="sd">                Example: ``name asc,update_time, create_time desc``</span>
 
 <span class="sd">                Supported fields are:</span>
 
-<span class="sd">                - ``create_time``: corresponds to time the template was created.</span>
-<span class="sd">                - ``update_time``: corresponds to time the template was last updated.</span>
-<span class="sd">                - ``name``: corresponds to template&#39;s name.</span>
-<span class="sd">                - ``display_name``: corresponds to template&#39;s display name.</span>
+<span class="sd">                -  ``create_time``: corresponds to time the template was created.</span>
+<span class="sd">                -  ``update_time``: corresponds to time the template was last updated.</span>
+<span class="sd">                -  ``name``: corresponds to template&#39;s name.</span>
+<span class="sd">                -  ``display_name``: corresponds to template&#39;s display name.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1464,14 +1478,16 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The parent resource name, for example projects/my-project-id.</span>
-<span class="sd">            inspect_job (Union[dict, ~google.cloud.dlp_v2.types.InspectJobConfig]): If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">            inspect_job (Union[dict, ~google.cloud.dlp_v2.types.InspectJobConfig]):</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.InspectJobConfig`</span>
-<span class="sd">            risk_job (Union[dict, ~google.cloud.dlp_v2.types.RiskAnalysisJobConfig]): If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">            risk_job (Union[dict, ~google.cloud.dlp_v2.types.RiskAnalysisJobConfig]):</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.RiskAnalysisJobConfig`</span>
-<span class="sd">            job_id (str): The job id can contain uppercase and lowercase letters,</span>
-<span class="sd">                numbers, and hyphens; that is, it must match the regular</span>
-<span class="sd">                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100</span>
-<span class="sd">                characters. Can be empty to allow the system to generate one.</span>
+<span class="sd">            job_id (str): The job id can contain uppercase and lowercase letters, numbers, and</span>
+<span class="sd">                hyphens; that is, it must match the regular expression:</span>
+<span class="sd">                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to</span>
+<span class="sd">                allow the system to generate one.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1548,7 +1564,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_dlp_jobs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_dlp_jobs(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -1559,23 +1575,29 @@
 
 <span class="sd">                Supported syntax:</span>
 
-<span class="sd">                * Filter expressions are made up of one or more restrictions.</span>
-<span class="sd">                * Restrictions can be combined by ``AND`` or ``OR`` logical operators. A</span>
-<span class="sd">                  sequence of restrictions implicitly uses ``AND``.</span>
-<span class="sd">                * A restriction has the form of ``&lt;field&gt; &lt;operator&gt; &lt;value&gt;``.</span>
-<span class="sd">                * Supported fields/values for inspect jobs:</span>
-<span class="sd">                  - `state` - PENDING|RUNNING|CANCELED|FINISHED|FAILED</span>
-<span class="sd">                  - `inspected_storage` - DATASTORE|CLOUD_STORAGE|BIGQUERY</span>
-<span class="sd">                  - `trigger_name` - The resource name of the trigger that created job.</span>
-<span class="sd">                * Supported fields for risk analysis jobs:</span>
-<span class="sd">                  - `state` - RUNNING|CANCELED|FINISHED|FAILED</span>
-<span class="sd">                * The operator must be ``=`` or ``!=``.</span>
+<span class="sd">                -  Filter expressions are made up of one or more restrictions.</span>
+<span class="sd">                -  Restrictions can be combined by ``AND`` or ``OR`` logical operators.</span>
+<span class="sd">                   A sequence of restrictions implicitly uses ``AND``.</span>
+<span class="sd">                -  A restriction has the form of ``&lt;field&gt; &lt;operator&gt; &lt;value&gt;``.</span>
+<span class="sd">                -  Supported fields/values for inspect jobs:</span>
+
+<span class="sd">                   -  ``state`` - PENDING\|RUNNING\|CANCELED\|FINISHED\|FAILED</span>
+<span class="sd">                   -  ``inspected_storage`` - DATASTORE\|CLOUD\_STORAGE\|BIGQUERY</span>
+<span class="sd">                   -  ``trigger_name`` - The resource name of the trigger that created</span>
+<span class="sd">                      job.</span>
+
+<span class="sd">                -  Supported fields for risk analysis jobs:</span>
+
+<span class="sd">                   -  ``state`` - RUNNING\|CANCELED\|FINISHED\|FAILED</span>
+
+<span class="sd">                -  The operator must be ``=`` or ``!=``.</span>
 
 <span class="sd">                Examples:</span>
 
-<span class="sd">                * inspected_storage = cloud_storage AND state = done</span>
-<span class="sd">                * inspected_storage = cloud_storage OR inspected_storage = bigquery</span>
-<span class="sd">                * inspected_storage = cloud_storage AND (state = done OR state = canceled)</span>
+<span class="sd">                -  inspected\_storage = cloud\_storage AND state = done</span>
+<span class="sd">                -  inspected\_storage = cloud\_storage OR inspected\_storage = bigquery</span>
+<span class="sd">                -  inspected\_storage = cloud\_storage AND (state = done OR state =</span>
+<span class="sd">                   canceled)</span>
 
 <span class="sd">                The length of this field should be no more than 500 characters.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
@@ -1584,19 +1606,18 @@
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
 <span class="sd">            type_ (~google.cloud.dlp_v2.types.DlpJobType): The type of job. Defaults to ``DlpJobType.INSPECT``</span>
-<span class="sd">            order_by (str): Optional comma separated list of fields to order by,</span>
-<span class="sd">                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,</span>
-<span class="sd">                default sorting order is ascending, redundant space characters are</span>
-<span class="sd">                insignificant.</span>
+<span class="sd">            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``</span>
+<span class="sd">                or ``desc`` postfix. This list is case-insensitive, default sorting</span>
+<span class="sd">                order is ascending, redundant space characters are insignificant.</span>
 
 <span class="sd">                Example: ``name asc, end_time asc, create_time desc``</span>
 
 <span class="sd">                Supported fields are:</span>
 
-<span class="sd">                - ``create_time``: corresponds to time the job was created.</span>
-<span class="sd">                - ``end_time``: corresponds to time the job ended.</span>
-<span class="sd">                - ``name``: corresponds to job&#39;s name.</span>
-<span class="sd">                - ``state``: corresponds to ``state``</span>
+<span class="sd">                -  ``create_time``: corresponds to time the job was created.</span>
+<span class="sd">                -  ``end_time``: corresponds to time the job ended.</span>
+<span class="sd">                -  ``name``: corresponds to job&#39;s name.</span>
+<span class="sd">                -  ``state``: corresponds to ``state``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1840,7 +1861,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_job_triggers(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_job_triggers(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -1861,11 +1882,11 @@
 
 <span class="sd">                Supported fields are:</span>
 
-<span class="sd">                - ``create_time``: corresponds to time the JobTrigger was created.</span>
-<span class="sd">                - ``update_time``: corresponds to time the JobTrigger was last updated.</span>
-<span class="sd">                - ``name``: corresponds to JobTrigger&#39;s name.</span>
-<span class="sd">                - ``display_name``: corresponds to JobTrigger&#39;s display name.</span>
-<span class="sd">                - ``status``: corresponds to JobTrigger&#39;s status.</span>
+<span class="sd">                -  ``create_time``: corresponds to time the JobTrigger was created.</span>
+<span class="sd">                -  ``update_time``: corresponds to time the JobTrigger was last updated.</span>
+<span class="sd">                -  ``name``: corresponds to JobTrigger&#39;s name.</span>
+<span class="sd">                -  ``display_name``: corresponds to JobTrigger&#39;s display name.</span>
+<span class="sd">                -  ``status``: corresponds to JobTrigger&#39;s status.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1988,7 +2009,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = dlp_v2.DlpServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``name``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `name`:</span>
 <span class="sd">            &gt;&gt;&gt; name = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.delete_job_trigger(name)</span>
@@ -2052,9 +2073,11 @@
 <span class="sd">            name (str): Resource name of the project and the triggeredJob, for example</span>
 <span class="sd">                ``projects/dlp-test-project/jobTriggers/53234423``.</span>
 <span class="sd">            job_trigger (Union[dict, ~google.cloud.dlp_v2.types.JobTrigger]): New JobTrigger value.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.JobTrigger`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.dlp_v2.types.FieldMask]): Mask to control which fields get updated.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -2120,12 +2143,13 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The parent resource name, for example projects/my-project-id.</span>
 <span class="sd">            job_trigger (Union[dict, ~google.cloud.dlp_v2.types.JobTrigger]): The JobTrigger to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.JobTrigger`</span>
-<span class="sd">            trigger_id (str): The trigger id can contain uppercase and lowercase letters,</span>
-<span class="sd">                numbers, and hyphens; that is, it must match the regular</span>
-<span class="sd">                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100</span>
-<span class="sd">                characters. Can be empty to allow the system to generate one.</span>
+<span class="sd">            trigger_id (str): The trigger id can contain uppercase and lowercase letters, numbers, and</span>
+<span class="sd">                hyphens; that is, it must match the regular expression:</span>
+<span class="sd">                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to</span>
+<span class="sd">                allow the system to generate one.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -2191,12 +2215,13 @@
 <span class="sd">            parent (str): The parent resource name, for example projects/my-project-id or</span>
 <span class="sd">                organizations/my-org-id.</span>
 <span class="sd">            config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Configuration of the storedInfoType to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.StoredInfoTypeConfig`</span>
 <span class="sd">            stored_info_type_id (str): The storedInfoType ID can contain uppercase and lowercase letters,</span>
-<span class="sd">                numbers, and hyphens; that is, it must match the regular</span>
-<span class="sd">                expression: ``[a-zA-Z\\d-]+``. The maximum length is 100</span>
-<span class="sd">                characters. Can be empty to allow the system to generate one.</span>
+<span class="sd">                numbers, and hyphens; that is, it must match the regular expression:</span>
+<span class="sd">                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to</span>
+<span class="sd">                allow the system to generate one.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -2266,9 +2291,11 @@
 <span class="sd">            config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Updated configuration for the storedInfoType. If not provided, a new</span>
 <span class="sd">                version of the storedInfoType will be created with the existing</span>
 <span class="sd">                configuration.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.StoredInfoTypeConfig`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.dlp_v2.types.FieldMask]): Mask to control which fields get updated.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.dlp_v2.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -2396,7 +2423,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_stored_info_types(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_stored_info_types(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -2409,20 +2436,19 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            order_by (str): Optional comma separated list of fields to order by,</span>
-<span class="sd">                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,</span>
-<span class="sd">                default sorting order is ascending, redundant space characters are</span>
-<span class="sd">                insignificant.</span>
+<span class="sd">            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``</span>
+<span class="sd">                or ``desc`` postfix. This list is case-insensitive, default sorting</span>
+<span class="sd">                order is ascending, redundant space characters are insignificant.</span>
 
 <span class="sd">                Example: ``name asc, display_name, create_time desc``</span>
 
 <span class="sd">                Supported fields are:</span>
 
-<span class="sd">                - ``create_time``: corresponds to time the most recent version of the</span>
-<span class="sd">                  resource was created.</span>
-<span class="sd">                - ``state``: corresponds to the state of the resource.</span>
-<span class="sd">                - ``name``: corresponds to resource name.</span>
-<span class="sd">                - ``display_name``: corresponds to info type&#39;s display name.</span>
+<span class="sd">                -  ``create_time``: corresponds to time the most recent version of the</span>
+<span class="sd">                     resource was created.</span>
+<span class="sd">                -  ``state``: corresponds to the state of the resource.</span>
+<span class="sd">                -  ``name``: corresponds to resource name.</span>
+<span class="sd">                -  ``display_name``: corresponds to info type&#39;s display name.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
