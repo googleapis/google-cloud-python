@@ -2128,6 +2128,8 @@ class JsonProperty(BlobProperty):
         Unlike most property types, a :class:`JsonProperty` is **not**
         indexed by default.
 
+    .. automethod:: _validate
+
     Args:
         name (str): The name of the property.
         compressed (bool): Indicates if the value should be compressed (via
@@ -2180,6 +2182,23 @@ class JsonProperty(BlobProperty):
         )
         if json_type is not None:
             self._json_type = json_type
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (Any): The value to check.
+
+        Raises:
+            TypeError: If the current property has a JSON type set and
+                ``value`` is not an instance of that type.
+        """
+        if self._json_type is None:
+            return
+        if not isinstance(value, self._json_type):
+            raise TypeError(
+                "JSON property must be a {}".format(self._json_type)
+            )
 
 
 class UserProperty(Property):

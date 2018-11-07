@@ -1737,6 +1737,22 @@ class TestJsonProperty:
         assert prop._verbose_name == "VALUE FOR READING"
         assert not prop._write_empty_list
 
+    @staticmethod
+    def test__validate_no_type():
+        prop = model.JsonProperty(name="json-val")
+        assert prop._validate(b"any") is None
+
+    @staticmethod
+    def test__validate_correct_type():
+        prop = model.JsonProperty(name="json-val", json_type=list)
+        assert prop._validate([b"any", b"mini"]) is None
+
+    @staticmethod
+    def test__validate_incorrect_type():
+        prop = model.JsonProperty(name="json-val", json_type=dict)
+        with pytest.raises(TypeError):
+            prop._validate(14)
+
 
 class TestUserProperty:
     @staticmethod
