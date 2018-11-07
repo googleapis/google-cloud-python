@@ -15,7 +15,7 @@
 """Manage asynchronous context. """
 import contextlib
 
-from . import _eventloop
+from google.cloud.ndb import _eventloop
 
 __all__ = ["async_context"]
 
