@@ -37,8 +37,8 @@ _EXPECTED = [
 
 
 def test_extend_w_empty_chunk():
-    crc = 0
-    assert crc32c.extend(123, b'', 0) == 123
+    crc = 123
+    assert crc32c.extend(crc, b'', 0) == crc
 
 
 def test_extend_w_multiple_chunks():

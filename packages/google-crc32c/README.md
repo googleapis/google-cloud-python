@@ -103,15 +103,20 @@ On Windows: TBD.
 
 ## Installing locally for testing
 
+Initialize the submodules and build the main `libcrc32c.so` shared
+library using `cmake` / `make`:
+
 ```bash
-$ /path/to/venv/bin/pip install cmake
 $ cd py-crc32c
 $ git submodule update --init --recursive
+$ python -m virtualenv venv
+$ venv/bin/pip install --upgrade setuptools pip wheel
+$ venv/bin/pip install cmake
 $ mkdir usr
 $ export CRC32C_INSTALL_PREFIX=$(pwd)/usr
 $ mkdir crc32c/build
 $ cd crc32c/build
-$ /path/to/venv/bin/cmake \
+$ ../../venv/bin/cmake \
 >   -DCRC32C_BUILD_TESTS=no \
 >   -DCRC32C_BUILD_BENCHMARKS=no \
 >   -DBUILD_SHARED_LIBS=yes \
@@ -119,9 +124,20 @@ $ /path/to/venv/bin/cmake \
 >   ..
 $ make all install
 $ cd ../..
-$ python3.Y -m venv usr
-$ usr/bin/pip install --upgrade setuptools pip wheel
-$ usr/bin/pip install pytest
-$ usr/bin/pip install -e .
-$ usr/bin/py.test tests/
+```
+
+Now, run the tests:
+
+```bash
+$ venv/bin/pip install pytest
+$ venv/bin/pip install -e .
+$ venv/bin/py.test tests/
+============================= test session starts ==============================
+platform linux -- Python 3.6.7, pytest-3.10.0, py-1.7.0, pluggy-0.8.0
+rootdir: /home/tseaver/projects/agendaless/Google/src/py-crc32c, inifile:
+collected 9 items                                                              
+
+tests/test___init__.py .........                                         [100%]
+
+=========================== 9 passed in 0.03 seconds ===========================
 ```
