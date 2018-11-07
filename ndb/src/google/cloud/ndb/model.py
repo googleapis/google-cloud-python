@@ -2039,9 +2039,41 @@ class StringProperty(TextProperty):
 
 
 class GeoPtProperty(Property):
+    """A property that contains :class:`.GeoPt` values.
+
+    .. automethod:: _validate
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (.GeoPt): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`.GeoPt`.
+        """
+        if not isinstance(value, GeoPt):
+            raise exceptions.BadValueError(
+                "Expected GeoPt, got {!r}".format(value)
+            )
+
+    def _db_set_value(self, v, p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
