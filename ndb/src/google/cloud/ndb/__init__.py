@@ -24,6 +24,7 @@ version of the ``db`` API (hence ``ndb``).
 __version__ = "0.0.1.dev1"
 """Current ``ndb`` version."""
 __all__ = [
+    "async_context",
     "AutoBatcher",
     "Context",
     "ContextOptions",
@@ -121,6 +122,7 @@ __all__ = [
 ]
 """All top-level exported names."""
 
+from google.cloud.ndb.async_ import async_context
 from google.cloud.ndb.context import AutoBatcher
 from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions

@@ -30,7 +30,7 @@ def async_context():
 
         from google.cloud.ndb import async_context
 
-        with async_context.async_context():
+        with async_context():
             # Make some asynchronous calls
             pass
 
