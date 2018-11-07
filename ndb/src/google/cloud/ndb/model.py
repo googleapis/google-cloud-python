@@ -16,6 +16,7 @@
 
 
 import inspect
+import pickle
 import zlib
 
 from google.cloud.ndb import exceptions
@@ -2044,10 +2045,39 @@ class GeoPtProperty(Property):
 
 
 class PickleProperty(BlobProperty):
+    """A property that contains values that are pickle-able.
+
+    This will use :func:`pickle.dumps` with the highest available pickle
+    protocol to convert to bytes and :func:`pickle.loads` to convert **from**
+    bytes. The base value stored in the datastore will be the pickled bytes.
+
+    .. automethod:: _to_base_type
+    .. automethod:: _from_base_type
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (Any): The value to be converted.
+
+        Returns:
+            bytes: The pickled ``value``.
+        """
+        return pickle.dumps(value, pickle.HIGHEST_PROTOCOL)
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        Args:
+            value (bytes): The value to be converted.
+
+        Returns:
+            Any: The unpickled ``value``.
+        """
+        return pickle.loads(value)
 
 
 class JsonProperty(BlobProperty):
