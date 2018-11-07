@@ -23,9 +23,11 @@ def get_kwargs():
     library_dirs = [os.path.join(install_prefix, "lib")]
     if os.name == "nt":
         library_dirs.append(os.path.join(install_prefix, "bin"))
+    rpath = os.pathsep.join(library_dirs)
     return {
         "library_dirs": library_dirs,
         "include_dirs": [os.path.join(install_prefix, "include")],
+        "extra_link_args": ["-Wl,-rpath={}".format(rpath)],
     }
 
 
