@@ -97,6 +97,9 @@ The primary differences come from:
   passed. The original set always (and used `False` as default)
 - `TextProperty(indexed=True)` and `StringProperty(indexed=False)` are no
   longer supported (see docstrings for more info)
+- `model.GeoPt` is an alias for `google.cloud.datastore.helpers.GeoPoint`
+  rather than an alias for `google.appengine.api.datastore_types.GeoPt`. These
+  classes have slightly different characteristics.
 
 ## Comments
 
