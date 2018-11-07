@@ -278,7 +278,8 @@ class Watch(object):
                 self._consumer.stop()
             self._consumer = None
 
-            self._rpc = None # TODO: Everywhere else this is self.rpc.
+            self.rpc.close()
+            self.rpc = None
             self._closed = True
             _LOGGER.debug('Finished stopping manager.')
 
@@ -310,8 +311,8 @@ class Watch(object):
         thread.daemon = True
         thread.start()
 
-    def unsubscribe(self):  # XXX should this be aliased to close?
-        self.rpc.close()
+    def unsubscribe(self):
+        self.close()
 
     @classmethod
     def for_document(cls, document_ref, snapshot_callback,
