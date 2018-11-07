@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.securitycenter_v1beta1.gapic.security_center_client &#8212; google-cloud c0ab644 documentation</title>
+    <title>google.cloud.securitycenter_v1beta1.gapic.security_center_client &#8212; google-cloud b0760f2 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -231,9 +231,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -266,16 +267,17 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.organization_path(&#39;[ORGANIZATION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``source``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `source`:</span>
 <span class="sd">            &gt;&gt;&gt; source = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_source(parent, source)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Resource name of the new source&#39;s parent. Its format should be</span>
-<span class="sd">                \&quot;organizations/[organization_id]\&quot;.</span>
-<span class="sd">            source (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Source]): The Source being created, only the display_name and description will be</span>
+<span class="sd">                &quot;organizations/[organization\_id]&quot;.</span>
+<span class="sd">            source (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Source]): The Source being created, only the display\_name and description will be</span>
 <span class="sd">                used. All other fields will be ignored.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Source`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -333,22 +335,23 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.source_path(&#39;[ORGANIZATION]&#39;, &#39;[SOURCE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``finding_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `finding_id`:</span>
 <span class="sd">            &gt;&gt;&gt; finding_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``finding``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `finding`:</span>
 <span class="sd">            &gt;&gt;&gt; finding = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_finding(parent, finding_id, finding)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Resource name of the new finding&#39;s parent. Its format should be</span>
-<span class="sd">                \&quot;organizations/[organization_id]/sources/[source_id]\&quot;.</span>
+<span class="sd">                &quot;organizations/[organization\_id]/sources/[source\_id]&quot;.</span>
 <span class="sd">            finding_id (str): Unique identifier provided by the client within the parent scope.</span>
 <span class="sd">                It must be alphanumeric and less than or equal to 32 characters and</span>
 <span class="sd">                greater than 0 characters in length.</span>
-<span class="sd">            finding (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Finding]): The Finding being created. The name and security_marks will be ignored as</span>
-<span class="sd">                they are both output only fields on this resource.</span>
+<span class="sd">            finding (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Finding]): The Finding being created. The name and security\_marks will be ignored</span>
+<span class="sd">                as they are both output only fields on this resource.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Finding`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -464,7 +467,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Name of the organization to get organization settings for. Its format is</span>
-<span class="sd">                \&quot;organizations/[organization_id]/organizationSettings\&quot;.</span>
+<span class="sd">                &quot;organizations/[organization\_id]/organizationSettings&quot;.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -520,7 +523,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Relative resource name of the source. Its format is</span>
-<span class="sd">                \&quot;organizations/[organization_id]/source/[source_id]\&quot;.</span>
+<span class="sd">                &quot;organizations/[organization\_id]/source/[source\_id]&quot;.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -575,7 +578,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.organization_path(&#39;[ORGANIZATION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``group_by``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `group_by`:</span>
 <span class="sd">            &gt;&gt;&gt; group_by = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
@@ -587,83 +590,87 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.group_assets(parent, group_by, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.group_assets(parent, group_by).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Name of the organization to groupBy. Its format is</span>
-<span class="sd">                \&quot;organizations/[organization_id]\&quot;.</span>
-<span class="sd">            group_by (str): Expression that defines what assets fields to use for grouping. The string</span>
-<span class="sd">                value should follow SQL syntax: comma separated list of fields. For</span>
-<span class="sd">                example:</span>
-<span class="sd">                \&quot;security_center_properties.resource_project,security_center_properties.project\&quot;.</span>
+<span class="sd">                &quot;organizations/[organization\_id]&quot;.</span>
+<span class="sd">            group_by (str): Expression that defines what assets fields to use for grouping. The</span>
+<span class="sd">                string value should follow SQL syntax: comma separated list of fields.</span>
+<span class="sd">                For example:</span>
+<span class="sd">                &quot;security\_center\_properties.resource\_project,security\_center\_properties.project&quot;.</span>
 
-<span class="sd">                The following fields are supported when compare_duration is not set:</span>
+<span class="sd">                The following fields are supported when compare\_duration is not set:</span>
 
-<span class="sd">                * security_center_properties.resource_name</span>
-<span class="sd">                * security_center_properties.resource_project</span>
-<span class="sd">                * security_center_properties.resource_type</span>
-<span class="sd">                * security_center_properties.resource_parent</span>
+<span class="sd">                -  security\_center\_properties.resource\_name</span>
+<span class="sd">                -  security\_center\_properties.resource\_project</span>
+<span class="sd">                -  security\_center\_properties.resource\_type</span>
+<span class="sd">                -  security\_center\_properties.resource\_parent</span>
 
-<span class="sd">                The following fields are supported when compare_duration is set:</span>
+<span class="sd">                The following fields are supported when compare\_duration is set:</span>
 
-<span class="sd">                * security_center_properties.resource_type</span>
-<span class="sd">            filter_ (str): Expression that defines the filter to apply across assets.</span>
-<span class="sd">                The expression is a list of zero or more restrictions combined via logical</span>
-<span class="sd">                operators ``AND`` and ``OR``.</span>
-<span class="sd">                Parentheses are not supported, and ``OR`` has higher precedence than ``AND``.</span>
+<span class="sd">                -  security\_center\_properties.resource\_type</span>
+<span class="sd">            filter_ (str): Expression that defines the filter to apply across assets. The</span>
+<span class="sd">                expression is a list of zero or more restrictions combined via logical</span>
+<span class="sd">                operators ``AND`` and ``OR``. Parentheses are not supported, and ``OR``</span>
+<span class="sd">                has higher precedence than ``AND``.</span>
 
-<span class="sd">                Restrictions have the form ``&lt;field&gt; &lt;operator&gt; &lt;value&gt;`` and may have a ``-``</span>
-<span class="sd">                character in front of them to indicate negation. The fields map to those</span>
-<span class="sd">                defined in the Asset resource. Examples include:</span>
+<span class="sd">                Restrictions have the form ``&lt;field&gt; &lt;operator&gt; &lt;value&gt;`` and may have a</span>
+<span class="sd">                ``-`` character in front of them to indicate negation. The fields map to</span>
+<span class="sd">                those defined in the Asset resource. Examples include:</span>
 
-<span class="sd">                * name</span>
-<span class="sd">                * security_center_properties.resource_name</span>
-<span class="sd">                * resource_properties.a_property</span>
-<span class="sd">                * security_marks.marks.marka</span>
+<span class="sd">                -  name</span>
+<span class="sd">                -  security\_center\_properties.resource\_name</span>
+<span class="sd">                -  resource\_properties.a\_property</span>
+<span class="sd">                -  security\_marks.marks.marka</span>
 
 <span class="sd">                The supported operators are:</span>
 
-<span class="sd">                * ``=`` for all value types.</span>
-<span class="sd">                * ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=`` for integer values.</span>
-<span class="sd">                * ``:``, meaning substring matching, for strings.</span>
+<span class="sd">                -  ``=`` for all value types.</span>
+<span class="sd">                -  ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=`` for integer values.</span>
+<span class="sd">                -  ``:``, meaning substring matching, for strings.</span>
 
 <span class="sd">                The supported value types are:</span>
 
-<span class="sd">                * string literals in quotes.</span>
-<span class="sd">                * integer literals without quotes.</span>
-<span class="sd">                * boolean literals ``true`` and ``false`` without quotes.</span>
+<span class="sd">                -  string literals in quotes.</span>
+<span class="sd">                -  integer literals without quotes.</span>
+<span class="sd">                -  boolean literals ``true`` and ``false`` without quotes.</span>
 
-<span class="sd">                For example, ``resource_properties.size = 100`` is a valid filter string.</span>
-<span class="sd">            compare_duration (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Duration]): When compare_duration is set, the Asset&#39;s \&quot;state\&quot; property is updated to</span>
-<span class="sd">                indicate whether the asset was added, removed, or remained present during</span>
-<span class="sd">                the compare_duration period of time that precedes the read_time. This is</span>
-<span class="sd">                the time between (read_time - compare_duration) and read_time.</span>
+<span class="sd">                For example, ``resource_properties.size = 100`` is a valid filter</span>
+<span class="sd">                string.</span>
+<span class="sd">            compare_duration (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Duration]): When compare\_duration is set, the Asset&#39;s &quot;state&quot; property is updated</span>
+<span class="sd">                to indicate whether the asset was added, removed, or remained present</span>
+<span class="sd">                during the compare\_duration period of time that precedes the</span>
+<span class="sd">                read\_time. This is the time between (read\_time - compare\_duration)</span>
+<span class="sd">                and read\_time.</span>
 
 <span class="sd">                The state value is derived based on the presence of the asset at the two</span>
 <span class="sd">                points in time. Intermediate state changes between the two times don&#39;t</span>
-<span class="sd">                affect the result. For example, the results aren&#39;t affected if the asset is</span>
-<span class="sd">                removed and re-created again.</span>
+<span class="sd">                affect the result. For example, the results aren&#39;t affected if the asset</span>
+<span class="sd">                is removed and re-created again.</span>
 
-<span class="sd">                Possible \&quot;state\&quot; values when compare_duration is specified:</span>
+<span class="sd">                Possible &quot;state&quot; values when compare\_duration is specified:</span>
 
-<span class="sd">                * \&quot;ADDED\&quot;: indicates that the asset was not present before</span>
-<span class="sd">                  compare_duration, but present at reference_time.</span>
-<span class="sd">                * \&quot;REMOVED\&quot;: indicates that the asset was present at the start of</span>
-<span class="sd">                  compare_duration, but not present at reference_time.</span>
-<span class="sd">                * \&quot;ACTIVE_AT_BOTH\&quot;: indicates that the asset was present at both the</span>
-<span class="sd">                  start and the end of the time period defined by</span>
-<span class="sd">                  compare_duration and reference_time.</span>
+<span class="sd">                -  &quot;ADDED&quot;: indicates that the asset was not present before</span>
+<span class="sd">                   compare\_duration, but present at reference\_time.</span>
+<span class="sd">                -  &quot;REMOVED&quot;: indicates that the asset was present at the start of</span>
+<span class="sd">                   compare\_duration, but not present at reference\_time.</span>
+<span class="sd">                -  &quot;ACTIVE\_AT\_BOTH&quot;: indicates that the asset was present at both the</span>
+<span class="sd">                   start and the end of the time period defined by compare\_duration and</span>
+<span class="sd">                   reference\_time.</span>
 
 <span class="sd">                This field is ignored if ``state`` is not a field in ``group_by``.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Duration`</span>
 <span class="sd">            read_time (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Timestamp]): Time used as a reference point when filtering assets. The filter is limited</span>
 <span class="sd">                to assets existing at the supplied time and their values are those at that</span>
 <span class="sd">                specific time. Absence of this field will default to the API&#39;s version of</span>
 <span class="sd">                NOW.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Timestamp`</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
@@ -736,11 +743,11 @@
                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Filters an organization or source&#39;s findings and  groups them by their</span>
+<span class="sd">        Filters an organization or source&#39;s findings and groups them by their</span>
 <span class="sd">        specified properties.</span>
 
-<span class="sd">        To group across all sources provide a ``-`` as the source id.</span>
-<span class="sd">        Example: /v1beta1/organizations/123/sources/-/findings</span>
+<span class="sd">        To group across all sources provide a ``-`` as the source id. Example:</span>
+<span class="sd">        /v1beta1/organizations/123/sources/-/findings</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import securitycenter_v1beta1</span>
@@ -749,7 +756,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.source_path(&#39;[ORGANIZATION]&#39;, &#39;[SOURCE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``group_by``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `group_by`:</span>
 <span class="sd">            &gt;&gt;&gt; group_by = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
@@ -761,56 +768,56 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.group_findings(parent, group_by, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.group_findings(parent, group_by).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Name of the source to groupBy. Its format is</span>
-<span class="sd">                \&quot;organizations/[organization_id]/sources/[source_id]\&quot;. To groupBy across</span>
-<span class="sd">                all sources provide a source_id of ``-``. For example:</span>
+<span class="sd">                &quot;organizations/[organization\_id]/sources/[source\_id]&quot;. To groupBy</span>
+<span class="sd">                across all sources provide a source\_id of ``-``. For example:</span>
 <span class="sd">                organizations/123/sources/-</span>
-<span class="sd">            group_by (str): Expression that defines what assets fields to use for grouping (including</span>
-<span class="sd">                ``state``). The string value should follow SQL syntax: comma separated list</span>
-<span class="sd">                of fields. For example:</span>
-<span class="sd">                \&quot;parent,resource_name\&quot;.</span>
+<span class="sd">            group_by (str): Expression that defines what assets fields to use for grouping</span>
+<span class="sd">                (including ``state``). The string value should follow SQL syntax: comma</span>
+<span class="sd">                separated list of fields. For example: &quot;parent,resource\_name&quot;.</span>
 
 <span class="sd">                The following fields are supported:</span>
 
-<span class="sd">                * resource_name</span>
-<span class="sd">                * category</span>
-<span class="sd">                * state</span>
-<span class="sd">                * parent</span>
-<span class="sd">            filter_ (str): Expression that defines the filter to apply across findings.</span>
-<span class="sd">                The expression is a list of one or more restrictions combined via logical</span>
-<span class="sd">                operators ``AND`` and ``OR``.</span>
-<span class="sd">                Parentheses are not supported, and ``OR`` has higher precedence than ``AND``.</span>
+<span class="sd">                -  resource\_name</span>
+<span class="sd">                -  category</span>
+<span class="sd">                -  state</span>
+<span class="sd">                -  parent</span>
+<span class="sd">            filter_ (str): Expression that defines the filter to apply across findings. The</span>
+<span class="sd">                expression is a list of one or more restrictions combined via logical</span>
+<span class="sd">                operators ``AND`` and ``OR``. Parentheses are not supported, and ``OR``</span>
+<span class="sd">                has higher precedence than ``AND``.</span>
 
-<span class="sd">                Restrictions have the form ``&lt;field&gt; &lt;operator&gt; &lt;value&gt;`` and may have a ``-``</span>
-<span class="sd">                character in front of them to indicate negation. Examples include:</span>
+<span class="sd">                Restrictions have the form ``&lt;field&gt; &lt;operator&gt; &lt;value&gt;`` and may have a</span>
+<span class="sd">                ``-`` character in front of them to indicate negation. Examples include:</span>
 
-<span class="sd">                 * name</span>
-<span class="sd">                 * source_properties.a_property</span>
-<span class="sd">                 * security_marks.marks.marka</span>
+<span class="sd">                -  name</span>
+<span class="sd">                -  source\_properties.a\_property</span>
+<span class="sd">                -  security\_marks.marks.marka</span>
 
 <span class="sd">                The supported operators are:</span>
 
-<span class="sd">                * ``=`` for all value types.</span>
-<span class="sd">                * ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=`` for integer values.</span>
-<span class="sd">                * ``:``, meaning substring matching, for strings.</span>
+<span class="sd">                -  ``=`` for all value types.</span>
+<span class="sd">                -  ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=`` for integer values.</span>
+<span class="sd">                -  ``:``, meaning substring matching, for strings.</span>
 
 <span class="sd">                The supported value types are:</span>
 
-<span class="sd">                * string literals in quotes.</span>
-<span class="sd">                * integer literals without quotes.</span>
-<span class="sd">                * boolean literals ``true`` and ``false`` without quotes.</span>
+<span class="sd">                -  string literals in quotes.</span>
+<span class="sd">                -  integer literals without quotes.</span>
+<span class="sd">                -  boolean literals ``true`` and ``false`` without quotes.</span>
 
 <span class="sd">                For example, ``source_properties.size = 100`` is a valid filter string.</span>
 <span class="sd">            read_time (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Timestamp]): Time used as a reference point when filtering findings. The filter is</span>
 <span class="sd">                limited to findings existing at the supplied time and their values are</span>
 <span class="sd">                those at that specific time. Absence of this field will default to the</span>
 <span class="sd">                API&#39;s version of NOW.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Timestamp`</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
@@ -902,78 +909,82 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_assets(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_assets(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Name of the organization assets should belong to. Its format is</span>
-<span class="sd">                \&quot;organizations/[organization_id]\&quot;.</span>
-<span class="sd">            filter_ (str): Expression that defines the filter to apply across assets.</span>
-<span class="sd">                The expression is a list of zero or more restrictions combined via logical</span>
-<span class="sd">                operators ``AND`` and ``OR``.</span>
-<span class="sd">                Parentheses are not supported, and ``OR`` has higher precedence than ``AND``.</span>
+<span class="sd">                &quot;organizations/[organization\_id]&quot;.</span>
+<span class="sd">            filter_ (str): Expression that defines the filter to apply across assets. The</span>
+<span class="sd">                expression is a list of zero or more restrictions combined via logical</span>
+<span class="sd">                operators ``AND`` and ``OR``. Parentheses are not supported, and ``OR``</span>
+<span class="sd">                has higher precedence than ``AND``.</span>
 
-<span class="sd">                Restrictions have the form ``&lt;field&gt; &lt;operator&gt; &lt;value&gt;`` and may have a ``-``</span>
-<span class="sd">                character in front of them to indicate negation. The fields map to those</span>
-<span class="sd">                defined in the Asset resource. Examples include:</span>
+<span class="sd">                Restrictions have the form ``&lt;field&gt; &lt;operator&gt; &lt;value&gt;`` and may have a</span>
+<span class="sd">                ``-`` character in front of them to indicate negation. The fields map to</span>
+<span class="sd">                those defined in the Asset resource. Examples include:</span>
 
-<span class="sd">                * name</span>
-<span class="sd">                * security_center_properties.resource_name</span>
-<span class="sd">                * resource_properties.a_property</span>
-<span class="sd">                * security_marks.marks.marka</span>
+<span class="sd">                -  name</span>
+<span class="sd">                -  security\_center\_properties.resource\_name</span>
+<span class="sd">                -  resource\_properties.a\_property</span>
+<span class="sd">                -  security\_marks.marks.marka</span>
 
 <span class="sd">                The supported operators are:</span>
 
-<span class="sd">                * ``=`` for all value types.</span>
-<span class="sd">                * ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=`` for integer values.</span>
-<span class="sd">                * ``:``, meaning substring matching, for strings.</span>
+<span class="sd">                -  ``=`` for all value types.</span>
+<span class="sd">                -  ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=`` for integer values.</span>
+<span class="sd">                -  ``:``, meaning substring matching, for strings.</span>
 
 <span class="sd">                The supported value types are:</span>
 
-<span class="sd">                * string literals in quotes.</span>
-<span class="sd">                * integer literals without quotes.</span>
-<span class="sd">                * boolean literals ``true`` and ``false`` without quotes.</span>
+<span class="sd">                -  string literals in quotes.</span>
+<span class="sd">                -  integer literals without quotes.</span>
+<span class="sd">                -  boolean literals ``true`` and ``false`` without quotes.</span>
 
-<span class="sd">                For example, ``resource_properties.size = 100`` is a valid filter string.</span>
+<span class="sd">                For example, ``resource_properties.size = 100`` is a valid filter</span>
+<span class="sd">                string.</span>
 <span class="sd">            order_by (str): Expression that defines what fields and order to use for sorting. The</span>
-<span class="sd">                string value should follow SQL syntax: comma separated list of fields. For</span>
-<span class="sd">                example: \&quot;name,resource_properties.a_property\&quot;. The default sorting order</span>
-<span class="sd">                is ascending. To specify descending order for a field, a suffix \&quot; desc\&quot;</span>
-<span class="sd">                should be appended to the field name. For example: \&quot;name</span>
-<span class="sd">                desc,resource_properties.a_property\&quot;. Redundant space characters in the</span>
-<span class="sd">                syntax are insignificant. \&quot;name desc,resource_properties.a_property\&quot; and \&quot;</span>
-<span class="sd">                name     desc  ,   resource_properties.a_property  \&quot; are equivalent.</span>
+<span class="sd">                string value should follow SQL syntax: comma separated list of fields.</span>
+<span class="sd">                For example: &quot;name,resource\_properties.a\_property&quot;. The default</span>
+<span class="sd">                sorting order is ascending. To specify descending order for a field, a</span>
+<span class="sd">                suffix &quot; desc&quot; should be appended to the field name. For example: &quot;name</span>
+<span class="sd">                desc,resource\_properties.a\_property&quot;. Redundant space characters in</span>
+<span class="sd">                the syntax are insignificant. &quot;name</span>
+<span class="sd">                desc,resource\_properties.a\_property&quot; and &quot; name desc ,</span>
+<span class="sd">                resource\_properties.a\_property &quot; are equivalent.</span>
 <span class="sd">            read_time (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Timestamp]): Time used as a reference point when filtering assets. The filter is limited</span>
 <span class="sd">                to assets existing at the supplied time and their values are those at that</span>
 <span class="sd">                specific time. Absence of this field will default to the API&#39;s version of</span>
 <span class="sd">                NOW.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Timestamp`</span>
-<span class="sd">            compare_duration (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Duration]): When compare_duration is set, the ListAssetResult&#39;s \&quot;state\&quot; attribute is</span>
-<span class="sd">                updated to indicate whether the asset was added, removed, or remained</span>
-<span class="sd">                present during the compare_duration period of time that precedes the</span>
-<span class="sd">                read_time. This is the time between (read_time -</span>
-<span class="sd">                compare_duration) and read_time.</span>
+<span class="sd">            compare_duration (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Duration]): When compare\_duration is set, the ListAssetResult&#39;s &quot;state&quot; attribute</span>
+<span class="sd">                is updated to indicate whether the asset was added, removed, or remained</span>
+<span class="sd">                present during the compare\_duration period of time that precedes the</span>
+<span class="sd">                read\_time. This is the time between (read\_time - compare\_duration)</span>
+<span class="sd">                and read\_time.</span>
 
 <span class="sd">                The state value is derived based on the presence of the asset at the two</span>
 <span class="sd">                points in time. Intermediate state changes between the two times don&#39;t</span>
-<span class="sd">                affect the result. For example, the results aren&#39;t affected if the asset is</span>
-<span class="sd">                removed and re-created again.</span>
+<span class="sd">                affect the result. For example, the results aren&#39;t affected if the asset</span>
+<span class="sd">                is removed and re-created again.</span>
 
-<span class="sd">                Possible \&quot;state\&quot; values when compare_duration is specified:</span>
+<span class="sd">                Possible &quot;state&quot; values when compare\_duration is specified:</span>
 
-<span class="sd">                * \&quot;ADDED\&quot;: indicates that the asset was not present before</span>
-<span class="sd">                  compare_duration, but present at read_time.</span>
-<span class="sd">                * \&quot;REMOVED\&quot;: indicates that the asset was present at the start of</span>
-<span class="sd">                  compare_duration, but not present at read_time.</span>
-<span class="sd">                * \&quot;ACTIVE\&quot;: indicates that the asset was present at both the</span>
-<span class="sd">                  start and the end of the time period defined by</span>
-<span class="sd">                  compare_duration and read_time.</span>
+<span class="sd">                -  &quot;ADDED&quot;: indicates that the asset was not present before</span>
+<span class="sd">                   compare\_duration, but present at read\_time.</span>
+<span class="sd">                -  &quot;REMOVED&quot;: indicates that the asset was present at the start of</span>
+<span class="sd">                   compare\_duration, but not present at read\_time.</span>
+<span class="sd">                -  &quot;ACTIVE&quot;: indicates that the asset was present at both the start and</span>
+<span class="sd">                   the end of the time period defined by compare\_duration and</span>
+<span class="sd">                   read\_time.</span>
 
-<span class="sd">                If compare_duration is not specified, then the only possible state is</span>
-<span class="sd">                \&quot;UNUSED\&quot;, which indicates that the asset is present at read_time.</span>
+<span class="sd">                If compare\_duration is not specified, then the only possible state is</span>
+<span class="sd">                &quot;UNUSED&quot;, which indicates that the asset is present at read\_time.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Duration`</span>
 <span class="sd">            field_mask (Union[dict, ~google.cloud.securitycenter_v1beta1.types.FieldMask]): Optional.</span>
@@ -981,6 +992,7 @@
 <span class="sd">                A field mask to specify the ListAssetsResult fields to be listed in the</span>
 <span class="sd">                response.</span>
 <span class="sd">                An empty field mask will list all fields.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.FieldMask`</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
@@ -1056,8 +1068,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Lists an organization or source&#39;s assets.</span>
 
-<span class="sd">        To list across all sources provide a ``-`` as the source id.</span>
-<span class="sd">        Example: /v1beta1/organizations/123/sources/-/findings</span>
+<span class="sd">        To list across all sources provide a ``-`` as the source id. Example:</span>
+<span class="sd">        /v1beta1/organizations/123/sources/-/findings</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import securitycenter_v1beta1</span>
@@ -1075,59 +1087,61 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_findings(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_findings(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Name of the source the findings belong to. Its format is</span>
-<span class="sd">                \&quot;organizations/[organization_id]/sources/[source_id]\&quot;. To list across all</span>
-<span class="sd">                sources provide a source_id of ``-``. For example:</span>
+<span class="sd">                &quot;organizations/[organization\_id]/sources/[source\_id]&quot;. To list across</span>
+<span class="sd">                all sources provide a source\_id of ``-``. For example:</span>
 <span class="sd">                organizations/123/sources/-</span>
-<span class="sd">            filter_ (str): Expression that defines the filter to apply across findings.</span>
-<span class="sd">                The expression is a list of one or more restrictions combined via logical</span>
-<span class="sd">                operators ``AND`` and ``OR``.</span>
-<span class="sd">                Parentheses are not supported, and ``OR`` has higher precedence than ``AND``.</span>
+<span class="sd">            filter_ (str): Expression that defines the filter to apply across findings. The</span>
+<span class="sd">                expression is a list of one or more restrictions combined via logical</span>
+<span class="sd">                operators ``AND`` and ``OR``. Parentheses are not supported, and ``OR``</span>
+<span class="sd">                has higher precedence than ``AND``.</span>
 
-<span class="sd">                Restrictions have the form ``&lt;field&gt; &lt;operator&gt; &lt;value&gt;`` and may have a ``-``</span>
-<span class="sd">                character in front of them to indicate negation. Examples include:</span>
+<span class="sd">                Restrictions have the form ``&lt;field&gt; &lt;operator&gt; &lt;value&gt;`` and may have a</span>
+<span class="sd">                ``-`` character in front of them to indicate negation. Examples include:</span>
 
-<span class="sd">                 * name</span>
-<span class="sd">                 * source_properties.a_property</span>
-<span class="sd">                 * security_marks.marks.marka</span>
+<span class="sd">                -  name</span>
+<span class="sd">                -  source\_properties.a\_property</span>
+<span class="sd">                -  security\_marks.marks.marka</span>
 
 <span class="sd">                The supported operators are:</span>
 
-<span class="sd">                * ``=`` for all value types.</span>
-<span class="sd">                * ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=`` for integer values.</span>
-<span class="sd">                * ``:``, meaning substring matching, for strings.</span>
+<span class="sd">                -  ``=`` for all value types.</span>
+<span class="sd">                -  ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=`` for integer values.</span>
+<span class="sd">                -  ``:``, meaning substring matching, for strings.</span>
 
 <span class="sd">                The supported value types are:</span>
 
-<span class="sd">                * string literals in quotes.</span>
-<span class="sd">                * integer literals without quotes.</span>
-<span class="sd">                * boolean literals ``true`` and ``false`` without quotes.</span>
+<span class="sd">                -  string literals in quotes.</span>
+<span class="sd">                -  integer literals without quotes.</span>
+<span class="sd">                -  boolean literals ``true`` and ``false`` without quotes.</span>
 
 <span class="sd">                For example, ``source_properties.size = 100`` is a valid filter string.</span>
 <span class="sd">            order_by (str): Expression that defines what fields and order to use for sorting. The</span>
-<span class="sd">                string value should follow SQL syntax: comma separated list of fields. For</span>
-<span class="sd">                example: \&quot;name,resource_properties.a_property\&quot;. The default sorting order</span>
-<span class="sd">                is ascending. To specify descending order for a field, a suffix \&quot; desc\&quot;</span>
-<span class="sd">                should be appended to the field name. For example: \&quot;name</span>
-<span class="sd">                desc,source_properties.a_property\&quot;. Redundant space characters in the</span>
-<span class="sd">                syntax are insignificant. \&quot;name desc,source_properties.a_property\&quot; and \&quot;</span>
-<span class="sd">                name     desc  ,   source_properties.a_property  \&quot; are equivalent.</span>
+<span class="sd">                string value should follow SQL syntax: comma separated list of fields.</span>
+<span class="sd">                For example: &quot;name,resource\_properties.a\_property&quot;. The default</span>
+<span class="sd">                sorting order is ascending. To specify descending order for a field, a</span>
+<span class="sd">                suffix &quot; desc&quot; should be appended to the field name. For example: &quot;name</span>
+<span class="sd">                desc,source\_properties.a\_property&quot;. Redundant space characters in the</span>
+<span class="sd">                syntax are insignificant. &quot;name desc,source\_properties.a\_property&quot; and</span>
+<span class="sd">                &quot; name desc , source\_properties.a\_property &quot; are equivalent.</span>
 <span class="sd">            read_time (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Timestamp]): Time used as a reference point when filtering findings. The filter is</span>
 <span class="sd">                limited to findings existing at the supplied time and their values are</span>
 <span class="sd">                those at that specific time. Absence of this field will default to the</span>
 <span class="sd">                API&#39;s version of NOW.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Timestamp`</span>
 <span class="sd">            field_mask (Union[dict, ~google.cloud.securitycenter_v1beta1.types.FieldMask]): Optional.</span>
 
 <span class="sd">                A field mask to specify the Finding fields to be listed in the response.</span>
 <span class="sd">                An empty field mask will list all fields.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.FieldMask`</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
@@ -1215,14 +1229,14 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_sources(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_sources(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Resource name of the parent of sources to list. Its format should be</span>
-<span class="sd">                \&quot;organizations/[organization_id]\&quot;.</span>
+<span class="sd">                &quot;organizations/[organization\_id]&quot;.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -1288,9 +1302,9 @@
 <span class="sd">        Runs asset discovery. The discovery is tracked with a long-running</span>
 <span class="sd">        operation.</span>
 
-<span class="sd">        This API can only be called with limited frequency for an organization. If</span>
-<span class="sd">        it is called too frequently the caller will receive a TOO_MANY_REQUESTS</span>
-<span class="sd">        error.</span>
+<span class="sd">        This API can only be called with limited frequency for an organization.</span>
+<span class="sd">        If it is called too frequently the caller will receive a</span>
+<span class="sd">        TOO\_MANY\_REQUESTS error.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import securitycenter_v1beta1</span>
@@ -1312,7 +1326,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Name of the organization to run asset discovery for. Its format is</span>
-<span class="sd">                \&quot;organizations/[organization_id]\&quot;.</span>
+<span class="sd">                &quot;organizations/[organization\_id]&quot;.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1373,21 +1387,21 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.finding_path(&#39;[ORGANIZATION]&#39;, &#39;[SOURCE]&#39;, &#39;[FINDING]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``state``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `state`:</span>
 <span class="sd">            &gt;&gt;&gt; state = enums.Finding.State.STATE_UNSPECIFIED</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``start_time``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `start_time`:</span>
 <span class="sd">            &gt;&gt;&gt; start_time = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_finding_state(name, state, start_time)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): The relative resource name of the finding. See:</span>
-<span class="sd">                https://cloud.google.com/apis/design/resource_names#relative_resource_name</span>
-<span class="sd">                Example:</span>
-<span class="sd">                \&quot;organizations/123/sources/456/finding/789\&quot;.</span>
+<span class="sd">                https://cloud.google.com/apis/design/resource\_names#relative\_resource\_name</span>
+<span class="sd">                Example: &quot;organizations/123/sources/456/finding/789&quot;.</span>
 <span class="sd">            state (~google.cloud.securitycenter_v1beta1.types.State): The desired State of the finding.</span>
 <span class="sd">            start_time (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Timestamp]): The time at which the updated state takes effect.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Timestamp`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1445,7 +1459,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.source_path(&#39;[ORGANIZATION]&#39;, &#39;[SOURCE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``policy``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `policy`:</span>
 <span class="sd">            &gt;&gt;&gt; policy = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.set_iam_policy(resource, policy)</span>
@@ -1454,10 +1468,11 @@
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy is being specified.</span>
 <span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
-<span class="sd">            policy (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The size of</span>
-<span class="sd">                the policy is limited to a few 10s of KB. An empty policy is a</span>
+<span class="sd">            policy (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The</span>
+<span class="sd">                size of the policy is limited to a few 10s of KB. An empty policy is a</span>
 <span class="sd">                valid policy but certain Cloud Platform services (such as Projects)</span>
 <span class="sd">                might reject them.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Policy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1513,7 +1528,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; resource = client.source_path(&#39;[ORGANIZATION]&#39;, &#39;[SOURCE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``permissions``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `permissions`:</span>
 <span class="sd">            &gt;&gt;&gt; permissions = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.test_iam_permissions(resource, permissions)</span>
@@ -1524,8 +1539,8 @@
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
 <span class="sd">            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with</span>
 <span class="sd">                wildcards (such as &#39;*&#39; or &#39;storage.*&#39;) are not allowed. For more</span>
-<span class="sd">                information see</span>
-<span class="sd">                `IAM Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`_.</span>
+<span class="sd">                information see `IAM</span>
+<span class="sd">                Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`__.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1579,22 +1594,24 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = securitycenter_v1beta1.SecurityCenterClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``finding``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `finding`:</span>
 <span class="sd">            &gt;&gt;&gt; finding = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_finding(finding)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            finding (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Finding]): The finding resource to update or create if it does not already exist.</span>
-<span class="sd">                parent, security_marks, and update_time will be ignored.</span>
+<span class="sd">                parent, security\_marks, and update\_time will be ignored.</span>
 
 <span class="sd">                In the case of creation, the finding id portion of the name must</span>
 <span class="sd">                alphanumeric and less than or equal to 32 characters and greater than 0</span>
 <span class="sd">                characters in length.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Finding`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.securitycenter_v1beta1.types.FieldMask]): The FieldMask to use when updating the finding resource. This field is</span>
 <span class="sd">                ignored if the finding does not already exist and the finding is created.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1649,16 +1666,18 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = securitycenter_v1beta1.SecurityCenterClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``organization_settings``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `organization_settings`:</span>
 <span class="sd">            &gt;&gt;&gt; organization_settings = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_organization_settings(organization_settings)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            organization_settings (Union[dict, ~google.cloud.securitycenter_v1beta1.types.OrganizationSettings]): The organization settings resource to update.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.OrganizationSettings`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.securitycenter_v1beta1.types.FieldMask]): The FieldMask to use when updating the settings resource.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1713,16 +1732,18 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = securitycenter_v1beta1.SecurityCenterClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``source``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `source`:</span>
 <span class="sd">            &gt;&gt;&gt; source = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_source(source)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            source (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Source]): The source resource to update.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Source`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.securitycenter_v1beta1.types.FieldMask]): The FieldMask to use when updating the source resource.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1777,19 +1798,22 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = securitycenter_v1beta1.SecurityCenterClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``security_marks``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `security_marks`:</span>
 <span class="sd">            &gt;&gt;&gt; security_marks = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_security_marks(security_marks)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            security_marks (Union[dict, ~google.cloud.securitycenter_v1beta1.types.SecurityMarks]): The security marks resource to update.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.SecurityMarks`</span>
 <span class="sd">            update_mask (Union[dict, ~google.cloud.securitycenter_v1beta1.types.FieldMask]): The FieldMask to use when updating the security marks resource.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.FieldMask`</span>
 <span class="sd">            start_time (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Timestamp]): The time at which the updated SecurityMarks take effect.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.Timestamp`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>

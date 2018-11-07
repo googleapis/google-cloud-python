@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.websecurityscanner_v1alpha.gapic.web_security_scanner_client &#8212; google-cloud c0ab644 documentation</title>
+    <title>google.cloud.websecurityscanner_v1alpha.gapic.web_security_scanner_client &#8212; google-cloud b0760f2 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -221,9 +221,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -256,7 +257,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``scan_config``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `scan_config`:</span>
 <span class="sd">            &gt;&gt;&gt; scan_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_scan_config(parent, scan_config)</span>
@@ -267,6 +268,7 @@
 <span class="sd">                project resource name in the format &#39;projects/{projectId}&#39;.</span>
 <span class="sd">            scan_config (Union[dict, ~google.cloud.websecurityscanner_v1alpha.types.ScanConfig]): Required.</span>
 <span class="sd">                The ScanConfig to be created.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.websecurityscanner_v1alpha.types.ScanConfig`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -440,7 +442,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_scan_configs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_scan_configs(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -520,10 +522,10 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = websecurityscanner_v1alpha.WebSecurityScannerClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``scan_config``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `scan_config`:</span>
 <span class="sd">            &gt;&gt;&gt; scan_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``update_mask``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `update_mask`:</span>
 <span class="sd">            &gt;&gt;&gt; update_mask = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_scan_config(scan_config, update_mask)</span>
@@ -533,12 +535,13 @@
 <span class="sd">                The ScanConfig to be updated. The name field must be set to identify the</span>
 <span class="sd">                resource to be updated. The values of fields not covered by the mask</span>
 <span class="sd">                will be ignored.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.websecurityscanner_v1alpha.types.ScanConfig`</span>
-<span class="sd">            update_mask (Union[dict, ~google.cloud.websecurityscanner_v1alpha.types.FieldMask]): Required.</span>
-<span class="sd">                The update mask applies to the resource. For the ``FieldMask`` definition,</span>
-<span class="sd">                see</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.websecurityscanner_v1alpha.types.FieldMask]): Required. The update mask applies to the resource. For the ``FieldMask``</span>
+<span class="sd">                definition, see</span>
 <span class="sd">                https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.websecurityscanner_v1alpha.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -715,7 +718,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_scan_runs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_scan_runs(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -861,7 +864,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_crawled_urls(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_crawled_urls(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -1000,7 +1003,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.scan_run_path(&#39;[PROJECT]&#39;, &#39;[SCAN_CONFIG]&#39;, &#39;[SCAN_RUN]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``filter_``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `filter_`:</span>
 <span class="sd">            &gt;&gt;&gt; filter_ = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
@@ -1012,7 +1015,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_findings(parent, filter_, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_findings(parent, filter_).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -1022,10 +1025,8 @@
 <span class="sd">                The parent resource name, which should be a scan run resource name in the</span>
 <span class="sd">                format</span>
 <span class="sd">                &#39;projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}&#39;.</span>
-<span class="sd">            filter_ (str): The filter expression. The expression must be in the format: &lt;field&gt;</span>
-<span class="sd">                &lt;operator&gt; &lt;value&gt;.</span>
-<span class="sd">                Supported field: &#39;finding_type&#39;.</span>
-<span class="sd">                Supported operator: &#39;=&#39;.</span>
+<span class="sd">            filter_ (str): The filter expression. The expression must be in the format: . Supported</span>
+<span class="sd">                field: &#39;finding\_type&#39;. Supported operator: &#39;=&#39;.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
