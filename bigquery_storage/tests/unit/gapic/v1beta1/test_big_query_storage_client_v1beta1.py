@@ -17,7 +17,7 @@
 
 import pytest
 
-from google.cloud import bigquery_storage_v1beta1
+from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client  # noqa
 from google.cloud.bigquery_storage_v1beta1.proto import storage_pb2
 from google.cloud.bigquery_storage_v1beta1.proto import table_reference_pb2
 from google.protobuf import empty_pb2
@@ -77,7 +77,7 @@ class TestBigQueryStorageClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_storage_v1beta1.BigQueryStorageClient(
+        client = big_query_storage_client.BigQueryStorageClient(
             channel=channel)
 
         # Setup Request
@@ -98,7 +98,7 @@ class TestBigQueryStorageClient(object):
     def test_create_read_session_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_storage_v1beta1.BigQueryStorageClient(
+        client = big_query_storage_client.BigQueryStorageClient(
             channel=channel)
 
         # Setup request
@@ -115,7 +115,7 @@ class TestBigQueryStorageClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = bigquery_storage_v1beta1.BigQueryStorageClient(
+        client = big_query_storage_client.BigQueryStorageClient(
             channel=channel)
 
         # Setup Request
@@ -135,7 +135,7 @@ class TestBigQueryStorageClient(object):
     def test_read_rows_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_storage_v1beta1.BigQueryStorageClient(
+        client = big_query_storage_client.BigQueryStorageClient(
             channel=channel)
 
         # Setup request
@@ -152,7 +152,7 @@ class TestBigQueryStorageClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_storage_v1beta1.BigQueryStorageClient(
+        client = big_query_storage_client.BigQueryStorageClient(
             channel=channel)
 
         # Setup Request
@@ -172,7 +172,7 @@ class TestBigQueryStorageClient(object):
     def test_batch_create_read_session_streams_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_storage_v1beta1.BigQueryStorageClient(
+        client = big_query_storage_client.BigQueryStorageClient(
             channel=channel)
 
         # Setup request
@@ -185,7 +185,7 @@ class TestBigQueryStorageClient(object):
 
     def test_finalize_stream(self):
         channel = ChannelStub()
-        client = bigquery_storage_v1beta1.BigQueryStorageClient(
+        client = big_query_storage_client.BigQueryStorageClient(
             channel=channel)
 
         # Setup Request
@@ -201,7 +201,7 @@ class TestBigQueryStorageClient(object):
     def test_finalize_stream_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_storage_v1beta1.BigQueryStorageClient(
+        client = big_query_storage_client.BigQueryStorageClient(
             channel=channel)
 
         # Setup request
@@ -218,7 +218,7 @@ class TestBigQueryStorageClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_storage_v1beta1.BigQueryStorageClient(
+        client = big_query_storage_client.BigQueryStorageClient(
             channel=channel)
 
         # Setup Request
@@ -236,7 +236,7 @@ class TestBigQueryStorageClient(object):
     def test_split_read_stream_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_storage_v1beta1.BigQueryStorageClient(
+        client = big_query_storage_client.BigQueryStorageClient(
             channel=channel)
 
         # Setup request

@@ -16,18 +16,27 @@
 
 from __future__ import absolute_import
 
+import pkg_resources
+__version__ = pkg_resources.get_distribution('google-cloud-bigquery-storage').version  # noqa
+
 from google.cloud.bigquery_storage_v1beta1 import types
-from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client  # noqa
+from google.cloud.bigquery_storage_v1beta1 import client
 from google.cloud.bigquery_storage_v1beta1.gapic import enums
 
 
-class BigQueryStorageClient(big_query_storage_client.BigQueryStorageClient):
-    __doc__ = big_query_storage_client.BigQueryStorageClient.__doc__
+class BigQueryStorageClient(client.BigQueryStorageClient):
+    __doc__ = client.BigQueryStorageClient.__doc__
     enums = enums
 
 
 __all__ = (
-    'enums',
+    # google.cloud.bigquery_storage_v1beta1
+    '__version__',
     'types',
+
+    # google.cloud.bigquery_storage_v1beta1.client
     'BigQueryStorageClient',
+
+    # google.cloud.bigquery_storage_v1beta1.gapic
+    'enums',
 )

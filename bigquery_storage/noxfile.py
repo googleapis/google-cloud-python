@@ -48,7 +48,7 @@ def default(session):
         '--cov-append',
         '--cov-config=.coveragerc',
         '--cov-report=',
-        os.path.join('tests', 'unit', 'gapic', 'v1beta1'),
+        os.path.join('tests', 'unit'),
         *session.posargs
     )
 
@@ -90,6 +90,7 @@ def cover(session):
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
+
 
 @nox.session(python=['2.7', '3.6'])
 def system(session):

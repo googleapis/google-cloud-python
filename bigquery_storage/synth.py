@@ -31,8 +31,15 @@ library = gapic.py_library(
 
 s.move(
     library,
-    excludes=['docs/conf.py', 'docs/index.rst', 'README.rst',
-              'nox*.py', 'setup.py', 'setup.cfg']
+    excludes=[
+        'docs/conf.py',
+        'docs/index.rst',
+        'google/cloud/bigquery_storage_v1beta1/__init__.py',
+        'README.rst',
+        'nox*.py',
+        'setup.py',
+        'setup.cfg',
+    ],
 )
 
 s.replace(
@@ -55,13 +62,19 @@ s.replace(
     '\g<0>import google.api_core.path_template\n'
 )
 
-# START: Ignore lint and coverage
 s.replace(
-    ['google/cloud/bigquery_storage_v1beta1/__init__.py'],
-    'import big_query_storage_client',
-    'import big_query_storage_client  # noqa',
+    ['tests/unit/gapic/v1beta1/test_big_query_storage_client_v1beta1.py'],
+    'from google.cloud import bigquery_storage_v1beta1',
+    'from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client  # noqa',
 )
 
+s.replace(
+    ['tests/unit/gapic/v1beta1/test_big_query_storage_client_v1beta1.py'],
+    'bigquery_storage_v1beta1.BigQueryStorageClient',
+    'big_query_storage_client.BigQueryStorageClient',
+)
+
+# START: Ignore lint and coverage
 s.replace(
     ['google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.py'],
     'if transport:',

@@ -32,16 +32,21 @@ def client():
     return bigquery_storage_v1beta1.BigQueryStorageClient()
 
 
-def test_read_rows(project_id, client):
+@pytest.fixture()
+def table_reference():
     table_ref = bigquery_storage_v1beta1.types.TableReference()
     table_ref.project_id = 'bigquery-public-data'
     table_ref.dataset_id = 'usa_names'
     table_ref.table_id = 'usa_1910_2013'
+    return table_ref
 
+
+def test_read_rows(client, table_reference):
     session = client.create_read_session(
-        table_ref,
+        table_reference,
         requested_streams=1,
-        parent='projects/{}'.format(project_id))
+        parent='projects/{}'.format(project_id),
+    )
 
     stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
         stream=session.streams[0])
@@ -50,3 +55,17 @@ def test_read_rows(project_id, client):
 
     assert page.status.estimated_row_count > 0
     assert len(page.avro_rows.serialized_binary_rows) > 0
+
+
+def test_split_read_stream(client, table_reference):
+    session = client.create_read_session(
+        table_reference,
+        requested_streams=1,
+        parent='projects/{}'.format(project_id),
+    )
+
+    split = client.split_read_stream(session.streams[0])
+
+    assert split.primary_stream is not None
+    assert split.remainder_stream is not None
+    assert split.primary_stream != split.remainder_stream
