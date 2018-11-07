@@ -1883,17 +1883,157 @@ class BlobProperty(Property):
 
 
 class TextProperty(BlobProperty):
+    """An unindexed property that contains UTF-8 encoded text values.
+
+    A :class:`TextProperty` is intended for values of unlimited length, hence
+    is **not** indexed. Previously, a :class:`TextProperty` could be indexed
+    via:
+
+    .. code-block:: python
+
+        class Item(ndb.Model):
+            description = ndb.TextProperty(indexed=True)
+            ...
+
+    but this usage is no longer supported. If indexed text is desired, a
+    :class:`StringProperty` should be used instead.
+
+    .. automethod:: _to_base_type
+    .. automethod:: _from_base_type
+    .. automethod:: _validate
+
+    Raises:
+        NotImplementedError: If ``indexed=True`` is provided.
+    """
+
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
+        indexed = kwargs.pop("indexed", False)
+        if indexed:
+            raise NotImplementedError(
+                "A TextProperty cannot be indexed. Previously this was "
+                "allowed, but this usage is no longer supported."
+            )
+
+        super(TextProperty, self).__init__(*args, **kwargs)
+
+    @property
+    def _indexed(self):
+        """bool: Indicates that the property is not indexed."""
+        return False
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (Union[bytes, str]): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is :class:`bytes`, but is not a valid
+                UTF-8 encoded string.
+            .BadValueError: If ``value`` is neither :class:`bytes` nor
+                :class:`str`.
+            .BadValueError: If the current property is indexed but the UTF-8
+                encoded value exceeds the maximum length (1500 bytes).
+        """
+        if isinstance(value, bytes):
+            try:
+                encoded_length = len(value)
+                value = value.decode("utf-8")
+            except UnicodeError:
+                raise exceptions.BadValueError(
+                    "Expected valid UTF-8, got {!r}".format(value)
+                )
+        elif isinstance(value, str):
+            encoded_length = len(value.encode("utf-8"))
+        else:
+            raise exceptions.BadValueError(
+                "Expected string, got {!r}".format(value)
+            )
+
+        if self._indexed and encoded_length > _MAX_STRING_LENGTH:
+            raise exceptions.BadValueError(
+                "Indexed value %s must be at most %d bytes"
+                % (self._name, _MAX_STRING_LENGTH)
+            )
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (Union[bytes, str]): The value to be converted.
+
+        Returns:
+            Optional[bytes]: The converted value. If ``value`` is a
+            :class:`str`, this will return the UTF-8 encoded bytes for it.
+            Otherwise, it will return :data:`None`.
+        """
+        if isinstance(value, str):
+            return value.encode("utf-8")
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        .. note::
+
+            Older versions of ``ndb`` could write non-UTF-8 ``TEXT``
+            properties. This means that if ``value`` is :class:`bytes`, but is
+            not a valid UTF-8 encoded string, it can't (necessarily) be
+            rejected. But, :meth:`_validate` now rejects such values, so it's
+            not possible to write new non-UTF-8 ``TEXT`` properties.
+
+        Args:
+            value (Union[bytes, str]): The value to be converted.
+
+        Returns:
+            Optional[str]: The converted value. If ``value`` is a a valid UTF-8
+            encoded :class:`bytes` string, this will return the decoded
+            :class:`str` corresponding to it. Otherwise, it will return
+            :data:`None`.
+        """
+        if isinstance(value, bytes):
+            try:
+                return value.decode("utf-8")
+            except UnicodeError:
+                pass
+
+    def _db_set_uncompressed_meaning(self, p):
+        """Helper for :meth:`_db_set_value`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
 class StringProperty(TextProperty):
+    """An indexed property that contains UTF-8 encoded text values.
+
+    This is nearly identical to :class:`TextProperty`, but is indexed. Values
+    must be at most 1500 bytes (when UTF-8 encoded from :class:`str` to bytes).
+
+    Raises:
+        NotImplementedError: If ``indexed=False`` is provided.
+    """
+
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        indexed = kwargs.pop("indexed", True)
+        if not indexed:
+            raise NotImplementedError(
+                "A StringProperty must be indexed. Previously setting "
+                "``indexed=False`` was allowed, but this usage is no longer "
+                "supported."
+            )
+
+        super(StringProperty, self).__init__(*args, **kwargs)
+
+    @property
+    def _indexed(self):
+        """bool: Indicates that the property is indexed."""
+        return True
 
 
 class GeoPtProperty(Property):
