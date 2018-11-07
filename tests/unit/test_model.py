@@ -1568,16 +1568,97 @@ class TestBlobProperty:
 
 class TestTextProperty:
     @staticmethod
-    def test_constructor():
+    def test_constructor_defaults():
+        prop = model.TextProperty()
+        assert not prop._indexed
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.TextProperty(name="text", indexed=False)
+        assert prop._name == b"text"
+        assert not prop._indexed
+
+    @staticmethod
+    def test_constructor_not_allowed():
         with pytest.raises(NotImplementedError):
-            model.TextProperty()
+            model.TextProperty(indexed=True)
+
+    @staticmethod
+    def test__validate():
+        prop = model.TextProperty(name="text")
+        assert prop._validate("abc") is None
+
+    @staticmethod
+    def test__validate_bad_bytes():
+        prop = model.TextProperty(name="text")
+        value = b"\x80abc"
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
+
+    @staticmethod
+    def test__validate_bad_type():
+        prop = model.TextProperty(name="text")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__to_base_type():
+        prop = model.TextProperty(name="text")
+        assert prop._to_base_type(b"abc") is None
+
+    @staticmethod
+    def test__to_base_type_converted():
+        prop = model.TextProperty(name="text")
+        value = "\N{snowman}"
+        assert prop._to_base_type(value) == b"\xe2\x98\x83"
+
+    @staticmethod
+    def test__from_base_type():
+        prop = model.TextProperty(name="text")
+        assert prop._from_base_type("abc") is None
+
+    @staticmethod
+    def test__from_base_type_converted():
+        prop = model.TextProperty(name="text")
+        value = b"\xe2\x98\x83"
+        assert prop._from_base_type(value) == "\N{snowman}"
+
+    @staticmethod
+    def test__from_base_type_cannot_convert():
+        prop = model.TextProperty(name="text")
+        value = b"\x80abc"
+        assert prop._from_base_type(value) is None
+
+    @staticmethod
+    def test__db_set_uncompressed_meaning():
+        prop = model.TextProperty(name="text")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_uncompressed_meaning(None)
 
 
 class TestStringProperty:
     @staticmethod
-    def test_constructor():
+    def test_constructor_defaults():
+        prop = model.StringProperty()
+        assert prop._indexed
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.StringProperty(name="limited-text", indexed=True)
+        assert prop._name == b"limited-text"
+        assert prop._indexed
+
+    @staticmethod
+    def test_constructor_not_allowed():
         with pytest.raises(NotImplementedError):
-            model.StringProperty()
+            model.StringProperty(indexed=False)
+
+    @staticmethod
+    def test__validate_bad_length():
+        prop = model.StringProperty(name="limited-text")
+        value = b"1" * 2000
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
 
 
 class TestGeoPtProperty:
