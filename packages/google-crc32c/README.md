@@ -100,3 +100,28 @@ On Windows: TBD.
 
 [1]: https://www.python.org/downloads/
 [2]: https://aka.ms/vcpython27
+
+## Installing locally for testing
+
+```bash
+$ /path/to/venv/bin/pip install cmake
+$ cd py-crc32c
+$ git submodule update --init --recursive
+$ mkdir usr
+$ export CRC32C_INSTALL_PREFIX=$(pwd)/usr
+$ mkdir crc32c/build
+$ cd crc32c/build
+$ /path/to/venv/bin/cmake \
+>   -DCRC32C_BUILD_TESTS=no \
+>   -DCRC32C_BUILD_BENCHMARKS=no \
+>   -DBUILD_SHARED_LIBS=yes \
+>   -DCMAKE_INSTALL_PREFIX:PATH=${CRC32C_INSTALL_PREFIX} \
+>   ..
+$ make all install
+$ cd ../..
+$ python3.Y -m venv usr
+$ usr/bin/pip install --upgrade setuptools pip wheel
+$ usr/bin/pip install pytest
+$ usr/bin/pip install -e .
+$ usr/bin/py.test tests/
+```
