@@ -24,14 +24,12 @@ class TimedCountAlignment(enum.IntEnum):
 
     Attributes:
       ERROR_COUNT_ALIGNMENT_UNSPECIFIED (int): No alignment specified.
-      ALIGNMENT_EQUAL_ROUNDED (int): The time periods shall be consecutive, have width equal to the
-      requested duration, and be aligned at the ``alignment_time`` provided in
-      the request.
-      The ``alignment_time`` does not have to be inside the query period but
-      even if it is outside, only time periods are returned which overlap
-      with the query period.
-      A rounded alignment will typically result in a
-      different size of the first or the last time period.
+      ALIGNMENT_EQUAL_ROUNDED (int): The time periods shall be consecutive, have width equal to the requested
+      duration, and be aligned at the ``alignment_time`` provided in the
+      request. The ``alignment_time`` does not have to be inside the query
+      period but even if it is outside, only time periods are returned which
+      overlap with the query period. A rounded alignment will typically result
+      in a different size of the first or the last time period.
       ALIGNMENT_EQUAL_AT_END (int): The time periods shall be consecutive, have width equal to the
       requested duration, and be aligned at the end of the requested time
       period. This can result in a different size of the

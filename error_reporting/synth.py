@@ -38,3 +38,24 @@ s.replace(
     r"from google.devtools.clouderrorreporting_v1beta1.proto import ",
     r"from google.cloud.errorreporting_v1beta1.proto import ",
 )
+
+# Fix up docstrings in GAPIC clients
+DISCARD_AUTH_BOILERPLATE = r"""
+        This endpoint accepts either an OAuth token, or an API key for
+        authentication. To use an API key, append it to the URL as the value of
+        a ``key`` parameter. For example:
+
+        \.\. raw:: html
+        <pre>POST .*
+"""
+
+targets = [
+    'google/cloud/errorreporting_v1beta1/gapic/*_client.py',
+    'google/cloud/errorreporting_v1beta1/gapic/transports/*_transport.py',
+]
+
+s.replace(
+    targets,
+    DISCARD_AUTH_BOILERPLATE,
+    r"",
+)
