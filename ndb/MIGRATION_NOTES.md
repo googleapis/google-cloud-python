@@ -94,7 +94,9 @@ The primary differences come from:
   if `isinstance(self, TextProperty)`. We have removed this check since
   the implementation does the same check in `TextProperty._validate`.
 - The `BlobProperty` constructor only sets `_compressed` if explicitly
-  passed. The original set always (and used `False` as default)
+  passed. The original set `_compressed` always (and used `False` as default).
+  In the exact same fashion the `JsonProperty` constructor only sets
+  `_json_type` if explicitly passed.
 - `TextProperty(indexed=True)` and `StringProperty(indexed=False)` are no
   longer supported (see docstrings for more info)
 - `model.GeoPt` is an alias for `google.cloud.datastore.helpers.GeoPoint`
