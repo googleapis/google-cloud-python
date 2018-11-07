@@ -348,8 +348,13 @@ class TestStorageFiles(unittest.TestCase):
         self.case_blobs_to_delete = []
 
     def tearDown(self):
+        errors = (
+            exceptions.TooManyRequests,
+            exceptions.ServiceUnavailable,
+        )
+        retry = RetryErrors(errors, max_tries=6)
         for blob in self.case_blobs_to_delete:
-            blob.delete()
+            retry(blob.delete)()
 
 
 class TestStorageWriteFiles(TestStorageFiles):
@@ -576,8 +581,13 @@ class TestStorageListFiles(TestStorageFiles):
 
     @classmethod
     def tearDownClass(cls):
+        errors = (
+            exceptions.TooManyRequests,
+            exceptions.ServiceUnavailable,
+        )
+        retry = RetryErrors(errors, max_tries=6)
         for blob in cls.suite_blobs_to_delete:
-            blob.delete()
+            retry(blob.delete)()
 
     @RetryErrors(unittest.TestCase.failureException)
     def test_list_files(self):
@@ -642,8 +652,13 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
 
     @classmethod
     def tearDownClass(cls):
+        errors = (
+            exceptions.TooManyRequests,
+            exceptions.ServiceUnavailable,
+        )
+        retry = RetryErrors(errors, max_tries=6)
         for blob in cls.suite_blobs_to_delete:
-            blob.delete()
+            retry(blob.delete)()
 
     @RetryErrors(unittest.TestCase.failureException)
     def test_blob_get_w_delimiter(self):
@@ -716,9 +731,14 @@ class TestStorageSignURLs(TestStorageFiles):
         self.case_blobs_to_delete.append(blob)
 
     def tearDown(self):
+        errors = (
+            exceptions.TooManyRequests,
+            exceptions.ServiceUnavailable,
+        )
+        retry = RetryErrors(errors, max_tries=6)
         for blob in self.case_blobs_to_delete:
             if blob.exists():
-                blob.delete()
+                retry(blob.delete)()
 
     def test_create_signed_read_url(self):
         blob = self.bucket.blob('LogoToSign.jpg')
