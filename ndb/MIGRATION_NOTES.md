@@ -95,6 +95,8 @@ The primary differences come from:
   the implementation does the same check in `TextProperty._validate`.
 - The `BlobProperty` constructor only sets `_compressed` if explicitly
   passed. The original set always (and used `False` as default)
+- `TextProperty(indexed=True)` and `StringProperty(indexed=False)` are no
+  longer supported (see docstrings for more info)
 
 ## Comments
 
