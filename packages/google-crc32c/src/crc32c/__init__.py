@@ -16,9 +16,29 @@ import crc32c.__config__
 import crc32c._crc32c_cffi
 
 
-def extend(*args, **kwargs):
-    return crc32c._crc32c_cffi.lib.crc32c_extend(*args, **kwargs)
+def extend(crc, chunk):
+    """Update an existing CRC checksum with new chunk of data.
+
+    Args
+        crc (int): An existing CRC check sum.
+        chunk (Union[bytes, List[int], Tuple[int]]): A new chunk of data.
+            Intended to be a byte string or similar.
+
+    Returns
+        int: New CRC checksum computed by extending existing CRC
+        with ``chunk``.
+    """
+    return crc32c._crc32c_cffi.lib.crc32c_extend(crc, chunk, len(chunk))
 
 
-def value(*args, **kwargs):
-    return crc32c._crc32c_cffi.lib.crc32c_value(*args, **kwargs)
+def value(chunk):
+    """Compute a CRC checksum for a chunk of data.
+
+    Args
+        chunk (Union[bytes, List[int], Tuple[int]]): A new chunk of data.
+            Intended to be a byte string or similar.
+
+    Returns
+        int: New CRC checksum computed for ``chunk``.
+    """
+    return crc32c._crc32c_cffi.lib.crc32c_value(chunk, len(chunk))
