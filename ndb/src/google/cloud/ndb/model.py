@@ -19,6 +19,7 @@ import inspect
 import pickle
 import zlib
 
+from google.cloud.ndb import _ports
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
@@ -85,7 +86,7 @@ __all__ = [
 _MAX_STRING_LENGTH = 1500
 Key = key_module.Key
 BlobKey = NotImplemented  # From `google.appengine.api.datastore_types`
-GeoPt = NotImplemented  # From `google.appengine.api.datastore_types`
+GeoPt = _ports.GeoPt
 Rollback = exceptions.Rollback
 
 
