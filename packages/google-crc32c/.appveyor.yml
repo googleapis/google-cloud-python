@@ -59,5 +59,19 @@ build_script:
     - "%PYTHON36%\\python -m pip wheel ."
     - "%PYTHON37%\\python -m pip wheel ."
 
+test_script:
+    # Install the wheel with pip
+    - "%PYTHON35%\\python -m pip install --no-index --find-links=. py_crc32c"
+    - "%PYTHON36%\\python -m pip install --no-index --find-links=. py_crc32c"
+    - "%PYTHON37%\\python -m pip install --no-index --find-links=. py_crc32c"
+    # Install pytest with pip
+    - "%PYTHON35%\\python -m pip install pytest"
+    - "%PYTHON36%\\python -m pip install pytest"
+    - "%PYTHON37%\\python -m pip install pytest"
+    # Run the tests
+    - "%PYTHON35%/python -m pytest tests"
+    - "%PYTHON36%/python -m pytest tests"
+    - "%PYTHON37%/python -m pytest tests"
+
 artifacts:
     - path: 'py_crc32c*win*.whl'
