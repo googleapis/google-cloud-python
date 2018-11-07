@@ -151,9 +151,10 @@ class ReportErrorsServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -179,13 +180,6 @@ class ReportErrorsServiceClient(object):
         """
         Report an individual error event.
 
-        This endpoint accepts <strong>either</strong> an OAuth token,
-        <strong>or</strong> an
-        <a href=\"https://support.google.com/cloud/answer/6158862\">API key</a>
-        for authentication. To use an API key, append it to the URL as the value of
-        a ``key`` parameter. For example:
-        <pre>POST https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456</pre>
-
         Example:
             >>> from google.cloud import errorreporting_v1beta1
             >>>
@@ -193,17 +187,18 @@ class ReportErrorsServiceClient(object):
             >>>
             >>> project_name = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``event``:
+            >>> # TODO: Initialize `event`:
             >>> event = {}
             >>>
             >>> response = client.report_error_event(project_name, event)
 
         Args:
-            project_name (str): [Required] The resource name of the Google Cloud Platform project. Written
-                as ``projects/`` plus the
-                `Google Cloud Platform project ID <https://support.google.com/cloud/answer/6158840>`_.
-                Example: ``projects/my-project-123``.
+            project_name (str): [Required] The resource name of the Google Cloud Platform project.
+                Written as ``projects/`` plus the `Google Cloud Platform project
+                ID <https://support.google.com/cloud/answer/6158840>`__. Example:
+                ``projects/my-project-123``.
             event (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ReportedErrorEvent]): [Required] The error event to be reported.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.ReportedErrorEvent`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
