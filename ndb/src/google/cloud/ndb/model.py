@@ -19,6 +19,8 @@ import inspect
 import pickle
 import zlib
 
+from google.cloud.datastore import helpers
+
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
@@ -85,7 +87,7 @@ __all__ = [
 _MAX_STRING_LENGTH = 1500
 Key = key_module.Key
 BlobKey = NotImplemented  # From `google.appengine.api.datastore_types`
-GeoPt = NotImplemented  # From `google.appengine.api.datastore_types`
+GeoPt = helpers.GeoPoint
 Rollback = exceptions.Rollback
 
 
@@ -2038,9 +2040,42 @@ class StringProperty(TextProperty):
 
 
 class GeoPtProperty(Property):
+    """A property that contains :attr:`.GeoPt` values.
+
+    .. automethod:: _validate
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (~google.cloud.datastore.helpers.GeoPoint): The value to
+                check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :attr:`.GeoPt`.
+        """
+        if not isinstance(value, GeoPt):
+            raise exceptions.BadValueError(
+                "Expected GeoPt, got {!r}".format(value)
+            )
+
+    def _db_set_value(self, v, p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 

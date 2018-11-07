@@ -17,6 +17,7 @@ import types
 import unittest.mock
 import zlib
 
+from google.cloud.datastore import helpers
 import pytest
 
 from google.cloud.ndb import exceptions
@@ -39,7 +40,7 @@ def test_BlobKey():
 
 
 def test_GeoPt():
-    assert model.GeoPt is NotImplemented
+    assert model.GeoPt is helpers.GeoPoint
 
 
 class TestIndexProperty:
@@ -1664,9 +1665,28 @@ class TestStringProperty:
 
 class TestGeoPtProperty:
     @staticmethod
-    def test_constructor():
+    def test__validate():
+        prop = model.GeoPtProperty(name="cartesian")
+        value = model.GeoPt(0.0, 0.0)
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.GeoPtProperty(name="cartesian")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.GeoPtProperty(name="cartesian")
         with pytest.raises(NotImplementedError):
-            model.GeoPtProperty()
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.GeoPtProperty(name="cartesian")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestPickleProperty:
