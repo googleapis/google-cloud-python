@@ -22,7 +22,6 @@ If you are still having issues, please be sure to include as much information as
 2. OS type and version
 3. Python version and virtual environment information: `python --version`
 4. google-cloud-<service> version:  `pip show google-<service>` or `pip freeze`
-5. Stacktrace if available
 
 #### Steps to reproduce
 
@@ -31,6 +30,11 @@ If you are still having issues, please be sure to include as much information as
 #### Code example
 
 ```python
+# example
+```
+
+#### Stack trace
+```
 # example
 ```
 
