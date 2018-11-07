@@ -162,7 +162,7 @@ class TestWatch(unittest.TestCase):
     def test_ctor(self):
         inst = self._makeOne()
         self.assertTrue(inst._consumer.started)
-        self.assertTrue(inst.rpc.callbacks, [inst._on_rpc_done])
+        self.assertTrue(inst._rpc.callbacks, [inst._on_rpc_done])
 
     def test__on_rpc_done(self):
         inst = self._makeOne()
@@ -199,7 +199,7 @@ class TestWatch(unittest.TestCase):
     def test_unsubscribe(self):
         inst = self._makeOne()
         inst.unsubscribe()
-        self.assertTrue(inst.rpc.closed)
+        self.assertTrue(inst._rpc is None)
 
     def test_for_document(self):
         from google.cloud.firestore_v1beta1.watch import Watch
@@ -223,7 +223,7 @@ class TestWatch(unittest.TestCase):
                     document_reference_class_instance
                 )
         self.assertTrue(inst._consumer.started)
-        self.assertTrue(inst.rpc.callbacks, [inst._on_rpc_done])
+        self.assertTrue(inst._rpc.callbacks, [inst._on_rpc_done])
 
     def test_for_query(self):
         from google.cloud.firestore_v1beta1.watch import Watch
@@ -252,7 +252,7 @@ class TestWatch(unittest.TestCase):
                         document_reference_class_instance
                     )
         self.assertTrue(inst._consumer.started)
-        self.assertTrue(inst.rpc.callbacks, [inst._on_rpc_done])
+        self.assertTrue(inst._rpc.callbacks, [inst._on_rpc_done])
         self.assertEqual(inst._targets['query'], 'dummy query target')
 
     def test_on_snapshot_target_no_change_no_target_ids_not_current(self):
@@ -773,7 +773,7 @@ class DummyBackgroundConsumer(object):
     is_active = True
 
     def __init__(self, rpc, on_snapshot):
-        self.rpc = rpc
+        self._rpc = rpc
         self.on_snapshot = on_snapshot
 
     def start(self):

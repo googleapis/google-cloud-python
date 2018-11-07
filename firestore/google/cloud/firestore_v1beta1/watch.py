@@ -214,12 +214,12 @@ class Watch(object):
         if ResumableBidiRpc is None:
             ResumableBidiRpc = self.ResumableBidiRpc  # FBO unit tests
 
-        self.rpc = ResumableBidiRpc(
+        self._rpc = ResumableBidiRpc(
             self._api.transport._stubs['firestore_stub'].Listen,
             initial_request=initial_request,
             should_recover=should_recover)
 
-        self.rpc.add_done_callback(self._on_rpc_done)
+        self._rpc.add_done_callback(self._on_rpc_done)
 
         # Initialize state for on_snapshot
         # The sorted tree of QueryDocumentSnapshots as sent in the last
@@ -247,7 +247,7 @@ class Watch(object):
         if BackgroundConsumer is None:  # FBO unit tests
             BackgroundConsumer = self.BackgroundConsumer
 
-        self._consumer = BackgroundConsumer(self.rpc, self.on_snapshot)
+        self._consumer = BackgroundConsumer(self._rpc, self.on_snapshot)
         self._consumer.start()
 
     @property
@@ -278,8 +278,8 @@ class Watch(object):
                 self._consumer.stop()
             self._consumer = None
 
-            self.rpc.close()
-            self.rpc = None
+            self._rpc.close()
+            self._rpc = None
             self._closed = True
             _LOGGER.debug('Finished stopping manager.')
 
