@@ -1463,6 +1463,7 @@ class TestBlobProperty:
             write_empty_list=False,
         )
         assert prop._name == b"blob_val" and prop._name != "blob_val"
+        assert prop._compressed
         assert not prop._indexed
         assert not prop._repeated
         assert prop._required
@@ -1704,9 +1705,37 @@ class TestPickleProperty:
 
 class TestJsonProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.JsonProperty()
+    def test_constructor_defaults():
+        prop = model.JsonProperty()
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {}
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.JsonProperty(
+            name="json-val",
+            compressed=True,
+            json_type=tuple,
+            indexed=False,
+            repeated=False,
+            required=True,
+            default=(),
+            choices=((), ("b",), ("c", "d")),
+            validator=TestProperty._example_validator,
+            verbose_name="VALUE FOR READING",
+            write_empty_list=False,
+        )
+        assert prop._name == b"json-val" and prop._name != "json-val"
+        assert prop._compressed
+        assert prop._json_type is tuple
+        assert not prop._indexed
+        assert not prop._repeated
+        assert prop._required
+        assert prop._default == ()
+        assert prop._choices == frozenset([(), ("b",), ("c", "d")])
+        assert prop._validator is TestProperty._example_validator
+        assert prop._verbose_name == "VALUE FOR READING"
+        assert not prop._write_empty_list
 
 
 class TestUserProperty:

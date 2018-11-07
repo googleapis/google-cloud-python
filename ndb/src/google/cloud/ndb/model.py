@@ -2082,6 +2082,11 @@ class GeoPtProperty(Property):
 class PickleProperty(BlobProperty):
     """A property that contains values that are pickle-able.
 
+    .. note::
+
+        Unlike most property types, a :class:`PickleProperty` is **not**
+        indexed by default.
+
     This will use :func:`pickle.dumps` with the highest available pickle
     protocol to convert to bytes and :func:`pickle.loads` to convert **from**
     bytes. The base value stored in the datastore will be the pickled bytes.
@@ -2116,10 +2121,65 @@ class PickleProperty(BlobProperty):
 
 
 class JsonProperty(BlobProperty):
-    __slots__ = ()
+    """A property that contains JSON-encodable values.
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    .. note::
+
+        Unlike most property types, a :class:`JsonProperty` is **not**
+        indexed by default.
+
+    Args:
+        name (str): The name of the property.
+        compressed (bool): Indicates if the value should be compressed (via
+            ``zlib``).
+        json_type (type): The expected type of values that this property can
+            hold. If :data:`None`, any type is allowed.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (bytes): The default value for this property.
+        choices (Iterable[bytes]): A container of allowed values for this
+            property.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+    """
+
+    _json_type = None
+
+    def __init__(
+        self,
+        name=None,
+        compressed=None,
+        json_type=None,
+        *,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        super(JsonProperty, self).__init__(
+            name=name,
+            compressed=compressed,
+            indexed=indexed,
+            repeated=repeated,
+            required=required,
+            default=default,
+            choices=choices,
+            validator=validator,
+            verbose_name=verbose_name,
+            write_empty_list=write_empty_list,
+        )
+        if json_type is not None:
+            self._json_type = json_type
 
 
 class UserProperty(Property):
