@@ -249,27 +249,19 @@ s.replace(
 # Fix Docstrings in google/cloud/dlp_v2/gapic/dlp_service_client.py
 s.replace(
     "google/cloud/dlp_v2/gapic/dlp_service_client.py",
-    "(- ``CryptoReplaceFfxFpeConfig``\n)(\s+If a dict is provided.*\n)"
-    "(\s+message.*\n)",
-    "\g<1>   \g<2>   \g<3>"
-)
-
-s.replace(
-    "google/cloud/dlp_v2/gapic/dlp_service_client.py",
-    "  ::\n  (\s+- `state`.*\n)  (\s+- `inspected_storage`.*\n)"
-    "  (\s+- `trigger_name`.*\n)",
-    "* Supported fields/values for inspect jobs:\n\g<1>\g<2>\g<3>"
-)
-
-s.replace(
-    "google/cloud/dlp_v2/gapic/dlp_service_client.py",
-    "  ::\n  (\s+- `state`.*\n)(\s+\* The operator must be)",
-    "* Supported fields for risk analysis jobs:\n\g<1>\g<2>"
-)
-
-
-s.replace(
-    "google/cloud/dlp_v2/gapic/dlp_service_client.py",
     "^\s+resource was created.",
     "  \g<0>"
+)
+
+# Fix Docstrings in google/cloud/dlp_v2/gapic/enums.py
+s.replace(
+    "google/cloud/dlp_v2/gapic/enums.py",
+    "(\s+)WHITESPACE \(int\).*\n",
+    "\g<1>WHITESPACE (int): Whitespace character\n",
+)
+
+s.replace(
+    "google/cloud/dlp_v2/gapic/enums.py",
+    ".*:raw-latex:.*\n",
+    "",
 )
