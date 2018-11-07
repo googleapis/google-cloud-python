@@ -17,11 +17,13 @@
 This should handle both asynchronous ``ndb`` objects and arbitrary callbacks.
 """
 import collections
+import contextlib
 import threading
 import time
 
 __all__ = [
     "add_idle",
+    "async_context",
     "contexts",
     "EventLoop",
     "get_event_loop",
@@ -267,10 +269,8 @@ class _LocalContexts(threading.local):
     def __init__(self):
         self.stack = []
 
-    def push(self):
-        loop = EventLoop()
+    def push(self, loop):
         self.stack.append(loop)
-        return loop
 
     def pop(self):
         return self.stack.pop(-1)
@@ -281,6 +281,39 @@ class _LocalContexts(threading.local):
 
 
 contexts = _LocalContexts()
+
+
+@contextlib.contextmanager
+def async_context():
+    """Establish a context for a set of asynchronous API calls.
+
+    This function provides a context manager which establishes the event loop
+    that will be used for any asynchronous NDB calls that occur in the context.
+    For example::
+
+        from google.cloud.ndb import async_context
+
+        with async_context():
+            # Make some asynchronous calls
+            pass
+
+    Within the context, any calls to a ``*_async`` function or to an
+    ``ndb.tasklet``, will be added to the event loop established by the
+    context.  Upon exiting the context, execution will block until all
+    asynchronous calls loaded onto the event loop have finished execution.
+
+    Code within an ``async_context`` should be single threaded. Internally, a
+    ``threading.local`` instance is used to track the current event loop.
+
+    In the context of a web application, it is recommended that a single
+    ``async_context`` be used per HTTP request. This can typically be
+    accomplished in a middleware layer.
+    """
+    loop = EventLoop()
+    contexts.push(loop)
+    yield
+    contexts.pop()
+    loop.run()
 
 
 def add_idle(*args, **kwargs):

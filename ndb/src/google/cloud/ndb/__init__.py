@@ -122,12 +122,12 @@ __all__ = [
 ]
 """All top-level exported names."""
 
-from google.cloud.ndb.async_ import async_context
 from google.cloud.ndb.context import AutoBatcher
 from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions
 from google.cloud.ndb.context import EVENTUAL_CONSISTENCY
 from google.cloud.ndb.context import TransactionOptions
+from google.cloud.ndb._eventloop import async_context
 from google.cloud.ndb.key import Key
 from google.cloud.ndb.model import BlobKey
 from google.cloud.ndb.model import BlobKeyProperty
