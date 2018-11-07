@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Google Cloud Vision API &#8212; google-cloud 8cbfd7b documentation</title>
+    <title>Client for Google Cloud Vision API &#8212; google-cloud c0ab644 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -118,18 +118,18 @@ specified, the timeout applies to each individual attempt.</li>
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.async_batch_annotate_files">
 <code class="descname">async_batch_annotate_files</code><span class="sig-paren">(</span><em>requests</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1p2beta1/gapic/image_annotator_client.html#ImageAnnotatorClient.async_batch_annotate_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.async_batch_annotate_files" title="Permalink to this definition">#</a></dt>
-<dd><p>Run async image detection and annotation for a list of generic files (e.g.
-PDF) which may contain multiple pages and multiple images per page.
-Progress and results can be retrieved through the
-<code class="docutils literal notranslate"><span class="pre">google.longrunning.Operations</span></code> interface.
-<code class="docutils literal notranslate"><span class="pre">Operation.metadata</span></code> contains <code class="docutils literal notranslate"><span class="pre">OperationMetadata</span></code> (metadata).
-<code class="docutils literal notranslate"><span class="pre">Operation.response</span></code> contains <code class="docutils literal notranslate"><span class="pre">AsyncBatchAnnotateFilesResponse</span></code> (results).</p>
+<dd><p>Run async image detection and annotation for a list of generic files
+(e.g. PDF) which may contain multiple pages and multiple images per
+page. Progress and results can be retrieved through the
+<code class="docutils literal notranslate"><span class="pre">google.longrunning.Operations</span></code> interface. <code class="docutils literal notranslate"><span class="pre">Operation.metadata</span></code>
+contains <code class="docutils literal notranslate"><span class="pre">OperationMetadata</span></code> (metadata). <code class="docutils literal notranslate"><span class="pre">Operation.response</span></code>
+contains <code class="docutils literal notranslate"><span class="pre">AsyncBatchAnnotateFilesResponse</span></code> (results).</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1p2beta1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1p2beta1</span><span class="o">.</span><span class="n">ImageAnnotatorClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``requests``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `requests`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">async_batch_annotate_files</span><span class="p">(</span><span class="n">requests</span><span class="p">)</span>
@@ -149,9 +149,10 @@ Progress and results can be retrieved through the
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest" title="google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest"><em>AsyncAnnotateFileRequest</em></a><em>]</em><em>]</em>) – Individual async file annotation requests for this batch.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest" title="google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncAnnotateFileRequest</span></code></a></li>
+<li><strong>requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest" title="google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest"><em>AsyncAnnotateFileRequest</em></a><em>]</em><em>]</em>) – <p>Individual async file annotation requests for this batch.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest" title="google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncAnnotateFileRequest</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -188,7 +189,7 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1p2beta1</span><span class="o">.</span><span class="n">ImageAnnotatorClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize ``requests``:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `requests`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">batch_annotate_images</span><span class="p">(</span><span class="n">requests</span><span class="p">)</span>
@@ -199,9 +200,10 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><em>AnnotateImageRequest</em></a><em>]</em><em>]</em>) – Individual image annotation requests for this batch.
-If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a></li>
+<li><strong>requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><em>AnnotateImageRequest</em></a><em>]</em><em>]</em>) – <p>Individual image annotation requests for this batch.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a></p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>

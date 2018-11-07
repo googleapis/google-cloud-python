@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_v1.gapic.product_search_client &#8212; google-cloud 8cbfd7b documentation</title>
+    <title>google.cloud.vision_v1.gapic.product_search_client &#8212; google-cloud c0ab644 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -84,17 +84,17 @@
 <span class="sd">    Manages Products and ProductSets of reference images for use in product</span>
 <span class="sd">    search. It uses the following resource model:</span>
 
-<span class="sd">    - The API has a collection of ``ProductSet`` resources, named</span>
-<span class="sd">      ``projects/*/locations/*/productSets/*``, which acts as a way to put different</span>
-<span class="sd">      products into groups to limit identification.</span>
+<span class="sd">    -  The API has a collection of ``ProductSet`` resources, named</span>
+<span class="sd">       ``projects/*/locations/*/productSets/*``, which acts as a way to put</span>
+<span class="sd">       different products into groups to limit identification.</span>
 
 <span class="sd">    In parallel,</span>
 
-<span class="sd">    - The API has a collection of ``Product`` resources, named</span>
-<span class="sd">      ``projects/*/locations/*/products/*``</span>
+<span class="sd">    -  The API has a collection of ``Product`` resources, named</span>
+<span class="sd">       ``projects/*/locations/*/products/*``</span>
 
-<span class="sd">    - Each ``Product`` has a collection of ``ReferenceImage`` resources, named</span>
-<span class="sd">      ``projects/*/locations/*/products/*/referenceImages/*``</span>
+<span class="sd">    -  Each ``Product`` has a collection of ``ReferenceImage`` resources,</span>
+<span class="sd">       named ``projects/*/locations/*/products/*/referenceImages/*``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;vision.googleapis.com:443&#39;</span>
@@ -234,9 +234,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -265,10 +266,11 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns INVALID_ARGUMENT if display_name is missing or longer than 4096</span>
-<span class="sd">          characters.</span>
-<span class="sd">        * Returns INVALID_ARGUMENT if description is longer than 4096 characters.</span>
-<span class="sd">        * Returns INVALID_ARGUMENT if product_category is missing or invalid.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if display\_name is missing or longer than</span>
+<span class="sd">           4096 characters.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if description is longer than 4096</span>
+<span class="sd">           characters.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if product\_category is missing or invalid.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -277,7 +279,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `product`:</span>
 <span class="sd">            &gt;&gt;&gt; product = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_product(parent, product)</span>
@@ -285,15 +287,15 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The project in which the Product should be created.</span>
 
-<span class="sd">                Format is</span>
-<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID``.</span>
+<span class="sd">                Format is ``projects/PROJECT_ID/locations/LOC_ID``.</span>
 <span class="sd">            product (Union[dict, ~google.cloud.vision_v1.types.Product]): The product to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.Product`</span>
 <span class="sd">            product_id (str): A user-supplied resource id for this Product. If set, the server will</span>
-<span class="sd">                attempt to use this value as the resource id. If it is already in use, an</span>
-<span class="sd">                error is returned with code ALREADY_EXISTS. Must be at most 128 characters</span>
-<span class="sd">                long. It cannot contain the character ``/``.</span>
+<span class="sd">                attempt to use this value as the resource id. If it is already in use,</span>
+<span class="sd">                an error is returned with code ALREADY\_EXISTS. Must be at most 128</span>
+<span class="sd">                characters long. It cannot contain the character ``/``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -343,7 +345,8 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if page\_size is greater than 100 or less</span>
+<span class="sd">           than 1.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -361,7 +364,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_products(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_products(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -369,8 +372,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The project OR ProductSet from which Products should be listed.</span>
 
-<span class="sd">                Format:</span>
-<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID``</span>
+<span class="sd">                Format: ``projects/PROJECT_ID/locations/LOC_ID``</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -437,7 +439,7 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND if the Product does not exist.</span>
+<span class="sd">        -  Returns NOT\_FOUND if the Product does not exist.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -451,8 +453,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Resource name of the Product to get.</span>
 
-<span class="sd">                Format is:</span>
-<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
+<span class="sd">                Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -493,28 +494,28 @@
                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Makes changes to a Product resource.</span>
-<span class="sd">        Only the ``display_name``, ``description``, and ``labels`` fields can be updated</span>
-<span class="sd">        right now.</span>
+<span class="sd">        Makes changes to a Product resource. Only the ``display_name``,</span>
+<span class="sd">        ``description``, and ``labels`` fields can be updated right now.</span>
 
 <span class="sd">        If labels are updated, the change will not be reflected in queries until</span>
 <span class="sd">        the next index time.</span>
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND if the Product does not exist.</span>
-<span class="sd">        * Returns INVALID_ARGUMENT if display_name is present in update_mask but is</span>
-<span class="sd">          missing from the request or longer than 4096 characters.</span>
-<span class="sd">        * Returns INVALID_ARGUMENT if description is present in update_mask but is</span>
-<span class="sd">          longer than 4096 characters.</span>
-<span class="sd">        * Returns INVALID_ARGUMENT if product_category is present in update_mask.</span>
+<span class="sd">        -  Returns NOT\_FOUND if the Product does not exist.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if display\_name is present in update\_mask</span>
+<span class="sd">           but is missing from the request or longer than 4096 characters.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if description is present in update\_mask</span>
+<span class="sd">           but is longer than 4096 characters.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if product\_category is present in</span>
+<span class="sd">           update\_mask.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `product`:</span>
 <span class="sd">            &gt;&gt;&gt; product = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_product(product)</span>
@@ -522,13 +523,13 @@
 <span class="sd">        Args:</span>
 <span class="sd">            product (Union[dict, ~google.cloud.vision_v1.types.Product]): The Product resource which replaces the one on the server.</span>
 <span class="sd">                product.name is immutable.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.Product`</span>
-<span class="sd">            update_mask (Union[dict, ~google.cloud.vision_v1.types.FieldMask]): The ``FieldMask`` that specifies which fields</span>
-<span class="sd">                to update.</span>
-<span class="sd">                If update_mask isn&#39;t specified, all mutable fields are to be updated.</span>
-<span class="sd">                Valid mask paths include ``product_labels``, ``display_name``, and</span>
-<span class="sd">                ``description``.</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.vision_v1.types.FieldMask]): The ``FieldMask`` that specifies which fields to update. If update\_mask</span>
+<span class="sd">                isn&#39;t specified, all mutable fields are to be updated. Valid mask paths</span>
+<span class="sd">                include ``product_labels``, ``display_name``, and ``description``.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -576,13 +577,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Permanently deletes a product and its reference images.</span>
 
-<span class="sd">        Metadata of the product and all its images will be deleted right away, but</span>
-<span class="sd">        search queries against ProductSets containing the product may still work</span>
-<span class="sd">        until all related caches are refreshed.</span>
+<span class="sd">        Metadata of the product and all its images will be deleted right away,</span>
+<span class="sd">        but search queries against ProductSets containing the product may still</span>
+<span class="sd">        work until all related caches are refreshed.</span>
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND if the product does not exist.</span>
+<span class="sd">        -  Returns NOT\_FOUND if the product does not exist.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -596,8 +597,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Resource name of product to delete.</span>
 
-<span class="sd">                Format is:</span>
-<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
+<span class="sd">                Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -640,9 +640,9 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND if the parent product does not exist.</span>
-<span class="sd">        * Returns INVALID_ARGUMENT if the page_size is greater than 100, or less</span>
-<span class="sd">          than 1.</span>
+<span class="sd">        -  Returns NOT\_FOUND if the parent product does not exist.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if the page\_size is greater than 100, or</span>
+<span class="sd">           less than 1.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -660,7 +660,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_reference_images(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_reference_images(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -668,8 +668,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Resource name of the product containing the reference images.</span>
 
-<span class="sd">                Format is</span>
-<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.</span>
+<span class="sd">                Format is ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -737,7 +736,7 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND if the specified image does not exist.</span>
+<span class="sd">        -  Returns NOT\_FOUND if the specified image does not exist.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -799,14 +798,14 @@
 <span class="sd">        Permanently deletes a reference image.</span>
 
 <span class="sd">        The image metadata will be deleted right away, but search queries</span>
-<span class="sd">        against ProductSets containing the image may still work until all related</span>
-<span class="sd">        caches are refreshed.</span>
+<span class="sd">        against ProductSets containing the image may still work until all</span>
+<span class="sd">        related caches are refreshed.</span>
 
 <span class="sd">        The actual image files are not deleted from Google Cloud Storage.</span>
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND if the reference image does not exist.</span>
+<span class="sd">        -  Returns NOT\_FOUND if the reference image does not exist.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -866,23 +865,25 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates and returns a new ReferenceImage resource.</span>
 
-<span class="sd">        The ``bounding_poly`` field is optional. If ``bounding_poly`` is not specified,</span>
-<span class="sd">        the system will try to detect regions of interest in the image that are</span>
-<span class="sd">        compatible with the product_category on the parent product. If it is</span>
-<span class="sd">        specified, detection is ALWAYS skipped. The system converts polygons into</span>
-<span class="sd">        non-rotated rectangles.</span>
+<span class="sd">        The ``bounding_poly`` field is optional. If ``bounding_poly`` is not</span>
+<span class="sd">        specified, the system will try to detect regions of interest in the</span>
+<span class="sd">        image that are compatible with the product\_category on the parent</span>
+<span class="sd">        product. If it is specified, detection is ALWAYS skipped. The system</span>
+<span class="sd">        converts polygons into non-rotated rectangles.</span>
 
-<span class="sd">        Note that the pipeline will resize the image if the image resolution is too</span>
-<span class="sd">        large to process (above 50MP).</span>
+<span class="sd">        Note that the pipeline will resize the image if the image resolution is</span>
+<span class="sd">        too large to process (above 50MP).</span>
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns INVALID_ARGUMENT if the image_uri is missing or longer than 4096</span>
-<span class="sd">          characters.</span>
-<span class="sd">        * Returns INVALID_ARGUMENT if the product does not exist.</span>
-<span class="sd">        * Returns INVALID_ARGUMENT if bounding_poly is not provided, and nothing</span>
-<span class="sd">          compatible with the parent product&#39;s product_category is detected.</span>
-<span class="sd">        * Returns INVALID_ARGUMENT if bounding_poly contains more than 10 polygons.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if the image\_uri is missing or longer than</span>
+<span class="sd">           4096 characters.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if the product does not exist.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if bounding\_poly is not provided, and</span>
+<span class="sd">           nothing compatible with the parent product&#39;s product\_category is</span>
+<span class="sd">           detected.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if bounding\_poly contains more than 10</span>
+<span class="sd">           polygons.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -891,7 +892,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.product_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``reference_image``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `reference_image`:</span>
 <span class="sd">            &gt;&gt;&gt; reference_image = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_reference_image(parent, reference_image)</span>
@@ -899,16 +900,16 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Resource name of the product in which to create the reference image.</span>
 
-<span class="sd">                Format is</span>
-<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.</span>
+<span class="sd">                Format is ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.</span>
 <span class="sd">            reference_image (Union[dict, ~google.cloud.vision_v1.types.ReferenceImage]): The reference image to create.</span>
 <span class="sd">                If an image ID is specified, it is ignored.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.ReferenceImage`</span>
 <span class="sd">            reference_image_id (str): A user-supplied resource id for the ReferenceImage to be added. If set,</span>
 <span class="sd">                the server will attempt to use this value as the resource id. If it is</span>
-<span class="sd">                already in use, an error is returned with code ALREADY_EXISTS. Must be at</span>
-<span class="sd">                most 128 characters long. It cannot contain the character ``/``.</span>
+<span class="sd">                already in use, an error is returned with code ALREADY\_EXISTS. Must be</span>
+<span class="sd">                at most 128 characters long. It cannot contain the character ``/``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -960,8 +961,8 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns INVALID_ARGUMENT if display_name is missing, or is longer than</span>
-<span class="sd">          4096 characters.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if display\_name is missing, or is longer</span>
+<span class="sd">           than 4096 characters.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -970,7 +971,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product_set``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `product_set`:</span>
 <span class="sd">            &gt;&gt;&gt; product_set = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_product_set(parent, product_set)</span>
@@ -980,12 +981,13 @@
 
 <span class="sd">                Format is ``projects/PROJECT_ID/locations/LOC_ID``.</span>
 <span class="sd">            product_set (Union[dict, ~google.cloud.vision_v1.types.ProductSet]): The ProductSet to create.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.ProductSet`</span>
 <span class="sd">            product_set_id (str): A user-supplied resource id for this ProductSet. If set, the server will</span>
-<span class="sd">                attempt to use this value as the resource id. If it is already in use, an</span>
-<span class="sd">                error is returned with code ALREADY_EXISTS. Must be at most 128 characters</span>
-<span class="sd">                long. It cannot contain the character ``/``.</span>
+<span class="sd">                attempt to use this value as the resource id. If it is already in use,</span>
+<span class="sd">                an error is returned with code ALREADY\_EXISTS. Must be at most 128</span>
+<span class="sd">                characters long. It cannot contain the character ``/``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1036,8 +1038,8 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns INVALID_ARGUMENT if page_size is greater than 100, or less</span>
-<span class="sd">          than 1.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if page\_size is greater than 100, or less</span>
+<span class="sd">           than 1.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -1055,7 +1057,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_product_sets(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_product_sets(parent).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -1131,7 +1133,7 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND if the ProductSet does not exist.</span>
+<span class="sd">        -  Returns NOT\_FOUND if the ProductSet does not exist.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -1188,33 +1190,34 @@
                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Makes changes to a ProductSet resource.</span>
-<span class="sd">        Only display_name can be updated currently.</span>
+<span class="sd">        Makes changes to a ProductSet resource. Only display\_name can be</span>
+<span class="sd">        updated currently.</span>
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND if the ProductSet does not exist.</span>
-<span class="sd">        * Returns INVALID_ARGUMENT if display_name is present in update_mask but</span>
-<span class="sd">          missing from the request or longer than 4096 characters.</span>
+<span class="sd">        -  Returns NOT\_FOUND if the ProductSet does not exist.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if display\_name is present in update\_mask</span>
+<span class="sd">           but missing from the request or longer than 4096 characters.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product_set``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `product_set`:</span>
 <span class="sd">            &gt;&gt;&gt; product_set = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_product_set(product_set)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            product_set (Union[dict, ~google.cloud.vision_v1.types.ProductSet]): The ProductSet resource which replaces the one on the server.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.ProductSet`</span>
-<span class="sd">            update_mask (Union[dict, ~google.cloud.vision_v1.types.FieldMask]): The ``FieldMask`` that specifies which fields to</span>
-<span class="sd">                update.</span>
-<span class="sd">                If update_mask isn&#39;t specified, all mutable fields are to be updated.</span>
-<span class="sd">                Valid mask path is ``display_name``.</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.vision_v1.types.FieldMask]): The ``FieldMask`` that specifies which fields to update. If update\_mask</span>
+<span class="sd">                isn&#39;t specified, all mutable fields are to be updated. Valid mask path</span>
+<span class="sd">                is ``display_name``.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -1261,14 +1264,14 @@
                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
                            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Permanently deletes a ProductSet. All Products and ReferenceImages in the</span>
-<span class="sd">        ProductSet will be deleted.</span>
+<span class="sd">        Permanently deletes a ProductSet. All Products and ReferenceImages in</span>
+<span class="sd">        the ProductSet will be deleted.</span>
 
 <span class="sd">        The actual image files are not deleted from Google Cloud Storage.</span>
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND if the ProductSet does not exist.</span>
+<span class="sd">        -  Returns NOT\_FOUND if the ProductSet does not exist.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -1332,7 +1335,7 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND if the Product or the ProductSet doesn&#39;t exist.</span>
+<span class="sd">        -  Returns NOT\_FOUND if the Product or the ProductSet doesn&#39;t exist.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -1341,7 +1344,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.product_set_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT_SET]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `product`:</span>
 <span class="sd">            &gt;&gt;&gt; product = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.add_product_to_product_set(name, product)</span>
@@ -1353,8 +1356,7 @@
 <span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``</span>
 <span class="sd">            product (str): The resource name for the Product to be added to this ProductSet.</span>
 
-<span class="sd">                Format is:</span>
-<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
+<span class="sd">                Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1402,7 +1404,7 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns NOT_FOUND If the Product is not found under the ProductSet.</span>
+<span class="sd">        -  Returns NOT\_FOUND If the Product is not found under the ProductSet.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -1411,7 +1413,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.product_set_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[PRODUCT_SET]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``product``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `product`:</span>
 <span class="sd">            &gt;&gt;&gt; product = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.remove_product_from_product_set(name, product)</span>
@@ -1423,8 +1425,7 @@
 <span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``</span>
 <span class="sd">            product (str): The resource name for the Product to be removed from this ProductSet.</span>
 
-<span class="sd">                Format is:</span>
-<span class="sd">                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
+<span class="sd">                Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1474,7 +1475,8 @@
 
 <span class="sd">        Possible errors:</span>
 
-<span class="sd">        * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.</span>
+<span class="sd">        -  Returns INVALID\_ARGUMENT if page\_size is greater than 100 or less</span>
+<span class="sd">           than 1.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
@@ -1492,7 +1494,7 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_products_in_product_set(name, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_products_in_product_set(name).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
@@ -1569,10 +1571,10 @@
 <span class="sd">        Asynchronous API that imports a list of reference images to specified</span>
 <span class="sd">        product sets based on a list of image information.</span>
 
-<span class="sd">        The ``google.longrunning.Operation`` API can be used to keep track of the</span>
-<span class="sd">        progress and results of the request.</span>
-<span class="sd">        ``Operation.metadata`` contains ``BatchOperationMetadata``. (progress)</span>
-<span class="sd">        ``Operation.response`` contains ``ImportProductSetsResponse``. (results)</span>
+<span class="sd">        The ``google.longrunning.Operation`` API can be used to keep track of</span>
+<span class="sd">        the progress and results of the request. ``Operation.metadata`` contains</span>
+<span class="sd">        ``BatchOperationMetadata``. (progress) ``Operation.response`` contains</span>
+<span class="sd">        ``ImportProductSetsResponse``. (results)</span>
 
 <span class="sd">        The input source of this method is a csv file on Google Cloud Storage.</span>
 <span class="sd">        For the format of the csv file please see</span>
@@ -1585,7 +1587,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``input_config``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `input_config`:</span>
 <span class="sd">            &gt;&gt;&gt; input_config = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.import_product_sets(parent, input_config)</span>
@@ -1604,6 +1606,7 @@
 
 <span class="sd">                Format is ``projects/PROJECT_ID/locations/LOC_ID``.</span>
 <span class="sd">            input_config (Union[dict, ~google.cloud.vision_v1.types.ImportProductSetsInputConfig]): The input content for the list of requests.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.ImportProductSetsInputConfig`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>

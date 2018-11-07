@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_v1p3beta1.gapic.image_annotator_client &#8212; google-cloud 8cbfd7b documentation</title>
+    <title>google.cloud.vision_v1p3beta1.gapic.image_annotator_client &#8212; google-cloud c0ab644 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -182,9 +182,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -214,13 +215,14 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = vision_v1p3beta1.ImageAnnotatorClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``requests``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `requests`:</span>
 <span class="sd">            &gt;&gt;&gt; requests = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.batch_annotate_images(requests)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            requests (list[Union[dict, ~google.cloud.vision_v1p3beta1.types.AnnotateImageRequest]]): Individual image annotation requests for this batch.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1p3beta1.types.AnnotateImageRequest`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
@@ -269,16 +271,16 @@
 <span class="sd">        Run asynchronous image detection and annotation for a list of generic</span>
 <span class="sd">        files, such as PDF files, which may contain multiple pages and multiple</span>
 <span class="sd">        images per page. Progress and results can be retrieved through the</span>
-<span class="sd">        ``google.longrunning.Operations`` interface.</span>
-<span class="sd">        ``Operation.metadata`` contains ``OperationMetadata`` (metadata).</span>
-<span class="sd">        ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).</span>
+<span class="sd">        ``google.longrunning.Operations`` interface. ``Operation.metadata``</span>
+<span class="sd">        contains ``OperationMetadata`` (metadata). ``Operation.response``</span>
+<span class="sd">        contains ``AsyncBatchAnnotateFilesResponse`` (results).</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1p3beta1</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = vision_v1p3beta1.ImageAnnotatorClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``requests``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `requests`:</span>
 <span class="sd">            &gt;&gt;&gt; requests = []</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.async_batch_annotate_files(requests)</span>
@@ -294,6 +296,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            requests (list[Union[dict, ~google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileRequest]]): Individual async file annotation requests for this batch.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileRequest`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
