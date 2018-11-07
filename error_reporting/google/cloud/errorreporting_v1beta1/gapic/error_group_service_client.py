@@ -146,9 +146,10 @@ class ErrorGroupServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -184,13 +185,10 @@ class ErrorGroupServiceClient(object):
 
         Args:
             group_name (str): [Required] The group resource name. Written as
-                <code>projects/<var>projectID</var>/groups/<var>group_name</var></code>.
-                Call
-                <a href=\"/error-reporting/reference/rest/v1beta1/projects.groupStats/list\">
-                <code>groupStats.list</code></a> to return a list of groups belonging to
-                this project.
+                projects/projectID/groups/group\_name. Call groupStats.list to return a
+                list of groups belonging to this project.
 
-                Example: <code>projects/my-project-123/groups/my-group</code>
+                Example: projects/my-project-123/groups/my-group
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -239,13 +237,14 @@ class ErrorGroupServiceClient(object):
             >>>
             >>> client = errorreporting_v1beta1.ErrorGroupServiceClient()
             >>>
-            >>> # TODO: Initialize ``group``:
+            >>> # TODO: Initialize `group`:
             >>> group = {}
             >>>
             >>> response = client.update_group(group)
 
         Args:
             group (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ErrorGroup]): [Required] The group which replaces the resource on the server.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.ErrorGroup`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
