@@ -19,7 +19,8 @@ import inspect
 import pickle
 import zlib
 
-from google.cloud.ndb import _ports
+from google.cloud.datastore import helpers
+
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
@@ -86,7 +87,7 @@ __all__ = [
 _MAX_STRING_LENGTH = 1500
 Key = key_module.Key
 BlobKey = NotImplemented  # From `google.appengine.api.datastore_types`
-GeoPt = _ports.GeoPt
+GeoPt = helpers.GeoPoint
 Rollback = exceptions.Rollback
 
 
@@ -2039,7 +2040,7 @@ class StringProperty(TextProperty):
 
 
 class GeoPtProperty(Property):
-    """A property that contains :class:`.GeoPt` values.
+    """A property that contains :attr:`.GeoPt` values.
 
     .. automethod:: _validate
     """
@@ -2050,10 +2051,11 @@ class GeoPtProperty(Property):
         """Validate a ``value`` before setting it.
 
         Args:
-            value (.GeoPt): The value to check.
+            value (~google.cloud.datastore.helpers.GeoPoint): The value to
+                check.
 
         Raises:
-            .BadValueError: If ``value`` is not a :class:`.GeoPt`.
+            .BadValueError: If ``value`` is not a :attr:`.GeoPt`.
         """
         if not isinstance(value, GeoPt):
             raise exceptions.BadValueError(

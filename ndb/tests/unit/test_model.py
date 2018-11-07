@@ -17,9 +17,9 @@ import types
 import unittest.mock
 import zlib
 
+from google.cloud.datastore import helpers
 import pytest
 
-from google.cloud.ndb import _ports
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key
 from google.cloud.ndb import model
@@ -40,7 +40,7 @@ def test_BlobKey():
 
 
 def test_GeoPt():
-    assert model.GeoPt is _ports.GeoPt
+    assert model.GeoPt is helpers.GeoPoint
 
 
 class TestIndexProperty:
