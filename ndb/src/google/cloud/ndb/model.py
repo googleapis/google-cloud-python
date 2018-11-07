@@ -1534,7 +1534,10 @@ class ModelKey(Property):
 
 
 class BooleanProperty(Property):
-    """A property that contains values of type bool."""
+    """A property that contains values of type bool.
+
+    .. automethod:: _validate
+    """
 
     __slots__ = ()
 
@@ -1623,9 +1626,52 @@ class IntegerProperty(Property):
 
 
 class FloatProperty(Property):
+    """A property that contains values of type float.
+
+    .. note::
+
+        If a value is a :class:`bool` or :class:`int`, it will be
+        coerced to a floating point value.
+
+    .. automethod:: _validate
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (Union[float, int, bool]): The value to check.
+
+        Returns:
+            float: The passed-in ``value``, possibly converted to a
+            :class:`float`.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`float` or convertible
+                to one.
+        """
+        if not isinstance(value, (float, int)):
+            raise exceptions.BadValueError(
+                "Expected float, got {!r}".format(value)
+            )
+        return float(value)
+
+    def _db_set_value(self, v, unused_p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
@@ -1667,6 +1713,10 @@ class BlobProperty(Property):
         Unlike most property types, a :class:`BlobProperty` is **not**
         indexed by default.
 
+    .. automethod:: _to_base_type
+    .. automethod:: _from_base_type
+    .. automethod:: _validate
+
     Args:
         name (str): The name of the property.
         compressed (bool): Indicates if the value should be compressed (via
@@ -1679,8 +1729,8 @@ class BlobProperty(Property):
         default (bytes): The default value for this property.
         choices (Iterable[bytes]): A container of allowed values for this
             property.
-        validator (Callable[[Property, Any], bool]): A validator to be used
-            to check values.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
         verbose_name (str): A longer, user-friendly name for this property.
         write_empty_list (bool): Indicates if an empty list should be written
             to the datastore.
