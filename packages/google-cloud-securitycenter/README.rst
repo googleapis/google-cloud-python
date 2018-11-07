@@ -15,7 +15,7 @@ Python Client for Cloud Security Command Center API (`Alpha`_)
    :target: https://pypi.org/project/google-cloud-securitycenter/
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Security Command Center API: https://cloud.google.com/security-command-center
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/securitycenter/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/securitycenter/usage.html
 .. _Product Documentation:  https://cloud.google.com/security-command-center
 
 
@@ -32,7 +32,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Security Command Center API.:  https://cloud.google.com/security-command-center
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
