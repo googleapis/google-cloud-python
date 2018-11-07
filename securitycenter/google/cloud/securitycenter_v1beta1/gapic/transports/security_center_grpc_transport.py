@@ -183,11 +183,11 @@ class SecurityCenterGrpcTransport(object):
     def group_findings(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Filters an organization or source's findings and  groups them by their
+        Filters an organization or source's findings and groups them by their
         specified properties.
 
-        To group across all sources provide a ``-`` as the source id.
-        Example: /v1beta1/organizations/123/sources/-/findings
+        To group across all sources provide a ``-`` as the source id. Example:
+        /v1beta1/organizations/123/sources/-/findings
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -215,8 +215,8 @@ class SecurityCenterGrpcTransport(object):
 
         Lists an organization or source's assets.
 
-        To list across all sources provide a ``-`` as the source id.
-        Example: /v1beta1/organizations/123/sources/-/findings
+        To list across all sources provide a ``-`` as the source id. Example:
+        /v1beta1/organizations/123/sources/-/findings
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -245,9 +245,9 @@ class SecurityCenterGrpcTransport(object):
         Runs asset discovery. The discovery is tracked with a long-running
         operation.
 
-        This API can only be called with limited frequency for an organization. If
-        it is called too frequently the caller will receive a TOO_MANY_REQUESTS
-        error.
+        This API can only be called with limited frequency for an organization.
+        If it is called too frequently the caller will receive a
+        TOO\_MANY\_REQUESTS error.
 
         Returns:
             Callable: A callable which accepts the appropriate
