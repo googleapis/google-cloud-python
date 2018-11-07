@@ -1939,20 +1939,20 @@ class TextProperty(BlobProperty):
         """
         if isinstance(value, bytes):
             try:
-                length = len(value)
+                encoded_length = len(value)
                 value = value.decode("utf-8")
             except UnicodeError:
                 raise exceptions.BadValueError(
                     "Expected valid UTF-8, got {!r}".format(value)
                 )
         elif isinstance(value, str):
-            length = len(value.encode("utf-8"))
+            encoded_length = len(value.encode("utf-8"))
         else:
             raise exceptions.BadValueError(
                 "Expected string, got {!r}".format(value)
             )
 
-        if self._indexed and length > _MAX_STRING_LENGTH:
+        if self._indexed and encoded_length > _MAX_STRING_LENGTH:
             raise exceptions.BadValueError(
                 "Indexed value %s must be at most %d bytes"
                 % (self._name, _MAX_STRING_LENGTH)
@@ -2011,7 +2011,7 @@ class StringProperty(TextProperty):
     """An indexed property that contains UTF-8 encoded text values.
 
     This is nearly identical to :class:`TextProperty`, but is indexed. Values
-    must be at most 1500 bytes (when encoded from UTF-8 to bytes).
+    must be at most 1500 bytes (when UTF-8 encoded from :class:`str` to bytes).
 
     Raises:
         NotImplementedError: If ``indexed=False`` is provided.
