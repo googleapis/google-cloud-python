@@ -31,6 +31,7 @@ _EXPECTED = [
     (b'\xff' * 32, 0x62a8ab43),
     (bytes(range(32)), 0x46dd794e),
     (bytes(reversed(range(32))), 0x113fdb5c),
+    (ISCSI_SCSI_READ_10_COMMAND_PDU, ISCSI_CRC),
     (bytes(ISCSI_SCSI_READ_10_COMMAND_PDU), ISCSI_CRC),
 ]
 
