@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.errorreporting_v1beta1.gapic.error_stats_service_client &#8212; google-cloud 1787742 documentation</title>
+    <title>google.cloud.errorreporting_v1beta1.gapic.error_stats_service_client &#8212; google-cloud 271f3ef documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -190,9 +190,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -232,7 +233,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; project_name = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``time_range``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `time_range`:</span>
 <span class="sd">            &gt;&gt;&gt; time_range = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
@@ -244,45 +245,46 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_group_stats(project_name, time_range, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_group_stats(project_name, time_range).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_name (str): [Required] The resource name of the Google Cloud Platform project. Written</span>
-<span class="sd">                as &lt;code&gt;projects/&lt;/code&gt; plus the</span>
-<span class="sd">                &lt;a href=\&quot;https://support.google.com/cloud/answer/6158840\&quot;&gt;Google Cloud</span>
-<span class="sd">                Platform project ID&lt;/a&gt;.</span>
+<span class="sd">            project_name (str): [Required] The resource name of the Google Cloud Platform project.</span>
+<span class="sd">                Written as projects/ plus the Google Cloud Platform project ID.</span>
 
-<span class="sd">                Example: &lt;code&gt;projects/my-project-123&lt;/code&gt;.</span>
-<span class="sd">            time_range (Union[dict, ~google.cloud.errorreporting_v1beta1.types.QueryTimeRange]): [Optional] List data for the given time range.</span>
-<span class="sd">                If not set a default time range is used. The field time_range_begin</span>
-<span class="sd">                in the response will specify the beginning of this time range.</span>
-<span class="sd">                Only &lt;code&gt;ErrorGroupStats&lt;/code&gt; with a non-zero count in the given time</span>
-<span class="sd">                range are returned, unless the request contains an explicit group_id list.</span>
-<span class="sd">                If a group_id list is given, also &lt;code&gt;ErrorGroupStats&lt;/code&gt; with zero</span>
-<span class="sd">                occurrences are returned.</span>
+<span class="sd">                Example: projects/my-project-123.</span>
+<span class="sd">            time_range (Union[dict, ~google.cloud.errorreporting_v1beta1.types.QueryTimeRange]): [Optional] List data for the given time range. If not set a default time</span>
+<span class="sd">                range is used. The field time\_range\_begin in the response will specify</span>
+<span class="sd">                the beginning of this time range. Only ErrorGroupStats with a non-zero</span>
+<span class="sd">                count in the given time range are returned, unless the request contains</span>
+<span class="sd">                an explicit group\_id list. If a group\_id list is given, also</span>
+<span class="sd">                ErrorGroupStats with zero occurrences are returned.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.errorreporting_v1beta1.types.QueryTimeRange`</span>
-<span class="sd">            group_id (list[str]): [Optional] List all &lt;code&gt;ErrorGroupStats&lt;/code&gt; with these IDs.</span>
-<span class="sd">            service_filter (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter]): [Optional] List only &lt;code&gt;ErrorGroupStats&lt;/code&gt; which belong to a service</span>
-<span class="sd">                context that matches the filter.</span>
-<span class="sd">                Data for all service contexts is returned if this field is not specified.</span>
+<span class="sd">            group_id (list[str]): [Optional] List all ErrorGroupStats with these IDs.</span>
+<span class="sd">            service_filter (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter]): [Optional] List only ErrorGroupStats which belong to a service context</span>
+<span class="sd">                that matches the filter. Data for all service contexts is returned if</span>
+<span class="sd">                this field is not specified.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter`</span>
 <span class="sd">            timed_count_duration (Union[dict, ~google.cloud.errorreporting_v1beta1.types.Duration]): [Optional] The preferred duration for a single returned ``TimedCount``.</span>
 <span class="sd">                If not set, no timed counts are returned.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.errorreporting_v1beta1.types.Duration`</span>
-<span class="sd">            alignment (~google.cloud.errorreporting_v1beta1.types.TimedCountAlignment): [Optional] The alignment of the timed counts to be returned.</span>
-<span class="sd">                Default is ``ALIGNMENT_EQUAL_AT_END``.</span>
+<span class="sd">            alignment (~google.cloud.errorreporting_v1beta1.types.TimedCountAlignment): [Optional] The alignment of the timed counts to be returned. Default is</span>
+<span class="sd">                ``ALIGNMENT_EQUAL_AT_END``.</span>
 <span class="sd">            alignment_time (Union[dict, ~google.cloud.errorreporting_v1beta1.types.Timestamp]): [Optional] Time where the timed counts shall be aligned if rounded</span>
 <span class="sd">                alignment is chosen. Default is 00:00 UTC.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.errorreporting_v1beta1.types.Timestamp`</span>
-<span class="sd">            order (~google.cloud.errorreporting_v1beta1.types.ErrorGroupOrder): [Optional] The sort order in which the results are returned.</span>
-<span class="sd">                Default is ``COUNT_DESC``.</span>
+<span class="sd">            order (~google.cloud.errorreporting_v1beta1.types.ErrorGroupOrder): [Optional] The sort order in which the results are returned. Default is</span>
+<span class="sd">                ``COUNT_DESC``.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -365,7 +367,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; project_name = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``group_id``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `group_id`:</span>
 <span class="sd">            &gt;&gt;&gt; group_id = &#39;&#39;</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
@@ -377,26 +379,27 @@
 <span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
-<span class="sd">            &gt;&gt;&gt; for page in client.list_events(project_name, group_id, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_events(project_name, group_id).pages:</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_name (str): [Required] The resource name of the Google Cloud Platform project. Written</span>
-<span class="sd">                as ``projects/`` plus the</span>
-<span class="sd">                [Google Cloud Platform project</span>
-<span class="sd">                ID](https://support.google.com/cloud/answer/6158840).</span>
-<span class="sd">                Example: ``projects/my-project-123``.</span>
+<span class="sd">            project_name (str): [Required] The resource name of the Google Cloud Platform project.</span>
+<span class="sd">                Written as ``projects/`` plus the `Google Cloud Platform project</span>
+<span class="sd">                ID &lt;https://support.google.com/cloud/answer/6158840&gt;`__. Example:</span>
+<span class="sd">                ``projects/my-project-123``.</span>
 <span class="sd">            group_id (str): [Required] The group for which events shall be returned.</span>
 <span class="sd">            service_filter (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter]): [Optional] List only ErrorGroups which belong to a service context that</span>
-<span class="sd">                matches the filter.</span>
-<span class="sd">                Data for all service contexts is returned if this field is not specified.</span>
+<span class="sd">                matches the filter. Data for all service contexts is returned if this</span>
+<span class="sd">                field is not specified.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter`</span>
-<span class="sd">            time_range (Union[dict, ~google.cloud.errorreporting_v1beta1.types.QueryTimeRange]): [Optional] List only data for the given time range.</span>
-<span class="sd">                If not set a default time range is used. The field time_range_begin</span>
-<span class="sd">                in the response will specify the beginning of this time range.</span>
+<span class="sd">            time_range (Union[dict, ~google.cloud.errorreporting_v1beta1.types.QueryTimeRange]): [Optional] List only data for the given time range. If not set a default</span>
+<span class="sd">                time range is used. The field time\_range\_begin in the response will</span>
+<span class="sd">                specify the beginning of this time range.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.errorreporting_v1beta1.types.QueryTimeRange`</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
@@ -475,11 +478,10 @@
 <span class="sd">            &gt;&gt;&gt; response = client.delete_events(project_name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            project_name (str): [Required] The resource name of the Google Cloud Platform project. Written</span>
-<span class="sd">                as ``projects/`` plus the</span>
-<span class="sd">                [Google Cloud Platform project</span>
-<span class="sd">                ID](https://support.google.com/cloud/answer/6158840).</span>
-<span class="sd">                Example: ``projects/my-project-123``.</span>
+<span class="sd">            project_name (str): [Required] The resource name of the Google Cloud Platform project.</span>
+<span class="sd">                Written as ``projects/`` plus the `Google Cloud Platform project</span>
+<span class="sd">                ID &lt;https://support.google.com/cloud/answer/6158840&gt;`__. Example:</span>
+<span class="sd">                ``projects/my-project-123``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>

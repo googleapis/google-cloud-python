@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.errorreporting_v1beta1.gapic.error_group_service_client &#8212; google-cloud 1787742 documentation</title>
+    <title>google.cloud.errorreporting_v1beta1.gapic.error_group_service_client &#8212; google-cloud 271f3ef documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -182,9 +182,10 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+                <span class="n">gapic_version</span><span class="o">=</span><span class="n">_GAPIC_LIBRARY_VERSION</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
@@ -220,13 +221,10 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            group_name (str): [Required] The group resource name. Written as</span>
-<span class="sd">                &lt;code&gt;projects/&lt;var&gt;projectID&lt;/var&gt;/groups/&lt;var&gt;group_name&lt;/var&gt;&lt;/code&gt;.</span>
-<span class="sd">                Call</span>
-<span class="sd">                &lt;a href=\&quot;/error-reporting/reference/rest/v1beta1/projects.groupStats/list\&quot;&gt;</span>
-<span class="sd">                &lt;code&gt;groupStats.list&lt;/code&gt;&lt;/a&gt; to return a list of groups belonging to</span>
-<span class="sd">                this project.</span>
+<span class="sd">                projects/projectID/groups/group\_name. Call groupStats.list to return a</span>
+<span class="sd">                list of groups belonging to this project.</span>
 
-<span class="sd">                Example: &lt;code&gt;projects/my-project-123/groups/my-group&lt;/code&gt;</span>
+<span class="sd">                Example: projects/my-project-123/groups/my-group</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -275,13 +273,14 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = errorreporting_v1beta1.ErrorGroupServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize ``group``:</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `group`:</span>
 <span class="sd">            &gt;&gt;&gt; group = {}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_group(group)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            group (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ErrorGroup]): [Required] The group which replaces the resource on the server.</span>
+
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.errorreporting_v1beta1.types.ErrorGroup`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
