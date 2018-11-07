@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pickle
 import types
 import unittest.mock
 import zlib
@@ -1669,10 +1670,16 @@ class TestGeoPtProperty:
 
 
 class TestPickleProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.PickleProperty()
+    UNPICKLED = ["a", {"b": "c"}, {"d", "e"}, (0xF, 0x10), 0x11]
+    PICKLED = pickle.dumps(UNPICKLED, pickle.HIGHEST_PROTOCOL)
+
+    def test__to_base_type(self):
+        prop = model.PickleProperty(name="pkl")
+        assert prop._to_base_type(self.UNPICKLED) == self.PICKLED
+
+    def test__from_base_type(self):
+        prop = model.PickleProperty(name="pkl")
+        assert prop._from_base_type(self.PICKLED) == self.UNPICKLED
 
 
 class TestJsonProperty:
