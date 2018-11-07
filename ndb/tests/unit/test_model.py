@@ -1590,7 +1590,7 @@ class TestGeoPtProperty:
 
 class TestPickleProperty:
     UNPICKLED = ["a", {"b": "c"}, {"d", "e"}, (0xF, 0x10), 0x11]
-    PICKLED = pickle.dumps(UNPICKLED)
+    PICKLED = pickle.dumps(UNPICKLED, pickle.HIGHEST_PROTOCOL)
 
     def test__to_base_type(self):
         prop = model.PickleProperty(name="pkl")
