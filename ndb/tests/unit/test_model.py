@@ -1357,9 +1357,40 @@ class TestIntegerProperty:
 
 class TestFloatProperty:
     @staticmethod
-    def test_constructor():
+    def test__validate():
+        prop = model.FloatProperty(name="continuous")
+        value = 7.25
+        assert prop._validate(value) is value
+
+    @staticmethod
+    def test__validate_int():
+        prop = model.FloatProperty(name="continuous")
+        value = 1015
+        assert prop._validate(value) == 1015.0
+
+    @staticmethod
+    def test__validate_bool():
+        prop = model.FloatProperty(name="continuous")
+        value = True
+        assert prop._validate(value) == 1.0
+
+    @staticmethod
+    def test__validate_bad_value():
+        prop = model.FloatProperty(name="continuous")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.FloatProperty(name="continuous")
         with pytest.raises(NotImplementedError):
-            model.FloatProperty()
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.FloatProperty(name="continuous")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class Test_CompressedValue:
