@@ -163,9 +163,10 @@ class MetricsServiceV2Client(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -207,7 +208,7 @@ class MetricsServiceV2Client(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_log_metrics(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_log_metrics(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -217,7 +218,7 @@ class MetricsServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]\"
+                     "projects/[PROJECT_ID]"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -296,7 +297,7 @@ class MetricsServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]/metrics/[METRIC_ID]\"
+                     "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -348,7 +349,7 @@ class MetricsServiceV2Client(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``metric``:
+            >>> # TODO: Initialize `metric`:
             >>> metric = {}
             >>>
             >>> response = client.create_log_metric(parent, metric)
@@ -358,11 +359,12 @@ class MetricsServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]\"
+                     "projects/[PROJECT_ID]"
 
                 The new metric must be provided in the request.
             metric (Union[dict, ~google.cloud.logging_v2.types.LogMetric]): The new logs-based metric, which must not have an identifier that
                 already exists.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogMetric`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -419,7 +421,7 @@ class MetricsServiceV2Client(object):
             >>>
             >>> metric_name = client.metric_path('[PROJECT]', '[METRIC]')
             >>>
-            >>> # TODO: Initialize ``metric``:
+            >>> # TODO: Initialize `metric`:
             >>> metric = {}
             >>>
             >>> response = client.update_log_metric(metric_name, metric)
@@ -429,12 +431,13 @@ class MetricsServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]/metrics/[METRIC_ID]\"
+                     "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
 
-                The updated metric must be provided in the request and it's
-                ``name`` field must be the same as ``[METRIC_ID]`` If the metric
-                does not exist in ``[PROJECT_ID]``, then a new metric is created.
+                The updated metric must be provided in the request and it's ``name``
+                field must be the same as ``[METRIC_ID]`` If the metric does not exist
+                in ``[PROJECT_ID]``, then a new metric is created.
             metric (Union[dict, ~google.cloud.logging_v2.types.LogMetric]): The updated metric.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogMetric`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -497,7 +500,7 @@ class MetricsServiceV2Client(object):
 
                 ::
 
-                    \"projects/[PROJECT_ID]/metrics/[METRIC_ID]\"
+                     "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
