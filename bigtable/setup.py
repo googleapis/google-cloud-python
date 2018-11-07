@@ -29,9 +29,9 @@ version = '0.31.0'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 4 - Beta'
 dependencies = [
-    'google-cloud-core<0.29dev,>=0.28.0',
-    'google-api-core[grpc]<2.0.0dev,>=0.1.1',
-    'grpc-google-iam-v1<0.12dev,>=0.11.4',
+    'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
+    'google-cloud-core >= 0.28.0, <0.29dev',
+    'grpc-google-iam-v1 >= 0.11.4, < 0.12dev',
 ]
 extras = {
 }
