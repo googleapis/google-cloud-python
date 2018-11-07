@@ -41,7 +41,7 @@ def table_reference():
     return table_ref
 
 
-def test_read_rows(client, table_reference):
+def test_read_rows(client, project_id, table_reference):
     session = client.create_read_session(
         table_reference,
         requested_streams=1,
@@ -57,7 +57,7 @@ def test_read_rows(client, table_reference):
     assert len(page.avro_rows.serialized_binary_rows) > 0
 
 
-def test_split_read_stream(client, table_reference):
+def test_split_read_stream(client, project_id, table_reference):
     session = client.create_read_session(
         table_reference,
         requested_streams=1,
