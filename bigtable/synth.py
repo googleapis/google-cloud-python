@@ -50,10 +50,6 @@ s.replace(
     "google/**/*.py",
     'from google\.cloud\.bigtable\.admin_v2.proto',
     'from google.cloud.bigtable_admin_v2.proto')
-s.replace(
-    "tests/**/*.py",
-    'from google\.cloud\.bigtable\.admin_v2.proto',
-    'from google.cloud.bigtable_admin_v2.proto')
 
 s.replace(
     ['google/cloud/bigtable_admin_v2/gapic/transports/'
