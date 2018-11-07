@@ -1886,7 +1886,8 @@ class TextProperty(BlobProperty):
     """An unindexed property that contains UTF-8 encoded text values.
 
     A :class:`TextProperty` is intended for values of unlimited length, hence
-    is **not** indexed by default. A :class:`TextProperty` can be indexed via:
+    is **not** indexed. Previously, a :class:`TextProperty` could be indexed
+    via:
 
     .. code-block:: python
 
@@ -1894,15 +1895,33 @@ class TextProperty(BlobProperty):
             description = ndb.TextProperty(indexed=True)
             ...
 
-    but that is not the intended usage. If indexed text is desired, a
+    but this usage is no longer supported. If indexed text is desired, a
     :class:`StringProperty` should be used instead.
 
     .. automethod:: _to_base_type
     .. automethod:: _from_base_type
     .. automethod:: _validate
+
+    Raises:
+        NotImplementedError: If ``indexed=True`` is provided.
     """
 
     __slots__ = ()
+
+    def __init__(self, *args, **kwargs):
+        indexed = kwargs.pop("indexed", False)
+        if indexed:
+            raise NotImplementedError(
+                "A TextProperty cannot be indexed. Previously this was "
+                "allowed, but this usage is no longer supported."
+            )
+
+        super(TextProperty, self).__init__(*args, **kwargs)
+
+    @property
+    def _indexed(self):
+        """bool: Indicates that the property is not indexed."""
+        return False
 
     def _validate(self, value):
         """Validate a ``value`` before setting it.
@@ -1991,14 +2010,30 @@ class TextProperty(BlobProperty):
 class StringProperty(TextProperty):
     """An indexed property that contains UTF-8 encoded text values.
 
-    This is nearly identical to :class:`TextProperty`, but is indexed by
-    default. When indexed, values must be at most 1500 bytes (when encoded from
-    UTF-8 to bytes).
+    This is nearly identical to :class:`TextProperty`, but is indexed. Values
+    must be at most 1500 bytes (when encoded from UTF-8 to bytes).
+
+    Raises:
+        NotImplementedError: If ``indexed=False`` is provided.
     """
 
     __slots__ = ()
 
-    _indexed = True
+    def __init__(self, *args, **kwargs):
+        indexed = kwargs.pop("indexed", True)
+        if not indexed:
+            raise NotImplementedError(
+                "A StringProperty must be indexed. Previously setting "
+                "``indexed=False`` was allowed, but this usage is no longer "
+                "supported."
+            )
+
+        super(StringProperty, self).__init__(*args, **kwargs)
+
+    @property
+    def _indexed(self):
+        """bool: Indicates that the property is indexed."""
+        return True
 
 
 class GeoPtProperty(Property):

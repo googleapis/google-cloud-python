@@ -1573,6 +1573,17 @@ class TestTextProperty:
         assert not prop._indexed
 
     @staticmethod
+    def test_constructor_explicit():
+        prop = model.TextProperty(name="text", indexed=False)
+        assert prop._name == b"text"
+        assert not prop._indexed
+
+    @staticmethod
+    def test_constructor_not_allowed():
+        with pytest.raises(NotImplementedError):
+            model.TextProperty(indexed=True)
+
+    @staticmethod
     def test__validate():
         prop = model.TextProperty(name="text")
         assert prop._validate("abc") is None
@@ -1589,13 +1600,6 @@ class TestTextProperty:
         prop = model.TextProperty(name="text")
         with pytest.raises(exceptions.BadValueError):
             prop._validate(None)
-
-    @staticmethod
-    def test__validate_bad_length():
-        prop = model.TextProperty(name="text", indexed=True)
-        value = b"1" * 2000
-        with pytest.raises(exceptions.BadValueError):
-            prop._validate(value)
 
     @staticmethod
     def test__to_base_type():
@@ -1637,6 +1641,24 @@ class TestStringProperty:
     def test_constructor_defaults():
         prop = model.StringProperty()
         assert prop._indexed
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.StringProperty(name="limited-text", indexed=True)
+        assert prop._name == b"limited-text"
+        assert prop._indexed
+
+    @staticmethod
+    def test_constructor_not_allowed():
+        with pytest.raises(NotImplementedError):
+            model.StringProperty(indexed=False)
+
+    @staticmethod
+    def test__validate_bad_length():
+        prop = model.StringProperty(name="limited-text")
+        value = b"1" * 2000
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
 
 
 class TestGeoPtProperty:
