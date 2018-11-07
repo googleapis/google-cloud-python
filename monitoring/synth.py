@@ -37,13 +37,6 @@ excludes = [
 ]
 s.copy(v3_library, excludes=excludes)
 
-# Correct calls to routing_header
-# https://github.com/googleapis/gapic-generator/issues/2016
-s.replace(
-    "google/cloud/*/gapic/*_client.py",
-    "routing_header\(",
-    "routing_header.to_grpc_metadata(")
-
 # metadata in tests in none but should be empty list.
 # https://github.com/googleapis/gapic-generator/issues/2014
 s.replace(
@@ -53,19 +46,6 @@ s.replace(
     '        if metadata is None:\n'
     '            metadata = []\n'
     '        metadata = list(metadata)\n')
-
-
-# empty objects trying to get attrs
-# https://github.com/googleapis/gapic-generator/issues/2015
-s.replace(
-    "google/cloud/*/gapic/*_client.py",
-    "(^        )(routing_header = google.api_core.gapic_v1.routing_header"
-    ".to_grpc_metadata\(\n)"
-    "(\s+)(\[\('[a-z\_]*?\.name', )([a-z\_]*?)(.name\)\], \)\n)"
-    "(\s+metadata.append\(routing_header\)\n)",
-    "\g<1>if hasattr(\g<5>, 'name'):\n"
-    "\g<1>    \g<2>\g<3>    \g<4>\g<5>\g<6>    \g<7>"
-)
 
 # Issues exist where python files should defined the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
