@@ -16,6 +16,7 @@
 
 
 import inspect
+import json
 import pickle
 import zlib
 
@@ -2128,6 +2129,8 @@ class JsonProperty(BlobProperty):
         Unlike most property types, a :class:`JsonProperty` is **not**
         indexed by default.
 
+    .. automethod:: _to_base_type
+    .. automethod:: _from_base_type
     .. automethod:: _validate
 
     Args:
@@ -2199,6 +2202,29 @@ class JsonProperty(BlobProperty):
             raise TypeError(
                 "JSON property must be a {}".format(self._json_type)
             )
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (Any): The value to be converted.
+
+        Returns:
+            bytes: The ``value``, JSON encoded as an ASCII byte string.
+        """
+        as_str = json.dumps(value, separators=(",", ":"), ensure_ascii=True)
+        return as_str.encode("ascii")
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        Args:
+            value (Union[bytes, str]): The value to be converted.
+
+        Returns:
+            Any: The ``value`` (ASCII bytes or string) loaded as JSON.
+        """
+        return json.loads(value)
 
 
 class UserProperty(Property):
