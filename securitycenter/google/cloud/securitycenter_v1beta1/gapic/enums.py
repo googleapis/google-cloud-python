@@ -20,10 +20,10 @@ import enum
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for the
-    ``Value`` type union.
+    ``NullValue`` is a singleton enumeration to represent the null value for
+    the ``Value`` type union.
 
-     The JSON representation for ``NullValue`` is JSON ``null``.
+    The JSON representation for ``NullValue`` is JSON ``null``.
 
     Attributes:
       NULL_VALUE (int): Null value.
@@ -51,13 +51,13 @@ class OrganizationSettings(object):
     class AssetDiscoveryConfig(object):
         class InclusionMode(enum.IntEnum):
             """
-            The mode of inclusion when running Asset Discovery.
-            Asset discovery can be limited by explicitly identifying projects to be
-            included or excluded. If INCLUDE_ONLY is set then only those projects
-            (within the organization) and their children are discovered during asset
-            discovery. If EXCLUDE is set then projects not matching those projects
-            are discovered during asset discovery. If neither are set then all
-            projects within the organization are discovered during asset discovery.
+            The mode of inclusion when running Asset Discovery. Asset discovery can
+            be limited by explicitly identifying projects to be included or
+            excluded. If INCLUDE\_ONLY is set then only those projects (within the
+            organization) and their children are discovered during asset discovery.
+            If EXCLUDE is set then projects not matching those projects are
+            discovered during asset discovery. If neither are set then all projects
+            within the organization are discovered during asset discovery.
 
             Attributes:
               INCLUSION_MODE_UNSPECIFIED (int): Unspecified. Setting the mode with this value will disable
@@ -78,10 +78,9 @@ class ListAssetsResponse(object):
             """
             State of the asset.
 
-            When querying across two points in time this describes
-            the change between the two points: ADDED, REMOVED, or ACTIVE.
-            If there was no compare_duration supplied in the request the state should
-            be: UNUSED
+            When querying across two points in time this describes the change
+            between the two points: ADDED, REMOVED, or ACTIVE. If there was no
+            compare\_duration supplied in the request the state should be: UNUSED
 
             Attributes:
               STATE_UNSPECIFIED (int): Unspecified state.
