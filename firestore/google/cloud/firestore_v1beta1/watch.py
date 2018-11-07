@@ -278,7 +278,7 @@ class Watch(object):
                 self._consumer.stop()
             self._consumer = None
 
-            self._rpc = None
+            self._rpc = None # TODO: Everywhere else this is self.rpc.
             self._closed = True
             _LOGGER.debug('Finished stopping manager.')
 
@@ -388,8 +388,9 @@ class Watch(object):
             code = change.cause.code
             message = change.cause.message
 
-        # TODO: Surface a .code property on the exception.
-        raise Exception('Error %s:  %s' % (code, message))  # XXX Exception?
+        # TODO: Consider surfacing a code property on the exception.
+        # TODO: Consider a more exact exception
+        raise Exception('Error %s:  %s' % (code, message))
 
     def _on_snapshot_target_change_reset(self, proto):
         # Whatever changes have happened so far no longer matter.
@@ -438,15 +439,9 @@ class Watch(object):
                     _LOGGER.debug("meth(proto) exc: " + str(exc2))
                     raise
 
-            # XXX this is currently a no-op
-            # affects_target = self._affects_target(
-            #     target_change.target_ids, WATCH_TARGET_ID
-            # )
-
-            # if target_change.resume_token and affects_target:
-            #     # TODO: they node version resets backoff here. We allow
-            #     # bidi rpc to do its thing.
-            #     pass
+            # NOTE:
+            # in other implementations, such as node, the backoff is reset here
+            # in this version bidi rpc is just used and will control this.
 
         elif str(proto.document_change):
             _LOGGER.debug('on_snapshot: document change')
@@ -579,9 +574,6 @@ class Watch(object):
 
     def _compute_snapshot(self, doc_tree, doc_map, delete_changes, add_changes,
                           update_changes):
-        # TODO: ACTUALLY NEED TO CALCULATE
-        # return {updated_tree, updated_map, appliedChanges};
-        # return doc_tree, doc_map, changes
         updated_tree = doc_tree
         updated_map = doc_map
 
@@ -596,7 +588,7 @@ class Watch(object):
             """
             assert name in updated_map, 'Document to delete does not exist'
             old_document = updated_map.get(name)
-            # XXX probably should not expose IndexError when doc doesnt exist
+            # TODO: If a document doesn't exist this raises IndexError. Handle?
             existing = updated_tree.find(old_document)
             old_index = existing.index
             updated_tree = updated_tree.remove(old_document)

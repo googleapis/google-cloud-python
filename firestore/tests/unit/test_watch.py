@@ -377,9 +377,8 @@ class TestWatch(unittest.TestCase):
         self.assertEqual(inst.change_map['fred'].data, {})
 
     def test_on_snapshot_document_change_changed_docname_db_prefix(self):
-        # XXX This test asserts the current behavior, but I have no level
-        # of confidence that the change map should contain the
-        # db-prefixed document name instead of the bare document name.
+        # TODO: Verify the current behavior. The change map currently contains
+        # the db-prefixed document name and not the bare document name.
         from google.cloud.firestore_v1beta1.watch import WATCH_TARGET_ID
         inst = self._makeOne()
 
@@ -644,8 +643,7 @@ class TestWatch(unittest.TestCase):
             add_changes,
             update_changes
             )
-        # TODO:
-        # Assertion is not verified correct below. Verify this test is good.
+        # TODO: Verify that the assertion here is correct.
         self.assertEqual(updated_map,
                          {
                              '/updated': updated_snapshot,
