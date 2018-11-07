@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Manage asynchronous context. """
+
 import contextlib
 
 from google.cloud.ndb import _eventloop
