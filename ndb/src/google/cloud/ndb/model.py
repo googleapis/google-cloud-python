@@ -2144,8 +2144,8 @@ class JsonProperty(BlobProperty):
             multiple values.
         required (bool): Indicates if this property is required on the given
             model type.
-        default (bytes): The default value for this property.
-        choices (Iterable[bytes]): A container of allowed values for this
+        default (Any): The default value for this property.
+        choices (Iterable[Any]): A container of allowed values for this
             property.
         validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
             validator to be used to check values.
