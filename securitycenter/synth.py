@@ -29,22 +29,9 @@ s.move(
     ]
 )
 
-# Fix security_center_client.py docstrings.
+# Add encoding header to protoc-generated files.
+# See: https://github.com/googleapis/gapic-generator/issues/2097
 s.replace(
-    "google/cloud/securitycenter_v1beta1/gapic/security_center_client.py",
-    "::\n\n\s+(compare_duration, but present at [a-z]+_time.)",
-    "  \g<1>"
-)
-
-s.replace(
-    "google/cloud/securitycenter_v1beta1/gapic/security_center_client.py",
-    "::\n\n\s+(compare_duration, but not present at [a-z]+_time.)",
-    "  \g<1>"
-)
-
-s.replace(
-    "google/cloud/securitycenter_v1beta1/gapic/security_center_client.py",
-    "(^\s+)::\n\n\s+(start and the end of the time period defined by\n)"
-    "\s+(compare_duration and [a-z]+_time.)",
-    "\g<1>  \g<2>\g<1>  \g<3>"
-)
+    '**/proto/*_pb2.py',
+    r"(^.*$\n)*",
+    r"# -*- coding: utf-8 -*-\n\g<0>")
