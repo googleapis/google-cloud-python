@@ -17,8 +17,10 @@ import unittest.mock
 
 import pytest
 
-from google.cloud.ndb import _eventloop as eventloop
 import tests.unit.utils
+
+from google.cloud.ndb import exceptions
+from google.cloud.ndb import _eventloop as eventloop
 
 
 def test___all__():
@@ -317,14 +319,16 @@ def test_async_context(EventLoop):
     one.run.assert_called_once_with()
 
 
+def test_get_event_loop():
+    with pytest.raises(exceptions.AsyncContextError):
+        eventloop.get_event_loop()
+    with eventloop.async_context():
+        assert isinstance(eventloop.get_event_loop(), eventloop.EventLoop)
+
+
 def test_add_idle():
     with pytest.raises(NotImplementedError):
         eventloop.add_idle()
-
-
-def test_get_event_loop():
-    with pytest.raises(NotImplementedError):
-        eventloop.get_event_loop()
 
 
 def test_queue_call():
