@@ -1875,6 +1875,52 @@ class TestKeyProperty:
         expected = "KeyProperty(b'keyp', kind=b'Simple', repeated=True)"
         assert repr(prop) == expected
 
+    @staticmethod
+    def test__validate():
+        kind = "Simple"
+        prop = model.KeyProperty("keyp", kind=kind)
+        value = key.Key(kind, 182983)
+        prop._kind = kind  # Ick
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_without_kind():
+        prop = model.KeyProperty("keyp")
+        value = key.Key("Foo", "Bar")
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_non_key():
+        prop = model.KeyProperty("keyp")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__validate_partial_key():
+        prop = model.KeyProperty("keyp")
+        value = key.Key("Kynd", None)
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
+
+    @staticmethod
+    def test__validate_wrong_kind():
+        prop = model.KeyProperty("keyp", kind="Simple")
+        value = key.Key("Kynd", 184939)
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.KeyProperty("keyp", kind="Simple")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.KeyProperty("keyp", kind="Simple")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
+
 
 class TestBlobKeyProperty:
     @staticmethod

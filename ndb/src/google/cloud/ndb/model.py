@@ -2283,6 +2283,8 @@ class KeyProperty(Property):
     :class:`type` argument is assumed to be the ``kind`` (and checked that
     the type is a subclass of :class:`Model`).
 
+    .. automethod:: _validate
+
     Args:
         name (str): The name of the property.
         kind (Union[type, str]): The (optional) kind to be stored. If provided
@@ -2437,6 +2439,54 @@ class KeyProperty(Property):
             if name in ("args", "name", "kind"):
                 continue
             yield name, is_keyword
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (.Key): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`.Key`.
+            .BadValueError: If ``value`` is a partial :class:`.Key` (i.e. it
+                has no name or ID set).
+            .BadValueError: If the current property has an associated ``kind``
+                and ``value`` does not match that kind.
+        """
+        if not isinstance(value, Key):
+            raise exceptions.BadValueError(
+                "Expected Key, got {!r}".format(value)
+            )
+
+        # Reject incomplete keys.
+        if not value.id():
+            raise exceptions.BadValueError(
+                "Expected complete Key, got {!r}".format(value)
+            )
+
+        # Verify kind if provided.
+        if self._kind is not None:
+            if value.kind() != self._kind:
+                raise exceptions.BadValueError(
+                    "Expected Key with kind={!r}, got "
+                    "{!r}".format(self._kind, value)
+                )
+
+    def _db_set_value(self, v, unused_p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
 
 
 class BlobKeyProperty(Property):
