@@ -2159,9 +2159,9 @@ class JsonProperty(BlobProperty):
     def __init__(
         self,
         name=None,
+        *,
         compressed=None,
         json_type=None,
-        *,
         indexed=None,
         repeated=None,
         required=None,
