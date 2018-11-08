@@ -78,6 +78,9 @@ def main():
             "Programming Language :: Python :: 3.7",
         ],
         cmdclass={"build_ext": BuildExtWithDLL},
+        extras_require={
+            "testing": ["pytest", 'mock; python_version == "2.7"']
+        },
     )
 
 
