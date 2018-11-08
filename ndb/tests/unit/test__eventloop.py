@@ -294,6 +294,29 @@ class TestEventLoop:
         runlater.assert_called_once_with()
 
 
+@unittest.mock.patch("google.cloud.ndb._eventloop.EventLoop")
+def test_async_context(EventLoop):
+    one = unittest.mock.Mock(spec=("run",))
+    two = unittest.mock.Mock(spec=("run",))
+    EventLoop.side_effect = [one, two]
+    assert eventloop.contexts.current() is None
+
+    with eventloop.async_context():
+        assert eventloop.contexts.current() is one
+        one.run.assert_not_called()
+
+        with eventloop.async_context():
+            assert eventloop.contexts.current() is two
+            two.run.assert_not_called()
+
+        assert eventloop.contexts.current() is one
+        one.run.assert_not_called()
+        two.run.assert_called_once_with()
+
+    assert eventloop.contexts.current() is None
+    one.run.assert_called_once_with()
+
+
 def test_add_idle():
     with pytest.raises(NotImplementedError):
         eventloop.add_idle()
