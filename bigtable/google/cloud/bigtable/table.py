@@ -268,8 +268,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_list_column_family]
-            :end-before: [END bigtable_list_column_family]
+            :start-after: [START bigtable_list_column_families]
+            :end-before: [END bigtable_list_column_families]
 
         :rtype: dict
         :returns: Dictionary of column families attached to this table. Keys
@@ -429,6 +429,12 @@ class Table(object):
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_mutate_rows]
+            :end-before: [END bigtable_mutate_rows]
+
         The method tries to update all specified rows.
         If some of the rows weren't updated, it would not remove mutations.
         They can be applied to the row separately.
@@ -500,6 +506,11 @@ class Table(object):
     def truncate(self, timeout=None):
         """Truncate the table
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_truncate_table]
+            :end-before: [END bigtable_truncate_table]
         :type timeout: float
         :param timeout: (Optional) The amount of time, in seconds, to wait
                         for the request to complete.
