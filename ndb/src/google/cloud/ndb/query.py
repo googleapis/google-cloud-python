@@ -96,7 +96,7 @@ class Parameter(ParameterizedThing):
     __slots__ = ("_key",)
 
     def __init__(self, key):
-        if not isinstance(key, (int, str, bytes)):
+        if not isinstance(key, (int, bytes, str)):
             raise TypeError(
                 "Parameter key must be an integer or string, not {}".format(
                     key

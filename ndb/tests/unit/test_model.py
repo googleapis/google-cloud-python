@@ -1784,9 +1784,96 @@ class TestUserProperty:
 
 class TestKeyProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.KeyProperty()
+    def test_constructor_defaults():
+        prop = model.KeyProperty()
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {}
+
+    @staticmethod
+    def test_constructor_too_many_positional():
+        with pytest.raises(TypeError):
+            model.KeyProperty("a", None, None)
+
+    @staticmethod
+    def test_constructor_positional_name_twice():
+        with pytest.raises(TypeError):
+            model.KeyProperty("a", "b")
+
+    @staticmethod
+    def test_constructor_positional_kind_twice():
+        class Simple(model.Model):
+            pass
+
+        with pytest.raises(TypeError):
+            model.KeyProperty(Simple, Simple)
+
+    @staticmethod
+    def test_constructor_positional_bad_type():
+        with pytest.raises(TypeError):
+            model.KeyProperty("a", unittest.mock.sentinel.bad)
+
+    @staticmethod
+    def test_constructor_name_both_ways():
+        with pytest.raises(TypeError):
+            model.KeyProperty("a", name="b")
+
+    @staticmethod
+    def test_constructor_kind_both_ways():
+        class Simple(model.Model):
+            pass
+
+        with pytest.raises(TypeError):
+            model.KeyProperty(Simple, kind="Simple")
+
+    @staticmethod
+    def test_constructor_bad_kind():
+        with pytest.raises(TypeError):
+            model.KeyProperty(kind=unittest.mock.sentinel.bad)
+
+    @staticmethod
+    def test_constructor_positional():
+        class Simple(model.Model):
+            pass
+
+        prop = model.KeyProperty(None, None)
+        assert prop._name is None
+        assert prop._kind is None
+
+        name_only_args = [("keyp",), (None, "keyp"), (b"keyp", None)]
+        for args in name_only_args:
+            prop = model.KeyProperty(*args)
+            assert prop._name == b"keyp"
+            assert prop._kind is None
+
+        kind_only_args = [(Simple,), (None, Simple), (Simple, None)]
+        for args in kind_only_args:
+            prop = model.KeyProperty(*args)
+            assert prop._name is None
+            assert prop._kind == b"Simple"
+
+        both_args = [("keyp", Simple), (Simple, "keyp")]
+        for args in both_args:
+            prop = model.KeyProperty(*args)
+            assert prop._name == b"keyp"
+            assert prop._kind == b"Simple"
+
+    @staticmethod
+    def test_constructor_hybrid():
+        class Simple(model.Model):
+            pass
+
+        prop1 = model.KeyProperty(Simple, name="keyp")
+        prop2 = model.KeyProperty("keyp", kind=Simple)
+        prop3 = model.KeyProperty("keyp", kind="Simple")
+        for prop in (prop1, prop2, prop3):
+            assert prop._name == b"keyp"
+            assert prop._kind == b"Simple"
+
+    @staticmethod
+    def test_repr():
+        prop = model.KeyProperty("keyp", kind="Simple", repeated=True)
+        expected = "KeyProperty(b'keyp', kind=b'Simple', repeated=True)"
+        assert repr(prop) == expected
 
 
 class TestBlobKeyProperty:
