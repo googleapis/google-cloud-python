@@ -21,6 +21,8 @@ import contextlib
 import threading
 import time
 
+from google.cloud.ndb import exceptions
+
 __all__ = [
     "add_idle",
     "async_context",
@@ -304,8 +306,9 @@ def async_context():
     context. Upon exiting the context, execution will block until all
     asynchronous calls loaded onto the event loop have finished execution.
 
-    Code within an asynchronous context should be single threaded. Internally, a
-    :class:`threading.local` instance is used to track the current event loop.
+    Code within an asynchronous context should be single threaded. Internally,
+    a :class:`threading.local` instance is used to track the current event
+    loop.
 
     In the context of a web application, it is recommended that a single
     asynchronous context be used per HTTP request. This can typically be
@@ -321,11 +324,28 @@ def async_context():
     contexts.pop()
 
 
+def get_event_loop():
+    """Get the current event loop.
+
+    This function should be called within a context established by
+    :func:`google.cloud.ndb.async_context`.
+
+    Returns:
+        EventLoop: The event loop for the current
+            context.
+
+    Raises:
+        exceptions.AsyncContextError: If called outside of a context
+            established by :func:`google.cloud.ndb.async_context`.
+    """
+    loop = contexts.current()
+    if loop:
+        return loop
+
+    raise exceptions.AsyncContextError()
+
+
 def add_idle(*args, **kwargs):
-    raise NotImplementedError
-
-
-def get_event_loop(*args, **kwargs):
     raise NotImplementedError
 
 
