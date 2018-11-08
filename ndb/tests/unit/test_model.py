@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import pickle
 import types
 import unittest.mock
@@ -1797,9 +1798,49 @@ class TestBlobKeyProperty:
 
 class TestDateTimeProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.DateTimeProperty()
+    def test_constructor_defaults():
+        prop = model.DateTimeProperty()
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {}
+
+    @staticmethod
+    def test_constructor_explicit():
+        now = datetime.datetime.utcnow()
+        prop = model.DateTimeProperty(
+            name="dt_val",
+            auto_now=True,
+            auto_now_add=False,
+            indexed=False,
+            repeated=False,
+            required=True,
+            default=now,
+            validator=TestProperty._example_validator,
+            verbose_name="VALUE FOR READING",
+            write_empty_list=False,
+        )
+        assert prop._name == b"dt_val" and prop._name != "dt_val"
+        assert prop._auto_now
+        assert not prop._auto_now_add
+        assert not prop._indexed
+        assert not prop._repeated
+        assert prop._required
+        assert prop._default == now
+        assert prop._choices is None
+        assert prop._validator is TestProperty._example_validator
+        assert prop._verbose_name == "VALUE FOR READING"
+        assert not prop._write_empty_list
+
+    @staticmethod
+    def test_constructor_repeated():
+        with pytest.raises(ValueError):
+            model.DateTimeProperty(name="dt_val", auto_now=True, repeated=True)
+        with pytest.raises(ValueError):
+            model.DateTimeProperty(
+                name="dt_val", auto_now_add=True, repeated=True
+            )
+
+        prop = model.DateTimeProperty(name="dt_val", repeated=True)
+        assert prop._repeated
 
 
 class TestDateProperty:
