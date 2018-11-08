@@ -2389,6 +2389,22 @@ class DateTimeProperty(Property):
             value = self._now()
             self._store_value(entity, value)
 
+    def _db_set_value(self, v, p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
 
 class DateProperty(DateTimeProperty):
     __slots__ = ()

@@ -1902,6 +1902,18 @@ class TestDateTimeProperty:
                 assert entity._values == {prop._name: _now.return_value}
                 _now.assert_called_once_with()
 
+    @staticmethod
+    def test__db_set_value():
+        prop = model.DateTimeProperty(name="dt_val")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.DateTimeProperty(name="dt_val")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
+
 
 class TestDateProperty:
     @staticmethod
