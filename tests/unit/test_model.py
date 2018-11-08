@@ -1917,16 +1917,74 @@ class TestDateTimeProperty:
 
 class TestDateProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.DateProperty()
+    def test__validate():
+        prop = model.DateProperty(name="d_val")
+        value = datetime.datetime.utcnow().date()
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.DateProperty(name="d_val")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__now():
+        d_val = model.DateProperty._now()
+        assert isinstance(d_val, datetime.date)
+
+    def test__to_base_type(self):
+        prop = model.DateProperty(name="d_val")
+        value = datetime.date(2014, 10, 7)
+        expected = datetime.datetime(2014, 10, 7)
+        assert prop._to_base_type(value) == expected
+
+    def test__to_base_type_invalid(self):
+        prop = model.DateProperty(name="d_val")
+        with pytest.raises(TypeError):
+            prop._to_base_type(None)
+
+    def test__from_base_type(self):
+        prop = model.DateProperty(name="d_val")
+        value = datetime.datetime(2014, 10, 7)
+        expected = datetime.date(2014, 10, 7)
+        assert prop._from_base_type(value) == expected
 
 
 class TestTimeProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.TimeProperty()
+    def test__validate():
+        prop = model.TimeProperty(name="t_val")
+        value = datetime.datetime.utcnow().time()
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.TimeProperty(name="t_val")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__now():
+        t_val = model.TimeProperty._now()
+        assert isinstance(t_val, datetime.time)
+
+    def test__to_base_type(self):
+        prop = model.TimeProperty(name="t_val")
+        value = datetime.time(17, 57, 18, 453529)
+        expected = datetime.datetime(1970, 1, 1, 17, 57, 18, 453529)
+        assert prop._to_base_type(value) == expected
+
+    def test__to_base_type_invalid(self):
+        prop = model.TimeProperty(name="t_val")
+        with pytest.raises(TypeError):
+            prop._to_base_type(None)
+
+    def test__from_base_type(self):
+        prop = model.TimeProperty(name="t_val")
+        value = datetime.datetime(1970, 1, 1, 1, 15, 59, 900101)
+        expected = datetime.time(1, 15, 59, 900101)
+        assert prop._from_base_type(value) == expected
 
 
 class TestStructuredProperty:
