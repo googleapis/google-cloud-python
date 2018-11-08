@@ -162,7 +162,7 @@ class EventLoop:
         An idle callback is a low priority task which is executed when
         there aren't other events scheduled for immediate execution.
 
-        An idle callback can return True, False or None.  These mean:
+        An idle callback can return True, False or None. These mean:
 
         - None: remove the callback (don't reschedule)
         - False: the callback did no work; reschedule later
@@ -301,7 +301,7 @@ def async_context():
 
     Within the context, any calls to a ``*_async`` function or to an
     ``ndb.tasklet``, will be added to the event loop established by the
-    context.  Upon exiting the context, execution will block until all
+    context. Upon exiting the context, execution will block until all
     asynchronous calls loaded onto the event loop have finished execution.
 
     Code within an asynchronous context should be single threaded. Internally, a
