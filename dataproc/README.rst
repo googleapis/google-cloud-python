@@ -15,7 +15,7 @@ Python Client for Google Cloud Dataproc API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataproc.svg
    :target: https://pypi.org/project/google-cloud-dataproc/
 .. _Google Cloud Dataproc API: https://cloud.google.com/dataproc
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/dataproc/usage.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/dataproc/index.html
 .. _Product Documentation:  https://cloud.google.com/dataproc
 
 Quick Start
