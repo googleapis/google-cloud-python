@@ -96,7 +96,8 @@ The primary differences come from:
 - The `BlobProperty` constructor only sets `_compressed` if explicitly
   passed. The original set `_compressed` always (and used `False` as default).
   In the exact same fashion the `JsonProperty` constructor only sets
-  `_json_type` if explicitly passed.
+  `_json_type` if explicitly passed. Similarly, the `DateTimeProperty`
+  constructor only sets `_auto_now` and `_auto_now_add` if explicitly passed.
 - `TextProperty(indexed=True)` and `StringProperty(indexed=False)` are no
   longer supported (see docstrings for more info)
 - `model.GeoPt` is an alias for `google.cloud.datastore.helpers.GeoPoint`
