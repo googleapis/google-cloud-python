@@ -15,6 +15,7 @@
 """Model classes for datastore objects and properties for models."""
 
 
+import datetime
 import inspect
 import json
 import pickle
@@ -469,6 +470,11 @@ class Property(ModelAttribute):
     * Returning the original value: if any of these return :data:`None`, the
       original value is kept. (Returning a different value not equal to
       :data:`None` will substitute the different value.)
+
+    Additionally, :meth:`_prepare_for_put` can be used to integrate with
+    datastore save hooks used by :class:`Model` instances.
+
+    .. automethod:: _prepare_for_put
 
     Args:
         name (str): The name of the property.
@@ -1749,8 +1755,8 @@ class BlobProperty(Property):
     def __init__(
         self,
         name=None,
-        compressed=None,
         *,
+        compressed=None,
         indexed=None,
         repeated=None,
         required=None,
@@ -2249,9 +2255,154 @@ class BlobKeyProperty(Property):
 
 
 class DateTimeProperty(Property):
-    __slots__ = ()
+    """A property that contains :class:`~datetime.datetime` values.
 
-    def __init__(self, *args, **kwargs):
+    This property expects "naive" datetime stamps, i.e. no timezone can
+    be set. Furthermore, the assumption is that naive datetime stamps
+    represent UTC.
+
+    .. note::
+
+        Unlike Django, ``auto_now_add`` can be overridden by setting the
+        value before writing the entity. And unlike the legacy
+        ``google.appengine.ext.db``, ``auto_now`` does not supply a default
+        value. Also unlike legacy ``db``, when the entity is written, the
+        property values are updated to match what was written. Finally, beware
+        that this also updates the value in the in-process cache, **and** that
+        ``auto_now_add`` may interact weirdly with transaction retries (a retry
+        of a property with ``auto_now_add`` set will reuse the value that was
+        set on the first try).
+
+    .. automethod:: _validate
+    .. automethod:: _prepare_for_put
+
+    Args:
+        name (str): The name of the property.
+        auto_now (bool): Indicates that the property should be set to the
+            current datetime when an entity is created and whenever it is
+            updated.
+        auto_now_add (bool): Indicates that the property should be set to the
+            current datetime when an entity is created.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (bytes): The default value for this property.
+        choices (Iterable[bytes]): A container of allowed values for this
+            property.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+
+    Raises:
+        ValueError: If ``repeated=True`` and ``auto_now=True``.
+        ValueError: If ``repeated=True`` and ``auto_now_add=True``.
+    """
+
+    _auto_now = False
+    _auto_now_add = False
+
+    def __init__(
+        self,
+        name=None,
+        *,
+        auto_now=None,
+        auto_now_add=None,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        super(DateTimeProperty, self).__init__(
+            name=name,
+            indexed=indexed,
+            repeated=repeated,
+            required=required,
+            default=default,
+            choices=choices,
+            validator=validator,
+            verbose_name=verbose_name,
+            write_empty_list=write_empty_list,
+        )
+        if self._repeated:
+            if auto_now:
+                raise ValueError(
+                    "DateTimeProperty {} could use auto_now and be "
+                    "repeated, but there would be no point.".format(self._name)
+                )
+            elif auto_now_add:
+                raise ValueError(
+                    "DateTimeProperty {} could use auto_now_add and be "
+                    "repeated, but there would be no point.".format(self._name)
+                )
+        if auto_now is not None:
+            self._auto_now = auto_now
+        if auto_now_add is not None:
+            self._auto_now_add = auto_now_add
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (~datetime.datetime): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`~datetime.datetime`.
+        """
+        if not isinstance(value, datetime.datetime):
+            raise exceptions.BadValueError(
+                "Expected datetime, got {!r}".format(value)
+            )
+
+    @staticmethod
+    def _now():
+        """datetime.datetime: Return current time.
+
+        This is in place so it can be patched in tests.
+        """
+        return datetime.datetime.utcnow()
+
+    def _prepare_for_put(self, entity):
+        """Sets the current timestamp when "auto" is set.
+
+        If one of the following scenarios occur
+
+        * ``auto_now=True``
+        * ``auto_now_add=True`` and the ``entity`` doesn't have a value set
+
+        then this hook will run before the ``entity`` is ``put()`` into
+        the datastore.
+
+        Args:
+            entity (Model): An entity with values.
+        """
+        if self._auto_now or (
+            self._auto_now_add and not self._has_value(entity)
+        ):
+            value = self._now()
+            self._store_value(entity, value)
+
+    def _db_set_value(self, v, p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
