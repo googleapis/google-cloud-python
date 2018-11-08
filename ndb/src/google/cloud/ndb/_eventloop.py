@@ -324,7 +324,7 @@ def async_context():
     contexts.pop()
 
 
-def get_event_loop(*args, **kwargs):
+def get_event_loop():
     """Get the current event loop.
 
     This function should be called within a context established by
