@@ -336,7 +336,7 @@ def get_event_loop(*args, **kwargs):
 
     Raises:
         exceptions.AsyncContextError: If called outside of a context
-        established by :func:`google.cloud.ndb.async_context`.
+            established by :func:`google.cloud.ndb.async_context`.
     """
     loop = contexts.current()
     if loop:
