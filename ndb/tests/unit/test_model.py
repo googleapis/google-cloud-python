@@ -1756,16 +1756,16 @@ class TestJsonProperty:
     @staticmethod
     def test__to_base_type():
         prop = model.JsonProperty(name="json-val")
-        value = [14, [15, 16], {"seventeen": 18}]
-        expected = b'[14,[15,16],{"seventeen":18}]'
+        value = [14, [15, 16], {"seventeen": 18}, "\N{snowman}"]
+        expected = b'[14,[15,16],{"seventeen":18},"\\u2603"]'
         assert prop._to_base_type(value) == expected
 
     @staticmethod
     def test__from_base_type():
         prop = model.JsonProperty(name="json-val")
 
-        values = (b"[14,true]", '{"a": null}')
-        expecteds = ([14, True], {"a": None})
+        values = (b"[14,true]", '{"a":null,"b":"\\u2603"}')
+        expecteds = ([14, True], {"a": None, "b": "\N{snowman}"})
         for value, expected in zip(values, expecteds):
             assert prop._from_base_type(value) == expected
 
