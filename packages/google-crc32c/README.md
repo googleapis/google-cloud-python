@@ -129,13 +129,12 @@ $ cd ../..
 Now, run the tests:
 
 ```bash
-$ venv/bin/pip install pytest
-$ venv/bin/pip install -e .
+$ venv/bin/pip install -e .[testing]
 $ venv/bin/py.test tests/
 ============================= test session starts ==============================
 platform linux -- Python 3.6.7, pytest-3.10.0, py-1.7.0, pluggy-0.8.0
 rootdir: ..., inifile:
-collected 9 items                                                              
+collected 9 items
 
 tests/test___init__.py .........                                         [100%]
 

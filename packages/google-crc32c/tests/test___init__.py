@@ -11,6 +11,7 @@
 # limitations under the License.
 import functools
 import itertools
+from unittest import mock
 
 import pytest
 
@@ -151,6 +152,11 @@ ISCSI_BYTES = bytes(ISCSI_SCSI_READ_10_COMMAND_PDU)
 ISCSI_CRC = 0xD9963A56
 
 
+def iscsi_chunks(chunksize):
+    for index in itertools.islice(range(ISCSI_LENGTH), 0, None, chunksize):
+        yield ISCSI_SCSI_READ_10_COMMAND_PDU[index : index + chunksize]
+
+
 _EXPECTED = [
     (EMPTY, EMPTY_CRC),
     (ALL_ZEROS, ALL_ZEROS_CRC),
@@ -170,19 +176,14 @@ def test_extend_w_empty_chunk():
 def test_extend_w_multiple_chunks():
     crc = 0
 
-    for index in itertools.islice(range(ISCSI_LENGTH), 0, None, 7):
-        chunk = ISCSI_SCSI_READ_10_COMMAND_PDU[index : index + 7]
+    for chunk in iscsi_chunks(7):
         crc = crc32c.extend(crc, chunk)
 
     assert crc == ISCSI_CRC
 
 
 def test_extend_w_reduce():
-    chunks = (
-        ISCSI_BYTES[index : index + 3]
-        for index in itertools.islice(range(ISCSI_LENGTH), 0, None, 3)
-    )
-    assert functools.reduce(crc32c.extend, chunks, 0) == ISCSI_CRC
+    assert functools.reduce(crc32c.extend, iscsi_chunks(3), 0) == ISCSI_CRC
 
 
 @pytest.mark.parametrize("chunk, expected", _EXPECTED)
@@ -249,3 +250,18 @@ class TestChecksum(object):
         before = helper._crc
         helper.update(b"FACEDACE")
         assert clone._crc == before
+
+    @staticmethod
+    @pytest.mark.parametrize("chunksize", [1, 3, 5, 7, 11, 13, ISCSI_LENGTH])
+    def test_consume_stream(chunksize):
+        helper = crc32c.Checksum()
+        expected = list(iscsi_chunks(chunksize))
+        stream = mock.Mock(spec=["read"])
+        stream.read.side_effect = expected + [b""]
+
+        found = list(helper.consume(stream, chunksize))
+
+        assert helper._crc == ISCSI_CRC
+        assert found == expected
+        for call in stream.read.call_args_list:
+            assert call == mock.call(chunksize)

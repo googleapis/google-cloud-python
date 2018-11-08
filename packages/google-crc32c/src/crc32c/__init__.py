@@ -95,3 +95,21 @@ class Checksum(object):
         clone = self.__class__()
         clone._crc = self._crc
         return clone
+
+    def consume(self, stream, chunksize):
+        """Consume chunks from a stream, extending our CRC32 checksum.
+
+        Args:
+            stream (BinaryIO): the stream to consume.
+            chunksize (int): the size of the read to perform
+
+        Returns:
+            Generator[bytes, None, None]: Tterable of the chunks read from the
+            stream.
+        """
+        while True:
+            chunk = stream.read(chunksize)
+            if not chunk:
+                break
+            self._crc = extend(self._crc, chunk)
+            yield chunk
