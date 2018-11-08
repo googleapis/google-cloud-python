@@ -314,8 +314,11 @@ def async_context():
     loop = EventLoop()
     contexts.push(loop)
     yield
-    contexts.pop()
     loop.run()
+
+    # This will pop the same loop pushed above unless someone is severely
+    # abusing our private data structure.
+    contexts.pop()
 
 
 def add_idle(*args, **kwargs):
