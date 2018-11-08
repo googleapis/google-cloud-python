@@ -1854,6 +1854,54 @@ class TestDateTimeProperty:
         with pytest.raises(exceptions.BadValueError):
             prop._validate(None)
 
+    @staticmethod
+    def test__now():
+        dt_val = model.DateTimeProperty._now()
+        assert isinstance(dt_val, datetime.datetime)
+
+    @staticmethod
+    def test__prepare_for_put():
+        prop = model.DateTimeProperty(name="dt_val")
+        entity = unittest.mock.Mock(_values={}, spec=("_values",))
+
+        with unittest.mock.patch.object(prop, "_now") as _now:
+            prop._prepare_for_put(entity)
+        assert entity._values == {}
+        _now.assert_not_called()
+
+    @staticmethod
+    def test__prepare_for_put_auto_now():
+        prop = model.DateTimeProperty(name="dt_val", auto_now=True)
+        values1 = {}
+        values2 = {prop._name: unittest.mock.sentinel.dt}
+        for values in (values1, values2):
+            entity = unittest.mock.Mock(_values=values, spec=("_values",))
+
+            with unittest.mock.patch.object(prop, "_now") as _now:
+                prop._prepare_for_put(entity)
+            assert entity._values == {prop._name: _now.return_value}
+            _now.assert_called_once_with()
+
+    @staticmethod
+    def test__prepare_for_put_auto_now_add():
+        prop = model.DateTimeProperty(name="dt_val", auto_now_add=True)
+        values1 = {}
+        values2 = {prop._name: unittest.mock.sentinel.dt}
+        for values in (values1, values2):
+            entity = unittest.mock.Mock(
+                _values=values.copy(), spec=("_values",)
+            )
+
+            with unittest.mock.patch.object(prop, "_now") as _now:
+                prop._prepare_for_put(entity)
+            if values:
+                assert entity._values == values
+                _now.assert_not_called()
+            else:
+                assert entity._values != values
+                assert entity._values == {prop._name: _now.return_value}
+                _now.assert_called_once_with()
+
 
 class TestDateProperty:
     @staticmethod

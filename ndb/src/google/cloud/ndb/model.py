@@ -471,6 +471,11 @@ class Property(ModelAttribute):
       original value is kept. (Returning a different value not equal to
       :data:`None` will substitute the different value.)
 
+    Additionally, :meth:`_prepare_for_put` can be used to integrate with
+    datastore save hooks used by :class:`Model` instances.
+
+    .. automethod:: _prepare_for_put
+
     Args:
         name (str): The name of the property.
         indexed (bool): Indicates if the value should be indexed.
@@ -2269,6 +2274,7 @@ class DateTimeProperty(Property):
         set on the first try).
 
     .. automethod:: _validate
+    .. automethod:: _prepare_for_put
 
     Args:
         name (str): The name of the property.
@@ -2354,6 +2360,34 @@ class DateTimeProperty(Property):
             raise exceptions.BadValueError(
                 "Expected datetime, got {!r}".format(value)
             )
+
+    @staticmethod
+    def _now():
+        """datetime.datetime: Return current time.
+
+        This is in place so it can be patched in tests.
+        """
+        return datetime.datetime.utcnow()
+
+    def _prepare_for_put(self, entity):
+        """Sets the current timestamp when "auto" is set.
+
+        If one of the following scenarios occur
+
+        * ``auto_now=True``
+        * ``auto_now_add=True`` and the ``entity`` doesn't have a value set
+
+        then this hook will run before the ``entity`` is ``put()`` into
+        the datastore.
+
+        Args:
+            entity (Model): An entity with values.
+        """
+        if self._auto_now or (
+            self._auto_now_add and not self._has_value(entity)
+        ):
+            value = self._now()
+            self._store_value(entity, value)
 
 
 class DateProperty(DateTimeProperty):
