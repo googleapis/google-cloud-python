@@ -2219,12 +2219,12 @@ class JsonProperty(BlobProperty):
         """Convert a value from the "base" value type for this property.
 
         Args:
-            value (Union[bytes, str]): The value to be converted.
+            value (bytes): The value to be converted.
 
         Returns:
             Any: The ``value`` (ASCII bytes or string) loaded as JSON.
         """
-        return json.loads(value)
+        return json.loads(value.decode("ascii"))
 
 
 class UserProperty(Property):

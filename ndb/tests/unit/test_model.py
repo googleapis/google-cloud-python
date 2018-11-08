@@ -1763,11 +1763,15 @@ class TestJsonProperty:
     @staticmethod
     def test__from_base_type():
         prop = model.JsonProperty(name="json-val")
+        value = b'[14,true,{"a":null,"b":"\\u2603"}]'
+        expected = [14, True, {"a": None, "b": "\N{snowman}"}]
+        assert prop._from_base_type(value) == expected
 
-        values = (b"[14,true]", '{"a":null,"b":"\\u2603"}')
-        expecteds = ([14, True], {"a": None, "b": "\N{snowman}"})
-        for value, expected in zip(values, expecteds):
-            assert prop._from_base_type(value) == expected
+    @staticmethod
+    def test__from_base_type_invalid():
+        prop = model.JsonProperty(name="json-val")
+        with pytest.raises(AttributeError):
+            prop._from_base_type("{}")
 
 
 class TestUserProperty:
