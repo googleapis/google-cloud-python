@@ -221,6 +221,16 @@ def test_gapic_class_method_on_class():
     assert answer == 'projects/foo/topics/bar'
 
 
+def test_class_method_factory():
+    patch = mock.patch(
+        'google.oauth2.service_account.Credentials.from_service_account_file')
+
+    with patch:
+        client = publisher.Client.from_service_account_file('filename.json')
+
+    assert isinstance(client, publisher.Client)
+
+
 def test_gapic_class_method_on_instance():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
