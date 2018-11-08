@@ -2363,9 +2363,9 @@ class DateTimeProperty(Property):
 
     @staticmethod
     def _now():
-        """datetime.datetime: Return current time.
+        """datetime.datetime: Return current datetime.
 
-        This is in place so it can be patched in tests.
+        Subclasses will override this to return different forms of "now".
         """
         return datetime.datetime.utcnow()
 
@@ -2407,17 +2407,135 @@ class DateTimeProperty(Property):
 
 
 class DateProperty(DateTimeProperty):
+    """A property that contains :class:`~datetime.date` values.
+
+    .. automethod:: _to_base_type
+    .. automethod:: _from_base_type
+    .. automethod:: _validate
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (~datetime.date): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`~datetime.date`.
+        """
+        if not isinstance(value, datetime.date):
+            raise exceptions.BadValueError(
+                "Expected date, got {!r}".format(value)
+            )
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (~datetime.date): The value to be converted.
+
+        Returns:
+            ~datetime.datetime: The converted value: a datetime object with the
+            time set to ``00:00``.
+
+        Raises:
+            TypeError: If ``value`` is not a :class:`~datetime.date`.
+        """
+        if not isinstance(value, datetime.date):
+            raise TypeError(
+                "Cannot convert to datetime expected date value; "
+                "received {}".format(value)
+            )
+        return datetime.datetime(value.year, value.month, value.day)
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        Args:
+            value (~datetime.datetime): The value to be converted.
+
+        Returns:
+            ~datetime.date: The converted value: the date that ``value``
+            occurs on.
+        """
+        return value.date()
+
+    @staticmethod
+    def _now():
+        """datetime.datetime: Return current date."""
+        return datetime.datetime.utcnow().date()
 
 
 class TimeProperty(DateTimeProperty):
+    """A property that contains :class:`~datetime.time` values.
+
+    .. automethod:: _to_base_type
+    .. automethod:: _from_base_type
+    .. automethod:: _validate
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (~datetime.time): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`~datetime.time`.
+        """
+        if not isinstance(value, datetime.time):
+            raise exceptions.BadValueError(
+                "Expected time, got {!r}".format(value)
+            )
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (~datetime.time): The value to be converted.
+
+        Returns:
+            ~datetime.datetime: The converted value: a datetime object with the
+            date set to ``1970-01-01``.
+
+        Raises:
+            TypeError: If ``value`` is not a :class:`~datetime.time`.
+        """
+        if not isinstance(value, datetime.time):
+            raise TypeError(
+                "Cannot convert to datetime expected time value; "
+                "received {}".format(value)
+            )
+        return datetime.datetime(
+            1970,
+            1,
+            1,
+            value.hour,
+            value.minute,
+            value.second,
+            value.microsecond,
+        )
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        Args:
+            value (~datetime.datetime): The value to be converted.
+
+        Returns:
+            ~datetime.time: The converted value: the time that ``value``
+            occurs at.
+        """
+        return value.time()
+
+    @staticmethod
+    def _now():
+        """datetime.datetime: Return current time."""
+        return datetime.datetime.utcnow().time()
 
 
 class StructuredProperty(Property):
