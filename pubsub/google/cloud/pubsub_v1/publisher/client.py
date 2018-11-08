@@ -22,6 +22,7 @@ import grpc
 import six
 
 from google.api_core import grpc_helpers
+from google.oauth2 import service_account
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
@@ -31,8 +32,15 @@ from google.cloud.pubsub_v1.publisher._batch import thread
 
 __version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
+_BLACKLISTED_METHODS = (
+    'publish',
+    'from_service_account_file',
+    'from_service_account_json',
+)
 
-@_gapic.add_methods(publisher_client.PublisherClient, blacklist=('publish',))
+
+@_gapic.add_methods(
+    publisher_client.PublisherClient, blacklist=_BLACKLISTED_METHODS)
 class Client(object):
     """A publisher client for Google Cloud Pub/Sub.
 
@@ -85,6 +93,28 @@ class Client(object):
         # messages. One batch exists for each topic.
         self._batch_lock = self._batch_class.make_lock()
         self._batches = {}
+
+    @classmethod
+    def from_service_account_file(cls, filename, batch_settings=(), **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            batch_settings (~google.cloud.pubsub_v1.types.BatchSettings): The
+                settings for batch publishing.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            PublisherClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(batch_settings, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     @property
     def target(self):
