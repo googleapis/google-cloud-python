@@ -15,6 +15,7 @@
 """Model classes for datastore objects and properties for models."""
 
 
+import datetime
 import inspect
 import json
 import pickle
@@ -2251,6 +2252,10 @@ class BlobKeyProperty(Property):
 class DateTimeProperty(Property):
     """A property that contains :class:`~datetime.datetime` values.
 
+    This property expects "naive" datetime stamps, i.e. no timezone can
+    be set. Furthermore, the assumption is that naive datetime stamps
+    represent UTC.
+
     .. note::
 
         Unlike Django, ``auto_now_add`` can be overridden by setting the
@@ -2262,6 +2267,8 @@ class DateTimeProperty(Property):
         ``auto_now_add`` may interact weirdly with transaction retries (a retry
         of a property with ``auto_now_add`` set will reuse the value that was
         set on the first try).
+
+    .. automethod:: _validate
 
     Args:
         name (str): The name of the property.
@@ -2333,6 +2340,20 @@ class DateTimeProperty(Property):
             self._auto_now = auto_now
         if auto_now_add is not None:
             self._auto_now_add = auto_now_add
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (~datetime.datetime): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`~datetime.datetime`.
+        """
+        if not isinstance(value, datetime.datetime):
+            raise exceptions.BadValueError(
+                "Expected datetime, got {!r}".format(value)
+            )
 
 
 class DateProperty(DateTimeProperty):

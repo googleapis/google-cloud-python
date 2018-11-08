@@ -1842,6 +1842,18 @@ class TestDateTimeProperty:
         prop = model.DateTimeProperty(name="dt_val", repeated=True)
         assert prop._repeated
 
+    @staticmethod
+    def test__validate():
+        prop = model.DateTimeProperty(name="dt_val")
+        value = datetime.datetime.utcnow()
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.DateTimeProperty(name="dt_val")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
 
 class TestDateProperty:
     @staticmethod
