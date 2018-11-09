@@ -22,7 +22,7 @@ import setuptools
 
 name = 'google-api-core'
 description = 'Google API client core library'
-version = '1.5.1'
+version = '1.5.2'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -40,7 +40,8 @@ dependencies = [
 ]
 extras = {
     'grpc': 'grpcio >= 1.8.2',
-    'grpcgcp': 'grpcio-gcp >= 0.2.2'
+    'grpcgcp': 'grpcio-gcp >= 0.2.2',
+    'grpcio-gcp': 'grpcio-gcp >= 0.2.2'
 }
 
 
