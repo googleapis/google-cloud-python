@@ -170,6 +170,8 @@ class Context(object):
     def __init__(self):
         self._credentials = None
         self._project = None
+        # dialect defaults to None so that read_gbq can stop warning if set.
+        self._dialect = None
 
     @property
     def credentials(self):
@@ -215,6 +217,28 @@ class Context(object):
     @project.setter
     def project(self, value):
         self._project = value
+
+    @property
+    def dialect(self):
+        """str: Default dialect to use in :func:`pandas_gbq.read_gbq`.
+
+        Allowed values for the BigQuery SQL syntax dialect:
+
+        ``'legacy'``
+            Use BigQuery's legacy SQL dialect. For more information see
+            `BigQuery Legacy SQL Reference
+            <https://cloud.google.com/bigquery/docs/reference/legacy-sql>`__.
+        ``'standard'``
+            Use BigQuery's standard SQL, which is
+            compliant with the SQL 2011 standard. For more information
+            see `BigQuery Standard SQL Reference
+            <https://cloud.google.com/bigquery/docs/reference/standard-sql/>`__.
+        """
+        return self._dialect
+
+    @dialect.setter
+    def dialect(self, value):
+        self._dialect = value
 
 
 # Create an empty context, used to cache credentials.
@@ -728,12 +752,17 @@ def read_gbq(
     df: DataFrame
         DataFrame representing results of query.
     """
+    global context
+
+    if dialect is None:
+        dialect = context.dialect
+
     if dialect is None:
         dialect = "legacy"
         warnings.warn(
             'The default value for dialect is changing to "standard" in a '
-            'future version. Pass in dialect="legacy" to disable this '
-            "warning.",
+            'future version. Pass in dialect="legacy" or set '
+            'pandas_gbq.context.dialect="legacy" to disable this warning.',
             FutureWarning,
             stacklevel=2,
         )

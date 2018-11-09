@@ -36,3 +36,21 @@ def test_read_gbq_should_save_credentials(mock_get_credentials):
 
     pandas_gbq.read_gbq("SELECT 1", dialect="standard")
     mock_get_credentials.assert_not_called()
+
+
+def test_read_gbq_should_use_dialect(mock_bigquery_client):
+    import pandas_gbq
+
+    assert pandas_gbq.context.dialect is None
+    pandas_gbq.context.dialect = "legacy"
+    pandas_gbq.read_gbq("SELECT 1")
+
+    _, kwargs = mock_bigquery_client.query.call_args
+    assert kwargs["job_config"].use_legacy_sql == True
+
+    pandas_gbq.context.dialect = "standard"
+    pandas_gbq.read_gbq("SELECT 1")
+
+    _, kwargs = mock_bigquery_client.query.call_args
+    assert kwargs["job_config"].use_legacy_sql == False
+    pandas_gbq.context.dialect = None  # Reset the global state.
