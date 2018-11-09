@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## p
+
+11-09-2018 14:21 PST
+
+
+### Implementation Changes
+- Retry transient errors in 'PollingFuture.result'. ([#6305](https://github.com/googleapis/google-cloud-python/pull/6305))
+
+### Dependencies
+- remove hyphen from named extra in api_core ([#6468](https://github.com/googleapis/google-cloud-python/pull/6468))
+- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+- Avoid broken 'google-common-apis 1.5.4' release. ([#6355](https://github.com/googleapis/google-cloud-python/pull/6355))
+
 ## 1.5.1
 
 10-29-2018 13:29 PDT
