@@ -56,9 +56,8 @@ class ComparisonType(enum.IntEnum):
 
 class ServiceTier(enum.IntEnum):
     """
-    The tier of service for a Stackdriver account. Please see the `service
-    tiers
-    documentation <https://cloud.google.com/monitoring/accounts/tiers>`__
+    The tier of service for a Workspace. Please see the `service tiers
+    documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__
     for more details.
 
     Attributes:
@@ -68,12 +67,12 @@ class ServiceTier(enum.IntEnum):
       features, a moderate allotment of logs, and access to built-in metrics.
       A number of features are not available in this tier. For more details,
       see `the service tiers
-      documentation <https://cloud.google.com/monitoring/accounts/tiers>`__.
+      documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
       SERVICE_TIER_PREMIUM (int): The Stackdriver Premium tier, a higher, more expensive tier of service
       that provides access to all Stackdriver features, lets you use
       Stackdriver with AWS accounts, and has a larger allotments for logs and
       metrics. For more details, see `the service tiers
-      documentation <https://cloud.google.com/monitoring/accounts/tiers>`__.
+      documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
     """
     SERVICE_TIER_UNSPECIFIED = 0
     SERVICE_TIER_BASIC = 1
