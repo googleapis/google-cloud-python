@@ -16,11 +16,7 @@ def project_id():
 @pytest.fixture(scope="session")
 def private_key_path():
     path = None
-    if "TRAVIS_BUILD_DIR" in os.environ:
-        path = os.path.join(
-            os.environ["TRAVIS_BUILD_DIR"], "ci", "travis_gbq.json"
-        )
-    elif "GBQ_GOOGLE_APPLICATION_CREDENTIALS" in os.environ:
+    if "GBQ_GOOGLE_APPLICATION_CREDENTIALS" in os.environ:
         path = os.environ["GBQ_GOOGLE_APPLICATION_CREDENTIALS"]
     elif "GOOGLE_APPLICATION_CREDENTIALS" in os.environ:
         path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]

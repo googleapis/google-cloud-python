@@ -297,14 +297,16 @@ class TestReadGBQIntegration(object):
         )
 
     def test_should_properly_handle_null_floats(self, project_id):
-        query = "SELECT FLOAT(NULL) AS null_float"
+        query = """SELECT null_float
+        FROM UNNEST(ARRAY<FLOAT64>[NULL, 1.0]) AS null_float
+        """
         df = gbq.read_gbq(
             query,
             project_id=project_id,
             credentials=self.credentials,
-            dialect="legacy",
+            dialect="standard",
         )
-        tm.assert_frame_equal(df, DataFrame({"null_float": [np.nan]}))
+        tm.assert_frame_equal(df, DataFrame({"null_float": [np.nan, 1.0]}))
 
     def test_should_properly_handle_timestamp_unix_epoch(self, project_id):
         query = 'SELECT TIMESTAMP("1970-01-01 00:00:00") AS unix_epoch'

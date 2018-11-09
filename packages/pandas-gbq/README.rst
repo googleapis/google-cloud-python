@@ -37,8 +37,8 @@ Usage
 
 See the `pandas-gbq documentation <https://pandas-gbq.readthedocs.io/>`_ for more details.
 
-.. |Build Status| image:: https://travis-ci.org/pydata/pandas-gbq.svg?branch=master
-   :target: https://travis-ci.org/pydata/pandas-gbq
+.. |Build Status| image:: https://circleci.com/gh/pydata/pandas-gbq/tree/master.svg?style=svg
+   :target: https://circleci.com/gh/pydata/pandas-gbq/tree/master
 .. |Version Status| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
    :target: https://pypi.python.org/pypi/pandas-gbq/
 .. |Coverage Status| image:: https://img.shields.io/codecov/c/github/pydata/pandas-gbq.svg

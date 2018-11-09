@@ -1,2 +1,0 @@
-TRAVIS_IV_ENV=encrypted_53f0a3897064_iv
-TRAVIS_KEY_ENV=encrypted_53f0a3897064_key
