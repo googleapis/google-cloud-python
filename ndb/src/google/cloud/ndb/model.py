@@ -2538,6 +2538,32 @@ class TimeProperty(DateTimeProperty):
         return datetime.datetime.utcnow().time()
 
 
+def _structured_get_for_dict(property_, entity):
+    """Helper for ``_get_for_dict()``.
+
+    This is similar to a mix-in, for :class:`StructuredProperty` and
+    :class:`LocalStructuredProperty`.
+
+    This converts sub-entities to dictionaries by calling ``to_dict()`` on them
+    which allows nesting to go arbitrarily deep.
+
+    Args:
+        property_ (Property): Usually ``self`` in the caller.
+        entity (Model): An entity to get a value from.
+
+    Returns:
+        Optional[Union[dict, List[dict]]]: The nested dictionary (or list of
+        dictionaries in the repeated case) stored for ``property_``.
+    """
+    value = property_._get_value(entity)
+    if property_._repeated:
+        value = [sub_value._to_dict() for sub_value in value]
+    elif value is not None:
+        value = value._to_dict()
+
+    return value
+
+
 class StructuredProperty(Property):
     """A property that contains a model entity as value.
 
@@ -2603,6 +2629,21 @@ class StructuredProperty(Property):
             )
         self._modelclass = modelclass
 
+    def _get_for_dict(self, entity):
+        """Retrieve the value like ``_get_value()``.
+
+        This is intended to be processed for ``_to_dict()``.
+
+        Args:
+            entity (Model): An entity to get a value from.
+
+        Returns:
+            Optional[Union[dict, List[dict]]]: The nested dictionary (or list
+            of dictionaries in the repeated case) stored for the current
+            property.
+        """
+        return _structured_get_for_dict(self, entity)
+
 
 class LocalStructuredProperty(BlobProperty):
     __slots__ = ()
@@ -2634,7 +2675,7 @@ class MetaModel(type):
 
 class Model:
     __slots__ = ()
-    _has_repeated = True
+    _has_repeated = False
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError

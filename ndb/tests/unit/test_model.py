@@ -2007,6 +2007,56 @@ class TestStructuredProperty:
         with pytest.raises(TypeError):
             model.StructuredProperty(Foo, repeated=True)
 
+    def test__get_for_dict_not_set(self):
+        prop = model.StructuredProperty(self.Book, "book")
+        entity = unittest.mock.Mock(
+            _projection=None, _values={}, spec=("_projection", "_values")
+        )
+        nested_values = prop._get_for_dict(entity)
+        assert nested_values is None
+
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    def test__get_for_dict_single(self):
+        prop = model.StructuredProperty(self.Book, "book")
+        book_value = unittest.mock.Mock(spec=("_to_dict",))
+        book_info = {"num_pages": 170, "topic": "business"}
+        book_value._to_dict.return_value = book_info
+
+        values = {prop._name: book_value}
+        entity = unittest.mock.Mock(
+            _projection=None, _values=values, spec=("_projection", "_values")
+        )
+        nested_values = prop._get_for_dict(entity)
+        assert nested_values == book_info
+
+        book_value._to_dict.assert_called_once_with()
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
+    def test__get_for_dict_repeated(self):
+        prop = model.StructuredProperty(self.Book, "book", repeated=True)
+        book_value1 = unittest.mock.Mock(spec=("_to_dict",))
+        book_info1 = {"num_pages": 170, "topic": "business"}
+        book_value1._to_dict.return_value = book_info1
+
+        book_value2 = unittest.mock.Mock(spec=("_to_dict",))
+        book_info2 = {"num_pages": 88, "topic": "race cars"}
+        book_value2._to_dict.return_value = book_info2
+
+        values = {prop._name: [book_value1, book_value2]}
+        entity = unittest.mock.Mock(
+            _projection=None, _values=values, spec=("_projection", "_values")
+        )
+        nested_values = prop._get_for_dict(entity)
+        assert nested_values == [book_info1, book_info2]
+
+        book_value1._to_dict.assert_called_once_with()
+        book_value2._to_dict.assert_called_once_with()
+        # Cache is untouched.
+        assert model.Property._FIND_METHODS_CACHE == {}
+
 
 class TestLocalStructuredProperty:
     @staticmethod
