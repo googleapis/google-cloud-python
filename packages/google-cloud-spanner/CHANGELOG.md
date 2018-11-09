@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.6.1
+
+11-09-2018 14:49 PST
+
+### Implementation Changes
+- Fix client_info bug, update docstrings. ([#6420](https://github.com/googleapis/google-cloud-python/pull/6420))
+
+### Documentation
+- Update README service links in quickstart guides. ([#6322](https://github.com/googleapis/google-cloud-python/pull/6322))
+- Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Fix typo in spanner usage documentation ([#6209](https://github.com/googleapis/google-cloud-python/pull/6209))
+
+### Internal / Testing Changes
+- Rationalize 'all_types' round-trip systest ([#6379](https://github.com/googleapis/google-cloud-python/pull/6379))
+- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+- Add systest for returning empty array struct ([#4449](https://github.com/googleapis/google-cloud-python/pull/4449))
+- Add systests not needing tables ([#6308](https://github.com/googleapis/google-cloud-python/pull/6308))
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+
 ## 1.6.0
 
 10-08-2018 08:25 PDT
