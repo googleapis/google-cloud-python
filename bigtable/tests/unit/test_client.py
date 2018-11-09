@@ -214,16 +214,21 @@ class TestClient(unittest.TestCase):
 
     def test_constructor_with_emulator_host(self):
         import grpc
+        from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
         credentials = _make_credentials()
         emulator_host = "localhost:8081"
-        with mock.patch('os.getenv') as mocked:
-            mocked.return_value = emulator_host
-            client = self._make_one(project=self.PROJECT,
-                                    credentials=credentials)
+        with mock.patch('os.getenv') as getenv:
+            getenv.return_value = emulator_host
+            with mock.patch('grpc.insecure_channel') as factory:
+                getenv.return_value = emulator_host
+                client = self._make_one(
+                    project=self.PROJECT, credentials=credentials)
 
         self.assertEqual(client._emulator_host, emulator_host)
-        self.assertIsInstance(client._emulator_channel,
-                              grpc._channel.Channel)
+        self.assertIs(client._emulator_channel,factory.return_value)
+        factory.assert_called_once_with(emulator_host)
+        getenv.assert_called_once_with(BIGTABLE_EMULATOR)
 
     def test__get_scopes_default(self):
         from google.cloud.bigtable.client import DATA_SCOPE
