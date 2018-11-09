@@ -40,7 +40,8 @@ dependencies = [
 ]
 extras = {
     'grpc': 'grpcio >= 1.8.2',
-    'grpcgcp': 'grpcio-gcp >= 0.2.2'
+    'grpcgcp': 'grpcio-gcp >= 0.2.2',
+    'grpcio-gcp': 'grpcio-gcp >= 0.2.2'
 }
 
 
