@@ -20,6 +20,53 @@ import mock
 from ._testing import _make_credentials
 
 
+class Test__create_gapic_client(unittest.TestCase):
+
+    def _invoke_client_factory(self, client_class):
+        from google.cloud.bigtable.client import _create_gapic_client
+
+        return _create_gapic_client(client_class)
+
+    def test_without_emulator(self):
+        from google.cloud.bigtable.client import _CLIENT_INFO
+
+        client_class = mock.Mock()
+        credentials = _make_credentials()
+        client = _Client(credentials)
+
+        result = self._invoke_client_factory(client_class)(client)
+
+        self.assertIs(result, client_class.return_value)
+        client_class.assert_called_once_with(
+            credentials=client._credentials,
+            client_info=_CLIENT_INFO)
+
+    def test_with_emulator(self):
+        from google.cloud.bigtable.client import _CLIENT_INFO
+
+        client_class = mock.Mock()
+        emulator_host = emulator_channel = object()
+        credentials = _make_credentials()
+        client = _Client(credentials, emulator_host=emulator_host,
+                         emulator_channel=emulator_channel)
+
+        result = self._invoke_client_factory(client_class)(client)
+
+        self.assertIs(result, client_class.return_value)
+        client_class.assert_called_once_with(
+            channel=client._emulator_channel,
+            client_info=_CLIENT_INFO)
+
+
+class _Client(object):
+
+    def __init__(self, credentials, emulator_host=None,
+                 emulator_channel=None):
+        self._credentials = credentials
+        self._emulator_host = emulator_host
+        self._emulator_channel = emulator_channel
+
+
 class TestClient(unittest.TestCase):
 
     PROJECT = 'PROJECT'
@@ -51,6 +98,8 @@ class TestClient(unittest.TestCase):
         self.assertFalse(client._read_only)
         self.assertFalse(client._admin)
         self.assertIsNone(client._channel)
+        self.assertIsNone(client._emulator_host)
+        self.assertIsNone(client._emulator_channel)
         self.assertEqual(client.SCOPE, (DATA_SCOPE,))
 
     def test_constructor_explicit(self):
@@ -85,6 +134,23 @@ class TestClient(unittest.TestCase):
             self._make_one(
                 project=self.PROJECT, credentials=credentials,
                 admin=True, read_only=True)
+
+    def test_constructor_with_emulator_host(self):
+        from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
+        credentials = _make_credentials()
+        emulator_host = "localhost:8081"
+        with mock.patch('os.getenv') as getenv:
+            getenv.return_value = emulator_host
+            with mock.patch('grpc.insecure_channel') as factory:
+                getenv.return_value = emulator_host
+                client = self._make_one(
+                    project=self.PROJECT, credentials=credentials)
+
+        self.assertEqual(client._emulator_host, emulator_host)
+        self.assertIs(client._emulator_channel, factory.return_value)
+        factory.assert_called_once_with(emulator_host)
+        getenv.assert_called_once_with(BIGTABLE_EMULATOR)
 
     def test__get_scopes_default(self):
         from google.cloud.bigtable.client import DATA_SCOPE
