@@ -29,15 +29,22 @@ CREATE TABLE contact_phones (
     PRIMARY KEY (contact_id, phone_type),
     INTERLEAVE IN PARENT contacts ON DELETE CASCADE;
 CREATE TABLE all_types (
-    list_goes_on ARRAY<INT64>,
-    are_you_sure BOOL,
-    raw_data BYTES(16),
-    hwhen DATE,
-    approx_value FLOAT64,
-    eye_d INT64,
-    description STRING(16),
-    exactly_hwhen TIMESTAMP)
-    PRIMARY KEY (eye_d);
+    pkey INT64 NOT NULL,
+    int_value INT64,
+    int_array ARRAY<INT64>,
+    bool_value BOOL,
+    bool_array ARRAY<BOOL>,
+    bytes_value BYTES(16),
+    bytes_array ARRAY<BYTES(16)>,
+    date_value DATE,
+    date_array ARRAY<DATE>,
+    float_value FLOAT64,
+    float_array ARRAY<FLOAT64>,
+    string_value STRING(16),
+    string_array ARRAY<STRING(16)>,
+    timestamp_value TIMESTAMP,
+    timestamp_array ARRAY<TIMESTAMP>)
+    PRIMARY KEY (pkey);
 CREATE TABLE counters (
     name STRING(1024),
     value INT64 )
