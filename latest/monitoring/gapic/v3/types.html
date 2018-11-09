@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Stackdriver Monitoring API Client &#8212; google-cloud 5adc1c7 documentation</title>
+    <title>Types for Stackdriver Monitoring API Client &#8212; google-cloud 90f921f documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -1196,18 +1196,30 @@ that are clusters.</p>
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.types.InternalChecker">
 <em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">InternalChecker</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker" title="Permalink to this definition">#</a></dt>
-<dd><p>Nimbus InternalCheckers.</p>
+<dd><p>An internal checker allows uptime checks to run on private/internal GCP
+resources.</p>
 <dl class="attribute">
-<dt id="google.cloud.monitoring_v3.types.InternalChecker.project_id">
-<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The GCP project ID. Not necessarily the same as the
-project_id for the config.</p>
+<dt id="google.cloud.monitoring_v3.types.InternalChecker.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.name" title="Permalink to this definition">#</a></dt>
+<dd><p>A unique resource name for this InternalChecker. The format
+is:  <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/internalCheckers/[INTERNAL_CHECKE</span>
+<span class="pre">R_ID]</span></code>.  PROJECT_ID is the stackdriver workspace project for
+the uptime check config associated with the internal checker.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.InternalChecker.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The checker’s human-readable name. The display name should be
+unique within a Stackdriver Workspace in order to make it
+easier to identify; however, uniqueness is not enforced.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.InternalChecker.network">
 <code class="descname">network</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.network" title="Permalink to this definition">#</a></dt>
-<dd><p>The internal network to perform this uptime check on.</p>
+<dd><p>The <a class="reference external" href="https://cloud.google.com/vpc/docs/vpc">GCP VPC network</a> where the internal
+resource lives (ex: “default”).</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1219,15 +1231,10 @@ is specified.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.monitoring_v3.types.InternalChecker.checker_id">
-<code class="descname">checker_id</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.checker_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The checker ID.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.monitoring_v3.types.InternalChecker.display_name">
-<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.display_name" title="Permalink to this definition">#</a></dt>
-<dd><p>The checker’s human-readable name.</p>
+<dt id="google.cloud.monitoring_v3.types.InternalChecker.peer_project_id">
+<code class="descname">peer_project_id</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.InternalChecker.peer_project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The GCP project_id where the internal checker lives. Not
+necessary the same as the workspace project.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2598,8 +2605,8 @@ by the server and included in the response.</p>
 <dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.display_name">
 <code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.display_name" title="Permalink to this definition">#</a></dt>
 <dd><p>A human-friendly name for the uptime check configuration. The
-display name should be unique within a Stackdriver Account in
-order to make it easier to identify; however, uniqueness is
+display name should be unique within a Stackdriver Workspace
+in order to make it easier to identify; however, uniqueness is
 not enforced. Required.</p>
 </dd></dl>
 
@@ -2673,18 +2680,22 @@ match is required.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.selected_regions">
 <code class="descname">selected_regions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.selected_regions" title="Permalink to this definition">#</a></dt>
-<dd><p>The list of regions from which the check will be run. If this
-field is specified, enough regions to include a minimum of 3
-locations must be provided, or an error message is returned.
-Not specifying this field will result in uptime checks running
-from all regions.</p>
+<dd><p>The list of regions from which the check will be run. Some
+regions contain one location, and others contain more than
+one. If this field is specified, enough regions to include a
+minimum of 3 locations must be provided, or an error message
+is returned. Not specifying this field will result in uptime
+checks running from all regions.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.is_internal">
 <code class="descname">is_internal</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.is_internal" title="Permalink to this definition">#</a></dt>
-<dd><p>Denotes whether this is a check that egresses from
-InternalCheckers.</p>
+<dd><p>If this is true, then checks are made only from the
+‘internal_checkers’. If it is false, then checks are made
+only from the ‘selected_regions’. It is an error to provide
+‘selected_regions’ when is_internal is true, or to provide
+‘internal_checkers’ when is_internal is false.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2692,20 +2703,19 @@ InternalCheckers.</p>
 <code class="descname">internal_checkers</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.internal_checkers" title="Permalink to this definition">#</a></dt>
 <dd><p>The internal checkers that this check will egress from. If
 <code class="docutils literal notranslate"><span class="pre">is_internal</span></code> is true and this list is empty, the check will
-egress from all InternalCheckers configured for the project
-that owns this CheckConfig.</p>
+egress from all the InternalCheckers configured for the
+project that owns this CheckConfig.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher">
 <em class="property">class </em><code class="descname">ContentMatcher</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher" title="Permalink to this definition">#</a></dt>
-<dd><p>Used to perform string matching. Currently, this matches on the exact
-content. In the future, it can be expanded to allow for regular
-expressions and more complex matching.</p>
+<dd><p>Used to perform string matching. It allows substring and regular
+expressions, together with their negations.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher.content">
 <code class="descname">content</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher.content" title="Permalink to this definition">#</a></dt>
-<dd><p>String content to match (max 1024 bytes)</p>
+<dd><p>String or regex content to match (max 1024 bytes)</p>
 </dd></dl>
 
 </dd></dl>
