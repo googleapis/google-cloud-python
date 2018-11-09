@@ -2539,10 +2539,69 @@ class TimeProperty(DateTimeProperty):
 
 
 class StructuredProperty(Property):
-    __slots__ = ()
+    """A property that contains a model entity as value.
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    If this property is indexed, the values of any sub-entities are also
+    indexed and can be queried.
+
+    Args:
+        modelclass (type): A subclass of :class:`Model`. This defines the
+            type of entity that will be stored for this property.
+        name (str): The name of the property.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (Any): The default value for this property.
+        choices (Iterable[Any]): A container of allowed values for this
+            property.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+
+    Raises:
+        TypeError: If ``repeated=True`` but the ``modelclass`` has
+            repeated properties or subproperties.
+    """
+
+    _modelclass = None
+
+    def __init__(
+        self,
+        modelclass,
+        name=None,
+        *,
+        compressed=None,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        super(StructuredProperty, self).__init__(
+            name=name,
+            indexed=indexed,
+            repeated=repeated,
+            required=required,
+            default=default,
+            choices=choices,
+            validator=validator,
+            verbose_name=verbose_name,
+            write_empty_list=write_empty_list,
+        )
+        if self._repeated and modelclass._has_repeated:
+            raise TypeError(
+                "This StructuredProperty cannot use repeated=True because its "
+                "model class ({}) contains repeated properties (directly "
+                "or indirectly).".format(modelclass.__name__)
+            )
+        self._modelclass = modelclass
 
 
 class LocalStructuredProperty(BlobProperty):
@@ -2575,6 +2634,7 @@ class MetaModel(type):
 
 class Model:
     __slots__ = ()
+    _has_repeated = True
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError

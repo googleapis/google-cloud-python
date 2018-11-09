@@ -1988,10 +1988,24 @@ class TestTimeProperty:
 
 
 class TestStructuredProperty:
+    class Book(model.Model):
+        num_pages = model.IntegerProperty()
+        topic = model.StringProperty()
+
+    def test_constructor_defaults(self):
+        prop = model.StructuredProperty(self.Book)
+        assert prop._modelclass is self.Book
+        # Check that exactly one of the constructor defaults was used.
+        assert prop.__dict__ == {"_modelclass": self.Book}
+
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.StructuredProperty()
+    def test_constructor_repeated_not_allowed():
+        class Foo(model.Model):
+            _has_repeated = True
+            bar = model.StringProperty(repeated=True)
+
+        with pytest.raises(TypeError):
+            model.StructuredProperty(Foo, repeated=True)
 
 
 class TestLocalStructuredProperty:
