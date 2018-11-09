@@ -25,5 +25,6 @@ Submodules
    google.auth.environment_vars
    google.auth.exceptions
    google.auth.iam
+   google.auth.impersonated_credentials
    google.auth.jwt
 

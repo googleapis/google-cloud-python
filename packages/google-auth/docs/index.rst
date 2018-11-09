@@ -16,6 +16,7 @@ also provides integration with several HTTP libraries.
 - Support for signing and verifying :mod:`JWTs <google.auth.jwt>`.
 - Support for verifying and decoding :mod:`ID Tokens <google.oauth2.id_token>`.
 - Support for Google :mod:`Service Account credentials <google.oauth2.service_account>`.
+- Support for Google :mod:`Impersonated Credentials <google.auth.impersonated_credentials>`.
 - Support for :mod:`Google Compute Engine credentials <google.auth.compute_engine>`.
 - Support for :mod:`Google App Engine standard credentials <google.auth.app_engine>`.
 - Support for various transports, including

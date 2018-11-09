@@ -205,6 +205,35 @@ You can also use :class:`google_auth_oauthlib.flow.Flow` to perform the OAuth
 .. _requests-oauthlib:
     https://requests-oauthlib.readthedocs.io/en/latest/
 
+Impersonated credentials
+++++++++++++++++++++++++
+
+Impersonated Credentials allows one set of credentials issued to a user or service account
+to impersonate another.  The target service account must grant the source credential
+the "Service Account Token Creator" IAM role::
+
+    from google.auth import impersonated_credentials
+
+    target_scopes = ['https://www.googleapis.com/auth/devstorage.read_only']
+    source_credentials = service_account.Credentials.from_service_account_file(
+        '/path/to/svc_account.json',
+        scopes=target_scopes)
+
+    target_credentials = impersonated_credentials.Credentials(
+        source_credentials=source_credentials,
+        target_principal='impersonated-account@_project_.iam.gserviceaccount.com',
+        target_scopes=target_scopes,
+        lifetime=500)
+    client = storage.Client(credentials=target_credentials)
+    buckets = client.list_buckets(project='your_project')
+    for bucket in buckets:
+        print bucket.name
+
+
+In the example above `source_credentials` does not have direct access to list buckets
+in the target project.  Using `ImpersonatedCredentials` will allow the source_credentials
+to assume the identity of a target_principal that does have access
+
 Making authenticated requests
 -----------------------------
 
