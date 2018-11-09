@@ -917,6 +917,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         return committed
 
     def test_read_with_single_keys_index(self):
+        # [START spanner_test_single_key_index_read]
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
         self._set_up_table(row_count)
@@ -933,6 +934,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             )
             rows = list(results_iter)
             self.assertEqual(rows, [expected[row]])
+        # [END spanner_test_single_key_index_read]
 
     def test_empty_read_with_single_keys_index(self):
         row_count = 10
@@ -1087,6 +1089,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_rows_data(rows, expected)
 
     def test_read_w_single_key(self):
+        # [START spanner_test_single_key_read]
         ROW_COUNT = 40
         committed = self._set_up_table(ROW_COUNT)
 
@@ -1097,14 +1100,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         all_data_rows = list(self._row_data(ROW_COUNT))
         expected = [all_data_rows[0]]
         self._check_row_data(rows, expected)
+        # [END spanner_test_single_key_read]
 
     def test_empty_read(self):
+        # [START spanner_test_empty_read]
         ROW_COUNT = 40
         self._set_up_table(ROW_COUNT)
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.read(
                 self.TABLE, self.COLUMNS, KeySet(keys=[(40,)])))
         self._check_row_data(rows, [])
+        # [END spanner_test_empty_read]
 
     def test_read_w_multiple_keys(self):
         ROW_COUNT = 40
