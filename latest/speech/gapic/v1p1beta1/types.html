@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Speech API Client &#8212; google-cloud 34f9788109 documentation</title>
+    <title>Types for Cloud Speech API Client &#8212; google-cloud 5adc1c7 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -276,7 +276,7 @@ corresponding to sequential portions of audio.</p>
 <code class="docutils literal notranslate"><span class="pre">RecognitionConfig</span></code>. Either <code class="docutils literal notranslate"><span class="pre">content</span></code> or <code class="docutils literal notranslate"><span class="pre">uri</span></code> must be supplied.
 Supplying both or neither returns
 [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
-See <a class="reference external" href="https://cloud.google.com/speech/limits#content">audio limits</a>.</p>
+See <a class="reference external" href="/speech-to-text/quotas#content">content limits</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionAudio.audio_source">
 <code class="descname">audio_source</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionAudio.audio_source" title="Permalink to this definition">#</a></dt>
@@ -297,12 +297,13 @@ representations use base64.</p>
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionAudio.uri">
 <code class="descname">uri</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionAudio.uri" title="Permalink to this definition">#</a></dt>
 <dd><p>URI that points to a file that contains audio data bytes as
-specified in <code class="docutils literal notranslate"><span class="pre">RecognitionConfig</span></code>. Currently, only Google
-Cloud Storage URIs are supported, which must be specified in
-the following format: <code class="docutils literal notranslate"><span class="pre">gs://bucket_name/object_name</span></code> (other
-URI formats return [google.rpc.Code.INVALID_ARGUMENT][google.
-rpc.Code.INVALID_ARGUMENT]). For more information, see
-<a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Request URIs</a>.</p>
+specified in <code class="docutils literal notranslate"><span class="pre">RecognitionConfig</span></code>. The file must not be
+compressed (for example, gzip). Currently, only Google Cloud
+Storage URIs are supported, which must be specified in the
+following format: <code class="docutils literal notranslate"><span class="pre">gs://bucket_name/object_name</span></code> (other URI
+formats return [google.rpc.Code.INVALID_ARGUMENT][google.rpc.
+Code.INVALID_ARGUMENT]). For more information, see <a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Request
+URIs</a>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -344,30 +345,31 @@ ONLY set this for MULTI-CHANNEL recognition. Valid values for
 LINEAR16 and FLAC are <code class="docutils literal notranslate"><span class="pre">1</span></code>-<code class="docutils literal notranslate"><span class="pre">8</span></code>. Valid values for OGG_OPUS
 are ‘1’-‘254’. Valid value for MULAW, AMR, AMR_WB and
 SPEEX_WITH_HEADER_BYTE is only <code class="docutils literal notranslate"><span class="pre">1</span></code>. If <code class="docutils literal notranslate"><span class="pre">0</span></code> or omitted,
-defaults to one channel (mono). NOTE: We only recognize the
+defaults to one channel (mono). Note: We only recognize the
 first channel by default. To perform independent recognition
 on each channel set
-enable_separate_recognition_per_channel to ‘true’.</p>
+<code class="docutils literal notranslate"><span class="pre">enable_separate_recognition_per_channel</span></code> to ‘true’.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_separate_recognition_per_channel">
 <code class="descname">enable_separate_recognition_per_channel</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_separate_recognition_per_channel" title="Permalink to this definition">#</a></dt>
 <dd><p>This needs to be set to ‘true’ explicitly and
-audio_channel_count &gt; 1 to get each channel recognized
-separately. The recognition result will contain a channel_tag
-field to state which channel that result belongs to. If this
-is not ‘true’, we will only recognize the first channel. NOTE:
-The request is also billed cumulatively for all channels
-recognized: (audio_channel_count times the audio length)</p>
+<code class="docutils literal notranslate"><span class="pre">audio_channel_count</span></code> &gt; 1 to get each channel recognized
+separately. The recognition result will contain a
+<code class="docutils literal notranslate"><span class="pre">channel_tag</span></code> field to state which channel that result
+belongs to. If this is not true, we will only recognize the
+first channel. The request is billed cumulatively for all
+channels recognized: <code class="docutils literal notranslate"><span class="pre">audio_channel_count</span></code> multiplied by the
+length of the audio.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.language_code">
 <code class="descname">language_code</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.language_code" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Required</em> The language of the supplied audio as a <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language
-tag. Example: “en-US”. See <a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Support</a> for a list
-of the currently supported language codes.</p>
+tag. Example: “en-US”. See <a class="reference external" href="/speech-to-text/docs/languages">Language Support</a> for a list of the currently supported
+language codes.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -375,15 +377,15 @@ of the currently supported language codes.</p>
 <code class="descname">alternative_language_codes</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.alternative_language_codes" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> A list of up to 3 additional <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language
 tags, listing possible alternative languages of the supplied
-audio. See <a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Support</a> for a list
-of the currently supported language codes. If alternative
-languages are listed, recognition result will contain
-recognition in the most likely language detected including the
-main language_code. The recognition result will include the
-language tag of the language detected in the audio. NOTE: This
-feature is only supported for Voice Command and Voice Search
-use cases and performance may vary for other use cases (e.g.,
-phone call transcription).</p>
+audio. See <a class="reference external" href="/speech-to-text/docs/languages">Language Support</a> for a list of the currently supported
+language codes. If alternative languages are listed,
+recognition result will contain recognition in the most likely
+language detected including the main language_code. The
+recognition result will include the language tag of the
+language detected in the audio. Note: This feature is only
+supported for Voice Command and Voice Search use cases and
+performance may vary for other use cases (e.g., phone call
+transcription).</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -411,8 +413,10 @@ be filtered out.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.speech_contexts">
 <code class="descname">speech_contexts</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.speech_contexts" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Optional</em> A means to provide context to assist the speech
-recognition.</p>
+<dd><p><em>Optional</em> array of
+[SpeechContext][google.cloud.speech.v1p1beta1.SpeechContext].
+A means to provide context to assist the speech recognition.
+For more information, see <a class="reference external" href="/speech-to-text/docs/basics#phrase-hints">Phrase Hints</a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -440,10 +444,10 @@ word-level confidence information is returned. The default is
 hypotheses. This feature is only available in select
 languages. Setting this for requests in other languages has no
 effect at all. The default ‘false’ value does not add
-punctuation to result hypotheses. NOTE: “This is currently
+punctuation to result hypotheses. Note: This is currently
 offered as an experimental service, complimentary to all
 users. In the future this may be exclusively available as a
-premium feature.”</p>
+premium feature.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -454,9 +458,11 @@ recognized word in the top alternative of the recognition
 result using a speaker_tag provided in the WordInfo. Note:
 When this is true, we send all the words from the beginning of
 the audio for the top alternative in every consecutive
-responses. This is done in order to improve our speaker tags
-as our models learn to identify the speakers in the
-conversation over time.</p>
+STREAMING responses. This is done in order to improve our
+speaker tags as our models learn to identify the speakers in
+the conversation over time. For non-streaming requests, the
+diarization results will be provided only in the top
+alternative of the FINAL SpeechRecognitionResult.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -506,15 +512,17 @@ html     &lt;/tr&gt;  .. raw:: html     &lt;/table&gt;</p>
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.use_enhanced">
 <code class="descname">use_enhanced</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.use_enhanced" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> Set to true to use an enhanced model for speech
-recognition. You must also set the <code class="docutils literal notranslate"><span class="pre">model</span></code> field to a valid,
-enhanced model. If <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is set to true and the
-<code class="docutils literal notranslate"><span class="pre">model</span></code> field is not set, then <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is ignored.
-If <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is true and an enhanced version of the
+recognition. If <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is set to true and the
+<code class="docutils literal notranslate"><span class="pre">model</span></code> field is not set, then an appropriate enhanced model
+is chosen if: 1. project is eligible for requesting enhanced
+models 2. an enhanced model exists for the audio  If
+<code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is true and an enhanced version of the
 specified model does not exist, then the speech is recognized
 using the standard version of the specified model.  Enhanced
-speech models require that you opt-in to the audio logging
-using instructions in the <a class="reference external" href="/speech/data-sharing">alpha documentation</a>. If you set <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> to true and you have
-not enabled audio logging, then you will receive an error.</p>
+speech models require that you opt-in to data logging using
+instructions in the <a class="reference external" href="/speech-to-text/docs/enable-data-logging">documentation</a>. If you set <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code>
+to true and you have not enabled audio logging, then you will
+receive an error.</p>
 </dd></dl>
 
 </dd></dl>
@@ -660,7 +668,7 @@ recognize them. This can be used to improve the accuracy for
 specific words and phrases, for example, if specific commands
 are typically spoken by the user. This can also be used to add
 additional words to the vocabulary of the recognizer. See
-<a class="reference external" href="https://cloud.google.com/speech/limits#content">usage limits</a>.</p>
+<a class="reference external" href="/speech-to-text/quotas#content">usage limits</a>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -693,7 +701,7 @@ indicating <code class="docutils literal notranslate"><span class="pre">confiden
 <dt id="google.cloud.speech_v1p1beta1.types.SpeechRecognitionAlternative.words">
 <code class="descname">words</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeechRecognitionAlternative.words" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. A list of word-specific information for each
-recognized word. Note: When enable_speaker_diarization is
+recognized word. Note: When <code class="docutils literal notranslate"><span class="pre">enable_speaker_diarization</span></code> is
 true, you will see all the words from the beginning of the
 audio.</p>
 </dd></dl>
@@ -817,6 +825,13 @@ indicating <code class="docutils literal notranslate"><span class="pre">stabilit
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.result_end_time">
+<code class="descname">result_end_time</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.result_end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Time offset of the end of this result relative to
+the beginning of the audio.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.channel_tag">
 <code class="descname">channel_tag</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.channel_tag" title="Permalink to this definition">#</a></dt>
 <dd><p>For multi-channel audio, this is the channel number
@@ -869,7 +884,7 @@ not contain <code class="docutils literal notranslate"><span class="pre">audio_c
 <code class="docutils literal notranslate"><span class="pre">audio_content</span></code> data. The audio bytes must be encoded as
 specified in <code class="docutils literal notranslate"><span class="pre">RecognitionConfig</span></code>. Note: as with all bytes
 fields, protobuffers use a pure binary representation (not
-base64). See <a class="reference external" href="https://cloud.google.com/speech/limits#content">audio limits</a>.</p>
+base64). See <a class="reference external" href="/speech-to-text/quotas#content">content limits</a>.</p>
 </dd></dl>
 
 </dd></dl>
