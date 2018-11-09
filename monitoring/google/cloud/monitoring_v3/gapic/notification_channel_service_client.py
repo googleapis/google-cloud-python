@@ -552,7 +552,7 @@ class NotificationChannelServiceClient(object):
             metadata=None):
         """
         Creates a new notification channel, representing a single notification
-        endpoint such as an email address, SMS number, or pagerduty service.
+        endpoint such as an email address, SMS number, or PagerDuty service.
 
         Example:
             >>> from google.cloud import monitoring_v3
