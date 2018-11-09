@@ -136,7 +136,6 @@ class TestClient(unittest.TestCase):
                 admin=True, read_only=True)
 
     def test_constructor_with_emulator_host(self):
-        import grpc
         from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
         credentials = _make_credentials()
@@ -149,7 +148,7 @@ class TestClient(unittest.TestCase):
                     project=self.PROJECT, credentials=credentials)
 
         self.assertEqual(client._emulator_host, emulator_host)
-        self.assertIs(client._emulator_channel,factory.return_value)
+        self.assertIs(client._emulator_channel, factory.return_value)
         factory.assert_called_once_with(emulator_host)
         getenv.assert_called_once_with(BIGTABLE_EMULATOR)
 
