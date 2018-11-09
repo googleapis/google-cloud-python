@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.client &#8212; google-cloud 772960b documentation</title>
+    <title>google.cloud.bigtable.client &#8212; google-cloud 0530884 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -63,7 +63,9 @@
 <span class="sd">* a :class:`~google.cloud.bigtable.table.Table` owns a</span>
 <span class="sd">  :class:`~google.cloud.bigtable.row.Row` (and all the cells in the row)</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">grpc</span>
 
 <span class="kn">from</span> <span class="nn">google.api_core.gapic_v1</span> <span class="k">import</span> <span class="n">client_info</span>
 
@@ -78,6 +80,7 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable_admin_v2</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.cluster</span> <span class="k">import</span> <span class="n">_CLUSTER_NAME_RE</span>
+<span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">BIGTABLE_EMULATOR</span>
 
 
 <span class="n">INSTANCE_TYPE_PRODUCTION</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Instance</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">PRODUCTION</span>
@@ -92,6 +95,19 @@
 <span class="sd">&quot;&quot;&quot;Scope for reading and writing table data.&quot;&quot;&quot;</span>
 <span class="n">READ_ONLY_SCOPE</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/auth/bigtable.data.readonly&#39;</span>
 <span class="sd">&quot;&quot;&quot;Scope for reading table data.&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_create_gapic_client</span><span class="p">(</span><span class="n">client_class</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_emulator_host</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">client_class</span><span class="p">(</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">client_class</span><span class="p">(</span>
+                <span class="n">channel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_emulator_channel</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">inner</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../bigtable/client.html#google.cloud.bigtable.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
@@ -145,6 +161,11 @@
         <span class="c1">#       It **may** use those scopes in ``with_scopes_if_required``.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">read_only</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_emulator_host</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">BIGTABLE_EMULATOR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_emulator_channel</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_emulator_host</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_emulator_channel</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">insecure_channel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_emulator_host</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
@@ -197,10 +218,8 @@
 <span class="sd">        :returns: A BigtableClient object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_data_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table_data_client</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">bigtable_v2</span><span class="o">.</span><span class="n">BigtableClient</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span>
-                                           <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span><span class="p">))</span>
-
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table_data_client</span> <span class="o">=</span> <span class="n">_create_gapic_client</span><span class="p">(</span>
+                <span class="n">bigtable_v2</span><span class="o">.</span><span class="n">BigtableClient</span><span class="p">)(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_data_client</span>
 
     <span class="nd">@property</span>
@@ -216,10 +235,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_admin_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client is not an admin client.&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table_admin_client</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">bigtable_admin_v2</span><span class="o">.</span><span class="n">BigtableTableAdminClient</span><span class="p">(</span>
-                    <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span><span class="p">))</span>
-
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table_admin_client</span> <span class="o">=</span> <span class="n">_create_gapic_client</span><span class="p">(</span>
+                <span class="n">bigtable_admin_v2</span><span class="o">.</span><span class="n">BigtableTableAdminClient</span><span class="p">)(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_admin_client</span>
 
     <span class="nd">@property</span>
@@ -235,9 +252,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client is not an admin client.&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_client</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">bigtable_admin_v2</span><span class="o">.</span><span class="n">BigtableInstanceAdminClient</span><span class="p">(</span>
-                    <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_client</span> <span class="o">=</span> <span class="n">_create_gapic_client</span><span class="p">(</span>
+                <span class="n">bigtable_admin_v2</span><span class="o">.</span><span class="n">BigtableInstanceAdminClient</span><span class="p">)(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_client</span>
 
 <div class="viewcode-block" id="Client.instance"><a class="viewcode-back" href="../../../../bigtable/client.html#google.cloud.bigtable.client.Client.instance">[docs]</a>    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span> <span class="n">display_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
