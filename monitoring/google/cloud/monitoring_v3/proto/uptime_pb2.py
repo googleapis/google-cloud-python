@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/monitoring_v3/proto/uptime.proto',
   package='google.monitoring.v3',
   syntax='proto3',
-  serialized_pb=_b('\n-google/cloud/monitoring_v3/proto/uptime.proto\x12\x14google.monitoring.v3\x1a#google/api/monitored_resource.proto\x1a\x1egoogle/protobuf/duration.proto\"r\n\x0fInternalChecker\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0f\n\x07network\x18\x02 \x01(\t\x12\x10\n\x08gcp_zone\x18\x03 \x01(\t\x12\x12\n\nchecker_id\x18\x04 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x05 \x01(\t\"\xc1\t\n\x11UptimeCheckConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12;\n\x12monitored_resource\x18\x03 \x01(\x0b\x32\x1d.google.api.MonitoredResourceH\x00\x12O\n\x0eresource_group\x18\x04 \x01(\x0b\x32\x35.google.monitoring.v3.UptimeCheckConfig.ResourceGroupH\x00\x12G\n\nhttp_check\x18\x05 \x01(\x0b\x32\x31.google.monitoring.v3.UptimeCheckConfig.HttpCheckH\x01\x12\x45\n\ttcp_check\x18\x06 \x01(\x0b\x32\x30.google.monitoring.v3.UptimeCheckConfig.TcpCheckH\x01\x12)\n\x06period\x18\x07 \x01(\x0b\x32\x19.google.protobuf.Duration\x12*\n\x07timeout\x18\x08 \x01(\x0b\x32\x19.google.protobuf.Duration\x12P\n\x10\x63ontent_matchers\x18\t \x03(\x0b\x32\x36.google.monitoring.v3.UptimeCheckConfig.ContentMatcher\x12\x41\n\x10selected_regions\x18\n \x03(\x0e\x32\'.google.monitoring.v3.UptimeCheckRegion\x12\x13\n\x0bis_internal\x18\x0f \x01(\x08\x12@\n\x11internal_checkers\x18\x0e \x03(\x0b\x32%.google.monitoring.v3.InternalChecker\x1a\x61\n\rResourceGroup\x12\x10\n\x08group_id\x18\x01 \x01(\t\x12>\n\rresource_type\x18\x02 \x01(\x0e\x32\'.google.monitoring.v3.GroupResourceType\x1a\xe4\x02\n\tHttpCheck\x12\x0f\n\x07use_ssl\x18\x01 \x01(\x08\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0c\n\x04port\x18\x03 \x01(\x05\x12X\n\tauth_info\x18\x04 \x01(\x0b\x32\x45.google.monitoring.v3.UptimeCheckConfig.HttpCheck.BasicAuthentication\x12\x14\n\x0cmask_headers\x18\x05 \x01(\x08\x12O\n\x07headers\x18\x06 \x03(\x0b\x32>.google.monitoring.v3.UptimeCheckConfig.HttpCheck.HeadersEntry\x1a\x39\n\x13\x42\x61sicAuthentication\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x18\n\x08TcpCheck\x12\x0c\n\x04port\x18\x01 \x01(\x05\x1a!\n\x0e\x43ontentMatcher\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\tB\n\n\x08resourceB\x14\n\x12\x63heck_request_type\"n\n\rUptimeCheckIp\x12\x37\n\x06region\x18\x01 \x01(\x0e\x32\'.google.monitoring.v3.UptimeCheckRegion\x12\x10\n\x08location\x18\x02 \x01(\t\x12\x12\n\nip_address\x18\x03 \x01(\t*e\n\x11UptimeCheckRegion\x12\x16\n\x12REGION_UNSPECIFIED\x10\x00\x12\x07\n\x03USA\x10\x01\x12\n\n\x06\x45UROPE\x10\x02\x12\x11\n\rSOUTH_AMERICA\x10\x03\x12\x10\n\x0c\x41SIA_PACIFIC\x10\x04*[\n\x11GroupResourceType\x12\x1d\n\x19RESOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08INSTANCE\x10\x01\x12\x19\n\x15\x41WS_ELB_LOAD_BALANCER\x10\x02\x42\xa3\x01\n\x18\x63om.google.monitoring.v3B\x0bUptimeProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
+  serialized_pb=_b('\n-google/cloud/monitoring_v3/proto/uptime.proto\x12\x14google.monitoring.v3\x1a#google/api/monitored_resource.proto\x1a\x1egoogle/protobuf/duration.proto\"q\n\x0fInternalChecker\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x0f\n\x07network\x18\x03 \x01(\t\x12\x10\n\x08gcp_zone\x18\x04 \x01(\t\x12\x17\n\x0fpeer_project_id\x18\x06 \x01(\t\"\xc1\t\n\x11UptimeCheckConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12;\n\x12monitored_resource\x18\x03 \x01(\x0b\x32\x1d.google.api.MonitoredResourceH\x00\x12O\n\x0eresource_group\x18\x04 \x01(\x0b\x32\x35.google.monitoring.v3.UptimeCheckConfig.ResourceGroupH\x00\x12G\n\nhttp_check\x18\x05 \x01(\x0b\x32\x31.google.monitoring.v3.UptimeCheckConfig.HttpCheckH\x01\x12\x45\n\ttcp_check\x18\x06 \x01(\x0b\x32\x30.google.monitoring.v3.UptimeCheckConfig.TcpCheckH\x01\x12)\n\x06period\x18\x07 \x01(\x0b\x32\x19.google.protobuf.Duration\x12*\n\x07timeout\x18\x08 \x01(\x0b\x32\x19.google.protobuf.Duration\x12P\n\x10\x63ontent_matchers\x18\t \x03(\x0b\x32\x36.google.monitoring.v3.UptimeCheckConfig.ContentMatcher\x12\x41\n\x10selected_regions\x18\n \x03(\x0e\x32\'.google.monitoring.v3.UptimeCheckRegion\x12\x13\n\x0bis_internal\x18\x0f \x01(\x08\x12@\n\x11internal_checkers\x18\x0e \x03(\x0b\x32%.google.monitoring.v3.InternalChecker\x1a\x61\n\rResourceGroup\x12\x10\n\x08group_id\x18\x01 \x01(\t\x12>\n\rresource_type\x18\x02 \x01(\x0e\x32\'.google.monitoring.v3.GroupResourceType\x1a\xe4\x02\n\tHttpCheck\x12\x0f\n\x07use_ssl\x18\x01 \x01(\x08\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0c\n\x04port\x18\x03 \x01(\x05\x12X\n\tauth_info\x18\x04 \x01(\x0b\x32\x45.google.monitoring.v3.UptimeCheckConfig.HttpCheck.BasicAuthentication\x12\x14\n\x0cmask_headers\x18\x05 \x01(\x08\x12O\n\x07headers\x18\x06 \x03(\x0b\x32>.google.monitoring.v3.UptimeCheckConfig.HttpCheck.HeadersEntry\x1a\x39\n\x13\x42\x61sicAuthentication\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x18\n\x08TcpCheck\x12\x0c\n\x04port\x18\x01 \x01(\x05\x1a!\n\x0e\x43ontentMatcher\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\tB\n\n\x08resourceB\x14\n\x12\x63heck_request_type\"n\n\rUptimeCheckIp\x12\x37\n\x06region\x18\x01 \x01(\x0e\x32\'.google.monitoring.v3.UptimeCheckRegion\x12\x10\n\x08location\x18\x02 \x01(\t\x12\x12\n\nip_address\x18\x03 \x01(\t*e\n\x11UptimeCheckRegion\x12\x16\n\x12REGION_UNSPECIFIED\x10\x00\x12\x07\n\x03USA\x10\x01\x12\n\n\x06\x45UROPE\x10\x02\x12\x11\n\rSOUTH_AMERICA\x10\x03\x12\x10\n\x0c\x41SIA_PACIFIC\x10\x04*[\n\x11GroupResourceType\x12\x1d\n\x19RESOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08INSTANCE\x10\x01\x12\x19\n\x15\x41WS_ELB_LOAD_BALANCER\x10\x02\x42\xa3\x01\n\x18\x63om.google.monitoring.v3B\x0bUptimeProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,])
 
@@ -55,8 +55,8 @@ _UPTIMECHECKREGION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1588,
-  serialized_end=1689,
+  serialized_start=1587,
+  serialized_end=1688,
 )
 _sym_db.RegisterEnumDescriptor(_UPTIMECHECKREGION)
 
@@ -82,8 +82,8 @@ _GROUPRESOURCETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1691,
-  serialized_end=1782,
+  serialized_start=1690,
+  serialized_end=1781,
 )
 _sym_db.RegisterEnumDescriptor(_GROUPRESOURCETYPE)
 
@@ -107,36 +107,36 @@ _INTERNALCHECKER = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='project_id', full_name='google.monitoring.v3.InternalChecker.project_id', index=0,
+      name='name', full_name='google.monitoring.v3.InternalChecker.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='network', full_name='google.monitoring.v3.InternalChecker.network', index=1,
+      name='display_name', full_name='google.monitoring.v3.InternalChecker.display_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='gcp_zone', full_name='google.monitoring.v3.InternalChecker.gcp_zone', index=2,
+      name='network', full_name='google.monitoring.v3.InternalChecker.network', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='checker_id', full_name='google.monitoring.v3.InternalChecker.checker_id', index=3,
+      name='gcp_zone', full_name='google.monitoring.v3.InternalChecker.gcp_zone', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='display_name', full_name='google.monitoring.v3.InternalChecker.display_name', index=4,
-      number=5, type=9, cpp_type=9, label=1,
+      name='peer_project_id', full_name='google.monitoring.v3.InternalChecker.peer_project_id', index=4,
+      number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -154,7 +154,7 @@ _INTERNALCHECKER = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=140,
-  serialized_end=254,
+  serialized_end=253,
 )
 
 
@@ -191,8 +191,8 @@ _UPTIMECHECKCONFIG_RESOURCEGROUP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=923,
-  serialized_end=1020,
+  serialized_start=922,
+  serialized_end=1019,
 )
 
 _UPTIMECHECKCONFIG_HTTPCHECK_BASICAUTHENTICATION = _descriptor.Descriptor(
@@ -228,8 +228,8 @@ _UPTIMECHECKCONFIG_HTTPCHECK_BASICAUTHENTICATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1274,
-  serialized_end=1331,
+  serialized_start=1273,
+  serialized_end=1330,
 )
 
 _UPTIMECHECKCONFIG_HTTPCHECK_HEADERSENTRY = _descriptor.Descriptor(
@@ -265,8 +265,8 @@ _UPTIMECHECKCONFIG_HTTPCHECK_HEADERSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1333,
-  serialized_end=1379,
+  serialized_start=1332,
+  serialized_end=1378,
 )
 
 _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
@@ -330,8 +330,8 @@ _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1023,
-  serialized_end=1379,
+  serialized_start=1022,
+  serialized_end=1378,
 )
 
 _UPTIMECHECKCONFIG_TCPCHECK = _descriptor.Descriptor(
@@ -360,8 +360,8 @@ _UPTIMECHECKCONFIG_TCPCHECK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1381,
-  serialized_end=1405,
+  serialized_start=1380,
+  serialized_end=1404,
 )
 
 _UPTIMECHECKCONFIG_CONTENTMATCHER = _descriptor.Descriptor(
@@ -390,8 +390,8 @@ _UPTIMECHECKCONFIG_CONTENTMATCHER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1407,
-  serialized_end=1440,
+  serialized_start=1406,
+  serialized_end=1439,
 )
 
 _UPTIMECHECKCONFIG = _descriptor.Descriptor(
@@ -503,8 +503,8 @@ _UPTIMECHECKCONFIG = _descriptor.Descriptor(
       name='check_request_type', full_name='google.monitoring.v3.UptimeCheckConfig.check_request_type',
       index=1, containing_type=None, fields=[]),
   ],
-  serialized_start=257,
-  serialized_end=1474,
+  serialized_start=256,
+  serialized_end=1473,
 )
 
 
@@ -548,8 +548,8 @@ _UPTIMECHECKIP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1476,
-  serialized_end=1586,
+  serialized_start=1475,
+  serialized_end=1585,
 )
 
 _UPTIMECHECKCONFIG_RESOURCEGROUP.fields_by_name['resource_type'].enum_type = _GROUPRESOURCETYPE
@@ -594,23 +594,31 @@ InternalChecker = _reflection.GeneratedProtocolMessageType('InternalChecker', (_
   DESCRIPTOR = _INTERNALCHECKER,
   __module__ = 'google.cloud.monitoring_v3.proto.uptime_pb2'
   ,
-  __doc__ = """Nimbus InternalCheckers.
+  __doc__ = """An internal checker allows uptime checks to run on private/internal GCP
+  resources.
   
   
   Attributes:
-      project_id:
-          The GCP project ID. Not necessarily the same as the
-          project\_id for the config.
+      name:
+          A unique resource name for this InternalChecker. The format
+          is:  ``projects/[PROJECT_ID]/internalCheckers/[INTERNAL_CHECKE
+          R_ID]``.  PROJECT\_ID is the stackdriver workspace project for
+          the uptime check config associated with the internal checker.
+      display_name:
+          The checker's human-readable name. The display name should be
+          unique within a Stackdriver Workspace in order to make it
+          easier to identify; however, uniqueness is not enforced.
       network:
-          The internal network to perform this uptime check on.
+          The `GCP VPC network
+          <https://cloud.google.com/vpc/docs/vpc>`__ where the internal
+          resource lives (ex: "default").
       gcp_zone:
           The GCP zone the uptime check should egress from. Only
           respected for internal uptime checks, where internal\_network
           is specified.
-      checker_id:
-          The checker ID.
-      display_name:
-          The checker's human-readable name.
+      peer_project_id:
+          The GCP project\_id where the internal checker lives. Not
+          necessary the same as the workspace project.
   """,
   # @@protoc_insertion_point(class_scope:google.monitoring.v3.InternalChecker)
   ))
@@ -730,14 +738,13 @@ UptimeCheckConfig = _reflection.GeneratedProtocolMessageType('UptimeCheckConfig'
     DESCRIPTOR = _UPTIMECHECKCONFIG_CONTENTMATCHER,
     __module__ = 'google.cloud.monitoring_v3.proto.uptime_pb2'
     ,
-    __doc__ = """Used to perform string matching. Currently, this matches on the exact
-    content. In the future, it can be expanded to allow for regular
-    expressions and more complex matching.
+    __doc__ = """Used to perform string matching. It allows substring and regular
+    expressions, together with their negations.
     
     
     Attributes:
         content:
-            String content to match (max 1024 bytes)
+            String or regex content to match (max 1024 bytes)
     """,
     # @@protoc_insertion_point(class_scope:google.monitoring.v3.UptimeCheckConfig.ContentMatcher)
     ))
@@ -758,8 +765,8 @@ UptimeCheckConfig = _reflection.GeneratedProtocolMessageType('UptimeCheckConfig'
           by the server and included in the response.
       display_name:
           A human-friendly name for the uptime check configuration. The
-          display name should be unique within a Stackdriver Account in
-          order to make it easier to identify; however, uniqueness is
+          display name should be unique within a Stackdriver Workspace
+          in order to make it easier to identify; however, uniqueness is
           not enforced. Required.
       resource:
           The resource the check is checking. Required.
@@ -794,19 +801,23 @@ UptimeCheckConfig = _reflection.GeneratedProtocolMessageType('UptimeCheckConfig'
           field is optional and should only be specified if a content
           match is required.
       selected_regions:
-          The list of regions from which the check will be run. If this
-          field is specified, enough regions to include a minimum of 3
-          locations must be provided, or an error message is returned.
-          Not specifying this field will result in uptime checks running
-          from all regions.
+          The list of regions from which the check will be run. Some
+          regions contain one location, and others contain more than
+          one. If this field is specified, enough regions to include a
+          minimum of 3 locations must be provided, or an error message
+          is returned. Not specifying this field will result in uptime
+          checks running from all regions.
       is_internal:
-          Denotes whether this is a check that egresses from
-          InternalCheckers.
+          If this is true, then checks are made only from the
+          'internal\_checkers'. If it is false, then checks are made
+          only from the 'selected\_regions'. It is an error to provide
+          'selected\_regions' when is\_internal is true, or to provide
+          'internal\_checkers' when is\_internal is false.
       internal_checkers:
           The internal checkers that this check will egress from. If
           ``is_internal`` is true and this list is empty, the check will
-          egress from all InternalCheckers configured for the project
-          that owns this CheckConfig.
+          egress from all the InternalCheckers configured for the
+          project that owns this CheckConfig.
   """,
   # @@protoc_insertion_point(class_scope:google.monitoring.v3.UptimeCheckConfig)
   ))
