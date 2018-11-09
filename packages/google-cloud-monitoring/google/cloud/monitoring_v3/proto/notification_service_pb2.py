@@ -17,6 +17,7 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.monitoring_v3.proto import notification_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
+from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -24,9 +25,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/monitoring_v3/proto/notification_service.proto',
   package='google.monitoring.v3',
   syntax='proto3',
-  serialized_pb=_b('\n;google/cloud/monitoring_v3/proto/notification_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/monitoring_v3/proto/notification.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"`\n)ListNotificationChannelDescriptorsRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"\x97\x01\n*ListNotificationChannelDescriptorsResponse\x12P\n\x13\x63hannel_descriptors\x18\x01 \x03(\x0b\x32\x33.google.monitoring.v3.NotificationChannelDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"7\n\'GetNotificationChannelDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"y\n CreateNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12G\n\x14notification_channel\x18\x02 \x01(\x0b\x32).google.monitoring.v3.NotificationChannel\"x\n\x1fListNotificationChannelsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x06 \x01(\t\x12\x10\n\x08order_by\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"\x85\x01\n ListNotificationChannelsResponse\x12H\n\x15notification_channels\x18\x03 \x03(\x0b\x32).google.monitoring.v3.NotificationChannel\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"-\n\x1dGetNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x9c\x01\n UpdateNotificationChannelRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12G\n\x14notification_channel\x18\x03 \x01(\x0b\x32).google.monitoring.v3.NotificationChannel\"?\n DeleteNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\r\n\x05\x66orce\x18\x05 \x01(\x08\">\n.SendNotificationChannelVerificationCodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"n\n-GetNotificationChannelVerificationCodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"o\n.GetNotificationChannelVerificationCodeResponse\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\">\n VerifyNotificationChannelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t2\xbb\x10\n\x1aNotificationChannelService\x12\xe5\x01\n\"ListNotificationChannelDescriptors\x12?.google.monitoring.v3.ListNotificationChannelDescriptorsRequest\x1a@.google.monitoring.v3.ListNotificationChannelDescriptorsResponse\"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v3/{name=projects/*}/notificationChannelDescriptors\x12\xd6\x01\n GetNotificationChannelDescriptor\x12=.google.monitoring.v3.GetNotificationChannelDescriptorRequest\x1a\x33.google.monitoring.v3.NotificationChannelDescriptor\">\x82\xd3\xe4\x93\x02\x38\x12\x36/v3/{name=projects/*/notificationChannelDescriptors/*}\x12\xbd\x01\n\x18ListNotificationChannels\x12\x35.google.monitoring.v3.ListNotificationChannelsRequest\x1a\x36.google.monitoring.v3.ListNotificationChannelsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*}/notificationChannels\x12\xae\x01\n\x16GetNotificationChannel\x12\x33.google.monitoring.v3.GetNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\"4\x82\xd3\xe4\x93\x02.\x12,/v3/{name=projects/*/notificationChannels/*}\x12\xc8\x01\n\x19\x43reateNotificationChannel\x12\x36.google.monitoring.v3.CreateNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\"H\x82\xd3\xe4\x93\x02\x42\"*/v3/{name=projects/*}/notificationChannels:\x14notification_channel\x12\xdf\x01\n\x19UpdateNotificationChannel\x12\x36.google.monitoring.v3.UpdateNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\"_\x82\xd3\xe4\x93\x02Y2A/v3/{notification_channel.name=projects/*/notificationChannels/*}:\x14notification_channel\x12\xa1\x01\n\x19\x44\x65leteNotificationChannel\x12\x36.google.monitoring.v3.DeleteNotificationChannelRequest\x1a\x16.google.protobuf.Empty\"4\x82\xd3\xe4\x93\x02.*,/v3/{name=projects/*/notificationChannels/*}\x12\xd5\x01\n\'SendNotificationChannelVerificationCode\x12\x44.google.monitoring.v3.SendNotificationChannelVerificationCodeRequest\x1a\x16.google.protobuf.Empty\"L\x82\xd3\xe4\x93\x02\x46\"A/v3/{name=projects/*/notificationChannels/*}:sendVerificationCode:\x01*\x12\x80\x02\n&GetNotificationChannelVerificationCode\x12\x43.google.monitoring.v3.GetNotificationChannelVerificationCodeRequest\x1a\x44.google.monitoring.v3.GetNotificationChannelVerificationCodeResponse\"K\x82\xd3\xe4\x93\x02\x45\"@/v3/{name=projects/*/notificationChannels/*}:getVerificationCode:\x01*\x12\xbe\x01\n\x19VerifyNotificationChannel\x12\x36.google.monitoring.v3.VerifyNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\">\x82\xd3\xe4\x93\x02\x38\"3/v3/{name=projects/*/notificationChannels/*}:verify:\x01*B\xb0\x01\n\x18\x63om.google.monitoring.v3B\x18NotificationServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
+  serialized_pb=_b('\n;google/cloud/monitoring_v3/proto/notification_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/monitoring_v3/proto/notification.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"`\n)ListNotificationChannelDescriptorsRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"\x97\x01\n*ListNotificationChannelDescriptorsResponse\x12P\n\x13\x63hannel_descriptors\x18\x01 \x03(\x0b\x32\x33.google.monitoring.v3.NotificationChannelDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"7\n\'GetNotificationChannelDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"y\n CreateNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12G\n\x14notification_channel\x18\x02 \x01(\x0b\x32).google.monitoring.v3.NotificationChannel\"x\n\x1fListNotificationChannelsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x06 \x01(\t\x12\x10\n\x08order_by\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"\x85\x01\n ListNotificationChannelsResponse\x12H\n\x15notification_channels\x18\x03 \x03(\x0b\x32).google.monitoring.v3.NotificationChannel\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"-\n\x1dGetNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x9c\x01\n UpdateNotificationChannelRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12G\n\x14notification_channel\x18\x03 \x01(\x0b\x32).google.monitoring.v3.NotificationChannel\"?\n DeleteNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\r\n\x05\x66orce\x18\x05 \x01(\x08\">\n.SendNotificationChannelVerificationCodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"n\n-GetNotificationChannelVerificationCodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"o\n.GetNotificationChannelVerificationCodeResponse\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\">\n VerifyNotificationChannelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t2\xbb\x10\n\x1aNotificationChannelService\x12\xe5\x01\n\"ListNotificationChannelDescriptors\x12?.google.monitoring.v3.ListNotificationChannelDescriptorsRequest\x1a@.google.monitoring.v3.ListNotificationChannelDescriptorsResponse\"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v3/{name=projects/*}/notificationChannelDescriptors\x12\xd6\x01\n GetNotificationChannelDescriptor\x12=.google.monitoring.v3.GetNotificationChannelDescriptorRequest\x1a\x33.google.monitoring.v3.NotificationChannelDescriptor\">\x82\xd3\xe4\x93\x02\x38\x12\x36/v3/{name=projects/*/notificationChannelDescriptors/*}\x12\xbd\x01\n\x18ListNotificationChannels\x12\x35.google.monitoring.v3.ListNotificationChannelsRequest\x1a\x36.google.monitoring.v3.ListNotificationChannelsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*}/notificationChannels\x12\xae\x01\n\x16GetNotificationChannel\x12\x33.google.monitoring.v3.GetNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\"4\x82\xd3\xe4\x93\x02.\x12,/v3/{name=projects/*/notificationChannels/*}\x12\xc8\x01\n\x19\x43reateNotificationChannel\x12\x36.google.monitoring.v3.CreateNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\"H\x82\xd3\xe4\x93\x02\x42\"*/v3/{name=projects/*}/notificationChannels:\x14notification_channel\x12\xdf\x01\n\x19UpdateNotificationChannel\x12\x36.google.monitoring.v3.UpdateNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\"_\x82\xd3\xe4\x93\x02Y2A/v3/{notification_channel.name=projects/*/notificationChannels/*}:\x14notification_channel\x12\xa1\x01\n\x19\x44\x65leteNotificationChannel\x12\x36.google.monitoring.v3.DeleteNotificationChannelRequest\x1a\x16.google.protobuf.Empty\"4\x82\xd3\xe4\x93\x02.*,/v3/{name=projects/*/notificationChannels/*}\x12\xd5\x01\n\'SendNotificationChannelVerificationCode\x12\x44.google.monitoring.v3.SendNotificationChannelVerificationCodeRequest\x1a\x16.google.protobuf.Empty\"L\x82\xd3\xe4\x93\x02\x46\"A/v3/{name=projects/*/notificationChannels/*}:sendVerificationCode:\x01*\x12\x80\x02\n&GetNotificationChannelVerificationCode\x12\x43.google.monitoring.v3.GetNotificationChannelVerificationCodeRequest\x1a\x44.google.monitoring.v3.GetNotificationChannelVerificationCodeResponse\"K\x82\xd3\xe4\x93\x02\x45\"@/v3/{name=projects/*/notificationChannels/*}:getVerificationCode:\x01*\x12\xbe\x01\n\x19VerifyNotificationChannel\x12\x36.google.monitoring.v3.VerifyNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\">\x82\xd3\xe4\x93\x02\x38\"3/v3/{name=projects/*/notificationChannels/*}:verify:\x01*B\xb0\x01\n\x18\x63om.google.monitoring.v3B\x18NotificationServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
   ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
 
 
@@ -71,8 +72,8 @@ _LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=264,
-  serialized_end=360,
+  serialized_start=294,
+  serialized_end=390,
 )
 
 
@@ -109,8 +110,8 @@ _LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=363,
-  serialized_end=514,
+  serialized_start=393,
+  serialized_end=544,
 )
 
 
@@ -140,8 +141,8 @@ _GETNOTIFICATIONCHANNELDESCRIPTORREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=516,
-  serialized_end=571,
+  serialized_start=546,
+  serialized_end=601,
 )
 
 
@@ -178,8 +179,8 @@ _CREATENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=573,
-  serialized_end=694,
+  serialized_start=603,
+  serialized_end=724,
 )
 
 
@@ -237,8 +238,8 @@ _LISTNOTIFICATIONCHANNELSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=696,
-  serialized_end=816,
+  serialized_start=726,
+  serialized_end=846,
 )
 
 
@@ -275,8 +276,8 @@ _LISTNOTIFICATIONCHANNELSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=819,
-  serialized_end=952,
+  serialized_start=849,
+  serialized_end=982,
 )
 
 
@@ -306,8 +307,8 @@ _GETNOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=954,
-  serialized_end=999,
+  serialized_start=984,
+  serialized_end=1029,
 )
 
 
@@ -344,8 +345,8 @@ _UPDATENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1002,
-  serialized_end=1158,
+  serialized_start=1032,
+  serialized_end=1188,
 )
 
 
@@ -382,8 +383,8 @@ _DELETENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1160,
-  serialized_end=1223,
+  serialized_start=1190,
+  serialized_end=1253,
 )
 
 
@@ -413,8 +414,8 @@ _SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1225,
-  serialized_end=1287,
+  serialized_start=1255,
+  serialized_end=1317,
 )
 
 
@@ -451,8 +452,8 @@ _GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1289,
-  serialized_end=1399,
+  serialized_start=1319,
+  serialized_end=1429,
 )
 
 
@@ -489,8 +490,8 @@ _GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1401,
-  serialized_end=1512,
+  serialized_start=1431,
+  serialized_end=1542,
 )
 
 
@@ -527,8 +528,8 @@ _VERIFYNOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1514,
-  serialized_end=1576,
+  serialized_start=1544,
+  serialized_end=1606,
 )
 
 _LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE.fields_by_name['channel_descriptors'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNELDESCRIPTOR
@@ -865,8 +866,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=1579,
-  serialized_end=3686,
+  serialized_start=1609,
+  serialized_end=3716,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListNotificationChannelDescriptors',
