@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.6.0
+
+11-09-2018 13:36 PST
+
+
+### Implementation Changes
+- Add support for speech transcription. ([#6313](https://github.com/googleapis/google-cloud-python/pull/6313))
+- Fix client_info bug, update docstrings and timeouts. ([#6425](https://github.com/googleapis/google-cloud-python/pull/6425))
+
+### Dependencies
+- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+- Avoid broken 'google-common-apis 1.5.4' release. ([#6355](https://github.com/googleapis/google-cloud-python/pull/6355))
+
+### Documentation
+- normalize use of support level badges.([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+
+### Internal / Testing Changes
+- Add 'mock' to unit test dependencies for autogen libs. ([#6402](https://github.com/googleapis/google-cloud-python/pull/6402))
+
 ## 1.5.0
 
 ### New Features
