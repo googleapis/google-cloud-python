@@ -29,7 +29,7 @@ version = '1.6.0'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
-    'google-api-core[grpc, grpcio-gcp] >= 1.4.1, < 2.0.0dev',
+    'google-api-core[grpcio-gcp] >= 1.4.1, < 2.0.0dev',
     'google-cloud-core >= 0.28.0, < 0.29dev',
     'grpc-google-iam-v1 >= 0.11.4, < 0.12dev',
 ]
