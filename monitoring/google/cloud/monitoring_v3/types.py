@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +27,7 @@ from google.api import monitored_resource_pb2
 from google.cloud.monitoring_v3.proto import alert_pb2
 from google.cloud.monitoring_v3.proto import alert_service_pb2
 from google.cloud.monitoring_v3.proto import common_pb2
+from google.cloud.monitoring_v3.proto import dropped_labels_pb2
 from google.cloud.monitoring_v3.proto import group_pb2
 from google.cloud.monitoring_v3.proto import group_service_pb2
 from google.cloud.monitoring_v3.proto import metric_pb2 as proto_metric_pb2
@@ -32,6 +35,7 @@ from google.cloud.monitoring_v3.proto import metric_service_pb2
 from google.cloud.monitoring_v3.proto import mutation_record_pb2
 from google.cloud.monitoring_v3.proto import notification_pb2
 from google.cloud.monitoring_v3.proto import notification_service_pb2
+from google.cloud.monitoring_v3.proto import span_context_pb2
 from google.cloud.monitoring_v3.proto import uptime_pb2
 from google.cloud.monitoring_v3.proto import uptime_service_pb2
 from google.protobuf import any_pb2
@@ -65,6 +69,7 @@ _local_modules = [
     alert_pb2,
     alert_service_pb2,
     common_pb2,
+    dropped_labels_pb2,
     group_pb2,
     group_service_pb2,
     proto_metric_pb2,
@@ -72,6 +77,7 @@ _local_modules = [
     mutation_record_pb2,
     notification_pb2,
     notification_service_pb2,
+    span_context_pb2,
     uptime_pb2,
     uptime_service_pb2,
 ]

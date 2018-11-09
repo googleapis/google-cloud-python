@@ -22,15 +22,15 @@ import setuptools
 
 name = 'google-cloud-datastore'
 description = 'Google Cloud Datastore API client library'
-version = '1.7.0'
+version = '1.7.1'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
-    'google-cloud-core<0.29dev,>=0.28.0',
-    'google-api-core[grpc]<2.0.0dev,>=1.0.0',
+    'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
+    'google-cloud-core >=0.28.0, <0.29dev',
 ]
 extras = {
 }

@@ -103,10 +103,10 @@ class AssetServiceGrpcTransport(object):
     def export_assets(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Exports assets with time and resource types to a given Google Cloud Storage
-        location. The output format is newline-delimited JSON.
-        This API implements the ``google.longrunning.Operation`` API allowing users
-        to keep track of the export.
+        Exports assets with time and resource types to a given Cloud Storage
+        location. The output format is newline-delimited JSON. This API
+        implements the ``google.longrunning.Operation`` API allowing you to keep
+        track of the export.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -119,11 +119,11 @@ class AssetServiceGrpcTransport(object):
     def batch_get_assets_history(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Batch gets assets update history that overlaps a time window.
-        For RESOURCE content, this API outputs history with asset in both
-        non-delete or deleted status.
-        For IAM_POLICY content, this API only outputs history when asset and its
-        attached IAM POLICY both exist. So there may be gaps in the output history.
+        Batch gets the update history of assets that overlap a time window. For
+        RESOURCE content, this API outputs history with asset in both non-delete
+        or deleted status. For IAM\_POLICY content, this API outputs history
+        when the asset and its attached IAM POLICY both exist. This can create
+        gaps in the output history.
 
         Returns:
             Callable: A callable which accepts the appropriate

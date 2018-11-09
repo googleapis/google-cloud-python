@@ -44,6 +44,8 @@ def add_flow_exception(*args, **kwargs):
 
 
 class Future:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -65,16 +67,22 @@ def make_default_context(*args, **kwargs):
 
 
 class MultiFuture:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class QueueFuture:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class ReducingFuture:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -83,6 +91,8 @@ Return = StopIteration
 
 
 class SerialQueueFuture:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 

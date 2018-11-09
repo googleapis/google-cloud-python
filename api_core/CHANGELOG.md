@@ -4,23 +4,33 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
-## 1.6.0a1
+## 1.5.2
 
-10-18-2018 16:26 PDT
+11-09-2018 14:22 PST
 
-### New Features
-- Add methods to api_core used by new autogenerator. ([#6267](https://github.com/googleapis/google-cloud-python/pull/6267))
+
+### Implementation Changes
+- Retry transient errors in 'PollingFuture.result'. ([#6305](https://github.com/googleapis/google-cloud-python/pull/6305))
+
+### Dependencies
+- Remove hyphen from named extra in api_core. ([#6468](https://github.com/googleapis/google-cloud-python/pull/6468))
+- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+- Avoid broken 'google-common-apis 1.5.4' release. ([#6355](https://github.com/googleapis/google-cloud-python/pull/6355))
+
+## 1.5.1
+
+10-29-2018 13:29 PDT
+
+### Implementation Changes
+- Don't URL-encode slashes in gRPC request headers. ([#6310](https://github.com/googleapis/google-cloud-python/pull/6310))
 
 ### Internal / Testing Changes
-- Fix branch coverage for un-called callbacks. ([#6242](https://github.com/googleapis/google-cloud-python/pull/6242))
-- Fix import order, appeasing lint. ([#6240](https://github.com/googleapis/google-cloud-python/pull/6240))
-- Add / fix badges for PyPI / versions. ([#6158](https://github.com/googleapis/google-cloud-python/pull/6158))
+- Back out changes from [#6267](https://github.com/googleapis/google-cloud-python/pull/6267) / `api_core-1.6.0a1` release. ([#6328](https://github.com/googleapis/google-cloud-python/pull/6328))
 
 ## 1.5.0
 
 ### New Features
 - Add bidi, Bidirection Streaming, to api-core ([#6211](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6211))
-
 
 ### Internal / Testing Changes
 - Use new Nox ([#6175](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175))

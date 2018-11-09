@@ -20,10 +20,10 @@ import enum
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for the
-    ``Value`` type union.
+    ``NullValue`` is a singleton enumeration to represent the null value for
+    the ``Value`` type union.
 
-     The JSON representation for ``NullValue`` is JSON ``null``.
+    The JSON representation for ``NullValue`` is JSON ``null``.
 
     Attributes:
       NULL_VALUE (int): Null value.
@@ -125,8 +125,8 @@ class TargetChange(object):
           This will be sent after or with a ``read_time`` that is greater than or
           equal to the time at which the targets were added.
 
-          Listeners can wait for this change if read-after-write semantics
-          are desired.
+          Listeners can wait for this change if read-after-write semantics are
+          desired.
           RESET (int): The targets have been reset, and a new initial state for the targets
           will be returned in subsequent changes.
 

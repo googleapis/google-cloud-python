@@ -20,6 +20,7 @@ import os
 import grpc
 
 from google.api_core import grpc_helpers
+from google.oauth2 import service_account
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
@@ -30,9 +31,15 @@ from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 
 __version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
+_BLACKLISTED_METHODS = (
+    'publish',
+    'from_service_account_file',
+    'from_service_account_json',
+)
 
-@_gapic.add_methods(subscriber_client.SubscriberClient,
-                    blacklist=('streaming_pull',))
+
+@_gapic.add_methods(
+    subscriber_client.SubscriberClient, blacklist=_BLACKLISTED_METHODS)
 class Client(object):
     """A subscriber client for Google Cloud Pub/Sub.
 
@@ -74,6 +81,26 @@ class Client(object):
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
         self._api = subscriber_client.SubscriberClient(**kwargs)
+
+    @classmethod
+    def from_service_account_file(cls, filename, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            PublisherClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(**kwargs)
+
+    from_service_account_json = from_service_account_file
 
     @property
     def target(self):
@@ -129,9 +156,9 @@ class Client(object):
 
         .. code-block:: python
 
-            from google.cloud.pubsub_v1 import subscriber
+            from google.cloud import pubsub_v1
 
-            subscriber_client = pubsub.SubscriberClient()
+            subscriber_client = pubsub_v1.SubscriberClient()
 
             # existing subscription
             subscription = subscriber_client.subscription_path(
@@ -165,8 +192,8 @@ class Client(object):
                 how callbacks are executed concurrently.
 
         Returns:
-            google.cloud.pubsub_v1.futures.StreamingPullFuture: A Future object
-                that can be used to manage the background stream.
+            google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture: A
+                Future object that can be used to manage the background stream.
         """
         flow_control = types.FlowControl(*flow_control)
 

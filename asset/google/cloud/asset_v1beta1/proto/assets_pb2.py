@@ -286,24 +286,25 @@ Asset = _reflection.GeneratedProtocolMessageType('Asset', (_message.Message,), d
   DESCRIPTOR = _ASSET,
   __module__ = 'google.cloud.asset_v1beta1.proto.assets_pb2'
   ,
-  __doc__ = """Cloud asset. This include all Google Cloud Platform resources, as well
-  as IAM policies and other non-GCP assets.
+  __doc__ = """Cloud asset. This includes all Google Cloud Platform resources, Cloud
+  IAM policies, and other non-GCP assets.
   
   
   Attributes:
       name:
-          The full name of the asset. See: https://cloud.google.com/apis
-          /design/resource\_names#full\_resource\_name Example: "//compu
-          te.googleapis.com/projects/my\_project\_123/zones/zone1/instan
-          ces/instance1".
+
+          The full name of the asset. For example:
+          ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
+          See https://cloud.google.com/apis/design/resource_names#full_resource_name
+          for more information.
       asset_type:
           Type of the asset. Example: "google.compute.disk".
       resource:
           Representation of the resource.
       iam_policy:
-          Representation of the actual IAM policy set on a cloud
-          resource. For each resource, there must be at most one IAM
-          policy set on it.
+          Representation of the actual Cloud IAM policy set on a cloud
+          resource. For each resource, there must be at most one Cloud
+          IAM policy set on it.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.asset.v1beta1.Asset)
   ))
@@ -321,9 +322,9 @@ Resource = _reflection.GeneratedProtocolMessageType('Resource', (_message.Messag
           The API version. Example: "v1".
       discovery_document_uri:
           The URL of the discovery document containing the resource's
-          JSON schema. Example: "https://www.googleapis.com/discovery/v1
-          /apis/compute/v1/rest". It will be left unspecified for
-          resources without a discovery-based API, such as Cloud
+          JSON schema. For example: ``"https://www.googleapis.com/discov
+          ery/v1/apis/compute/v1/rest"``. It will be left unspecified
+          for resources without a discovery-based API, such as Cloud
           Bigtable.
       discovery_name:
           The JSON schema name listed in the discovery document.
@@ -336,14 +337,14 @@ Resource = _reflection.GeneratedProtocolMessageType('Resource', (_message.Messag
           project-123``. It will be left unspecified for resources
           without a REST API.
       parent:
-          The full name of the immediate parent of this resource. See: h
-          ttps://cloud.google.com/apis/design/resource\_names#full\_reso
-          urce\_name  For GCP assets, it is the parent resource defined
-          in the IAM policy hierarchy:
-          https://cloud.google.com/iam/docs/overview#policy\_hierarchy.
-          Example: "//cloudresourcemanager.googleapis.com/projects/my\_p
-          roject\_123".  For third-party assets, it is up to the users
-          to define.
+          The full name of the immediate parent of this resource. See
+          `Resource Names <https://cloud.google.com/apis/design/resource
+          _names#full_resource_name>`__ for more information.  For GCP
+          assets, it is the parent resource defined in the `Cloud IAM
+          policy hierarchy <https://cloud.google.com/iam/docs/overview#p
+          olicy_hierarchy>`__. For example: ``"//cloudresourcemanager.go
+          ogleapis.com/projects/my_project_123"``.  For third-party
+          assets, it is up to the users to define.
       data:
           The content of the resource, in which some sensitive fields
           are scrubbed away and may not be present.

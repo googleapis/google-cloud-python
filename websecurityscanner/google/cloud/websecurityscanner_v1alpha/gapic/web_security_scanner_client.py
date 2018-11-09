@@ -185,9 +185,10 @@ class WebSecurityScannerClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -220,7 +221,7 @@ class WebSecurityScannerClient(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``scan_config``:
+            >>> # TODO: Initialize `scan_config`:
             >>> scan_config = {}
             >>>
             >>> response = client.create_scan_config(parent, scan_config)
@@ -231,6 +232,7 @@ class WebSecurityScannerClient(object):
                 project resource name in the format 'projects/{projectId}'.
             scan_config (Union[dict, ~google.cloud.websecurityscanner_v1alpha.types.ScanConfig]): Required.
                 The ScanConfig to be created.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.websecurityscanner_v1alpha.types.ScanConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -404,7 +406,7 @@ class WebSecurityScannerClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_scan_configs(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_scan_configs(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -484,10 +486,10 @@ class WebSecurityScannerClient(object):
             >>>
             >>> client = websecurityscanner_v1alpha.WebSecurityScannerClient()
             >>>
-            >>> # TODO: Initialize ``scan_config``:
+            >>> # TODO: Initialize `scan_config`:
             >>> scan_config = {}
             >>>
-            >>> # TODO: Initialize ``update_mask``:
+            >>> # TODO: Initialize `update_mask`:
             >>> update_mask = {}
             >>>
             >>> response = client.update_scan_config(scan_config, update_mask)
@@ -497,12 +499,13 @@ class WebSecurityScannerClient(object):
                 The ScanConfig to be updated. The name field must be set to identify the
                 resource to be updated. The values of fields not covered by the mask
                 will be ignored.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.websecurityscanner_v1alpha.types.ScanConfig`
-            update_mask (Union[dict, ~google.cloud.websecurityscanner_v1alpha.types.FieldMask]): Required.
-                The update mask applies to the resource. For the ``FieldMask`` definition,
-                see
+            update_mask (Union[dict, ~google.cloud.websecurityscanner_v1alpha.types.FieldMask]): Required. The update mask applies to the resource. For the ``FieldMask``
+                definition, see
                 https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.websecurityscanner_v1alpha.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -679,7 +682,7 @@ class WebSecurityScannerClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_scan_runs(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_scan_runs(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -825,7 +828,7 @@ class WebSecurityScannerClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_crawled_urls(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_crawled_urls(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -964,7 +967,7 @@ class WebSecurityScannerClient(object):
             >>>
             >>> parent = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]', '[SCAN_RUN]')
             >>>
-            >>> # TODO: Initialize ``filter_``:
+            >>> # TODO: Initialize `filter_`:
             >>> filter_ = ''
             >>>
             >>> # Iterate over all results
@@ -976,7 +979,7 @@ class WebSecurityScannerClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_findings(parent, filter_, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_findings(parent, filter_).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -986,10 +989,8 @@ class WebSecurityScannerClient(object):
                 The parent resource name, which should be a scan run resource name in the
                 format
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
-            filter_ (str): The filter expression. The expression must be in the format: <field>
-                <operator> <value>.
-                Supported field: 'finding_type'.
-                Supported operator: '='.
+            filter_ (str): The filter expression. The expression must be in the format: . Supported
+                field: 'finding\_type'. Supported operator: '='.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page

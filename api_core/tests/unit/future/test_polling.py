@@ -19,6 +19,7 @@ import time
 import mock
 import pytest
 
+from google.api_core import exceptions
 from google.api_core.future import polling
 
 
@@ -116,6 +117,34 @@ def test_result_timeout():
     future = PollingFutureImplTimeout()
     with pytest.raises(concurrent.futures.TimeoutError):
         future.result(timeout=1)
+
+
+class PollingFutureImplTransient(PollingFutureImplWithPoll):
+    def __init__(self, errors):
+        super(PollingFutureImplTransient, self).__init__()
+        self._errors = errors
+
+    def done(self):
+        if self._errors:
+            error, self._errors = self._errors[0], self._errors[1:]
+            raise error('testing')
+        self.poll_count += 1
+        self.set_result(42)
+        return True
+
+
+def test_result_transient_error():
+    future = PollingFutureImplTransient((
+        exceptions.TooManyRequests,
+        exceptions.InternalServerError,
+        exceptions.BadGateway,
+    ))
+    result = future.result()
+    assert result == 42
+    assert future.poll_count == 1
+    # Repeated calls should not cause additional polling
+    assert future.result() == result
+    assert future.poll_count == 1
 
 
 def test_callback_background_thread():

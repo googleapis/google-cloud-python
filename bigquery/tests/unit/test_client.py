@@ -3834,7 +3834,7 @@ class TestClient(unittest.TestCase):
         partition_list = client.list_partitions(
             '{}.{}'.format(self.DS_ID, self.TABLE_ID))
 
-        self.assertEquals(len(partition_list), 0)
+        self.assertEqual(len(partition_list), 0)
 
     def test_list_rows(self):
         import datetime

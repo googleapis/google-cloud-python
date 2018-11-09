@@ -14,9 +14,9 @@
 
 
 import unittest
-
 import mock
 
+from google.api_core.exceptions import DeadlineExceeded
 from ._testing import _make_credentials
 from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable_v2.proto import (
@@ -320,6 +320,71 @@ class _Client(object):
     data_stub = None
 
 
+class Test_retry_read_rows_exception(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(exc):
+        from google.cloud.bigtable.row_data import _retry_read_rows_exception
+
+        return _retry_read_rows_exception(exc)
+
+    @staticmethod
+    def _make_grpc_call_error(exception):
+        from grpc import Call
+        from grpc import RpcError
+
+        class TestingException(Call, RpcError):
+            def __init__(self, exception):
+                self.exception = exception
+
+            def code(self):
+                return self.exception.grpc_status_code
+
+            def details(self):
+                return 'Testing'
+
+        return TestingException(exception)
+
+    def test_w_miss(self):
+        from google.api_core.exceptions import Conflict
+
+        exception = Conflict('testing')
+        self.assertFalse(self._call_fut(exception))
+
+    def test_w_service_unavailable(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        exception = ServiceUnavailable('testing')
+        self.assertTrue(self._call_fut(exception))
+
+    def test_w_deadline_exceeded(self):
+        from google.api_core.exceptions import DeadlineExceeded
+
+        exception = DeadlineExceeded('testing')
+        self.assertTrue(self._call_fut(exception))
+
+    def test_w_miss_wrapped_in_grpc(self):
+        from google.api_core.exceptions import Conflict
+
+        wrapped = Conflict('testing')
+        exception = self._make_grpc_call_error(wrapped)
+        self.assertFalse(self._call_fut(exception))
+
+    def test_w_service_unavailable_wrapped_in_grpc(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        wrapped = ServiceUnavailable('testing')
+        exception = self._make_grpc_call_error(wrapped)
+        self.assertTrue(self._call_fut(exception))
+
+    def test_w_deadline_exceeded_wrapped_in_grpc(self):
+        from google.api_core.exceptions import DeadlineExceeded
+
+        wrapped = DeadlineExceeded('testing')
+        exception = self._make_grpc_call_error(wrapped)
+        self.assertTrue(self._call_fut(exception))
+
+
 class TestPartialRowsData(unittest.TestCase):
     ROW_KEY = b'row-key'
     FAMILY_NAME = u'family'
@@ -343,6 +408,7 @@ class TestPartialRowsData(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
+        from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
         client = _Client()
         client._data_stub = mock.MagicMock()
         request = object()
@@ -350,6 +416,19 @@ class TestPartialRowsData(unittest.TestCase):
                                            request)
         self.assertIs(partial_rows_data.request, request)
         self.assertEqual(partial_rows_data.rows, {})
+        self.assertEqual(partial_rows_data.retry,
+                         DEFAULT_RETRY_READ_ROWS)
+
+    def test_constructor_with_retry(self):
+        client = _Client()
+        client._data_stub = mock.MagicMock()
+        request = retry = object()
+        partial_rows_data = self._make_one(client._data_stub.ReadRows,
+                                           request, retry)
+        self.assertIs(partial_rows_data.request, request)
+        self.assertEqual(partial_rows_data.rows, {})
+        self.assertEqual(partial_rows_data.retry,
+                         retry)
 
     def test___eq__(self):
         client = _Client()
@@ -637,6 +716,40 @@ class TestPartialRowsData(unittest.TestCase):
         request = object()
 
         yrd = self._make_one(client._data_stub.ReadRows, request)
+
+        result = self._consume_all(yrd)[0]
+
+        self.assertEqual(result, self.ROW_KEY)
+
+    def test_yield_retry_rows_data(self):
+        from google.api_core import retry
+        client = _Client()
+
+        retry_read_rows = retry.Retry(
+            predicate=_read_rows_retry_exception,
+        )
+
+        chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        chunks = [chunk]
+
+        response = _ReadRowsResponseV2(chunks)
+        failure_iterator = _MockFailureIterator_1()
+        iterator = _MockCancellableIterator(response)
+        client._data_stub = mock.MagicMock()
+        client._data_stub.ReadRows.side_effect = [failure_iterator,
+                                                  iterator]
+
+        request = object()
+
+        yrd = self._make_one(client._data_stub.ReadRows, request,
+                             retry_read_rows)
 
         result = self._consume_all(yrd)[0]
 
@@ -1141,6 +1254,14 @@ class _MockCancellableIterator(object):
     __next__ = next
 
 
+class _MockFailureIterator_1(object):
+
+    def next(self):
+        raise DeadlineExceeded("Failed to read from server")
+
+    __next__ = next
+
+
 class _PartialCellData(object):
 
     row_key = b''
@@ -1221,3 +1342,7 @@ def _ReadRowsRequestPB(*args, **kw):
         bigtable_pb2 as messages_v2_pb2)
 
     return messages_v2_pb2.ReadRowsRequest(*args, **kw)
+
+
+def _read_rows_retry_exception(exc):
+    return isinstance(exc, DeadlineExceeded)

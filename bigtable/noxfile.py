@@ -91,7 +91,7 @@ def lint(session):
     """
     session.install('flake8', *LOCAL_DEPS)
     session.install('.')
-    session.run('flake8', 'google', 'tests')
+    session.run('flake8', 'google', 'tests', 'docs')
 
 
 @nox.session(python='3.6')
@@ -113,3 +113,24 @@ def cover(session):
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
+
+
+@nox.session(python=['2.7', '3.7'])
+def snippets(session):
+    """Run the system test suite."""
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        session.skip('Credentials must be set via environment variable.')
+
+    # Install all test dependencies, then install local packages in place.
+    session.install('mock', 'pytest')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', '../test_utils/')
+    session.install('-e', '.')
+    session.run(
+        'py.test',
+        '--quiet',
+        os.path.join('docs', 'snippets.py'),
+        *session.posargs,
+    )

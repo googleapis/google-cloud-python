@@ -170,9 +170,10 @@ class SpannerClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -196,25 +197,23 @@ class SpannerClient(object):
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
         """
-        Creates a new session. A session can be used to perform
-        transactions that read and/or modify data in a Cloud Spanner database.
-        Sessions are meant to be reused for many consecutive
-        transactions.
+        Creates a new session. A session can be used to perform transactions
+        that read and/or modify data in a Cloud Spanner database. Sessions are
+        meant to be reused for many consecutive transactions.
 
-        Sessions can only execute one transaction at a time. To execute
-        multiple concurrent read-write/write-only transactions, create
-        multiple sessions. Note that standalone reads and queries use a
-        transaction internally, and count toward the one transaction
-        limit.
+        Sessions can only execute one transaction at a time. To execute multiple
+        concurrent read-write/write-only transactions, create multiple sessions.
+        Note that standalone reads and queries use a transaction internally, and
+        count toward the one transaction limit.
 
         Cloud Spanner limits the number of sessions that can exist at any given
         time; thus, it is a good idea to delete idle and/or unneeded sessions.
-        Aside from explicit deletes, Cloud Spanner can delete sessions for which no
-        operations are sent for more than an hour. If a session is deleted,
+        Aside from explicit deletes, Cloud Spanner can delete sessions for which
+        no operations are sent for more than an hour. If a session is deleted,
         requests to it return ``NOT_FOUND``.
 
         Idle sessions can be kept alive by sending a trivial SQL query
-        periodically, e.g., ``\"SELECT 1\"``.
+        periodically, e.g., ``"SELECT 1"``.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -228,6 +227,7 @@ class SpannerClient(object):
         Args:
             database (str): Required. The database in which the new session is created.
             session (Union[dict, ~google.cloud.spanner_v1.types.Session]): The session to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Session`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -274,8 +274,7 @@ class SpannerClient(object):
                     metadata=None):
         """
         Gets a session. Returns ``NOT_FOUND`` if the session does not exist.
-        This is mainly useful for determining whether a session is still
-        alive.
+        This is mainly useful for determining whether a session is still alive.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -347,7 +346,7 @@ class SpannerClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_sessions(database, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_sessions(database).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -362,15 +361,13 @@ class SpannerClient(object):
             filter_ (str): An expression for filtering the results of the request. Filter rules are
                 case insensitive. The fields eligible for filtering are:
 
-                  * ``labels.key`` where key is the name of a label
+                -  ``labels.key`` where key is the name of a label
 
                 Some examples of using filters are:
 
-                  * ``labels.env:*`` --> The session has the label \"env\".
-                  * ``labels.env:dev`` --> The session has the label \"env\" and the value of
-                ::
-
-                                       the label contains the string \"dev\".
+                -  ``labels.env:*`` --> The session has the label "env".
+                -  ``labels.env:dev`` --> The session has the label "env" and the value
+                   of the label contains the string "dev".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -488,13 +485,13 @@ class SpannerClient(object):
                     metadata=None):
         """
         Executes an SQL statement, returning all results in a single reply. This
-        method cannot be used to return a result set larger than 10 MiB;
-        if the query yields more data than that, the query fails with
-        a ``FAILED_PRECONDITION`` error.
+        method cannot be used to return a result set larger than 10 MiB; if the
+        query yields more data than that, the query fails with a
+        ``FAILED_PRECONDITION`` error.
 
         Operations inside read-write transactions might return ``ABORTED``. If
-        this occurs, the application should restart the transaction from
-        the beginning. See ``Transaction`` for more details.
+        this occurs, the application should restart the transaction from the
+        beginning. See ``Transaction`` for more details.
 
         Larger result sets can be fetched in streaming fashion by calling
         ``ExecuteStreamingSql`` instead.
@@ -506,7 +503,7 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``sql``:
+            >>> # TODO: Initialize `sql`:
             >>> sql = ''
             >>>
             >>> response = client.execute_sql(session, sql)
@@ -527,47 +524,49 @@ class SpannerClient(object):
                 either supply an existing transaction ID or begin a new transaction.
 
                 Partitioned DML requires an existing PartitionedDml transaction ID.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
             params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): The SQL string can contain parameter placeholders. A parameter
-                placeholder consists of ``'@'`` followed by the parameter
-                name. Parameter names consist of any combination of letters,
-                numbers, and underscores.
+                placeholder consists of ``'@'`` followed by the parameter name.
+                Parameter names consist of any combination of letters, numbers, and
+                underscores.
 
-                Parameters can appear anywhere that a literal value is expected.  The same
-                parameter name can be used more than once, for example:
-                  ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
+                Parameters can appear anywhere that a literal value is expected. The
+                same parameter name can be used more than once, for example:
+                ``"WHERE id > @msg_id AND id < @msg_id + 100"``
 
                 It is an error to execute an SQL statement with unbound parameters.
 
-                Parameter values are specified using ``params``, which is a JSON
-                object whose keys are parameter names, and whose values are the
-                corresponding parameter values.
+                Parameter values are specified using ``params``, which is a JSON object
+                whose keys are parameter names, and whose values are the corresponding
+                parameter values.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Struct`
             param_types (dict[str -> Union[dict, ~google.cloud.spanner_v1.types.Type]]): It is not always possible for Cloud Spanner to infer the right SQL type
-                from a JSON value.  For example, values of type ``BYTES`` and values
-                of type ``STRING`` both appear in ``params`` as JSON strings.
+                from a JSON value. For example, values of type ``BYTES`` and values of
+                type ``STRING`` both appear in ``params`` as JSON strings.
 
-                In these cases, ``param_types`` can be used to specify the exact
-                SQL type for some or all of the SQL statement parameters. See the
-                definition of ``Type`` for more information
-                about SQL types.
+                In these cases, ``param_types`` can be used to specify the exact SQL
+                type for some or all of the SQL statement parameters. See the definition
+                of ``Type`` for more information about SQL types.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Type`
             resume_token (bytes): If this request is resuming a previously interrupted SQL statement
                 execution, ``resume_token`` should be copied from the last
-                ``PartialResultSet`` yielded before the interruption. Doing this
-                enables the new SQL statement execution to resume where the last one left
-                off. The rest of the request parameters must exactly match the
-                request that yielded this token.
+                ``PartialResultSet`` yielded before the interruption. Doing this enables
+                the new SQL statement execution to resume where the last one left off.
+                The rest of the request parameters must exactly match the request that
+                yielded this token.
             query_mode (~google.cloud.spanner_v1.types.QueryMode): Used to control the amount of debugging information returned in
-                ``ResultSetStats``. If ``partition_token`` is set, ``query_mode`` can only
-                be set to ``QueryMode.NORMAL``.
+                ``ResultSetStats``. If ``partition_token`` is set, ``query_mode`` can
+                only be set to ``QueryMode.NORMAL``.
             partition_token (bytes): If present, results will be restricted to the specified partition
-                previously created using PartitionQuery().  There must be an exact
-                match for the values of fields common to this message and the
-                PartitionQueryRequest message used to create this partition_token.
+                previously created using PartitionQuery(). There must be an exact match
+                for the values of fields common to this message and the
+                PartitionQueryRequest message used to create this partition\_token.
             seqno (long): A per-transaction sequence number used to identify this request. This
                 makes each request idempotent such that if the request is received multiple
                 times, at most one will succeed.
@@ -635,11 +634,10 @@ class SpannerClient(object):
                               timeout=google.api_core.gapic_v1.method.DEFAULT,
                               metadata=None):
         """
-        Like ``ExecuteSql``, except returns the result
-        set as a stream. Unlike ``ExecuteSql``, there
-        is no limit on the size of the returned result set. However, no
-        individual row in the result set can exceed 100 MiB, and no
-        column value can exceed 10 MiB.
+        Like ``ExecuteSql``, except returns the result set as a stream. Unlike
+        ``ExecuteSql``, there is no limit on the size of the returned result
+        set. However, no individual row in the result set can exceed 100 MiB,
+        and no column value can exceed 10 MiB.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -648,7 +646,7 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``sql``:
+            >>> # TODO: Initialize `sql`:
             >>> sql = ''
             >>>
             >>> for element in client.execute_streaming_sql(session, sql):
@@ -671,47 +669,49 @@ class SpannerClient(object):
                 either supply an existing transaction ID or begin a new transaction.
 
                 Partitioned DML requires an existing PartitionedDml transaction ID.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
             params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): The SQL string can contain parameter placeholders. A parameter
-                placeholder consists of ``'@'`` followed by the parameter
-                name. Parameter names consist of any combination of letters,
-                numbers, and underscores.
+                placeholder consists of ``'@'`` followed by the parameter name.
+                Parameter names consist of any combination of letters, numbers, and
+                underscores.
 
-                Parameters can appear anywhere that a literal value is expected.  The same
-                parameter name can be used more than once, for example:
-                  ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
+                Parameters can appear anywhere that a literal value is expected. The
+                same parameter name can be used more than once, for example:
+                ``"WHERE id > @msg_id AND id < @msg_id + 100"``
 
                 It is an error to execute an SQL statement with unbound parameters.
 
-                Parameter values are specified using ``params``, which is a JSON
-                object whose keys are parameter names, and whose values are the
-                corresponding parameter values.
+                Parameter values are specified using ``params``, which is a JSON object
+                whose keys are parameter names, and whose values are the corresponding
+                parameter values.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Struct`
             param_types (dict[str -> Union[dict, ~google.cloud.spanner_v1.types.Type]]): It is not always possible for Cloud Spanner to infer the right SQL type
-                from a JSON value.  For example, values of type ``BYTES`` and values
-                of type ``STRING`` both appear in ``params`` as JSON strings.
+                from a JSON value. For example, values of type ``BYTES`` and values of
+                type ``STRING`` both appear in ``params`` as JSON strings.
 
-                In these cases, ``param_types`` can be used to specify the exact
-                SQL type for some or all of the SQL statement parameters. See the
-                definition of ``Type`` for more information
-                about SQL types.
+                In these cases, ``param_types`` can be used to specify the exact SQL
+                type for some or all of the SQL statement parameters. See the definition
+                of ``Type`` for more information about SQL types.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Type`
             resume_token (bytes): If this request is resuming a previously interrupted SQL statement
                 execution, ``resume_token`` should be copied from the last
-                ``PartialResultSet`` yielded before the interruption. Doing this
-                enables the new SQL statement execution to resume where the last one left
-                off. The rest of the request parameters must exactly match the
-                request that yielded this token.
+                ``PartialResultSet`` yielded before the interruption. Doing this enables
+                the new SQL statement execution to resume where the last one left off.
+                The rest of the request parameters must exactly match the request that
+                yielded this token.
             query_mode (~google.cloud.spanner_v1.types.QueryMode): Used to control the amount of debugging information returned in
-                ``ResultSetStats``. If ``partition_token`` is set, ``query_mode`` can only
-                be set to ``QueryMode.NORMAL``.
+                ``ResultSetStats``. If ``partition_token`` is set, ``query_mode`` can
+                only be set to ``QueryMode.NORMAL``.
             partition_token (bytes): If present, results will be restricted to the specified partition
-                previously created using PartitionQuery().  There must be an exact
-                match for the values of fields common to this message and the
-                PartitionQueryRequest message used to create this partition_token.
+                previously created using PartitionQuery(). There must be an exact match
+                for the values of fields common to this message and the
+                PartitionQueryRequest message used to create this partition\_token.
             seqno (long): A per-transaction sequence number used to identify this request. This
                 makes each request idempotent such that if the request is received multiple
                 times, at most one will succeed.
@@ -781,16 +781,14 @@ class SpannerClient(object):
              timeout=google.api_core.gapic_v1.method.DEFAULT,
              metadata=None):
         """
-        Reads rows from the database using key lookups and scans, as a
-        simple key/value style alternative to
-        ``ExecuteSql``.  This method cannot be used to
-        return a result set larger than 10 MiB; if the read matches more
-        data than that, the read fails with a ``FAILED_PRECONDITION``
-        error.
+        Reads rows from the database using key lookups and scans, as a simple
+        key/value style alternative to ``ExecuteSql``. This method cannot be
+        used to return a result set larger than 10 MiB; if the read matches more
+        data than that, the read fails with a ``FAILED_PRECONDITION`` error.
 
-        Reads inside read-write transactions might return ``ABORTED``. If
-        this occurs, the application should restart the transaction from
-        the beginning. See ``Transaction`` for more details.
+        Reads inside read-write transactions might return ``ABORTED``. If this
+        occurs, the application should restart the transaction from the
+        beginning. See ``Transaction`` for more details.
 
         Larger result sets can be yielded in streaming fashion by calling
         ``StreamingRead`` instead.
@@ -802,13 +800,13 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``table``:
+            >>> # TODO: Initialize `table`:
             >>> table = ''
             >>>
-            >>> # TODO: Initialize ``columns``:
+            >>> # TODO: Initialize `columns`:
             >>> columns = []
             >>>
-            >>> # TODO: Initialize ``key_set``:
+            >>> # TODO: Initialize `key_set`:
             >>> key_set = {}
             >>>
             >>> response = client.read(session, table, columns, key_set)
@@ -816,42 +814,43 @@ class SpannerClient(object):
         Args:
             session (str): Required. The session in which the read should be performed.
             table (str): Required. The name of the table in the database to be read.
-            columns (list[str]): The columns of ``table`` to be returned for each row matching
-                this request.
-            key_set (Union[dict, ~google.cloud.spanner_v1.types.KeySet]): Required. ``key_set`` identifies the rows to be yielded. ``key_set`` names the
-                primary keys of the rows in ``table`` to be yielded, unless ``index``
-                is present. If ``index`` is present, then ``key_set`` instead names
-                index keys in ``index``.
+            columns (list[str]): The columns of ``table`` to be returned for each row matching this
+                request.
+            key_set (Union[dict, ~google.cloud.spanner_v1.types.KeySet]): Required. ``key_set`` identifies the rows to be yielded. ``key_set``
+                names the primary keys of the rows in ``table`` to be yielded, unless
+                ``index`` is present. If ``index`` is present, then ``key_set`` instead
+                names index keys in ``index``.
 
-                If the ``partition_token`` field is empty, rows are yielded
-                in table primary key order (if ``index`` is empty) or index key order
-                (if ``index`` is non-empty).  If the ``partition_token`` field is not
-                empty, rows will be yielded in an unspecified order.
+                If the ``partition_token`` field is empty, rows are yielded in table
+                primary key order (if ``index`` is empty) or index key order (if
+                ``index`` is non-empty). If the ``partition_token`` field is not empty,
+                rows will be yielded in an unspecified order.
 
-                It is not an error for the ``key_set`` to name rows that do not
-                exist in the database. Read yields nothing for nonexistent rows.
+                It is not an error for the ``key_set`` to name rows that do not exist in
+                the database. Read yields nothing for nonexistent rows.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.KeySet`
             transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): The transaction to use. If none is provided, the default is a
                 temporary read-only transaction with strong concurrency.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
-            index (str): If non-empty, the name of an index on ``table``. This index is
-                used instead of the table primary key when interpreting ``key_set``
-                and sorting result rows. See ``key_set`` for further information.
-            limit (long): If greater than zero, only the first ``limit`` rows are yielded. If ``limit``
-                is zero, the default is no limit. A limit cannot be specified if
-                ``partition_token`` is set.
+            index (str): If non-empty, the name of an index on ``table``. This index is used
+                instead of the table primary key when interpreting ``key_set`` and
+                sorting result rows. See ``key_set`` for further information.
+            limit (long): If greater than zero, only the first ``limit`` rows are yielded. If
+                ``limit`` is zero, the default is no limit. A limit cannot be specified
+                if ``partition_token`` is set.
             resume_token (bytes): If this request is resuming a previously interrupted read,
-                ``resume_token`` should be copied from the last
-                ``PartialResultSet`` yielded before the interruption. Doing this
-                enables the new read to resume where the last read left off. The
-                rest of the request parameters must exactly match the request
-                that yielded this token.
+                ``resume_token`` should be copied from the last ``PartialResultSet``
+                yielded before the interruption. Doing this enables the new read to
+                resume where the last read left off. The rest of the request parameters
+                must exactly match the request that yielded this token.
             partition_token (bytes): If present, results will be restricted to the specified partition
-                previously created using PartitionRead().    There must be an exact
-                match for the values of fields common to this message and the
-                PartitionReadRequest message used to create this partition_token.
+                previously created using PartitionRead(). There must be an exact match
+                for the values of fields common to this message and the
+                PartitionReadRequest message used to create this partition\_token.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -909,11 +908,10 @@ class SpannerClient(object):
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
         """
-        Like ``Read``, except returns the result set as a
-        stream. Unlike ``Read``, there is no limit on the
-        size of the returned result set. However, no individual row in
-        the result set can exceed 100 MiB, and no column value can exceed
-        10 MiB.
+        Like ``Read``, except returns the result set as a stream. Unlike
+        ``Read``, there is no limit on the size of the returned result set.
+        However, no individual row in the result set can exceed 100 MiB, and no
+        column value can exceed 10 MiB.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -922,13 +920,13 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``table``:
+            >>> # TODO: Initialize `table`:
             >>> table = ''
             >>>
-            >>> # TODO: Initialize ``columns``:
+            >>> # TODO: Initialize `columns`:
             >>> columns = []
             >>>
-            >>> # TODO: Initialize ``key_set``:
+            >>> # TODO: Initialize `key_set`:
             >>> key_set = {}
             >>>
             >>> for element in client.streaming_read(session, table, columns, key_set):
@@ -938,42 +936,43 @@ class SpannerClient(object):
         Args:
             session (str): Required. The session in which the read should be performed.
             table (str): Required. The name of the table in the database to be read.
-            columns (list[str]): The columns of ``table`` to be returned for each row matching
-                this request.
-            key_set (Union[dict, ~google.cloud.spanner_v1.types.KeySet]): Required. ``key_set`` identifies the rows to be yielded. ``key_set`` names the
-                primary keys of the rows in ``table`` to be yielded, unless ``index``
-                is present. If ``index`` is present, then ``key_set`` instead names
-                index keys in ``index``.
+            columns (list[str]): The columns of ``table`` to be returned for each row matching this
+                request.
+            key_set (Union[dict, ~google.cloud.spanner_v1.types.KeySet]): Required. ``key_set`` identifies the rows to be yielded. ``key_set``
+                names the primary keys of the rows in ``table`` to be yielded, unless
+                ``index`` is present. If ``index`` is present, then ``key_set`` instead
+                names index keys in ``index``.
 
-                If the ``partition_token`` field is empty, rows are yielded
-                in table primary key order (if ``index`` is empty) or index key order
-                (if ``index`` is non-empty).  If the ``partition_token`` field is not
-                empty, rows will be yielded in an unspecified order.
+                If the ``partition_token`` field is empty, rows are yielded in table
+                primary key order (if ``index`` is empty) or index key order (if
+                ``index`` is non-empty). If the ``partition_token`` field is not empty,
+                rows will be yielded in an unspecified order.
 
-                It is not an error for the ``key_set`` to name rows that do not
-                exist in the database. Read yields nothing for nonexistent rows.
+                It is not an error for the ``key_set`` to name rows that do not exist in
+                the database. Read yields nothing for nonexistent rows.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.KeySet`
             transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): The transaction to use. If none is provided, the default is a
                 temporary read-only transaction with strong concurrency.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
-            index (str): If non-empty, the name of an index on ``table``. This index is
-                used instead of the table primary key when interpreting ``key_set``
-                and sorting result rows. See ``key_set`` for further information.
-            limit (long): If greater than zero, only the first ``limit`` rows are yielded. If ``limit``
-                is zero, the default is no limit. A limit cannot be specified if
-                ``partition_token`` is set.
+            index (str): If non-empty, the name of an index on ``table``. This index is used
+                instead of the table primary key when interpreting ``key_set`` and
+                sorting result rows. See ``key_set`` for further information.
+            limit (long): If greater than zero, only the first ``limit`` rows are yielded. If
+                ``limit`` is zero, the default is no limit. A limit cannot be specified
+                if ``partition_token`` is set.
             resume_token (bytes): If this request is resuming a previously interrupted read,
-                ``resume_token`` should be copied from the last
-                ``PartialResultSet`` yielded before the interruption. Doing this
-                enables the new read to resume where the last read left off. The
-                rest of the request parameters must exactly match the request
-                that yielded this token.
+                ``resume_token`` should be copied from the last ``PartialResultSet``
+                yielded before the interruption. Doing this enables the new read to
+                resume where the last read left off. The rest of the request parameters
+                must exactly match the request that yielded this token.
             partition_token (bytes): If present, results will be restricted to the specified partition
-                previously created using PartitionRead().    There must be an exact
-                match for the values of fields common to this message and the
-                PartitionReadRequest message used to create this partition_token.
+                previously created using PartitionRead(). There must be an exact match
+                for the values of fields common to this message and the
+                PartitionReadRequest message used to create this partition\_token.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1025,9 +1024,8 @@ class SpannerClient(object):
                           timeout=google.api_core.gapic_v1.method.DEFAULT,
                           metadata=None):
         """
-        Begins a new transaction. This step can often be skipped:
-        ``Read``, ``ExecuteSql`` and
-        ``Commit`` can begin a new transaction as a
+        Begins a new transaction. This step can often be skipped: ``Read``,
+        ``ExecuteSql`` and ``Commit`` can begin a new transaction as a
         side-effect.
 
         Example:
@@ -1037,7 +1035,7 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``options_``:
+            >>> # TODO: Initialize `options_`:
             >>> options_ = {}
             >>>
             >>> response = client.begin_transaction(session, options_)
@@ -1045,6 +1043,7 @@ class SpannerClient(object):
         Args:
             session (str): Required. The session in which the transaction runs.
             options_ (Union[dict, ~google.cloud.spanner_v1.types.TransactionOptions]): Required. Options for the new transaction.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1094,14 +1093,14 @@ class SpannerClient(object):
                timeout=google.api_core.gapic_v1.method.DEFAULT,
                metadata=None):
         """
-        Commits a transaction. The request includes the mutations to be
-        applied to rows in the database.
+        Commits a transaction. The request includes the mutations to be applied
+        to rows in the database.
 
-        ``Commit`` might return an ``ABORTED`` error. This can occur at any time;
-        commonly, the cause is conflicts with concurrent
-        transactions. However, it can also happen for a variety of other
-        reasons. If ``Commit`` returns ``ABORTED``, the caller should re-attempt
-        the transaction from the beginning, re-using the same session.
+        ``Commit`` might return an ``ABORTED`` error. This can occur at any
+        time; commonly, the cause is conflicts with concurrent transactions.
+        However, it can also happen for a variety of other reasons. If
+        ``Commit`` returns ``ABORTED``, the caller should re-attempt the
+        transaction from the beginning, re-using the same session.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -1110,7 +1109,7 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``mutations``:
+            >>> # TODO: Initialize `mutations`:
             >>> mutations = []
             >>>
             >>> response = client.commit(session, mutations)
@@ -1120,18 +1119,18 @@ class SpannerClient(object):
             mutations (list[Union[dict, ~google.cloud.spanner_v1.types.Mutation]]): The mutations to be executed when this transaction commits. All
                 mutations are applied atomically, in the order they appear in
                 this list.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Mutation`
             transaction_id (bytes): Commit a previously-started transaction.
-            single_use_transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionOptions]): Execute mutations in a temporary transaction. Note that unlike
-                commit of a previously-started transaction, commit with a
-                temporary transaction is non-idempotent. That is, if the
-                ``CommitRequest`` is sent to Cloud Spanner more than once (for
-                instance, due to retries in the application, or in the
-                transport library), it is possible that the mutations are
+            single_use_transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionOptions]): Execute mutations in a temporary transaction. Note that unlike commit of
+                a previously-started transaction, commit with a temporary transaction is
+                non-idempotent. That is, if the ``CommitRequest`` is sent to Cloud
+                Spanner more than once (for instance, due to retries in the application,
+                or in the transport library), it is possible that the mutations are
                 executed more than once. If this is undesirable, use
-                ``BeginTransaction`` and
-                ``Commit`` instead.
+                ``BeginTransaction`` and ``Commit`` instead.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1187,13 +1186,12 @@ class SpannerClient(object):
                  metadata=None):
         """
         Rolls back a transaction, releasing any locks it holds. It is a good
-        idea to call this for any transaction that includes one or more
-        ``Read`` or ``ExecuteSql`` requests and
-        ultimately decides not to commit.
+        idea to call this for any transaction that includes one or more ``Read``
+        or ``ExecuteSql`` requests and ultimately decides not to commit.
 
-        ``Rollback`` returns ``OK`` if it successfully aborts the transaction, the
-        transaction was already aborted, or the transaction is not
-        found. ``Rollback`` never returns ``ABORTED``.
+        ``Rollback`` returns ``OK`` if it successfully aborts the transaction,
+        the transaction was already aborted, or the transaction is not found.
+        ``Rollback`` never returns ``ABORTED``.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -1202,7 +1200,7 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``transaction_id``:
+            >>> # TODO: Initialize `transaction_id`:
             >>> transaction_id = b''
             >>>
             >>> client.rollback(session, transaction_id)
@@ -1255,16 +1253,16 @@ class SpannerClient(object):
                         metadata=None):
         """
         Creates a set of partition tokens that can be used to execute a query
-        operation in parallel.  Each of the returned partition tokens can be used
-        by ``ExecuteStreamingSql`` to specify a subset
-        of the query result to read.  The same session and read-only transaction
-        must be used by the PartitionQueryRequest used to create the
-        partition tokens and the ExecuteSqlRequests that use the partition tokens.
+        operation in parallel. Each of the returned partition tokens can be used
+        by ``ExecuteStreamingSql`` to specify a subset of the query result to
+        read. The same session and read-only transaction must be used by the
+        PartitionQueryRequest used to create the partition tokens and the
+        ExecuteSqlRequests that use the partition tokens.
 
-        Partition tokens become invalid when the session used to create them
-        is deleted, is idle for too long, begins a new transaction, or becomes too
-        old.  When any of these happen, it is not possible to resume the query, and
-        the whole operation must be restarted from the beginning.
+        Partition tokens become invalid when the session used to create them is
+        deleted, is idle for too long, begins a new transaction, or becomes too
+        old. When any of these happen, it is not possible to resume the query,
+        and the whole operation must be restarted from the beginning.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -1273,7 +1271,7 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``sql``:
+            >>> # TODO: Initialize `sql`:
             >>> sql = ''
             >>>
             >>> response = client.partition_query(session, sql)
@@ -1282,45 +1280,48 @@ class SpannerClient(object):
             session (str): Required. The session used to create the partitions.
             sql (str): The query request to generate partitions for. The request will fail if
                 the query is not root partitionable. The query plan of a root
-                partitionable query has a single distributed union operator. A distributed
-                union operator conceptually divides one or more tables into multiple
-                splits, remotely evaluates a subquery independently on each split, and
-                then unions all results.
+                partitionable query has a single distributed union operator. A
+                distributed union operator conceptually divides one or more tables into
+                multiple splits, remotely evaluates a subquery independently on each
+                split, and then unions all results.
 
-                This must not contain DML commands, such as INSERT, UPDATE, or
-                DELETE. Use ``ExecuteStreamingSql`` with a
-                PartitionedDml transaction for large, partition-friendly DML operations.
+                This must not contain DML commands, such as INSERT, UPDATE, or DELETE.
+                Use ``ExecuteStreamingSql`` with a PartitionedDml transaction for large,
+                partition-friendly DML operations.
             transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): Read only snapshot transactions are supported, read/write and single use
                 transactions are not.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
             params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): The SQL query string can contain parameter placeholders. A parameter
-                placeholder consists of ``'@'`` followed by the parameter
-                name. Parameter names consist of any combination of letters,
-                numbers, and underscores.
+                placeholder consists of ``'@'`` followed by the parameter name.
+                Parameter names consist of any combination of letters, numbers, and
+                underscores.
 
-                Parameters can appear anywhere that a literal value is expected.  The same
-                parameter name can be used more than once, for example:
-                  ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
+                Parameters can appear anywhere that a literal value is expected. The
+                same parameter name can be used more than once, for example:
+                ``"WHERE id > @msg_id AND id < @msg_id + 100"``
 
                 It is an error to execute an SQL query with unbound parameters.
 
-                Parameter values are specified using ``params``, which is a JSON
-                object whose keys are parameter names, and whose values are the
-                corresponding parameter values.
+                Parameter values are specified using ``params``, which is a JSON object
+                whose keys are parameter names, and whose values are the corresponding
+                parameter values.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Struct`
             param_types (dict[str -> Union[dict, ~google.cloud.spanner_v1.types.Type]]): It is not always possible for Cloud Spanner to infer the right SQL type
-                from a JSON value.  For example, values of type ``BYTES`` and values
-                of type ``STRING`` both appear in ``params`` as JSON strings.
+                from a JSON value. For example, values of type ``BYTES`` and values of
+                type ``STRING`` both appear in ``params`` as JSON strings.
 
-                In these cases, ``param_types`` can be used to specify the exact
-                SQL type for some or all of the SQL query parameters. See the
-                definition of ``Type`` for more information
-                about SQL types.
+                In these cases, ``param_types`` can be used to specify the exact SQL
+                type for some or all of the SQL query parameters. See the definition of
+                ``Type`` for more information about SQL types.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Type`
             partition_options (Union[dict, ~google.cloud.spanner_v1.types.PartitionOptions]): Additional options that affect how many partitions are created.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.PartitionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1377,18 +1378,19 @@ class SpannerClient(object):
                        metadata=None):
         """
         Creates a set of partition tokens that can be used to execute a read
-        operation in parallel.  Each of the returned partition tokens can be used
-        by ``StreamingRead`` to specify a subset of the read
-        result to read.  The same session and read-only transaction must be used by
-        the PartitionReadRequest used to create the partition tokens and the
-        ReadRequests that use the partition tokens.  There are no ordering
+        operation in parallel. Each of the returned partition tokens can be used
+        by ``StreamingRead`` to specify a subset of the read result to read. The
+        same session and read-only transaction must be used by the
+        PartitionReadRequest used to create the partition tokens and the
+        ReadRequests that use the partition tokens. There are no ordering
         guarantees on rows returned among the returned partition tokens, or even
-        within each individual StreamingRead call issued with a partition_token.
+        within each individual StreamingRead call issued with a
+        partition\_token.
 
-        Partition tokens become invalid when the session used to create them
-        is deleted, is idle for too long, begins a new transaction, or becomes too
-        old.  When any of these happen, it is not possible to resume the read, and
-        the whole operation must be restarted from the beginning.
+        Partition tokens become invalid when the session used to create them is
+        deleted, is idle for too long, begins a new transaction, or becomes too
+        old. When any of these happen, it is not possible to resume the read,
+        and the whole operation must be restarted from the beginning.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -1397,10 +1399,10 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``table``:
+            >>> # TODO: Initialize `table`:
             >>> table = ''
             >>>
-            >>> # TODO: Initialize ``key_set``:
+            >>> # TODO: Initialize `key_set`:
             >>> key_set = {}
             >>>
             >>> response = client.partition_read(session, table, key_set)
@@ -1408,25 +1410,28 @@ class SpannerClient(object):
         Args:
             session (str): Required. The session used to create the partitions.
             table (str): Required. The name of the table in the database to be read.
-            key_set (Union[dict, ~google.cloud.spanner_v1.types.KeySet]): Required. ``key_set`` identifies the rows to be yielded. ``key_set`` names the
-                primary keys of the rows in ``table`` to be yielded, unless ``index``
-                is present. If ``index`` is present, then ``key_set`` instead names
-                index keys in ``index``.
+            key_set (Union[dict, ~google.cloud.spanner_v1.types.KeySet]): Required. ``key_set`` identifies the rows to be yielded. ``key_set``
+                names the primary keys of the rows in ``table`` to be yielded, unless
+                ``index`` is present. If ``index`` is present, then ``key_set`` instead
+                names index keys in ``index``.
 
-                It is not an error for the ``key_set`` to name rows that do not
-                exist in the database. Read yields nothing for nonexistent rows.
+                It is not an error for the ``key_set`` to name rows that do not exist in
+                the database. Read yields nothing for nonexistent rows.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.KeySet`
             transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): Read only snapshot transactions are supported, read/write and single use
                 transactions are not.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
-            index (str): If non-empty, the name of an index on ``table``. This index is
-                used instead of the table primary key when interpreting ``key_set``
-                and sorting result rows. See ``key_set`` for further information.
-            columns (list[str]): The columns of ``table`` to be returned for each row matching
-                this request.
+            index (str): If non-empty, the name of an index on ``table``. This index is used
+                instead of the table primary key when interpreting ``key_set`` and
+                sorting result rows. See ``key_set`` for further information.
+            columns (list[str]): The columns of ``table`` to be returned for each row matching this
+                request.
             partition_options (Union[dict, ~google.cloud.spanner_v1.types.PartitionOptions]): Additional options that affect how many partitions are created.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.PartitionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used

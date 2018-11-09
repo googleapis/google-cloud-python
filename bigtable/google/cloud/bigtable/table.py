@@ -31,6 +31,7 @@ from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
+from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
 from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable import enums
@@ -60,7 +61,7 @@ DEFAULT_RETRY = Retry(
     multiplier=2.0,
     deadline=120.0,  # 2 minutes
 )
-"""The default retry stategy to be used on retry-able errors.
+"""The default retry strategy to be used on retry-able errors.
 
 Used by :meth:`~google.cloud.bigtable.table.Table.mutate_rows`.
 """
@@ -298,7 +299,8 @@ class Table(object):
         return row
 
     def read_rows(self, start_key=None, end_key=None, limit=None,
-                  filter_=None, end_inclusive=False, row_set=None):
+                  filter_=None, end_inclusive=False, row_set=None,
+                  retry=DEFAULT_RETRY_READ_ROWS):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -329,6 +331,14 @@ class Table(object):
         :param filter_: (Optional) The row set containing multiple row keys and
                         row_ranges.
 
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry:
+            (Optional) Retry delay and deadline arguments. To override, the
+            default value :attr:`DEFAULT_RETRY_READ_ROWS` can be used and
+            modified with the :meth:`~google.api_core.retry.Retry.with_delay`
+            method or the :meth:`~google.api_core.retry.Retry.with_deadline`
+            method.
+
         :rtype: :class:`.PartialRowsData`
         :returns: A :class:`.PartialRowsData` a generator for consuming
                   the streamed results.
@@ -340,7 +350,7 @@ class Table(object):
         data_client = self._instance._client.table_data_client
         return PartialRowsData(
             data_client.transport.read_rows,
-            request_pb)
+            request_pb, retry)
 
     def yield_rows(self, **kwargs):
         """Read rows from this table.
@@ -559,7 +569,7 @@ class _RetryableMutateRowsWorker(object):
 
         try:
             mutate_rows()
-        except (_BigtableRetryableError, RetryError) as err:
+        except (_BigtableRetryableError, RetryError):
             # - _BigtableRetryableError raised when no retry strategy is used
             #   and a retryable error on a mutation occurred.
             # - RetryError raised when retry deadline is reached.
@@ -833,7 +843,7 @@ def _check_row_table_name(table_name, row):
     :raises: :exc:`~.table.TableMismatchError` if the row does not belong to
              the table.
     """
-    if row.table.name != table_name:
+    if row.table is not None and row.table.name != table_name:
         raise TableMismatchError(
             'Row %s is a part of %s table. Current table: %s' %
             (row.row_key, row.table.name, table_name))

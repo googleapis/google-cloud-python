@@ -23,12 +23,12 @@ config = {
                     "retry_params_name": "default"
                 },
                 "GetInstance": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "ListInstances": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
@@ -43,7 +43,7 @@ config = {
                     "retry_params_name": "default"
                 },
                 "DeleteInstance": {
-                    "timeout_millis": 150000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
@@ -53,12 +53,12 @@ config = {
                     "retry_params_name": "default"
                 },
                 "GetCluster": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "ListClusters": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
@@ -68,47 +68,47 @@ config = {
                     "retry_params_name": "default"
                 },
                 "DeleteCluster": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "CreateAppProfile": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "GetAppProfile": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "ListAppProfiles": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "UpdateAppProfile": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "DeleteAppProfile": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "GetIamPolicy": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "SetIamPolicy": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "TestIamPermissions": {
-                    "timeout_millis": 120000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 }

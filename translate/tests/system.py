@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,7 +75,7 @@ class TestTranslate(unittest.TestCase):
         self.assertEqual(
             translations[2]['detectedSourceLanguage'], 'es')
         self.assertEqual(
-            translations[2]['translatedText'].lower(), 'mein name ist jeff')
+            translations[2]['translatedText'].lower(), u'ich heiße jeff')
 
         self.assertEqual(
             translations[3]['detectedSourceLanguage'], 'en')

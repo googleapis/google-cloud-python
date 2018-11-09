@@ -27,7 +27,9 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.bigtable.table.Table` owns a
   :class:`~google.cloud.bigtable.row.Row` (and all the cells in the row)
 """
-
+import os
+import warnings
+import grpc
 
 from google.api_core.gapic_v1 import client_info
 
@@ -42,6 +44,7 @@ from google.cloud.client import ClientWithProject
 
 from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 
 INSTANCE_TYPE_PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -56,6 +59,19 @@ DATA_SCOPE = 'https://www.googleapis.com/auth/bigtable.data'
 """Scope for reading and writing table data."""
 READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
+
+
+def _create_gapic_client(client_class):
+
+    def inner(self):
+        if self._emulator_host is None:
+            return client_class(
+                credentials=self._credentials, client_info=_CLIENT_INFO)
+        else:
+            return client_class(
+                channel=self._emulator_channel, client_info=_CLIENT_INFO)
+
+    return inner
 
 
 class Client(ClientWithProject):
@@ -87,10 +103,10 @@ class Client(ClientWithProject):
                   requires the :const:`ADMIN_SCOPE`. Defaults to :data:`False`.
 
     :type channel: :instance: grpc.Channel
-    :param channel (grpc.Channel): (Optional) A ``Channel`` instance
-            through which to make calls. This argument is mutually
-            exclusive with ``credentials``; providing both will raise an
-            exception.
+    :param channel (grpc.Channel): (Optional) DEPRECATED:
+            A ``Channel`` instance through which to make calls.
+            This argument is mutually exclusive with ``credentials``;
+            providing both will raise an exception. No longer used.
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
@@ -109,6 +125,17 @@ class Client(ClientWithProject):
         #       It **may** use those scopes in ``with_scopes_if_required``.
         self._read_only = bool(read_only)
         self._admin = bool(admin)
+        self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
+        self._emulator_channel = None
+
+        if self._emulator_host is not None:
+            self._emulator_channel = grpc.insecure_channel(self._emulator_host)
+
+        if channel is not None:
+            warnings.warn(
+                "'channel' is deprecated and no longer used.",
+                DeprecationWarning, stacklevel=2)
+
         self._channel = channel
         self.SCOPE = self._get_scopes()
         super(Client, self).__init__(project=project, credentials=credentials)
@@ -145,8 +172,7 @@ class Client(ClientWithProject):
         :rtype: str
         :returns: Return a fully-qualified project string.
         """
-        instance_client = self.instance_admin_client
-        return instance_client.project_path(self.project)
+        return self.instance_admin_client.project_path(self.project)
 
     @property
     def table_data_client(self):
@@ -156,10 +182,8 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
-            self._table_data_client = (
-                bigtable_v2.BigtableClient(credentials=self._credentials,
-                                           client_info=_CLIENT_INFO))
-
+            self._table_data_client = _create_gapic_client(
+                bigtable_v2.BigtableClient)(self)
         return self._table_data_client
 
     @property
@@ -175,10 +199,8 @@ class Client(ClientWithProject):
         if self._table_admin_client is None:
             if not self._admin:
                 raise ValueError('Client is not an admin client.')
-            self._table_admin_client = (
-                bigtable_admin_v2.BigtableTableAdminClient(
-                    credentials=self._credentials, client_info=_CLIENT_INFO))
-
+            self._table_admin_client = _create_gapic_client(
+                bigtable_admin_v2.BigtableTableAdminClient)(self)
         return self._table_admin_client
 
     @property
@@ -194,14 +216,19 @@ class Client(ClientWithProject):
         if self._instance_admin_client is None:
             if not self._admin:
                 raise ValueError('Client is not an admin client.')
-            self._instance_admin_client = (
-                bigtable_admin_v2.BigtableInstanceAdminClient(
-                    credentials=self._credentials, client_info=_CLIENT_INFO))
+            self._instance_admin_client = _create_gapic_client(
+                bigtable_admin_v2.BigtableInstanceAdminClient)(self)
         return self._instance_admin_client
 
     def instance(self, instance_id, display_name=None,
                  instance_type=None, labels=None):
         """Factory to create a instance associated with this client.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_prod_instance]
+            :end-before: [END bigtable_create_prod_instance]
 
         :type instance_id: str
         :param instance_id: The ID of the instance.
@@ -241,6 +268,12 @@ class Client(ClientWithProject):
     def list_instances(self):
         """List instances owned by the project.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_instances]
+            :end-before: [END bigtable_list_instances]
+
         :rtype: tuple
         :returns:
             (instances, failed_locations), where 'instances' is list of
@@ -255,6 +288,12 @@ class Client(ClientWithProject):
 
     def list_clusters(self):
         """List the clusters in the project.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_list_clusters_in_project]
+            :end-before: [END bigtable_list_clusters_in_project]
 
         :rtype: tuple
         :returns:

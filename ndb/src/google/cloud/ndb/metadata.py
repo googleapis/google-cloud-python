@@ -29,6 +29,8 @@ __all__ = [
 
 
 class EntityGroup:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -54,15 +56,21 @@ def get_representations_of_kind(*args, **kwargs):
 
 
 class Kind:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class Namespace:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class Property:
+    __slots__ = ()
+
     def __init__(self, *args, **kwargs):
         raise NotImplementedError

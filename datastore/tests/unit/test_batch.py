@@ -119,7 +119,7 @@ class TestBatch(unittest.TestCase):
             'foo': 'bar',
             'baz': 'qux',
             'spam': [1, 2, 3],
-            'frotz': [],  # will be ignored
+            'frotz': [],
         }
         client = _Client(project)
         batch = self._make_one(client)
@@ -134,7 +134,7 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(mutated_entity.key, key._key)
 
         prop_dict = dict(_property_tuples(mutated_entity))
-        self.assertEqual(len(prop_dict), 3)
+        self.assertEqual(len(prop_dict), 4)
         self.assertFalse(prop_dict['foo'].exclude_from_indexes)
         self.assertTrue(prop_dict['baz'].exclude_from_indexes)
         self.assertFalse(prop_dict['spam'].exclude_from_indexes)
@@ -142,7 +142,7 @@ class TestBatch(unittest.TestCase):
         self.assertTrue(spam_values[0].exclude_from_indexes)
         self.assertTrue(spam_values[1].exclude_from_indexes)
         self.assertTrue(spam_values[2].exclude_from_indexes)
-        self.assertFalse('frotz' in prop_dict)
+        self.assertTrue('frotz' in prop_dict)
 
     def test_delete_wrong_status(self):
         project = 'PROJECT'

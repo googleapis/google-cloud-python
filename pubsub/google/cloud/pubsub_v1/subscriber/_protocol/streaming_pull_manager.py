@@ -264,7 +264,7 @@ class StreamingPullManager(object):
         if self._UNARY_REQUESTS:
             try:
                 self._send_unary_request(request)
-            except exceptions.GoogleAPICallError as exc:
+            except exceptions.GoogleAPICallError:
                 _LOGGER.debug(
                     'Exception while sending unary RPC. This is typically '
                     'non-fatal as stream requests are best-effort.',

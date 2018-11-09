@@ -20,11 +20,32 @@ legacy Google App Engine runtime.
 """
 
 
-__all__ = ["Error", "BadValueError", "BadArgumentError", "Rollback"]
+__all__ = [
+    "Error",
+    "AsyncContextError",
+    "BadValueError",
+    "BadArgumentError",
+    "Rollback",
+    "BadFilterError",
+]
 
 
 class Error(Exception):
     """Base datastore error type."""
+
+
+class AsyncContextError(Error):
+    """Indicates an async call being made without a context.
+
+    Raised whenever an asynchronous call is made outside of a context
+    established by :func:`google.cloud.ndb.async_context`.
+    """
+
+    def __init__(self):
+        super(AsyncContextError, self).__init__(
+            "No currently running event loop. Asynchronous calls must be made "
+            "in context established by google.cloud.ndb.async_context."
+        )
 
 
 class BadValueError(Error):
@@ -48,3 +69,20 @@ class Rollback(Error):
     Note that *any* exception raised by a transaction function will cause a
     rollback. Hence, this exception type is purely for convenience.
     """
+
+
+class BadQueryError(Error):
+    """Raised by Query when a query or query string is invalid."""
+
+
+class BadFilterError(Error):
+    """Indicates a filter value is invalid.
+
+    Raised by ``Query.__setitem__()`` and ``Query.Run()`` when a filter string
+    is invalid.
+    """
+
+    def __init__(self, filter):
+        self.filter = filter
+        message = "invalid filter: {}.".format(self.filter).encode("utf-8")
+        super(BadFilterError, self).__init__(message)

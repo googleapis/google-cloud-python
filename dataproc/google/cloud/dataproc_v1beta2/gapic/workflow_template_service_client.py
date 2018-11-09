@@ -171,9 +171,10 @@ class WorkflowTemplateServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -207,16 +208,17 @@ class WorkflowTemplateServiceClient(object):
             >>>
             >>> parent = client.region_path('[PROJECT]', '[REGION]')
             >>>
-            >>> # TODO: Initialize ``template``:
+            >>> # TODO: Initialize `template`:
             >>> template = {}
             >>>
             >>> response = client.create_workflow_template(parent, template)
 
         Args:
-            parent (str): Required. The \"resource name\" of the region, as described
-                in https://cloud.google.com/apis/design/resource_names of the form
+            parent (str): Required. The "resource name" of the region, as described in
+                https://cloud.google.com/apis/design/resource\_names of the form
                 ``projects/{project_id}/regions/{region}``
             template (Union[dict, ~google.cloud.dataproc_v1beta2.types.WorkflowTemplate]): Required. The Dataproc workflow template to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -279,8 +281,8 @@ class WorkflowTemplateServiceClient(object):
             >>> response = client.get_workflow_template(name)
 
         Args:
-            name (str): Required. The \"resource name\" of the workflow template, as described
-                in https://cloud.google.com/apis/design/resource_names of the form
+            name (str): Required. The "resource name" of the workflow template, as described in
+                https://cloud.google.com/apis/design/resource\_names of the form
                 ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
             version (int): Optional. The version of workflow template to retrieve. Only previously
                 instatiated versions can be retrieved.
@@ -335,22 +337,17 @@ class WorkflowTemplateServiceClient(object):
         """
         Instantiates a template and begins execution.
 
-        The returned Operation can be used to track execution of
-        workflow by polling
-        ``operations.get``.
-        The Operation will complete when entire workflow is finished.
+        The returned Operation can be used to track execution of workflow by
+        polling ``operations.get``. The Operation will complete when entire
+        workflow is finished.
 
-        The running workflow can be aborted via
-        ``operations.cancel``.
-        This will cause any inflight jobs to be cancelled and workflow-owned
-        clusters to be deleted.
+        The running workflow can be aborted via ``operations.cancel``. This will
+        cause any inflight jobs to be cancelled and workflow-owned clusters to
+        be deleted.
 
-        The ``Operation.metadata`` will be
-        ``WorkflowMetadata``.
+        The ``Operation.metadata`` will be ``WorkflowMetadata``.
 
-        On successful completion,
-        ``Operation.response`` will be
-        ``Empty``.
+        On successful completion, ``Operation.response`` will be ``Empty``.
 
         Example:
             >>> from google.cloud import dataproc_v1beta2
@@ -371,8 +368,8 @@ class WorkflowTemplateServiceClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            name (str): Required. The \"resource name\" of the workflow template, as described
-                in https://cloud.google.com/apis/design/resource_names of the form
+            name (str): Required. The "resource name" of the workflow template, as described in
+                https://cloud.google.com/apis/design/resource\_names of the form
                 ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
             version (int): Optional. The version of workflow template to instantiate. If specified,
                 the workflow will be instantiated only if the current version of
@@ -380,15 +377,15 @@ class WorkflowTemplateServiceClient(object):
 
                 This option cannot be used to instantiate a previous version of
                 workflow template.
-            instance_id (str): Optional. A tag that prevents multiple concurrent workflow
-                instances with the same tag from running. This mitigates risk of
-                concurrent instances started due to retries.
+            instance_id (str): Optional. A tag that prevents multiple concurrent workflow instances
+                with the same tag from running. This mitigates risk of concurrent
+                instances started due to retries.
 
                 It is recommended to always set this value to a
-                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`_.
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
-                The tag must contain only letters (a-z, A-Z), numbers (0-9),
-                underscores (_), and hyphens (-). The maximum length is 40 characters.
+                The tag must contain only letters (a-z, A-Z), numbers (0-9), underscores
+                (\_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -449,7 +446,7 @@ class WorkflowTemplateServiceClient(object):
             >>>
             >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
             >>>
-            >>> # TODO: Initialize ``template``:
+            >>> # TODO: Initialize `template`:
             >>> template = {}
             >>>
             >>> response = client.update_workflow_template(template)
@@ -458,6 +455,7 @@ class WorkflowTemplateServiceClient(object):
             template (Union[dict, ~google.cloud.dataproc_v1beta2.types.WorkflowTemplate]): Required. The updated workflow template.
 
                 The ``template.version`` field must match the current version.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -522,14 +520,14 @@ class WorkflowTemplateServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_workflow_templates(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_workflow_templates(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): Required. The \"resource name\" of the region, as described
-                in https://cloud.google.com/apis/design/resource_names of the form
+            parent (str): Required. The "resource name" of the region, as described in
+                https://cloud.google.com/apis/design/resource\_names of the form
                 ``projects/{project_id}/regions/{region}``
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -608,8 +606,8 @@ class WorkflowTemplateServiceClient(object):
             >>> client.delete_workflow_template(name)
 
         Args:
-            name (str): Required. The \"resource name\" of the workflow template, as described
-                in https://cloud.google.com/apis/design/resource_names of the form
+            name (str): Required. The "resource name" of the workflow template, as described in
+                https://cloud.google.com/apis/design/resource\_names of the form
                 ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
             version (int): Optional. The version of workflow template to delete. If specified,
                 will only delete the template if the current server version matches

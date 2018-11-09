@@ -926,8 +926,13 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`Blob`
         :returns: The newly-renamed blob.
         """
+        same_name = blob.name == new_name
+
         new_blob = self.copy_blob(blob, self, new_name, client=client)
-        blob.delete(client=client)
+
+        if not same_name:
+            blob.delete(client=client)
+
         return new_blob
 
     @property
@@ -1347,8 +1352,9 @@ class Bucket(_PropertyMixin):
         """
         policy = self._properties.setdefault('retentionPolicy', {})
         if value is not None:
-            value = str(value)
-        policy['retentionPeriod'] = value
+            policy['retentionPeriod'] = str(value)
+        else:
+            policy = None
         self._patch_property('retentionPolicy', policy)
 
     @property

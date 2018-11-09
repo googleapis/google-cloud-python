@@ -13,14 +13,16 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/vision_v1/proto/geometry.proto',
   package='google.cloud.vision.v1',
   syntax='proto3',
-  serialized_pb=_b('\n+google/cloud/vision_v1/proto/geometry.proto\x12\x16google.cloud.vision.v1\"\x1e\n\x06Vertex\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"(\n\x10NormalizedVertex\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\"\x87\x01\n\x0c\x42oundingPoly\x12\x30\n\x08vertices\x18\x01 \x03(\x0b\x32\x1e.google.cloud.vision.v1.Vertex\x12\x45\n\x13normalized_vertices\x18\x02 \x03(\x0b\x32(.google.cloud.vision.v1.NormalizedVertex\"+\n\x08Position\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\x42u\n\x1a\x63om.google.cloud.vision.v1B\rGeometryProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\xa2\x02\x04GCVNb\x06proto3')
-)
+  serialized_pb=_b('\n+google/cloud/vision_v1/proto/geometry.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\"\x1e\n\x06Vertex\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"(\n\x10NormalizedVertex\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\"\x87\x01\n\x0c\x42oundingPoly\x12\x30\n\x08vertices\x18\x01 \x03(\x0b\x32\x1e.google.cloud.vision.v1.Vertex\x12\x45\n\x13normalized_vertices\x18\x02 \x03(\x0b\x32(.google.cloud.vision.v1.NormalizedVertex\"+\n\x08Position\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\x42u\n\x1a\x63om.google.cloud.vision.v1B\rGeometryProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\xa2\x02\x04GCVNb\x06proto3')
+  ,
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
 
 
@@ -58,8 +60,8 @@ _VERTEX = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=71,
-  serialized_end=101,
+  serialized_start=101,
+  serialized_end=131,
 )
 
 
@@ -96,8 +98,8 @@ _NORMALIZEDVERTEX = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=103,
-  serialized_end=143,
+  serialized_start=133,
+  serialized_end=173,
 )
 
 
@@ -134,8 +136,8 @@ _BOUNDINGPOLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=146,
-  serialized_end=281,
+  serialized_start=176,
+  serialized_end=311,
 )
 
 
@@ -179,8 +181,8 @@ _POSITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=283,
-  serialized_end=326,
+  serialized_start=313,
+  serialized_end=356,
 )
 
 _BOUNDINGPOLY.fields_by_name['vertices'].message_type = _VERTEX

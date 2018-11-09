@@ -536,7 +536,7 @@ class Table(object):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
             "Table.time_partitioning.type_ instead.",
-            UserWarning)
+            PendingDeprecationWarning, stacklevel=2)
         if self.time_partitioning is not None:
             return self.time_partitioning.type_
 
@@ -545,7 +545,7 @@ class Table(object):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
             "Table.time_partitioning.type_ instead.",
-            UserWarning)
+            PendingDeprecationWarning, stacklevel=2)
         if self.time_partitioning is None:
             self._properties['timePartitioning'] = {}
         self._properties['timePartitioning']['type'] = value
@@ -561,7 +561,7 @@ class Table(object):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
             "Table.time_partitioning.expiration_ms instead.",
-            UserWarning)
+            PendingDeprecationWarning, stacklevel=2)
         if self.time_partitioning is not None:
             return self.time_partitioning.expiration_ms
 
@@ -570,7 +570,7 @@ class Table(object):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
             "Table.time_partitioning.expiration_ms instead.",
-            UserWarning)
+            PendingDeprecationWarning, stacklevel=2)
         if self.time_partitioning is None:
             self._properties['timePartitioning'] = {
                 'type': TimePartitioningType.DAY}
@@ -928,7 +928,7 @@ class TableListItem(object):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
             "TableListItem.time_partitioning.type_ instead.",
-            PendingDeprecationWarning)
+            PendingDeprecationWarning, stacklevel=2)
         if self.time_partitioning is not None:
             return self.time_partitioning.type_
 
@@ -942,7 +942,7 @@ class TableListItem(object):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
             "TableListItem.time_partitioning.expiration_ms instead.",
-            PendingDeprecationWarning)
+            PendingDeprecationWarning, stacklevel=2)
         if self.time_partitioning is not None:
             return self.time_partitioning.expiration_ms
 

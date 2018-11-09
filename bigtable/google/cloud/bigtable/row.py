@@ -520,9 +520,13 @@ class ConditionalRow(_SetDeleteRow):
 
         data_client = self._table._instance._client.table_data_client
         resp = data_client.check_and_mutate_row(
-            table_name=self._table.name, row_key=self._row_key,)
+            table_name=self._table.name,
+            row_key=self._row_key,
+            predicate_filter=self._filter.to_pb(),
+            true_mutations=true_mutations,
+            false_mutations=false_mutations)
         self.clear()
-        return resp[0].predicate_matched
+        return resp.predicate_matched
 
     # pylint: disable=arguments-differ
     def set_cell(self, column_family_id, column, value, timestamp=None,

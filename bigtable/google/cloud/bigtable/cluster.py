@@ -172,7 +172,14 @@ class Cluster(object):
         return not self == other
 
     def reload(self):
-        """Reload the metadata for this cluster."""
+        """Reload the metadata for this cluster.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_reload_cluster]
+            :end-before: [END bigtable_reload_cluster]
+        """
         cluster_pb = self._instance._client.instance_admin_client.get_cluster(
             self.name)
 
@@ -182,6 +189,12 @@ class Cluster(object):
 
     def exists(self):
         """Check whether the cluster already exists.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_check_cluster_exists]
+            :end-before: [END bigtable_check_cluster_exists]
 
         :rtype: bool
         :returns: True if the table exists, else False.
@@ -196,6 +209,12 @@ class Cluster(object):
 
     def create(self):
         """Create this cluster.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_cluster]
+            :end-before: [END bigtable_create_cluster]
 
         .. note::
 
@@ -222,6 +241,12 @@ class Cluster(object):
 
     def update(self):
         """Update this cluster.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_update_cluster]
+            :end-before: [END bigtable_update_cluster]
 
         .. note::
 
@@ -259,6 +284,12 @@ class Cluster(object):
 
     def delete(self):
         """Delete this cluster.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_delete_cluster]
+            :end-before: [END bigtable_delete_cluster]
 
         Marks a cluster and all of its tables for permanent deletion in 7 days.
 
