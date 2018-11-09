@@ -50,6 +50,7 @@ your job. For more information about query configuration parameters see `here
 .. note::
 
     The ``dialect`` argument can be used to indicate whether to use BigQuery's ``'legacy'`` SQL
-    or BigQuery's ``'standard'`` SQL (beta). The default value is ``'legacy'``. For more information
+    or BigQuery's ``'standard'`` SQL (beta). The default value is ``'legacy'``, though this will change
+    in a subsequent release to ``'standard'``. For more information
     on BigQuery's standard SQL, see `BigQuery SQL Reference
     <https://cloud.google.com/bigquery/sql-reference/>`__

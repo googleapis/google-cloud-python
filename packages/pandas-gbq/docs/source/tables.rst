@@ -14,9 +14,3 @@ Creating Tables
             {'name': 'my_int64', 'type': 'INTEGER'},
             {'name': 'my_string', 'type': 'STRING'}]}
 
-.. note::
-
-   If you delete and re-create a BigQuery table with the same name, but different table schema,
-   you must wait 2 minutes before streaming data into the table. As a workaround, consider creating
-   the new table with a different name. Refer to
-   `Google BigQuery issue 191 <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__.

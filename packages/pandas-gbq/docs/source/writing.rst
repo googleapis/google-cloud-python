@@ -51,11 +51,6 @@ a ``TableCreationError`` if the destination table already exists.
 
 .. note::
 
-   The BigQuery SQL query language has some oddities, see the
-   `BigQuery Query Reference Documentation <https://cloud.google.com/bigquery/query-reference>`__.
-
-.. note::
-
    While BigQuery uses SQL-like syntax, it has some important differences
    from traditional databases both in functionality, API limitations (size
    and quantity of queries or uploads), and how Google charges for use of the
