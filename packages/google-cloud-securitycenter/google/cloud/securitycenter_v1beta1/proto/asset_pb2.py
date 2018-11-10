@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/securitycenter_v1beta1/proto/asset.proto',
   package='google.cloud.securitycenter.v1beta1',
   syntax='proto3',
-  serialized_pb=_b('\n5google/cloud/securitycenter_v1beta1/proto/asset.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/cloud/securitycenter_v1beta1/proto/security_marks.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf7\x04\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12g\n\x1asecurity_center_properties\x18\x02 \x01(\x0b\x32\x43.google.cloud.securitycenter.v1beta1.Asset.SecurityCenterProperties\x12_\n\x13resource_properties\x18\x07 \x03(\x0b\x32\x42.google.cloud.securitycenter.v1beta1.Asset.ResourcePropertiesEntry\x12J\n\x0esecurity_marks\x18\x08 \x01(\x0b\x32\x32.google.cloud.securitycenter.v1beta1.SecurityMarks\x12/\n\x0b\x63reate_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x94\x01\n\x18SecurityCenterProperties\x12\x15\n\rresource_name\x18\x01 \x01(\t\x12\x15\n\rresource_type\x18\x02 \x01(\t\x12\x17\n\x0fresource_parent\x18\x03 \x01(\t\x12\x18\n\x10resource_project\x18\x04 \x01(\t\x12\x17\n\x0fresource_owners\x18\x05 \x03(\t\x1aQ\n\x17ResourcePropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01\x42|\n\'com.google.cloud.securitycenter.v1beta1ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3')
+  serialized_pb=_b('\n5google/cloud/securitycenter_v1beta1/proto/asset.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/cloud/securitycenter_v1beta1/proto/security_marks.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf7\x04\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12g\n\x1asecurity_center_properties\x18\x02 \x01(\x0b\x32\x43.google.cloud.securitycenter.v1beta1.Asset.SecurityCenterProperties\x12_\n\x13resource_properties\x18\x07 \x03(\x0b\x32\x42.google.cloud.securitycenter.v1beta1.Asset.ResourcePropertiesEntry\x12J\n\x0esecurity_marks\x18\x08 \x01(\x0b\x32\x32.google.cloud.securitycenter.v1beta1.SecurityMarks\x12/\n\x0b\x63reate_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x94\x01\n\x18SecurityCenterProperties\x12\x15\n\rresource_name\x18\x01 \x01(\t\x12\x15\n\rresource_type\x18\x02 \x01(\t\x12\x17\n\x0fresource_parent\x18\x03 \x01(\t\x12\x18\n\x10resource_project\x18\x04 \x01(\t\x12\x17\n\x0fresource_owners\x18\x05 \x03(\t\x1aQ\n\x17ResourcePropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01\x42~\n\'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_security__marks__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -208,21 +208,21 @@ Asset = _reflection.GeneratedProtocolMessageType('Asset', (_message.Message,), d
     DESCRIPTOR = _ASSET_SECURITYCENTERPROPERTIES,
     __module__ = 'google.cloud.securitycenter_v1beta1.proto.asset_pb2'
     ,
-    __doc__ = """Security Center managed properties. These properties are managed by
-    Security Center and cannot be modified by the user.
+    __doc__ = """Cloud SCC managed properties. These properties are managed by Cloud SCC
+    and cannot be modified by the user.
     
     
     Attributes:
         resource_name:
-            The full resource name of the Google Cloud Platform resource
-            this asset represents. This field is immutable after create
-            time. See: https://cloud.google.com/apis/design/resource\_name
-            s#full\_resource\_name
+            The full resource name of the GCP resource this asset
+            represents. This field is immutable after create time. See: ht
+            tps://cloud.google.com/apis/design/resource\_names#full\_resou
+            rce\_name
         resource_type:
-            The type of the Google Cloud resource. Examples include:
-            APPLICATION, PROJECT, and ORGANIZATION. This is a case
-            insensitive field defined by Security Center and/or the
-            producer of the resource and is immutable after create time.
+            The type of the GCP resource. Examples include: APPLICATION,
+            PROJECT, and ORGANIZATION. This is a case insensitive field
+            defined by Cloud SCC and/or the producer of the resource and
+            is immutable after create time.
         resource_parent:
             The full resource name of the immediate parent of the
             resource. See: https://cloud.google.com/apis/design/resource\_
@@ -247,12 +247,12 @@ Asset = _reflection.GeneratedProtocolMessageType('Asset', (_message.Message,), d
   DESCRIPTOR = _ASSET,
   __module__ = 'google.cloud.securitycenter_v1beta1.proto.asset_pb2'
   ,
-  __doc__ = """Security Center's representation of a Google Cloud Platform resource.
+  __doc__ = """Cloud Security Command Center's (Cloud SCC) representation of a Google
+  Cloud Platform (GCP) resource.
   
-  The Asset is a resource of Security Center that is meant to capture
-  information regarding a single Google Cloud Platform resource. All
-  modifications to an Asset are only within the context of Security Center
-  and do not effect the referenced Google Cloud Platform resource.
+  The Asset is a Cloud SCC resource that captures information about a
+  single GCP resource. All modifications to an Asset are only within the
+  context of Cloud SCC and don't affect the referenced GCP resource.
   
   
   Attributes:
@@ -261,21 +261,21 @@ Asset = _reflection.GeneratedProtocolMessageType('Asset', (_message.Message,), d
           oogle.com/apis/design/resource\_names#relative\_resource\_name
           Example: "organizations/123/assets/456".
       security_center_properties:
-          Security Center managed properties. These properties are
-          managed by Security Center and cannot be modified by the user.
+          Cloud SCC managed properties. These properties are managed by
+          Cloud SCC and cannot be modified by the user.
       resource_properties:
           Resource managed properties. These properties are managed and
-          defined by the Google Cloud Platform resource and cannot be
-          modified by the user.
+          defined by the GCP resource and cannot be modified by the
+          user.
       security_marks:
           User specified security marks. These marks are entirely
           managed by the user and come from the SecurityMarks resource
-          belonging to the asset.
+          that belongs to the asset.
       create_time:
-          The time at which the asset was created in Security Center.
+          The time at which the asset was created in Cloud SCC.
       update_time:
           The time at which the asset was last updated, added, or
-          deleted in Security Center.
+          deleted in Cloud SCC.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1beta1.Asset)
   ))
@@ -285,7 +285,7 @@ _sym_db.RegisterMessage(Asset.ResourcePropertiesEntry)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\'com.google.cloud.securitycenter.v1beta1ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter'))
 _ASSET_RESOURCEPROPERTIESENTRY.has_options = True
 _ASSET_RESOURCEPROPERTIESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 # @@protoc_insertion_point(module_scope)

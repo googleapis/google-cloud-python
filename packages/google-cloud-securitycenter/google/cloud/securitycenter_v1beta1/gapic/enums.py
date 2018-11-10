@@ -53,10 +53,10 @@ class OrganizationSettings(object):
             """
             The mode of inclusion when running Asset Discovery. Asset discovery can
             be limited by explicitly identifying projects to be included or
-            excluded. If INCLUDE\_ONLY is set then only those projects (within the
-            organization) and their children are discovered during asset discovery.
-            If EXCLUDE is set then projects not matching those projects are
-            discovered during asset discovery. If neither are set then all projects
+            excluded. If INCLUDE\_ONLY is set, then only those projects within the
+            organization and their children are discovered during asset discovery.
+            If EXCLUDE is set, then projects that don't match those projects are
+            discovered during asset discovery. If neither are set, then all projects
             within the organization are discovered during asset discovery.
 
             Attributes:
