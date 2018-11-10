@@ -213,7 +213,7 @@ class SecurityCenterGrpcTransport(object):
     def list_findings(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Lists an organization or source's assets.
+        Lists an organization or source's findings.
 
         To list across all sources provide a ``-`` as the source id. Example:
         /v1beta1/organizations/123/sources/-/findings

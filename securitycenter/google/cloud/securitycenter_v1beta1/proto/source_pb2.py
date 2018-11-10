@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/securitycenter_v1beta1/proto/source.proto',
   package='google.cloud.securitycenter.v1beta1',
   syntax='proto3',
-  serialized_pb=_b('\n6google/cloud/securitycenter_v1beta1/proto/source.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\"A\n\x06Source\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\tB|\n\'com.google.cloud.securitycenter.v1beta1ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3')
+  serialized_pb=_b('\n6google/cloud/securitycenter_v1beta1/proto/source.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\"A\n\x06Source\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\tB~\n\'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -79,9 +79,9 @@ Source = _reflection.GeneratedProtocolMessageType('Source', (_message.Message,),
   DESCRIPTOR = _SOURCE,
   __module__ = 'google.cloud.securitycenter_v1beta1.proto.source_pb2'
   ,
-  __doc__ = """Security Center's finding source. A finding source is an entity or a
-  mechanism that can produce a finding. A source can also be thought of as
-  a container of findings that come from the same scanner, logger,
+  __doc__ = """Cloud Security Command Center's (Cloud SCC) finding source. A finding
+  source is an entity or a mechanism that can produce a finding. A source
+  is like a container of findings that come from the same scanner, logger,
   monitor, etc.
   
   
@@ -92,18 +92,18 @@ Source = _reflection.GeneratedProtocolMessageType('Source', (_message.Message,),
           e Example: "organizations/123/sources/456"
       display_name:
           The source’s display name. A source’s display name must be
-          unique amongst its siblings, e.g. no two sources with the same
-          parent can share the same display name. The display name must
-          start and end with a letter or digit, may contain letters,
-          digits, spaces, hyphens and underscores and can be no longer
-          than 30 characters. This is captured by the regular
+          unique amongst its siblings, for example, two sources with the
+          same parent can't share the same display name. The display
+          name must start and end with a letter or digit, may contain
+          letters, digits, spaces, hyphens, and underscores, and can be
+          no longer than 30 characters. This is captured by the regular
           expression: `:raw-latex:`\p{L}`:raw-latex:`\p{N}` <%7B\p%7BL%7
           D\p%7BN%7D_-%20%5D%7B0,28%7D%5B\p%7BL%7D\p%7BN%7D%5D>`__?.
       description:
           The description of the source (max of 1024 characters).
           Example: "Cloud Security Scanner is a web security scanner for
-          common vulnerabilities in Google App Engine applications. It
-          can automatically scan and detect four common vulnerabilities,
+          common vulnerabilities in App Engine applications. It can
+          automatically scan and detect four common vulnerabilities,
           including cross-site-scripting (XSS), Flash injection, mixed
           content (HTTP in HTTPS), and outdated/insecure libraries."
   """,
@@ -113,5 +113,5 @@ _sym_db.RegisterMessage(Source)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\'com.google.cloud.securitycenter.v1beta1ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter'))
 # @@protoc_insertion_point(module_scope)
