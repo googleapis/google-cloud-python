@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/securitycenter_v1beta1/proto/security_marks.proto',
   package='google.cloud.securitycenter.v1beta1',
   syntax='proto3',
-  serialized_pb=_b('\n>google/cloud/securitycenter_v1beta1/proto/security_marks.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\"\x99\x01\n\rSecurityMarks\x12\x0c\n\x04name\x18\x01 \x01(\t\x12L\n\x05marks\x18\x02 \x03(\x0b\x32=.google.cloud.securitycenter.v1beta1.SecurityMarks.MarksEntry\x1a,\n\nMarksEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42|\n\'com.google.cloud.securitycenter.v1beta1ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3')
+  serialized_pb=_b('\n>google/cloud/securitycenter_v1beta1/proto/security_marks.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\"\x99\x01\n\rSecurityMarks\x12\x0c\n\x04name\x18\x01 \x01(\t\x12L\n\x05marks\x18\x02 \x03(\x0b\x32=.google.cloud.securitycenter.v1beta1.SecurityMarks.MarksEntry\x1a,\n\nMarksEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42~\n\'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -118,10 +118,10 @@ SecurityMarks = _reflection.GeneratedProtocolMessageType('SecurityMarks', (_mess
   DESCRIPTOR = _SECURITYMARKS,
   __module__ = 'google.cloud.securitycenter_v1beta1.proto.security_marks_pb2'
   ,
-  __doc__ = """User specified security marks that are attached to the parent Security
-  Center resource. Security marks are scoped within a Security Center
-  organization -- they are modifiable and viewable by all with proper
-  permissions on the organization.
+  __doc__ = """User specified security marks that are attached to the parent Cloud
+  Security Command Center (Cloud SCC) resource. Security marks are scoped
+  within a Cloud SCC organization -- they can be modified and viewed by
+  all users who have proper permissions on the organization.
   
   
   Attributes:
@@ -145,7 +145,7 @@ _sym_db.RegisterMessage(SecurityMarks.MarksEntry)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\'com.google.cloud.securitycenter.v1beta1ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter'))
 _SECURITYMARKS_MARKSENTRY.has_options = True
 _SECURITYMARKS_MARKSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 # @@protoc_insertion_point(module_scope)

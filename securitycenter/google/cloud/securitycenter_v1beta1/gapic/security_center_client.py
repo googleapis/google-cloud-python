@@ -569,7 +569,6 @@ class SecurityCenterClient(object):
 
                 The following fields are supported when compare\_duration is not set:
 
-                -  security\_center\_properties.resource\_name
                 -  security\_center\_properties.resource\_project
                 -  security\_center\_properties.resource\_type
                 -  security\_center\_properties.resource\_parent
@@ -622,8 +621,8 @@ class SecurityCenterClient(object):
                    compare\_duration, but present at reference\_time.
                 -  "REMOVED": indicates that the asset was present at the start of
                    compare\_duration, but not present at reference\_time.
-                -  "ACTIVE\_AT\_BOTH": indicates that the asset was present at both the
-                   start and the end of the time period defined by compare\_duration and
+                -  "ACTIVE": indicates that the asset was present at both the start and
+                   the end of the time period defined by compare\_duration and
                    reference\_time.
 
                 This field is ignored if ``state`` is not a field in ``group_by``.
@@ -1030,7 +1029,7 @@ class SecurityCenterClient(object):
                       timeout=google.api_core.gapic_v1.method.DEFAULT,
                       metadata=None):
         """
-        Lists an organization or source's assets.
+        Lists an organization or source's findings.
 
         To list across all sources provide a ``-`` as the source id. Example:
         /v1beta1/organizations/123/sources/-/findings

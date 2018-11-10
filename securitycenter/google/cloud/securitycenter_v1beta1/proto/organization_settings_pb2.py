@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/securitycenter_v1beta1/proto/organization_settings.proto',
   package='google.cloud.securitycenter.v1beta1',
   syntax='proto3',
-  serialized_pb=_b('\nEgoogle/cloud/securitycenter_v1beta1/proto/organization_settings.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\"\xa8\x03\n\x14OrganizationSettings\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1e\n\x16\x65nable_asset_discovery\x18\x02 \x01(\x08\x12n\n\x16\x61sset_discovery_config\x18\x03 \x01(\x0b\x32N.google.cloud.securitycenter.v1beta1.OrganizationSettings.AssetDiscoveryConfig\x1a\xf1\x01\n\x14\x41ssetDiscoveryConfig\x12\x13\n\x0bproject_ids\x18\x01 \x03(\t\x12t\n\x0einclusion_mode\x18\x02 \x01(\x0e\x32\\.google.cloud.securitycenter.v1beta1.OrganizationSettings.AssetDiscoveryConfig.InclusionMode\"N\n\rInclusionMode\x12\x1e\n\x1aINCLUSION_MODE_UNSPECIFIED\x10\x00\x12\x10\n\x0cINCLUDE_ONLY\x10\x01\x12\x0b\n\x07\x45XCLUDE\x10\x02\x42|\n\'com.google.cloud.securitycenter.v1beta1ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3')
+  serialized_pb=_b('\nEgoogle/cloud/securitycenter_v1beta1/proto/organization_settings.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\"\xa8\x03\n\x14OrganizationSettings\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1e\n\x16\x65nable_asset_discovery\x18\x02 \x01(\x08\x12n\n\x16\x61sset_discovery_config\x18\x03 \x01(\x0b\x32N.google.cloud.securitycenter.v1beta1.OrganizationSettings.AssetDiscoveryConfig\x1a\xf1\x01\n\x14\x41ssetDiscoveryConfig\x12\x13\n\x0bproject_ids\x18\x01 \x03(\t\x12t\n\x0einclusion_mode\x18\x02 \x01(\x0e\x32\\.google.cloud.securitycenter.v1beta1.OrganizationSettings.AssetDiscoveryConfig.InclusionMode\"N\n\rInclusionMode\x12\x1e\n\x1aINCLUSION_MODE_UNSPECIFIED\x10\x00\x12\x10\n\x0cINCLUDE_ONLY\x10\x01\x12\x0b\n\x07\x45XCLUDE\x10\x02\x42~\n\'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -164,8 +164,8 @@ OrganizationSettings = _reflection.GeneratedProtocolMessageType('OrganizationSet
   DESCRIPTOR = _ORGANIZATIONSETTINGS,
   __module__ = 'google.cloud.securitycenter_v1beta1.proto.organization_settings_pb2'
   ,
-  __doc__ = """User specified settings that are attached to the Security Center
-  organization.
+  __doc__ = """User specified settings that are attached to the Cloud Security Command
+  Center (Cloud SCC) organization.
   
   
   Attributes:
@@ -174,10 +174,10 @@ OrganizationSettings = _reflection.GeneratedProtocolMessageType('OrganizationSet
           .google.com/apis/design/resource\_names#relative\_resource\_na
           me Example: "organizations/123/organizationSettings".
       enable_asset_discovery:
-          A flag indicating whether Asset Discovery should be enabled.
-          If the flag is set to true then discovery of assets will
-          occur. If it is set to false all historical assets will remain
-          but discovery of future assets will not occur.
+          A flag that indicates if Asset Discovery should be enabled. If
+          the flag is set to ``true``, then discovery of assets will
+          occur. If it is set to \`false, all historical assets will
+          remain, but discovery of future assets will not occur.
       asset_discovery_config:
           The configuration used for Asset Discovery runs.
   """,
@@ -188,5 +188,5 @@ _sym_db.RegisterMessage(OrganizationSettings.AssetDiscoveryConfig)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\'com.google.cloud.securitycenter.v1beta1ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter'))
 # @@protoc_insertion_point(module_scope)
