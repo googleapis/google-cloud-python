@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Security Command Center API &#8212; google-cloud 56da978646 documentation</title>
+    <title>Client for Cloud Security Command Center API &#8212; google-cloud 20f2b92 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -203,7 +203,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="attribute">
 <dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.enums">
-<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.securitycenter_v1beta1.gapic.enums' from '/tmpfs/src/github/google-cloud-python/securitycenter/google/cloud/securitycenter_v1beta1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.enums" title="Permalink to this definition">#</a></dt>
+<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.securitycenter_v1beta1.gapic.enums' from '/var/code/gcp/securitycenter/google/cloud/securitycenter_v1beta1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.enums" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="classmethod">
@@ -454,7 +454,6 @@ For example:
 “security_center_properties.resource_project,security_center_properties.project”.</p>
 <p>The following fields are supported when compare_duration is not set:</p>
 <ul>
-<li>security_center_properties.resource_name</li>
 <li>security_center_properties.resource_project</li>
 <li>security_center_properties.resource_type</li>
 <li>security_center_properties.resource_parent</li>
@@ -507,8 +506,8 @@ is removed and re-created again.</p>
 compare_duration, but present at reference_time.</li>
 <li>”REMOVED”: indicates that the asset was present at the start of
 compare_duration, but not present at reference_time.</li>
-<li>”ACTIVE_AT_BOTH”: indicates that the asset was present at both the
-start and the end of the time period defined by compare_duration and
+<li>”ACTIVE”: indicates that the asset was present at both the start and
+the end of the time period defined by compare_duration and
 reference_time.</li>
 </ul>
 <p>This field is ignored if <code class="docutils literal notranslate"><span class="pre">state</span></code> is not a field in <code class="docutils literal notranslate"><span class="pre">group_by</span></code>.</p>
@@ -822,7 +821,7 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.securitycenter_v1beta1.SecurityCenterClient.list_findings">
 <code class="descname">list_findings</code><span class="sig-paren">(</span><em>parent</em>, <em>filter_=None</em>, <em>order_by=None</em>, <em>read_time=None</em>, <em>field_mask=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1beta1/gapic/security_center_client.html#SecurityCenterClient.list_findings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.SecurityCenterClient.list_findings" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists an organization or source’s assets.</p>
+<dd><p>Lists an organization or source’s findings.</p>
 <p>To list across all sources provide a <code class="docutils literal notranslate"><span class="pre">-</span></code> as the source id. Example:
 /v1beta1/organizations/123/sources/-/findings</p>
 <p class="rubric">Example</p>
