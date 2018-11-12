@@ -31,6 +31,7 @@ release_status = 'Development Status :: 4 - Beta'
 dependencies = [
     'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
     'google-cloud-core >= 0.28.0, < 0.29dev',
+    'pytz',
 ]
 extras = {
 }

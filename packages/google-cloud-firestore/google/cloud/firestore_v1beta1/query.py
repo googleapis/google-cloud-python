@@ -29,7 +29,8 @@ from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import document
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import query_pb2
-
+from google.cloud.firestore_v1beta1.order import Order
+from google.cloud.firestore_v1beta1.watch import Watch
 
 _EQ_OP = '=='
 _COMPARISON_OPERATORS = {
@@ -600,6 +601,84 @@ class Query(object):
                 empty_stream = skipped_results == 0
             else:
                 yield snapshot
+
+    def on_snapshot(self, callback):
+        """Monitor the documents in this collection that match this query.
+
+        This starts a watch on this query using a background thread. The
+        provided callback is run on the snapshot of the documents.
+
+        Args:
+            callback(~.firestore.query.QuerySnapshot): a callback to run when
+                a change occurs.
+
+        Example:
+            from google.cloud import firestore
+
+            db = firestore.Client()
+            query_ref = db.collection(u'users').where("user", "==", u'Ada')
+
+            def on_snapshot(query_snapshot):
+                for doc in query_snapshot.documents:
+                    print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
+            # Watch this query
+            query_watch = query_ref.on_snapshot(on_snapshot)
+
+            # Terminate this watch
+            query_watch.unsubscribe()
+        """
+        return Watch.for_query(self,
+                               callback,
+                               document.DocumentSnapshot,
+                               document.DocumentReference)
+
+    def _comparator(self, doc1, doc2):
+        _orders = self._orders
+
+        # Add implicit sorting by name, using the last specified direction.
+        if len(_orders) == 0:
+            lastDirection = Query.ASCENDING
+        else:
+            if _orders[-1].direction == 1:
+                lastDirection = Query.ASCENDING
+            else:
+                lastDirection = Query.DESCENDING
+
+        orderBys = list(_orders)
+
+        order_pb = query_pb2.StructuredQuery.Order(
+            field=query_pb2.StructuredQuery.FieldReference(
+                field_path='id',
+            ),
+            direction=_enum_from_direction(lastDirection),
+        )
+        orderBys.append(order_pb)
+
+        for orderBy in orderBys:
+            if orderBy.field.field_path == 'id':
+                # If ordering by docuent id, compare resource paths.
+                comp = Order()._compare_to(
+                    doc1.reference._path, doc2.reference._path)
+            else:
+                if orderBy.field.field_path not in doc1._data or \
+                   orderBy.field.field_path not in doc2._data:
+                    raise ValueError(
+                        "Can only compare fields that exist in the "
+                        "DocumentSnapshot. Please include the fields you are "
+                        "ordering on in your select() call."
+                    )
+                v1 = doc1._data[orderBy.field.field_path]
+                v2 = doc2._data[orderBy.field.field_path]
+                encoded_v1 = _helpers.encode_value(v1)
+                encoded_v2 = _helpers.encode_value(v2)
+                comp = Order().compare(encoded_v1, encoded_v2)
+
+            if (comp != 0):
+                # 1 == Ascending, -1 == Descending
+                return orderBy.direction * comp
+
+        return 0
 
 
 def _enum_from_op_string(op_string):

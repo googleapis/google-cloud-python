@@ -15,7 +15,11 @@
 """Common helpers shared across Google Cloud Firestore modules."""
 
 
-import collections
+try:
+    from collections import abc
+except ImportError:  # python 2.7
+    import collections as abc
+
 import datetime
 import re
 
@@ -745,7 +749,7 @@ def get_nested_value(field_path, data):
 
     nested_data = data
     for index, field_name in enumerate(field_names):
-        if isinstance(nested_data, collections.Mapping):
+        if isinstance(nested_data, abc.Mapping):
             if field_name in nested_data:
                 nested_data = nested_data[field_name]
             else:

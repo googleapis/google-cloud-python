@@ -32,6 +32,7 @@ from google.cloud._helpers import UTC
 from google.cloud import firestore
 from test_utils.system import unique_resource_id
 
+from time import sleep
 
 FIRESTORE_CREDS = os.environ.get('FIRESTORE_APPLICATION_CREDENTIALS')
 FIRESTORE_PROJECT = os.environ.get('GCLOUD_PROJECT')
@@ -794,3 +795,219 @@ def test_batch(client, cleanup):
     assert snapshot2.update_time == write_result2.update_time
 
     assert not document3.get().exists
+
+
+def test_watch_document(client, cleanup):
+    db = client
+    doc_ref = db.collection(u'users').document(
+        u'alovelace' + unique_resource_id())
+
+    # Initial setting
+    doc_ref.set({
+        u'first': u'Jane',
+        u'last': u'Doe',
+        u'born': 1900
+    })
+
+    sleep(1)
+
+    # Setup listener
+    def on_snapshot(docs, changes, read_time):
+        on_snapshot.called_count += 1
+
+    on_snapshot.called_count = 0
+
+    doc_ref.on_snapshot(on_snapshot)
+
+    # Alter document
+    doc_ref.set({
+        u'first': u'Ada',
+        u'last': u'Lovelace',
+        u'born': 1815
+    })
+
+    sleep(1)
+
+    for _ in range(10):
+        if on_snapshot.called_count == 1:
+            return
+        sleep(1)
+
+    if on_snapshot.called_count != 1:
+        raise AssertionError(
+            "Failed to get exactly one document change: count: " +
+            str(on_snapshot.called_count))
+
+
+def test_watch_collection(client, cleanup):
+    db = client
+    doc_ref = db.collection(u'users').document(
+        u'alovelace' + unique_resource_id())
+    collection_ref = db.collection(u'users')
+
+    # Initial setting
+    doc_ref.set({
+        u'first': u'Jane',
+        u'last': u'Doe',
+        u'born': 1900
+    })
+
+    # Setup listener
+    def on_snapshot(docs, changes, read_time):
+        on_snapshot.called_count += 1
+        for doc in [doc for doc in docs if doc.id == doc_ref.id]:
+            on_snapshot.born = doc.get('born')
+
+    on_snapshot.called_count = 0
+    on_snapshot.born = 0
+
+    collection_ref.on_snapshot(on_snapshot)
+
+    # delay here so initial on_snapshot occurs and isn't combined with set
+    sleep(1)
+
+    doc_ref.set({
+        u'first': u'Ada',
+        u'last': u'Lovelace',
+        u'born': 1815
+    })
+
+    for _ in range(10):
+        if on_snapshot.born == 1815:
+            break
+        sleep(1)
+
+    if on_snapshot.born != 1815:
+        raise AssertionError(
+            "Expected the last document update to update born: " +
+            str(on_snapshot.born))
+
+
+def test_watch_query(client, cleanup):
+    db = client
+    doc_ref = db.collection(u'users').document(
+        u'alovelace' + unique_resource_id())
+    query_ref = db.collection(u'users').where("first", "==", u'Ada')
+
+    # Initial setting
+    doc_ref.set({
+        u'first': u'Jane',
+        u'last': u'Doe',
+        u'born': 1900
+    })
+
+    sleep(1)
+
+    # Setup listener
+    def on_snapshot(docs, changes, read_time):
+        on_snapshot.called_count += 1
+
+        # A snapshot should return the same thing as if a query ran now.
+        query_ran = db.collection(u'users').where("first", "==", u'Ada').get()
+        assert len(docs) == len([i for i in query_ran])
+
+    on_snapshot.called_count = 0
+
+    query_ref.on_snapshot(on_snapshot)
+
+    # Alter document
+    doc_ref.set({
+        u'first': u'Ada',
+        u'last': u'Lovelace',
+        u'born': 1815
+    })
+
+    for _ in range(10):
+        if on_snapshot.called_count == 1:
+            return
+        sleep(1)
+
+    if on_snapshot.called_count != 1:
+        raise AssertionError(
+            "Failed to get exactly one document change: count: " +
+            str(on_snapshot.called_count))
+
+
+def test_watch_query_order(client, cleanup):
+    db = client
+    unique_id = unique_resource_id()
+    doc_ref1 = db.collection(u'users').document(
+        u'alovelace' + unique_id)
+    doc_ref2 = db.collection(u'users').document(
+        u'asecondlovelace' + unique_id)
+    doc_ref3 = db.collection(u'users').document(
+        u'athirdlovelace' + unique_id)
+    doc_ref4 = db.collection(u'users').document(
+        u'afourthlovelace' + unique_id)
+    doc_ref5 = db.collection(u'users').document(
+        u'afifthlovelace' + unique_id)
+
+    query_ref = db.collection(u'users').where(
+        "first", "==", u'Ada' + unique_id).order_by("last")
+
+    # Setup listener
+    def on_snapshot(docs, changes, read_time):
+        try:
+            if len(docs) != 5:
+                return
+            # A snapshot should return the same thing as if a query ran now.
+            query_ran = query_ref.get()
+            query_ran_results = [i for i in query_ran]
+            assert len(docs) == len(query_ran_results)
+
+            # compare the order things are returned
+            for snapshot, query in zip(docs, query_ran_results):
+                assert snapshot.get('last') == query.get(
+                   'last'), "expect the sort order to match, last"
+                assert snapshot.get('born') == query.get(
+                   'born'), "expect the sort order to match, born"
+            on_snapshot.called_count += 1
+            on_snapshot.last_doc_count = len(docs)
+        except Exception as e:
+            on_snapshot.failed = e
+
+    on_snapshot.called_count = 0
+    on_snapshot.last_doc_count = 0
+    on_snapshot.failed = None
+    query_ref.on_snapshot(on_snapshot)
+
+    sleep(1)
+
+    doc_ref1.set({
+        u'first': u'Ada' + unique_id,
+        u'last': u'Lovelace',
+        u'born': 1815
+    })
+    doc_ref2.set({
+        u'first': u'Ada' + unique_id,
+        u'last': u'SecondLovelace',
+        u'born': 1815
+    })
+    doc_ref3.set({
+        u'first': u'Ada' + unique_id,
+        u'last': u'ThirdLovelace',
+        u'born': 1815
+    })
+    doc_ref4.set({
+        u'first': u'Ada' + unique_id,
+        u'last': u'FourthLovelace',
+        u'born': 1815
+    })
+    doc_ref5.set({
+        u'first': u'Ada' + unique_id,
+        u'last': u'lovelace',
+        u'born': 1815
+    })
+
+    for _ in range(10):
+        if on_snapshot.last_doc_count == 5:
+            break
+        sleep(1)
+
+    if on_snapshot.failed:
+        raise on_snapshot.failed
+
+    if on_snapshot.last_doc_count != 5:
+        raise AssertionError(
+            "5 docs expected in snapshot method " +
+            str(on_snapshot.last_doc_count))

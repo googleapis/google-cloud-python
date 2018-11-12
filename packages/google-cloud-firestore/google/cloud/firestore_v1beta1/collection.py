@@ -22,7 +22,8 @@ import six
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import query as query_mod
 from google.cloud.firestore_v1beta1.proto import document_pb2
-
+from google.cloud.firestore_v1beta1.watch import Watch
+from google.cloud.firestore_v1beta1 import document
 
 _AUTO_ID_CHARS = (
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')
@@ -370,6 +371,37 @@ class CollectionReference(object):
         """
         query = query_mod.Query(self)
         return query.get(transaction=transaction)
+
+    def on_snapshot(self, callback):
+        """Monitor the documents in this collection.
+
+        This starts a watch on this collection using a background thread. The
+        provided callback is run on the snapshot of the documents.
+
+        Args:
+            callback(~.firestore.collection.CollectionSnapshot): a callback
+                to run when a change occurs.
+
+        Example:
+            from google.cloud import firestore
+
+            db = firestore.Client()
+            collection_ref = db.collection(u'users')
+
+            def on_snapshot(collection_snapshot):
+                for doc in collection_snapshot.documents:
+                    print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
+            # Watch this collection
+            collection_watch = collection_ref.on_snapshot(on_snapshot)
+
+            # Terminate this watch
+            collection_watch.unsubscribe()
+        """
+        return Watch.for_query(query_mod.Query(self),
+                               callback,
+                               document.DocumentSnapshot,
+                               document.DocumentReference)
 
 
 def _auto_id():
