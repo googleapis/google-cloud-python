@@ -175,27 +175,34 @@ class Context(object):
 
     @property
     def credentials(self):
-        """google.auth.credentials.Credentials: Credentials to use for Google
-        APIs.
+        """
+        Credentials to use for Google APIs.
 
-        Note:
-            These credentials are automatically cached in memory by calls to
-            :func:`pandas_gbq.read_gbq` and :func:`pandas_gbq.to_gbq`. To
-            manually set the credentials, construct an
-            :class:`google.auth.credentials.Credentials` object and set it as
-            the context credentials as demonstrated in the example below. See
-            `auth docs`_ for more information on obtaining credentials.
+        These credentials are automatically cached in memory by calls to
+        :func:`pandas_gbq.read_gbq` and :func:`pandas_gbq.to_gbq`. To
+        manually set the credentials, construct an
+        :class:`google.auth.credentials.Credentials` object and set it as
+        the context credentials as demonstrated in the example below. See
+        `auth docs`_ for more information on obtaining credentials.
 
-        Example:
-            Manually setting the context credentials:
-            >>> import pandas_gbq
-            >>> from google.oauth2 import service_account
-            >>> credentials = (service_account
-            ...     .Credentials.from_service_account_file(
-            ...         '/path/to/key.json'))
-            >>> pandas_gbq.context.credentials = credentials
         .. _auth docs: http://google-auth.readthedocs.io
             /en/latest/user-guide.html#obtaining-credentials
+
+        Returns
+        -------
+        google.auth.credentials.Credentials
+
+        Examples
+        --------
+
+        Manually setting the context credentials:
+
+        >>> import pandas_gbq
+        >>> from google.oauth2 import service_account
+        >>> credentials = service_account.Credentials.from_service_account_file(
+        ...     '/path/to/key.json',
+        ... )
+        >>> pandas_gbq.context.credentials = credentials
         """
         return self._credentials
 
@@ -205,12 +212,19 @@ class Context(object):
 
     @property
     def project(self):
-        """str: Default project to use for calls to Google APIs.
+        """Default project to use for calls to Google APIs.
 
-        Example:
-            Manually setting the context project:
-            >>> import pandas_gbq
-            >>> pandas_gbq.context.project = 'my-project'
+        Returns
+        -------
+        str
+
+        Examples
+        --------
+
+        Manually setting the context project:
+
+        >>> import pandas_gbq
+        >>> pandas_gbq.context.project = 'my-project'
         """
         return self._project
 
@@ -220,7 +234,8 @@ class Context(object):
 
     @property
     def dialect(self):
-        """str: Default dialect to use in :func:`pandas_gbq.read_gbq`.
+        """
+        Default dialect to use in :func:`pandas_gbq.read_gbq`.
 
         Allowed values for the BigQuery SQL syntax dialect:
 
@@ -233,6 +248,18 @@ class Context(object):
             compliant with the SQL 2011 standard. For more information
             see `BigQuery Standard SQL Reference
             <https://cloud.google.com/bigquery/docs/reference/standard-sql/>`__.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
+
+        Setting the default syntax to standard:
+
+        >>> import pandas_gbq
+        >>> pandas_gbq.context.dialect = 'standard'
         """
         return self._dialect
 

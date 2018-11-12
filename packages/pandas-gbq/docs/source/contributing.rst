@@ -321,7 +321,7 @@ run gbq integration tests on a forked repository:
    - ``GBQ_PROJECT_ID`` with the value being the ID of your BigQuery project.
 
    - ``SERVICE_ACCOUNT_KEY`` with the value being the base64-encoded
-   *contents* of the JSON key that you downloaded for your service account.
+     *contents* of the JSON key that you downloaded for your service account.
 
    Keep the contents of these variables confidential. These variables contain
    sensitive data and you do not want their contents being exposed in build

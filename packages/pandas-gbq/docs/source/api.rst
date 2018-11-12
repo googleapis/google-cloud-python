@@ -18,6 +18,10 @@ API Reference
    Context
 
 .. autofunction:: read_gbq
+
 .. autofunction:: to_gbq
+
 .. autodata:: context
+
 .. autoclass:: Context
+   :members:

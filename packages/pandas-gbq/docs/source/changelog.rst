@@ -3,8 +3,8 @@ Changelog
 
 .. _changelog-0.8.0:
 
-0.8.0 / unreleased
---------------------
+0.8.0 / 2018-11-12
+------------------
 
 Breaking changes
 ~~~~~~~~~~~~~~~~
@@ -16,12 +16,20 @@ Breaking changes
   or
   :func:`google.oauth2.service_account.Credentials.from_service_account_file`.
   See the :doc:`authentication how-to guide <howto/authentication>` for
-  examples. (:issue:`161`, :issue:`TODO`)
+  examples. (:issue:`161`, :issue:`231`)
 
 Enhancements
 ~~~~~~~~~~~~
 
 - Allow newlines in data passed to ``to_gbq``. (:issue:`180`)
+- Add :attr:`pandas_gbq.context.dialect` to allow overriding the default SQL
+  syntax dialect. (:issue:`195`, :issue:`235`)
+- Support Python 3.7. (:issue:`197`, :issue:`232`)
+
+Internal changes
+~~~~~~~~~~~~~~~~
+
+- Migrate tests to CircleCI. (:issue:`228`, :issue:`232`)
 
 .. _changelog-0.7.0:
 

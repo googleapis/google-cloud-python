@@ -58,10 +58,14 @@ more information on service accounts.
 Default Authentication Methods
 ------------------------------
 
-If the ``private_key`` parameter is ``None``, pandas-gbq tries the following
-authentication methods:
+If the ``credentials`` parameter (or the deprecated ``private_key``
+parameter) is ``None``, pandas-gbq tries the following authentication
+methods:
 
-1. Application Default Credentials via the :func:`google.auth.default`
+1. In-memory, cached credentials at ``pandas_gbq.context.credentials``. See
+   :attr:`pandas_gbq.Context.credentials` for details.
+
+2. Application Default Credentials via the :func:`google.auth.default`
    function.
 
    .. note::
@@ -74,7 +78,7 @@ authentication methods:
        Compute Engine is that the VM does not have sufficient scopes to query
        BigQuery.
 
-2. User account credentials.
+3. User account credentials.
 
    pandas-gbq loads cached credentials from a hidden user folder on the
    operating system. Override the location of the cached user credentials
