@@ -44,7 +44,6 @@ _IAM_ENDPOINT = ('https://iamcredentials.googleapis.com/v1/projects/-' +
                  '/serviceAccounts/{}:generateAccessToken')
 
 _REFRESH_ERROR = 'Unable to acquire impersonated credentials'
-_LIFETIME_ERROR = 'Credentials with lifetime set cannot be renewed'
 
 
 def _make_iam_token_request(request, principal, headers, body):
@@ -122,6 +121,9 @@ class Credentials(credentials.Credentials):
     token creator role on
     `impersonated-account@_project_.iam.gserviceaccount.com`.
 
+    Enable the IAMCredentials API on the source project:
+    `gcloud services enable iamcredentials.googleapis.com`.
+
     Initialize a source credential which does not have access to
     list bucket::
 
@@ -156,7 +158,7 @@ class Credentials(credentials.Credentials):
 
     def __init__(self, source_credentials,  target_principal,
                  target_scopes, delegates=None,
-                 lifetime=None):
+                 lifetime=_DEFAULT_TOKEN_LIFETIME_SECS):
         """
         Args:
             source_credentials (google.auth.Credentials): The source credential
@@ -175,9 +177,7 @@ class Credentials(credentials.Credentials):
                 If left unset, source_credential must have that role on
                 target_principal.
             lifetime (int): Number of seconds the delegated credential should
-                be valid for (upto 3600).  If set, the credentials will
-                **not** get refreshed after expiration.  If not set, the
-                credentials will be refreshed every 3600s.
+                be valid for (upto 3600).
         """
 
         super(Credentials, self).__init__()
@@ -193,10 +193,6 @@ class Credentials(credentials.Credentials):
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
-        if (self.token is not None and self._lifetime is not None):
-            self.expiry = _helpers.utcnow()
-            raise exceptions.RefreshError(_LIFETIME_ERROR)
-        self._source_credentials.refresh(request)
         self._update_token(request)
 
     @property
@@ -215,14 +211,10 @@ class Credentials(credentials.Credentials):
         # Refresh our source credentials.
         self._source_credentials.refresh(request)
 
-        lifetime = self._lifetime
-        if (self._lifetime is None):
-            lifetime = _DEFAULT_TOKEN_LIFETIME_SECS
-
         body = {
             "delegates": self._delegates,
             "scope": self._target_scopes,
-            "lifetime": str(lifetime) + "s"
+            "lifetime": str(self._lifetime) + "s"
         }
 
         headers = {

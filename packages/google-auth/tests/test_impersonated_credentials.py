@@ -133,32 +133,6 @@ class TestImpersonatedCredentials(object):
         assert not credentials.valid
         assert credentials.expired
 
-    def test_refresh_failure_lifetime_specified(self, mock_donor_credentials):
-        credentials = self.make_credentials(lifetime=500)
-        token = 'token'
-
-        expire_time = (
-            _helpers.utcnow().replace(microsecond=0) +
-            datetime.timedelta(seconds=500)).isoformat('T') + 'Z'
-        response_body = {
-            "accessToken": token,
-            "expireTime": expire_time
-        }
-
-        request = self.make_request(
-            data=json.dumps(response_body),
-            status=http_client.OK)
-
-        credentials.refresh(request)
-
-        with pytest.raises(exceptions.RefreshError) as excinfo:
-            credentials.refresh(request)
-
-        assert excinfo.match(impersonated_credentials._LIFETIME_ERROR)
-
-        assert not credentials.valid
-        assert credentials.expired
-
     def test_refresh_failure_unauthorzed(self, mock_donor_credentials):
         credentials = self.make_credentials(lifetime=None)
 
