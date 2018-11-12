@@ -12,7 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import collections
+try:
+    from collections import abc as collections_abc
+except ImportError:  # Python 2.7
+    import collections as collections_abc
+
 import datetime
 import decimal
 import numbers
@@ -105,7 +109,7 @@ def to_query_parameters(parameters):
     if parameters is None:
         return []
 
-    if isinstance(parameters, collections.Mapping):
+    if isinstance(parameters, collections_abc.Mapping):
         return to_query_parameters_dict(parameters)
 
     return to_query_parameters_list(parameters)
