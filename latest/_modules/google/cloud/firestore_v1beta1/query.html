@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud 20f2b92064 documentation</title>
+    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud faf6663 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -64,7 +64,8 @@
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">document</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.proto</span> <span class="k">import</span> <span class="n">query_pb2</span>
-
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.order</span> <span class="k">import</span> <span class="n">Order</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.watch</span> <span class="k">import</span> <span class="n">Watch</span>
 
 <span class="n">_EQ_OP</span> <span class="o">=</span> <span class="s1">&#39;==&#39;</span>
 <span class="n">_COMPARISON_OPERATORS</span> <span class="o">=</span> <span class="p">{</span>
@@ -634,7 +635,85 @@
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="n">empty_stream</span> <span class="o">=</span> <span class="n">skipped_results</span> <span class="o">==</span> <span class="mi">0</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">snapshot</span></div></div>
+                <span class="k">yield</span> <span class="n">snapshot</span></div>
+
+<div class="viewcode-block" id="Query.on_snapshot"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.on_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">on_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Monitor the documents in this collection that match this query.</span>
+
+<span class="sd">        This starts a watch on this query using a background thread. The</span>
+<span class="sd">        provided callback is run on the snapshot of the documents.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            callback(~.firestore.query.QuerySnapshot): a callback to run when</span>
+<span class="sd">                a change occurs.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            from google.cloud import firestore</span>
+
+<span class="sd">            db = firestore.Client()</span>
+<span class="sd">            query_ref = db.collection(u&#39;users&#39;).where(&quot;user&quot;, &quot;==&quot;, u&#39;Ada&#39;)</span>
+
+<span class="sd">            def on_snapshot(query_snapshot):</span>
+<span class="sd">                for doc in query_snapshot.documents:</span>
+<span class="sd">                    print(u&#39;{} =&gt; {}&#39;.format(doc.id, doc.to_dict()))</span>
+
+<span class="sd">            # Watch this query</span>
+<span class="sd">            query_watch = query_ref.on_snapshot(on_snapshot)</span>
+
+<span class="sd">            # Terminate this watch</span>
+<span class="sd">            query_watch.unsubscribe()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Watch</span><span class="o">.</span><span class="n">for_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">callback</span><span class="p">,</span>
+                               <span class="n">document</span><span class="o">.</span><span class="n">DocumentSnapshot</span><span class="p">,</span>
+                               <span class="n">document</span><span class="o">.</span><span class="n">DocumentReference</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_comparator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc1</span><span class="p">,</span> <span class="n">doc2</span><span class="p">):</span>
+        <span class="n">_orders</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span>
+
+        <span class="c1"># Add implicit sorting by name, using the last specified direction.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_orders</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">lastDirection</span> <span class="o">=</span> <span class="n">Query</span><span class="o">.</span><span class="n">ASCENDING</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_orders</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">lastDirection</span> <span class="o">=</span> <span class="n">Query</span><span class="o">.</span><span class="n">ASCENDING</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lastDirection</span> <span class="o">=</span> <span class="n">Query</span><span class="o">.</span><span class="n">DESCENDING</span>
+
+        <span class="n">orderBys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_orders</span><span class="p">)</span>
+
+        <span class="n">order_pb</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Order</span><span class="p">(</span>
+            <span class="n">field</span><span class="o">=</span><span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldReference</span><span class="p">(</span>
+                <span class="n">field_path</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">direction</span><span class="o">=</span><span class="n">_enum_from_direction</span><span class="p">(</span><span class="n">lastDirection</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">orderBys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">order_pb</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">orderBy</span> <span class="ow">in</span> <span class="n">orderBys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">orderBy</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">field_path</span> <span class="o">==</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span>
+                <span class="c1"># If ordering by docuent id, compare resource paths.</span>
+                <span class="n">comp</span> <span class="o">=</span> <span class="n">Order</span><span class="p">()</span><span class="o">.</span><span class="n">_compare_to</span><span class="p">(</span>
+                    <span class="n">doc1</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">_path</span><span class="p">,</span> <span class="n">doc2</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">orderBy</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">field_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">doc1</span><span class="o">.</span><span class="n">_data</span> <span class="ow">or</span> \
+                   <span class="n">orderBy</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">field_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">doc2</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;Can only compare fields that exist in the &quot;</span>
+                        <span class="s2">&quot;DocumentSnapshot. Please include the fields you are &quot;</span>
+                        <span class="s2">&quot;ordering on in your select() call.&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">v1</span> <span class="o">=</span> <span class="n">doc1</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">orderBy</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">field_path</span><span class="p">]</span>
+                <span class="n">v2</span> <span class="o">=</span> <span class="n">doc2</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">orderBy</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">field_path</span><span class="p">]</span>
+                <span class="n">encoded_v1</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">encode_value</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+                <span class="n">encoded_v2</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">encode_value</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+                <span class="n">comp</span> <span class="o">=</span> <span class="n">Order</span><span class="p">()</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">encoded_v1</span><span class="p">,</span> <span class="n">encoded_v2</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">comp</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="c1"># 1 == Ascending, -1 == Descending</span>
+                <span class="k">return</span> <span class="n">orderBy</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">comp</span>
+
+        <span class="k">return</span> <span class="mi">0</span></div>
 
 
 <span class="k">def</span> <span class="nf">_enum_from_op_string</span><span class="p">(</span><span class="n">op_string</span><span class="p">):</span>

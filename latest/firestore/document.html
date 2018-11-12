@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Documents &#8212; google-cloud 20f2b92064 documentation</title>
+    <title>Documents &#8212; google-cloud faf6663 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -215,6 +215,38 @@ the time of <cite>snapshot</cite>, the snapshot <cite>reference</cite>, <cite>da
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentReference.on_snapshot">
+<code class="descname">on_snapshot</code><span class="sig-paren">(</span><em>callback</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentReference.on_snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentReference.on_snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>Watch this document.</p>
+<p>This starts a watch on this document using a background thread. The
+provided callback is run on the snapshot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>callback</strong> (<em>DocumentSnapshot</em>) – a callback to run
+when a change occurs</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>from google.cloud import firestore</p>
+<p>db = firestore.Client()
+collection_ref = db.collection(u’users’)</p>
+<dl class="docutils">
+<dt>def on_snapshot(document_snapshot):</dt>
+<dd>doc = document_snapshot
+print(u’{} =&gt; {}’.format(doc.id, doc.to_dict()))</dd>
+<dt>doc_ref = db.collection(u’users’).document(</dt>
+<dd>u’alovelace’ + unique_resource_id())</dd>
+</dl>
+<p># Watch this document
+doc_watch = doc_ref.on_snapshot(on_snapshot)</p>
+<p># Terminate this watch
+doc_watch.unsubscribe()</p>
 </dd></dl>
 
 <dl class="attribute">

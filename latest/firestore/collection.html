@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Collections &#8212; google-cloud 20f2b92064 documentation</title>
+    <title>Collections &#8212; google-cloud faf6663 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -264,6 +264,39 @@ of query results. (Must be non-negative.)</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1beta1.collection.CollectionReference.on_snapshot">
+<code class="descname">on_snapshot</code><span class="sig-paren">(</span><em>callback</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.on_snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.on_snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>Monitor the documents in this collection.</p>
+<p>This starts a watch on this collection using a background thread. The
+provided callback is run on the snapshot of the documents.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>callback</strong> (<em>CollectionSnapshot</em>) – a callback
+to run when a change occurs.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>from google.cloud import firestore</p>
+<p>db = firestore.Client()
+collection_ref = db.collection(u’users’)</p>
+<dl class="docutils">
+<dt>def on_snapshot(collection_snapshot):</dt>
+<dd><dl class="first last docutils">
+<dt>for doc in collection_snapshot.documents:</dt>
+<dd>print(u’{} =&gt; {}’.format(doc.id, doc.to_dict()))</dd>
+</dl>
+</dd>
+</dl>
+<p># Watch this collection
+collection_watch = collection_ref.on_snapshot(on_snapshot)</p>
+<p># Terminate this watch
+collection_watch.unsubscribe()</p>
 </dd></dl>
 
 <dl class="method">

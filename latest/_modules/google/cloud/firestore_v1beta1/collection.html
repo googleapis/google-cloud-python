@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.collection &#8212; google-cloud 20f2b92064 documentation</title>
+    <title>google.cloud.firestore_v1beta1.collection &#8212; google-cloud faf6663 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -57,7 +57,8 @@
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">query</span> <span class="k">as</span> <span class="n">query_mod</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.proto</span> <span class="k">import</span> <span class="n">document_pb2</span>
-
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.watch</span> <span class="k">import</span> <span class="n">Watch</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">document</span>
 
 <span class="n">_AUTO_ID_CHARS</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s1">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#39;</span><span class="p">)</span>
@@ -404,7 +405,38 @@
 <span class="sd">            document that fulfills the query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CollectionReference.on_snapshot"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.on_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">on_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Monitor the documents in this collection.</span>
+
+<span class="sd">        This starts a watch on this collection using a background thread. The</span>
+<span class="sd">        provided callback is run on the snapshot of the documents.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            callback(~.firestore.collection.CollectionSnapshot): a callback</span>
+<span class="sd">                to run when a change occurs.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            from google.cloud import firestore</span>
+
+<span class="sd">            db = firestore.Client()</span>
+<span class="sd">            collection_ref = db.collection(u&#39;users&#39;)</span>
+
+<span class="sd">            def on_snapshot(collection_snapshot):</span>
+<span class="sd">                for doc in collection_snapshot.documents:</span>
+<span class="sd">                    print(u&#39;{} =&gt; {}&#39;.format(doc.id, doc.to_dict()))</span>
+
+<span class="sd">            # Watch this collection</span>
+<span class="sd">            collection_watch = collection_ref.on_snapshot(on_snapshot)</span>
+
+<span class="sd">            # Terminate this watch</span>
+<span class="sd">            collection_watch.unsubscribe()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Watch</span><span class="o">.</span><span class="n">for_query</span><span class="p">(</span><span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+                               <span class="n">callback</span><span class="p">,</span>
+                               <span class="n">document</span><span class="o">.</span><span class="n">DocumentSnapshot</span><span class="p">,</span>
+                               <span class="n">document</span><span class="o">.</span><span class="n">DocumentReference</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_auto_id</span><span class="p">():</span>
