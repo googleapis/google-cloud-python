@@ -1069,7 +1069,7 @@ def pbs_for_create(document_path, document_data):
                 name=document_path,
                 fields=encode_dict(actual_data),
             ),
-            current_document = common_pb2.Precondition(exists=False),
+            current_document=common_pb2.Precondition(exists=False),
         )
 
         write_pbs.append(update_pb)
@@ -1082,6 +1082,7 @@ def pbs_for_create(document_path, document_data):
         write_pbs.append(transform_pb)
 
     return write_pbs
+
 
 def pbs_for_set(document_path, document_data, merge=False):
     """Make ``Write`` protobufs for ``set()`` methods.
@@ -1196,7 +1197,7 @@ def _pbs_for_set_with_merge(document_path, document_data, merge):
     for transform_path in transform_paths:
         if len(transform_path.parts) > 1:
             parent_fp = FieldPath(*transform_path.parts[:-1])
-            if not parent_fp in update_paths:
+            if parent_fp not in update_paths:
                 update_paths.append(parent_fp)
 
     if actual_data or create_empty or update_paths:
@@ -1282,7 +1283,6 @@ def pbs_for_update(client, document_path, field_updates, option):
         # Due to the default, we don't have to check if ``None``.
         option.modify_write(update_pb)
         write_pbs.append(update_pb)
-
 
     if transform_paths:
         transform_pb = get_transform_pb(document_path, transform_paths)
