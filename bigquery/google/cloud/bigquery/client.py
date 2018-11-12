@@ -16,7 +16,11 @@
 
 from __future__ import absolute_import
 
-import collections
+try:
+    from collections import abc as collections_abc
+except ImportError:  # Python 2.7
+    import collections as collections_abc
+
 import functools
 import gzip
 import os
@@ -1232,7 +1236,7 @@ class Client(ClientWithProject):
             destination = TableReference.from_string(
                 destination, default_project=self.project)
 
-        if not isinstance(sources, collections.Sequence):
+        if not isinstance(sources, collections_abc.Sequence):
             sources = [sources]
 
         copy_job = job.CopyJob(

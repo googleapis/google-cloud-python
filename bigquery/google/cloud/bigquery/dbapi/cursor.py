@@ -16,6 +16,11 @@
 
 import collections
 
+try:
+    from collections import abc as collections_abc
+except ImportError:  # Python 2.7
+    import collections as collections_abc
+
 import six
 
 from google.cloud.bigquery import job
@@ -335,7 +340,7 @@ def _format_operation(operation, parameters=None):
     if parameters is None:
         return operation
 
-    if isinstance(parameters, collections.Mapping):
+    if isinstance(parameters, collections_abc.Mapping):
         return _format_operation_dict(operation, parameters)
 
     return _format_operation_list(operation, parameters)
