@@ -39,6 +39,7 @@ _COMPARISON_OPERATORS = {
     _EQ_OP: enums.StructuredQuery.FieldFilter.Operator.EQUAL,
     '>=': enums.StructuredQuery.FieldFilter.Operator.GREATER_THAN_OR_EQUAL,
     '>': enums.StructuredQuery.FieldFilter.Operator.GREATER_THAN,
+    'array_contains': enums.StructuredQuery.FieldFilter.Operator.ARRAY_CONTAINS,
 }
 _BAD_OP_STRING = 'Operator string {!r} is invalid. Valid choices are: {}.'
 _BAD_OP_NAN_NULL = (
