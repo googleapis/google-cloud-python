@@ -110,6 +110,12 @@ class Table(object):
     def name(self):
         """Table name used in requests.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_table_name]
+            :end-before: [END bigtable_table_name]
+
         .. note::
 
           This property will not change if ``table_id`` does not, but the
@@ -341,6 +347,12 @@ class Table(object):
                   retry=DEFAULT_RETRY_READ_ROWS):
         """Read rows from this table.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_read_rows]
+            :end-before: [END bigtable_read_rows]
+
         :type start_key: bytes
         :param start_key: (Optional) The beginning of a range of row keys to
                           read from. The range will include ``start_key``. If
@@ -511,6 +523,7 @@ class Table(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_truncate_table]
             :end-before: [END bigtable_truncate_table]
+
         :type timeout: float
         :param timeout: (Optional) The amount of time, in seconds, to wait
                         for the request to complete.
@@ -559,6 +572,12 @@ class Table(object):
     def mutations_batcher(self, flush_count=FLUSH_COUNT,
                           max_row_bytes=MAX_ROW_BYTES):
         """Factory to create a mutation batcher associated with this instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_mutations_batcher]
+            :end-before: [END bigtable_mutations_batcher]
 
         :type table: class
         :param table: class:`~google.cloud.bigtable.table.Table`.
