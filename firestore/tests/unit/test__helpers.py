@@ -1478,14 +1478,99 @@ class Test_get_transform_pb(unittest.TestCase):
         self.assertEqual(transform_pb, expected_pb)
 
 
+class Test_pbs_for_create(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(document_path, document_data):
+        from google.cloud.firestore_v1beta1._helpers import pbs_for_create
+
+        return pbs_for_create(document_path, document_data)
+
+    @staticmethod
+    def _make_write_w_document(document_path, **data):
+        from google.cloud.firestore_v1beta1.proto import document_pb2
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1._helpers import encode_dict
+        from google.cloud.firestore_v1beta1.proto import common_pb2
+
+        return write_pb2.Write(
+            update=document_pb2.Document(
+                name=document_path,
+                fields=encode_dict(data),
+            ),
+            current_document=common_pb2.Precondition(exists=False),
+        )
+
+    @staticmethod
+    def _make_write_w_transform(document_path, fields):
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.gapic import enums
+
+        server_val = enums.DocumentTransform.FieldTransform.ServerValue
+        transforms = [
+            write_pb2.DocumentTransform.FieldTransform(
+                field_path=field, set_to_server_value=server_val.REQUEST_TIME)
+            for field in fields
+        ]
+
+        return write_pb2.Write(
+            transform=write_pb2.DocumentTransform(
+                document=document_path,
+                field_transforms=transforms,
+            ),
+        )
+
+    def _helper(self, do_transform=False, empty_val=False):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
+        document_data = {
+            'cheese': 1.5,
+            'crackers': True,
+        }
+
+        if do_transform:
+            document_data['butter'] = SERVER_TIMESTAMP
+
+        if empty_val:
+            document_data['mustard'] = {}
+
+        write_pbs = self._call_fut(document_path, document_data)
+
+        if empty_val:
+            update_pb = self._make_write_w_document(
+                document_path, cheese=1.5, crackers=True, mustard={},
+            )
+        else:
+            update_pb = self._make_write_w_document(
+                document_path, cheese=1.5, crackers=True,
+            )
+        expected_pbs = [update_pb]
+
+        if do_transform:
+            expected_pbs.append(
+                self._make_write_w_transform(document_path, fields=['butter']))
+
+        self.assertEqual(write_pbs, expected_pbs)
+
+    def test_without_transform(self):
+        self._helper()
+
+    def test_w_transform(self):
+        self._helper(do_transform=True)
+
+    def test_w_transform_and_empty_value(self):
+        self._helper(do_transform=True, empty_val=True)
+
+
 class Test_pbs_for_set(unittest.TestCase):
 
     @staticmethod
-    def _call_fut(document_path, document_data, merge=False, exists=None):
+    def _call_fut(document_path, document_data, merge=False):
         from google.cloud.firestore_v1beta1._helpers import pbs_for_set
 
         return pbs_for_set(
-            document_path, document_data, merge=merge, exists=exists)
+            document_path, document_data, merge=merge)
 
     @staticmethod
     def _make_write_w_document(document_path, **data):
@@ -1519,8 +1604,7 @@ class Test_pbs_for_set(unittest.TestCase):
             ),
         )
 
-    def _helper(self, merge=False, do_transform=False, exists=None,
-                empty_val=False):
+    def _helper(self, merge=False, do_transform=False, empty_val=False):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1.proto import common_pb2
 
@@ -1536,8 +1620,7 @@ class Test_pbs_for_set(unittest.TestCase):
         if empty_val:
             document_data['mustard'] = {}
 
-        write_pbs = self._call_fut(
-            document_path, document_data, merge, exists)
+        write_pbs = self._call_fut(document_path, document_data, merge)
 
         if empty_val:
             update_pb = self._make_write_w_document(
@@ -1554,10 +1637,6 @@ class Test_pbs_for_set(unittest.TestCase):
             update_pb.update_mask.CopyFrom(
                 common_pb2.DocumentMask(field_paths=field_paths))
 
-        if exists is not None:
-            update_pb.current_document.CopyFrom(
-                common_pb2.Precondition(exists=exists))
-
         if do_transform:
             expected_pbs.append(
                 self._make_write_w_transform(document_path, fields=['butter']))
@@ -1569,12 +1648,6 @@ class Test_pbs_for_set(unittest.TestCase):
 
     def test_with_merge(self):
         self._helper(merge=True)
-
-    def test_with_exists_false(self):
-        self._helper(exists=False)
-
-    def test_with_exists_true(self):
-        self._helper(exists=True)
 
     def test_w_transform(self):
         self._helper(do_transform=True)

@@ -57,8 +57,8 @@ class WriteBatch(object):
             document_data (dict): Property names and values to use for
                 creating a document.
         """
-        write_pbs = _helpers.pbs_for_set(
-            reference._document_path, document_data, merge=False, exists=False)
+        write_pbs = _helpers.pbs_for_create(
+            reference._document_path, document_data)
         self._add_write_pbs(write_pbs)
 
     def set(self, reference, document_data, merge=False):

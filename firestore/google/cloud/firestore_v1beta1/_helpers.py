@@ -1043,7 +1043,47 @@ def get_transform_pb(document_path, transform_paths):
     )
 
 
-def pbs_for_set(document_path, document_data, merge=False, exists=None):
+def pbs_for_create(document_path, document_data):
+    """Make ``Write`` protobufs for ``create()`` methods.
+
+    Args:
+        document_path (str): A fully-qualified document path.
+        document_data (dict): Property names and values to use for
+            creating a document.
+
+    Returns:
+        List[google.cloud.firestore_v1beta1.types.Write]: One or two
+        ``Write`` protobuf instances for ``create()``.
+    """
+    transform_paths, actual_data, field_paths = process_server_timestamp(
+        document_data, False)
+
+    write_pbs = []
+
+    empty_document = not document_data
+
+    if empty_document or actual_data:
+
+        update_pb = write_pb2.Write(
+            update=document_pb2.Document(
+                name=document_path,
+                fields=encode_dict(actual_data),
+            ),
+            current_document = common_pb2.Precondition(exists=False),
+        )
+
+        write_pbs.append(update_pb)
+
+    if transform_paths:
+        transform_pb = get_transform_pb(document_path, transform_paths)
+        if not actual_data:
+            transform_pb.current_document.CopyFrom(
+                common_pb2.Precondition(exists=False))
+        write_pbs.append(transform_pb)
+
+    return write_pbs
+
+def pbs_for_set(document_path, document_data, merge=False):
     """Make ``Write`` protobufs for ``set()`` methods.
 
     Args:
@@ -1051,17 +1091,13 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
         document_data (dict): Property names and values to use for
             replacing a document.
         merge (bool): Whether to merge the fields or replace them
-        exists (bool): If set, a precondition to indicate whether the
-            document should exist or not. Used for create.
 
     Returns:
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
     if merge is not False:
-        return _pbs_for_set_with_merge(
-            document_path, document_data, merge, exists
-        )
+        return _pbs_for_set_with_merge(document_path, document_data, merge)
 
     transform_paths, actual_data, field_paths = process_server_timestamp(
         document_data, False)
@@ -1080,10 +1116,6 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
             )
         )
 
-        if exists is not None:
-            update_pb.current_document.CopyFrom(
-                common_pb2.Precondition(exists=exists))
-
         write_pbs.append(update_pb)
 
     if transform_paths:
@@ -1093,7 +1125,7 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
     return write_pbs
 
 
-def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
+def _pbs_for_set_with_merge(document_path, document_data, merge):
     data_merge = []
     transform_merge = []
 
@@ -1172,10 +1204,6 @@ def _pbs_for_set_with_merge(document_path, document_data, merge, exists):
             update_pb.update_mask.CopyFrom(mask)
 
         write_pbs.append(update_pb)
-
-    if exists is not None:
-        update_pb.current_document.CopyFrom(
-            common_pb2.Precondition(exists=exists))
 
     new_transform_paths = []
     for merge_fp in merge:
