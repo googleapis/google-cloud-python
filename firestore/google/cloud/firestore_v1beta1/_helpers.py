@@ -1188,7 +1188,18 @@ def _pbs_for_set_with_merge(document_path, document_data, merge):
     write_pbs = []
     update_pb = write_pb2.Write()
 
-    if actual_data or create_empty:
+    update_paths = data_merge[:]
+
+    # for whatever reason, the conformance tests want to see the parent
+    # of nested transform paths in the update mask
+    # (see set-st-merge-nonleaf-alone.textproto)
+    for transform_path in transform_paths:
+        if len(transform_path.parts) > 1:
+            parent_fp = FieldPath(*transform_path.parts[:-1])
+            if not parent_fp in update_paths:
+                update_paths.append(parent_fp)
+
+    if actual_data or create_empty or update_paths:
         update = document_pb2.Document(
             name=document_path,
             fields=encode_dict(actual_data),
