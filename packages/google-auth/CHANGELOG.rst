@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v1.6.1
+------
+
+11-12-2018 10:10 PST
+
+Implementation Changes
+++++++++++++++++++++++
+
+- Automatically refresh impersonated credentials (#304)
+
 v1.6.0
 ------
 

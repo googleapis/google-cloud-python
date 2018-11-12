@@ -39,7 +39,7 @@ deploy:
   on:
     tags: true
     distributions: sdist bdist_wheel
-    repo: GoogleCloudPlatform/google-auth-library-python
+    repo: googleapis/google-auth-library-python
     condition: "$TOXENV = \"cover\""
 env:
   global:
