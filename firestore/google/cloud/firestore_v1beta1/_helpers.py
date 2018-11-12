@@ -1224,7 +1224,7 @@ def pbs_for_update(client, document_path, field_updates, option):
     for transform_path in transform_paths:
         if len(transform_path.parts) > 1:
             parent_fp = FieldPath(*transform_path.parts[:-1])
-            if not parent_fp in update_paths:
+            if parent_fp not in update_paths:
                 update_paths.append(parent_fp)
 
     field_paths = canonicalize_field_paths(field_paths)
