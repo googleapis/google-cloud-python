@@ -1269,22 +1269,27 @@ def pbs_for_update(client, document_path, field_updates, option):
     field_paths = canonicalize_field_paths(field_paths)
     update_paths = canonicalize_field_paths(update_paths)
 
-    update_pb = write_pb2.Write(
-        update=document_pb2.Document(
-            name=document_path,
-            fields=encode_dict(update_values),
-        ),
-        update_mask=common_pb2.DocumentMask(field_paths=update_paths),
-    )
-    # Due to the default, we don't have to check if ``None``.
-    option.modify_write(update_pb, field_paths=field_paths)
+    write_pbs = []
 
-    write_pbs = [update_pb]
+    if update_values:
+        update_pb = write_pb2.Write(
+            update=document_pb2.Document(
+                name=document_path,
+                fields=encode_dict(update_values),
+            ),
+            update_mask=common_pb2.DocumentMask(field_paths=update_paths),
+        )
+        # Due to the default, we don't have to check if ``None``.
+        option.modify_write(update_pb)
+        write_pbs.append(update_pb)
+
 
     if transform_paths:
-        # NOTE: We **explicitly** don't set any write option on
-        #       the ``transform_pb``.
         transform_pb = get_transform_pb(document_path, transform_paths)
+        if not update_values:
+            # NOTE: set the write option on the ``transform_pb`` only if there
+            #       is no ``update_pb``
+            option.modify_write(transform_pb)
         write_pbs.append(transform_pb)
 
     return write_pbs
