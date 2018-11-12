@@ -18,6 +18,10 @@ https://cloud.google.com/iam/docs/understanding-roles
 """
 
 import collections
+try:
+    from collections import abc as collections_abc
+except ImportError:  # Python 2.7
+    import collections as collections_abc
 import warnings
 
 # Generic IAM roles
@@ -35,7 +39,7 @@ _ASSIGNMENT_DEPRECATED_MSG = """\
 Assigning to '{}' is deprecated.  Replace with 'policy[{}] = members."""
 
 
-class Policy(collections.MutableMapping):
+class Policy(collections_abc.MutableMapping):
     """IAM Policy
 
     See
@@ -239,4 +243,4 @@ class Policy(collections.MutableMapping):
         return resource
 
 
-collections.MutableMapping.register(Policy)
+collections_abc.MutableMapping.register(Policy)
