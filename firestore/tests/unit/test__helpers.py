@@ -1620,12 +1620,18 @@ class Test_pbs_for_update(unittest.TestCase):
         map_pb = document_pb2.MapValue(fields={
             'yum': _value_pb(bytes_value=value),
         })
+
+        if do_transform:
+            field_paths = [field_path1, 'blog']
+        else:
+            field_paths = [field_path1]
+
         expected_update_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
                 fields={'bitez': _value_pb(map_value=map_pb)},
             ),
-            update_mask=common_pb2.DocumentMask(field_paths=[field_path1]),
+            update_mask=common_pb2.DocumentMask(field_paths=field_paths),
             **write_kwargs
         )
         if isinstance(option, ExistsOption):
