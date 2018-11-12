@@ -19,6 +19,7 @@ import copy
 import six
 
 from google.cloud.firestore_v1beta1 import _helpers
+from google.cloud.firestore_v1beta1.watch import Watch
 
 
 class DocumentReference(object):
@@ -444,6 +445,38 @@ class DocumentReference(object):
         iterator.document = self
         iterator.item_to_value = _item_to_collection_ref
         return iterator
+
+    def on_snapshot(self, callback):
+        """Watch this document.
+
+        This starts a watch on this document using a background thread. The
+        provided callback is run on the snapshot.
+
+        Args:
+            callback(~.firestore.document.DocumentSnapshot):a callback to run
+                when a change occurs
+
+        Example:
+            from google.cloud import firestore
+
+            db = firestore.Client()
+            collection_ref = db.collection(u'users')
+
+            def on_snapshot(document_snapshot):
+                doc = document_snapshot
+                print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
+            doc_ref = db.collection(u'users').document(
+                u'alovelace' + unique_resource_id())
+
+            # Watch this document
+            doc_watch = doc_ref.on_snapshot(on_snapshot)
+
+            # Terminate this watch
+            doc_watch.unsubscribe()
+        """
+        return Watch.for_document(self, callback, DocumentSnapshot,
+                                  DocumentReference)
 
 
 class DocumentSnapshot(object):
