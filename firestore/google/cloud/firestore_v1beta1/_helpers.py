@@ -415,13 +415,6 @@ class FieldPathHelper(object):
         return helper.parse()
 
 
-class ReadAfterWriteError(Exception):
-    """Raised when a read is attempted after a write.
-
-    Raised by "read" methods that use transactions.
-    """
-
-
 def verify_path(path, is_collection):
     """Verifies that a ``path`` has the correct form.
 
@@ -1308,6 +1301,13 @@ def pb_for_delete(document_path, option):
         option.modify_write(write_pb)
 
     return write_pb
+
+
+class ReadAfterWriteError(Exception):
+    """Raised when a read is attempted after a write.
+
+    Raised by "read" methods that use transactions.
+    """
 
 
 def get_transaction_id(transaction, read_operation=True):
