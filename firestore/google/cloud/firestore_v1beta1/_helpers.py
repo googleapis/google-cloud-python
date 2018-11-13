@@ -549,16 +549,15 @@ def extract_field_paths(document_data):
     """
     field_paths = []
     for field_name, value in six.iteritems(document_data):
+
         if isinstance(value, dict):
-            sub_field_paths = extract_field_paths(value)
-            for sub_path in sub_field_paths:
-                paths = [field_name]
-                paths.extend(sub_path.parts)
-                field_path = FieldPath(*paths)
-                field_paths.append(field_path)
+            for sub_path in extract_field_paths(value):
+                field_path = FieldPath(field_name, *sub_path.parts)
         else:
-            path = FieldPath(field_name)
-            field_paths.append(path)
+            field_path = FieldPath(field_name)
+
+        field_paths.append(field_path)
+
     return field_paths
 
 
