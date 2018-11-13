@@ -14,9 +14,10 @@
 
 """Ported implementations from the Google App Engine SDK.
 
+These are from the ``google.appengine.api.datastore_types`` module.
 The following members have been brought in:
 
-* ``google.appengine.api.datastore_types.BlobKey``
+* ``BlobKey``
 """
 
 import functools

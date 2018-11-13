@@ -19,7 +19,7 @@ Storage.
 """
 
 
-from google.cloud.ndb import _ports
+from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import model
 
 
@@ -57,7 +57,7 @@ __all__ = [
 ]
 
 
-BlobKey = _ports.BlobKey
+BlobKey = _datastore_types.BlobKey
 
 BLOB_INFO_KIND = "__BlobInfo__"
 BLOB_MIGRATION_KIND = "__BlobMigration__"

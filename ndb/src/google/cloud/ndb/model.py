@@ -23,7 +23,7 @@ import zlib
 
 from google.cloud.datastore import helpers
 
-from google.cloud.ndb import _ports
+from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
@@ -89,7 +89,7 @@ __all__ = [
 
 _MAX_STRING_LENGTH = 1500
 Key = key_module.Key
-BlobKey = _ports.BlobKey
+BlobKey = _datastore_types.BlobKey
 GeoPt = helpers.GeoPoint
 Rollback = exceptions.Rollback
 

@@ -14,7 +14,7 @@
 
 import pytest
 
-from google.cloud.ndb import _ports
+from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import blobstore
 from google.cloud.ndb import model
 import tests.unit.utils
@@ -25,7 +25,7 @@ def test___all__():
 
 
 def test_BlobKey():
-    assert blobstore.BlobKey is _ports.BlobKey
+    assert blobstore.BlobKey is _datastore_types.BlobKey
 
 
 def test_BlobKeyProperty():

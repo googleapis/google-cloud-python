@@ -16,7 +16,7 @@ import unittest.mock
 
 import pytest
 
-from google.cloud.ndb import _ports
+from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 
 
@@ -24,31 +24,31 @@ class TestBlobKey:
     @staticmethod
     def test_constructor_bytes():
         value = b"abc"
-        blob_key = _ports.BlobKey(value)
+        blob_key = _datastore_types.BlobKey(value)
         assert blob_key._blob_key is value
 
     @staticmethod
     def test_constructor_none():
-        blob_key = _ports.BlobKey(None)
+        blob_key = _datastore_types.BlobKey(None)
         assert blob_key._blob_key is None
 
     @staticmethod
     def test_constructor_too_long():
         value = b"a" * 2000
         with pytest.raises(exceptions.BadValueError):
-            _ports.BlobKey(value)
+            _datastore_types.BlobKey(value)
 
     @staticmethod
     def test_constructor_bad_type():
         value = {"a": "b"}
         with pytest.raises(exceptions.BadValueError):
-            _ports.BlobKey(value)
+            _datastore_types.BlobKey(value)
 
     @staticmethod
     def test___eq__():
-        blob_key1 = _ports.BlobKey(b"abc")
-        blob_key2 = _ports.BlobKey(b"def")
-        blob_key3 = _ports.BlobKey(None)
+        blob_key1 = _datastore_types.BlobKey(b"abc")
+        blob_key2 = _datastore_types.BlobKey(b"def")
+        blob_key3 = _datastore_types.BlobKey(None)
         blob_key4 = b"ghi"
         blob_key5 = unittest.mock.sentinel.blob_key
         assert blob_key1 == blob_key1
@@ -59,9 +59,9 @@ class TestBlobKey:
 
     @staticmethod
     def test___lt__():
-        blob_key1 = _ports.BlobKey(b"abc")
-        blob_key2 = _ports.BlobKey(b"def")
-        blob_key3 = _ports.BlobKey(None)
+        blob_key1 = _datastore_types.BlobKey(b"abc")
+        blob_key2 = _datastore_types.BlobKey(b"def")
+        blob_key3 = _datastore_types.BlobKey(None)
         blob_key4 = b"ghi"
         blob_key5 = unittest.mock.sentinel.blob_key
         assert not blob_key1 < blob_key1
@@ -75,5 +75,5 @@ class TestBlobKey:
     @staticmethod
     def test___hash__():
         value = b"289399038904ndkjndjnd02mx"
-        blob_key = _ports.BlobKey(value)
+        blob_key = _datastore_types.BlobKey(value)
         assert hash(blob_key) == hash(value)

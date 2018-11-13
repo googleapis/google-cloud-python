@@ -21,7 +21,7 @@ import zlib
 from google.cloud.datastore import helpers
 import pytest
 
-from google.cloud.ndb import _ports
+from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key
 from google.cloud.ndb import model
@@ -38,7 +38,7 @@ def test_Key():
 
 
 def test_BlobKey():
-    assert model.BlobKey is _ports.BlobKey
+    assert model.BlobKey is _datastore_types.BlobKey
 
 
 def test_GeoPt():
