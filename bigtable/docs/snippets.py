@@ -681,7 +681,7 @@ def test_bigtable_table_row_truncate_table():
     assert rows_data_after_truncate == []
 
 
-def s___test_bigtable_test_iam_permissions():
+def test_bigtable_test_iam_permissions():
     # [START bigtable_test_iam_permissions]
     from google.cloud.bigtable import Client
 
@@ -695,7 +695,7 @@ def s___test_bigtable_test_iam_permissions():
     assert permissions_allowed == permissions
 
 
-def s___test_bigtable_set_iam_policy_then_get_iam_policy():
+def test_bigtable_set_iam_policy_then_get_iam_policy():
     # [START bigtable_set_iam_policy]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.policy import Policy
