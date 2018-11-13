@@ -547,25 +547,19 @@ class Property(ModelAttribute):
         """Verify the name of the property.
 
         Args:
-            name (Union[bytes, str]): The name of the property.
+            name (str): The name of the property.
 
         Returns:
-            bytes: The UTF-8 encoded version of the ``name``, if not already
-            passed in as bytes.
+            str: The ``name`` passed in.
 
         Raises:
-            TypeError: If the ``name`` is not a string or bytes.
+            TypeError: If the ``name`` is not a string.
             ValueError: If the name contains a ``.``.
         """
-        if isinstance(name, str):
-            name = name.encode("utf-8")
+        if not isinstance(name, str):
+            raise TypeError("Name {!r} is not a string".format(name))
 
-        if not isinstance(name, bytes):
-            raise TypeError(
-                "Name {!r} is not a string or byte string".format(name)
-            )
-
-        if b"." in name:
+        if "." in name:
             raise ValueError(
                 "Name {!r} cannot contain period characters".format(name)
             )
@@ -1975,8 +1969,8 @@ class TextProperty(BlobProperty):
 
         if self._indexed and encoded_length > _MAX_STRING_LENGTH:
             raise exceptions.BadValueError(
-                "Indexed value %s must be at most %d bytes"
-                % (self._name, _MAX_STRING_LENGTH)
+                "Indexed value {} must be at most {:d} "
+                "bytes".format(self._name, _MAX_STRING_LENGTH)
             )
 
     def _to_base_type(self, value):
@@ -2270,13 +2264,13 @@ class KeyProperty(Property):
 
         >>> name = "my_value"
         >>> ndb.KeyProperty(name)
-        KeyProperty(b'my_value')
+        KeyProperty('my_value')
         >>> ndb.KeyProperty(SimpleModel)
-        KeyProperty(kind=b'SimpleModel')
+        KeyProperty(kind='SimpleModel')
         >>> ndb.KeyProperty(name, SimpleModel)
-        KeyProperty(b'my_value', kind=b'SimpleModel')
+        KeyProperty('my_value', kind='SimpleModel')
         >>> ndb.KeyProperty(SimpleModel, name)
-        KeyProperty(b'my_value', kind=b'SimpleModel')
+        KeyProperty('my_value', kind='SimpleModel')
 
     The type of the positional arguments will be used to determine their
     purpose: a string argument is assumed to be the ``name`` and a
@@ -2361,15 +2355,14 @@ class KeyProperty(Property):
                 twice in ``args``.
             TypeError: If a valid ``kind`` type (i.e. a subclass of
                 :class:`Model`) is specified twice in ``args``.
-            TypeError: If an element in ``args`` is not a :class:`bytes`,
-                :class:`str` or a subclass of :class:`Model`.
+            TypeError: If an element in ``args`` is not a :class:`str` or a
+                subclass of :class:`Model`.
             TypeError: If a ``name`` is specified both in ``args`` and via
                 the ``name`` keyword.
             TypeError: If a ``kind`` is specified both in ``args`` and via
                 the ``kind`` keyword.
             TypeError: If a ``kind`` was provided via ``keyword`` and is
-                not a :class:`bytes`, :class:`str` or a subclass of
-                :class:`Model`.
+                not a :class:`str` or a subclass of :class:`Model`.
         """
         # Limit positional arguments.
         if len(args) > 2:
@@ -2385,7 +2378,7 @@ class KeyProperty(Property):
         name_via_positional = None
         kind_via_positional = None
         for value in args:
-            if isinstance(value, (bytes, str)):
+            if isinstance(value, str):
                 if name_via_positional is None:
                     name_via_positional = value
                 else:
@@ -2417,10 +2410,8 @@ class KeyProperty(Property):
             else:
                 raise TypeError("You can only specify kind once")
 
-        # Make sure the ``kind`` is converted to ``bytes``.
-        if isinstance(kind, str):
-            kind = kind.encode("utf-8")
-        elif kind is not None and not isinstance(kind, bytes):
+        # Make sure the ``kind`` is a ``str``.
+        if kind is not None and not isinstance(kind, str):
             raise TypeError("kind must be a Model class or a string")
 
         return name, kind
@@ -2530,9 +2521,9 @@ class DateTimeProperty(Property):
             multiple values.
         required (bool): Indicates if this property is required on the given
             model type.
-        default (bytes): The default value for this property.
-        choices (Iterable[bytes]): A container of allowed values for this
-            property.
+        default (~datetime.datetime): The default value for this property.
+        choices (Iterable[~datetime.datetime]): A container of allowed values
+            for this property.
         validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
             validator to be used to check values.
         verbose_name (str): A longer, user-friendly name for this property.

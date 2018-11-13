@@ -363,7 +363,7 @@ class TestProperty:
             verbose_name="VALUE FOR READING",
             write_empty_list=False,
         )
-        assert prop._name == b"val" and prop._name != "val"
+        assert prop._name == "val"
         assert not prop._indexed
         assert not prop._repeated
         assert prop._required
@@ -412,7 +412,7 @@ class TestProperty:
             write_empty_list=False,
         )
         expected = (
-            "Property(b'val', indexed=False, required=True, "
+            "Property('val', indexed=False, required=True, "
             "default='zorp', choices={}, validator={}, "
             "verbose_name='VALUE FOR READING')".format(
                 prop._choices, prop._validator
@@ -449,13 +449,13 @@ class TestProperty:
     def test__comparison(property_clean_cache):
         prop = model.Property("sentiment", indexed=True)
         filter_node = prop._comparison(">=", 0.0)
-        assert filter_node == query.FilterNode(b"sentiment", ">=", 0.0)
+        assert filter_node == query.FilterNode("sentiment", ">=", 0.0)
 
     @staticmethod
     def test__comparison_empty_value():
         prop = model.Property("height", indexed=True)
         filter_node = prop._comparison("=", None)
-        assert filter_node == query.FilterNode(b"height", "=", None)
+        assert filter_node == query.FilterNode("height", "=", None)
         # Cache is untouched.
         assert model.Property._FIND_METHODS_CACHE == {}
 
@@ -463,7 +463,7 @@ class TestProperty:
     def test___eq__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = 1337
-        expected = query.FilterNode(b"name", "=", value)
+        expected = query.FilterNode("name", "=", value)
 
         filter_node_left = prop == value
         assert filter_node_left == expected
@@ -475,8 +475,8 @@ class TestProperty:
         prop = model.Property("name", indexed=True)
         value = 7.0
         expected = query.DisjunctionNode(
-            query.FilterNode(b"name", "<", value),
-            query.FilterNode(b"name", ">", value),
+            query.FilterNode("name", "<", value),
+            query.FilterNode("name", ">", value),
         )
 
         or_node_left = prop != value
@@ -488,7 +488,7 @@ class TestProperty:
     def test___lt__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = 2.0
-        expected = query.FilterNode(b"name", "<", value)
+        expected = query.FilterNode("name", "<", value)
 
         filter_node_left = prop < value
         assert filter_node_left == expected
@@ -499,7 +499,7 @@ class TestProperty:
     def test___le__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = 20.0
-        expected = query.FilterNode(b"name", "<=", value)
+        expected = query.FilterNode("name", "<=", value)
 
         filter_node_left = prop <= value
         assert filter_node_left == expected
@@ -510,7 +510,7 @@ class TestProperty:
     def test___gt__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = "new"
-        expected = query.FilterNode(b"name", ">", value)
+        expected = query.FilterNode("name", ">", value)
 
         filter_node_left = prop > value
         assert filter_node_left == expected
@@ -521,7 +521,7 @@ class TestProperty:
     def test___ge__(property_clean_cache):
         prop = model.Property("name", indexed=True)
         value = "old"
-        expected = query.FilterNode(b"name", ">=", value)
+        expected = query.FilterNode("name", ">=", value)
 
         filter_node_left = prop >= value
         assert filter_node_left == expected
@@ -551,9 +551,9 @@ class TestProperty:
         prop = model.Property("name", indexed=True)
         or_node = prop._IN(["a", None, "xy"])
         expected = query.DisjunctionNode(
-            query.FilterNode(b"name", "=", "a"),
-            query.FilterNode(b"name", "=", None),
-            query.FilterNode(b"name", "=", "xy"),
+            query.FilterNode("name", "=", "a"),
+            query.FilterNode("name", "=", None),
+            query.FilterNode("name", "=", "xy"),
         )
         assert or_node == expected
         # Also verify the alias
@@ -949,7 +949,7 @@ class TestProperty:
                 return len(self._name) < 20
 
         prop = SomeProperty(name="hi")
-        assert prop.find_me() == b"hi"
+        assert prop.find_me() == "hi"
         assert prop.IN()
 
         return SomeProperty
@@ -1230,7 +1230,7 @@ class TestProperty:
         value = 1234.5
         # __set__
         m.prop = value
-        assert m._values == {b"prop": value}
+        assert m._values == {"prop": value}
         # __get__
         assert m.prop == value
         # __delete__
@@ -1463,7 +1463,7 @@ class TestBlobProperty:
             verbose_name="VALUE FOR READING",
             write_empty_list=False,
         )
-        assert prop._name == b"blob_val" and prop._name != "blob_val"
+        assert prop._name == "blob_val"
         assert prop._compressed
         assert not prop._indexed
         assert not prop._repeated
@@ -1579,7 +1579,7 @@ class TestTextProperty:
     @staticmethod
     def test_constructor_explicit():
         prop = model.TextProperty(name="text", indexed=False)
-        assert prop._name == b"text"
+        assert prop._name == "text"
         assert not prop._indexed
 
     @staticmethod
@@ -1649,7 +1649,7 @@ class TestStringProperty:
     @staticmethod
     def test_constructor_explicit():
         prop = model.StringProperty(name="limited-text", indexed=True)
-        assert prop._name == b"limited-text"
+        assert prop._name == "limited-text"
         assert prop._indexed
 
     @staticmethod
@@ -1726,7 +1726,7 @@ class TestJsonProperty:
             verbose_name="VALUE FOR READING",
             write_empty_list=False,
         )
-        assert prop._name == b"json-val" and prop._name != "json-val"
+        assert prop._name == "json-val"
         assert prop._compressed
         assert prop._json_type is tuple
         assert not prop._indexed
@@ -1839,23 +1839,23 @@ class TestKeyProperty:
         assert prop._name is None
         assert prop._kind is None
 
-        name_only_args = [("keyp",), (None, "keyp"), (b"keyp", None)]
+        name_only_args = [("keyp",), (None, "keyp"), ("keyp", None)]
         for args in name_only_args:
             prop = model.KeyProperty(*args)
-            assert prop._name == b"keyp"
+            assert prop._name == "keyp"
             assert prop._kind is None
 
         kind_only_args = [(Simple,), (None, Simple), (Simple, None)]
         for args in kind_only_args:
             prop = model.KeyProperty(*args)
             assert prop._name is None
-            assert prop._kind == b"Simple"
+            assert prop._kind == "Simple"
 
         both_args = [("keyp", Simple), (Simple, "keyp")]
         for args in both_args:
             prop = model.KeyProperty(*args)
-            assert prop._name == b"keyp"
-            assert prop._kind == b"Simple"
+            assert prop._name == "keyp"
+            assert prop._kind == "Simple"
 
     @staticmethod
     def test_constructor_hybrid():
@@ -1866,13 +1866,13 @@ class TestKeyProperty:
         prop2 = model.KeyProperty("keyp", kind=Simple)
         prop3 = model.KeyProperty("keyp", kind="Simple")
         for prop in (prop1, prop2, prop3):
-            assert prop._name == b"keyp"
-            assert prop._kind == b"Simple"
+            assert prop._name == "keyp"
+            assert prop._kind == "Simple"
 
     @staticmethod
     def test_repr():
         prop = model.KeyProperty("keyp", kind="Simple", repeated=True)
-        expected = "KeyProperty(b'keyp', kind=b'Simple', repeated=True)"
+        expected = "KeyProperty('keyp', kind='Simple', repeated=True)"
         assert repr(prop) == expected
 
     @staticmethod
@@ -1880,7 +1880,6 @@ class TestKeyProperty:
         kind = "Simple"
         prop = model.KeyProperty("keyp", kind=kind)
         value = key.Key(kind, 182983)
-        prop._kind = kind  # Ick
         assert prop._validate(value) is None
 
     @staticmethod
@@ -1951,7 +1950,7 @@ class TestDateTimeProperty:
             verbose_name="VALUE FOR READING",
             write_empty_list=False,
         )
-        assert prop._name == b"dt_val" and prop._name != "dt_val"
+        assert prop._name == "dt_val"
         assert prop._auto_now
         assert not prop._auto_now_add
         assert not prop._indexed
