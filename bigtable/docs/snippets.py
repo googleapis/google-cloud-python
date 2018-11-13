@@ -55,14 +55,7 @@ LABEL_STAMP = datetime.datetime.utcnow() \
                                .strftime("%Y-%m-%dt%H-%M-%S")
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 COL_NAME1 = b'col-name1'
-# COL_NAME2 = b'col-name2'
-# COL_NAME3 = b'col-name3-but-other-fam'
 CELL_VAL1 = b'cell-val'
-# CELL_VAL2 = b'cell-val-newer'
-# CELL_VAL3 = b'altcol-cell-val'
-# CELL_VAL4 = b'foo'
-# ROW_KEY = b'row-key'
-# ROW_KEY_ALT = b'row-key-alt'
 
 
 class Config(object):
