@@ -26,7 +26,7 @@ for version in versions:
     library = gapic.py_library('automl', version)
     s.move(library / f'google/cloud/automl_{version}')
     s.move(library / f'tests/unit/gapic/{version}')
-    s.move(library / f'docs/gapic/automl/{version}')
+    s.move(library / f'docs/gapic/{version}')
 
 # Use the highest version library to generate import alias.
 s.move(library / 'google/cloud/automl.py')

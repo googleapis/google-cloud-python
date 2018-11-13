@@ -110,7 +110,7 @@ class NotificationChannelServiceServicer(object):
 
   def CreateNotificationChannel(self, request, context):
     """Creates a new notification channel, representing a single notification
-    endpoint such as an email address, SMS number, or pagerduty service.
+    endpoint such as an email address, SMS number, or PagerDuty service.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

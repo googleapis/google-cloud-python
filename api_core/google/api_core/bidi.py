@@ -481,7 +481,7 @@ class BackgroundConsumer(object):
             print(response)
 
         consumer = BackgroundConsumer(rpc, on_response)
-        consume.start()
+        consumer.start()
 
     Note that error handling *must* be done by using the provided
     ``bidi_rpc``'s ``add_done_callback``. This helper will automatically exit

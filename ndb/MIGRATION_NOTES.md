@@ -57,7 +57,7 @@ The primary differences come from:
   the limit has been raised by the backend. (FWIW, Danny's opinion is that
   the backend should enforce these limits, not the library.)
 - `Property.__creation_counter_global` has been removed as it seems to have
-  been included for a feature that was never implemented. See 
+  been included for a feature that was never implemented. See
   [Issue #175][1] for original rationale for including it and [Issue #6317][2]
   for discussion of its removal.
 - `ndb` uses "private" instance attributes in many places, e.g. `Key.__app`.
@@ -83,6 +83,26 @@ The primary differences come from:
   Now `Property._FIND_METHODS_CACHE` is set to `{}` when the `Property` class
   is created and there is another level of keys (based on fully-qualified
   class name) in the cache.
+- `eventloop` has been renamed to `_eventloop`. It is believed that `eventloop`
+  was previously a *de facto* private module, so we've just made that
+  explicit.
+- `BlobProperty._datastore_type` has not been implemented; the base class
+  implementation is sufficient. The original implementation wrapped a byte
+  string in a `google.appengine.api.datastore_types.ByteString` instance, but
+  that type was mostly an alias for `str` in Python 2
+- `BlobProperty._validate` used to special case for "too long when indexed"
+  if `isinstance(self, TextProperty)`. We have removed this check since
+  the implementation does the same check in `TextProperty._validate`.
+- The `BlobProperty` constructor only sets `_compressed` if explicitly
+  passed. The original set `_compressed` always (and used `False` as default).
+  In the exact same fashion the `JsonProperty` constructor only sets
+  `_json_type` if explicitly passed. Similarly, the `DateTimeProperty`
+  constructor only sets `_auto_now` and `_auto_now_add` if explicitly passed.
+- `TextProperty(indexed=True)` and `StringProperty(indexed=False)` are no
+  longer supported (see docstrings for more info)
+- `model.GeoPt` is an alias for `google.cloud.datastore.helpers.GeoPoint`
+  rather than an alias for `google.appengine.api.datastore_types.GeoPt`. These
+  classes have slightly different characteristics.
 
 ## Comments
 
@@ -133,7 +153,10 @@ The primary differences come from:
 - There is a giant web of module interdependency, so runtime imports (to avoid
   import cycles) are very common. For example `model.Property` depends on
   `query` but `query` depends on `model`.
+- Will need to sort out dependencies on old RPC implementations and port to
+  modern gRPC. ([Issue #6363][4])
 
 [1]: https://github.com/GoogleCloudPlatform/datastore-ndb-python/issues/175
 [2]: https://github.com/googleapis/google-cloud-python/issues/6317
 [3]: https://github.com/googleapis/googleapis/blob/3afba2fd062df0c89ecd62d97f912192b8e0e0ae/google/datastore/v1/entity.proto#L203
+[4]: https://github.com/googleapis/google-cloud-python/issues/6363

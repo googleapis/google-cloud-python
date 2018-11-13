@@ -60,44 +60,13 @@ for version in versions:
         f'class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):'
     )
 
-    # Fix import of operations
-    s.replace(
-        [f'google/cloud/vision_{version}/**/*.py',
-         f'tests/system/gapic/{version}/**/*.py'],
-        f'import google.api_core.operations_v1',
-        f'from google.api_core import operations_v1')
-
-    # fix issues with imports of vision from wrong directory
-    s.replace(
-        [f'google/cloud/vision_{version}/**/*.py',
-         f'tests/system/gapic/{version}/**/*.py'],
-        f'from google.cloud.gapic.vision import enums',
-        f'from google.cloud.vision_{version}.gapic import enums')
-
-    s.replace(
-        f'tests/system/gapic/{version}/**/*.py',
-        f'from google.cloud.gapic import vision',
-        f'import google.cloud.vision_{version} as vision')
-
-    s.replace(
-        f'google/cloud/vision_{version}/**/*.py',
-        f'from google.cloud.gapic.vision.{version}',
-        f'from google.cloud.vision_{version}')
-
-    # under indented second line of docstring
-    s.replace(
-        "google/cloud/vision_v1p3beta1/gapic/product_search_client.py",
-        "    (- The API has a collection of ``ProductSet.*\n)"
-        "\s+(``project.*\n)\s+(products.*)",
-        "    \g<1>      \g<2>      \g<3>")
-
-    s.replace(
-        'google/cloud/vision_v1p3beta1/gapic/product_search_client.py',
-        '(        \* .*\n        )([^\s*])',
-        '\g<1>  \g<2>')
-
-    # Blank line needed after bullet list
-    s.replace(
-        'google/cloud/vision_v1p3beta1/gapic/product_search_client.py',
-        "(- Each ``Product`` has a collection .*\n.*\n)(\s+\"\"\")",
-        '\g<1>\n\g<2>')
+# Fix import of operations
+targets = [
+    'google/cloud/vision_*/**/*.py',
+    'tests/system/gapic/*/**/*.py',
+]
+s.replace(
+    targets,
+    'import google.api_core.operations_v1',
+    'from google.api_core import operations_v1',
+)

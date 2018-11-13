@@ -41,11 +41,6 @@ s.replace(
     "google\.cloud\.privacy\.dlp_v2",
     "google.cloud.dlp_v2"
 )
-s.replace(
-    "tests/**/*.py",
-    "google\.cloud\.privacy\.dlp_v2",
-    "google.cloud.dlp_v2"
-)
 
 # Add missing utf-8 marker
 s.replace(
@@ -80,15 +75,6 @@ s.replace(
     "google/cloud/dlp_v2/proto/storage_pb2.py",
     "(hotword_regex:)\n(\s+Regular expression.*)\n",
     "\g<1> \\\n\g<2> \\\n"
-)
-
-s.replace(
-    "google/cloud/dlp_v2/proto/storage_pb2.py",
-    "(proximity:)\n(\s+Proximity.*)\n(\s+reside..*)\n(\s+characters..*)\n"
-    "(\s+the window.*)\n(\s+of the finding.*)\n(\s+number regex.*)\n"
-    "(\s+latex:.*)\n(\s+known to be the local.*)\n(\s+hotword regex.*)\n",
-    "\g<1> \\\n\g<2> \\\n\g<3> \\\n\g<4> \\\n\g<5> \\\n\g<6> \\\n\g<7> "
-    "\\\n\g<8> \\\n\g<9> \\\n\g<10> \\\n"
 )
 
 s.replace(
@@ -263,27 +249,19 @@ s.replace(
 # Fix Docstrings in google/cloud/dlp_v2/gapic/dlp_service_client.py
 s.replace(
     "google/cloud/dlp_v2/gapic/dlp_service_client.py",
-    "(- ``CryptoReplaceFfxFpeConfig``\n)(\s+If a dict is provided.*\n)"
-    "(\s+message.*\n)",
-    "\g<1>   \g<2>   \g<3>"
-)
-
-s.replace(
-    "google/cloud/dlp_v2/gapic/dlp_service_client.py",
-    "  ::\n  (\s+- `state`.*\n)  (\s+- `inspected_storage`.*\n)"
-    "  (\s+- `trigger_name`.*\n)",
-    "* Supported fields/values for inspect jobs:\n\g<1>\g<2>\g<3>"
-)
-
-s.replace(
-    "google/cloud/dlp_v2/gapic/dlp_service_client.py",
-    "  ::\n  (\s+- `state`.*\n)(\s+\* The operator must be)",
-    "* Supported fields for risk analysis jobs:\n\g<1>\g<2>"
-)
-
-
-s.replace(
-    "google/cloud/dlp_v2/gapic/dlp_service_client.py",
     "^\s+resource was created.",
     "  \g<0>"
+)
+
+# Fix Docstrings in google/cloud/dlp_v2/gapic/enums.py
+s.replace(
+    "google/cloud/dlp_v2/gapic/enums.py",
+    "(\s+)WHITESPACE \(int\).*\n",
+    "\g<1>WHITESPACE (int): Whitespace character\n",
+)
+
+s.replace(
+    "google/cloud/dlp_v2/gapic/enums.py",
+    ".*:raw-latex:.*\n",
+    "",
 )

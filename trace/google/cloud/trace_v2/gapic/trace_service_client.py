@@ -165,9 +165,10 @@ class TraceServiceClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -201,7 +202,7 @@ class TraceServiceClient(object):
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``spans``:
+            >>> # TODO: Initialize `spans`:
             >>> spans = []
             >>>
             >>> client.batch_write_spans(name, spans)
@@ -211,6 +212,7 @@ class TraceServiceClient(object):
                 ``projects/[PROJECT_ID]``.
             spans (list[Union[dict, ~google.cloud.trace_v2.types.Span]]): A list of new spans. The span names must not match existing
                 spans, or the results are undefined.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Span`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -275,16 +277,16 @@ class TraceServiceClient(object):
             >>>
             >>> name = client.span_path('[PROJECT]', '[TRACE]', '[SPAN]')
             >>>
-            >>> # TODO: Initialize ``span_id``:
+            >>> # TODO: Initialize `span_id`:
             >>> span_id = ''
             >>>
-            >>> # TODO: Initialize ``display_name``:
+            >>> # TODO: Initialize `display_name`:
             >>> display_name = {}
             >>>
-            >>> # TODO: Initialize ``start_time``:
+            >>> # TODO: Initialize `start_time`:
             >>> start_time = {}
             >>>
-            >>> # TODO: Initialize ``end_time``:
+            >>> # TODO: Initialize `end_time`:
             >>> end_time = {}
             >>>
             >>> response = client.create_span(name, span_id, display_name, start_time, end_time)
@@ -294,60 +296,70 @@ class TraceServiceClient(object):
 
                 ::
 
-                    projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
+                     projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
 
-                [TRACE_ID] is a unique identifier for a trace within a project;
-                it is a 32-character hexadecimal encoding of a 16-byte array.
+                [TRACE\_ID] is a unique identifier for a trace within a project; it is a
+                32-character hexadecimal encoding of a 16-byte array.
 
-                [SPAN_ID] is a unique identifier for a span within a trace; it
-                is a 16-character hexadecimal encoding of an 8-byte array.
-            span_id (str): The [SPAN_ID] portion of the span's resource name.
-            display_name (Union[dict, ~google.cloud.trace_v2.types.TruncatableString]): A description of the span's operation (up to 128 bytes).
-                Stackdriver Trace displays the description in the
-                {% dynamic print site_values.console_name %}.
-                For example, the display name can be a qualified method name or a file name
-                and a line number where the operation is called. A best practice is to use
-                the same display name within an application and at the same call point.
-                This makes it easier to correlate spans in different traces.
+                [SPAN\_ID] is a unique identifier for a span within a trace; it is a
+                16-character hexadecimal encoding of an 8-byte array.
+            span_id (str): The [SPAN\_ID] portion of the span's resource name.
+            display_name (Union[dict, ~google.cloud.trace_v2.types.TruncatableString]): A description of the span's operation (up to 128 bytes). Stackdriver
+                Trace displays the description in the {% dynamic print
+                site\_values.console\_name %}. For example, the display name can be a
+                qualified method name or a file name and a line number where the
+                operation is called. A best practice is to use the same display name
+                within an application and at the same call point. This makes it easier
+                to correlate spans in different traces.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.TruncatableString`
             start_time (Union[dict, ~google.cloud.trace_v2.types.Timestamp]): The start time of the span. On the client side, this is the time kept by
                 the local machine where the span execution starts. On the server side, this
                 is the time when the server's application handler starts running.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Timestamp`
             end_time (Union[dict, ~google.cloud.trace_v2.types.Timestamp]): The end time of the span. On the client side, this is the time kept by
                 the local machine where the span execution ends. On the server side, this
                 is the time when the server application handler stops running.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Timestamp`
-            parent_span_id (str): The [SPAN_ID] of this span's parent span. If this is a root span,
-                then this field must be empty.
+            parent_span_id (str): The [SPAN\_ID] of this span's parent span. If this is a root span, then
+                this field must be empty.
             attributes (Union[dict, ~google.cloud.trace_v2.types.Attributes]): A set of attributes on the span. You can have up to 32 attributes per
                 span.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Attributes`
             stack_trace (Union[dict, ~google.cloud.trace_v2.types.StackTrace]): Stack trace captured at the start of the span.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.StackTrace`
             time_events (Union[dict, ~google.cloud.trace_v2.types.TimeEvents]): A set of time events. You can have up to 32 annotations and 128 message
                 events per span.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.TimeEvents`
             links (Union[dict, ~google.cloud.trace_v2.types.Links]): Links associated with the span. You can have up to 128 links per Span.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Links`
             status (Union[dict, ~google.cloud.trace_v2.types.Status]): An optional final status for this span.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Status`
             same_process_as_parent_span (Union[dict, ~google.cloud.trace_v2.types.BoolValue]): (Optional) Set this parameter to indicate whether this span is in
                 the same process as its parent. If you do not set this parameter,
                 Stackdriver Trace is unable to take advantage of this helpful
                 information.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.BoolValue`
             child_span_count (Union[dict, ~google.cloud.trace_v2.types.Int32Value]): An optional number of child spans that were generated while this span
                 was active. If set, allows implementation to detect missing child spans.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Int32Value`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used

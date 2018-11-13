@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+import pickle
 import types
 import unittest.mock
+import zlib
 
+from google.cloud.datastore import helpers
 import pytest
 
 from google.cloud.ndb import exceptions
@@ -37,7 +41,7 @@ def test_BlobKey():
 
 
 def test_GeoPt():
-    assert model.GeoPt is NotImplemented
+    assert model.GeoPt is helpers.GeoPoint
 
 
 class TestIndexProperty:
@@ -648,7 +652,7 @@ class TestProperty:
     @staticmethod
     def test__set_value(property_clean_cache):
         entity = unittest.mock.Mock(
-            _projection=False, _values={}, spec=("_projection", "_values")
+            _projection=None, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=False)
         prop._set_value(entity, 19)
@@ -657,7 +661,7 @@ class TestProperty:
     @staticmethod
     def test__set_value_none():
         entity = unittest.mock.Mock(
-            _projection=False, _values={}, spec=("_projection", "_values")
+            _projection=None, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=False)
         prop._set_value(entity, None)
@@ -668,7 +672,7 @@ class TestProperty:
     @staticmethod
     def test__set_value_repeated(property_clean_cache):
         entity = unittest.mock.Mock(
-            _projection=False, _values={}, spec=("_projection", "_values")
+            _projection=None, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=True)
         prop._set_value(entity, (11, 12, 13))
@@ -677,7 +681,7 @@ class TestProperty:
     @staticmethod
     def test__set_value_repeated_bad_container():
         entity = unittest.mock.Mock(
-            _projection=False, _values={}, spec=("_projection", "_values")
+            _projection=None, _values={}, spec=("_projection", "_values")
         )
         prop = model.Property(name="foo", repeated=True)
         with pytest.raises(exceptions.BadValueError):
@@ -687,7 +691,9 @@ class TestProperty:
 
     @staticmethod
     def test__set_value_projection():
-        entity = unittest.mock.Mock(_projection=True, spec=("_projection",))
+        entity = unittest.mock.Mock(
+            _projection=("a", "b"), spec=("_projection",)
+        )
         prop = model.Property(name="foo", repeated=True)
         with pytest.raises(model.ReadonlyPropertyError):
             prop._set_value(entity, None)
@@ -1241,6 +1247,18 @@ class TestProperty:
         assert Model.prop2 is prop
 
     @staticmethod
+    def test__serialize():
+        prop = model.Property(name="prop")
+        with pytest.raises(NotImplementedError):
+            prop._serialize(None, None)
+
+    @staticmethod
+    def test__deserialize():
+        prop = model.Property(name="prop")
+        with pytest.raises(NotImplementedError):
+            prop._deserialize(None, None)
+
+    @staticmethod
     def test__prepare_for_put():
         prop = model.Property(name="prop")
         assert prop._prepare_for_put(None) is None
@@ -1284,65 +1302,477 @@ class TestModelKey:
 
 class TestBooleanProperty:
     @staticmethod
-    def test_constructor():
+    def test__validate():
+        prop = model.BooleanProperty(name="certify")
+        value = True
+        assert prop._validate(value) is value
+
+    @staticmethod
+    def test__validate_bad_value():
+        prop = model.BooleanProperty(name="certify")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.BooleanProperty(name="certify")
         with pytest.raises(NotImplementedError):
-            model.BooleanProperty()
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.BooleanProperty(name="certify")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestIntegerProperty:
     @staticmethod
-    def test_constructor():
+    def test__validate():
+        prop = model.IntegerProperty(name="count")
+        value = 829038402384
+        assert prop._validate(value) is value
+
+    @staticmethod
+    def test__validate_bool():
+        prop = model.IntegerProperty(name="count")
+        value = True
+        assert prop._validate(value) == 1
+
+    @staticmethod
+    def test__validate_bad_value():
+        prop = model.IntegerProperty(name="count")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.IntegerProperty(name="count")
         with pytest.raises(NotImplementedError):
-            model.IntegerProperty()
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.IntegerProperty(name="count")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestFloatProperty:
     @staticmethod
-    def test_constructor():
+    def test__validate():
+        prop = model.FloatProperty(name="continuous")
+        value = 7.25
+        assert prop._validate(value) is value
+
+    @staticmethod
+    def test__validate_int():
+        prop = model.FloatProperty(name="continuous")
+        value = 1015
+        assert prop._validate(value) == 1015.0
+
+    @staticmethod
+    def test__validate_bool():
+        prop = model.FloatProperty(name="continuous")
+        value = True
+        assert prop._validate(value) == 1.0
+
+    @staticmethod
+    def test__validate_bad_value():
+        prop = model.FloatProperty(name="continuous")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.FloatProperty(name="continuous")
         with pytest.raises(NotImplementedError):
-            model.FloatProperty()
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.FloatProperty(name="continuous")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
+
+
+class Test_CompressedValue:
+    @staticmethod
+    def test_constructor():
+        value = b"abc" * 1000
+        z_val = zlib.compress(value)
+        compressed_value = model._CompressedValue(z_val)
+
+        assert compressed_value.z_val == z_val
+
+    @staticmethod
+    def test___repr__():
+        z_val = zlib.compress(b"12345678901234567890")
+        compressed_value = model._CompressedValue(z_val)
+        expected = "_CompressedValue(" + repr(z_val) + ")"
+        assert repr(compressed_value) == expected
+
+    @staticmethod
+    def test___eq__():
+        z_val1 = zlib.compress(b"12345678901234567890")
+        compressed_value1 = model._CompressedValue(z_val1)
+        z_val2 = zlib.compress(b"12345678901234567890abcde\x00")
+        compressed_value2 = model._CompressedValue(z_val2)
+        compressed_value3 = unittest.mock.sentinel.compressed_value
+        assert compressed_value1 == compressed_value1
+        assert not compressed_value1 == compressed_value2
+        assert not compressed_value1 == compressed_value3
+
+    @staticmethod
+    def test___ne__():
+        z_val1 = zlib.compress(b"12345678901234567890")
+        compressed_value1 = model._CompressedValue(z_val1)
+        z_val2 = zlib.compress(b"12345678901234567890abcde\x00")
+        compressed_value2 = model._CompressedValue(z_val2)
+        compressed_value3 = unittest.mock.sentinel.compressed_value
+        assert not compressed_value1 != compressed_value1
+        assert compressed_value1 != compressed_value2
+        assert compressed_value1 != compressed_value3
+
+    @staticmethod
+    def test___hash__():
+        z_val = zlib.compress(b"12345678901234567890")
+        compressed_value = model._CompressedValue(z_val)
+        with pytest.raises(TypeError):
+            hash(compressed_value)
 
 
 class TestBlobProperty:
     @staticmethod
-    def test_constructor():
+    def test_constructor_defaults():
+        prop = model.BlobProperty()
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {}
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.BlobProperty(
+            name="blob_val",
+            compressed=True,
+            indexed=False,
+            repeated=False,
+            required=True,
+            default=b"eleven\x11",
+            choices=(b"a", b"b", b"c", b"eleven\x11"),
+            validator=TestProperty._example_validator,
+            verbose_name="VALUE FOR READING",
+            write_empty_list=False,
+        )
+        assert prop._name == b"blob_val" and prop._name != "blob_val"
+        assert prop._compressed
+        assert not prop._indexed
+        assert not prop._repeated
+        assert prop._required
+        assert prop._default == b"eleven\x11"
+        assert prop._choices == frozenset((b"a", b"b", b"c", b"eleven\x11"))
+        assert prop._validator is TestProperty._example_validator
+        assert prop._verbose_name == "VALUE FOR READING"
+        assert not prop._write_empty_list
+
+    @staticmethod
+    def test_constructor_compressed_and_indexed():
         with pytest.raises(NotImplementedError):
-            model.BlobProperty()
+            model.BlobProperty(name="foo", compressed=True, indexed=True)
+
+    @staticmethod
+    def test__value_to_repr():
+        prop = model.BlobProperty(name="blob")
+        as_repr = prop._value_to_repr(b"abc")
+        assert as_repr == "b'abc'"
+
+    @staticmethod
+    def test__value_to_repr_truncated():
+        prop = model.BlobProperty(name="blob")
+        value = bytes(range(256)) * 5
+        as_repr = prop._value_to_repr(value)
+        expected = repr(value)[: model._MAX_STRING_LENGTH] + "...'"
+        assert as_repr == expected
+
+    @staticmethod
+    def test__validate():
+        prop = model.BlobProperty(name="blob")
+        assert prop._validate(b"abc") is None
+
+    @staticmethod
+    def test__validate_wrong_type():
+        prop = model.BlobProperty(name="blob")
+        values = ("non-bytes", 48, {"a": "c"})
+        for value in values:
+            with pytest.raises(exceptions.BadValueError):
+                prop._validate(value)
+
+    @staticmethod
+    def test__validate_indexed_too_long():
+        prop = model.BlobProperty(name="blob", indexed=True)
+        value = b"\x00" * 2000
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
+
+    @staticmethod
+    def test__to_base_type():
+        prop = model.BlobProperty(name="blob", compressed=True)
+        value = b"abc" * 10
+        converted = prop._to_base_type(value)
+
+        assert isinstance(converted, model._CompressedValue)
+        assert converted.z_val == zlib.compress(value)
+
+    @staticmethod
+    def test__to_base_type_no_convert():
+        prop = model.BlobProperty(name="blob", compressed=False)
+        value = b"abc" * 10
+        converted = prop._to_base_type(value)
+        assert converted is None
+
+    @staticmethod
+    def test__from_base_type():
+        prop = model.BlobProperty(name="blob")
+        original = b"abc" * 10
+        z_val = zlib.compress(original)
+        value = model._CompressedValue(z_val)
+        converted = prop._from_base_type(value)
+
+        assert converted == original
+
+    @staticmethod
+    def test__from_base_type_no_convert():
+        prop = model.BlobProperty(name="blob")
+        converted = prop._from_base_type(b"abc")
+        assert converted is None
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_set_compressed_meaning():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_compressed_meaning(None)
+
+    @staticmethod
+    def test__db_set_uncompressed_meaning():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_uncompressed_meaning(None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestTextProperty:
     @staticmethod
-    def test_constructor():
+    def test_constructor_defaults():
+        prop = model.TextProperty()
+        assert not prop._indexed
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.TextProperty(name="text", indexed=False)
+        assert prop._name == b"text"
+        assert not prop._indexed
+
+    @staticmethod
+    def test_constructor_not_allowed():
         with pytest.raises(NotImplementedError):
-            model.TextProperty()
+            model.TextProperty(indexed=True)
+
+    @staticmethod
+    def test__validate():
+        prop = model.TextProperty(name="text")
+        assert prop._validate("abc") is None
+
+    @staticmethod
+    def test__validate_bad_bytes():
+        prop = model.TextProperty(name="text")
+        value = b"\x80abc"
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
+
+    @staticmethod
+    def test__validate_bad_type():
+        prop = model.TextProperty(name="text")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__to_base_type():
+        prop = model.TextProperty(name="text")
+        assert prop._to_base_type(b"abc") is None
+
+    @staticmethod
+    def test__to_base_type_converted():
+        prop = model.TextProperty(name="text")
+        value = "\N{snowman}"
+        assert prop._to_base_type(value) == b"\xe2\x98\x83"
+
+    @staticmethod
+    def test__from_base_type():
+        prop = model.TextProperty(name="text")
+        assert prop._from_base_type("abc") is None
+
+    @staticmethod
+    def test__from_base_type_converted():
+        prop = model.TextProperty(name="text")
+        value = b"\xe2\x98\x83"
+        assert prop._from_base_type(value) == "\N{snowman}"
+
+    @staticmethod
+    def test__from_base_type_cannot_convert():
+        prop = model.TextProperty(name="text")
+        value = b"\x80abc"
+        assert prop._from_base_type(value) is None
+
+    @staticmethod
+    def test__db_set_uncompressed_meaning():
+        prop = model.TextProperty(name="text")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_uncompressed_meaning(None)
 
 
 class TestStringProperty:
     @staticmethod
-    def test_constructor():
+    def test_constructor_defaults():
+        prop = model.StringProperty()
+        assert prop._indexed
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.StringProperty(name="limited-text", indexed=True)
+        assert prop._name == b"limited-text"
+        assert prop._indexed
+
+    @staticmethod
+    def test_constructor_not_allowed():
         with pytest.raises(NotImplementedError):
-            model.StringProperty()
+            model.StringProperty(indexed=False)
+
+    @staticmethod
+    def test__validate_bad_length():
+        prop = model.StringProperty(name="limited-text")
+        value = b"1" * 2000
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
 
 
 class TestGeoPtProperty:
     @staticmethod
-    def test_constructor():
+    def test__validate():
+        prop = model.GeoPtProperty(name="cartesian")
+        value = model.GeoPt(0.0, 0.0)
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.GeoPtProperty(name="cartesian")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.GeoPtProperty(name="cartesian")
         with pytest.raises(NotImplementedError):
-            model.GeoPtProperty()
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.GeoPtProperty(name="cartesian")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestPickleProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.PickleProperty()
+    UNPICKLED = ["a", {"b": "c"}, {"d", "e"}, (0xF, 0x10), 0x11]
+    PICKLED = pickle.dumps(UNPICKLED, pickle.HIGHEST_PROTOCOL)
+
+    def test__to_base_type(self):
+        prop = model.PickleProperty(name="pkl")
+        assert prop._to_base_type(self.UNPICKLED) == self.PICKLED
+
+    def test__from_base_type(self):
+        prop = model.PickleProperty(name="pkl")
+        assert prop._from_base_type(self.PICKLED) == self.UNPICKLED
 
 
 class TestJsonProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.JsonProperty()
+    def test_constructor_defaults():
+        prop = model.JsonProperty()
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {}
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.JsonProperty(
+            name="json-val",
+            compressed=True,
+            json_type=tuple,
+            indexed=False,
+            repeated=False,
+            required=True,
+            default=(),
+            choices=((), ("b",), ("c", "d")),
+            validator=TestProperty._example_validator,
+            verbose_name="VALUE FOR READING",
+            write_empty_list=False,
+        )
+        assert prop._name == b"json-val" and prop._name != "json-val"
+        assert prop._compressed
+        assert prop._json_type is tuple
+        assert not prop._indexed
+        assert not prop._repeated
+        assert prop._required
+        assert prop._default == ()
+        assert prop._choices == frozenset([(), ("b",), ("c", "d")])
+        assert prop._validator is TestProperty._example_validator
+        assert prop._verbose_name == "VALUE FOR READING"
+        assert not prop._write_empty_list
+
+    @staticmethod
+    def test__validate_no_type():
+        prop = model.JsonProperty(name="json-val")
+        assert prop._validate(b"any") is None
+
+    @staticmethod
+    def test__validate_correct_type():
+        prop = model.JsonProperty(name="json-val", json_type=list)
+        assert prop._validate([b"any", b"mini"]) is None
+
+    @staticmethod
+    def test__validate_incorrect_type():
+        prop = model.JsonProperty(name="json-val", json_type=dict)
+        with pytest.raises(TypeError):
+            prop._validate(14)
+
+    @staticmethod
+    def test__to_base_type():
+        prop = model.JsonProperty(name="json-val")
+        value = [14, [15, 16], {"seventeen": 18}, "\N{snowman}"]
+        expected = b'[14,[15,16],{"seventeen":18},"\\u2603"]'
+        assert prop._to_base_type(value) == expected
+
+    @staticmethod
+    def test__from_base_type():
+        prop = model.JsonProperty(name="json-val")
+        value = b'[14,true,{"a":null,"b":"\\u2603"}]'
+        expected = [14, True, {"a": None, "b": "\N{snowman}"}]
+        assert prop._from_base_type(value) == expected
+
+    @staticmethod
+    def test__from_base_type_invalid():
+        prop = model.JsonProperty(name="json-val")
+        with pytest.raises(AttributeError):
+            prop._from_base_type("{}")
 
 
 class TestUserProperty:
@@ -1368,23 +1798,193 @@ class TestBlobKeyProperty:
 
 class TestDateTimeProperty:
     @staticmethod
-    def test_constructor():
+    def test_constructor_defaults():
+        prop = model.DateTimeProperty()
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {}
+
+    @staticmethod
+    def test_constructor_explicit():
+        now = datetime.datetime.utcnow()
+        prop = model.DateTimeProperty(
+            name="dt_val",
+            auto_now=True,
+            auto_now_add=False,
+            indexed=False,
+            repeated=False,
+            required=True,
+            default=now,
+            validator=TestProperty._example_validator,
+            verbose_name="VALUE FOR READING",
+            write_empty_list=False,
+        )
+        assert prop._name == b"dt_val" and prop._name != "dt_val"
+        assert prop._auto_now
+        assert not prop._auto_now_add
+        assert not prop._indexed
+        assert not prop._repeated
+        assert prop._required
+        assert prop._default == now
+        assert prop._choices is None
+        assert prop._validator is TestProperty._example_validator
+        assert prop._verbose_name == "VALUE FOR READING"
+        assert not prop._write_empty_list
+
+    @staticmethod
+    def test_constructor_repeated():
+        with pytest.raises(ValueError):
+            model.DateTimeProperty(name="dt_val", auto_now=True, repeated=True)
+        with pytest.raises(ValueError):
+            model.DateTimeProperty(
+                name="dt_val", auto_now_add=True, repeated=True
+            )
+
+        prop = model.DateTimeProperty(name="dt_val", repeated=True)
+        assert prop._repeated
+
+    @staticmethod
+    def test__validate():
+        prop = model.DateTimeProperty(name="dt_val")
+        value = datetime.datetime.utcnow()
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.DateTimeProperty(name="dt_val")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__now():
+        dt_val = model.DateTimeProperty._now()
+        assert isinstance(dt_val, datetime.datetime)
+
+    @staticmethod
+    def test__prepare_for_put():
+        prop = model.DateTimeProperty(name="dt_val")
+        entity = unittest.mock.Mock(_values={}, spec=("_values",))
+
+        with unittest.mock.patch.object(prop, "_now") as _now:
+            prop._prepare_for_put(entity)
+        assert entity._values == {}
+        _now.assert_not_called()
+
+    @staticmethod
+    def test__prepare_for_put_auto_now():
+        prop = model.DateTimeProperty(name="dt_val", auto_now=True)
+        values1 = {}
+        values2 = {prop._name: unittest.mock.sentinel.dt}
+        for values in (values1, values2):
+            entity = unittest.mock.Mock(_values=values, spec=("_values",))
+
+            with unittest.mock.patch.object(prop, "_now") as _now:
+                prop._prepare_for_put(entity)
+            assert entity._values == {prop._name: _now.return_value}
+            _now.assert_called_once_with()
+
+    @staticmethod
+    def test__prepare_for_put_auto_now_add():
+        prop = model.DateTimeProperty(name="dt_val", auto_now_add=True)
+        values1 = {}
+        values2 = {prop._name: unittest.mock.sentinel.dt}
+        for values in (values1, values2):
+            entity = unittest.mock.Mock(
+                _values=values.copy(), spec=("_values",)
+            )
+
+            with unittest.mock.patch.object(prop, "_now") as _now:
+                prop._prepare_for_put(entity)
+            if values:
+                assert entity._values == values
+                _now.assert_not_called()
+            else:
+                assert entity._values != values
+                assert entity._values == {prop._name: _now.return_value}
+                _now.assert_called_once_with()
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.DateTimeProperty(name="dt_val")
         with pytest.raises(NotImplementedError):
-            model.DateTimeProperty()
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.DateTimeProperty(name="dt_val")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestDateProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.DateProperty()
+    def test__validate():
+        prop = model.DateProperty(name="d_val")
+        value = datetime.datetime.utcnow().date()
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.DateProperty(name="d_val")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__now():
+        d_val = model.DateProperty._now()
+        assert isinstance(d_val, datetime.date)
+
+    def test__to_base_type(self):
+        prop = model.DateProperty(name="d_val")
+        value = datetime.date(2014, 10, 7)
+        expected = datetime.datetime(2014, 10, 7)
+        assert prop._to_base_type(value) == expected
+
+    def test__to_base_type_invalid(self):
+        prop = model.DateProperty(name="d_val")
+        with pytest.raises(TypeError):
+            prop._to_base_type(None)
+
+    def test__from_base_type(self):
+        prop = model.DateProperty(name="d_val")
+        value = datetime.datetime(2014, 10, 7)
+        expected = datetime.date(2014, 10, 7)
+        assert prop._from_base_type(value) == expected
 
 
 class TestTimeProperty:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.TimeProperty()
+    def test__validate():
+        prop = model.TimeProperty(name="t_val")
+        value = datetime.datetime.utcnow().time()
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.TimeProperty(name="t_val")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__now():
+        t_val = model.TimeProperty._now()
+        assert isinstance(t_val, datetime.time)
+
+    def test__to_base_type(self):
+        prop = model.TimeProperty(name="t_val")
+        value = datetime.time(17, 57, 18, 453529)
+        expected = datetime.datetime(1970, 1, 1, 17, 57, 18, 453529)
+        assert prop._to_base_type(value) == expected
+
+    def test__to_base_type_invalid(self):
+        prop = model.TimeProperty(name="t_val")
+        with pytest.raises(TypeError):
+            prop._to_base_type(None)
+
+    def test__from_base_type(self):
+        prop = model.TimeProperty(name="t_val")
+        value = datetime.datetime(1970, 1, 1, 1, 15, 59, 900101)
+        expected = datetime.time(1, 15, 59, 900101)
+        assert prop._from_base_type(value) == expected
 
 
 class TestStructuredProperty:

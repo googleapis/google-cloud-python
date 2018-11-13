@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -142,8 +144,8 @@ class GroupServiceGrpcTransport(object):
     def update_group(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Updates an existing group.
-        You can change any group attributes except ``name``.
+        Updates an existing group. You can change any group attributes except
+        ``name``.
 
         Returns:
             Callable: A callable which accepts the appropriate

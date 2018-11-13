@@ -35,6 +35,7 @@ from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable.row_set import RowRange
 
 from test_utils.retry import RetryErrors
+from test_utils.retry import RetryResult
 from test_utils.system import EmulatorCreds
 from test_utils.system import unique_resource_id
 
@@ -595,13 +596,15 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(tables, [self._table])
 
     def test_exists(self):
+        retry_until_true = RetryResult(lambda result: result)
+        retry_until_false = RetryResult(lambda result: not result)
         temp_table_id = 'test-table_existence'
         temp_table = Config.INSTANCE.table(temp_table_id)
         self.assertFalse(temp_table.exists())
         temp_table.create()
-        self.assertTrue(temp_table.exists())
+        self.assertTrue(retry_until_true(temp_table.exists)())
         temp_table.delete()
-        self.assertFalse(temp_table.exists())
+        self.assertFalse(retry_until_false(temp_table.exists)())
 
     def test_create_table(self):
         temp_table_id = 'test-create-table'

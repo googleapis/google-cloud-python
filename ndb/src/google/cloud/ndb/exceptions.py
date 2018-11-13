@@ -22,6 +22,7 @@ legacy Google App Engine runtime.
 
 __all__ = [
     "Error",
+    "AsyncContextError",
     "BadValueError",
     "BadArgumentError",
     "Rollback",
@@ -31,6 +32,20 @@ __all__ = [
 
 class Error(Exception):
     """Base datastore error type."""
+
+
+class AsyncContextError(Error):
+    """Indicates an async call being made without a context.
+
+    Raised whenever an asynchronous call is made outside of a context
+    established by :func:`google.cloud.ndb.async_context`.
+    """
+
+    def __init__(self):
+        super(AsyncContextError, self).__init__(
+            "No currently running event loop. Asynchronous calls must be made "
+            "in context established by google.cloud.ndb.async_context."
+        )
 
 
 class BadValueError(Error):

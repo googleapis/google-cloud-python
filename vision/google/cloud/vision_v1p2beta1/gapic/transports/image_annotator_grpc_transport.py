@@ -119,12 +119,12 @@ class ImageAnnotatorGrpcTransport(object):
     def async_batch_annotate_files(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Run async image detection and annotation for a list of generic files (e.g.
-        PDF) which may contain multiple pages and multiple images per page.
-        Progress and results can be retrieved through the
-        ``google.longrunning.Operations`` interface.
-        ``Operation.metadata`` contains ``OperationMetadata`` (metadata).
-        ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).
+        Run async image detection and annotation for a list of generic files
+        (e.g. PDF) which may contain multiple pages and multiple images per
+        page. Progress and results can be retrieved through the
+        ``google.longrunning.Operations`` interface. ``Operation.metadata``
+        contains ``OperationMetadata`` (metadata). ``Operation.response``
+        contains ``AsyncBatchAnnotateFilesResponse`` (results).
 
         Returns:
             Callable: A callable which accepts the appropriate

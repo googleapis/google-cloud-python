@@ -18,27 +18,27 @@ config = {
             },
             "methods": {
                 "ListAlertPolicies": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "GetAlertPolicy": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "CreateAlertPolicy": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "DeleteAlertPolicy": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "UpdateAlertPolicy": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 }

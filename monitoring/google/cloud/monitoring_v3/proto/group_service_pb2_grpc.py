@@ -8,7 +8,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 class GroupServiceStub(object):
   """The Group API lets you inspect and manage your
-  [groups](google.monitoring.v3.Group).
+  [groups](#google.monitoring.v3.Group).
 
   A group is a named filter that is used to identify
   a collection of monitored resources. Groups are typically used to
@@ -61,7 +61,7 @@ class GroupServiceStub(object):
 
 class GroupServiceServicer(object):
   """The Group API lets you inspect and manage your
-  [groups](google.monitoring.v3.Group).
+  [groups](#google.monitoring.v3.Group).
 
   A group is a named filter that is used to identify
   a collection of monitored resources. Groups are typically used to

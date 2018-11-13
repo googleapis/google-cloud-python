@@ -13,6 +13,8 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import label_pb2 as google_dot_api_dot_label__pb2
 from google.api import metric_pb2 as google_dot_api_dot_metric__pb2
 from google.api import monitored_resource_pb2 as google_dot_api_dot_monitored__resource__pb2
 from google.cloud.monitoring_v3.proto import common_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2
@@ -22,9 +24,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/monitoring_v3/proto/metric.proto',
   package='google.monitoring.v3',
   syntax='proto3',
-  serialized_pb=_b('\n-google/cloud/monitoring_v3/proto/metric.proto\x12\x14google.monitoring.v3\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\"n\n\x05Point\x12\x34\n\x08interval\x18\x01 \x01(\x0b\x32\".google.monitoring.v3.TimeInterval\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .google.monitoring.v3.TypedValue\"\x88\x02\n\nTimeSeries\x12\"\n\x06metric\x18\x01 \x01(\x0b\x32\x12.google.api.Metric\x12/\n\x08resource\x18\x02 \x01(\x0b\x32\x1d.google.api.MonitoredResource\x12<\n\x0bmetric_kind\x18\x03 \x01(\x0e\x32\'.google.api.MetricDescriptor.MetricKind\x12:\n\nvalue_type\x18\x04 \x01(\x0e\x32&.google.api.MetricDescriptor.ValueType\x12+\n\x06points\x18\x05 \x03(\x0b\x32\x1b.google.monitoring.v3.PointB\xa3\x01\n\x18\x63om.google.monitoring.v3B\x0bMetricProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
+  serialized_pb=_b('\n-google/cloud/monitoring_v3/proto/metric.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x16google/api/label.proto\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\"n\n\x05Point\x12\x34\n\x08interval\x18\x01 \x01(\x0b\x32\".google.monitoring.v3.TimeInterval\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .google.monitoring.v3.TypedValue\"\xc1\x02\n\nTimeSeries\x12\"\n\x06metric\x18\x01 \x01(\x0b\x32\x12.google.api.Metric\x12/\n\x08resource\x18\x02 \x01(\x0b\x32\x1d.google.api.MonitoredResource\x12\x37\n\x08metadata\x18\x07 \x01(\x0b\x32%.google.api.MonitoredResourceMetadata\x12<\n\x0bmetric_kind\x18\x03 \x01(\x0e\x32\'.google.api.MetricDescriptor.MetricKind\x12:\n\nvalue_type\x18\x04 \x01(\x0e\x32&.google.api.MetricDescriptor.ValueType\x12+\n\x06points\x18\x05 \x03(\x0b\x32\x1b.google.monitoring.v3.PointB\xa3\x01\n\x18\x63om.google.monitoring.v3B\x0bMetricProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
   ,
-  dependencies=[google_dot_api_dot_metric__pb2.DESCRIPTOR,google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_label__pb2.DESCRIPTOR,google_dot_api_dot_metric__pb2.DESCRIPTOR,google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,])
 
 
 
@@ -62,8 +64,8 @@ _POINT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=180,
-  serialized_end=290,
+  serialized_start=234,
+  serialized_end=344,
 )
 
 
@@ -89,21 +91,28 @@ _TIMESERIES = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='metric_kind', full_name='google.monitoring.v3.TimeSeries.metric_kind', index=2,
+      name='metadata', full_name='google.monitoring.v3.TimeSeries.metadata', index=2,
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='metric_kind', full_name='google.monitoring.v3.TimeSeries.metric_kind', index=3,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value_type', full_name='google.monitoring.v3.TimeSeries.value_type', index=3,
+      name='value_type', full_name='google.monitoring.v3.TimeSeries.value_type', index=4,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='points', full_name='google.monitoring.v3.TimeSeries.points', index=4,
+      name='points', full_name='google.monitoring.v3.TimeSeries.points', index=5,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -121,14 +130,15 @@ _TIMESERIES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=293,
-  serialized_end=557,
+  serialized_start=347,
+  serialized_end=668,
 )
 
 _POINT.fields_by_name['interval'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2._TIMEINTERVAL
 _POINT.fields_by_name['value'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2._TYPEDVALUE
 _TIMESERIES.fields_by_name['metric'].message_type = google_dot_api_dot_metric__pb2._METRIC
 _TIMESERIES.fields_by_name['resource'].message_type = google_dot_api_dot_monitored__resource__pb2._MONITOREDRESOURCE
+_TIMESERIES.fields_by_name['metadata'].message_type = google_dot_api_dot_monitored__resource__pb2._MONITOREDRESOURCEMETADATA
 _TIMESERIES.fields_by_name['metric_kind'].enum_type = google_dot_api_dot_metric__pb2._METRICDESCRIPTOR_METRICKIND
 _TIMESERIES.fields_by_name['value_type'].enum_type = google_dot_api_dot_metric__pb2._METRICDESCRIPTOR_VALUETYPE
 _TIMESERIES.fields_by_name['points'].message_type = _POINT
@@ -145,16 +155,16 @@ Point = _reflection.GeneratedProtocolMessageType('Point', (_message.Message,), d
   
   Attributes:
       interval:
-          The time interval to which the data point applies. For GAUGE
-          metrics, only the end time of the interval is used. For DELTA
+          The time interval to which the data point applies. For
+          ``GAUGE`` metrics, only the end time of the interval is used.
+          For ``DELTA`` metrics, the start and end time should specify a
+          non-zero interval, with subsequent points specifying
+          contiguous and non-overlapping intervals. For ``CUMULATIVE``
           metrics, the start and end time should specify a non-zero
-          interval, with subsequent points specifying contiguous and
-          non-overlapping intervals. For CUMULATIVE metrics, the start
-          and end time should specify a non-zero interval, with
-          subsequent points specifying the same start time and
-          increasing end times, until an event resets the cumulative
-          value to zero and sets a new start time for the following
-          points.
+          interval, with subsequent points specifying the same start
+          time and increasing end times, until an event resets the
+          cumulative value to zero and sets a new start time for the
+          following points.
       value:
           The value of the data point.
   """,
@@ -177,8 +187,13 @@ TimeSeries = _reflection.GeneratedProtocolMessageType('TimeSeries', (_message.Me
           The associated metric. A fully-specified metric used to
           identify the time series.
       resource:
-          The associated resource. A fully-specified monitored resource
-          used to identify the time series.
+          The associated monitored resource. Custom metrics can use only
+          certain monitored resource types in their time series data.
+      metadata:
+          Output only. The associated monitored resource metadata. When
+          reading a a timeseries, this field will include metadata
+          labels that are explicitly named in the reduction. When
+          creating a timeseries, this field is ignored.
       metric_kind:
           The metric kind of the time series. When listing time series,
           this metric kind might be different from the metric kind of
@@ -198,13 +213,13 @@ TimeSeries = _reflection.GeneratedProtocolMessageType('TimeSeries', (_message.Me
           type of the data in the ``points`` field.
       points:
           The data points of this time series. When listing time series,
-          the order of the points is specified by the list method.  When
-          creating a time series, this field must contain exactly one
-          point and the point's type must be the same as the value type
-          of the associated metric. If the associated metric's
-          descriptor must be auto-created, then the value type of the
-          descriptor is determined by the point's type, which must be
-          ``BOOL``, ``INT64``, ``DOUBLE``, or ``DISTRIBUTION``.
+          points are returned in reverse time order.  When creating a
+          time series, this field must contain exactly one point and the
+          point's type must be the same as the value type of the
+          associated metric. If the associated metric's descriptor must
+          be auto-created, then the value type of the descriptor is
+          determined by the point's type, which must be ``BOOL``,
+          ``INT64``, ``DOUBLE``, or ``DISTRIBUTION``.
   """,
   # @@protoc_insertion_point(class_scope:google.monitoring.v3.TimeSeries)
   ))

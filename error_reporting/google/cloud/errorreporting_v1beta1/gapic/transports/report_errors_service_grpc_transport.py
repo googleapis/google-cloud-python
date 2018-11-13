@@ -98,13 +98,6 @@ class ReportErrorsServiceGrpcTransport(object):
 
         Report an individual error event.
 
-        This endpoint accepts <strong>either</strong> an OAuth token,
-        <strong>or</strong> an
-        <a href=\"https://support.google.com/cloud/answer/6158862\">API key</a>
-        for authentication. To use an API key, append it to the URL as the value of
-        a ``key`` parameter. For example:
-        <pre>POST https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456</pre>
-
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a

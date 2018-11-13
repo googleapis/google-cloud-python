@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/monitoring_v3/proto/uptime_service.proto',
   package='google.monitoring.v3',
   syntax='proto3',
-  serialized_pb=_b('\n5google/cloud/monitoring_v3/proto/uptime_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/monitoring_v3/proto/uptime.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\"V\n\x1dListUptimeCheckConfigsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"\x80\x01\n\x1eListUptimeCheckConfigsResponse\x12\x45\n\x14uptime_check_configs\x18\x01 \x03(\x0b\x32\'.google.monitoring.v3.UptimeCheckConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"+\n\x1bGetUptimeCheckConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"v\n\x1e\x43reateUptimeCheckConfigRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x44\n\x13uptime_check_config\x18\x02 \x01(\x0b\x32\'.google.monitoring.v3.UptimeCheckConfig\"\x97\x01\n\x1eUpdateUptimeCheckConfigRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x44\n\x13uptime_check_config\x18\x03 \x01(\x0b\x32\'.google.monitoring.v3.UptimeCheckConfig\".\n\x1e\x44\x65leteUptimeCheckConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"B\n\x19ListUptimeCheckIpsRequest\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"t\n\x1aListUptimeCheckIpsResponse\x12=\n\x10uptime_check_ips\x18\x01 \x03(\x0b\x32#.google.monitoring.v3.UptimeCheckIp\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xc7\x08\n\x12UptimeCheckService\x12\xb7\x01\n\x16ListUptimeCheckConfigs\x12\x33.google.monitoring.v3.ListUptimeCheckConfigsRequest\x1a\x34.google.monitoring.v3.ListUptimeCheckConfigsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v3/{parent=projects/*}/uptimeCheckConfigs\x12\xa6\x01\n\x14GetUptimeCheckConfig\x12\x31.google.monitoring.v3.GetUptimeCheckConfigRequest\x1a\'.google.monitoring.v3.UptimeCheckConfig\"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*/uptimeCheckConfigs/*}\x12\xc1\x01\n\x17\x43reateUptimeCheckConfig\x12\x34.google.monitoring.v3.CreateUptimeCheckConfigRequest\x1a\'.google.monitoring.v3.UptimeCheckConfig\"G\x82\xd3\xe4\x93\x02\x41\"*/v3/{parent=projects/*}/uptimeCheckConfigs:\x13uptime_check_config\x12\xd5\x01\n\x17UpdateUptimeCheckConfig\x12\x34.google.monitoring.v3.UpdateUptimeCheckConfigRequest\x1a\'.google.monitoring.v3.UptimeCheckConfig\"[\x82\xd3\xe4\x93\x02U2>/v3/{uptime_check_config.name=projects/*/uptimeCheckConfigs/*}:\x13uptime_check_config\x12\x9b\x01\n\x17\x44\x65leteUptimeCheckConfig\x12\x34.google.monitoring.v3.DeleteUptimeCheckConfigRequest\x1a\x16.google.protobuf.Empty\"2\x82\xd3\xe4\x93\x02,**/v3/{name=projects/*/uptimeCheckConfigs/*}\x12\x93\x01\n\x12ListUptimeCheckIps\x12/.google.monitoring.v3.ListUptimeCheckIpsRequest\x1a\x30.google.monitoring.v3.ListUptimeCheckIpsResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/v3/uptimeCheckIpsB\xaa\x01\n\x18\x63om.google.monitoring.v3B\x12UptimeServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
+  serialized_pb=_b('\n5google/cloud/monitoring_v3/proto/uptime_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/monitoring_v3/proto/uptime.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\"V\n\x1dListUptimeCheckConfigsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"\x94\x01\n\x1eListUptimeCheckConfigsResponse\x12\x45\n\x14uptime_check_configs\x18\x01 \x03(\x0b\x32\'.google.monitoring.v3.UptimeCheckConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\"+\n\x1bGetUptimeCheckConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"v\n\x1e\x43reateUptimeCheckConfigRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x44\n\x13uptime_check_config\x18\x02 \x01(\x0b\x32\'.google.monitoring.v3.UptimeCheckConfig\"\x97\x01\n\x1eUpdateUptimeCheckConfigRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x44\n\x13uptime_check_config\x18\x03 \x01(\x0b\x32\'.google.monitoring.v3.UptimeCheckConfig\".\n\x1e\x44\x65leteUptimeCheckConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"B\n\x19ListUptimeCheckIpsRequest\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"t\n\x1aListUptimeCheckIpsResponse\x12=\n\x10uptime_check_ips\x18\x01 \x03(\x0b\x32#.google.monitoring.v3.UptimeCheckIp\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xc7\x08\n\x12UptimeCheckService\x12\xb7\x01\n\x16ListUptimeCheckConfigs\x12\x33.google.monitoring.v3.ListUptimeCheckConfigsRequest\x1a\x34.google.monitoring.v3.ListUptimeCheckConfigsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v3/{parent=projects/*}/uptimeCheckConfigs\x12\xa6\x01\n\x14GetUptimeCheckConfig\x12\x31.google.monitoring.v3.GetUptimeCheckConfigRequest\x1a\'.google.monitoring.v3.UptimeCheckConfig\"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*/uptimeCheckConfigs/*}\x12\xc1\x01\n\x17\x43reateUptimeCheckConfig\x12\x34.google.monitoring.v3.CreateUptimeCheckConfigRequest\x1a\'.google.monitoring.v3.UptimeCheckConfig\"G\x82\xd3\xe4\x93\x02\x41\"*/v3/{parent=projects/*}/uptimeCheckConfigs:\x13uptime_check_config\x12\xd5\x01\n\x17UpdateUptimeCheckConfig\x12\x34.google.monitoring.v3.UpdateUptimeCheckConfigRequest\x1a\'.google.monitoring.v3.UptimeCheckConfig\"[\x82\xd3\xe4\x93\x02U2>/v3/{uptime_check_config.name=projects/*/uptimeCheckConfigs/*}:\x13uptime_check_config\x12\x9b\x01\n\x17\x44\x65leteUptimeCheckConfig\x12\x34.google.monitoring.v3.DeleteUptimeCheckConfigRequest\x1a\x16.google.protobuf.Empty\"2\x82\xd3\xe4\x93\x02,**/v3/{name=projects/*/uptimeCheckConfigs/*}\x12\x93\x01\n\x12ListUptimeCheckIps\x12/.google.monitoring.v3.ListUptimeCheckIpsRequest\x1a\x30.google.monitoring.v3.ListUptimeCheckIpsResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/v3/uptimeCheckIpsB\xaa\x01\n\x18\x63om.google.monitoring.v3B\x12UptimeServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_uptime__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,])
 
@@ -96,6 +96,13 @@ _LISTUPTIMECHECKCONFIGSRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='total_size', full_name='google.monitoring.v3.ListUptimeCheckConfigsResponse.total_size', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -109,7 +116,7 @@ _LISTUPTIMECHECKCONFIGSRESPONSE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=308,
-  serialized_end=436,
+  serialized_end=456,
 )
 
 
@@ -139,8 +146,8 @@ _GETUPTIMECHECKCONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=438,
-  serialized_end=481,
+  serialized_start=458,
+  serialized_end=501,
 )
 
 
@@ -177,8 +184,8 @@ _CREATEUPTIMECHECKCONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=483,
-  serialized_end=601,
+  serialized_start=503,
+  serialized_end=621,
 )
 
 
@@ -215,8 +222,8 @@ _UPDATEUPTIMECHECKCONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=604,
-  serialized_end=755,
+  serialized_start=624,
+  serialized_end=775,
 )
 
 
@@ -246,8 +253,8 @@ _DELETEUPTIMECHECKCONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=757,
-  serialized_end=803,
+  serialized_start=777,
+  serialized_end=823,
 )
 
 
@@ -284,8 +291,8 @@ _LISTUPTIMECHECKIPSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=805,
-  serialized_end=871,
+  serialized_start=825,
+  serialized_end=891,
 )
 
 
@@ -322,8 +329,8 @@ _LISTUPTIMECHECKIPSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=873,
-  serialized_end=989,
+  serialized_start=893,
+  serialized_end=1009,
 )
 
 _LISTUPTIMECHECKCONFIGSRESPONSE.fields_by_name['uptime_check_configs'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_uptime__pb2._UPTIMECHECKCONFIG
@@ -351,7 +358,7 @@ ListUptimeCheckConfigsRequest = _reflection.GeneratedProtocolMessageType('ListUp
   Attributes:
       parent:
           The project whose uptime check configurations are listed. The
-          format is  ``projects/[PROJECT_ID]``.
+          format is ``projects/[PROJECT_ID]``.
       page_size:
           The maximum number of results to return in a single response.
           The server may further constrain the maximum number of results
@@ -384,6 +391,9 @@ ListUptimeCheckConfigsResponse = _reflection.GeneratedProtocolMessageType('ListU
           results, the value of the next\_page\_token is passed to the
           subsequent List method call (in the request message's
           page\_token field).
+      total_size:
+          The total number of uptime check configurations for the
+          project, irrespective of any pagination.
   """,
   # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListUptimeCheckConfigsResponse)
   ))
@@ -398,8 +408,8 @@ GetUptimeCheckConfigRequest = _reflection.GeneratedProtocolMessageType('GetUptim
   
   Attributes:
       name:
-          The uptime check configuration to retrieve. The format is  ``p
-          rojects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]``.
+          The uptime check configuration to retrieve. The format is ``pr
+          ojects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]``.
   """,
   # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetUptimeCheckConfigRequest)
   ))
@@ -414,8 +424,8 @@ CreateUptimeCheckConfigRequest = _reflection.GeneratedProtocolMessageType('Creat
   
   Attributes:
       parent:
-          The project in which to create the uptime check. The format
-          is:  ``projects/[PROJECT_ID]``.
+          The project in which to create the uptime check. The format is
+          ``projects/[PROJECT_ID]``.
       uptime_check_config:
           The new uptime check configuration.
   """,
@@ -442,10 +452,13 @@ UpdateUptimeCheckConfigRequest = _reflection.GeneratedProtocolMessageType('Updat
           field gives the values for the set of fields mentioned in the
           ``"updateMask"``. If an ``"updateMask"`` has not been given,
           this uptime check configuration replaces the current
-          configuration. If a field is mentioned in ``"updateMask``" but
+          configuration. If a field is mentioned in ``"updateMask"`` but
           the corresonding field is omitted in this partial uptime check
           configuration, it has the effect of deleting/clearing the
-          field from the configuration on the server.
+          field from the configuration on the server.  The following
+          fields can be updated: ``display_name``, ``http_check``,
+          ``tcp_check``, ``timeout``, ``content_matchers``, and
+          ``selected_regions``.
   """,
   # @@protoc_insertion_point(class_scope:google.monitoring.v3.UpdateUptimeCheckConfigRequest)
   ))
@@ -460,8 +473,8 @@ DeleteUptimeCheckConfigRequest = _reflection.GeneratedProtocolMessageType('Delet
   
   Attributes:
       name:
-          The uptime check configuration to delete. The format is  ``pro
-          jects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]``.
+          The uptime check configuration to delete. The format is ``proj
+          ects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]``.
   """,
   # @@protoc_insertion_point(class_scope:google.monitoring.v3.DeleteUptimeCheckConfigRequest)
   ))
@@ -525,8 +538,8 @@ _UPTIMECHECKSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=992,
-  serialized_end=2087,
+  serialized_start=1012,
+  serialized_end=2107,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListUptimeCheckConfigs',
