@@ -103,6 +103,12 @@ The primary differences come from:
 - `model.GeoPt` is an alias for `google.cloud.datastore.helpers.GeoPoint`
   rather than an alias for `google.appengine.api.datastore_types.GeoPt`. These
   classes have slightly different characteristics.
+- The `Property()` constructor (and subclasses) originally accepted both
+  `unicode` and `str` (the Python 2 versions) for `name` (and `kind`) but we
+  only accept `str`.
+- The `Parameter()` constructor (and subclasses) originally accepted `int`,
+  `unicode` and `str` (the Python 2 versions) for `key` but we only accept
+  `int` and `str`.
 
 ## Comments
 

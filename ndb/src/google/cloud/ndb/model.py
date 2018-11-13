@@ -547,25 +547,19 @@ class Property(ModelAttribute):
         """Verify the name of the property.
 
         Args:
-            name (Union[str, bytes]): The name of the property.
+            name (str): The name of the property.
 
         Returns:
-            bytes: The UTF-8 encoded version of the ``name``, if not already
-            passed in as bytes.
+            str: The ``name`` passed in.
 
         Raises:
-            TypeError: If the ``name`` is not a string or bytes.
+            TypeError: If the ``name`` is not a string.
             ValueError: If the name contains a ``.``.
         """
-        if isinstance(name, str):
-            name = name.encode("utf-8")
+        if not isinstance(name, str):
+            raise TypeError("Name {!r} is not a string".format(name))
 
-        if not isinstance(name, bytes):
-            raise TypeError(
-                "Name {!r} is not a string or byte string".format(name)
-            )
-
-        if b"." in name:
+        if "." in name:
             raise ValueError(
                 "Name {!r} cannot contain period characters".format(name)
             )
@@ -644,6 +638,18 @@ class Property(ModelAttribute):
 
         return validator
 
+    def _constructor_info(self):
+        """Helper for :meth:`__repr__`.
+
+        Yields:
+            Tuple[str, bool]: Pairs of argument name and a boolean indicating
+            if that argument is a keyword.
+        """
+        signature = inspect.signature(self.__init__)
+        for name, parameter in signature.parameters.items():
+            is_keyword = parameter.kind == inspect.Parameter.KEYWORD_ONLY
+            yield name, is_keyword
+
     def __repr__(self):
         """Return a compact unambiguous string representation of a property.
 
@@ -652,8 +658,7 @@ class Property(ModelAttribute):
         """
         args = []
         cls = self.__class__
-        signature = inspect.signature(self.__init__)
-        for name, parameter in signature.parameters.items():
+        for name, is_keyword in self._constructor_info():
             attr = "_{}".format(name)
             instance_val = getattr(self, attr)
             default_val = getattr(cls, attr)
@@ -664,7 +669,7 @@ class Property(ModelAttribute):
                 else:
                     as_str = repr(instance_val)
 
-                if parameter.kind == inspect.Parameter.KEYWORD_ONLY:
+                if is_keyword:
                     as_str = "{}={}".format(name, as_str)
                 args.append(as_str)
 
@@ -1964,8 +1969,8 @@ class TextProperty(BlobProperty):
 
         if self._indexed and encoded_length > _MAX_STRING_LENGTH:
             raise exceptions.BadValueError(
-                "Indexed value %s must be at most %d bytes"
-                % (self._name, _MAX_STRING_LENGTH)
+                "Indexed value {} must be at most {:d} "
+                "bytes".format(self._name, _MAX_STRING_LENGTH)
             )
 
     def _to_base_type(self, value):
@@ -2241,9 +2246,237 @@ class UserProperty(Property):
 
 
 class KeyProperty(Property):
-    __slots__ = ()
+    """A property that contains :class:`.Key` values.
 
-    def __init__(self, *args, **kwargs):
+    The constructor for :class:`KeyProperty` allows at most two positional
+    arguments. Any usage of :data:`None` as a positional argument will
+    be ignored. Any of the following signatures are allowed:
+
+    .. testsetup:: key-property-constructor
+
+        from google.cloud import ndb
+
+
+        class SimpleModel(ndb.Model):
+            pass
+
+    .. doctest:: key-property-constructor
+
+        >>> name = "my_value"
+        >>> ndb.KeyProperty(name)
+        KeyProperty('my_value')
+        >>> ndb.KeyProperty(SimpleModel)
+        KeyProperty(kind='SimpleModel')
+        >>> ndb.KeyProperty(name, SimpleModel)
+        KeyProperty('my_value', kind='SimpleModel')
+        >>> ndb.KeyProperty(SimpleModel, name)
+        KeyProperty('my_value', kind='SimpleModel')
+
+    The type of the positional arguments will be used to determine their
+    purpose: a string argument is assumed to be the ``name`` and a
+    :class:`type` argument is assumed to be the ``kind`` (and checked that
+    the type is a subclass of :class:`Model`).
+
+    .. automethod:: _validate
+
+    Args:
+        name (str): The name of the property.
+        kind (Union[type, str]): The (optional) kind to be stored. If provided
+            as a positional argument, this must be a subclass of :class:`Model`
+            otherwise the kind name is sufficient.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (.Key): The default value for this property.
+        choices (Iterable[.Key]): A container of allowed values for this
+            property.
+        validator (Callable[[~google.cloud.ndb.model.Property, .Key], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+    """
+
+    _kind = None
+
+    def __init__(
+        self,
+        *args,
+        name=None,
+        kind=None,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        name, kind = self._handle_positional(args, name, kind)
+        super(KeyProperty, self).__init__(
+            name=name,
+            indexed=indexed,
+            repeated=repeated,
+            required=required,
+            default=default,
+            choices=choices,
+            validator=validator,
+            verbose_name=verbose_name,
+            write_empty_list=write_empty_list,
+        )
+        if kind is not None:
+            self._kind = kind
+
+    @staticmethod
+    def _handle_positional(args, name, kind):
+        """Handle positional arguments.
+
+        In particular, assign them to the "correct" values and make sure
+        they don't collide with the relevant keyword arguments.
+
+        Args:
+            args (tuple): The positional arguments provided to the
+                constructor.
+            name (Optional[str]): The name that was provided as a keyword
+                argument to the constructor.
+            kind (Optional[Union[type, str]]): The kind that was provided as a
+                keyword argument to the constructor.
+
+        Returns:
+            Tuple[Optional[str], Optional[str]]: The ``name`` and ``kind``
+            inferred from the arguments. Either may be :data:`None`.
+
+        Raises:
+            TypeError: If ``args`` has more than 2 elements.
+            TypeError: If a valid ``name`` type (i.e. a string) is specified
+                twice in ``args``.
+            TypeError: If a valid ``kind`` type (i.e. a subclass of
+                :class:`Model`) is specified twice in ``args``.
+            TypeError: If an element in ``args`` is not a :class:`str` or a
+                subclass of :class:`Model`.
+            TypeError: If a ``name`` is specified both in ``args`` and via
+                the ``name`` keyword.
+            TypeError: If a ``kind`` is specified both in ``args`` and via
+                the ``kind`` keyword.
+            TypeError: If a ``kind`` was provided via ``keyword`` and is
+                not a :class:`str` or a subclass of :class:`Model`.
+        """
+        # Limit positional arguments.
+        if len(args) > 2:
+            raise TypeError(
+                "The KeyProperty constructor accepts at most two "
+                "positional arguments."
+            )
+
+        # Filter out None
+        args = [value for value in args if value is not None]
+
+        # Determine the name / kind inferred from the positional arguments.
+        name_via_positional = None
+        kind_via_positional = None
+        for value in args:
+            if isinstance(value, str):
+                if name_via_positional is None:
+                    name_via_positional = value
+                else:
+                    raise TypeError("You can only specify one name")
+            elif isinstance(value, type) and issubclass(value, Model):
+                if kind_via_positional is None:
+                    kind_via_positional = value
+                else:
+                    raise TypeError("You can only specify one kind")
+            else:
+                raise TypeError(
+                    "Unexpected positional argument: {!r}".format(value)
+                )
+
+        # Reconcile the two possible ``name``` values.
+        if name_via_positional is not None:
+            if name is None:
+                name = name_via_positional
+            else:
+                raise TypeError("You can only specify name once")
+
+        # Reconcile the two possible ``kind``` values.
+        if kind_via_positional is None:
+            if isinstance(kind, type) and issubclass(kind, Model):
+                kind = kind._get_kind()
+        else:
+            if kind is None:
+                kind = kind_via_positional._get_kind()
+            else:
+                raise TypeError("You can only specify kind once")
+
+        # Make sure the ``kind`` is a ``str``.
+        if kind is not None and not isinstance(kind, str):
+            raise TypeError("kind must be a Model class or a string")
+
+        return name, kind
+
+    def _constructor_info(self):
+        """Helper for :meth:`__repr__`.
+
+        Yields:
+            Tuple[str, bool]: Pairs of argument name and a boolean indicating
+            if that argument is a keyword.
+        """
+        yield "name", False
+        yield "kind", True
+        from_inspect = super(KeyProperty, self)._constructor_info()
+        for name, is_keyword in from_inspect:
+            if name in ("args", "name", "kind"):
+                continue
+            yield name, is_keyword
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (.Key): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`.Key`.
+            .BadValueError: If ``value`` is a partial :class:`.Key` (i.e. it
+                has no name or ID set).
+            .BadValueError: If the current property has an associated ``kind``
+                and ``value`` does not match that kind.
+        """
+        if not isinstance(value, Key):
+            raise exceptions.BadValueError(
+                "Expected Key, got {!r}".format(value)
+            )
+
+        # Reject incomplete keys.
+        if not value.id():
+            raise exceptions.BadValueError(
+                "Expected complete Key, got {!r}".format(value)
+            )
+
+        # Verify kind if provided.
+        if self._kind is not None:
+            if value.kind() != self._kind:
+                raise exceptions.BadValueError(
+                    "Expected Key with kind={!r}, got "
+                    "{!r}".format(self._kind, value)
+                )
+
+    def _db_set_value(self, v, unused_p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
@@ -2288,9 +2521,9 @@ class DateTimeProperty(Property):
             multiple values.
         required (bool): Indicates if this property is required on the given
             model type.
-        default (bytes): The default value for this property.
-        choices (Iterable[bytes]): A container of allowed values for this
-            property.
+        default (~datetime.datetime): The default value for this property.
+        choices (Iterable[~datetime.datetime]): A container of allowed values
+            for this property.
         validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
             validator to be used to check values.
         verbose_name (str): A longer, user-friendly name for this property.
