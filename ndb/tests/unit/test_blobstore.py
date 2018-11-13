@@ -14,6 +14,7 @@
 
 import pytest
 
+from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import blobstore
 from google.cloud.ndb import model
 import tests.unit.utils
@@ -23,20 +24,12 @@ def test___all__():
     tests.unit.utils.verify___all__(blobstore)
 
 
-def test_BLOB_INFO_KIND():
-    assert blobstore.BLOB_INFO_KIND == "__BlobInfo__"
+def test_BlobKey():
+    assert blobstore.BlobKey is _datastore_types.BlobKey
 
 
-def test_BLOB_KEY_HEADER():
-    assert blobstore.BLOB_KEY_HEADER == "X-AppEngine-BlobKey"
-
-
-def test_BLOB_MIGRATION_KIND():
-    assert blobstore.BLOB_MIGRATION_KIND == "__BlobMigration__"
-
-
-def test_BLOB_RANGE_HEADER():
-    assert blobstore.BLOB_RANGE_HEADER == "X-AppEngine-BlobRange"
+def test_BlobKeyProperty():
+    assert blobstore.BlobKeyProperty is model.BlobKeyProperty
 
 
 class TestBlobFetchSizeTooLargeError:
@@ -78,17 +71,6 @@ class TestBlobInfoParseError:
     def test_constructor():
         with pytest.raises(NotImplementedError):
             blobstore.BlobInfoParseError()
-
-
-class TestBlobKey:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            blobstore.BlobKey()
-
-
-def test_BlobKeyProperty():
-    assert blobstore.BlobKeyProperty is model.BlobKeyProperty
 
 
 class TestBlobNotFoundError:
@@ -186,10 +168,6 @@ class TestInternalError:
             blobstore.InternalError()
 
 
-def test_MAX_BLOB_FETCH_SIZE():
-    assert blobstore.MAX_BLOB_FETCH_SIZE == 1015808
-
-
 def test_parse_blob_info():
     with pytest.raises(NotImplementedError):
         blobstore.parse_blob_info()
@@ -200,9 +178,3 @@ class TestPermissionDeniedError:
     def test_constructor():
         with pytest.raises(NotImplementedError):
             blobstore.PermissionDeniedError()
-
-
-def test_UPLOAD_INFO_CREATION_HEADER():
-    assert (
-        blobstore.UPLOAD_INFO_CREATION_HEADER == "X-AppEngine-Upload-Creation"
-    )
