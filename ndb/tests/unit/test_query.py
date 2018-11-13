@@ -63,7 +63,7 @@ class TestParameterizedThing:
 class TestParameter:
     @staticmethod
     def test_constructor():
-        for key in (88, b"abc", "def"):
+        for key in (88, "def"):
             parameter = query.Parameter(key)
             assert parameter._key == key
 
@@ -301,7 +301,7 @@ class TestParameterNode:
         used = {}
         resolved_node = parameter_node.resolve(bindings, used)
 
-        assert resolved_node == query.FilterNode(b"val", "=", value)
+        assert resolved_node == query.FilterNode("val", "=", value)
         assert used == {"abc": True}
 
     @staticmethod
@@ -316,9 +316,9 @@ class TestParameterNode:
         resolved_node = parameter_node.resolve(bindings, used)
 
         assert resolved_node == query.DisjunctionNode(
-            query.FilterNode(b"val", "=", 19),
-            query.FilterNode(b"val", "=", 20),
-            query.FilterNode(b"val", "=", 28),
+            query.FilterNode("val", "=", 19),
+            query.FilterNode("val", "=", 20),
+            query.FilterNode("val", "=", 28),
         )
         assert used == {"replace": True}
 
