@@ -1246,7 +1246,25 @@ class Test_get_field_path(unittest.TestCase):
 
         return get_field_path(field_names)
 
-    def test_it(self):
+    def test_w_empty(self):
+        self.assertEqual(self._call_fut([]), '')
+
+    def test_w_one_simple(self):
+        self.assertEqual(self._call_fut(['a']), 'a')
+
+    def test_w_one_starts_w_digit(self):
+        self.assertEqual(self._call_fut(['0abc']), '`0abc`')
+
+    def test_w_one_w_non_alphanum(self):
+        self.assertEqual(self._call_fut(['a b c']), '`a b c`')
+
+    def test_w_one_w_backtick(self):
+        self.assertEqual(self._call_fut(['a`b']), '`a\\`b`')
+
+    def test_w_one_w_backslash(self):
+        self.assertEqual(self._call_fut(['a\\b']), '`a\\\\b`')
+
+    def test_multiple(self):
         self.assertEqual(self._call_fut(['a', 'b', 'c']), 'a.b.c')
 
 
