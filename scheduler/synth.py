@@ -34,7 +34,13 @@ excludes = [
     "README.rst",
     "nox.py",
     "setup.py",
+    "docs/conf.py",
     "docs/index.rst",
 ]
 s.copy(library, excludes=excludes)
 
+s.replace(
+    "google/cloud/scheduler_v1beta1/gapic/cloud_scheduler_client.py",
+    "google-cloud-cloudscheduler",
+    "google-cloud-scheduler"
+)
