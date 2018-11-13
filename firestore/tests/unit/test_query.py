@@ -965,6 +965,7 @@ class Test__enum_from_op_string(unittest.TestCase):
         self.assertEqual(self._call_fut('=='), op_class.EQUAL)
         self.assertEqual(self._call_fut('>='), op_class.GREATER_THAN_OR_EQUAL)
         self.assertEqual(self._call_fut('>'), op_class.GREATER_THAN)
+        self.assertEqual(self._call_fut('array_contains'), op_class.ARRAY_CONTAINS)
 
     def test_failure(self):
         with self.assertRaises(ValueError):
