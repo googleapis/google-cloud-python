@@ -62,7 +62,7 @@ class BlobKey:
                 )
         elif blob_key is not None:
             raise exceptions.BadValueError(
-                "blob key should be a string; received "
+                "blob key should be bytes; received "
                 "{} (a {})".format(blob_key, blob_key.__class__.__name__)
             )
 
