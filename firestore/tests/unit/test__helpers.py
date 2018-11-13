@@ -923,6 +923,41 @@ class Test_extract_field_paths(unittest.TestCase):
         self.assertEqual(self._call_fut(document), expected)
 
 
+class Test_filter_document_data_by_field_paths(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(document_data, field_paths):
+        from google.cloud.firestore_v1beta1._helpers import (
+            filter_document_data_by_field_paths,
+            )
+
+        return filter_document_data_by_field_paths(document_data, field_paths)
+
+    def test_w_non_leaf_child(self):
+        document = {'a': {'b': {'c': 1, 'd': 2}}, 'x': 1}
+        field_paths = ['a.b.c']
+        expected = {'a': {'b': {'c': 1}}}
+        self.assertEqual(self._call_fut(document, field_paths), expected)
+
+    def test_w_non_leaf_child(self):
+        document = {'a': {'b': {'c': 1, 'd': 2}}, 'x': 1}
+        field_paths = ['a.b']
+        expected = {'a': {'b': {'c': 1, 'd': 2}}}
+        self.assertEqual(self._call_fut(document, field_paths), expected)
+
+    def test_w_root(self):
+        document = {'a': {'b': {'c': 1, 'd': 2}}, 'x': 1}
+        field_paths = ['a']
+        expected = {'a': {'b': {'c': 1, 'd': 2}}}
+        self.assertEqual(self._call_fut(document, field_paths), expected)
+
+    def test_w_multiple_leaves(self):
+        document = {'h': {'f': 5, 'g': 6}, 'e': 7}
+        field_paths = ['h.f', 'h.g']
+        expected = {'h': {'f': 5, 'g': 6}}
+        self.assertEqual(self._call_fut(document, field_paths), expected)
+
+
 class Test_reference_value_to_document(unittest.TestCase):
 
     @staticmethod
@@ -1936,34 +1971,6 @@ class Test_metadata_with_prefix(unittest.TestCase):
         self.assertEqual(metadata, [
             ('google-cloud-resource-prefix', database_string),
         ])
-
-
-class Test_filter_document_data_by_field_paths(unittest.TestCase):
-
-    @staticmethod
-    def _call_fut(document_data, field_paths):
-        from google.cloud.firestore_v1beta1._helpers import (
-            filter_document_data_by_field_paths,
-            )
-
-        return filter_document_data_by_field_paths(document_data, field_paths)
-
-    def test_it(self):
-        result = self._call_fut({'a': {'b': {'c': 1, 'd': 2}}, 'x': 1},
-                                ('a.b.c',))
-        self.assertEqual(result, {'a': {'b': {'c': 1}}})
-
-        result = self._call_fut({'a': {'b': {'c': 1, 'd': 2}, 'x': 1}},
-                                ('a.b',))
-        self.assertEqual(result, {'a': {'b': {'c': 1, 'd': 2}}})
-
-        result = self._call_fut({'a': {'b': {'c': 1, 'd': 2}}, 'x': 1},
-                                ('a',))
-        self.assertEqual(result, {'a': {'b': {'c': 1, 'd': 2}}})
-
-        result = self._call_fut({'h': {'f': 5, 'g': 6}, 'e': 7},
-                                ('h.f', 'h.g'))
-        self.assertEqual(result, {'h': {'f': 5, 'g': 6}})
 
 
 def _value_pb(**kwargs):
