@@ -55,14 +55,15 @@ LABEL_STAMP = datetime.datetime.utcnow() \
                                .strftime("%Y-%m-%dt%H-%M-%S")
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 COL_NAME1 = b'col-name1'
-COL_NAME2 = b'col-name2'
-COL_NAME3 = b'col-name3-but-other-fam'
+# COL_NAME2 = b'col-name2'
+# COL_NAME3 = b'col-name3-but-other-fam'
 CELL_VAL1 = b'cell-val'
-CELL_VAL2 = b'cell-val-newer'
-CELL_VAL3 = b'altcol-cell-val'
-CELL_VAL4 = b'foo'
-ROW_KEY = b'row-key'
-ROW_KEY_ALT = b'row-key-alt'
+# CELL_VAL2 = b'cell-val-newer'
+# CELL_VAL3 = b'altcol-cell-val'
+# CELL_VAL4 = b'foo'
+# ROW_KEY = b'row-key'
+# ROW_KEY_ALT = b'row-key-alt'
+
 
 class Config(object):
     """Run-time configuration to be modified at set-up.
@@ -187,12 +188,39 @@ def test_bigtable_create_table():
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
-    table = instance.table("table_my")
+
+    # Create table with Column families.
+    table1 = instance.table("table_id1_create")
     # Define the GC policy to retain only the most recent 2 versions.
     max_versions_rule = column_family.MaxVersionsGCRule(2)
-    table.create(column_families={'cf1': max_versions_rule})
+    table1.create(column_families={'cf1': max_versions_rule})
+
+    # Create table without Column families.
+    table2 = instance.table("table_id2_create")
+    table2.create()
     # [END bigtable_create_table]
-    assert table.exists()
+    assert table1.exists()
+    assert table2.exists()
+    table1.delete()
+    table2.delete()
+
+
+def test_bigtable_sample_row_keys():
+    # [START bigtable_sample_row_keys]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+
+    table = instance.table("table_id1_samplerow")
+    table.create()
+
+    data = table.sample_row_keys()
+    for element in data:
+        offset_bytes = str(element).split(":")[1].strip()
+    # [END bigtable_sample_row_keys]
+    assert offset_bytes == '805306368'
+    table.delete()
 
 
 def test_bigtable_create_column_family():
@@ -260,18 +288,52 @@ def test_bigtable_mutations_batcher_read_rows():
     actual_rows_data = []
     for row in rows_data:
         actual_rows_data.append(row.row_key.decode('utf-8'))
-        actual_rows_data.append(row.cells[COLUMN_FAMILY_ID][col_name][0].value.decode('utf-8'))
+        actual_rows_data.append(
+            row.cells[COLUMN_FAMILY_ID][col_name][0].value.decode('utf-8')
+            )
 
-    #     result = [status.code for status in statuses]
     assert actual_rows_data == expected_rows_data
 
     table.truncate(timeout=200)
 
 
-def test_bigtable_mutate_rows():
+def test_bigtable_drop_by_prefix():
+    # [START bigtable_drop_by_prefix]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    # [END bigtable_drop_by_prefix]
+
+    row_keys = [b'row_key_1', b'row_key_2', b'r_key_3', b'r_key_4']
+    rows = []
+    for row_key in row_keys:
+        row = table.row(row_key)
+        row.set_cell(COLUMN_FAMILY_ID, b'col-name1', b'cell-val-abc')
+        rows.append(row)
+    batcher = table.mutations_batcher()
+    batcher.mutate_rows(rows)
+    batcher.flush()
+
+    # [START bigtable_drop_by_prefix]
+    row_key_prefix = b'r_key'
+    table.drop_by_prefix(row_key_prefix, timeout=300)
+    # [END bigtable_drop_by_prefix]
+
+    rows_data = table.read_rows()
+    actual_rows_keys = []
+    for row in rows_data:
+        actual_rows_keys.append(row.row_key)
+
+    assert actual_rows_keys == [b'row_key_1', b'row_key_2']
+
+    table.truncate(timeout=300)
+
+
+def test_bigtable_mutate_rows_read_row():
     # [START bigtable_mutations_batcher]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -300,7 +362,22 @@ def test_bigtable_mutate_rows():
     result = [status.code for status in statuses]
     expected_result = [0, 0]
     assert result == expected_result
-    table.truncate(timeout=200)
+
+    # [START bigtable_read_row]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key = b'row-key'
+    row = table.read_row(row_key)
+    # [END bigtable_read_row]
+
+    assert row.row_key == row_key
+    assert row.cells[COLUMN_FAMILY_ID][col_name1][0].value == cell_val3
+
+    table.truncate(timeout=300)
 
 
 def test_bigtable_list_instances():
@@ -382,8 +459,9 @@ def test_bigtable_table_name():
         data = json.load(read_file)
         project_id = data["project_id"]
 
-    expected_table_name = 'projects/' + project_id + '/instances/' + \
-    INSTANCE_ID + '/tables/' + TABLE_ID
+    expected_table_name = 'projects/' + project_id + \
+        '/instances/' + INSTANCE_ID + \
+        '/tables/' + TABLE_ID
     assert table_name == expected_table_name
 
 
@@ -557,7 +635,7 @@ def test_bigtable_delete_table():
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
-    table = instance.table("table_my1")
+    table = instance.table("table_id_del")
     # [END bigtable_delete_table]
 
     table.create()
@@ -568,23 +646,30 @@ def test_bigtable_delete_table():
     assert not table.exists()
 
 
-def test_bigtable_truncate_table():
+def test_bigtable_table_row_truncate_table():
     # [START bigtable_truncate_table]
     from google.cloud.bigtable import Client
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
+
     # [END bigtable_truncate_table]
+    # [START bigtable_table_row]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
 
     row_keys = [b'row_key_1', b'row_key_2']
-
     row1 = table.row(row_keys[0])
     row1.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row1.commit()
     row2 = table.row(row_keys[1])
     row2.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
-
-    table.mutate_rows([row1, row2])
+    row2.commit()
+    # [END bigtable_table_row]
 
     rows_data_before_truncate = []
     for row in table.read_rows():
@@ -593,7 +678,7 @@ def test_bigtable_truncate_table():
     assert rows_data_before_truncate == row_keys
 
     # [START bigtable_truncate_table]
-    table.truncate(timeout=200)
+    table.truncate(timeout=300)
     # [END bigtable_truncate_table]
 
     rows_data_after_truncate = []
@@ -603,7 +688,7 @@ def test_bigtable_truncate_table():
     assert rows_data_after_truncate == []
 
 
-def test_bigtable_test_iam_permissions():
+def s___test_bigtable_test_iam_permissions():
     # [START bigtable_test_iam_permissions]
     from google.cloud.bigtable import Client
 
@@ -617,7 +702,7 @@ def test_bigtable_test_iam_permissions():
     assert permissions_allowed == permissions
 
 
-def test_bigtable_set_iam_policy_then_get_iam_policy():
+def s___test_bigtable_set_iam_policy_then_get_iam_policy():
     # [START bigtable_set_iam_policy]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.policy import Policy

@@ -159,6 +159,12 @@ class Table(object):
     def row(self, row_key, filter_=None, append=False):
         """Factory to create a row associated with this table.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_table_row]
+            :end-before: [END bigtable_table_row]
+
         .. warning::
 
            At most one of ``filter_`` and ``append`` can be used in a
@@ -321,6 +327,12 @@ class Table(object):
     def read_row(self, row_key, filter_=None):
         """Read a single row from this table.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_read_row]
+            :end-before: [END bigtable_read_row]
+
         :type row_key: bytes
         :param row_key: The key of the row to read from.
 
@@ -481,6 +493,12 @@ class Table(object):
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_sample_row_keys]
+            :end-before: [END bigtable_sample_row_keys]
+
         The returned row keys will delimit contiguous sections of the table of
         approximately equal size, which can be used to break up the data for
         distributed tasks like mapreduces.
@@ -545,6 +563,13 @@ class Table(object):
 
     def drop_by_prefix(self, row_key_prefix, timeout=None):
         """
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_drop_by_prefix]
+            :end-before: [END bigtable_drop_by_prefix]
+
         :type row_prefix: bytes
         :param row_prefix: Delete all rows that start with this row key
                             prefix. Prefix cannot be zero length.
