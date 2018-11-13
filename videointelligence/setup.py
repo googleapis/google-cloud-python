@@ -22,14 +22,14 @@ import setuptools
 
 name = 'google-cloud-videointelligence'
 description = 'Google Cloud Video Intelligence API client library'
-version = '1.5.0'
+version = '1.6.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
-    'google-api-core[grpc]<2.0.0dev,>=0.1.0',
+    'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
 ]
 extras = {
 }

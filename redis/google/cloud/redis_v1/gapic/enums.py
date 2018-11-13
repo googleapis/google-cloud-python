@@ -50,7 +50,7 @@ class Instance(object):
         Attributes:
           TIER_UNSPECIFIED (int): Not set.
           BASIC (int): BASIC tier: standalone instance
-          STANDARD_HA (int): STANDARD_HA tier: highly available primary/replica instances
+          STANDARD_HA (int): STANDARD\_HA tier: highly available primary/replica instances
         """
         TIER_UNSPECIFIED = 0
         BASIC = 1

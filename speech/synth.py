@@ -40,20 +40,6 @@ for version in versions:
 s.move(library / 'google/cloud/speech.py')
 
 
-# Fix bad reference to operations_v1
-s.replace(
-    '**/gapic/**/*_transport.py',
-    r' \= operations_v1\.',
-    ' = google.api_core.operations_v1.')
-
-
-# Fix bad docstrings.
-s.replace(
-    '**/gapic/*_client.py',
-    r'\\"(.+?)-\*\\"',
-    r'"\1-\\*"')
-
-
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
 s.replace(

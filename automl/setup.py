@@ -22,7 +22,7 @@ description = 'Cloud AutoML API client library'
 version = '0.1.1'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
-    'google-api-core[grpc] >= 1.1.0, < 2.0.0dev',
+    'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
     'enum34; python_version < "3.4"',
 ]
 

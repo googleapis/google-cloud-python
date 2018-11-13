@@ -175,7 +175,6 @@ class Test_Worker(unittest.TestCase):
         self.assertEqual(worker._grace_period, grace_period)
         self.assertEqual(worker._max_batch_size, max_batch_size)
         self.assertEqual(worker._max_latency, max_latency)
-        self.assertTrue(worker._include_logger_name)
         self.assertFalse(worker.is_alive)
         self.assertIsNone(worker._thread)
 
@@ -282,23 +281,6 @@ class Test_Worker(unittest.TestCase):
         self.assertTrue(worker._cloud_logger._batch.commit_called)
         self.assertEqual(worker._cloud_logger._batch.commit_count, 2)
         self.assertEqual(worker._queue.qsize(), 0)
-
-    def test__thread_main_no_python_logger(self):
-        from google.cloud.logging.handlers.transports import background_thread
-
-        worker = self._make_one(_Logger(self.NAME), include_logger_name=False)
-        self.assertFalse(worker._include_logger_name)
-
-        # Enqueue one record and the termination signal.
-        self._enqueue_record(worker, '1')
-        worker._queue.put_nowait(background_thread._WORKER_TERMINATOR)
-
-        worker._thread_main()
-
-        self.assertEqual(len(worker._cloud_logger._batch.all_entries), 1)
-        self.assertFalse(
-            'python_logger' in worker._cloud_logger._batch.all_entries[0]
-        )
 
     def test__thread_main_error(self):
         from google.cloud.logging.handlers.transports import background_thread
@@ -439,12 +421,9 @@ class _Thread(object):
 class _Batch(object):
 
     def __init__(self):
-        # Entries waiting to be committed
         self.entries = []
         self.commit_called = False
         self.commit_count = None
-        # All entries ever committed via this _Batch
-        self.all_entries = []
 
     def log_struct(
             self, info, severity=logging.INFO, resource=None, labels=None,
@@ -457,7 +436,6 @@ class _Batch(object):
         self.log_struct_called_with = (info, severity, resource, labels,
                                        trace, span_id)
         self.entries.append(info)
-        self.all_entries.append(info)
 
     def commit(self):
         self.commit_called = True

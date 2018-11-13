@@ -136,22 +136,17 @@ class WorkflowTemplateServiceGrpcTransport(object):
 
         Instantiates a template and begins execution.
 
-        The returned Operation can be used to track execution of
-        workflow by polling
-        ``operations.get``.
-        The Operation will complete when entire workflow is finished.
+        The returned Operation can be used to track execution of workflow by
+        polling ``operations.get``. The Operation will complete when entire
+        workflow is finished.
 
-        The running workflow can be aborted via
-        ``operations.cancel``.
-        This will cause any inflight jobs to be cancelled and workflow-owned
-        clusters to be deleted.
+        The running workflow can be aborted via ``operations.cancel``. This will
+        cause any inflight jobs to be cancelled and workflow-owned clusters to
+        be deleted.
 
-        The ``Operation.metadata`` will be
-        ``WorkflowMetadata``.
+        The ``Operation.metadata`` will be ``WorkflowMetadata``.
 
-        On successful completion,
-        ``Operation.response`` will be
-        ``Empty``.
+        On successful completion, ``Operation.response`` will be ``Empty``.
 
         Returns:
             Callable: A callable which accepts the appropriate

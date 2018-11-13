@@ -54,8 +54,8 @@ class Table(object):
           VIEW_UNSPECIFIED (int): Uses the default view for each method as documented in its request.
           NAME_ONLY (int): Only populates ``name``.
           SCHEMA_VIEW (int): Only populates ``name`` and fields related to the table's schema.
-          REPLICATION_VIEW (int): Only populates ``name`` and fields related to the table's
-          replication state.
+          REPLICATION_VIEW (int): Only populates ``name`` and fields related to the table's replication
+          state.
           FULL (int): Populates all fields.
         """
         VIEW_UNSPECIFIED = 0
@@ -128,17 +128,16 @@ class Instance(object):
 
         Attributes:
           TYPE_UNSPECIFIED (int): The type of the instance is unspecified. If set when creating an
-          instance, a ``PRODUCTION`` instance will be created. If set when updating
-          an instance, the type will be left unchanged.
-          PRODUCTION (int): An instance meant for production use. ``serve_nodes`` must be set
-          on the cluster.
+          instance, a ``PRODUCTION`` instance will be created. If set when
+          updating an instance, the type will be left unchanged.
+          PRODUCTION (int): An instance meant for production use. ``serve_nodes`` must be set on the
+          cluster.
           DEVELOPMENT (int): The instance is meant for development and testing purposes only; it has
-          no performance or uptime guarantees and is not covered by SLA.
-          After a development instance is created, it can be upgraded by
-          updating the instance to type ``PRODUCTION``. An instance created
-          as a production instance cannot be changed to a development instance.
-          When creating a development instance, ``serve_nodes`` on the cluster must
-          not be set.
+          no performance or uptime guarantees and is not covered by SLA. After a
+          development instance is created, it can be upgraded by updating the
+          instance to type ``PRODUCTION``. An instance created as a production
+          instance cannot be changed to a development instance. When creating a
+          development instance, ``serve_nodes`` on the cluster must not be set.
         """
         TYPE_UNSPECIFIED = 0
         PRODUCTION = 1

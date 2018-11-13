@@ -151,8 +151,8 @@ class KeyManagementServiceGrpcTransport(object):
     def get_crypto_key(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Returns metadata for a given ``CryptoKey``, as well as its
-        ``primary`` ``CryptoKeyVersion``.
+        Returns metadata for a given ``CryptoKey``, as well as its ``primary``
+        ``CryptoKeyVersion``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -193,9 +193,8 @@ class KeyManagementServiceGrpcTransport(object):
 
         Create a new ``CryptoKey`` within a ``KeyRing``.
 
-        ``CryptoKey.purpose`` and
-        ``CryptoKey.version_template.algorithm``
-        are required.
+        ``CryptoKey.purpose`` and ``CryptoKey.version_template.algorithm`` are
+        required.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -210,9 +209,8 @@ class KeyManagementServiceGrpcTransport(object):
 
         Create a new ``CryptoKeyVersion`` in a ``CryptoKey``.
 
-        The server will assign the next sequential id. If unset,
-        ``state`` will be set to
-        ``ENABLED``.
+        The server will assign the next sequential id. If unset, ``state`` will
+        be set to ``ENABLED``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -241,11 +239,9 @@ class KeyManagementServiceGrpcTransport(object):
 
         Update a ``CryptoKeyVersion``'s metadata.
 
-        ``state`` may be changed between
-        ``ENABLED`` and
-        ``DISABLED`` using this
-        method. See ``DestroyCryptoKeyVersion`` and ``RestoreCryptoKeyVersion`` to
-        move between other states.
+        ``state`` may be changed between ``ENABLED`` and ``DISABLED`` using this
+        method. See ``DestroyCryptoKeyVersion`` and ``RestoreCryptoKeyVersion``
+        to move between other states.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -259,9 +255,8 @@ class KeyManagementServiceGrpcTransport(object):
     def encrypt(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Encrypts data, so that it can only be recovered by a call to ``Decrypt``.
-        The ``CryptoKey.purpose`` must be
-        ``ENCRYPT_DECRYPT``.
+        Encrypts data, so that it can only be recovered by a call to
+        ``Decrypt``. The ``CryptoKey.purpose`` must be ``ENCRYPT_DECRYPT``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -274,8 +269,8 @@ class KeyManagementServiceGrpcTransport(object):
     def decrypt(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Decrypts data that was protected by ``Encrypt``. The ``CryptoKey.purpose``
-        must be ``ENCRYPT_DECRYPT``.
+        Decrypts data that was protected by ``Encrypt``. The
+        ``CryptoKey.purpose`` must be ``ENCRYPT_DECRYPT``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -307,15 +302,12 @@ class KeyManagementServiceGrpcTransport(object):
         Schedule a ``CryptoKeyVersion`` for destruction.
 
         Upon calling this method, ``CryptoKeyVersion.state`` will be set to
-        ``DESTROY_SCHEDULED``
-        and ``destroy_time`` will be set to a time 24
-        hours in the future, at which point the ``state``
-        will be changed to
-        ``DESTROYED``, and the key
-        material will be irrevocably destroyed.
+        ``DESTROY_SCHEDULED`` and ``destroy_time`` will be set to a time 24
+        hours in the future, at which point the ``state`` will be changed to
+        ``DESTROYED``, and the key material will be irrevocably destroyed.
 
-        Before the ``destroy_time`` is reached,
-        ``RestoreCryptoKeyVersion`` may be called to reverse the process.
+        Before the ``destroy_time`` is reached, ``RestoreCryptoKeyVersion`` may
+        be called to reverse the process.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -329,13 +321,10 @@ class KeyManagementServiceGrpcTransport(object):
     def restore_crypto_key_version(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Restore a ``CryptoKeyVersion`` in the
-        ``DESTROY_SCHEDULED``
-        state.
+        Restore a ``CryptoKeyVersion`` in the ``DESTROY_SCHEDULED`` state.
 
-        Upon restoration of the CryptoKeyVersion, ``state``
-        will be set to ``DISABLED``,
-        and ``destroy_time`` will be cleared.
+        Upon restoration of the CryptoKeyVersion, ``state`` will be set to
+        ``DISABLED``, and ``destroy_time`` will be cleared.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -350,8 +339,7 @@ class KeyManagementServiceGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Returns the public key for the given ``CryptoKeyVersion``. The
-        ``CryptoKey.purpose`` must be
-        ``ASYMMETRIC_SIGN`` or
+        ``CryptoKey.purpose`` must be ``ASYMMETRIC_SIGN`` or
         ``ASYMMETRIC_DECRYPT``.
 
         Returns:
@@ -367,7 +355,7 @@ class KeyManagementServiceGrpcTransport(object):
 
         Decrypts data that was encrypted with a public key retrieved from
         ``GetPublicKey`` corresponding to a ``CryptoKeyVersion`` with
-        ``CryptoKey.purpose`` ASYMMETRIC_DECRYPT.
+        ``CryptoKey.purpose`` ASYMMETRIC\_DECRYPT.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -381,8 +369,8 @@ class KeyManagementServiceGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Signs data using a ``CryptoKeyVersion`` with ``CryptoKey.purpose``
-        ASYMMETRIC_SIGN, producing a signature that can be verified with the public
-        key retrieved from ``GetPublicKey``.
+        ASYMMETRIC\_SIGN, producing a signature that can be verified with the
+        public key retrieved from ``GetPublicKey``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -424,9 +412,9 @@ class KeyManagementServiceGrpcTransport(object):
     def test_iam_permissions(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Returns permissions that a caller has on the specified resource.
-        If the resource does not exist, this will return an empty set of
-        permissions, not a NOT_FOUND error.
+        Returns permissions that a caller has on the specified resource. If the
+        resource does not exist, this will return an empty set of permissions,
+        not a NOT\_FOUND error.
 
         Returns:
             Callable: A callable which accepts the appropriate

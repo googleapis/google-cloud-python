@@ -49,18 +49,18 @@ class CloudRedisClient(object):
 
     Google Cloud Memorystore for Redis v1
 
-    The ``redis.googleapis.com`` service implements the Google Cloud Memorystore
-    for Redis API and defines the following resource model for managing Redis
-    instances:
-    * The service works with a collection of cloud projects, named: ``/projects/*``
-    * Each project has a collection of available locations, named: ``/locations/*``
-    * Each location has a collection of Redis instances, named: ``/instances/*``
-    * As such, Redis instances are resources of the form:
+    The ``redis.googleapis.com`` service implements the Google Cloud
+    Memorystore for Redis API and defines the following resource model for
+    managing Redis instances: \* The service works with a collection of
+    cloud projects, named: ``/projects/*`` \* Each project has a collection
+    of available locations, named: ``/locations/*`` \* Each location has a
+    collection of Redis instances, named: ``/instances/*`` \* As such, Redis
+    instances are resources of the form:
+    ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
-      ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-
-    Note that location_id must be refering to a GCP ``region``; for example:
-    * ``projects/redpepper-1290/locations/us-central1/instances/my-redis``
+    Note that location\_id must be refering to a GCP ``region``; for
+    example: \*
+    ``projects/redpepper-1290/locations/us-central1/instances/my-redis``
     """
 
     SERVICE_ADDRESS = 'redis.googleapis.com:443'
@@ -179,9 +179,10 @@ class CloudRedisClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -208,8 +209,8 @@ class CloudRedisClient(object):
         Lists all Redis instances owned by a project in either the specified
         location (region) or all locations.
 
-        The location should have the following format:
-        * ``projects/{project_id}/locations/{location_id}``
+        The location should have the following format: \*
+        ``projects/{project_id}/locations/{location_id}``
 
         If ``location_id`` is specified as ``-`` (wildcard), then all regions
         available to the project are queried, and the results are aggregated.
@@ -230,14 +231,15 @@ class CloudRedisClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_instances(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_instances(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): Required. The resource name of the instance location using the form ``projects/{project_id}/locations/{location_id}``
-                where ``location_id`` refers to a GCP region
+            parent (str): Required. The resource name of the instance location using the form:
+                ``projects/{project_id}/locations/{location_id}`` where ``location_id``
+                refers to a GCP region
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -312,7 +314,8 @@ class CloudRedisClient(object):
             >>> response = client.get_instance(name)
 
         Args:
-            name (str): Required. Redis instance resource name using the form ``projects/{project_id}/locations/{location_id}/instances/{instance_id}```
+            name (str): Required. Redis instance resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
                 where ``location_id`` refers to a GCP region
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -358,16 +361,17 @@ class CloudRedisClient(object):
         """
         Creates a Redis instance based on the specified tier and memory size.
 
-        By default, the instance is accessible from the project's
-        `default network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`_.
+        By default, the instance is accessible from the project's `default
+        network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
 
-        The creation is executed asynchronously and callers may check the returned
-        operation to track its progress. Once the operation is completed the Redis
-        instance will be fully functional. Completed longrunning.Operation will
-        contain the new instance object in the response field.
+        The creation is executed asynchronously and callers may check the
+        returned operation to track its progress. Once the operation is
+        completed the Redis instance will be fully functional. Completed
+        longrunning.Operation will contain the new instance object in the
+        response field.
 
-        The returned operation is automatically deleted after a few hours, so there
-        is no need to call DeleteOperation.
+        The returned operation is automatically deleted after a few hours, so
+        there is no need to call DeleteOperation.
 
         Example:
             >>> from google.cloud import redis_v1
@@ -393,16 +397,19 @@ class CloudRedisClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): Required. The resource name of the instance location using the form ``projects/{project_id}/locations/{location_id}``
-                where ``location_id`` refers to a GCP region
+            parent (str): Required. The resource name of the instance location using the form:
+                ``projects/{project_id}/locations/{location_id}`` where ``location_id``
+                refers to a GCP region
             instance_id (str): Required. The logical name of the Redis instance in the customer project
                 with the following restrictions:
-                * Must contain only lowercase letters, numbers, and hyphens.
-                * Must start with a letter.
-                * Must be between 1-40 characters.
-                * Must end with a number or a letter.
-                * Must be unique within the customer project / location
+
+                -  Must contain only lowercase letters, numbers, and hyphens.
+                -  Must start with a letter.
+                -  Must be between 1-40 characters.
+                -  Must end with a number or a letter.
+                -  Must be unique within the customer project / location
             instance (Union[dict, ~google.cloud.redis_v1.types.Instance]): Required. A Redis [Instance] resource
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.redis_v1.types.Instance`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -487,13 +494,20 @@ class CloudRedisClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            update_mask (Union[dict, ~google.cloud.redis_v1.types.FieldMask]): Required. Mask of fields to update. At least one path must be supplied in
-                this field. The elements of the repeated paths field may only include these
-                fields from ``Instance``: ``displayName``, ``labels``, ``memorySizeGb``, and ``redisConfig``.
+            update_mask (Union[dict, ~google.cloud.redis_v1.types.FieldMask]): Required. Mask of fields to update. At least one path must be supplied
+                in this field. The elements of the repeated paths field may only include
+                these fields from ``Instance``:
+
+                -  ``displayName``
+                -  ``labels``
+                -  ``memorySizeGb``
+                -  ``redisConfig``
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.redis_v1.types.FieldMask`
-            instance (Union[dict, ~google.cloud.redis_v1.types.Instance]): Required. Update description.
-                Only fields specified in update_mask are updated.
+            instance (Union[dict, ~google.cloud.redis_v1.types.Instance]): Required. Update description. Only fields specified in update\_mask are
+                updated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.redis_v1.types.Instance`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -567,7 +581,8 @@ class CloudRedisClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            name (str): Required. Redis instance resource name using the form ``projects/{project_id}/locations/{location_id}/instances/{instance_id}```
+            name (str): Required. Redis instance resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
                 where ``location_id`` refers to a GCP region
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not

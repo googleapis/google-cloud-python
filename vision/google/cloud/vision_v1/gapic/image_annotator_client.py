@@ -32,7 +32,11 @@ from google.cloud.vision_v1.gapic import image_annotator_client_config
 from google.cloud.vision_v1.gapic.transports import image_annotator_grpc_transport
 from google.cloud.vision_v1.proto import image_annotator_pb2
 from google.cloud.vision_v1.proto import image_annotator_pb2_grpc
+from google.cloud.vision_v1.proto import product_search_service_pb2
+from google.cloud.vision_v1.proto import product_search_service_pb2_grpc
 from google.longrunning import operations_pb2
+from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-vision', ).version
@@ -142,9 +146,10 @@ class ImageAnnotatorClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -174,13 +179,14 @@ class ImageAnnotatorClient(object):
             >>>
             >>> client = vision_v1.ImageAnnotatorClient()
             >>>
-            >>> # TODO: Initialize ``requests``:
+            >>> # TODO: Initialize `requests`:
             >>> requests = []
             >>>
             >>> response = client.batch_annotate_images(requests)
 
         Args:
             requests (list[Union[dict, ~google.cloud.vision_v1.types.AnnotateImageRequest]]): Individual image annotation requests for this batch.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1.types.AnnotateImageRequest`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -229,16 +235,16 @@ class ImageAnnotatorClient(object):
         Run asynchronous image detection and annotation for a list of generic
         files, such as PDF files, which may contain multiple pages and multiple
         images per page. Progress and results can be retrieved through the
-        ``google.longrunning.Operations`` interface.
-        ``Operation.metadata`` contains ``OperationMetadata`` (metadata).
-        ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).
+        ``google.longrunning.Operations`` interface. ``Operation.metadata``
+        contains ``OperationMetadata`` (metadata). ``Operation.response``
+        contains ``AsyncBatchAnnotateFilesResponse`` (results).
 
         Example:
             >>> from google.cloud import vision_v1
             >>>
             >>> client = vision_v1.ImageAnnotatorClient()
             >>>
-            >>> # TODO: Initialize ``requests``:
+            >>> # TODO: Initialize `requests`:
             >>> requests = []
             >>>
             >>> response = client.async_batch_annotate_files(requests)
@@ -254,6 +260,7 @@ class ImageAnnotatorClient(object):
 
         Args:
             requests (list[Union[dict, ~google.cloud.vision_v1.types.AsyncAnnotateFileRequest]]): Individual async file annotation requests for this batch.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1.types.AsyncAnnotateFileRequest`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used

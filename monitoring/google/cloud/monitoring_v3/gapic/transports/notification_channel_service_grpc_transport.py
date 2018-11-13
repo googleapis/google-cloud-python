@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -167,7 +169,7 @@ class NotificationChannelServiceGrpcTransport(object):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Creates a new notification channel, representing a single notification
-        endpoint such as an email address, SMS number, or pagerduty service.
+        endpoint such as an email address, SMS number, or PagerDuty service.
 
         Returns:
             Callable: A callable which accepts the appropriate

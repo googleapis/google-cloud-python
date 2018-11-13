@@ -56,8 +56,9 @@ class PublicKeyCertificateFormat(enum.IntEnum):
     Attributes:
       UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT (int): The format has not been specified. This is an invalid default value and
       must not be used.
-      X509_CERTIFICATE_PEM (int): An X.509v3 certificate (`RFC5280 <https://www.ietf.org/rfc/rfc5280.txt>`_),
-      encoded in base64, and wrapped by ``-----BEGIN CERTIFICATE-----`` and
+      X509_CERTIFICATE_PEM (int): An X.509v3 certificate
+      (`RFC5280 <https://www.ietf.org/rfc/rfc5280.txt>`__), encoded in base64,
+      and wrapped by ``-----BEGIN CERTIFICATE-----`` and
       ``-----END CERTIFICATE-----``.
     """
     UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT = 0
@@ -72,20 +73,24 @@ class PublicKeyFormat(enum.IntEnum):
       UNSPECIFIED_PUBLIC_KEY_FORMAT (int): The format has not been specified. This is an invalid default value and
       must not be used.
       RSA_PEM (int): An RSA public key encoded in base64, and wrapped by
-      ``-----BEGIN PUBLIC KEY-----`` and ``-----END PUBLIC KEY-----``. This can be
-      used to verify ``RS256`` signatures in JWT tokens ([RFC7518](
-      https://www.ietf.org/rfc/rfc7518.txt)).
-      RSA_X509_PEM (int): As RSA_PEM, but wrapped in an X.509v3 certificate ([RFC5280](
-      https://www.ietf.org/rfc/rfc5280.txt)), encoded in base64, and wrapped by
-      ``-----BEGIN CERTIFICATE-----`` and ``-----END CERTIFICATE-----``.
+      ``-----BEGIN PUBLIC KEY-----`` and ``-----END PUBLIC KEY-----``. This
+      can be used to verify ``RS256`` signatures in JWT tokens
+      (`RFC7518 <https://www.ietf.org/rfc/rfc7518.txt>`__).
+      RSA_X509_PEM (int): As RSA\_PEM, but wrapped in an X.509v3 certificate
+      (`RFC5280 <https://www.ietf.org/rfc/rfc5280.txt>`__), encoded in base64,
+      and wrapped by ``-----BEGIN CERTIFICATE-----`` and
+      ``-----END CERTIFICATE-----``.
       ES256_PEM (int): Public key for the ECDSA algorithm using P-256 and SHA-256, encoded in
-      base64, and wrapped by ``-----BEGIN PUBLIC KEY-----`` and ``-----END
-      PUBLIC KEY-----``. This can be used to verify JWT tokens with the ``ES256``
-      algorithm (`RFC7518 <https://www.ietf.org/rfc/rfc7518.txt>`_). This curve is
-      defined in `OpenSSL <https://www.openssl.org/>`_ as the ``prime256v1`` curve.
-      ES256_X509_PEM (int): As ES256_PEM, but wrapped in an X.509v3 certificate ([RFC5280](
-      https://www.ietf.org/rfc/rfc5280.txt)), encoded in base64, and wrapped by
-      ``-----BEGIN CERTIFICATE-----`` and ``-----END CERTIFICATE-----``.
+      base64, and wrapped by ``-----BEGIN PUBLIC KEY-----`` and
+      ``-----END  PUBLIC KEY-----``. This can be used to verify JWT tokens
+      with the ``ES256`` algorithm
+      (`RFC7518 <https://www.ietf.org/rfc/rfc7518.txt>`__). This curve is
+      defined in `OpenSSL <https://www.openssl.org/>`__ as the ``prime256v1``
+      curve.
+      ES256_X509_PEM (int): As ES256\_PEM, but wrapped in an X.509v3 certificate
+      (`RFC5280 <https://www.ietf.org/rfc/rfc5280.txt>`__), encoded in base64,
+      and wrapped by ``-----BEGIN CERTIFICATE-----`` and
+      ``-----END CERTIFICATE-----``.
     """
     UNSPECIFIED_PUBLIC_KEY_FORMAT = 0
     RSA_PEM = 3
