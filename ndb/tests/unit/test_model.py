@@ -21,6 +21,7 @@ import zlib
 from google.cloud.datastore import helpers
 import pytest
 
+from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key
 from google.cloud.ndb import model
@@ -37,7 +38,7 @@ def test_Key():
 
 
 def test_BlobKey():
-    assert model.BlobKey is NotImplemented
+    assert model.BlobKey is _datastore_types.BlobKey
 
 
 def test_GeoPt():
@@ -1923,9 +1924,28 @@ class TestKeyProperty:
 
 class TestBlobKeyProperty:
     @staticmethod
-    def test_constructor():
+    def test__validate():
+        prop = model.BlobKeyProperty(name="object-gcs")
+        value = model.BlobKey(b"abc")
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.BlobKeyProperty(name="object-gcs")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.BlobKeyProperty(name="object-gcs")
         with pytest.raises(NotImplementedError):
-            model.BlobKeyProperty()
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.BlobKeyProperty(name="object-gcs")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestDateTimeProperty:

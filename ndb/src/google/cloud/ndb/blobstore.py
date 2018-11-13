@@ -19,7 +19,8 @@ Storage.
 """
 
 
-import google.cloud.ndb.model
+from google.cloud.ndb import _datastore_types
+from google.cloud.ndb import model
 
 
 __all__ = [
@@ -56,10 +57,16 @@ __all__ = [
 ]
 
 
+BlobKey = _datastore_types.BlobKey
+
 BLOB_INFO_KIND = "__BlobInfo__"
-BLOB_KEY_HEADER = "X-AppEngine-BlobKey"
 BLOB_MIGRATION_KIND = "__BlobMigration__"
+BLOB_KEY_HEADER = "X-AppEngine-BlobKey"
 BLOB_RANGE_HEADER = "X-AppEngine-BlobRange"
+MAX_BLOB_FETCH_SIZE = 1015808
+UPLOAD_INFO_CREATION_HEADER = "X-AppEngine-Upload-Creation"
+
+BlobKeyProperty = model.BlobKeyProperty
 
 
 class BlobFetchSizeTooLargeError:
@@ -93,16 +100,6 @@ class BlobInfo:
 class BlobInfoParseError:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
-
-
-class BlobKey:
-    __slots__ = ()
-
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
-
-
-BlobKeyProperty = google.cloud.ndb.model.BlobKeyProperty
 
 
 class BlobNotFoundError:
@@ -170,9 +167,6 @@ class InternalError:
         raise NotImplementedError
 
 
-MAX_BLOB_FETCH_SIZE = 1015808
-
-
 def parse_blob_info(*args, **kwargs):
     raise NotImplementedError
 
@@ -180,6 +174,3 @@ def parse_blob_info(*args, **kwargs):
 class PermissionDeniedError:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
-
-
-UPLOAD_INFO_CREATION_HEADER = "X-AppEngine-Upload-Creation"
