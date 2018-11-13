@@ -38,7 +38,7 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-cloudscheduler', ).version
+    'google-cloud-scheduler', ).version
 
 
 class CloudSchedulerClient(object):

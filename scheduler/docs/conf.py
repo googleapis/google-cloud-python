@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-cloudscheduler documentation build configuration file
+# google-cloud-scheduler documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -59,7 +59,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'google-cloud-cloudscheduler'
+project = u'google-cloud-scheduler'
 copyright = u'2017, Google'
 author = u'Google APIs'
 
@@ -212,7 +212,7 @@ html_theme = 'sphinx_rtd_theme'
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'google-cloud-cloudscheduler-doc'
+htmlhelp_basename = 'google-cloud-scheduler-doc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -234,8 +234,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'google-cloud-cloudscheduler.tex',
-     u'google-cloud-cloudscheduler Documentation', author, 'manual'),
+    (master_doc, 'google-cloud-scheduler.tex',
+     u'google-cloud-scheduler Documentation', author, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -262,8 +262,8 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, 'google-cloud-cloudscheduler',
-              u'google-cloud-cloudscheduler Documentation', [author], 1)]
+man_pages = [(master_doc, 'google-cloud-scheduler',
+              u'google-cloud-scheduler Documentation', [author], 1)]
 
 # If true, show URL addresses after external links.
 #man_show_urls = False
@@ -274,9 +274,9 @@ man_pages = [(master_doc, 'google-cloud-cloudscheduler',
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'google-cloud-cloudscheduler',
-     u'google-cloud-cloudscheduler Documentation', author,
-     'google-cloud-cloudscheduler',
+    (master_doc, 'google-cloud-scheduler',
+     u'google-cloud-scheduler Documentation', author,
+     'google-cloud-scheduler',
      'GAPIC library for the {metadata.shortName} v1beta1 service', 'APIs'),
 ]
 
