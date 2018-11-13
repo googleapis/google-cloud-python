@@ -779,23 +779,23 @@ def _parse_field_name(api_repr):
     if api_repr[0] != '`':  # first field name is simple
         index = api_repr.index('.')
         return api_repr[:index], api_repr[index+1:]  # skips delimiter
-    else:
-        index = 1
-        while index < len(api_repr):
-            if api_repr[index] == '\\':  # escape character
-                index += 2
-                if api_repr[index-1] == '`':  # skips escaped backticks
-                    value = (
-                        api_repr[:index+1], api_repr[index+2:])
-                    index = len(api_repr)  # to please coverage
-            elif api_repr[index] == '`':  # end of unicode field name
-                value = (
-                    api_repr[:index+1],
-                    api_repr[index+2:])  # skips delimiter
-                index = len(api_repr)  # to please coverage
-            else:
-                index += 1
-        return value
+
+    # starts with backtick:  find next non-escaped backtick.
+    index = 1
+    while index < len(api_repr):
+
+        if api_repr[index] == '`':  # end of quoted field name
+            break
+
+        if api_repr[index] == '\\':  # escape character, skip next
+            index += 2
+        else:
+            index += 1
+
+    if index == len(api_repr):  # no closing backtick found
+        raise ValueError("No closing backtick: {}".format(api_repr))
+
+    return api_repr[:index+1], api_repr[index+2:]
 
 
 def get_nested_value(field_path, data):

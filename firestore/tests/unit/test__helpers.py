@@ -1223,15 +1223,47 @@ class Test_parse_field_path(unittest.TestCase):
 
         return parse_field_path(field_path)
 
-    def test_it(self):
+    def test_wo_escaped_names(self):
         self.assertEqual(self._call_fut('a.b.c'), ['a', 'b', 'c'])
 
-    def test_api_repr(self):
-        from google.cloud.firestore_v1beta1._helpers import FieldPath
+    def test_w_escaped_backtick(self):
+        self.assertEqual(self._call_fut('`a\\`b`.c.d'), ['a`b', 'c', 'd'])
 
-        self.assertEqual(
-            self._call_fut(FieldPath('a', 'b', 'c').to_api_repr()),
-            ['a', 'b', 'c'])
+    def test_w_escaped_backslash(self):
+        self.assertEqual(self._call_fut('`a\\\\b`.c.d'), ['a\\b', 'c', 'd'])
+
+
+class Test__parse_field_name(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(field_path):
+        from google.cloud.firestore_v1beta1._helpers import _parse_field_name
+
+        return _parse_field_name(field_path)
+
+    def test_w_no_dots(self):
+        name, rest = self._call_fut('a')
+        self.assertEqual(name, 'a')
+        self.assertIsNone(rest)
+
+    def test_w_first_name_simple(self):
+        name, rest = self._call_fut('a.b.c')
+        self.assertEqual(name, 'a')
+        self.assertEqual(rest, 'b.c')
+
+    def test_w_first_name_escaped_no_escapse(self):
+        name, rest = self._call_fut('`3`.b.c')
+        self.assertEqual(name, '`3`')
+        self.assertEqual(rest, 'b.c')
+
+    def test_w_first_name_escaped_w_escaped_backtick(self):
+        name, rest = self._call_fut('`a\\`b`.c.d')
+        self.assertEqual(name, '`a\\`b`')
+        self.assertEqual(rest, 'c.d')
+
+    def test_w_first_name_escaped_wo_closing_backtick(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('`a\\`b.c.d')
 
 
 class Test_get_nested_value(unittest.TestCase):
