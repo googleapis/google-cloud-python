@@ -335,7 +335,7 @@ def get_event_loop():
             context.
 
     Raises:
-        exceptions.AsyncContextError: If called outside of a context
+        .AsyncContextError: If called outside of a context
             established by :func:`~google.cloud.ndb.async_context`.
     """
     loop = contexts.current()
@@ -346,12 +346,10 @@ def get_event_loop():
 
 
 def add_idle(callback, *args, **kwargs):
-    """Helper function.
-
-    Calls :method:`EventLoop.add_idle` on current event loop.
+    """Calls :method:`EventLoop.add_idle` on current event loop.
 
     Raises:
-        exceptions.AsyncContextError: If called outside of a context
+        .AsyncContextError: If called outside of a context
             established by :func:`~google.cloud.ndb.async_context`.
     """
     loop = get_event_loop()
@@ -359,12 +357,10 @@ def add_idle(callback, *args, **kwargs):
 
 
 def queue_call(delay, callback, *args, **kwargs):
-    """Helper function.
-
-    Calls :method:`EventLoop.queue_call` on current event loop.
+    """Calls :method:`EventLoop.queue_call` on current event loop.
 
     Raises:
-        exceptions.AsyncContextError: If called outside of a context
+        .AsyncContextError: If called outside of a context
             established by :func:`~google.cloud.ndb.async_context`.
     """
     loop = get_event_loop()
@@ -376,12 +372,10 @@ def queue_rpc(*args, **kwargs):
 
 
 def run():
-    """Helper function.
-
-    Calls :method:`EventLoop.run` on current event loop.
+    """Calls :method:`EventLoop.run` on current event loop.
 
     Raises:
-        exceptions.AsyncContextError: If called outside of a context
+        .AsyncContextError: If called outside of a context
             established by :func:`~google.cloud.ndb.async_context`.
     """
     loop = get_event_loop()
@@ -389,12 +383,10 @@ def run():
 
 
 def run0():
-    """Helper function.
-
-    Calls :method:`EventLoop.run0` on current event loop.
+    """Calls :method:`EventLoop.run0` on current event loop.
 
     Raises:
-        exceptions.AsyncContextError: If called outside of a context
+        .AsyncContextError: If called outside of a context
             established by :func:`~google.cloud.ndb.async_context`.
     """
     loop = get_event_loop()
@@ -402,12 +394,10 @@ def run0():
 
 
 def run1():
-    """Helper function.
-
-    Calls :method:`EventLoop.run1` on current event loop.
+    """Calls :method:`EventLoop.run1` on current event loop.
 
     Raises:
-        exceptions.AsyncContextError: If called outside of a context
+        .AsyncContextError: If called outside of a context
             established by :func:`~google.cloud.ndb.async_context`.
     """
     loop = get_event_loop()
