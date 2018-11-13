@@ -94,43 +94,153 @@ class TestFieldPath(unittest.TestCase):
         from google.cloud.firestore_v1beta1._helpers import FieldPath
         return FieldPath
 
-    def _make_one(self, *args, **kwargs):
+    def _make_one(self, *args):
         klass = self._get_target_class()
-        return klass(*args, **kwargs)
+        return klass(*args)
 
-    def test_none_fails(self):
+    def test_ctor_w_none_in_part(self):
         with self.assertRaises(ValueError):
             self._make_one('a', None, 'b')
 
-    def test_empty_string_in_part_fails(self):
+    def test_ctor_w_empty_string_in_part(self):
         with self.assertRaises(ValueError):
             self._make_one('a', '', 'b')
 
-    def test_integer_fails(self):
+    def test_ctor_w_integer_part(self):
         with self.assertRaises(ValueError):
             self._make_one('a', 3, 'b')
 
-    def test_iterable_fails(self):
+    def test_ctor_w_list(self):
+        parts = ['a', 'b', 'c']
+        with self.assertRaises(ValueError):
+            self._make_one(parts)
+
+    def test_ctor_w_tuple(self):
+        parts = ('a', 'b', 'c')
+        with self.assertRaises(ValueError):
+            self._make_one(parts)
+
+    def test_ctor_w_iterable_part(self):
         with self.assertRaises(ValueError):
             self._make_one('a', ['a'], 'b')
 
-    def test_invalid_chars_in_constructor(self):
-        parts = '~*/[].'
-        for part in parts:
-            field_path = self._make_one(part)
-            self.assertEqual(field_path.parts, (part, ))
+    def test_constructor_w_single_part(self):
+        field_path = self._make_one('a')
+        self.assertEqual(field_path.parts, ('a',))
 
-    def test_component(self):
-        field_path = self._make_one('a..b')
-        self.assertEqual(field_path.parts, ('a..b',))
-
-    def test_constructor_iterable(self):
+    def test_constructor_w_multiple_parts(self):
         field_path = self._make_one('a', 'b', 'c')
         self.assertEqual(field_path.parts, ('a', 'b', 'c'))
 
-    def test_unicode(self):
+    def test_ctor_w_invalid_chars_in_part(self):
+        invalid_parts = ('~', '*', '/', '[', ']', '.')
+        for invalid_part in invalid_parts:
+            field_path = self._make_one(invalid_part)
+            self.assertEqual(field_path.parts, (invalid_part, ))
+
+    def test_ctor_w_double_dots(self):
+        field_path = self._make_one('a..b')
+        self.assertEqual(field_path.parts, ('a..b',))
+
+    def test_ctor_w_unicode(self):
         field_path = self._make_one('一', '二', '三')
         self.assertEqual(field_path.parts, ('一', '二', '三'))
+
+    def test_from_string_w_empty_string(self):
+        parts = ''
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_string(parts)
+
+    def test_from_string_w_empty_field_name(self):
+        parts = 'a..b'
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_string(parts)
+
+    def test_from_string_w_invalid_chars(self):
+        invalid_parts = ('~', '*', '/', '[', ']', '.')
+        for invalid_part in invalid_parts:
+            with self.assertRaises(ValueError):
+                self._get_target_class().from_string(invalid_part)
+
+    def test_from_string_w_ascii_single(self):
+        field_path = self._get_target_class().from_string('a')
+        self.assertEqual(field_path.parts, ('a',))
+
+    def test_from_string_w_ascii_dotted(self):
+        field_path = self._get_target_class().from_string('a.b.c')
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+
+    def test_from_string_w_non_ascii_dotted(self):
+        field_path = self._get_target_class().from_string('a.一')
+        self.assertEqual(field_path.parts, ('a', '一'))
+
+    def test___hash___w_single_part(self):
+        field_path = self._make_one('a')
+        self.assertEqual(hash(field_path), hash('a'))
+
+    def test___hash___w_multiple_parts(self):
+        field_path = self._make_one('a', 'b')
+        self.assertEqual(hash(field_path), hash('a.b'))
+
+    def test___hash___w_escaped_parts(self):
+        field_path = self._make_one('a', '3')
+        self.assertEqual(hash(field_path), hash('a.`3`'))
+
+    def test___eq___w_matching_type(self):
+        field_path = self._make_one('a', 'b')
+        string_path = self._get_target_class().from_string('a.b')
+        self.assertEqual(field_path, string_path)
+
+    def test___eq___w_non_matching_type(self):
+        field_path = self._make_one('a', 'c')
+        other = mock.Mock()
+        other.parts = 'a', 'b'
+        self.assertNotEqual(field_path, other)
+
+    def test___lt___w_matching_type(self):
+        field_path = self._make_one('a', 'b')
+        string_path = self._get_target_class().from_string('a.c')
+        self.assertTrue(field_path < string_path)
+
+    def test___lt___w_non_matching_type(self):
+        field_path = self._make_one('a', 'b')
+        other = object()
+        # Python 2 doesn't raise TypeError here, but Python3 does.
+        self.assertIs(field_path.__lt__(other), NotImplemented)
+
+    def test___add__(self):
+        path1 = 'a123', 'b456'
+        path2 = 'c789', 'd012'
+        path3 = 'c789.d012'
+        field_path1 = self._make_one(*path1)
+        field_path1_string = self._make_one(*path1)
+        field_path2 = self._make_one(*path2)
+        field_path1 += field_path2
+        field_path1_string += path3
+        field_path2 = field_path2 + self._make_one(*path1)
+        self.assertEqual(field_path1, self._make_one(*(path1 + path2)))
+        self.assertEqual(field_path2, self._make_one(*(path2 + path1)))
+        self.assertEqual(field_path1_string, field_path1)
+        self.assertNotEqual(field_path1, field_path2)
+        with self.assertRaises(TypeError):
+            field_path1 + 305
+
+    def test_eq_or_parent_same(self):
+        field_path = self._make_one('a', 'b')
+        other = self._make_one('a', 'b')
+        self.assertTrue(field_path.eq_or_parent(other))
+
+    def test_eq_or_parent_prefix(self):
+        field_path = self._make_one('a', 'b')
+        other = self._make_one('a', 'b', 'c')
+        self.assertTrue(field_path.eq_or_parent(other))
+        self.assertTrue(other.eq_or_parent(field_path))
+
+    def test_eq_or_parent_no_prefix(self):
+        field_path = self._make_one('a', 'b')
+        other = self._make_one('d', 'e', 'f')
+        self.assertFalse(field_path.eq_or_parent(other))
+        self.assertFalse(other.eq_or_parent(field_path))
 
     def test_to_api_repr_a(self):
         parts = 'a'
@@ -191,96 +301,6 @@ class TestFieldPath(unittest.TestCase):
         field_path = self._make_one(*parts)
         self.assertEqual(field_path.to_api_repr(),
                          r'a.`\``.`\\`._3.`03`.a03.`\\\\`.a0332432.`一`')
-
-    def test_from_string(self):
-        field_path = self._get_target_class().from_string('a.b.c')
-        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
-        self.assertEqual(field_path.to_api_repr(), 'a.b.c')
-
-    def test_from_string_non_simple(self):
-        field_path = self._get_target_class().from_string('a.一')
-        self.assertEqual(field_path.parts, ('a', '一'))
-        self.assertEqual(field_path.to_api_repr(), 'a.`一`')
-
-    def test_list_splat(self):
-        parts = ['a', 'b', 'c']
-        field_path = self._make_one(*parts)
-        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
-
-    def test_tuple_splat(self):
-        parts = ('a', 'b', 'c')
-        field_path = self._make_one(*parts)
-        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
-
-    def test_invalid_chars_from_string_fails(self):
-        parts = '~*/[].'
-        for part in parts:
-            with self.assertRaises(ValueError):
-                self._get_target_class().from_string(part)
-
-    def test_empty_string_fails(self):
-        parts = ''
-        with self.assertRaises(ValueError):
-            self._get_target_class().from_string(parts)
-
-    def test_empty_field_name_fails(self):
-        parts = 'a..b'
-        with self.assertRaises(ValueError):
-            self._get_target_class().from_string(parts)
-
-    def test_list_fails(self):
-        parts = ['a', 'b', 'c']
-        with self.assertRaises(ValueError):
-            self._make_one(parts)
-
-    def test_tuple_fails(self):
-        parts = ('a', 'b', 'c')
-        with self.assertRaises(ValueError):
-            self._make_one(parts)
-
-    def test_equality(self):
-        field_path = self._make_one('a', 'b')
-        string_path = self._get_target_class().from_string('a.b')
-        self.assertEqual(field_path, string_path)
-
-    def test_non_equal_types(self):
-        import mock
-        mock = mock.Mock()
-        mock.parts = 'a', 'b'
-        field_path = self._make_one('a', 'b')
-        self.assertNotEqual(field_path, mock)
-
-    def test_key(self):
-        field_path = self._make_one('a321', 'b456')
-        field_path_same = self._get_target_class().from_string('a321.b456')
-        field_path_different = self._make_one('a321', 'b457')
-        keys = {
-            field_path: '',
-            field_path_same: '',
-            field_path_different: ''
-        }
-        for key in keys:
-            if key == field_path_different:
-                self.assertNotEqual(key, field_path)
-            else:
-                self.assertEqual(key, field_path)
-
-    def test___add__(self):
-        path1 = 'a123', 'b456'
-        path2 = 'c789', 'd012'
-        path3 = 'c789.d012'
-        field_path1 = self._make_one(*path1)
-        field_path1_string = self._make_one(*path1)
-        field_path2 = self._make_one(*path2)
-        field_path1 += field_path2
-        field_path1_string += path3
-        field_path2 = field_path2 + self._make_one(*path1)
-        self.assertEqual(field_path1, self._make_one(*(path1 + path2)))
-        self.assertEqual(field_path2, self._make_one(*(path2 + path1)))
-        self.assertEqual(field_path1_string, field_path1)
-        self.assertNotEqual(field_path1, field_path2)
-        with self.assertRaises(TypeError):
-            field_path1 + 305
 
 
 class TestFieldPathHelper(unittest.TestCase):

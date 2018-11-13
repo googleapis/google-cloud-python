@@ -127,13 +127,6 @@ class FieldPath(object):
                 raise ValueError(error)
         self.parts = tuple(parts)
 
-    def __repr__(self):
-        paths = ""
-        for part in self.parts:
-            paths += "'" + part + "',"
-        paths = paths[:-1]
-        return 'FieldPath({})'.format(paths)
-
     @staticmethod
     def from_string(string):
         """ Creates a FieldPath from a unicode string representation.
@@ -160,22 +153,12 @@ class FieldPath(object):
         string = string.split('.')
         return FieldPath(*string)
 
-    def to_api_repr(self):
-        """ Returns quoted string representation of the FieldPath
-
-        Returns: :rtype: str
-            Quoted string representation of the path stored
-            within this FieldPath conforming to the Firestore API
-            specification
-        """
-        return get_field_path(self.parts)
-
-    def eq_or_parent(self, other):
-        return self.parts[:len(other.parts)] == other.parts[:len(self.parts)]
-
-    def is_parent(self, other):
-        if self.eq_or_parent(other) and not self.parts == other.parts:
-            return True
+    def __repr__(self):
+        paths = ""
+        for part in self.parts:
+            paths += "'" + part + "',"
+        paths = paths[:-1]
+        return 'FieldPath({})'.format(paths)
 
     def __hash__(self):
         return hash(self.to_api_repr())
@@ -205,6 +188,19 @@ class FieldPath(object):
             return FieldPath(*parts)
         else:
             return NotImplemented
+
+    def eq_or_parent(self, other):
+        return self.parts[:len(other.parts)] == other.parts[:len(self.parts)]
+
+    def to_api_repr(self):
+        """ Returns quoted string representation of the FieldPath
+
+        Returns: :rtype: str
+            Quoted string representation of the path stored
+            within this FieldPath conforming to the Firestore API
+            specification
+        """
+        return get_field_path(self.parts)
 
 
 class FieldPathHelper(object):
