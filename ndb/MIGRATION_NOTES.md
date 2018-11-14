@@ -109,6 +109,10 @@ The primary differences come from:
 - The `Parameter()` constructor (and subclasses) originally accepted `int`,
   `unicode` and `str` (the Python 2 versions) for `key` but we only accept
   `int` and `str`.
+- When a `Key` is used to create a query "node", e.g. via
+  `MyModel.my_value == some_key`, the underlying behavior has changed.
+  Previously a `FilterNode` would be created with the actual value set to
+  `some_key.to_old_key()`. Now, we set it to `some_key._key`.
 
 ## Comments
 

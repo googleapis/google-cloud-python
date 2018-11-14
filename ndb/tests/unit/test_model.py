@@ -1294,12 +1294,130 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
 
+class Test__validate_key:
+    @staticmethod
+    def test_valid_value():
+        value = model.Key("This", 1)
+        result = model._validate_key(value)
+        assert result is value
+
+    @staticmethod
+    def test_invalid_value():
+        with pytest.raises(exceptions.BadValueError):
+            model._validate_key(None)
+
+    @staticmethod
+    def test_unchecked_model_type():
+        value = model.Key("This", 1)
+        entity = unittest.mock.Mock(spec=model.Model)
+
+        result = model._validate_key(value, entity=entity)
+        assert result is value
+        entity._get_kind.assert_not_called()
+
+    @staticmethod
+    def test_unchecked_expando_type():
+        value = model.Key("This", 1)
+        entity = unittest.mock.Mock(spec=model.Expando)
+
+        result = model._validate_key(value, entity=entity)
+        assert result is value
+        entity._get_kind.assert_not_called()
+
+    @staticmethod
+    def test_same_kind():
+        class Mine(model.Model):
+            pass
+
+        value = model.Key(Mine, "yours")
+        entity = unittest.mock.Mock(spec=Mine)
+        entity._get_kind.return_value = "Mine"
+
+        result = model._validate_key(value, entity=entity)
+        assert result is value
+        entity._get_kind.assert_called_once_with()
+
+    @staticmethod
+    def test_different_kind():
+        class Mine(model.Model):
+            pass
+
+        value = model.Key(Mine, "yours")
+        entity = unittest.mock.Mock(spec=Mine)
+        entity._get_kind.return_value = "NotMine"
+
+        with pytest.raises(model.KindError):
+            model._validate_key(value, entity=entity)
+
+        calls = [unittest.mock.call(), unittest.mock.call()]
+        entity._get_kind.assert_has_calls(calls)
+
+
 class TestModelKey:
     @staticmethod
     def test_constructor():
         prop = model.ModelKey()
         assert prop._name == "__key__"
         assert prop.__dict__ == {"_name": "__key__"}
+
+    @staticmethod
+    def test_compare_valid():
+        prop = model.ModelKey()
+        value = key.Key("say", "quay")
+        filter_node = prop._comparison(">=", value)
+        assert filter_node == query.FilterNode("__key__", ">=", value)
+
+    @staticmethod
+    def test_compare_invalid():
+        prop = model.ModelKey()
+        with pytest.raises(exceptions.BadValueError):
+            prop == None
+
+    @staticmethod
+    def test__validate():
+        prop = model.ModelKey()
+        value = key.Key("Up", 909)
+        assert prop._validate(value) is value
+
+    @staticmethod
+    def test__validate_wrong_type():
+        prop = model.ModelKey()
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__set_value():
+        entity = unittest.mock.Mock(spec=model.Model)
+        value = key.Key("Map", 8898)
+
+        entity._validate_key.return_value = value
+        model.ModelKey._set_value(entity, value)
+
+        assert entity._entity_key is value
+        entity._validate_key.assert_called_once_with(value)
+
+    @staticmethod
+    def test__set_value_none():
+        entity = unittest.mock.Mock(spec=("_entity_key",))
+
+        assert entity._entity_key is not None
+        model.ModelKey._set_value(entity, None)
+        assert entity._entity_key is None
+
+    @staticmethod
+    def test__get_value():
+        entity = unittest.mock.Mock(spec=("_entity_key",))
+
+        result = model.ModelKey._get_value(entity)
+        assert result is entity._entity_key
+
+    @staticmethod
+    def test__delete_value():
+        entity = unittest.mock.Mock(spec=("_entity_key",))
+
+        assert entity._entity_key is not None
+        model.ModelKey._delete_value(entity)
+        assert entity._entity_key is None
 
 
 class TestBooleanProperty:
@@ -2189,6 +2307,11 @@ class TestModel:
             pass
 
         assert Simple._get_kind() == "Simple"
+
+    @staticmethod
+    def test__validate_key():
+        value = unittest.mock.sentinel.value
+        assert model.Model._validate_key(value) is value
 
 
 class TestExpando:

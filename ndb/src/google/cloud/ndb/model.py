@@ -698,6 +698,7 @@ class Property(ModelAttribute):
         Args:
             op (str): The comparison operator. One of ``=``, ``!=``, ``<``,
                 ``<=``, ``>``, ``>=`` or ``in``.
+            value (Any): The value to compare against.
 
         Returns:
             FilterNode: A FilterNode instance representing the requested
@@ -1542,12 +1543,45 @@ class Property(ModelAttribute):
         return self._get_value(entity)
 
 
+def _validate_key(value, entity=None):
+    """Validate a key.
+
+    Args:
+        value (.Key): The key to be validated.
+        entity (Optional[Model]): The entity that the key is being validated
+            for.
+
+    Returns:
+        .Key: The passed in ``value``.
+
+    Raises:
+        .BadValueError: If ``value`` is not a :class:`.Key`.
+        KindError: If ``entity`` is specified, by the kind of the entity
+            doesn't match the kind of ``value``.
+    """
+    if not isinstance(value, Key):
+        raise exceptions.BadValueError("Expected Key, got {!r}".format(value))
+
+    if entity and entity.__class__ not in (Model, Expando):
+        if value.kind() != entity._get_kind():
+            raise KindError(
+                "Expected Key kind to be {}; received "
+                "{}".format(entity._get_kind(), value.kind())
+            )
+
+    return value
+
+
 class ModelKey(Property):
     """Special property to store a special "key" for a :class:`Model`.
 
     This is intended to be used as a psuedo-:class:`Property` on each
     :class:`Model` subclass. It is **not** intended for other usage in
     application code.
+
+    It allows key-only queries to be done for a given kind.
+
+    .. automethod:: _validate
     """
 
     __slots__ = ()
@@ -1555,6 +1589,77 @@ class ModelKey(Property):
     def __init__(self):
         super(ModelKey, self).__init__()
         self._name = "__key__"
+
+    def _comparison(self, op, value):
+        """Internal helper for comparison operators.
+
+        This uses the base implementation in :class:`Property`, but doesn't
+        allow comparison to :data:`None`.
+
+        Args:
+            op (str): The comparison operator. One of ``=``, ``!=``, ``<``,
+                ``<=``, ``>``, ``>=`` or ``in``.
+            value (Any): The value to compare against.
+
+        Returns:
+            FilterNode: A FilterNode instance representing the requested
+            comparison.
+
+        Raises:
+            .BadValueError: If ``value`` is :data:`None`.
+        """
+        if value is not None:
+            return super(ModelKey, self)._comparison(op, value)
+
+        raise exceptions.BadValueError(
+            "__key__ filter query can't be compared to None"
+        )
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (.Key): The value to check.
+
+        Returns:
+            .Key: The passed-in ``value``.
+        """
+        return _validate_key(value)
+
+    @staticmethod
+    def _set_value(entity, value):
+        """Set the entity key on an entity.
+
+        Args:
+            entity (Model): An entity to set the entity key on.
+            value (.Key): The key to be set on the entity.
+        """
+        if value is not None:
+            value = _validate_key(value, entity=entity)
+            value = entity._validate_key(value)
+
+        entity._entity_key = value
+
+    @staticmethod
+    def _get_value(entity):
+        """Get the entity key from an entity.
+
+        Args:
+            entity (Model): An entity to get the entity key from.
+
+        Returns:
+            .Key: The entity key stored on ``entity``.
+        """
+        return entity._entity_key
+
+    @staticmethod
+    def _delete_value(entity):
+        """Remove / disassociate the entity key from an entity.
+
+        Args:
+            entity (Model): An entity to remove the entity key from.
+        """
+        entity._entity_key = None
 
 
 class BooleanProperty(Property):
@@ -2863,6 +2968,18 @@ class Model:
         name of the class.
         """
         return cls.__name__
+
+    @staticmethod
+    def _validate_key(key):
+        """Validation for ``_key`` attribute (designed to be overridden).
+
+        Args:
+            key (.Key): Proposed key to use for this entity.
+
+        Returns:
+            .Key: The validated ``key``.
+        """
+        return key
 
 
 class Expando(Model):
