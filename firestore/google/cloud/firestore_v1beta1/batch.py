@@ -78,8 +78,13 @@ class WriteBatch(object):
                 If True, apply merging instead of overwriting the state
                 of the document.
         """
-        write_pbs = _helpers.pbs_for_set(
-            reference._document_path, document_data, merge=merge)
+        if merge is not False:
+            write_pbs = _helpers.pbs_for_set_with_merge(
+                reference._document_path, document_data, merge)
+        else:
+            write_pbs = _helpers.pbs_for_set_no_merge(
+                reference._document_path, document_data)
+
         self._add_write_pbs(write_pbs)
 
     def update(self, reference, field_updates, option=None):

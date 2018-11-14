@@ -1072,22 +1072,18 @@ def pbs_for_create(document_path, document_data):
     return write_pbs
 
 
-def pbs_for_set(document_path, document_data, merge=False):
+def pbs_for_set_no_merge(document_path, document_data):
     """Make ``Write`` protobufs for ``set()`` methods.
 
     Args:
         document_path (str): A fully-qualified document path.
         document_data (dict): Property names and values to use for
             replacing a document.
-        merge (bool): Whether to merge the fields or replace them
 
     Returns:
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    if merge is not False:
-        return _pbs_for_set_with_merge(document_path, document_data, merge)
-
     transform_paths, actual_data, field_paths = process_server_timestamp(
         document_data, False)
 
@@ -1114,7 +1110,20 @@ def pbs_for_set(document_path, document_data, merge=False):
     return write_pbs
 
 
-def _pbs_for_set_with_merge(document_path, document_data, merge):
+def pbs_for_set_with_merge(document_path, document_data, merge):
+    """Make ``Write`` protobufs for ``set()`` methods.
+
+    Args:
+        document_path (str): A fully-qualified document path.
+        document_data (dict): Property names and values to use for
+            replacing a document.
+        merge (Optional[bool] or Optional[List<apispec>]):
+            If True, merge all fields; else, merge only the named fields.
+
+    Returns:
+        List[google.cloud.firestore_v1beta1.types.Write]: One
+        or two ``Write`` protobuf instances for ``set()``.
+    """
     data_merge = []
     transform_merge = []
 
