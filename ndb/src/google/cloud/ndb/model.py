@@ -1562,7 +1562,7 @@ def _validate_key(value, entity=None):
     if not isinstance(value, Key):
         raise exceptions.BadValueError("Expected Key, got {!r}".format(value))
 
-    if entity and entity.__class__ not in (Model, Expando):
+    if entity and type(entity) not in (Model, Expando):
         if value.kind() != entity._get_kind():
             raise KindError(
                 "Expected Key kind to be {}; received "
