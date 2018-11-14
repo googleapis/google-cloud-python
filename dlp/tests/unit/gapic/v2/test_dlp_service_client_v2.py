@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import dlp_v2
@@ -69,7 +70,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -85,7 +89,10 @@ class TestDlpServiceClient(object):
     def test_inspect_content_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -105,7 +112,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -121,7 +131,10 @@ class TestDlpServiceClient(object):
     def test_redact_image_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -137,7 +150,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -153,7 +169,10 @@ class TestDlpServiceClient(object):
     def test_deidentify_content_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -169,7 +188,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -185,7 +207,10 @@ class TestDlpServiceClient(object):
     def test_reidentify_content_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -200,7 +225,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         response = client.list_info_types()
         assert expected_response == response
@@ -213,7 +241,10 @@ class TestDlpServiceClient(object):
     def test_list_info_types_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         with pytest.raises(CustomException):
             client.list_info_types()
@@ -232,7 +263,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -248,7 +282,10 @@ class TestDlpServiceClient(object):
     def test_create_inspect_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.organization_path('[ORGANIZATION]')
@@ -270,7 +307,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.organization_inspect_template_path(
@@ -287,7 +327,10 @@ class TestDlpServiceClient(object):
     def test_update_inspect_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.organization_inspect_template_path(
@@ -310,7 +353,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         response = client.get_inspect_template()
         assert expected_response == response
@@ -323,7 +369,10 @@ class TestDlpServiceClient(object):
     def test_get_inspect_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         with pytest.raises(CustomException):
             client.get_inspect_template()
@@ -342,7 +391,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -360,7 +412,10 @@ class TestDlpServiceClient(object):
 
     def test_list_inspect_templates_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.organization_path('[ORGANIZATION]')
@@ -371,7 +426,10 @@ class TestDlpServiceClient(object):
 
     def test_delete_inspect_template(self):
         channel = ChannelStub()
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.organization_inspect_template_path(
@@ -387,7 +445,10 @@ class TestDlpServiceClient(object):
     def test_delete_inspect_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.organization_inspect_template_path(
@@ -410,7 +471,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -427,7 +491,10 @@ class TestDlpServiceClient(object):
     def test_create_deidentify_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.organization_path('[ORGANIZATION]')
@@ -449,7 +516,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.organization_deidentify_template_path(
@@ -466,7 +536,10 @@ class TestDlpServiceClient(object):
     def test_update_deidentify_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.organization_deidentify_template_path(
@@ -489,7 +562,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.organization_deidentify_template_path(
@@ -506,7 +582,10 @@ class TestDlpServiceClient(object):
     def test_get_deidentify_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.organization_deidentify_template_path(
@@ -529,7 +608,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -548,7 +630,10 @@ class TestDlpServiceClient(object):
 
     def test_list_deidentify_templates_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.organization_path('[ORGANIZATION]')
@@ -559,7 +644,10 @@ class TestDlpServiceClient(object):
 
     def test_delete_deidentify_template(self):
         channel = ChannelStub()
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.organization_deidentify_template_path(
@@ -575,7 +663,10 @@ class TestDlpServiceClient(object):
     def test_delete_deidentify_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.organization_deidentify_template_path(
@@ -596,7 +687,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -612,7 +706,10 @@ class TestDlpServiceClient(object):
     def test_create_dlp_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -630,7 +727,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -648,7 +748,10 @@ class TestDlpServiceClient(object):
 
     def test_list_dlp_jobs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -669,7 +772,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.dlp_job_path('[PROJECT]', '[DLP_JOB]')
@@ -685,7 +791,10 @@ class TestDlpServiceClient(object):
     def test_get_dlp_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.dlp_job_path('[PROJECT]', '[DLP_JOB]')
@@ -695,7 +804,10 @@ class TestDlpServiceClient(object):
 
     def test_delete_dlp_job(self):
         channel = ChannelStub()
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.dlp_job_path('[PROJECT]', '[DLP_JOB]')
@@ -710,7 +822,10 @@ class TestDlpServiceClient(object):
     def test_delete_dlp_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.dlp_job_path('[PROJECT]', '[DLP_JOB]')
@@ -720,7 +835,10 @@ class TestDlpServiceClient(object):
 
     def test_cancel_dlp_job(self):
         channel = ChannelStub()
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.dlp_job_path('[PROJECT]', '[DLP_JOB]')
@@ -735,7 +853,10 @@ class TestDlpServiceClient(object):
     def test_cancel_dlp_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.dlp_job_path('[PROJECT]', '[DLP_JOB]')
@@ -757,7 +878,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -775,7 +899,10 @@ class TestDlpServiceClient(object):
 
     def test_list_job_triggers_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -798,7 +925,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.project_job_trigger_path('[PROJECT]', '[JOB_TRIGGER]')
@@ -814,7 +944,10 @@ class TestDlpServiceClient(object):
     def test_get_job_trigger_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.project_job_trigger_path('[PROJECT]', '[JOB_TRIGGER]')
@@ -824,7 +957,10 @@ class TestDlpServiceClient(object):
 
     def test_delete_job_trigger(self):
         channel = ChannelStub()
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = 'name3373707'
@@ -839,7 +975,10 @@ class TestDlpServiceClient(object):
     def test_delete_job_trigger_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = 'name3373707'
@@ -861,7 +1000,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.project_job_trigger_path('[PROJECT]', '[JOB_TRIGGER]')
@@ -877,7 +1019,10 @@ class TestDlpServiceClient(object):
     def test_update_job_trigger_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.project_job_trigger_path('[PROJECT]', '[JOB_TRIGGER]')
@@ -899,7 +1044,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -915,7 +1063,10 @@ class TestDlpServiceClient(object):
     def test_create_job_trigger_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -931,7 +1082,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -947,7 +1101,10 @@ class TestDlpServiceClient(object):
     def test_create_stored_info_type_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.organization_path('[ORGANIZATION]')
@@ -963,7 +1120,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.organization_stored_info_type_path(
@@ -980,7 +1140,10 @@ class TestDlpServiceClient(object):
     def test_update_stored_info_type_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.organization_stored_info_type_path(
@@ -997,7 +1160,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.organization_stored_info_type_path(
@@ -1014,7 +1180,10 @@ class TestDlpServiceClient(object):
     def test_get_stored_info_type_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.organization_stored_info_type_path(
@@ -1037,7 +1206,10 @@ class TestDlpServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -1055,7 +1227,10 @@ class TestDlpServiceClient(object):
 
     def test_list_stored_info_types_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         parent = client.organization_path('[ORGANIZATION]')
@@ -1066,7 +1241,10 @@ class TestDlpServiceClient(object):
 
     def test_delete_stored_info_type(self):
         channel = ChannelStub()
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup Request
         name = client.organization_stored_info_type_path(
@@ -1082,7 +1260,10 @@ class TestDlpServiceClient(object):
     def test_delete_stored_info_type_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2.DlpServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
 
         # Setup request
         name = client.organization_stored_info_type_path(
