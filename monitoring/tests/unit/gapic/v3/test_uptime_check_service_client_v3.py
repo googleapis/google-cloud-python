@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import monitoring_v3
@@ -79,7 +80,10 @@ class TestUptimeCheckServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -98,7 +102,10 @@ class TestUptimeCheckServiceClient(object):
 
     def test_list_uptime_check_configs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -121,7 +128,10 @@ class TestUptimeCheckServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         # Setup Request
         name = client.uptime_check_config_path('[PROJECT]',
@@ -139,7 +149,10 @@ class TestUptimeCheckServiceClient(object):
     def test_get_uptime_check_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         # Setup request
         name = client.uptime_check_config_path('[PROJECT]',
@@ -162,7 +175,10 @@ class TestUptimeCheckServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -181,7 +197,10 @@ class TestUptimeCheckServiceClient(object):
     def test_create_uptime_check_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -204,7 +223,10 @@ class TestUptimeCheckServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         # Setup Request
         uptime_check_config = {}
@@ -221,7 +243,10 @@ class TestUptimeCheckServiceClient(object):
     def test_update_uptime_check_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         # Setup request
         uptime_check_config = {}
@@ -231,7 +256,10 @@ class TestUptimeCheckServiceClient(object):
 
     def test_delete_uptime_check_config(self):
         channel = ChannelStub()
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         # Setup Request
         name = client.uptime_check_config_path('[PROJECT]',
@@ -248,7 +276,10 @@ class TestUptimeCheckServiceClient(object):
     def test_delete_uptime_check_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         # Setup request
         name = client.uptime_check_config_path('[PROJECT]',
@@ -271,7 +302,10 @@ class TestUptimeCheckServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         paged_list_response = client.list_uptime_check_ips()
         resources = list(paged_list_response)
@@ -286,7 +320,10 @@ class TestUptimeCheckServiceClient(object):
 
     def test_list_uptime_check_ips_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.UptimeCheckServiceClient()
 
         paged_list_response = client.list_uptime_check_ips()
         with pytest.raises(CustomException):

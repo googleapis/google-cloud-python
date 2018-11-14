@@ -18,19 +18,6 @@
 import enum
 
 
-class NullValue(enum.IntEnum):
-    """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
-
-    The JSON representation for ``NullValue`` is JSON ``null``.
-
-    Attributes:
-      NULL_VALUE (int): Null value.
-    """
-    NULL_VALUE = 0
-
-
 class ComparisonType(enum.IntEnum):
     """
     Specifies an ordering relationship on two arguments, here called left and
@@ -79,48 +66,6 @@ class ServiceTier(enum.IntEnum):
     SERVICE_TIER_PREMIUM = 2
 
 
-class LaunchStage(enum.IntEnum):
-    """
-    The launch stage as defined by `Google Cloud Platform Launch
-    Stages <http://cloud.google.com/terms/launch-stages>`__.
-
-    Attributes:
-      LAUNCH_STAGE_UNSPECIFIED (int): Do not use this default value.
-      EARLY_ACCESS (int): Early Access features are limited to a closed group of testers. To use
-      these features, you must sign up in advance and sign a Trusted Tester
-      agreement (which includes confidentiality provisions). These features may
-      be unstable, changed in backward-incompatible ways, and are not
-      guaranteed to be released.
-      ALPHA (int): Alpha is a limited availability test for releases before they are cleared
-      for widespread use. By Alpha, all significant design issues are resolved
-      and we are in the process of verifying functionality. Alpha customers
-      need to apply for access, agree to applicable terms, and have their
-      projects whitelisted. Alpha releases don’t have to be feature complete,
-      no SLAs are provided, and there are no technical support obligations, but
-      they will be far enough along that customers can actually use them in
-      test environments or for limited-use tests -- just like they would in
-      normal production cases.
-      BETA (int): Beta is the point at which we are ready to open a release for any
-      customer to use. There are no SLA or technical support obligations in a
-      Beta release. Products will be complete from a feature perspective, but
-      may have some open outstanding issues. Beta releases are suitable for
-      limited production use cases.
-      GA (int): GA features are open to all developers and are considered stable and
-      fully qualified for production use.
-      DEPRECATED (int): Deprecated features are scheduled to be shut down and removed. For more
-      information, see the “Deprecation Policy” section of our `Terms of
-      Service <https://cloud.google.com/terms/>`__ and the `Google Cloud
-      Platform Subject to the Deprecation
-      Policy <https://cloud.google.com/terms/deprecation>`__ documentation.
-    """
-    LAUNCH_STAGE_UNSPECIFIED = 0
-    EARLY_ACCESS = 1
-    ALPHA = 2
-    BETA = 3
-    GA = 4
-    DEPRECATED = 5
-
-
 class UptimeCheckRegion(enum.IntEnum):
     """
     The regions from which an uptime check can be run.
@@ -161,6 +106,19 @@ class GroupResourceType(enum.IntEnum):
     AWS_ELB_LOAD_BALANCER = 2
 
 
+class NullValue(enum.IntEnum):
+    """
+    ``NullValue`` is a singleton enumeration to represent the null value for
+    the ``Value`` type union.
+
+    The JSON representation for ``NullValue`` is JSON ``null``.
+
+    Attributes:
+      NULL_VALUE (int): Null value.
+    """
+    NULL_VALUE = 0
+
+
 class LabelDescriptor(object):
     class ValueType(enum.IntEnum):
         """
@@ -174,6 +132,73 @@ class LabelDescriptor(object):
         STRING = 0
         BOOL = 1
         INT64 = 2
+
+
+class MetricDescriptor(object):
+    class MetricKind(enum.IntEnum):
+        """
+        The kind of measurement. It describes how the data is reported.
+
+        Attributes:
+          METRIC_KIND_UNSPECIFIED (int): Do not use this default value.
+          GAUGE (int): An instantaneous measurement of a value.
+          DELTA (int): The change in a value during a time interval.
+          CUMULATIVE (int): A value accumulated over a time interval.  Cumulative
+          measurements in a time series should have the same start time
+          and increasing end times, until an event resets the cumulative
+          value to zero and sets a new start time for the following
+          points.
+        """
+        METRIC_KIND_UNSPECIFIED = 0
+        GAUGE = 1
+        DELTA = 2
+        CUMULATIVE = 3
+
+    class ValueType(enum.IntEnum):
+        """
+        The value type of a metric.
+
+        Attributes:
+          VALUE_TYPE_UNSPECIFIED (int): Do not use this default value.
+          BOOL (int): The value is a boolean. This value type can be used only if the metric
+          kind is ``GAUGE``.
+          INT64 (int): The value is a signed 64-bit integer.
+          DOUBLE (int): The value is a double precision floating point number.
+          STRING (int): The value is a text string. This value type can be used only if the
+          metric kind is ``GAUGE``.
+          DISTRIBUTION (int): The value is a ``Distribution``.
+          MONEY (int): The value is money.
+        """
+        VALUE_TYPE_UNSPECIFIED = 0
+        BOOL = 1
+        INT64 = 2
+        DOUBLE = 3
+        STRING = 4
+        DISTRIBUTION = 5
+        MONEY = 6
+
+
+class AlertPolicy(object):
+    class ConditionCombinerType(enum.IntEnum):
+        """
+        Operators for combining conditions.
+
+        Attributes:
+          COMBINE_UNSPECIFIED (int): An unspecified combiner.
+          AND (int): Combine conditions using the logical ``AND`` operator. An incident is
+          created only if all conditions are met simultaneously. This combiner is
+          satisfied if all conditions are met, even if they are met on completely
+          different resources.
+          OR (int): Combine conditions using the logical ``OR`` operator. An incident is
+          created if any of the listed conditions is met.
+          AND_WITH_MATCHING_RESOURCE (int): Combine conditions using logical ``AND`` operator, but unlike the
+          regular ``AND`` option, an incident is created only if all conditions
+          are met simultaneously on at least one resource.
+        """
+        COMBINE_UNSPECIFIED = 0
+        AND = 1
+        OR = 2
+        AND_WITH_MATCHING_RESOURCE = 3
 
 
 class Aggregation(object):
@@ -379,71 +404,19 @@ class Aggregation(object):
         REDUCE_PERCENTILE_05 = 12
 
 
-class MetricDescriptor(object):
-    class MetricKind(enum.IntEnum):
+class ListTimeSeriesRequest(object):
+    class TimeSeriesView(enum.IntEnum):
         """
-        The kind of measurement. It describes how the data is reported.
+        Controls which fields are returned by ``ListTimeSeries``.
 
         Attributes:
-          METRIC_KIND_UNSPECIFIED (int): Do not use this default value.
-          GAUGE (int): An instantaneous measurement of a value.
-          DELTA (int): The change in a value during a time interval.
-          CUMULATIVE (int): A value accumulated over a time interval.  Cumulative
-          measurements in a time series should have the same start time
-          and increasing end times, until an event resets the cumulative
-          value to zero and sets a new start time for the following
-          points.
+          FULL (int): Returns the identity of the metric(s), the time series,
+          and the time series data.
+          HEADERS (int): Returns the identity of the metric and the time series resource,
+          but not the time series data.
         """
-        METRIC_KIND_UNSPECIFIED = 0
-        GAUGE = 1
-        DELTA = 2
-        CUMULATIVE = 3
-
-    class ValueType(enum.IntEnum):
-        """
-        The value type of a metric.
-
-        Attributes:
-          VALUE_TYPE_UNSPECIFIED (int): Do not use this default value.
-          BOOL (int): The value is a boolean. This value type can be used only if the metric
-          kind is ``GAUGE``.
-          INT64 (int): The value is a signed 64-bit integer.
-          DOUBLE (int): The value is a double precision floating point number.
-          STRING (int): The value is a text string. This value type can be used only if the
-          metric kind is ``GAUGE``.
-          DISTRIBUTION (int): The value is a ``Distribution``.
-          MONEY (int): The value is money.
-        """
-        VALUE_TYPE_UNSPECIFIED = 0
-        BOOL = 1
-        INT64 = 2
-        DOUBLE = 3
-        STRING = 4
-        DISTRIBUTION = 5
-        MONEY = 6
-
-
-class AlertPolicy(object):
-    class ConditionCombinerType(enum.IntEnum):
-        """
-        Operators for combining conditions.
-
-        Attributes:
-          COMBINE_UNSPECIFIED (int): An unspecified combiner.
-          AND (int): Combine conditions using the logical ``AND`` operator. An incident is
-          created only if all conditions are met simultaneously. This combiner is
-          satisfied if all conditions are met, even if they are met on completely
-          different resources.
-          OR (int): Combine conditions using the logical ``OR`` operator. An incident is
-          created if any of the listed conditions is met.
-          AND_WITH_MATCHING_RESOURCE (int): Combine conditions using logical ``AND`` operator, but unlike the
-          regular ``AND`` option, an incident is created only if all conditions
-          are met simultaneously on at least one resource.
-        """
-        COMBINE_UNSPECIFIED = 0
-        AND = 1
-        OR = 2
-        AND_WITH_MATCHING_RESOURCE = 3
+        FULL = 0
+        HEADERS = 1
 
 
 class NotificationChannel(object):
@@ -468,18 +441,3 @@ class NotificationChannel(object):
         VERIFICATION_STATUS_UNSPECIFIED = 0
         UNVERIFIED = 1
         VERIFIED = 2
-
-
-class ListTimeSeriesRequest(object):
-    class TimeSeriesView(enum.IntEnum):
-        """
-        Controls which fields are returned by ``ListTimeSeries``.
-
-        Attributes:
-          FULL (int): Returns the identity of the metric(s), the time series,
-          and the time series data.
-          HEADERS (int): Returns the identity of the metric and the time series resource,
-          but not the time series data.
-        """
-        FULL = 0
-        HEADERS = 1
