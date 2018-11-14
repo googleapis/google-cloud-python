@@ -2025,7 +2025,7 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
             ),
         )
 
-    def _helper(self, merge, do_transform=False, empty_val=False):
+    def _helper(self, merge, do_transform=False, empty_value=False):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1.proto import common_pb2
 
@@ -2038,25 +2038,30 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         if do_transform:
             document_data['butter'] = SERVER_TIMESTAMP
 
-        if empty_val:
+        if empty_value:
             document_data['mustard'] = {}
 
         write_pbs = self._call_fut(document_path, document_data, merge)
 
-        if empty_val:
+        if empty_value:
             update_pb = self._make_write_w_document(
                 document_path, cheese=1.5, crackers=True, mustard={},
             )
-        else:
+        elif merge is True:
             update_pb = self._make_write_w_document(
                 document_path, cheese=1.5, crackers=True,
             )
-        expected_pbs = [update_pb]
-
-        if merge is True:
             field_paths = sorted(['cheese', 'crackers'])
             update_pb.update_mask.CopyFrom(
                 common_pb2.DocumentMask(field_paths=field_paths))
+        else:
+            expected_data = {field: document_data[field] for field in merge}
+            update_pb = self._make_write_w_document(
+                document_path, **expected_data)
+            update_pb.update_mask.CopyFrom(
+                common_pb2.DocumentMask(field_paths=sorted(merge)))
+        expected_pbs = [update_pb]
+
 
         if do_transform:
             expected_pbs.append(
@@ -2064,8 +2069,11 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
 
         self.assertEqual(write_pbs, expected_pbs)
 
-    def test_with_merge_true(self):
+    def test_with_merge_true_wo_transform_wo_empty_value(self):
         self._helper(merge=True)
+
+    def test_with_merge_field_wo_transform_wo_empty_value(self):
+        self._helper(merge=['cheese'])
 
 
 class Test_pbs_for_update(unittest.TestCase):
