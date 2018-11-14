@@ -1939,7 +1939,7 @@ class Test_all_merge_paths(unittest.TestCase):
         self.assertEqual(transform_merge, [])
         self.assertEqual(merge, [])
 
-    def test__w_simple(self):
+    def test_w_simple(self):
         document_data = {'a': {'b': 'c'}}
 
         (transform_paths, actual_data, data_merge, transform_merge, merge,
@@ -1952,7 +1952,7 @@ class Test_all_merge_paths(unittest.TestCase):
         self.assertEqual(transform_merge, [])
         self.assertEqual(merge, [path])
 
-    def test__w_server_timestamp(self):
+    def test_w_server_timestamp(self):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
 
         document_data = {'a': {'b': SERVER_TIMESTAMP}}
@@ -1967,7 +1967,7 @@ class Test_all_merge_paths(unittest.TestCase):
         self.assertEqual(transform_merge, [path])
         self.assertEqual(merge, [path])
 
-    def test__w_simple_and_server_timestamp(self):
+    def test_w_simple_and_server_timestamp(self):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
 
         document_data = {'a': {'b': 'd', 'c': SERVER_TIMESTAMP}}
