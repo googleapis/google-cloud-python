@@ -106,7 +106,7 @@ class CloudSchedulerClient(object):
                  transport=None,
                  channel=None,
                  credentials=None,
-                 client_config=cloud_scheduler_client_config.config,
+                 client_config=None,
                  client_info=None):
         """Constructor.
 
@@ -139,13 +139,20 @@ class CloudSchedulerClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
-            warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+        if client_config is not None:
+            warnings.warn(
+                'The `client_config` argument is deprecated.',
+                PendingDeprecationWarning,
+                stacklevel=2)
+        else:
+            client_config = cloud_scheduler_client_config.config
+
         if channel:
             warnings.warn(
                 'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                '`transport` instead.',
+                PendingDeprecationWarning,
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
