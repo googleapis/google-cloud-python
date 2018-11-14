@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -77,7 +78,10 @@ class TestAssetServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = asset_v1beta1.AssetServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = asset_v1beta1.AssetServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -102,7 +106,10 @@ class TestAssetServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = asset_v1beta1.AssetServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = asset_v1beta1.AssetServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -120,7 +127,10 @@ class TestAssetServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = asset_v1beta1.AssetServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = asset_v1beta1.AssetServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -142,7 +152,10 @@ class TestAssetServiceClient(object):
     def test_batch_get_assets_history_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = asset_v1beta1.AssetServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = asset_v1beta1.AssetServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
