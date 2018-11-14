@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import bigquery_datatransfer_v1
@@ -98,8 +99,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         name = client.project_data_source_path('[PROJECT]', '[DATA_SOURCE]')
@@ -115,8 +118,10 @@ class TestDataTransferServiceClient(object):
     def test_get_data_source_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         name = client.project_data_source_path('[PROJECT]', '[DATA_SOURCE]')
@@ -138,8 +143,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -158,8 +165,10 @@ class TestDataTransferServiceClient(object):
 
     def test_list_data_sources_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -194,8 +203,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -213,8 +224,10 @@ class TestDataTransferServiceClient(object):
     def test_create_transfer_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -249,8 +262,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         transfer_config = {}
@@ -268,8 +283,10 @@ class TestDataTransferServiceClient(object):
     def test_update_transfer_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         transfer_config = {}
@@ -280,8 +297,10 @@ class TestDataTransferServiceClient(object):
 
     def test_delete_transfer_config(self):
         channel = ChannelStub()
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         name = client.project_transfer_config_path('[PROJECT]',
@@ -298,8 +317,10 @@ class TestDataTransferServiceClient(object):
     def test_delete_transfer_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         name = client.project_transfer_config_path('[PROJECT]',
@@ -334,8 +355,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         name = client.project_transfer_config_path('[PROJECT]',
@@ -352,8 +375,10 @@ class TestDataTransferServiceClient(object):
     def test_get_transfer_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         name = client.project_transfer_config_path('[PROJECT]',
@@ -376,8 +401,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -396,8 +423,10 @@ class TestDataTransferServiceClient(object):
 
     def test_list_transfer_configs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -414,8 +443,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         parent = client.project_transfer_config_path('[PROJECT]',
@@ -435,8 +466,10 @@ class TestDataTransferServiceClient(object):
     def test_schedule_transfer_runs_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         parent = client.project_transfer_config_path('[PROJECT]',
@@ -465,8 +498,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         name = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
@@ -483,8 +518,10 @@ class TestDataTransferServiceClient(object):
     def test_get_transfer_run_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         name = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
@@ -495,8 +532,10 @@ class TestDataTransferServiceClient(object):
 
     def test_delete_transfer_run(self):
         channel = ChannelStub()
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         name = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
@@ -512,8 +551,10 @@ class TestDataTransferServiceClient(object):
     def test_delete_transfer_run_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         name = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
@@ -536,8 +577,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         parent = client.project_transfer_config_path('[PROJECT]',
@@ -557,8 +600,10 @@ class TestDataTransferServiceClient(object):
 
     def test_list_transfer_runs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         parent = client.project_transfer_config_path('[PROJECT]',
@@ -582,8 +627,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         parent = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
@@ -603,8 +650,10 @@ class TestDataTransferServiceClient(object):
 
     def test_list_transfer_logs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         parent = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
@@ -623,8 +672,10 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup Request
         name = client.project_data_source_path('[PROJECT]', '[DATA_SOURCE]')
@@ -640,8 +691,10 @@ class TestDataTransferServiceClient(object):
     def test_check_valid_creds_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigquery_datatransfer_v1.DataTransferServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
         # Setup request
         name = client.project_data_source_path('[PROJECT]', '[DATA_SOURCE]')
