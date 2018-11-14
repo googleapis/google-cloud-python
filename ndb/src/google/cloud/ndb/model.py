@@ -1543,10 +1543,18 @@ class Property(ModelAttribute):
 
 
 class ModelKey(Property):
+    """Special property to store a special "key" for a :class:`Model`.
+
+    This is intended to be used as a psuedo-:class:`Property` on each
+    :class:`Model` subclass. It is **not** intended for other usage in
+    application code.
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    def __init__(self):
+        super(ModelKey, self).__init__()
+        self._name = "__key__"
 
 
 class BooleanProperty(Property):

@@ -1297,8 +1297,9 @@ class TestProperty:
 class TestModelKey:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.ModelKey()
+        prop = model.ModelKey()
+        assert prop._name == "__key__"
+        assert prop.__dict__ == {"_name": "__key__"}
 
 
 class TestBooleanProperty:
