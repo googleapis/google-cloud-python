@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import automl_v1beta1
@@ -70,7 +71,10 @@ class TestPredictionServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.PredictionServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.PredictionServiceClient()
 
         # Setup Request
         name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
@@ -88,7 +92,10 @@ class TestPredictionServiceClient(object):
     def test_predict_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.PredictionServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.PredictionServiceClient()
 
         # Setup request
         name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
