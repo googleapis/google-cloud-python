@@ -1087,21 +1087,14 @@ def pbs_for_set_no_merge(document_path, document_data):
     transform_paths, actual_data, field_paths = process_server_timestamp(
         document_data, False)
 
-    create_empty = (document_data and not actual_data) or (not document_data)
-
-    write_pbs = []
-    update_pb = None
-
-    if actual_data or create_empty:
-
-        update_pb = write_pb2.Write(
+    write_pbs = [
+        write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
                 fields=encode_dict(actual_data),
             )
-        )
-
-        write_pbs.append(update_pb)
+        ),
+    ]
 
     if transform_paths:
         transform_pb = get_transform_pb(document_path, transform_paths)

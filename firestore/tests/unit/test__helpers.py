@@ -1738,6 +1738,29 @@ class Test_pbs_for_set_no_merge(unittest.TestCase):
             ),
         )
 
+    def test_w_empty_document(self):
+        document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
+        document_data = {}
+
+        write_pbs = self._call_fut(document_path, document_data)
+
+        update_pb = self._make_write_w_document(document_path)
+        expected_pbs = [update_pb]
+        self.assertEqual(write_pbs, expected_pbs)
+
+    def test_w_only_server_timestamp(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
+        document_data = {'butter': SERVER_TIMESTAMP}
+
+        write_pbs = self._call_fut(document_path, document_data)
+
+        update_pb = self._make_write_w_document(document_path)
+        transform_pb = self._make_write_w_transform(document_path, ['butter'])
+        expected_pbs = [update_pb, transform_pb]
+        self.assertEqual(write_pbs, expected_pbs)
+
     def _helper(self, do_transform=False, empty_val=False):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1.proto import common_pb2
