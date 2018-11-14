@@ -328,15 +328,15 @@ def get_event_loop():
     """Get the current event loop.
 
     This function should be called within a context established by
-    :func:`google.cloud.ndb.async_context`.
+    :func:`~google.cloud.ndb.async_context`.
 
     Returns:
         EventLoop: The event loop for the current
             context.
 
     Raises:
-        exceptions.AsyncContextError: If called outside of a context
-            established by :func:`google.cloud.ndb.async_context`.
+        .AsyncContextError: If called outside of a context
+            established by :func:`~google.cloud.ndb.async_context`.
     """
     loop = contexts.current()
     if loop:
@@ -345,25 +345,60 @@ def get_event_loop():
     raise exceptions.AsyncContextError()
 
 
-def add_idle(*args, **kwargs):
-    raise NotImplementedError
+def add_idle(callback, *args, **kwargs):
+    """Calls :method:`EventLoop.add_idle` on current event loop.
+
+    Raises:
+        .AsyncContextError: If called outside of a context
+            established by :func:`~google.cloud.ndb.async_context`.
+    """
+    loop = get_event_loop()
+    loop.add_idle(callback, *args, **kwargs)
 
 
-def queue_call(*args, **kwargs):
-    raise NotImplementedError
+def queue_call(delay, callback, *args, **kwargs):
+    """Calls :method:`EventLoop.queue_call` on current event loop.
+
+    Raises:
+        .AsyncContextError: If called outside of a context
+            established by :func:`~google.cloud.ndb.async_context`.
+    """
+    loop = get_event_loop()
+    loop.queue_call(delay, callback, *args, **kwargs)
 
 
 def queue_rpc(*args, **kwargs):
     raise NotImplementedError
 
 
-def run(*args, **kwargs):
-    raise NotImplementedError
+def run():
+    """Calls :method:`EventLoop.run` on current event loop.
+
+    Raises:
+        .AsyncContextError: If called outside of a context
+            established by :func:`~google.cloud.ndb.async_context`.
+    """
+    loop = get_event_loop()
+    loop.run()
 
 
-def run0(*args, **kwargs):
-    raise NotImplementedError
+def run0():
+    """Calls :method:`EventLoop.run0` on current event loop.
+
+    Raises:
+        .AsyncContextError: If called outside of a context
+            established by :func:`~google.cloud.ndb.async_context`.
+    """
+    loop = get_event_loop()
+    loop.run0()
 
 
-def run1(*args, **kwargs):
-    raise NotImplementedError
+def run1():
+    """Calls :method:`EventLoop.run1` on current event loop.
+
+    Raises:
+        .AsyncContextError: If called outside of a context
+            established by :func:`~google.cloud.ndb.async_context`.
+    """
+    loop = get_event_loop()
+    loop.run1()
