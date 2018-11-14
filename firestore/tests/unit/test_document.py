@@ -278,7 +278,7 @@ class TestDocumentReference(unittest.TestCase):
         )
         if merge:
             _, _, field_paths = _helpers.process_server_timestamp(
-                document_data)
+                document_data, split_on_dots=False)
             field_paths = _helpers.canonicalize_field_paths(field_paths)
             mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
             write_pbs.update_mask.CopyFrom(mask)

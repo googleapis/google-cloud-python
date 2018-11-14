@@ -894,7 +894,7 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-def process_server_timestamp(document_data, split_on_dots=True):
+def process_server_timestamp(document_data, split_on_dots):
     """Remove all server timestamp sentinel values from data.
 
     If the data is nested, for example:
@@ -959,7 +959,7 @@ def process_server_timestamp(document_data, split_on_dots=True):
                 actual_data[field_name] = value
                 continue
             sub_transform_paths, sub_data, sub_field_paths = (
-                process_server_timestamp(value, False))
+                process_server_timestamp(value, split_on_dots=False))
             for sub_transform_path in sub_transform_paths:
                 transform_path = FieldPath.from_string(field_name)
                 transform_path.parts = (
@@ -1044,7 +1044,7 @@ def pbs_for_create(document_path, document_data):
         ``Write`` protobuf instances for ``create()``.
     """
     transform_paths, actual_data, field_paths = process_server_timestamp(
-        document_data, False)
+        document_data, split_on_dots=False)
 
     write_pbs = []
 
@@ -1085,7 +1085,7 @@ def pbs_for_set_no_merge(document_path, document_data):
         or two ``Write`` protobuf instances for ``set()``.
     """
     transform_paths, actual_data, field_paths = process_server_timestamp(
-        document_data, False)
+        document_data, split_on_dots=False)
 
     write_pbs = [
         write_pb2.Write(
@@ -1101,6 +1101,15 @@ def pbs_for_set_no_merge(document_path, document_data):
         write_pbs.append(transform_pb)
 
     return write_pbs
+
+
+def _compute_merge_paths(document_data, merge):
+    """Normalize merge paths against document data.
+
+    Returns:
+    """
+    transform_paths, actual_data, field_paths = process_server_timestamp(
+        document_data, split_on_dots=False)
 
 
 def pbs_for_set_with_merge(document_path, document_data, merge):
@@ -1123,7 +1132,7 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
     create_empty = not document_data
 
     transform_paths, actual_data, field_paths = process_server_timestamp(
-        document_data, False)
+        document_data, split_on_dots=False)
 
     if hasattr(merge, '__iter__'):
         # merge is list of paths provided by enduser; convert merge
@@ -1243,7 +1252,7 @@ def pbs_for_update(client, document_path, field_updates, option):
         option = client.write_option(exists=True)
 
     transform_paths, actual_updates, field_paths = (
-        process_server_timestamp(field_updates))
+        process_server_timestamp(field_updates, split_on_dots=True))
     if not (transform_paths or actual_updates):
         raise ValueError('There are only ServerTimeStamp objects or is empty.')
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)

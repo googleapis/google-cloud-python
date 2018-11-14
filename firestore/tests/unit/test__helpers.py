@@ -1428,13 +1428,13 @@ class Test_get_doc_id(unittest.TestCase):
 class Test_process_server_timestamp(unittest.TestCase):
 
     @staticmethod
-    def _call_fut(document_data):
-        from google.cloud.firestore_v1beta1._helpers import (
-            process_server_timestamp)
+    def _call_fut(document_data, split_on_dots):
+        from google.cloud.firestore_v1beta1 import _helpers 
 
-        return process_server_timestamp(document_data)
+        return _helpers.process_server_timestamp(
+            document_data, split_on_dots=split_on_dots)
 
-    def test_no_fields(self):
+    def test_no_fields_w_split_on_dots(self):
         import collections
         from google.cloud.firestore_v1beta1 import _helpers
 
@@ -1448,12 +1448,33 @@ class Test_process_server_timestamp(unittest.TestCase):
             _helpers.FieldPath('two'),
             _helpers.FieldPath('three')
         ]
-        transform_paths, actual_data, field_paths = self._call_fut(data)
+        transform_paths, actual_data, field_paths = self._call_fut(
+            data, split_on_dots=True)
         self.assertEqual(transform_paths, [])
         self.assertEqual(field_paths, expected_field_paths)
         self.assertIs(actual_data, data)
 
-    def test_simple_fields(self):
+    def test_no_fields_wo_split_on_dots(self):
+        import collections
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        data = collections.OrderedDict((
+            ('one', 1),
+            ('two', 2.25),
+            ('three', [False, True, True]),
+        ))
+        expected_field_paths = [
+            _helpers.FieldPath('one'),
+            _helpers.FieldPath('two'),
+            _helpers.FieldPath('three')
+        ]
+        transform_paths, actual_data, field_paths = self._call_fut(
+            data, split_on_dots=False)
+        self.assertEqual(transform_paths, [])
+        self.assertEqual(field_paths, expected_field_paths)
+        self.assertIs(actual_data, data)
+
+    def test_simple_fields_w_split_on_dots(self):
         import collections
         from google.cloud.firestore_v1beta1 import _helpers
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
@@ -1486,7 +1507,8 @@ class Test_process_server_timestamp(unittest.TestCase):
             },
             'top5': data['top5'],
         }
-        transform_paths, actual_data, field_paths = self._call_fut(data)
+        transform_paths, actual_data, field_paths = self._call_fut(
+            data, split_on_dots=True)
         self.assertEqual(
             transform_paths,
             expected_transform_paths
@@ -1494,7 +1516,49 @@ class Test_process_server_timestamp(unittest.TestCase):
         self.assertEqual(field_paths, expected_field_paths)
         self.assertEqual(actual_data, expected_data)
 
-    def test_field_updates(self):
+    def test_simple_fields_wo_split_on_dots(self):
+        import collections
+        from google.cloud.firestore_v1beta1 import _helpers
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
+        nested1 = collections.OrderedDict((
+            ('bottom2', SERVER_TIMESTAMP),
+            ('bottom3', 1.5),
+        ))
+        nested2 = collections.OrderedDict((
+            ('bottom7', SERVER_TIMESTAMP),
+        ))
+        data = collections.OrderedDict((
+            ('top1', nested1),
+            ('top4', SERVER_TIMESTAMP),
+            ('top5', 200),
+            ('top6', nested2),
+        ))
+        expected_transform_paths = [
+            _helpers.FieldPath('top1', 'bottom2'),
+            _helpers.FieldPath('top4'),
+            _helpers.FieldPath('top6', 'bottom7')
+        ]
+        expected_field_paths = [
+            _helpers.FieldPath('top1', 'bottom3'),
+            _helpers.FieldPath('top5')]
+        expected_data = {
+            'top1': {
+                'bottom3': data['top1']['bottom3'],
+            },
+            'top5': data['top5'],
+        }
+        transform_paths, actual_data, field_paths = self._call_fut(
+            data, split_on_dots=False)
+        self.assertEqual(
+            transform_paths,
+            expected_transform_paths
+        )
+        self.assertEqual(field_paths, expected_field_paths)
+        self.assertEqual(actual_data, expected_data)
+
+    def test_field_updates_w_split_on_dots(self):
         import collections
         from google.cloud.firestore_v1beta1 import _helpers
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
@@ -1505,14 +1569,34 @@ class Test_process_server_timestamp(unittest.TestCase):
             ('c.d', {'e': SERVER_TIMESTAMP}),
             ('f.g', SERVER_TIMESTAMP),
         ))
-        transform_paths, actual_data, field_paths = self._call_fut(data)
+        transform_paths, actual_data, field_paths = self._call_fut(
+            data, split_on_dots=True)
         self.assertEqual(transform_paths, [_helpers.FieldPath('c', 'd', 'e'),
                                            _helpers.FieldPath('f', 'g')])
 
         expected_data = {'a': {'b': data['a']['b']}}
         self.assertEqual(actual_data, expected_data)
 
-    def test_field_updates_w_empty_value(self):
+    def test_field_updates_wo_split_on_dots(self):
+        import collections
+        from google.cloud.firestore_v1beta1 import _helpers
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
+        data = collections.OrderedDict((
+            ('a', {'b': 10}),
+            ('c.d', {'e': SERVER_TIMESTAMP}),
+            ('f.g', SERVER_TIMESTAMP),
+        ))
+        transform_paths, actual_data, field_paths = self._call_fut(
+            data, split_on_dots=False)
+        self.assertEqual(transform_paths, [_helpers.FieldPath('c', 'd', 'e'),
+                                           _helpers.FieldPath('f.g')])
+
+        expected_data = {'a': {'b': data['a']['b']}}
+        self.assertEqual(actual_data, expected_data)
+
+    def test_field_updates_w_empty_value_w_split_on_dots(self):
         import collections
         from google.cloud.firestore_v1beta1 import _helpers
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
@@ -1524,11 +1608,34 @@ class Test_process_server_timestamp(unittest.TestCase):
             ('f.g', SERVER_TIMESTAMP),
             ('h', {}),
         ))
-        transform_paths, actual_data, field_paths = self._call_fut(data)
+        transform_paths, actual_data, field_paths = self._call_fut(
+            data, split_on_dots=True)
         self.assertEqual(
             transform_paths,
             [_helpers.FieldPath('c', 'd', 'e'),
              _helpers.FieldPath('f', 'g')])
+
+        expected_data = {'a': {'b': data['a']['b']}, 'h': {}}
+        self.assertEqual(actual_data, expected_data)
+
+    def test_field_updates_w_empty_value_wo_split_on_dots(self):
+        import collections
+        from google.cloud.firestore_v1beta1 import _helpers
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
+        data = collections.OrderedDict((
+            ('a', {'b': 10}),
+            ('c.d', {'e': SERVER_TIMESTAMP}),
+            ('f.g', SERVER_TIMESTAMP),
+            ('h', {}),
+        ))
+        transform_paths, actual_data, field_paths = self._call_fut(
+            data, split_on_dots=False)
+        self.assertEqual(
+            transform_paths,
+            [_helpers.FieldPath('c', 'd', 'e'),
+             _helpers.FieldPath('f.g')])
 
         expected_data = {'a': {'b': data['a']['b']}, 'h': {}}
         self.assertEqual(actual_data, expected_data)
