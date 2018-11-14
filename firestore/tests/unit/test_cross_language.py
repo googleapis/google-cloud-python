@@ -187,11 +187,12 @@ def test_get_testprotos(test_proto):
         testcase.is_error
     except AttributeError:
         return
-    testcase = test_proto.get
-    firestore_api = _mock_firestore_api()
-    client, document = _make_client_document(firestore_api, testcase)
-    call = functools.partial(document.get, None, None)
-    _run_testcase(testcase, call, firestore_api, client)
+    else:  # pragma: NO COVER
+        testcase = test_proto.get
+        firestore_api = _mock_firestore_api()
+        client, document = _make_client_document(firestore_api, testcase)
+        call = functools.partial(document.get, None, None)
+        _run_testcase(testcase, call, firestore_api, client)
 
 
 @pytest.mark.parametrize('test_proto', _SET_TESTPROTOS)
@@ -225,7 +226,7 @@ def test_update_testprotos(test_proto):
 @pytest.mark.skip(
     reason="Python has no way to call update with a list of field paths.")
 @pytest.mark.parametrize('test_proto', _UPDATE_PATHS_TESTPROTOS)
-def test_update_paths_testprotos(test_proto):
+def test_update_paths_testprotos(test_proto):  # pragma: NO COVER
     pass
 
 
@@ -244,13 +245,13 @@ def test_delete_testprotos(test_proto):
 
 @pytest.mark.skip(reason="Watch aka listen not yet implemented in Python.")
 @pytest.mark.parametrize('test_proto', _LISTEN_TESTPROTOS)
-def test_listen_paths_testprotos(test_proto):
+def test_listen_paths_testprotos(test_proto):  # pragma: NO COVER
     pass
 
 
 @pytest.mark.skip(reason="Feature not yet implemented in Python.")
 @pytest.mark.parametrize('test_proto', _UNIMPLEMENTED_FEATURE_TESTPROTOS)
-def test_unimplemented_features_testprotos(test_proto):
+def test_unimplemented_features_testprotos(test_proto):  # pragma: NO COVER
     pass
 
 
@@ -273,15 +274,15 @@ def convert_data(v):
 
 def convert_set_option(option):
     from google.cloud.firestore_v1beta1 import _helpers
-    fields = []
-    if option.all:
-        return True
-    elif option.fields:
-        for field in option.fields:
-            fields.append(_helpers.FieldPath(*field.field).to_api_repr())
-        return fields
-    else:
-        return False
+
+    if option.fields:
+        return [
+            _helpers.FieldPath(*field.field).to_api_repr()
+            for field in option.fields
+        ]
+
+    assert option.all
+    return True
 
 
 def convert_precondition(precond):
@@ -289,5 +290,6 @@ def convert_precondition(precond):
 
     if precond.HasField('exists'):
         return Client.write_option(exists=precond.exists)
-    else:  # update_time
-        return Client.write_option(last_update_time=precond.update_time)
+
+    assert precond.HasField('update_time')
+    return Client.write_option(last_update_time=precond.update_time)

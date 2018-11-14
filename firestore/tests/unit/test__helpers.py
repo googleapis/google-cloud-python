@@ -1940,14 +1940,12 @@ class Test_all_merge_paths(unittest.TestCase):
         self.assertEqual(merge, [])
 
     def test__w_simple(self):
-        from google.cloud.firestore_v1beta1 import _helpers
-
         document_data = {'a': {'b': 'c'}}
 
         (transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data)
 
-        path = _helpers.FieldPath('a', 'b')
+        path = self._make_field_path('a', 'b')
         self.assertEqual(transform_paths, [])
         self.assertEqual(actual_data, document_data)
         self.assertEqual(data_merge, [path])
