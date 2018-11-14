@@ -18,17 +18,36 @@
 import enum
 
 
-class NullValue(enum.IntEnum):
-    """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
+class CommitRequest(object):
+    class Mode(enum.IntEnum):
+        """
+        The modes available for commits.
 
-    The JSON representation for ``NullValue`` is JSON ``null``.
+        Attributes:
+          MODE_UNSPECIFIED (int): Unspecified. This value must not be used.
+          TRANSACTIONAL (int): Transactional: The mutations are either all applied, or none are
+          applied. Learn about transactions
+          `here <https://cloud.google.com/datastore/docs/concepts/transactions>`__.
+          NON_TRANSACTIONAL (int): Non-transactional: The mutations may not apply as all or none.
+        """
+        MODE_UNSPECIFIED = 0
+        TRANSACTIONAL = 1
+        NON_TRANSACTIONAL = 2
 
-    Attributes:
-      NULL_VALUE (int): Null value.
-    """
-    NULL_VALUE = 0
+
+class ReadOptions(object):
+    class ReadConsistency(enum.IntEnum):
+        """
+        The possible values for read consistencies.
+
+        Attributes:
+          READ_CONSISTENCY_UNSPECIFIED (int): Unspecified. This value must not be used.
+          STRONG (int): Strong consistency.
+          EVENTUAL (int): Eventual consistency.
+        """
+        READ_CONSISTENCY_UNSPECIFIED = 0
+        STRONG = 1
+        EVENTUAL = 2
 
 
 class EntityResult(object):
@@ -122,35 +141,3 @@ class QueryResultBatch(object):
         MORE_RESULTS_AFTER_LIMIT = 2
         MORE_RESULTS_AFTER_CURSOR = 4
         NO_MORE_RESULTS = 3
-
-
-class CommitRequest(object):
-    class Mode(enum.IntEnum):
-        """
-        The modes available for commits.
-
-        Attributes:
-          MODE_UNSPECIFIED (int): Unspecified. This value must not be used.
-          TRANSACTIONAL (int): Transactional: The mutations are either all applied, or none are
-          applied. Learn about transactions
-          `here <https://cloud.google.com/datastore/docs/concepts/transactions>`__.
-          NON_TRANSACTIONAL (int): Non-transactional: The mutations may not apply as all or none.
-        """
-        MODE_UNSPECIFIED = 0
-        TRANSACTIONAL = 1
-        NON_TRANSACTIONAL = 2
-
-
-class ReadOptions(object):
-    class ReadConsistency(enum.IntEnum):
-        """
-        The possible values for read consistencies.
-
-        Attributes:
-          READ_CONSISTENCY_UNSPECIFIED (int): Unspecified. This value must not be used.
-          STRONG (int): Strong consistency.
-          EVENTUAL (int): Eventual consistency.
-        """
-        READ_CONSISTENCY_UNSPECIFIED = 0
-        STRONG = 1
-        EVENTUAL = 2
