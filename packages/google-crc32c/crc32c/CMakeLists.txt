@@ -228,6 +228,7 @@ if(HAVE_ARM64_CRC32C)
     target_compile_options(crc32c_arm64 PRIVATE "-march=armv8-a+crc+crypto")
   endif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif(HAVE_ARM64_CRC32C)
+# CMake only enables PIC by default in SHARED and MODULE targets.
 set_property(TARGET crc32c_arm64 PROPERTY POSITION_INDEPENDENT_CODE
   "${BUILD_SHARED_LIBS}")
 
@@ -247,6 +248,7 @@ if(HAVE_SSE42)
     target_compile_options(crc32c_sse42 PRIVATE "-msse4.2")
   endif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif(HAVE_SSE42)
+# CMake only enables PIC by default in SHARED and MODULE targets.
 set_property(TARGET crc32c_sse42 PROPERTY POSITION_INDEPENDENT_CODE
   "${BUILD_SHARED_LIBS}")
 
