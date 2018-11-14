@@ -18,23 +18,6 @@
 import enum
 
 
-class ClusterOperationStatus(object):
-    class State(enum.IntEnum):
-        """
-        The operation state.
-
-        Attributes:
-          UNKNOWN (int): Unused.
-          PENDING (int): The operation has been created.
-          RUNNING (int): The operation is running.
-          DONE (int): The operation is done; either cancelled or completed.
-        """
-        UNKNOWN = 0
-        PENDING = 1
-        RUNNING = 2
-        DONE = 3
-
-
 class ClusterStatus(object):
     class State(enum.IntEnum):
         """
