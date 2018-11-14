@@ -38,7 +38,7 @@ class AsyncContextError(Error):
     """Indicates an async call being made without a context.
 
     Raised whenever an asynchronous call is made outside of a context
-    established by :func:`google.cloud.ndb.async_context`.
+    established by :func:`~google.cloud.ndb.async_context`.
     """
 
     def __init__(self):
