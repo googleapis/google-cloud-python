@@ -18,19 +18,6 @@
 import enum
 
 
-class NullValue(enum.IntEnum):
-    """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
-
-    The JSON representation for ``NullValue`` is JSON ``null``.
-
-    Attributes:
-      NULL_VALUE (int): Null value.
-    """
-    NULL_VALUE = 0
-
-
 class TransferType(enum.IntEnum):
     """
     DEPRECATED. Represents data transfer type.
@@ -67,21 +54,17 @@ class TransferState(enum.IntEnum):
     CANCELLED = 6
 
 
-class TransferMessage(object):
-    class MessageSeverity(enum.IntEnum):
-        """
-        Represents data transfer user facing message severity.
+class NullValue(enum.IntEnum):
+    """
+    ``NullValue`` is a singleton enumeration to represent the null value for
+    the ``Value`` type union.
 
-        Attributes:
-          MESSAGE_SEVERITY_UNSPECIFIED (int): No severity specified.
-          INFO (int): Informational message.
-          WARNING (int): Warning message.
-          ERROR (int): Error message.
-        """
-        MESSAGE_SEVERITY_UNSPECIFIED = 0
-        INFO = 1
-        WARNING = 2
-        ERROR = 3
+    The JSON representation for ``NullValue`` is JSON ``null``.
+
+    Attributes:
+      NULL_VALUE (int): Null value.
+    """
+    NULL_VALUE = 0
 
 
 class DataSourceParameter(object):
@@ -153,3 +136,20 @@ class ListTransferRunsRequest(object):
         """
         RUN_ATTEMPT_UNSPECIFIED = 0
         LATEST = 1
+
+
+class TransferMessage(object):
+    class MessageSeverity(enum.IntEnum):
+        """
+        Represents data transfer user facing message severity.
+
+        Attributes:
+          MESSAGE_SEVERITY_UNSPECIFIED (int): No severity specified.
+          INFO (int): Informational message.
+          WARNING (int): Warning message.
+          ERROR (int): Error message.
+        """
+        MESSAGE_SEVERITY_UNSPECIFIED = 0
+        INFO = 1
+        WARNING = 2
+        ERROR = 3
