@@ -21,7 +21,7 @@ import setuptools
 
 name = 'google-cloud-kms'
 description = 'Cloud Key Management Service (KMS) API API client library'
-version = '0.2.1'
+version = '0.3.0'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
