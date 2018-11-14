@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
-## 0.2.1
+## 0.3.0
 
 11-14-2018 11:37 PST
 
