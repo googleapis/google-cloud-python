@@ -1556,7 +1556,7 @@ def _validate_key(value, entity=None):
 
     Raises:
         .BadValueError: If ``value`` is not a :class:`.Key`.
-        KindError: If ``entity`` is specified, by the kind of the entity
+        KindError: If ``entity`` is specified, but the kind of the entity
             doesn't match the kind of ``value``.
     """
     if not isinstance(value, Key):
