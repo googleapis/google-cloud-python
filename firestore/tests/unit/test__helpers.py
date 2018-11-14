@@ -1913,6 +1913,79 @@ class Test_pbs_for_set_no_merge(unittest.TestCase):
         self._helper(do_transform=True, empty_val=True)
 
 
+class Test_all_merge_paths(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(document_data):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.all_merge_paths(document_data)
+
+    @staticmethod
+    def _make_field_path(*fields):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.FieldPath(*fields)
+
+    def test_w_empty(self):
+        document_data = {}
+
+        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = self._call_fut(document_data)
+
+        self.assertEqual(transform_paths, [])
+        self.assertEqual(actual_data, {})
+        self.assertEqual(data_merge, [])
+        self.assertEqual(transform_merge, [])
+        self.assertEqual(merge, [])
+
+    def test__w_simple(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        document_data = {'a': {'b': 'c'}}
+
+        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = self._call_fut(document_data)
+
+        path = _helpers.FieldPath('a', 'b')
+        self.assertEqual(transform_paths, [])
+        self.assertEqual(actual_data, document_data)
+        self.assertEqual(data_merge, [path])
+        self.assertEqual(transform_merge, [])
+        self.assertEqual(merge, [path])
+
+    def test__w_server_timestamp(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {'a': {'b': SERVER_TIMESTAMP}}
+
+        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = self._call_fut(document_data)
+
+        path = self._make_field_path('a', 'b')
+        self.assertEqual(transform_paths, [path])
+        self.assertEqual(actual_data, {})
+        self.assertEqual(data_merge, [])
+        self.assertEqual(transform_merge, [path])
+        self.assertEqual(merge, [path])
+
+    def test__w_simple_and_server_timestamp(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {'a': {'b': 'd', 'c': SERVER_TIMESTAMP}}
+
+        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = self._call_fut(document_data)
+
+        path_a_b = self._make_field_path('a', 'b')
+        path_a_c = self._make_field_path('a', 'c')
+        self.assertEqual(transform_paths, [path_a_c])
+        self.assertEqual(actual_data, {'a': {'b': 'd'}})
+        self.assertEqual(data_merge, [path_a_b])
+        self.assertEqual(transform_merge, [path_a_c])
+        self.assertEqual(merge, [path_a_b, path_a_c])
+
+
 class Test_pbs_for_set_with_merge(unittest.TestCase):
 
     @staticmethod
