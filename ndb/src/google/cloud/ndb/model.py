@@ -16,6 +16,7 @@
 
 
 import datetime
+import functools
 import inspect
 import json
 import pickle
@@ -2352,11 +2353,250 @@ class JsonProperty(BlobProperty):
         return json.loads(value.decode("ascii"))
 
 
-class UserProperty(Property):
-    __slots__ = ()
+class UserNotFoundError(exceptions.Error):
+    """No email argument was specified, and no user is logged in."""
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+
+@functools.total_ordering
+class User:
+    """Provides the email address, nickname, and ID for a Google Accounts user.
+
+    .. note::
+
+        This class is a port of ``google.appengine.api.users.User``.
+        In the (legacy) Google App Engine standard environment, this
+        constructor relied on several environment variables to provide a
+        fallback for inputs. In particular:
+
+        * ``AUTH_DOMAIN`` for the ``_auth_domain`` argument
+        * ``USER_EMAIL`` for the ``email`` argument
+        * ``USER_ID`` for the ``_user_id`` argument
+        * ``FEDERATED_IDENTITY`` for the ``federated_identity`` argument
+        * ``FEDERATED_PROVIDER`` for the ``federated_provider`` argument
+
+        However in the gVisor Google App Engine runtime (e.g. Python 3.7),
+        none of these environment variables will be populated.
+
+    .. warning::
+
+        The ``federated_identity`` and ``federated_provider`` are
+        decommissioned and cannot be used (the constructor will throw an
+        exception if they are provided).
+
+    Args:
+        email (str): The user's email address.
+        _auth_domain (str): The auth domain for the current application.
+        _user_id (str): The user ID.
+        federated_identity (str): Decommissioned, don't use.
+        federated_provider (str): Decommissioned, don't use.
+        _strict_mode (bool): Indicates that an ``email`` is required.
+
+    Raises:
+        ValueError: If the ``_auth_domain`` is not passed in.
+        NotImplementedError: If ``federated_identity`` is passed in.
+        NotImplementedError: If ``federated_provider`` is passed in.
+        UserNotFoundError: If ``email`` is empty and ``_strict_mode`` is set.
+    """
+
+    __slots__ = ("_auth_domain", "_email", "_user_id")
+
+    def __init__(
+        self,
+        email=None,
+        _auth_domain=None,
+        _user_id=None,
+        federated_identity=None,
+        federated_provider=None,
+        _strict_mode=True,
+    ):
+        if _auth_domain is None:
+            raise ValueError("_auth_domain is required")
+
+        if federated_identity is not None:
+            raise NotImplementedError(
+                "federated_identity is decommissioned and should not be used."
+            )
+
+        if federated_provider is not None:
+            raise NotImplementedError(
+                "federated_provider is decommissioned and should not be used."
+            )
+
+        if not email and _strict_mode:
+            raise UserNotFoundError
+
+        self._auth_domain = _auth_domain
+        self._email = email
+        self._user_id = _user_id
+
+    def nickname(self):
+        """The nickname for this user.
+
+        A nickname is a human-readable string that uniquely identifies a Google
+        user with respect to this application, akin to a username. For some
+        users, this nickname is an email address or part of the email address.
+
+        Returns:
+            str: The nickname of the user.
+        """
+        if (
+            self._email
+            and self._auth_domain
+            and self._email.endswith("@" + self._auth_domain)
+        ):
+            suffix_len = len(self._auth_domain) + 1
+            return self._email[:-suffix_len]
+        else:
+            return self._email
+
+    def email(self):
+        """Returns the user's email address."""
+        return self._email
+
+    def user_id(self):
+        """Obtains the user ID of the user.
+
+        Returns:
+            Optional[str]: A permanent unique identifying string or
+            :data:`None`. If the email address was set explicity, this will
+            return :data:`None`.
+        """
+        return self._user_id
+
+    def auth_domain(self):
+        """Obtains the user's authentication domain.
+
+        Returns:
+            str: The authentication domain. This method is internal and
+            should not be used by client applications.
+        """
+        return self._auth_domain
+
+    def federated_identity(self):
+        """Get the federated identity.
+
+        Raises:
+            NotImplementedError: Always. This method is decommissioned, don't
+            use.
+        """
+        raise NotImplementedError(
+            "federated_identity is decommissioned and should not be used."
+        )
+
+    def federated_provider(self):
+        """Get the federated provider.
+
+        Raises:
+            NotImplementedError: Always. This method is decommissioned, don't
+            use.
+        """
+        raise NotImplementedError(
+            "federated_provider is decommissioned and should not be used."
+        )
+
+    def __str__(self):
+        return str(self.nickname())
+
+    def __repr__(self):
+        values = []
+        if self._email:
+            values.append("email='{}'".format(self._email))
+        if self._user_id:
+            values.append("_user_id='{}'".format(self._user_id))
+        return "users.User({})".format(",".join(values))
+
+    def __hash__(self):
+        return hash((self._email, self._auth_domain))
+
+    def __eq__(self, other):
+        if not isinstance(other, User):
+            return NotImplemented
+
+        return (
+            self._email == other._email
+            and self._auth_domain == other._auth_domain
+        )
+
+    def __lt__(self, other):
+        if not isinstance(other, User):
+            return NotImplemented
+
+        return (self._email, self._auth_domain) < (
+            other._email,
+            other._auth_domain,
+        )
+
+
+class UserProperty(Property):
+    """A property that contains :class:`.User` values.
+
+    .. warning::
+
+        This exists for backwards compatibility with existing Cloud Datastore
+        schemas only; storing :class:`.User` objects directly in Cloud
+        Datastore is not recommended. The ``auto_current_user`` and
+        ``auto_current_user_add`` arguments are no longer supported.
+
+    Args:
+        name (str): The name of the property.
+        auto_current_user (bool): Indicates if the value should be indexed.
+        auto_current_user_add (bool): Indicates if the value should be indexed.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (bytes): The default value for this property.
+        choices (Iterable[bytes]): A container of allowed values for this
+            property.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+
+    Raises:
+        NotImplementedError: If ``auto_current_user`` is provided.
+        NotImplementedError: If ``auto_current_user_add`` is provided.
+    """
+
+    _auto_current_user = False
+    _auto_current_user_add = False
+
+    def __init__(
+        self,
+        name=None,
+        *,
+        auto_current_user=None,
+        auto_current_user_add=None,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        super(UserProperty, self).__init__(
+            name=name,
+            indexed=indexed,
+            repeated=repeated,
+            required=required,
+            default=default,
+            choices=choices,
+            validator=validator,
+            verbose_name=verbose_name,
+            write_empty_list=write_empty_list,
+        )
+        if auto_current_user is not None:
+            raise NotImplementedError(
+                "The auto_current_user argument is no longer supported."
+            )
+        if auto_current_user_add is not None:
+            raise NotImplementedError(
+                "The auto_current_user_add argument is no longer supported."
+            )
 
 
 class KeyProperty(Property):
