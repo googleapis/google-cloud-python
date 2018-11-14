@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -83,7 +84,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -101,7 +105,10 @@ class TestAutoMlClient(object):
     def test_create_dataset_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -124,7 +131,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.dataset_path('[PROJECT]', '[LOCATION]', '[DATASET]')
@@ -140,7 +150,10 @@ class TestAutoMlClient(object):
     def test_get_dataset_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup request
         name = client.dataset_path('[PROJECT]', '[LOCATION]', '[DATASET]')
@@ -162,7 +175,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -180,7 +196,10 @@ class TestAutoMlClient(object):
 
     def test_list_datasets_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -199,7 +218,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.dataset_path('[PROJECT]', '[LOCATION]', '[DATASET]')
@@ -222,7 +244,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.dataset_path('[PROJECT]', '[LOCATION]', '[DATASET]')
@@ -241,7 +266,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.dataset_path('[PROJECT]', '[LOCATION]', '[DATASET]')
@@ -266,7 +294,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.dataset_path('[PROJECT]', '[LOCATION]', '[DATASET]')
@@ -286,7 +317,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.dataset_path('[PROJECT]', '[LOCATION]', '[DATASET]')
@@ -311,7 +345,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.dataset_path('[PROJECT]', '[LOCATION]', '[DATASET]')
@@ -338,7 +375,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -363,7 +403,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -387,7 +430,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
@@ -403,7 +449,10 @@ class TestAutoMlClient(object):
     def test_get_model_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup request
         name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
@@ -424,7 +473,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -442,7 +494,10 @@ class TestAutoMlClient(object):
 
     def test_list_models_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -461,7 +516,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
@@ -484,7 +542,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
@@ -502,7 +563,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
@@ -518,7 +582,10 @@ class TestAutoMlClient(object):
     def test_deploy_model_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup request
         name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
@@ -535,7 +602,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
@@ -551,7 +621,10 @@ class TestAutoMlClient(object):
     def test_undeploy_model_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup request
         name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
@@ -574,7 +647,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         name = client.model_evaluation_path('[PROJECT]', '[LOCATION]',
@@ -591,7 +667,10 @@ class TestAutoMlClient(object):
     def test_get_model_evaluation_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup request
         name = client.model_evaluation_path('[PROJECT]', '[LOCATION]',
@@ -614,7 +693,10 @@ class TestAutoMlClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup Request
         parent = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
@@ -633,7 +715,10 @@ class TestAutoMlClient(object):
 
     def test_list_model_evaluations_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.AutoMlClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.AutoMlClient()
 
         # Setup request
         parent = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
