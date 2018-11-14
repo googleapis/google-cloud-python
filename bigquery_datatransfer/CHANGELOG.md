@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## 0.3.0
+
+11-14-2018 11:09 PST
+
+
+### Implementation Changes
+- Pick up fixes in GAPIC generator. ([#6491](https://github.com/googleapis/google-cloud-python/pull/6491))
+- Fix `client_info` bug, update docstrings. ([#6405](https://github.com/googleapis/google-cloud-python/pull/6405))
+
+### Dependencies
+- Bump minimum `api_core` version to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+### Documentation
+- Docs: fix GAX fossils ([#6264](https://github.com/googleapis/google-cloud-python/pull/6264))
+- Docs: normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Harmonize / DRY 'README.rst' / 'docs/index.rst'. ([#6013](https://github.com/googleapis/google-cloud-python/pull/6013))
+
+### Internal / Testing Changes
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+- Fix stray, lint-breaking blank lines from autosynth. ([#5960](https://github.com/googleapis/google-cloud-python/pull/5960))
+- Re-generate library using `bigquery_datatransfer/synth.py` ([#5973](https://github.com/googleapis/google-cloud-python/pull/5973))
+- Re-generate library using `bigquery_datatransfer/synth.py` ([#5947](https://github.com/googleapis/google-cloud-python/pull/5947))
+
 ## 0.2.0
 
 ### Implementation Changes
