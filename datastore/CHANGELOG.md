@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## 1.7.2
+
+11-14-2018 11:32 PST
+
+
+### Implementation Changes
+- Pick up fixes in GAPIC generator. ([#6494](https://github.com/googleapis/google-cloud-python/pull/6494))
+- Fix `client_info` bug, update docstrings. ([#6409](https://github.com/googleapis/google-cloud-python/pull/6409))
+
+### Dependencies
+- Bump minimum `api_core` version to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
 ## 1.7.1
 
 10-29-2018 10:38 PDT
