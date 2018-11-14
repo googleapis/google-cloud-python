@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.10.0
+
+11-14-2018 11:34 PST
+
+
+### Implementation Changes
+- Pick up fixes in GAPIC generator. ([#6495](https://github.com/googleapis/google-cloud-python/pull/6495))
+- Fix `client_info` bug, update docstrings via synth. ([#6440](https://github.com/googleapis/google-cloud-python/pull/6440))
+- Add `BigQueryOptions.excluded_fields` via synth ([#6312](https://github.com/googleapis/google-cloud-python/pull/6312))
+
+### Dependencies
+- Bump minimum `api_core` version to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+### Internal / Testing Changes
+- Remove now-spurious fixup from `synth.py` ([#6400](https://github.com/googleapis/google-cloud-python/pull/6400))
+
 ## 0.9.0
 
 10-18-2018 10:44 PDT
