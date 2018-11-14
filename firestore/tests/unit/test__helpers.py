@@ -1984,6 +1984,112 @@ class Test_all_merge_paths(unittest.TestCase):
         self.assertEqual(merge, [path_a_b, path_a_c])
 
 
+class Test_normalize_merge_paths(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(document_data, merge):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.normalize_merge_paths(document_data, merge)
+
+    @staticmethod
+    def _make_field_path(*fields):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.FieldPath(*fields)
+
+    def test_w_empty_document_empty_merge_list(self):
+        document_data = {}
+
+        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = self._call_fut(document_data, [])
+
+        self.assertEqual(transform_paths, [])
+        self.assertEqual(actual_data, {})
+        self.assertEqual(data_merge, [])
+        self.assertEqual(transform_merge, [])
+        self.assertEqual(merge, [])
+
+    def test_w_merge_path_miss(self):
+        document_data = {}
+        merge_path = self._make_field_path('a', 'b')
+
+        with self.assertRaises(KeyError):
+            self._call_fut(document_data, [merge_path])
+
+    def test_w_merge_path_parent(self):
+        document_data = {'a': {'b': 'c', 'd': 'e'}}
+        merge_path = self._make_field_path('a', 'b')
+
+        with self.assertRaises(ValueError):
+            self._call_fut(document_data, ['a', 'a.b'])
+
+        with self.assertRaises(ValueError):
+            self._call_fut(document_data, ['a.b', 'a'])
+
+    def test_w_simple(self):
+        document_data = {'a': {'b': 'c', 'd': 'e'}}
+        merge_path = self._make_field_path('a', 'b')
+
+        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = self._call_fut(document_data, [merge_path])
+
+        self.assertEqual(transform_paths, [])
+        self.assertEqual(actual_data, {'a': {'b': 'c'}})
+        self.assertEqual(data_merge, [merge_path])
+        self.assertEqual(transform_merge, [])
+        self.assertEqual(merge, [merge_path])
+
+    def test_w_server_timestamp(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {'a': {'b': SERVER_TIMESTAMP, 'c': 'd'}}
+        merge_string = 'a.b'
+        merge_path = self._make_field_path('a', 'b')
+
+        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = self._call_fut(document_data, [merge_string])
+
+        self.assertEqual(transform_paths, [merge_path])
+        self.assertEqual(actual_data, {})
+        self.assertEqual(data_merge, [])
+        self.assertEqual(transform_merge, [merge_path])
+        self.assertEqual(merge, [merge_path])
+
+    def test_w_simple_and_server_timestamp(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {'a': {'b': SERVER_TIMESTAMP, 'c': 'd'}}
+        merge_path = self._make_field_path('a')
+
+        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = self._call_fut(document_data, [merge_path])
+
+        path_a_b = self._make_field_path('a', 'b')
+        path_a_c = self._make_field_path('a', 'c')
+        self.assertEqual(transform_paths, [path_a_b])
+        self.assertEqual(actual_data, {'a': {'c': 'd'}})
+        self.assertEqual(data_merge, [path_a_c])
+        self.assertEqual(transform_merge, [])
+        self.assertEqual(merge, [merge_path])
+
+    def test_w_simple_and_server_timestamp_two_merge_paths(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {'a': {'b': SERVER_TIMESTAMP, 'c': 'd'}}
+        path_a_b = self._make_field_path('a', 'b')
+        path_a_c = self._make_field_path('a', 'c')
+
+        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = self._call_fut(document_data, [path_a_b, path_a_c])
+
+        self.assertEqual(transform_paths, [path_a_b])
+        self.assertEqual(actual_data, {'a': {'c': 'd'}})
+        self.assertEqual(data_merge, [path_a_c])
+        self.assertEqual(transform_merge, [path_a_b])
+        self.assertEqual(merge, [path_a_b, path_a_c])
+
+
 class Test_pbs_for_set_with_merge(unittest.TestCase):
 
     @staticmethod
