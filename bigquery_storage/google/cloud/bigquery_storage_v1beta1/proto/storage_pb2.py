@@ -623,7 +623,10 @@ Stream = _reflection.GeneratedProtocolMessageType('Stream', (_message.Message,),
   DESCRIPTOR = _STREAM,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Information about a single data stream within a read session.
+  
+  
+  Attributes:
       name:
           Name of the stream. In the form
           ``/projects/{project_id}/stream/{stream_id}``
@@ -638,7 +641,12 @@ StreamPosition = _reflection.GeneratedProtocolMessageType('StreamPosition', (_me
   DESCRIPTOR = _STREAMPOSITION,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Expresses a point within a given stream using an offset position.
+  
+  
+  Attributes:
+      stream:
+          Identifier for a given Stream.
       offset:
           Position in the stream.
   """,
@@ -650,7 +658,10 @@ ReadSession = _reflection.GeneratedProtocolMessageType('ReadSession', (_message.
   DESCRIPTOR = _READSESSION,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Information returned from a ``CreateReadSession`` request.
+  
+  
+  Attributes:
       name:
           Unique identifier for the session. In the form
           ``projects/{project_id}/sessions/{session_id}``
@@ -679,11 +690,16 @@ CreateReadSessionRequest = _reflection.GeneratedProtocolMessageType('CreateReadS
   DESCRIPTOR = _CREATEREADSESSIONREQUEST,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Creates a new read session, which may include additional options such as
+  requested parallelism, projection filters and constraints.
+  
+  
+  Attributes:
       table_reference:
           Required. Reference to the table to read.
       parent:
-          Required. Project which this ReadSession is associated with.
+          Required. String of the form "projects/your-project-id"
+          indicating the project this ReadSession is associated with.
           This is the project that will be billed for usage.
       table_modifiers:
           Optional. Any modifiers to the Table (e.g. snapshot
@@ -710,7 +726,11 @@ ReadRowsRequest = _reflection.GeneratedProtocolMessageType('ReadRowsRequest', (_
   DESCRIPTOR = _READROWSREQUEST,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Requesting row data via ``ReadRows`` must provide Stream position
+  information.
+  
+  
+  Attributes:
       read_position:
           Required. Identifier of the position in the stream to start
           reading from. The offset requested must be less than the last
@@ -725,7 +745,10 @@ StreamStatus = _reflection.GeneratedProtocolMessageType('StreamStatus', (_messag
   DESCRIPTOR = _STREAMSTATUS,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Progress information for a given Stream.
+  
+  
+  Attributes:
       estimated_row_count:
           Number of estimated rows in the current stream. May change
           over time as different readers in the stream progress at rates
@@ -755,7 +778,14 @@ ReadRowsResponse = _reflection.GeneratedProtocolMessageType('ReadRowsResponse', 
   DESCRIPTOR = _READROWSRESPONSE,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Response from calling ``ReadRows`` may include row data, progress and
+  throttling information.
+  
+  
+  Attributes:
+      rows:
+          Row data is returned in format specified during session
+          creation.
       avro_rows:
           Serialized row data in AVRO format.
       status:
@@ -772,7 +802,11 @@ BatchCreateReadSessionStreamsRequest = _reflection.GeneratedProtocolMessageType(
   DESCRIPTOR = _BATCHCREATEREADSESSIONSTREAMSREQUEST,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Information needed to request additional streams for an established read
+  session.
+  
+  
+  Attributes:
       session:
           Required. Must be a non-expired session obtained from a call
           to CreateReadSession. Only the name field needs to be set.
@@ -789,7 +823,11 @@ BatchCreateReadSessionStreamsResponse = _reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _BATCHCREATEREADSESSIONSTREAMSRESPONSE,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """The response from ``BatchCreateReadSessionStreams`` returns the stream
+  identifiers for the newly created streams.
+  
+  
+  Attributes:
       streams:
           Newly added streams.
   """,
@@ -801,7 +839,10 @@ FinalizeStreamRequest = _reflection.GeneratedProtocolMessageType('FinalizeStream
   DESCRIPTOR = _FINALIZESTREAMREQUEST,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Request information for invoking ``FinalizeStream``.
+  
+  
+  Attributes:
       stream:
           Stream to finalize.
   """,
@@ -813,7 +854,10 @@ SplitReadStreamRequest = _reflection.GeneratedProtocolMessageType('SplitReadStre
   DESCRIPTOR = _SPLITREADSTREAMREQUEST,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Request information for ``SplitReadStream``.
+  
+  
+  Attributes:
       original_stream:
           Stream to split.
   """,
@@ -825,7 +869,10 @@ SplitReadStreamResponse = _reflection.GeneratedProtocolMessageType('SplitReadStr
   DESCRIPTOR = _SPLITREADSTREAMRESPONSE,
   __module__ = 'google.cloud.bigquery.storage_v1beta1.proto.storage_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """Response from ``SplitReadStream``.
+  
+  
+  Attributes:
       primary_stream:
           Primary stream. Will contain the beginning portion of
           \|original\_stream\|.

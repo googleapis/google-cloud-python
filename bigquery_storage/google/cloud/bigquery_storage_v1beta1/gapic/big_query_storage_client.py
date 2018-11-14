@@ -144,9 +144,10 @@ class BigQueryStorageClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -165,9 +166,9 @@ class BigQueryStorageClient(object):
     # Service calls
     def create_read_session(self,
                             table_reference,
-                            requested_streams,
-                            parent=None,
+                            parent,
                             table_modifiers=None,
+                            requested_streams=None,
                             read_options=None,
                             format_=None,
                             retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -192,18 +193,26 @@ class BigQueryStorageClient(object):
             >>>
             >>> client = bigquery_storage_v1beta1.BigQueryStorageClient()
             >>>
-            >>> # TODO: Initialize ``table_reference``:
+            >>> # TODO: Initialize `table_reference`:
             >>> table_reference = {}
             >>>
-            >>> # TODO: Initialize ``requested_streams``:
-            >>> requested_streams = 0
+            >>> # TODO: Initialize `parent`:
+            >>> parent = ''
             >>>
-            >>> response = client.create_read_session(table_reference, requested_streams)
+            >>> response = client.create_read_session(table_reference, parent)
 
         Args:
             table_reference (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.TableReference]): Required. Reference to the table to read.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.TableReference`
+            parent (str): Required. String of the form "projects/your-project-id" indicating the
+                project this ReadSession is associated with. This is the project that will
+                be billed for usage.
+            table_modifiers (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.TableModifiers]): Optional. Any modifiers to the Table (e.g. snapshot timestamp).
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.bigquery_storage_v1beta1.types.TableModifiers`
             requested_streams (int): Optional. Initial number of streams. If unset or 0, we will
                 provide a value of streams so as to produce reasonable throughput. Must be
                 non-negative. The number of streams may be lower than the requested number,
@@ -211,12 +220,8 @@ class BigQueryStorageClient(object):
                 the maximum amount of parallelism allowed by the system.
 
                 Streams must be read starting from offset 0.
-            parent (str): Required. Project which this ReadSession is associated with. This is the
-                project that will be billed for usage.
-            table_modifiers (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.TableModifiers]): Optional. Any modifiers to the Table (e.g. snapshot timestamp).
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.bigquery_storage_v1beta1.types.TableModifiers`
             read_options (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.TableReadOptions]): Optional. Read options for this session (e.g. column selection, filters).
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.TableReadOptions`
             format_ (~google.cloud.bigquery_storage_v1beta1.types.DataFormat): Data output format. Currently default to Avro.
@@ -253,9 +258,9 @@ class BigQueryStorageClient(object):
 
         request = storage_pb2.CreateReadSessionRequest(
             table_reference=table_reference,
-            requested_streams=requested_streams,
             parent=parent,
             table_modifiers=table_modifiers,
+            requested_streams=requested_streams,
             read_options=read_options,
             format=format_,
         )
@@ -298,7 +303,7 @@ class BigQueryStorageClient(object):
             >>>
             >>> client = bigquery_storage_v1beta1.BigQueryStorageClient()
             >>>
-            >>> # TODO: Initialize ``read_position``:
+            >>> # TODO: Initialize `read_position`:
             >>> read_position = {}
             >>>
             >>> for element in client.read_rows(read_position):
@@ -309,6 +314,7 @@ class BigQueryStorageClient(object):
             read_position (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.StreamPosition]): Required. Identifier of the position in the stream to start reading from.
                 The offset requested must be less than the last row read from ReadRows.
                 Requesting a larger offset is undefined.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.StreamPosition`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -374,10 +380,10 @@ class BigQueryStorageClient(object):
             >>>
             >>> client = bigquery_storage_v1beta1.BigQueryStorageClient()
             >>>
-            >>> # TODO: Initialize ``session``:
+            >>> # TODO: Initialize `session`:
             >>> session = {}
             >>>
-            >>> # TODO: Initialize ``requested_streams``:
+            >>> # TODO: Initialize `requested_streams`:
             >>> requested_streams = 0
             >>>
             >>> response = client.batch_create_read_session_streams(session, requested_streams)
@@ -385,6 +391,7 @@ class BigQueryStorageClient(object):
         Args:
             session (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.ReadSession]): Required. Must be a non-expired session obtained from a call to
                 CreateReadSession. Only the name field needs to be set.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.ReadSession`
             requested_streams (int): Required. Number of new streams requested. Must be positive.
@@ -466,13 +473,14 @@ class BigQueryStorageClient(object):
             >>>
             >>> client = bigquery_storage_v1beta1.BigQueryStorageClient()
             >>>
-            >>> # TODO: Initialize ``stream``:
+            >>> # TODO: Initialize `stream`:
             >>> stream = {}
             >>>
             >>> client.finalize_stream(stream)
 
         Args:
             stream (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.Stream]): Stream to finalize.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.Stream`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -524,11 +532,11 @@ class BigQueryStorageClient(object):
                           timeout=google.api_core.gapic_v1.method.DEFAULT,
                           metadata=None):
         """
-        Splits a given read stream into two Streams. These streams are referred to
-        as the primary and the residual of the split. The original stream can still
-        be read from in the same manner as before. Both of the returned streams can
-        also be read from, and the total rows return by both child streams will be
-        the same as the rows read from the original stream.
+        Splits a given read stream into two Streams. These streams are referred
+        to as the primary and the residual of the split. The original stream can
+        still be read from in the same manner as before. Both of the returned
+        streams can also be read from, and the total rows return by both child
+        streams will be the same as the rows read from the original stream.
 
         Moreover, the two child streams will be allocated back to back in the
         original Stream. Concretely, it is guaranteed that for streams Original,
@@ -543,13 +551,14 @@ class BigQueryStorageClient(object):
             >>>
             >>> client = bigquery_storage_v1beta1.BigQueryStorageClient()
             >>>
-            >>> # TODO: Initialize ``original_stream``:
+            >>> # TODO: Initialize `original_stream`:
             >>> original_stream = {}
             >>>
             >>> response = client.split_read_stream(original_stream)
 
         Args:
             original_stream (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.Stream]): Stream to split.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.Stream`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used

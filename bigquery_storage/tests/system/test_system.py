@@ -44,8 +44,8 @@ def table_reference():
 def test_read_rows(client, project_id, table_reference):
     session = client.create_read_session(
         table_reference,
+        'projects/{}'.format(project_id),
         requested_streams=1,
-        parent='projects/{}'.format(project_id),
     )
 
     stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
@@ -60,7 +60,6 @@ def test_read_rows(client, project_id, table_reference):
 def test_split_read_stream(client, project_id, table_reference):
     session = client.create_read_session(
         table_reference,
-        requested_streams=1,
         parent='projects/{}'.format(project_id),
     )
 

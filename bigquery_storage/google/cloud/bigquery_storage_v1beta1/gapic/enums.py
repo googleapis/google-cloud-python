@@ -23,7 +23,7 @@ class DataFormat(enum.IntEnum):
     Data format for input or output data.
 
     Attributes:
-      DATA_FORMAT_UNSPECIFIED (int)
+      DATA_FORMAT_UNSPECIFIED (int): Data format is unspecified.
       AVRO (int): Avro is a standard open source row based file format.
       See https://avro.apache.org/ for more details.
     """

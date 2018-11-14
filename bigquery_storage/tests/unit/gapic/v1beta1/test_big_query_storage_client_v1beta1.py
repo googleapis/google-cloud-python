@@ -82,16 +82,14 @@ class TestBigQueryStorageClient(object):
 
         # Setup Request
         table_reference = {}
-        requested_streams = 1017221410
+        parent = 'parent-995424086'
 
-        response = client.create_read_session(table_reference,
-                                              requested_streams)
+        response = client.create_read_session(table_reference, parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = storage_pb2.CreateReadSessionRequest(
-            table_reference=table_reference,
-            requested_streams=requested_streams)
+            table_reference=table_reference, parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -103,10 +101,10 @@ class TestBigQueryStorageClient(object):
 
         # Setup request
         table_reference = {}
-        requested_streams = 1017221410
+        parent = 'parent-995424086'
 
         with pytest.raises(CustomException):
-            client.create_read_session(table_reference, requested_streams)
+            client.create_read_session(table_reference, parent)
 
     def test_read_rows(self):
         # Setup Expected Response

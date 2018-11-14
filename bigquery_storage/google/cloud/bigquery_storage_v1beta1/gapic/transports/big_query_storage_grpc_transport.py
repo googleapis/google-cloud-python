@@ -186,11 +186,11 @@ class BigQueryStorageGrpcTransport(object):
     def split_read_stream(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Splits a given read stream into two Streams. These streams are referred to
-        as the primary and the residual of the split. The original stream can still
-        be read from in the same manner as before. Both of the returned streams can
-        also be read from, and the total rows return by both child streams will be
-        the same as the rows read from the original stream.
+        Splits a given read stream into two Streams. These streams are referred
+        to as the primary and the residual of the split. The original stream can
+        still be read from in the same manner as before. Both of the returned
+        streams can also be read from, and the total rows return by both child
+        streams will be the same as the rows read from the original stream.
 
         Moreover, the two child streams will be allocated back to back in the
         original Stream. Concretely, it is guaranteed that for streams Original,

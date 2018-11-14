@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.api_core.gapic_v1 import client_info
 import mock
 import pytest
 
@@ -47,7 +48,24 @@ def client_under_test(mock_transport):
     )
 
 
-def test_create_read_session_w_parent(mock_transport, client_under_test):
+def test_constructor_w_client_info(mock_transport):
+    from google.cloud.bigquery_storage_v1beta1 import client
+
+    def transport_callable(credentials=None, default_class=None):
+        return mock_transport
+
+    client_under_test = client.BigQueryStorageClient(
+        transport=transport_callable,
+        client_info=client_info.ClientInfo(
+            client_library_version='test-client-version',
+        ),
+    )
+
+    user_agent = client_under_test._client_info.to_user_agent()
+    assert 'test-client-version' in user_agent
+
+
+def test_create_read_session(mock_transport, client_under_test):
     table_reference = types.TableReference(
         project_id='data-project-id',
         dataset_id='dataset_id',
@@ -56,10 +74,7 @@ def test_create_read_session_w_parent(mock_transport, client_under_test):
 
     client_under_test.create_read_session(
         table_reference,
-        # TODO: requested_streams should be optional.
-        #       Can remove after CL 220489471.
-        requested_streams=0,
-        parent='projects/other-project',
+        'projects/other-project',
     )
 
     expected_request = types.CreateReadSessionRequest(
