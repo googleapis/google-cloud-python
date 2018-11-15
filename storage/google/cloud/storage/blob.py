@@ -1512,7 +1512,9 @@ class Blob(_PropertyMixin):
         return api_response["rewriteToken"], rewritten, size
 
     def update_storage_class(self, new_class, client=None):
-        """Update blob's storage class via a rewrite-in-place.
+        """Update blob's storage class via a rewrite-in-place. This helper will
+        wait for the rewrite to complete before returning, so it may take some
+        time for large files.
 
         See
         https://cloud.google.com/storage/docs/per-object-storage-class
@@ -1530,25 +1532,15 @@ class Blob(_PropertyMixin):
         if new_class not in self._STORAGE_CLASSES:
             raise ValueError("Invalid storage class: %s" % (new_class,))
 
-        client = self._require_client(client)
+        # Update current blob's storage class prior to rewrite
+        self._patch_property('storageClass', new_class)
 
-        query_params = {}
-
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
-
-        headers = _get_encryption_headers(self._encryption_key)
-        headers.update(_get_encryption_headers(self._encryption_key, source=True))
-
-        api_response = client._connection.api_request(
-            method="POST",
-            path=self.path + "/rewriteTo" + self.path,
-            query_params=query_params,
-            data={"storageClass": new_class},
-            headers=headers,
-            _target_object=self,
-        )
-        self._set_properties(api_response["resource"])
+        # Execute consecutive rewrite operations until operation is done
+        token = None
+        while True:
+            token, _, _ = self.rewrite(self, token=token)
+            if token is None:
+                break
 
     cache_control = _scalar_property("cacheControl")
     """HTTP 'Cache-Control' header for this object.
@@ -1815,7 +1807,7 @@ class Blob(_PropertyMixin):
     This can only be set at blob / object **creation** time. If you'd
     like to change the storage class **after** the blob / object already
     exists in a bucket, call :meth:`update_storage_class` (which uses
-    the "storage.objects.rewrite" method).
+    :meth:`rewrite`).
 
     See https://cloud.google.com/storage/docs/storage-classes
 
