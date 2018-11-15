@@ -121,10 +121,27 @@ def system(session):
     session.install("-e", ".")
 
     # Run py.test against the system tests.
+<<<<<<< HEAD
     if system_test_exists:
         session.run("py.test", "--quiet", system_test_path, *session.posargs)
     if system_test_folder_exists:
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
+=======
+    session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)
+
+
+@nox.session(python='3.7')
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install('flake8', *LOCAL_DEPS)
+    session.install('.')
+    session.run('flake8', 'google', 'tests', 'docs')
+
+>>>>>>> add column family snippets
 
 
 @nox.session(python="3.7")
@@ -140,7 +157,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=['2.7', '3.7'])
+@nox.session(python=['3.7'])
 def snippets(session):
     """Run the documentation example snippets."""
     # Sanity check: Only run snippets system tests if the environment variable
@@ -154,15 +171,18 @@ def snippets(session):
         session.install('-e', local_dep)
     session.install('-e', '../test_utils/')
     session.install('-e', '.')
+    #'--quiet',
     session.run(
         'py.test',
-        '--quiet',
         os.path.join('docs', 'snippets.py'),
         *session.posargs
+<<<<<<< HEAD
     )
     session.run(
         'py.test',
         '--quiet',
         os.path.join('docs', 'snippets_table.py'),
         *session.posargs
+=======
+>>>>>>> add column family snippets
     )

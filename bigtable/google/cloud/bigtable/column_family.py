@@ -43,6 +43,12 @@ class GarbageCollectionRule(object):
 class MaxVersionsGCRule(GarbageCollectionRule):
     """Garbage collection limiting the number of versions of a cell.
 
+    For example:
+
+    .. literalinclude:: snippets.py
+        :start-after: [START bigtable_create_MaxVersionsGCRule]
+        :end-before: [END bigtable_create_MaxVersionsGCRule]
+
     :type max_num_versions: int
     :param max_num_versions: The maximum number of versions
     """
@@ -69,6 +75,12 @@ class MaxVersionsGCRule(GarbageCollectionRule):
 
 class MaxAgeGCRule(GarbageCollectionRule):
     """Garbage collection limiting the age of a cell.
+
+    For example:
+
+    .. literalinclude:: snippets.py
+        :start-after: [START bigtable_create_MaxAgeGCRule]
+        :end-before: [END bigtable_create_MaxAgeGCRule]
 
     :type max_age: :class:`datetime.timedelta`
     :param max_age: The maximum age allowed for a cell in the table.
@@ -98,6 +110,12 @@ class MaxAgeGCRule(GarbageCollectionRule):
 class GCRuleUnion(GarbageCollectionRule):
     """Union of garbage collection rules.
 
+    For example:
+
+    .. literalinclude:: snippets.py
+        :start-after: [START bigtable_create_GCRuleUnion]
+        :end-before: [END bigtable_create_GCRuleUnion]
+
     :type rules: list
     :param rules: List of :class:`GarbageCollectionRule`.
     """
@@ -125,6 +143,12 @@ class GCRuleUnion(GarbageCollectionRule):
 
 class GCRuleIntersection(GarbageCollectionRule):
     """Intersection of garbage collection rules.
+
+    For example:
+
+    .. literalinclude:: snippets.py
+        :start-after: [START bigtable_create_GCRuleIntersection]
+        :end-before: [END bigtable_create_GCRuleIntersection]
 
     :type rules: list
     :param rules: List of :class:`GarbageCollectionRule`.
@@ -183,12 +207,18 @@ class ColumnFamily(object):
     def name(self):
         """Column family name used in requests.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_column_family_name]
+            :end-before: [END bigtable_column_family_name]
+
         .. note::
 
           This property will not change if ``column_family_id`` does not, but
           the return value is not cached.
 
-        The table name is of the form
+        The Column family name is of the form
 
             ``"projects/../zones/../clusters/../tables/../columnFamilies/.."``
 
@@ -221,7 +251,15 @@ class ColumnFamily(object):
             return table_v2_pb2.ColumnFamily(gc_rule=self.gc_rule.to_pb())
 
     def create(self):
-        """Create this column family."""
+        """Create this column family.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_column_family]
+            :end-before: [END bigtable_create_column_family]
+
+        """
         column_family = self.to_pb()
         modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
             id=self.column_family_id, create=column_family
@@ -236,6 +274,12 @@ class ColumnFamily(object):
 
     def update(self):
         """Update this column family.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_update_column_family]
+            :end-before: [END bigtable_update_column_family]
 
         .. note::
 
@@ -255,10 +299,25 @@ class ColumnFamily(object):
         )
 
     def delete(self):
+<<<<<<< HEAD
         """Delete this column family."""
         modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
             id=self.column_family_id, drop=True
         )
+=======
+        """Delete this column family.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_delete_column_family]
+            :end-before: [END bigtable_delete_column_family]
+
+        """
+        modification = (
+            table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
+                id=self.column_family_id, drop=True))
+>>>>>>> add column family snippets
 
         client = self._table._instance._client
         # data it contains are the GC rule and the column family ID already
