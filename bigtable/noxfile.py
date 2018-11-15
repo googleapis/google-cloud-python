@@ -82,7 +82,7 @@ def system(session):
     session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)
 
 
-@nox.session(python='3.6')
+@nox.session(python='3.7')
 def lint(session):
     """Run linters.
 
@@ -115,7 +115,7 @@ def cover(session):
     session.run('coverage', 'erase')
 
 
-@nox.session(python=['2.7', '3.7'])
+@nox.session(python=['3.7'])
 def snippets(session):
     """Run the system test suite."""
     # Sanity check: Only run system tests if the environment variable is set.
@@ -128,9 +128,9 @@ def snippets(session):
         session.install('-e', local_dep)
     session.install('-e', '../test_utils/')
     session.install('-e', '.')
+    #'--quiet',
     session.run(
         'py.test',
-        '--quiet',
         os.path.join('docs', 'snippets.py'),
-        *session.posargs,
+        *session.posargs
     )
