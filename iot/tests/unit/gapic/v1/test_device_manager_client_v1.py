@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import iot_v1
@@ -73,7 +76,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -91,7 +97,10 @@ class TestDeviceManagerClient(object):
     def test_create_device_registry_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -109,7 +118,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         name = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
@@ -126,7 +138,10 @@ class TestDeviceManagerClient(object):
     def test_get_device_registry_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         name = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
@@ -143,7 +158,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         device_registry = {}
@@ -161,7 +179,10 @@ class TestDeviceManagerClient(object):
     def test_update_device_registry_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         device_registry = {}
@@ -172,7 +193,10 @@ class TestDeviceManagerClient(object):
 
     def test_delete_device_registry(self):
         channel = ChannelStub()
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         name = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
@@ -188,7 +212,10 @@ class TestDeviceManagerClient(object):
     def test_delete_device_registry_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         name = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
@@ -210,7 +237,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -229,7 +259,10 @@ class TestDeviceManagerClient(object):
 
     def test_list_device_registries_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -254,7 +287,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         parent = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
@@ -272,7 +308,10 @@ class TestDeviceManagerClient(object):
     def test_create_device_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         parent = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
@@ -297,7 +336,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]',
@@ -314,7 +356,10 @@ class TestDeviceManagerClient(object):
     def test_get_device_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]',
@@ -339,7 +384,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         device = {}
@@ -357,7 +405,10 @@ class TestDeviceManagerClient(object):
     def test_update_device_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         device = {}
@@ -368,7 +419,10 @@ class TestDeviceManagerClient(object):
 
     def test_delete_device(self):
         channel = ChannelStub()
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]',
@@ -384,7 +438,10 @@ class TestDeviceManagerClient(object):
     def test_delete_device_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]',
@@ -407,7 +464,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         parent = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
@@ -425,7 +485,10 @@ class TestDeviceManagerClient(object):
 
     def test_list_devices_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         parent = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
@@ -443,7 +506,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]',
@@ -462,7 +528,10 @@ class TestDeviceManagerClient(object):
     def test_modify_cloud_to_device_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]',
@@ -480,7 +549,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]',
@@ -498,7 +570,10 @@ class TestDeviceManagerClient(object):
     def test_list_device_config_versions_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]',
@@ -515,7 +590,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]',
@@ -533,7 +611,10 @@ class TestDeviceManagerClient(object):
     def test_list_device_states_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]',
@@ -551,7 +632,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         resource = client.registry_path('[PROJECT]', '[LOCATION]',
@@ -570,7 +654,10 @@ class TestDeviceManagerClient(object):
     def test_set_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         resource = client.registry_path('[PROJECT]', '[LOCATION]',
@@ -589,7 +676,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         resource = client.registry_path('[PROJECT]', '[LOCATION]',
@@ -607,7 +697,10 @@ class TestDeviceManagerClient(object):
     def test_get_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         resource = client.registry_path('[PROJECT]', '[LOCATION]',
@@ -624,7 +717,10 @@ class TestDeviceManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup Request
         resource = client.registry_path('[PROJECT]', '[LOCATION]',
@@ -643,7 +739,10 @@ class TestDeviceManagerClient(object):
     def test_test_iam_permissions_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = iot_v1.DeviceManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = iot_v1.DeviceManagerClient()
 
         # Setup request
         resource = client.registry_path('[PROJECT]', '[LOCATION]',

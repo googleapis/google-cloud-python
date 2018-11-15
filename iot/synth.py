@@ -29,3 +29,5 @@ library = gapic.py_library(
     artman_output_name='iot-v1')
 
 s.move(library / 'google/cloud/iot_v1')
+s.move(library / 'tests/unit/gapic')
+s.move(library / 'tests/system/gapic')
