@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import errorreporting_v1beta1
@@ -74,8 +77,10 @@ class TestErrorStatsServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = errorreporting_v1beta1.ErrorStatsServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = errorreporting_v1beta1.ErrorStatsServiceClient()
 
         # Setup Request
         project_name = client.project_path('[PROJECT]')
@@ -95,8 +100,10 @@ class TestErrorStatsServiceClient(object):
 
     def test_list_group_stats_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = errorreporting_v1beta1.ErrorStatsServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = errorreporting_v1beta1.ErrorStatsServiceClient()
 
         # Setup request
         project_name = client.project_path('[PROJECT]')
@@ -120,8 +127,10 @@ class TestErrorStatsServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = errorreporting_v1beta1.ErrorStatsServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = errorreporting_v1beta1.ErrorStatsServiceClient()
 
         # Setup Request
         project_name = client.project_path('[PROJECT]')
@@ -141,8 +150,10 @@ class TestErrorStatsServiceClient(object):
 
     def test_list_events_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = errorreporting_v1beta1.ErrorStatsServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = errorreporting_v1beta1.ErrorStatsServiceClient()
 
         # Setup request
         project_name = client.project_path('[PROJECT]')
@@ -160,8 +171,10 @@ class TestErrorStatsServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = errorreporting_v1beta1.ErrorStatsServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = errorreporting_v1beta1.ErrorStatsServiceClient()
 
         # Setup Request
         project_name = client.project_path('[PROJECT]')
@@ -178,8 +191,10 @@ class TestErrorStatsServiceClient(object):
     def test_delete_events_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = errorreporting_v1beta1.ErrorStatsServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = errorreporting_v1beta1.ErrorStatsServiceClient()
 
         # Setup request
         project_name = client.project_path('[PROJECT]')
