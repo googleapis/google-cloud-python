@@ -16,15 +16,15 @@
 
 import time
 
-from google.cloud import language_v1
-from google.cloud.language_v1 import enums
-from google.cloud.language_v1.proto import language_service_pb2
+from google.cloud import language_v1beta2
+from google.cloud.language_v1beta2 import enums
+from google.cloud.language_v1beta2.proto import language_service_pb2
 
 
 class TestSystemLanguageService(object):
     def test_analyze_sentiment(self):
 
-        client = language_v1.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
         content = 'Hello, world!'
         type_ = enums.Document.Type.PLAIN_TEXT
         document = {'content': content, 'type': type_}

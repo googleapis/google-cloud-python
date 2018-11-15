@@ -31,3 +31,5 @@ for version in versions:
 
     s.move(library / f'google/cloud/language_{version}/proto')
     s.move(library / f'google/cloud/language_{version}/gapic')
+    s.move(library / f'tests/unit/gapic/{version}')
+    s.move(library / f'tests/system/gapic/{version}')
