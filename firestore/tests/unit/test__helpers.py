@@ -933,7 +933,7 @@ class Test_filter_document_data_by_field_paths(unittest.TestCase):
 
         return filter_document_data_by_field_paths(document_data, field_paths)
 
-    def test_w_non_leaf_child(self):
+    def test_w_leaf_child(self):
         document = {'a': {'b': {'c': 1, 'd': 2}}, 'x': 1}
         field_paths = ['a.b.c']
         expected = {'a': {'b': {'c': 1}}}
@@ -1429,7 +1429,7 @@ class Test_process_server_timestamp(unittest.TestCase):
 
     @staticmethod
     def _call_fut(document_data, split_on_dots):
-        from google.cloud.firestore_v1beta1 import _helpers 
+        from google.cloud.firestore_v1beta1 import _helpers
 
         return _helpers.process_server_timestamp(
             document_data, split_on_dots=split_on_dots)
@@ -1870,7 +1870,6 @@ class Test_pbs_for_set_no_merge(unittest.TestCase):
 
     def _helper(self, do_transform=False, empty_val=False):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
-        from google.cloud.firestore_v1beta1.proto import common_pb2
 
         document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
         document_data = {
@@ -1930,7 +1929,8 @@ class Test_all_merge_paths(unittest.TestCase):
     def test_w_empty(self):
         document_data = {}
 
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data)
 
         self.assertEqual(transform_paths, [])
@@ -1942,7 +1942,8 @@ class Test_all_merge_paths(unittest.TestCase):
     def test_w_simple(self):
         document_data = {'a': {'b': 'c'}}
 
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data)
 
         path = self._make_field_path('a', 'b')
@@ -1957,7 +1958,8 @@ class Test_all_merge_paths(unittest.TestCase):
 
         document_data = {'a': {'b': SERVER_TIMESTAMP}}
 
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data)
 
         path = self._make_field_path('a', 'b')
@@ -1972,7 +1974,8 @@ class Test_all_merge_paths(unittest.TestCase):
 
         document_data = {'a': {'b': 'd', 'c': SERVER_TIMESTAMP}}
 
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data)
 
         path_a_b = self._make_field_path('a', 'b')
@@ -2001,7 +2004,8 @@ class Test_normalize_merge_paths(unittest.TestCase):
     def test_w_empty_document_empty_merge_list(self):
         document_data = {}
 
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data, [])
 
         self.assertEqual(transform_paths, [])
@@ -2019,7 +2023,6 @@ class Test_normalize_merge_paths(unittest.TestCase):
 
     def test_w_merge_path_parent(self):
         document_data = {'a': {'b': 'c', 'd': 'e'}}
-        merge_path = self._make_field_path('a', 'b')
 
         with self.assertRaises(ValueError):
             self._call_fut(document_data, ['a', 'a.b'])
@@ -2031,7 +2034,8 @@ class Test_normalize_merge_paths(unittest.TestCase):
         document_data = {'a': {'b': 'c', 'd': 'e'}}
         merge_path = self._make_field_path('a', 'b')
 
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data, [merge_path])
 
         self.assertEqual(transform_paths, [])
@@ -2047,7 +2051,8 @@ class Test_normalize_merge_paths(unittest.TestCase):
         merge_string = 'a.b'
         merge_path = self._make_field_path('a', 'b')
 
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data, [merge_string])
 
         self.assertEqual(transform_paths, [merge_path])
@@ -2062,7 +2067,8 @@ class Test_normalize_merge_paths(unittest.TestCase):
         document_data = {'a': {'b': SERVER_TIMESTAMP, 'c': 'd'}}
         merge_path = self._make_field_path('a')
 
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data, [merge_path])
 
         path_a_b = self._make_field_path('a', 'b')
@@ -2080,7 +2086,8 @@ class Test_normalize_merge_paths(unittest.TestCase):
         path_a_b = self._make_field_path('a', 'b')
         path_a_c = self._make_field_path('a', 'c')
 
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data, [path_a_b, path_a_c])
 
         self.assertEqual(transform_paths, [path_a_b])

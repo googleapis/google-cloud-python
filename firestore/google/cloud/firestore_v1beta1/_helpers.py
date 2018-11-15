@@ -1218,10 +1218,12 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
     create_empty = not document_data
 
     if merge is True:
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = all_merge_paths(document_data)
     else:
-        (transform_paths, actual_data, data_merge, transform_merge, merge,
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = normalize_merge_paths(document_data, merge)
 
     write_pbs = []
