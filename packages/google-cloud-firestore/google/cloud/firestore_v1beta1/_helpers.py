@@ -120,21 +120,12 @@ class FieldPath(object):
         parts: (one or more strings)
             Indicating path of the key to be used.
     """
-    simple_field_name = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
-
     def __init__(self, *parts):
         for part in parts:
             if not isinstance(part, six.string_types) or not part:
                 error = 'One or more components is not a string or is empty.'
                 raise ValueError(error)
         self.parts = tuple(parts)
-
-    def __repr__(self):
-        paths = ""
-        for part in self.parts:
-            paths += "'" + part + "',"
-        paths = paths[:-1]
-        return 'FieldPath({})'.format(paths)
 
     @staticmethod
     def from_string(string):
@@ -154,6 +145,7 @@ class FieldPath(object):
             A :class: `FieldPath` instance with the string split on "."
             as arguments to `FieldPath`.
         """
+        # XXX this should just handle things with the invalid chars
         invalid_characters = '~*/[]'
         for invalid_character in invalid_characters:
             if invalid_character in string:
@@ -161,23 +153,12 @@ class FieldPath(object):
         string = string.split('.')
         return FieldPath(*string)
 
-    def to_api_repr(self):
-        """ Returns quoted string representation of the FieldPath
-
-        Returns: :rtype: str
-            Quoted string representation of the path stored
-            within this FieldPath conforming to the Firestore API
-            specification
-        """
-        api_repr = []
+    def __repr__(self):
+        paths = ""
         for part in self.parts:
-            match = re.match(self.simple_field_name, part)
-            if match and match.group(0) == part:
-                api_repr.append(part)
-            else:
-                replaced = part.replace('\\', '\\\\').replace('`', '\\`')
-                api_repr.append('`' + replaced + '`')
-        return '.'.join(api_repr)
+            paths += "'" + part + "',"
+        paths = paths[:-1]
+        return 'FieldPath({})'.format(paths)
 
     def __hash__(self):
         return hash(self.to_api_repr())
@@ -185,6 +166,11 @@ class FieldPath(object):
     def __eq__(self, other):
         if isinstance(other, FieldPath):
             return self.parts == other.parts
+        return NotImplemented
+
+    def __lt__(self, other):
+        if isinstance(other, FieldPath):
+            return self.parts < other.parts
         return NotImplemented
 
     def __add__(self, other):
@@ -202,6 +188,19 @@ class FieldPath(object):
             return FieldPath(*parts)
         else:
             return NotImplemented
+
+    def eq_or_parent(self, other):
+        return self.parts[:len(other.parts)] == other.parts[:len(self.parts)]
+
+    def to_api_repr(self):
+        """ Returns quoted string representation of the FieldPath
+
+        Returns: :rtype: str
+            Quoted string representation of the path stored
+            within this FieldPath conforming to the Firestore API
+            specification
+        """
+        return get_field_path(self.parts)
 
 
 class FieldPathHelper(object):
@@ -416,13 +415,6 @@ class FieldPathHelper(object):
         return helper.parse()
 
 
-class ReadAfterWriteError(Exception):
-    """Raised when a read is attempted after a write.
-
-    Raised by "read" methods that use transactions.
-    """
-
-
 def verify_path(path, is_collection):
     """Verifies that a ``path`` has the correct form.
 
@@ -538,6 +530,49 @@ def encode_dict(values_dict):
         key: encode_value(value)
         for key, value in six.iteritems(values_dict)
     }
+
+
+def extract_field_paths(document_data):
+    """Extract field paths from document data
+    Args:
+       document_data (dict): The dictionary of the actual set data.
+    Returns:
+       List[~.firestore_v1beta1._helpers.FieldPath]:
+           A list of `FieldPath` instances from the actual data.
+    """
+    field_paths = []
+    for field_name, value in six.iteritems(document_data):
+
+        if isinstance(value, dict):
+            for sub_path in extract_field_paths(value):
+                field_path = FieldPath(field_name, *sub_path.parts)
+        else:
+            field_path = FieldPath(field_name)
+
+        field_paths.append(field_path)
+
+    return field_paths
+
+
+def filter_document_data_by_field_paths(document_data, field_paths):
+    flattened = {}
+    toplevel = {}
+
+    for path in field_paths:
+        flattened[path] = get_nested_value(path, document_data)
+
+    for path, value in six.iteritems(flattened):
+        filtered = toplevel
+        parts = parse_field_path(path)
+
+        for part in parts:
+            parent, lastpart = filtered, part
+            filtered.setdefault(part, {})
+            filtered = filtered[part]
+
+        parent[lastpart] = value
+
+    return toplevel
 
 
 def reference_value_to_document(reference_value, client):
@@ -673,21 +708,87 @@ def get_field_path(field_names):
     Returns:
         str: The ``.``-delimited field path.
     """
-    return FIELD_PATH_DELIMITER.join(field_names)
+    simple_field_name = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
+    result = []
+
+    for field_name in field_names:
+        match = re.match(simple_field_name, field_name)
+        if match and match.group(0) == field_name:
+            result.append(field_name)
+        else:
+            replaced = field_name.replace('\\', '\\\\').replace('`', '\\`')
+            result.append('`' + replaced + '`')
+
+    return FIELD_PATH_DELIMITER.join(result)
 
 
-def parse_field_path(field_path):
+def parse_field_path(api_repr):
     """Parse a **field path** from into a list of nested field names.
 
     See :func:`field_path` for more on **field paths**.
 
     Args:
-        field_path (str): The ``.``-delimited field path to parse.
+        api_repr (str):
+            The unique Firestore api representation which consists of
+            either simple or UTF-8 field names. It cannot exceed
+            1500 bytes, and cannot be empty. Simple field names match
+            `'^[_a-zA-Z][_a-zA-Z0-9]*$'`. All other field names are
+            escaped with ```.
 
     Returns:
         List[str, ...]: The list of field names in the field path.
     """
-    return field_path.split(FIELD_PATH_DELIMITER)
+    # code dredged back up from
+    # https://github.com/googleapis/google-cloud-python/pull/5109/files
+    field_names = []
+    while api_repr:
+        field_name, api_repr = _parse_field_name(api_repr)
+        # non-simple field name
+        if field_name[0] == '`' and field_name[-1] == '`':
+            field_name = field_name[1:-1]
+            field_name = field_name.replace('\\`', '`')
+            field_name = field_name.replace('\\\\', '\\')
+        field_names.append(field_name)
+    return field_names
+
+
+def _parse_field_name(api_repr):
+    """
+    Parses the api_repr into the first field name and the rest
+         Args:
+            api_repr (str): The unique Firestore api representation.
+         Returns:
+            Tuple[str, str]:
+                A tuple with the first field name and the api_repr
+                of the rest.
+    """
+    # XXX code dredged back up from
+    # https://github.com/googleapis/google-cloud-python/pull/5109/files;
+    # probably needs some speeding up
+
+    if '.' not in api_repr:
+        return api_repr, None
+
+    if api_repr[0] != '`':  # first field name is simple
+        index = api_repr.index('.')
+        return api_repr[:index], api_repr[index+1:]  # skips delimiter
+
+    # starts with backtick:  find next non-escaped backtick.
+    index = 1
+    while index < len(api_repr):
+
+        if api_repr[index] == '`':  # end of quoted field name
+            break
+
+        if api_repr[index] == '\\':  # escape character, skip next
+            index += 2
+        else:
+            index += 1
+
+    if index == len(api_repr):  # no closing backtick found
+        raise ValueError("No closing backtick: {}".format(api_repr))
+
+    return api_repr[:index+1], api_repr[index+2:]
 
 
 def get_nested_value(field_path, data):
@@ -793,7 +894,7 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-def process_server_timestamp(document_data, split_on_dots=True):
+def process_server_timestamp(document_data, split_on_dots):
     """Remove all server timestamp sentinel values from data.
 
     If the data is nested, for example:
@@ -852,13 +953,13 @@ def process_server_timestamp(document_data, split_on_dots=True):
         if split_on_dots:
             top_level_path = FieldPath(*field_name.split("."))
         else:
-            top_level_path = FieldPath.from_string(field_name)
+            top_level_path = FieldPath(field_name)
         if isinstance(value, dict):
             if len(value) == 0:
                 actual_data[field_name] = value
                 continue
             sub_transform_paths, sub_data, sub_field_paths = (
-                process_server_timestamp(value, False))
+                process_server_timestamp(value, split_on_dots=False))
             for sub_transform_path in sub_transform_paths:
                 transform_path = FieldPath.from_string(field_name)
                 transform_path.parts = (
@@ -868,7 +969,7 @@ def process_server_timestamp(document_data, split_on_dots=True):
                 # Only add a key to ``actual_data`` if there is data.
                 actual_data[field_name] = sub_data
                 for sub_field_path in sub_field_paths:
-                    field_path = FieldPath.from_string(field_name)
+                    field_path = FieldPath(field_name)
                     field_path.parts = field_path.parts + sub_field_path.parts
                     field_paths.append(field_path)
         elif value is constants.SERVER_TIMESTAMP:
@@ -930,46 +1031,240 @@ def get_transform_pb(document_path, transform_paths):
     )
 
 
-def pbs_for_set(document_path, document_data, merge=False, exists=None):
+def pbs_for_create(document_path, document_data):
+    """Make ``Write`` protobufs for ``create()`` methods.
+
+    Args:
+        document_path (str): A fully-qualified document path.
+        document_data (dict): Property names and values to use for
+            creating a document.
+
+    Returns:
+        List[google.cloud.firestore_v1beta1.types.Write]: One or two
+        ``Write`` protobuf instances for ``create()``.
+    """
+    transform_paths, actual_data, field_paths = process_server_timestamp(
+        document_data, split_on_dots=False)
+
+    write_pbs = []
+
+    empty_document = not document_data
+
+    if empty_document or actual_data:
+
+        update_pb = write_pb2.Write(
+            update=document_pb2.Document(
+                name=document_path,
+                fields=encode_dict(actual_data),
+            ),
+            current_document=common_pb2.Precondition(exists=False),
+        )
+
+        write_pbs.append(update_pb)
+
+    if transform_paths:
+        transform_pb = get_transform_pb(document_path, transform_paths)
+        if not actual_data:
+            transform_pb.current_document.CopyFrom(
+                common_pb2.Precondition(exists=False))
+        write_pbs.append(transform_pb)
+
+    return write_pbs
+
+
+def pbs_for_set_no_merge(document_path, document_data):
     """Make ``Write`` protobufs for ``set()`` methods.
 
     Args:
         document_path (str): A fully-qualified document path.
         document_data (dict): Property names and values to use for
             replacing a document.
-        merge (bool): Whether to merge the fields or replace them
-        exists (bool): If set, a precondition to indicate whether the
-            document should exist or not. Used for create.
 
     Returns:
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
     transform_paths, actual_data, field_paths = process_server_timestamp(
-        document_data, False)
-    update_pb = write_pb2.Write(
-        update=document_pb2.Document(
+        document_data, split_on_dots=False)
+
+    write_pbs = [
+        write_pb2.Write(
+            update=document_pb2.Document(
+                name=document_path,
+                fields=encode_dict(actual_data),
+            )
+        ),
+    ]
+
+    if transform_paths:
+        transform_pb = get_transform_pb(document_path, transform_paths)
+        write_pbs.append(transform_pb)
+
+    return write_pbs
+
+
+def all_merge_paths(document_data):
+    """Compute all merge paths from document data.
+
+    Args:
+        document_data (dict): Property names and values to use for
+            replacing a document.
+
+    Returns:
+        Tuple: (
+            transform_paths,
+            actual_data,
+            data_merge,
+            transform_merge,
+            merge,
+        )
+    """
+    transform_paths, actual_data, field_paths = process_server_timestamp(
+        document_data, split_on_dots=False)
+
+    merge = sorted(field_paths + transform_paths)
+
+    return (
+        transform_paths, actual_data, field_paths, transform_paths, merge)
+
+
+def normalize_merge_paths(document_data, merge):
+    """Normalize merge paths against document data.
+
+    Args:
+        document_data (dict): Property names and values to use for
+            replacing a document.
+        merge (Optional[bool] or Optional[List<apispec>]):
+            If True, merge all fields; else, merge only the named fields.
+
+    Returns:
+        Tuple: (
+            transform_paths,
+            actual_data,
+            data_merge,
+            transform_merge,
+            merge,
+        )
+    """
+    transform_paths, actual_data, field_paths = process_server_timestamp(
+        document_data, split_on_dots=False)
+
+    # merge is list of paths provided by enduser; convert merge
+    # elements into FieldPaths if they aren't already
+    new_merge = []
+    data_merge = []
+    transform_merge = []
+
+    for merge_field in merge:
+        if isinstance(merge_field, FieldPath):
+            merge_fp = merge_field
+        else:
+            merge_fp = FieldPath(*parse_field_path(merge_field))
+        new_merge.append(merge_fp)
+
+        if merge_fp in transform_paths:
+            transform_merge.append(merge_fp)
+
+        for fp in field_paths:
+            if merge_fp.eq_or_parent(fp):
+                data_merge.append(fp)
+
+    merge = new_merge
+
+    # the conformance tests require that one merge path may not be the
+    # prefix of another, XXX quadratic is expensive, fix
+    for fp1 in merge:
+        for fp2 in merge:
+            if fp1 != fp2 and fp1.eq_or_parent(fp2):
+                raise ValueError(
+                    'a merge path may not be a parent of another merge '
+                    'path'
+                )
+
+    # the conformance tests require that an exception be raised if any
+    # merge spec is not in the data, and the below happens to raise a
+    # keyerror XXX do this without so much expense, maybe by ensuring that
+    # each of the merge fieldpaths are in the union of transform_merge and
+    # data_merge
+    filter_document_data_by_field_paths(
+        document_data,
+        field_paths=[fp.to_api_repr() for fp in merge],
+    )
+
+    # XXX dont pass apireprs to filter_d_d_b_p, pass FieldPaths
+    actual_data = filter_document_data_by_field_paths(
+        document_data,
+        field_paths=[fp.to_api_repr() for fp in data_merge],
+    )
+
+    return (
+        transform_paths, actual_data, data_merge, transform_merge, merge)
+
+
+def pbs_for_set_with_merge(document_path, document_data, merge):
+    """Make ``Write`` protobufs for ``set()`` methods.
+
+    Args:
+        document_path (str): A fully-qualified document path.
+        document_data (dict): Property names and values to use for
+            replacing a document.
+        merge (Optional[bool] or Optional[List<apispec>]):
+            If True, merge all fields; else, merge only the named fields.
+
+    Returns:
+        List[google.cloud.firestore_v1beta1.types.Write]: One
+        or two ``Write`` protobuf instances for ``set()``.
+    """
+    create_empty = not document_data
+
+    if merge is True:
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = all_merge_paths(document_data)
+    else:
+        (
+            transform_paths, actual_data, data_merge, transform_merge, merge,
+        ) = normalize_merge_paths(document_data, merge)
+
+    write_pbs = []
+    update_pb = write_pb2.Write()
+
+    update_paths = set(data_merge)
+
+    # for whatever reason, the conformance tests want to see the parent
+    # of nested transform paths in the update mask
+    # (see set-st-merge-nonleaf-alone.textproto)
+    for transform_path in transform_paths:
+        if len(transform_path.parts) > 1:
+            parent_fp = FieldPath(*transform_path.parts[:-1])
+            update_paths.add(parent_fp)
+
+    if actual_data or create_empty or update_paths:
+        update = document_pb2.Document(
             name=document_path,
             fields=encode_dict(actual_data),
-        ),
-    )
-    if exists is not None:
-        update_pb.current_document.CopyFrom(
-            common_pb2.Precondition(exists=exists))
+        )
+        update_pb.update.CopyFrom(update)
 
-    if merge:
-        field_paths = canonicalize_field_paths(field_paths)
-        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
-        update_pb.update_mask.CopyFrom(mask)
+        mask_paths = [
+            fp.to_api_repr() for fp in merge if fp not in transform_merge
+        ]
 
-    write_pbs = [update_pb]
+        if mask_paths or create_empty:
+            mask = common_pb2.DocumentMask(field_paths=mask_paths)
+            update_pb.update_mask.CopyFrom(mask)
+
+        write_pbs.append(update_pb)
+
+    new_transform_paths = []
+    for merge_fp in merge:
+        t_merge_fps = [
+            fp for fp in transform_paths if merge_fp.eq_or_parent(fp)]
+        new_transform_paths.extend(t_merge_fps)
+    transform_paths = new_transform_paths
+
     if transform_paths:
-        # NOTE: We **explicitly** don't set any write option on
-        #       the ``transform_pb``.
         transform_pb = get_transform_pb(document_path, transform_paths)
-        if not actual_data:
-            write_pbs = [transform_pb]
-            return write_pbs
         write_pbs.append(transform_pb)
 
     return write_pbs
@@ -997,27 +1292,43 @@ def pbs_for_update(client, document_path, field_updates, option):
         option = client.write_option(exists=True)
 
     transform_paths, actual_updates, field_paths = (
-        process_server_timestamp(field_updates))
+        process_server_timestamp(field_updates, split_on_dots=True))
     if not (transform_paths or actual_updates):
         raise ValueError('There are only ServerTimeStamp objects or is empty.')
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
-    field_paths = canonicalize_field_paths(field_paths)
+    update_paths = field_paths[:]
 
-    update_pb = write_pb2.Write(
-        update=document_pb2.Document(
-            name=document_path,
-            fields=encode_dict(update_values),
-        ),
-        update_mask=common_pb2.DocumentMask(field_paths=field_paths),
-    )
-    # Due to the default, we don't have to check if ``None``.
-    option.modify_write(update_pb, field_paths=field_paths)
-    write_pbs = [update_pb]
+    # for whatever reason, the conformance tests want to see the parent
+    # of nested transform paths in the update mask
+    for transform_path in transform_paths:
+        if len(transform_path.parts) > 1:
+            parent_fp = FieldPath(*transform_path.parts[:-1])
+            if parent_fp not in update_paths:
+                update_paths.append(parent_fp)
+
+    field_paths = canonicalize_field_paths(field_paths)
+    update_paths = canonicalize_field_paths(update_paths)
+
+    write_pbs = []
+
+    if update_values:
+        update_pb = write_pb2.Write(
+            update=document_pb2.Document(
+                name=document_path,
+                fields=encode_dict(update_values),
+            ),
+            update_mask=common_pb2.DocumentMask(field_paths=update_paths),
+        )
+        # Due to the default, we don't have to check if ``None``.
+        option.modify_write(update_pb)
+        write_pbs.append(update_pb)
 
     if transform_paths:
-        # NOTE: We **explicitly** don't set any write option on
-        #       the ``transform_pb``.
         transform_pb = get_transform_pb(document_path, transform_paths)
+        if not update_values:
+            # NOTE: set the write option on the ``transform_pb`` only if there
+            #       is no ``update_pb``
+            option.modify_write(transform_pb)
         write_pbs.append(transform_pb)
 
     return write_pbs
@@ -1041,6 +1352,13 @@ def pb_for_delete(document_path, option):
         option.modify_write(write_pb)
 
     return write_pb
+
+
+class ReadAfterWriteError(Exception):
+    """Raised when a read is attempted after a write.
+
+    Raised by "read" methods that use transactions.
+    """
 
 
 def get_transaction_id(transaction, read_operation=True):

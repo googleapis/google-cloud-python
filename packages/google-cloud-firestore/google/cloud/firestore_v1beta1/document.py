@@ -211,9 +211,9 @@ class DocumentReference(object):
         Args:
             document_data (dict): Property names and values to use for
                 replacing a document.
-            option (Optional[~.firestore_v1beta1.client.WriteOption]): A
-               write option to make assertions / preconditions on the server
-               state of the document before applying changes.
+            merge (Optional[bool] or Optional[List<apispec>]):
+                If True, apply merging instead of overwriting the state
+                of the document.
 
         Returns:
             google.cloud.firestore_v1beta1.types.WriteResult: The

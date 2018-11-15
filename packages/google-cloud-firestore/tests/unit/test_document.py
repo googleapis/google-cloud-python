@@ -278,7 +278,7 @@ class TestDocumentReference(unittest.TestCase):
         )
         if merge:
             _, _, field_paths = _helpers.process_server_timestamp(
-                document_data)
+                document_data, split_on_dots=False)
             field_paths = _helpers.canonicalize_field_paths(field_paths)
             mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
             write_pbs.update_mask.CopyFrom(mask)
@@ -381,11 +381,21 @@ class TestDocumentReference(unittest.TestCase):
             client._database_string, [write_pb], transaction=None,
             metadata=client._rpc_metadata)
 
+    def test_update_with_exists(self):
+        with self.assertRaises(ValueError):
+            self._update_helper(exists=True)
+
     def test_update(self):
         self._update_helper()
 
-    def test_update_with_exists(self):
-        self._update_helper(exists=True)
+    def test_update_with_precondition(self):
+        from google.protobuf import timestamp_pb2
+
+        timestamp = timestamp_pb2.Timestamp(
+            seconds=1058655101,
+            nanos=100022244,
+        )
+        self._update_helper(last_update_time=timestamp)
 
     def test_empty_update(self):
         # Create a minimal fake GAPIC with a dummy response.
