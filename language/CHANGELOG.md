@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## 1.2.0
+
+11-14-2018 19:19 PST
+
+
+### Implementation Changes
+- Pick up fixes to GAPIC generator. ([#6521](https://github.com/googleapis/google-cloud-python/pull/6521))
+- Fix `client_info` bug, update docstrings. ([#6415](https://github.com/googleapis/google-cloud-python/pull/6415))
+
+### Dependencies
+- Bump minimum `api_core` version to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+### Documentation
+- Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Fix usage docs example for entity extraction ([#6193](https://github.com/googleapis/google-cloud-python/pull/6193))
+
+### Internal / Testing Changes
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+
 ## 1.1.0
 
 10-05-2018 13:52 PDT
