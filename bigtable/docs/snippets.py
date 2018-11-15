@@ -45,7 +45,8 @@ INSTANCE_ID = "snippet-" + unique_resource_id('-')
 CLUSTER_ID = "clus-1-" + unique_resource_id('-')
 TABLE_ID = "tabl-1-" + unique_resource_id('-')
 COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id('-')
-LOCATION_ID = 'us-central1-f'
+# LOCATION_ID = 'us-central1-f'
+LOCATION_ID = 'us-central1-a'
 ALT_LOCATION_ID = 'us-central1-a'
 # READY = enums.Cluster.State.READY # remove this
 PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -73,15 +74,15 @@ class Config(object):
 
 def setup_module():
     import os
-    #     Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
-    #  
-    #     if Config.IN_EMULATOR:
-    #         credentials = EmulatorCreds()
-    #         client = Config.CLIENT = Client(admin=True, credentials=credentials)
-    #     else:
-    #         client = Config.CLIENT = Client(admin=True)
-    #     client = Config.CLIENT = Client(project="sdsd-sdds", admin=True)
-    client = Config.CLIENT = Client(admin=True)
+    Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
+  
+    if Config.IN_EMULATOR:
+        credentials = EmulatorCreds()
+        client = Config.CLIENT = Client(admin=True, credentials=credentials)
+    else:
+        client = Config.CLIENT = Client(admin=True)
+    client = Config.CLIENT = Client(project="sdsd-sdds", admin=True)
+    #     client = Config.CLIENT = Client(admin=True)
     Config.INSTANCE = client.instance(INSTANCE_ID,
                                       instance_type=PRODUCTION,
                                       labels=LABELS)
@@ -92,7 +93,7 @@ def setup_module():
     #     Config.INSTANCE.create(clusters=[cluster])
     #     operation = Config.INSTANCE.create(clusters=[cluster])
     #     # We want to make sure the operation completes.
-    #     operation.result(timeout=100)
+    #     operation.result(timeout=480)
     Config.TABLE = Config.INSTANCE.table(TABLE_ID)
     Config.TABLE.create()
     gc_rule = column_family.MaxVersionsGCRule(2)
@@ -102,7 +103,7 @@ def setup_module():
 
 
 def teardown_module():
-    # Config.INSTANCE.delete()
+    Config.INSTANCE.delete()
     pass
 
 
