@@ -195,7 +195,7 @@ def from_http_json(operation, api_request, result_type, **kwargs):
     """Create an operation future using a HTTP/JSON client.
 
     This interacts with the long-running operations `service`_ (specific
-    to a given API) vis `HTTP/JSON`_.
+    to a given API) via `HTTP/JSON`_.
 
     .. _HTTP/JSON: https://cloud.google.com/speech/reference/rest/\
             v1beta1/operations#Operation
