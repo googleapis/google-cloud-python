@@ -14,7 +14,7 @@
 
 
 import unittest
-
+import google.api_core.gapic_v1.method
 import mock
 
 
@@ -371,6 +371,8 @@ class TestSession(unittest.TestCase):
             None,
             None,
             None,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
         )
 
     def test_execute_sql_explicit(self):
@@ -397,6 +399,8 @@ class TestSession(unittest.TestCase):
             params,
             param_types,
             'PLAN',
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
         )
 
     def test_batch_not_created(self):

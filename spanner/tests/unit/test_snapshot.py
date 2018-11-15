@@ -14,7 +14,7 @@
 
 
 import unittest
-
+import google.api_core.gapic_v1.method
 import mock
 
 
@@ -417,6 +417,8 @@ class Test_SnapshotBase(unittest.TestCase):
             partition_token=partition,
             seqno=sql_count,
             metadata=[('google-cloud-resource-prefix', database.name)],
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            retry=google.api_core.gapic_v1.method.DEFAULT
         )
 
         self.assertEqual(derived._execute_sql_count, sql_count + 1)
