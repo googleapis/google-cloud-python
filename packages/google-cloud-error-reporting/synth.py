@@ -31,6 +31,8 @@ library = gapic.py_library(
 
 s.move(library / 'google/cloud/errorreporting_v1beta1/proto')
 s.move(library / 'google/cloud/errorreporting_v1beta1/gapic')
+s.move(library / 'tests/unit/gapic/v1beta1')
+s.move(library / 'tests/system/gapic/v1beta1')
 
 # Fix up imports
 s.replace(
