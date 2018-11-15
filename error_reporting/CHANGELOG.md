@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## 0.31.0
+
+11-14-2018 19:23 PST
+
+
+### Implementation Changes
+- Pick up fixes to GAPIC generator. ([#6522](https://github.com/googleapis/google-cloud-python/pull/6522))
+- Fix `client_info` bug, update docstrings via synth. ([#6442](https://github.com/googleapis/google-cloud-python/pull/6442))
+- Add `error_reporting/synth.py`. ([#6082](https://github.com/googleapis/google-cloud-python/pull/6082))
+
+### Documentation
+- Replace docs links to '/stable/' with '/latest/'. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
+- Update README service links in quickstart guides. ([#6322](https://github.com/googleapis/google-cloud-python/pull/6322))
+- Prep docs for repo split. ([#6155](https://github.com/googleapis/google-cloud-python/pull/6155))
+
+### Internal / Testing Changes
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+- Nox: use inplace installs ([#5865](https://github.com/googleapis/google-cloud-python/pull/5865))
+
 ## 0.30.0
 
 ### Implementation Changes
