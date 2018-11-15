@@ -30,3 +30,16 @@ library = gapic.py_library(
 
 s.move(library / 'google/cloud/firestore_v1beta1/proto')
 s.move(library / 'google/cloud/firestore_v1beta1/gapic')
+s.move(library / 'tests/unit/gapic/v1beta1')
+
+s.replace(
+    'tests/unit/gapic/v1beta1/test_firestore_client_v1beta1.py',
+    'from google.cloud import firestore_v1beta1',
+    'from google.cloud.firestore_v1beta1.gapic import firestore_client',
+)
+
+s.replace(
+    'tests/unit/gapic/v1beta1/test_firestore_client_v1beta1.py',
+    'client = firestore_v1beta1.FirestoreClient',
+    'client = firestore_client.FirestoreClient',
+)
