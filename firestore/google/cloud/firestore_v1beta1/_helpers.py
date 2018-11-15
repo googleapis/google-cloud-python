@@ -1227,7 +1227,7 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
     write_pbs = []
     update_pb = write_pb2.Write()
 
-    update_paths = data_merge[:]
+    update_paths = set(data_merge)
 
     # for whatever reason, the conformance tests want to see the parent
     # of nested transform paths in the update mask
@@ -1235,8 +1235,7 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
     for transform_path in transform_paths:
         if len(transform_path.parts) > 1:
             parent_fp = FieldPath(*transform_path.parts[:-1])
-            if parent_fp not in update_paths:
-                update_paths.append(parent_fp)
+            update_paths.add(parent_fp)
 
     if actual_data or create_empty or update_paths:
         update = document_pb2.Document(

@@ -2131,55 +2131,147 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
             ),
         )
 
-    def _helper(self, merge, do_transform=False, empty_value=False):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+    @staticmethod
+    def _update_document_mask(update_pb, field_paths):
         from google.cloud.firestore_v1beta1.proto import common_pb2
 
+        update_pb.update_mask.CopyFrom(
+            common_pb2.DocumentMask(field_paths=field_paths))
+
+    def test_with_merge_true_wo_transform(self):
         document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
         document_data = {
             'cheese': 1.5,
             'crackers': True,
         }
 
-        if do_transform:
-            document_data['butter'] = SERVER_TIMESTAMP
+        write_pbs = self._call_fut(document_path, document_data, merge=True)
 
-        if empty_value:
-            document_data['mustard'] = {}
-
-        write_pbs = self._call_fut(document_path, document_data, merge)
-
-        if empty_value:
-            update_pb = self._make_write_w_document(
-                document_path, cheese=1.5, crackers=True, mustard={},
-            )
-        elif merge is True:
-            update_pb = self._make_write_w_document(
-                document_path, cheese=1.5, crackers=True,
-            )
-            field_paths = sorted(['cheese', 'crackers'])
-            update_pb.update_mask.CopyFrom(
-                common_pb2.DocumentMask(field_paths=field_paths))
-        else:
-            expected_data = {field: document_data[field] for field in merge}
-            update_pb = self._make_write_w_document(
-                document_path, **expected_data)
-            update_pb.update_mask.CopyFrom(
-                common_pb2.DocumentMask(field_paths=sorted(merge)))
+        update_pb = self._make_write_w_document(document_path, **document_data)
+        self._update_document_mask(
+            update_pb, field_paths=sorted(document_data))
         expected_pbs = [update_pb]
-
-
-        if do_transform:
-            expected_pbs.append(
-                self._make_write_w_transform(document_path, fields=['butter']))
-
         self.assertEqual(write_pbs, expected_pbs)
 
-    def test_with_merge_true_wo_transform_wo_empty_value(self):
-        self._helper(merge=True)
+    def test_with_merge_field_wo_transform(self):
+        document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
+        document_data = {
+            'cheese': 1.5,
+            'crackers': True,
+        }
 
-    def test_with_merge_field_wo_transform_wo_empty_value(self):
-        self._helper(merge=['cheese'])
+        write_pbs = self._call_fut(
+            document_path, document_data, merge=['cheese'])
+
+        update_pb = self._make_write_w_document(
+            document_path, cheese=document_data['cheese'])
+        self._update_document_mask(
+            update_pb, field_paths=['cheese'])
+        expected_pbs = [update_pb]
+        self.assertEqual(write_pbs, expected_pbs)
+
+    def test_with_merge_true_w_transform(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
+        update_data = {
+            'cheese': 1.5,
+            'crackers': True,
+        }
+        document_data = update_data.copy()
+        document_data['butter'] = SERVER_TIMESTAMP
+
+        write_pbs = self._call_fut(document_path, document_data, merge=True)
+
+        update_pb = self._make_write_w_document(document_path, **update_data)
+        self._update_document_mask(
+            update_pb, field_paths=sorted(update_data))
+        transform_pb = self._make_write_w_transform(
+            document_path, fields=['butter'])
+        expected_pbs = [
+            update_pb,
+            transform_pb,
+        ]
+        self.assertEqual(write_pbs, expected_pbs)
+
+    def test_with_merge_field_w_transform(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
+        update_data = {
+            'cheese': 1.5,
+            'crackers': True,
+        }
+        document_data = update_data.copy()
+        document_data['butter'] = SERVER_TIMESTAMP
+
+        write_pbs = self._call_fut(
+            document_path, document_data, merge=['cheese', 'butter'])
+
+        update_pb = self._make_write_w_document(
+            document_path, cheese=document_data['cheese'])
+        self._update_document_mask(update_pb, ['cheese'])
+        transform_pb = self._make_write_w_transform(
+            document_path, fields=['butter'])
+        expected_pbs = [
+            update_pb,
+            transform_pb,
+        ]
+        self.assertEqual(write_pbs, expected_pbs)
+
+    def test_with_merge_field_w_transform_masking_simple(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
+        update_data = {
+            'cheese': 1.5,
+            'crackers': True,
+        }
+        document_data = update_data.copy()
+        document_data['butter'] = {'pecan': SERVER_TIMESTAMP}
+
+        write_pbs = self._call_fut(
+            document_path, document_data, merge=['butter.pecan'])
+
+        update_pb = self._make_write_w_document(document_path)
+        transform_pb = self._make_write_w_transform(
+            document_path, fields=['butter.pecan'])
+        expected_pbs = [
+            update_pb,
+            transform_pb,
+        ]
+        self.assertEqual(write_pbs, expected_pbs)
+
+    def test_with_merge_field_w_transform_parent(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
+        update_data = {
+            'cheese': 1.5,
+            'crackers': True,
+        }
+        document_data = update_data.copy()
+        document_data['butter'] = {
+            'popcorn': 'yum',
+            'pecan': SERVER_TIMESTAMP,
+        }
+
+        write_pbs = self._call_fut(
+            document_path, document_data, merge=['cheese', 'butter'])
+
+        update_pb = self._make_write_w_document(
+            document_path,
+            cheese=update_data['cheese'],
+            butter={'popcorn': 'yum'},
+        )
+        self._update_document_mask(update_pb, ['cheese', 'butter'])
+        transform_pb = self._make_write_w_transform(
+            document_path, fields=['butter.pecan'])
+        expected_pbs = [
+            update_pb,
+            transform_pb,
+        ]
+        self.assertEqual(write_pbs, expected_pbs)
 
 
 class Test_pbs_for_update(unittest.TestCase):
