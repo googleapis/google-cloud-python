@@ -23,7 +23,7 @@ import six
 class TestQuery(unittest.TestCase):
 
     if six.PY2:
-        assertRaisesRegex = TestCase.assertRaisesRegexp
+        assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
 
     @staticmethod
     def _get_target_class():

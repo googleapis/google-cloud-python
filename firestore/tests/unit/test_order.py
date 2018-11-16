@@ -29,7 +29,7 @@ from google.protobuf import timestamp_pb2
 class TestOrder(unittest.TestCase):
 
     if six.PY2:
-        assertRaisesRegex = TestCase.assertRaisesRegexp
+        assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
 
     @staticmethod
     def _get_target_class():
