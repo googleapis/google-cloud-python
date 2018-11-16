@@ -1935,6 +1935,40 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
 
+    def test_get_update_pb_w_exists_precondition(self):
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+
+        document_data = {}
+        inst = self._make_one(document_data)
+        document_path = (
+            'projects/project-id/databases/(default)/'
+            'documents/document-id')
+
+        update_pb = inst.get_update_pb(document_path, exists=False)
+
+        self.assertIsInstance(update_pb, write_pb2.Write)
+        self.assertEqual(update_pb.update.name, document_path)
+        self.assertEqual(update_pb.update.fields, document_data)
+        self.assertTrue(update_pb.HasField('current_document'))
+        self.assertFalse(update_pb.current_document.exists)
+
+    def test_get_update_pb_wo_exists_precondition(self):
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1._helpers import encode_dict
+
+        document_data = {'a': 1}
+        inst = self._make_one(document_data)
+        document_path = (
+            'projects/project-id/databases/(default)/'
+            'documents/document-id')
+
+        update_pb = inst.get_update_pb(document_path)
+
+        self.assertIsInstance(update_pb, write_pb2.Write)
+        self.assertEqual(update_pb.update.name, document_path)
+        self.assertEqual(update_pb.update.fields, encode_dict(document_data))
+        self.assertFalse(update_pb.HasField('current_document'))
+
 
 class Test_canonicalize_field_paths(unittest.TestCase):
 

@@ -1046,6 +1046,20 @@ class ExtractDocumentTransforms(object):
                 self.field_paths.append(field_path)
                 set_field_value(self.set_fields, field_path, value)
 
+    def get_update_pb(self, document_path, exists=None):
+        update_pb = write_pb2.Write(
+            update=document_pb2.Document(
+                name=document_path,
+                fields=encode_dict(self.set_fields),
+            )
+        )
+
+        if exists is not None:
+            update_pb.current_document.CopyFrom(
+                common_pb2.Precondition(exists=exists))
+
+        return update_pb
+
 
 def canonicalize_field_paths(field_paths):
     """Converts non-simple field paths to quoted field paths
@@ -1118,16 +1132,7 @@ def pbs_for_create(document_path, document_data):
     # Conformance tests require skipping the 'update_pb' if the document
     # contains only transforms.
     if extractor.empty_document or extractor.set_fields:
-
-        update_pb = write_pb2.Write(
-            update=document_pb2.Document(
-                name=document_path,
-                fields=encode_dict(extractor.set_fields),
-            ),
-            current_document=common_pb2.Precondition(exists=False),
-        )
-
-        write_pbs.append(update_pb)
+        write_pbs.append(extractor.get_update_pb(document_path, exists=False))
 
     if extractor.server_timestamps:  # TODO: handle other transforms
         transform_pb = get_transform_pb(
@@ -1162,14 +1167,7 @@ def pbs_for_set_no_merge(document_path, document_data):
 
     # Conformance tests require send the 'update_pb' even if the document
     # contains only transforms.
-    write_pbs = [
-        write_pb2.Write(
-            update=document_pb2.Document(
-                name=document_path,
-                fields=encode_dict(extractor.set_fields),
-            )
-        ),
-    ]
+    write_pbs = [extractor.get_update_pb(document_path)]
 
     if extractor.server_timestamps:  # TODO: handle other transforms
         transform_pb = get_transform_pb(
