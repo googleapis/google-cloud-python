@@ -149,7 +149,7 @@ class IndexProperty:
     def __repr__(self):
         """Return a string representation."""
         return "{}(name={!r}, direction={!r})".format(
-            self.__class__.__name__, self.name, self.direction
+            type(self).__name__, self.name, self.direction
         )
 
     def __eq__(self, other):
@@ -196,7 +196,7 @@ class Index:
     def __repr__(self):
         """Return a string representation."""
         return "{}(kind={!r}, properties={!r}, ancestor={})".format(
-            self.__class__.__name__, self.kind, self.properties, self.ancestor
+            type(self).__name__, self.kind, self.properties, self.ancestor
         )
 
     def __eq__(self, other):
@@ -252,7 +252,7 @@ class IndexState:
     def __repr__(self):
         """Return a string representation."""
         return "{}(definition={!r}, state={!r}, id={:d})".format(
-            self.__class__.__name__, self.definition, self.state, self.id
+            type(self).__name__, self.definition, self.state, self.id
         )
 
     def __eq__(self, other):
@@ -658,7 +658,7 @@ class Property(ModelAttribute):
         differ from the default values.
         """
         args = []
-        cls = self.__class__
+        cls = type(self)
         for name, is_keyword in self._constructor_info():
             attr = "_{}".format(name)
             instance_val = getattr(self, attr)
@@ -674,7 +674,7 @@ class Property(ModelAttribute):
                     as_str = "{}={}".format(name, as_str)
                 args.append(as_str)
 
-        return "{}({})".format(self.__class__.__name__, ", ".join(args))
+        return "{}({})".format(cls.__name__, ", ".join(args))
 
     def _datastore_type(self, value):
         """Internal hook used by property filters.
