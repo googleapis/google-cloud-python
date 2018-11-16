@@ -17,9 +17,13 @@ import types
 import unittest
 
 import mock
+import six
 
 
 class TestQuery(unittest.TestCase):
+
+    if six.PY2:
+        assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
 
     @staticmethod
     def _get_target_class():
@@ -943,8 +947,7 @@ class TestQuery(unittest.TestCase):
         doc2._data = {'first': {'stringValue': 'Ada'},
                       'last': {'stringValue': 'lovelace'}}
 
-        with self.assertRaisesRegexp(ValueError,
-                                     "Can only compare fields "):
+        with self.assertRaisesRegex(ValueError, "Can only compare fields "):
             query._comparator(doc1, doc2)
 
 
