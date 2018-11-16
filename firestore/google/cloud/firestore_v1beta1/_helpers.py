@@ -1000,6 +1000,16 @@ def extract_fields(document_data, prefix_path):
                 yield field_path, value
 
 
+def set_field_value(document_data, field_path, value):
+    """Set a value into a document for a field_path"""
+    current = document_data
+    for element in field_path.parts[:-1]:
+        current = current.setdefault(element, {})
+    if value is _EmptyDict:
+        value = {}
+    current[field_path.parts[-1]] = value
+
+
 def canonicalize_field_paths(field_paths):
     """Converts non-simple field paths to quoted field paths
 

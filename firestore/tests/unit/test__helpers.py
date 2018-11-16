@@ -1702,6 +1702,55 @@ class Test_extract_fields(unittest.TestCase):
             list(self._call_fut(document_data, prefix_path)), expected)
 
 
+class Test_set_field_value(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(document_data, field_path, value):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.set_field_value(document_data, field_path, value)
+
+    def test_normal_value_w_shallow(self):
+        document = {}
+        field_path = _make_field_path('a')
+        value = 3
+
+        self._call_fut(document, field_path, value)
+
+        self.assertEqual(document, {'a': 3})
+
+    def test_normal_value_w_nested(self):
+        document = {}
+        field_path = _make_field_path('a', 'b', 'c')
+        value = 3
+
+        self._call_fut(document, field_path, value)
+
+        self.assertEqual(document, {'a': {'b': {'c': 3}}})
+
+    def test_empty_dict_w_shallow(self):
+        from google.cloud.firestore_v1beta1._helpers import _EmptyDict
+
+        document = {}
+        field_path = _make_field_path('a')
+        value = _EmptyDict
+
+        self._call_fut(document, field_path, value)
+
+        self.assertEqual(document, {'a': {}})
+
+    def test_empty_dict_w_nested(self):
+        from google.cloud.firestore_v1beta1._helpers import _EmptyDict
+
+        document = {}
+        field_path = _make_field_path('a', 'b', 'c')
+        value = _EmptyDict
+
+        self._call_fut(document, field_path, value)
+
+        self.assertEqual(document, {'a': {'b': {'c': {}}}})
+
+
 class Test_canonicalize_field_paths(unittest.TestCase):
 
     @staticmethod
