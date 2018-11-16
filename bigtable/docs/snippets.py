@@ -80,7 +80,7 @@ def setup_module():
     Config.INSTANCE.create(clusters=[cluster])
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
-    operation.result(timeout=480)
+    operation.result(timeout=100)
     Config.TABLE = Config.INSTANCE.table(TABLE_ID)
     Config.TABLE.create()
     gc_rule = column_family.MaxVersionsGCRule(2)
