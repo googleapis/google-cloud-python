@@ -27,6 +27,10 @@ from google.protobuf import timestamp_pb2
 
 
 class TestOrder(unittest.TestCase):
+
+    if six.PY2:
+        assertRaisesRegex = TestCase.assertRaisesRegexp
+
     @staticmethod
     def _get_target_class():
         from google.cloud.firestore_v1beta1.order import Order
@@ -175,7 +179,7 @@ class TestOrder(unittest.TestCase):
         left = mock.Mock()
         left.WhichOneof.return_value = "imaginary-type"
 
-        with self.assertRaisesRegexp(ValueError, "Could not detect value"):
+        with self.assertRaisesRegex(ValueError, "Could not detect value"):
             target.compare(left, mock.Mock())
 
     def test_failure_to_find_type(self):
@@ -187,7 +191,7 @@ class TestOrder(unittest.TestCase):
         # expect this to fail with value error.
         with mock.patch.object(TypeOrder, 'from_value',) as to:
             to.value = None
-            with self.assertRaisesRegexp(
+            with self.assertRaisesRegex(
                     ValueError, "'Unknown ``value_type``"
             ):
                 target.compare(left, right)
