@@ -1309,20 +1309,18 @@ class Test__validate_key:
     @staticmethod
     def test_unchecked_model_type():
         value = model.Key("This", 1)
-        entity = unittest.mock.Mock(spec=model.Model)
+        entity = object.__new__(model.Model)
 
         result = model._validate_key(value, entity=entity)
         assert result is value
-        entity._get_kind.assert_not_called()
 
     @staticmethod
     def test_unchecked_expando_type():
         value = model.Key("This", 1)
-        entity = unittest.mock.Mock(spec=model.Expando)
+        entity = object.__new__(model.Expando)
 
         result = model._validate_key(value, entity=entity)
         assert result is value
-        entity._get_kind.assert_not_called()
 
     @staticmethod
     def test_same_kind():
@@ -1387,14 +1385,11 @@ class TestModelKey:
 
     @staticmethod
     def test__set_value():
-        entity = unittest.mock.Mock(spec=model.Model)
+        entity = object.__new__(model.Model)
         value = key.Key("Map", 8898)
 
-        entity._validate_key.return_value = value
         model.ModelKey._set_value(entity, value)
-
         assert entity._entity_key is value
-        entity._validate_key.assert_called_once_with(value)
 
     @staticmethod
     def test__set_value_none():

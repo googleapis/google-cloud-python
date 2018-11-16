@@ -2954,7 +2954,7 @@ class MetaModel(type):
 
 
 class Model:
-    __slots__ = ()
+    __slots__ = ("_entity_key",)
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
