@@ -1641,6 +1641,67 @@ class Test_process_server_timestamp(unittest.TestCase):
         self.assertEqual(actual_data, expected_data)
 
 
+class Test_extract_fields(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(document_data, prefix_path):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.extract_fields(document_data, prefix_path)
+
+    def test_w_empty_document(self):
+        from google.cloud.firestore_v1beta1._helpers import _EmptyDict
+
+        document_data = {}
+        prefix_path = _make_field_path()
+        expected = [(_make_field_path(), _EmptyDict)]
+
+        self.assertEqual(
+            list(self._call_fut(document_data, prefix_path)), expected)
+
+    def test_w_shallow_keys(self):
+        document_data = {
+            'b': 1,
+            'a': 2,
+            'c': 3,
+        }
+        prefix_path = _make_field_path()
+        expected = [
+            (_make_field_path('a'), 2),
+            (_make_field_path('b'), 1),
+            (_make_field_path('c'), 3),
+        ]
+
+        self.assertEqual(
+            list(self._call_fut(document_data, prefix_path)), expected)
+
+    def test_w_nested(self):
+        from google.cloud.firestore_v1beta1._helpers import _EmptyDict
+
+        document_data = {
+            'b': {
+                'a': {
+                    'd': 4,
+                    'c': 3,
+                    'g': {},
+                },
+                'e': 7,
+            },
+            'f': 5,
+        }
+        prefix_path = _make_field_path()
+        expected = [
+            (_make_field_path('b', 'a', 'c'), 3),
+            (_make_field_path('b', 'a', 'd'), 4),
+            (_make_field_path('b', 'a', 'g'), _EmptyDict),
+            (_make_field_path('b', 'e'), 7),
+            (_make_field_path('f'), 5),
+        ]
+
+        self.assertEqual(
+            list(self._call_fut(document_data, prefix_path)), expected)
+
+
 class Test_canonicalize_field_paths(unittest.TestCase):
 
     @staticmethod
