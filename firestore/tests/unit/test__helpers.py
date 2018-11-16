@@ -1751,6 +1751,191 @@ class Test_set_field_value(unittest.TestCase):
         self.assertEqual(document, {'a': {'b': {'c': {}}}})
 
 
+class TestExtractDocumentTransforms(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.ExtractDocumentTransforms
+
+    def _make_one(self, document_data):
+        return self._get_target_class()(document_data)
+
+    def test_ctor_w_empty_document(self):
+        document_data = {}
+
+        inst = self._make_one(document_data)
+
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.set_fields, {})
+        self.assertTrue(inst.empty_document)
+
+    def test_ctor_w_delete_field_shallow(self):
+        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+
+        document_data = {
+            'a': DELETE_FIELD,
+        }
+
+        inst = self._make_one(document_data)
+
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [_make_field_path('a')])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+
+    def test_ctor_w_delete_field_nested(self):
+        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+
+        document_data = {
+            'a': {
+                'b': {
+                    'c': DELETE_FIELD,
+                }
+            }
+        }
+
+        inst = self._make_one(document_data)
+
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(
+            inst.deleted_fields, [_make_field_path('a', 'b', 'c')])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+
+    def test_ctor_w_server_timestamp_shallow(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {
+            'a': SERVER_TIMESTAMP,
+        }
+
+        inst = self._make_one(document_data)
+
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [_make_field_path('a')])
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+
+    def test_ctor_w_server_timestamp_nested(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {
+            'a': {
+                'b': {
+                    'c': SERVER_TIMESTAMP,
+                }
+            }
+        }
+
+        inst = self._make_one(document_data)
+
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(
+            inst.server_timestamps, [_make_field_path('a', 'b', 'c')])
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+
+    def test_ctor_w_empty_dict_shallow(self):
+        document_data = {
+            'a': {},
+        }
+
+        inst = self._make_one(document_data)
+
+        expected_field_paths = [
+            _make_field_path('a'),
+        ]
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, expected_field_paths)
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.set_fields, document_data)
+        self.assertFalse(inst.empty_document)
+
+    def test_ctor_w_empty_dict_nested(self):
+        document_data = {
+            'a': {
+                'b': {
+                    'c': {
+                    },
+                },
+            },
+        }
+
+        inst = self._make_one(document_data)
+
+        expected_field_paths = [
+            _make_field_path('a', 'b', 'c'),
+        ]
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, expected_field_paths)
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.set_fields, document_data)
+        self.assertFalse(inst.empty_document)
+
+    def test_ctor_w_normal_value_shallow(self):
+        document_data = {
+            'b': 1,
+            'a': 2,
+            'c': 3,
+        }
+
+        inst = self._make_one(document_data)
+
+        expected_field_paths = [
+            _make_field_path('a'),
+            _make_field_path('b'),
+            _make_field_path('c'),
+        ]
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, expected_field_paths)
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.set_fields, document_data)
+        self.assertFalse(inst.empty_document)
+
+    def test_ctor_w_normal_value_nested(self):
+        document_data = {
+            'b': {
+                'a': {
+                    'd': 4,
+                    'c': 3,
+                },
+                'e': 7,
+            },
+            'f': 5,
+        }
+
+        inst = self._make_one(document_data)
+
+        expected_field_paths = [
+            _make_field_path('b', 'a', 'c'),
+            _make_field_path('b', 'a', 'd'),
+            _make_field_path('b', 'e'),
+            _make_field_path('f'),
+        ]
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, expected_field_paths)
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.set_fields, document_data)
+        self.assertFalse(inst.empty_document)
+
+
 class Test_canonicalize_field_paths(unittest.TestCase):
 
     @staticmethod

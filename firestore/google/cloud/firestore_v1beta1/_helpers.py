@@ -1010,6 +1010,43 @@ def set_field_value(document_data, field_path, value):
     current[field_path.parts[-1]] = value
 
 
+class ExtractDocumentTransforms(object):
+    """ Break document data up into actual data and transforms.
+
+    Handle special values such as ``DELETE_FIELD``, ``SERVER_TIMESTAMP``.
+
+    Args:
+        document_data (dict):
+            Property names and values to use for sending a change to
+            a document.
+    """
+    def __init__(self, document_data):
+        self.document_data = document_data
+        self.field_paths = []
+        self.deleted_fields = []
+        self.server_timestamps = []
+        self.set_fields = {}
+        self.empty_document = False
+
+        prefix_path = FieldPath()
+        iterator = extract_fields(document_data, prefix_path)
+
+        for field_path, value in iterator:
+
+            if field_path == prefix_path and value is _EmptyDict:
+                self.empty_document = True
+
+            elif value is constants.DELETE_FIELD:
+                self.deleted_fields.append(field_path)
+
+            elif value is constants.SERVER_TIMESTAMP:
+                self.server_timestamps.append(field_path)
+
+            else:
+                self.field_paths.append(field_path)
+                set_field_value(self.set_fields, field_path, value)
+
+
 def canonicalize_field_paths(field_paths):
     """Converts non-simple field paths to quoted field paths
 
