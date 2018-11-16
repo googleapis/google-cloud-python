@@ -1152,20 +1152,28 @@ def pbs_for_set_no_merge(document_path, document_data):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    transform_paths, actual_data, field_paths = process_server_timestamp(
-        document_data, split_on_dots=False)
+    extractor = ExtractDocumentTransforms(document_data)
 
+    if extractor.deleted_fields:
+        raise ValueError(
+            "Cannot apply DELETE_FIELD in a set request without "
+            "specifying 'merge=True' or 'merge=[field_paths]'."
+        )
+
+    # Conformance tests require send the 'update_pb' even if the document
+    # contains only transforms.
     write_pbs = [
         write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
-                fields=encode_dict(actual_data),
+                fields=encode_dict(extractor.set_fields),
             )
         ),
     ]
 
-    if transform_paths:
-        transform_pb = get_transform_pb(document_path, transform_paths)
+    if extractor.server_timestamps:  # TODO: handle other transforms
+        transform_pb = get_transform_pb(
+            document_path, extractor.server_timestamps)
         write_pbs.append(transform_pb)
 
     return write_pbs
