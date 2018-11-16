@@ -24,7 +24,6 @@ version of the ``db`` API (hence ``ndb``).
 __version__ = "0.0.1.dev1"
 """Current ``ndb`` version."""
 __all__ = [
-    "async_context",
     "AutoBatcher",
     "Context",
     "ContextOptions",
@@ -67,6 +66,7 @@ __all__ = [
     "ModelAdapter",
     "ModelAttribute",
     "ModelKey",
+    "ndb_context",
     "non_transactional",
     "PickleProperty",
     "Property",
@@ -127,7 +127,6 @@ from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions
 from google.cloud.ndb.context import EVENTUAL_CONSISTENCY
 from google.cloud.ndb.context import TransactionOptions
-from google.cloud.ndb._eventloop import async_context
 from google.cloud.ndb.key import Key
 from google.cloud.ndb.model import BlobKey
 from google.cloud.ndb.model import BlobKeyProperty
@@ -202,6 +201,7 @@ from google.cloud.ndb.query import Query
 from google.cloud.ndb.query import QueryIterator
 from google.cloud.ndb.query import QueryOptions
 from google.cloud.ndb.query import RepeatedStructuredPropertyPredicate
+from google.cloud.ndb._runstate import ndb_context
 from google.cloud.ndb.tasklets import add_flow_exception
 from google.cloud.ndb.tasklets import Future
 from google.cloud.ndb.tasklets import get_context
