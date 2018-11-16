@@ -145,7 +145,6 @@ def test_bigtable_create_additional_cluster():
     operation.result(timeout=100)
     # [END bigtable_create_cluster]
     assert cluster.exists()
-
     cluster.delete()
 
 
