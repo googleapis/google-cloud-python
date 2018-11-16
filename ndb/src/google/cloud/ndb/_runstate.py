@@ -64,7 +64,7 @@ def ndb_context():
             pass
 
     Use of a context is required--NDB can only be used inside a running
-    context.  The context is used to coordinate an event loop for asynchronous
+    context. The context is used to coordinate an event loop for asynchronous
     API calls, runtime caching policy, and other essential runtime state.
 
     Code within an asynchronous context should be single threaded. Internally,

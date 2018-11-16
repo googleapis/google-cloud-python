@@ -11,24 +11,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import unittest
 
-from google.cloud.ndb import _runstate as runstate
+from google.cloud.ndb import _runstate
 
 
 def test_ndb_context():
-    assert runstate.states.current() is None
+    assert _runstate.states.current() is None
 
-    with runstate.ndb_context():
-        one = runstate.current()
+    with _runstate.ndb_context():
+        one = _runstate.current()
 
-        with runstate.ndb_context():
-            two = runstate.current()
+        with _runstate.ndb_context():
+            two = _runstate.current()
             assert one is not two
             two.eventloop = unittest.mock.Mock(spec=("run",))
             two.eventloop.run.assert_not_called()
 
-        assert runstate.current() is one
+        assert _runstate.current() is one
         two.eventloop.run.assert_called_once_with()
 
-    assert runstate.states.current() is None
+    assert _runstate.states.current() is None

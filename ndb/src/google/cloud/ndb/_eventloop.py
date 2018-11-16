@@ -19,7 +19,7 @@ This should handle both asynchronous ``ndb`` objects and arbitrary callbacks.
 import collections
 import time
 
-from google.cloud.ndb import _runstate as runstate
+from google.cloud.ndb import _runstate
 
 __all__ = [
     "add_idle",
@@ -270,7 +270,7 @@ def get_event_loop():
     Returns:
         EventLoop: The event loop for the current context.
     """
-    state = runstate.current()
+    state = _runstate.current()
 
     # Be lazy and avoid circular dependency with _runstate
     if state.eventloop is None:

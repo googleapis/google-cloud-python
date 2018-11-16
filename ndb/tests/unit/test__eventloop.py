@@ -20,22 +20,22 @@ import pytest
 import tests.unit.utils
 
 from google.cloud.ndb import exceptions
-from google.cloud.ndb import ndb_context
-from google.cloud.ndb import _eventloop as eventloop
+from google.cloud.ndb import _runstate
+from google.cloud.ndb import _eventloop
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(eventloop)
+    tests.unit.utils.verify___all__(_eventloop)
 
 
 def _Event(when=0, what="foo", args=(), kw={}):
-    return eventloop._Event(when, what, args, kw)
+    return _eventloop._Event(when, what, args, kw)
 
 
 class TestEventLoop:
     @staticmethod
     def _make_one(**attrs):
-        loop = eventloop.EventLoop()
+        loop = _eventloop.EventLoop()
         for name, value in attrs.items():
             setattr(loop, name, value)
         return loop
@@ -299,11 +299,11 @@ class TestEventLoop:
 
 def test_get_event_loop():
     with pytest.raises(exceptions.ContextError):
-        eventloop.get_event_loop()
-    with ndb_context():
-        loop = eventloop.get_event_loop()
-        assert isinstance(loop, eventloop.EventLoop)
-        assert eventloop.get_event_loop() is loop
+        _eventloop.get_event_loop()
+    with _runstate.ndb_context():
+        loop = _eventloop.get_event_loop()
+        assert isinstance(loop, _eventloop.EventLoop)
+        assert _eventloop.get_event_loop() is loop
 
 
 @unittest.mock.patch("google.cloud.ndb._eventloop.EventLoop")
@@ -311,8 +311,8 @@ def test_add_idle(EventLoop):
     EventLoop.return_value = loop = unittest.mock.Mock(
         spec=("run", "add_idle")
     )
-    with ndb_context():
-        eventloop.add_idle("foo", "bar", baz="qux")
+    with _runstate.ndb_context():
+        _eventloop.add_idle("foo", "bar", baz="qux")
         loop.add_idle.assert_called_once_with("foo", "bar", baz="qux")
 
 
@@ -321,35 +321,35 @@ def test_queue_call(EventLoop):
     EventLoop.return_value = loop = unittest.mock.Mock(
         spec=("run", "queue_call")
     )
-    with ndb_context():
-        eventloop.queue_call(42, "foo", "bar", baz="qux")
+    with _runstate.ndb_context():
+        _eventloop.queue_call(42, "foo", "bar", baz="qux")
         loop.queue_call.assert_called_once_with(42, "foo", "bar", baz="qux")
 
 
 def test_queue_rpc():
     with pytest.raises(NotImplementedError):
-        eventloop.queue_rpc()
+        _eventloop.queue_rpc()
 
 
 @unittest.mock.patch("google.cloud.ndb._eventloop.EventLoop")
 def test_run(EventLoop):
     EventLoop.return_value = loop = unittest.mock.Mock(spec=("run",))
-    with ndb_context():
-        eventloop.run()
+    with _runstate.ndb_context():
+        _eventloop.run()
         loop.run.assert_called_once_with()
 
 
 @unittest.mock.patch("google.cloud.ndb._eventloop.EventLoop")
 def test_run0(EventLoop):
     EventLoop.return_value = loop = unittest.mock.Mock(spec=("run", "run0"))
-    with ndb_context():
-        eventloop.run0()
+    with _runstate.ndb_context():
+        _eventloop.run0()
         loop.run0.assert_called_once_with()
 
 
 @unittest.mock.patch("google.cloud.ndb._eventloop.EventLoop")
 def test_run1(EventLoop):
     EventLoop.return_value = loop = unittest.mock.Mock(spec=("run", "run1"))
-    with ndb_context():
-        eventloop.run1()
+    with _runstate.ndb_context():
+        _eventloop.run1()
         loop.run1.assert_called_once_with()
