@@ -1108,28 +1108,31 @@ def pbs_for_create(document_path, document_data):
         List[google.cloud.firestore_v1beta1.types.Write]: One or two
         ``Write`` protobuf instances for ``create()``.
     """
-    transform_paths, actual_data, field_paths = process_server_timestamp(
-        document_data, split_on_dots=False)
+    extractor = ExtractDocumentTransforms(document_data)
+
+    if extractor.deleted_fields:
+        raise ValueError("Cannot apply DELETE_FIELD in a create request.")
 
     write_pbs = []
 
-    empty_document = not document_data
-
-    if empty_document or actual_data:
+    # Conformance tests require skipping the 'update_pb' if the document
+    # contains only transforms.
+    if extractor.empty_document or extractor.set_fields:
 
         update_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
-                fields=encode_dict(actual_data),
+                fields=encode_dict(extractor.set_fields),
             ),
             current_document=common_pb2.Precondition(exists=False),
         )
 
         write_pbs.append(update_pb)
 
-    if transform_paths:
-        transform_pb = get_transform_pb(document_path, transform_paths)
-        if not actual_data:
+    if extractor.server_timestamps:  # TODO: handle other transforms
+        transform_pb = get_transform_pb(
+            document_path, extractor.server_timestamps)
+        if not write_pbs:
             transform_pb.current_document.CopyFrom(
                 common_pb2.Precondition(exists=False))
         write_pbs.append(transform_pb)
