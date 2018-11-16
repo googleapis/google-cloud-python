@@ -902,7 +902,7 @@ class Test_extract_field_paths(unittest.TestCase):
         return _helpers.extract_field_paths(document)
 
     @staticmethod
-    def _make_field_path(dotted):
+    def _make_dotted_field_path(dotted):
         from google.cloud.firestore_v1beta1 import _helpers
 
         return _helpers.FieldPath.from_string(dotted)
@@ -914,12 +914,12 @@ class Test_extract_field_paths(unittest.TestCase):
 
     def test_w_non_dict_value(self):
         document = {'a': 'b'}
-        expected = [self._make_field_path('a')]
+        expected = [self._make_dotted_field_path('a')]
         self.assertEqual(self._call_fut(document), expected)
 
     def test_w_dict_value(self):
         document = {'a': {'b': 'c'}}
-        expected = [self._make_field_path('a.b')]
+        expected = [self._make_dotted_field_path('a.b')]
         self.assertEqual(self._call_fut(document), expected)
 
 
@@ -1920,12 +1920,6 @@ class Test_all_merge_paths(unittest.TestCase):
 
         return _helpers.all_merge_paths(document_data)
 
-    @staticmethod
-    def _make_field_path(*fields):
-        from google.cloud.firestore_v1beta1 import _helpers
-
-        return _helpers.FieldPath(*fields)
-
     def test_w_empty(self):
         document_data = {}
 
@@ -1946,7 +1940,7 @@ class Test_all_merge_paths(unittest.TestCase):
             transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data)
 
-        path = self._make_field_path('a', 'b')
+        path = _make_field_path('a', 'b')
         self.assertEqual(transform_paths, [])
         self.assertEqual(actual_data, document_data)
         self.assertEqual(data_merge, [path])
@@ -1962,7 +1956,7 @@ class Test_all_merge_paths(unittest.TestCase):
             transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data)
 
-        path = self._make_field_path('a', 'b')
+        path = _make_field_path('a', 'b')
         self.assertEqual(transform_paths, [path])
         self.assertEqual(actual_data, {})
         self.assertEqual(data_merge, [])
@@ -1978,8 +1972,8 @@ class Test_all_merge_paths(unittest.TestCase):
             transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data)
 
-        path_a_b = self._make_field_path('a', 'b')
-        path_a_c = self._make_field_path('a', 'c')
+        path_a_b = _make_field_path('a', 'b')
+        path_a_c = _make_field_path('a', 'c')
         self.assertEqual(transform_paths, [path_a_c])
         self.assertEqual(actual_data, {'a': {'b': 'd'}})
         self.assertEqual(data_merge, [path_a_b])
@@ -1994,12 +1988,6 @@ class Test_normalize_merge_paths(unittest.TestCase):
         from google.cloud.firestore_v1beta1 import _helpers
 
         return _helpers.normalize_merge_paths(document_data, merge)
-
-    @staticmethod
-    def _make_field_path(*fields):
-        from google.cloud.firestore_v1beta1 import _helpers
-
-        return _helpers.FieldPath(*fields)
 
     def test_w_empty_document_empty_merge_list(self):
         document_data = {}
@@ -2016,7 +2004,7 @@ class Test_normalize_merge_paths(unittest.TestCase):
 
     def test_w_merge_path_miss(self):
         document_data = {}
-        merge_path = self._make_field_path('a', 'b')
+        merge_path = _make_field_path('a', 'b')
 
         with self.assertRaises(KeyError):
             self._call_fut(document_data, [merge_path])
@@ -2032,7 +2020,7 @@ class Test_normalize_merge_paths(unittest.TestCase):
 
     def test_w_simple(self):
         document_data = {'a': {'b': 'c', 'd': 'e'}}
-        merge_path = self._make_field_path('a', 'b')
+        merge_path = _make_field_path('a', 'b')
 
         (
             transform_paths, actual_data, data_merge, transform_merge, merge,
@@ -2049,7 +2037,7 @@ class Test_normalize_merge_paths(unittest.TestCase):
 
         document_data = {'a': {'b': SERVER_TIMESTAMP, 'c': 'd'}}
         merge_string = 'a.b'
-        merge_path = self._make_field_path('a', 'b')
+        merge_path = _make_field_path('a', 'b')
 
         (
             transform_paths, actual_data, data_merge, transform_merge, merge,
@@ -2065,14 +2053,14 @@ class Test_normalize_merge_paths(unittest.TestCase):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
 
         document_data = {'a': {'b': SERVER_TIMESTAMP, 'c': 'd'}}
-        merge_path = self._make_field_path('a')
+        merge_path = _make_field_path('a')
 
         (
             transform_paths, actual_data, data_merge, transform_merge, merge,
         ) = self._call_fut(document_data, [merge_path])
 
-        path_a_b = self._make_field_path('a', 'b')
-        path_a_c = self._make_field_path('a', 'c')
+        path_a_b = _make_field_path('a', 'b')
+        path_a_c = _make_field_path('a', 'c')
         self.assertEqual(transform_paths, [path_a_b])
         self.assertEqual(actual_data, {'a': {'c': 'd'}})
         self.assertEqual(data_merge, [path_a_c])
@@ -2083,8 +2071,8 @@ class Test_normalize_merge_paths(unittest.TestCase):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
 
         document_data = {'a': {'b': SERVER_TIMESTAMP, 'c': 'd'}}
-        path_a_b = self._make_field_path('a', 'b')
-        path_a_c = self._make_field_path('a', 'c')
+        path_a_b = _make_field_path('a', 'b')
+        path_a_c = _make_field_path('a', 'c')
 
         (
             transform_paths, actual_data, data_merge, transform_merge, merge,
@@ -2505,3 +2493,9 @@ def _make_client(project='quark'):
 
     credentials = _make_credentials()
     return Client(project=project, credentials=credentials)
+
+
+def _make_field_path(*fields):
+    from google.cloud.firestore_v1beta1 import _helpers
+
+    return _helpers.FieldPath(*fields)
