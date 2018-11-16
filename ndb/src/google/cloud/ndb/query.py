@@ -391,7 +391,7 @@ class FilterNode(Node):
 
     def __new__(cls, name, opsymbol, value):
         if isinstance(value, model.Key):
-            value = value.to_old_key()
+            value = value._key
 
         if opsymbol == _NE_OP:
             node1 = FilterNode(name, _LT_OP, value)
