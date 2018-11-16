@@ -105,7 +105,7 @@ class Parameter(ParameterizedThing):
         self._key = key
 
     def __repr__(self):
-        return "{}({!r})".format(self.__class__.__name__, self._key)
+        return "{}({!r})".format(type(self).__name__, self._key)
 
     def __eq__(self, other):
         if not isinstance(other, Parameter):
@@ -435,7 +435,7 @@ class FilterNode(Node):
 
     def __repr__(self):
         return "{}({!r}, {!r}, {!r})".format(
-            self.__class__.__name__, self._name, self._opsymbol, self._value
+            type(self).__name__, self._name, self._opsymbol, self._value
         )
 
     def __eq__(self, other):
@@ -513,7 +513,7 @@ class PostFilterNode(Node):
         return (self.predicate,)
 
     def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self.predicate)
+        return "{}({})".format(type(self).__name__, self.predicate)
 
     def __eq__(self, other):
         if not isinstance(other, PostFilterNode):
