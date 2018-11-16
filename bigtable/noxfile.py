@@ -128,9 +128,9 @@ def snippets(session):
         session.install('-e', local_dep)
     session.install('-e', '../test_utils/')
     session.install('-e', '.')
-    #'--quiet',
     session.run(
         'py.test',
+        '--quiet',
         os.path.join('docs', 'snippets.py'),
         *session.posargs
     )

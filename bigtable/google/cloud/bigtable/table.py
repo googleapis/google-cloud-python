@@ -140,8 +140,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_create_column_family]
-            :end-before: [END bigtable_create_column_family]
+            :start-after: [START bigtable_table_column_family]
+            :end-before: [END bigtable_table_column_family]
 
         :type column_family_id: str
         :param column_family_id: The ID of the column family. Must be of the
