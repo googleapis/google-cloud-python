@@ -1969,6 +1969,59 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(update_pb.update.fields, encode_dict(document_data))
         self.assertFalse(update_pb.HasField('current_document'))
 
+    def test_get_transform_pb_w_exists_precondition(self):
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1._helpers import REQUEST_TIME_ENUM
+
+        document_data = {
+            'a': SERVER_TIMESTAMP,
+        }
+        inst = self._make_one(document_data)
+        document_path = (
+            'projects/project-id/databases/(default)/'
+            'documents/document-id')
+
+        transform_pb = inst.get_transform_pb(document_path, exists=False)
+
+        self.assertIsInstance(transform_pb, write_pb2.Write)
+        self.assertEqual(transform_pb.transform.document, document_path)
+        transforms = transform_pb.transform.field_transforms
+        self.assertEqual(len(transforms), 1)
+        transform = transforms[0]
+        self.assertEqual(transform.field_path, 'a')
+        self.assertEqual(transform.set_to_server_value, REQUEST_TIME_ENUM)
+        self.assertTrue(transform_pb.HasField('current_document'))
+        self.assertFalse(transform_pb.current_document.exists)
+
+    def test_get_transform_pb_wo_exists_precondition(self):
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1._helpers import REQUEST_TIME_ENUM
+
+        document_data = {
+            'a': {
+                'b': {
+                    'c': SERVER_TIMESTAMP,
+                },
+            },
+        }
+        inst = self._make_one(document_data)
+        document_path = (
+            'projects/project-id/databases/(default)/'
+            'documents/document-id')
+
+        transform_pb = inst.get_transform_pb(document_path)
+
+        self.assertIsInstance(transform_pb, write_pb2.Write)
+        self.assertEqual(transform_pb.transform.document, document_path)
+        transforms = transform_pb.transform.field_transforms
+        self.assertEqual(len(transforms), 1)
+        transform = transforms[0]
+        self.assertEqual(transform.field_path, 'a.b.c')
+        self.assertEqual(transform.set_to_server_value, REQUEST_TIME_ENUM)
+        self.assertFalse(transform_pb.HasField('current_document'))
+
 
 class Test_canonicalize_field_paths(unittest.TestCase):
 

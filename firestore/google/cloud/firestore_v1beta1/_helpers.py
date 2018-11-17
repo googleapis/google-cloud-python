@@ -1060,6 +1060,25 @@ class ExtractDocumentTransforms(object):
 
         return update_pb
 
+    def get_transform_pb(self, document_path, exists=None):
+        transform_pb = write_pb2.Write(
+            transform=write_pb2.DocumentTransform(
+                document=document_path,
+                field_transforms=[
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(),
+                        set_to_server_value=REQUEST_TIME_ENUM,
+                    )
+                    for path in self.server_timestamps
+                ],
+            ),
+        )
+        if exists is not None:
+            transform_pb.current_document.CopyFrom(
+                common_pb2.Precondition(exists=exists))
+
+        return transform_pb
+
 
 def canonicalize_field_paths(field_paths):
     """Converts non-simple field paths to quoted field paths
@@ -1135,11 +1154,8 @@ def pbs_for_create(document_path, document_data):
         write_pbs.append(extractor.get_update_pb(document_path, exists=False))
 
     if extractor.server_timestamps:  # TODO: handle other transforms
-        transform_pb = get_transform_pb(
-            document_path, extractor.server_timestamps)
-        if not write_pbs:
-            transform_pb.current_document.CopyFrom(
-                common_pb2.Precondition(exists=False))
+        exists = None if write_pbs else False
+        transform_pb = extractor.get_transform_pb(document_path, exists)
         write_pbs.append(transform_pb)
 
     return write_pbs
@@ -1170,8 +1186,7 @@ def pbs_for_set_no_merge(document_path, document_data):
     write_pbs = [extractor.get_update_pb(document_path)]
 
     if extractor.server_timestamps:  # TODO: handle other transforms
-        transform_pb = get_transform_pb(
-            document_path, extractor.server_timestamps)
+        transform_pb = extractor.get_transform_pb(document_path)
         write_pbs.append(transform_pb)
 
     return write_pbs
