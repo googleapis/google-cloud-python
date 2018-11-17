@@ -213,7 +213,7 @@ def test_bigtable_sample_row_keys():
     actual_keys, offset = zip(*[(rk.row_key, rk.offset_bytes) for rk in data])
     # [END bigtable_sample_row_keys]
     initial_split_keys.append(b'')
-    assert actual_keys == initial_split_keys
+    assert list(actual_keys) == initial_split_keys
     table.delete()
 
 
