@@ -130,7 +130,7 @@ def system(session):
     session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)
 
 
-@nox.session(python='3.7')
+@nox.session(python='3.6')
 def lint(session):
     """Run linters.
 
@@ -171,9 +171,9 @@ def snippets(session):
         session.install('-e', local_dep)
     session.install('-e', '../test_utils/')
     session.install('-e', '.')
-    #'--quiet',
     session.run(
         'py.test',
+        '--quiet',
         os.path.join('docs', 'snippets.py'),
         *session.posargs
 <<<<<<< HEAD
