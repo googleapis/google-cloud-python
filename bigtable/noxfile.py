@@ -157,7 +157,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=['3.7'])
+@nox.session(python=['2.7','3.7'])
 def snippets(session):
     """Run the documentation example snippets."""
     # Sanity check: Only run snippets system tests if the environment variable
@@ -175,6 +175,7 @@ def snippets(session):
         'py.test',
         '--quiet',
         os.path.join('docs', 'snippets.py'),
+<<<<<<< HEAD
         *session.posargs
 <<<<<<< HEAD
     )
@@ -185,4 +186,7 @@ def snippets(session):
         *session.posargs
 =======
 >>>>>>> add column family snippets
+=======
+        *session.posargs,
+>>>>>>> Create snippets for Column Families.
     )
