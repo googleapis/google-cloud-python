@@ -75,7 +75,6 @@ def setup_module():
                                       location_id=LOCATION_ID,
                                       serve_nodes=SERVER_NODES,
                                       default_storage_type=STORAGE_TYPE)
-    Config.INSTANCE.create(clusters=[cluster])
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
