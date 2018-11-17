@@ -1935,6 +1935,18 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
 
+    def test_has_transforms_no(self):
+        document_data = {}
+        inst = self._make_one(document_data)
+        self.assertFalse(inst.has_transforms)
+
+    def test_has_transforms_w_server_timestamp(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {'a': SERVER_TIMESTAMP}
+        inst = self._make_one(document_data)
+        self.assertTrue(inst.has_transforms)
+
     def test_get_update_pb_w_exists_precondition(self):
         from google.cloud.firestore_v1beta1.proto import write_pb2
 

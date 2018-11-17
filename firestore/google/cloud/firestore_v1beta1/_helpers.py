@@ -1046,6 +1046,10 @@ class ExtractDocumentTransforms(object):
                 self.field_paths.append(field_path)
                 set_field_value(self.set_fields, field_path, value)
 
+    @property
+    def has_transforms(self):
+        return bool(self.server_timestamps)
+
     def get_update_pb(self, document_path, exists=None):
         update_pb = write_pb2.Write(
             update=document_pb2.Document(
@@ -1153,7 +1157,7 @@ def pbs_for_create(document_path, document_data):
     if extractor.empty_document or extractor.set_fields:
         write_pbs.append(extractor.get_update_pb(document_path, exists=False))
 
-    if extractor.server_timestamps:  # TODO: handle other transforms
+    if extractor.has_transforms:
         exists = None if write_pbs else False
         transform_pb = extractor.get_transform_pb(document_path, exists)
         write_pbs.append(transform_pb)
@@ -1185,7 +1189,7 @@ def pbs_for_set_no_merge(document_path, document_data):
     # contains only transforms.
     write_pbs = [extractor.get_update_pb(document_path)]
 
-    if extractor.server_timestamps:  # TODO: handle other transforms
+    if extractor.has_transforms:
         transform_pb = extractor.get_transform_pb(document_path)
         write_pbs.append(transform_pb)
 
