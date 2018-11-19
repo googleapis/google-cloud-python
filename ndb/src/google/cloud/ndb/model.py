@@ -3424,6 +3424,17 @@ class Model(metaclass=MetaModel):
     # Hardcoded pseudo-property for the key.
     _key = ModelKey()
     key = _key
+    """A special pseudo-property for key queries.
+
+    For example:
+
+    .. code-block:: python
+
+        key = ndb.Key(MyModel, 808)
+        query = MyModel.query(MyModel.key > key)
+
+    will create a query for the reserved ``__key__`` property.
+    """
 
     def __init__(_self, **kwargs):
         # NOTE: We use ``_self`` rather than ``self`` so users can define a
@@ -3595,6 +3606,19 @@ class Model(metaclass=MetaModel):
             .Key: The validated ``key``.
         """
         return key
+
+    def _put(self, **ctx_options):
+        """Write this entity to Cloud Datastore.
+
+        If the operation creates or completes a key, the entity's key
+        attribute is set to the new, complete key.
+
+        Raises:
+            NotImplementedError: Always. This is virtual (for now).
+        """
+        raise NotImplementedError
+
+    put = _put
 
 
 class Expando(Model):

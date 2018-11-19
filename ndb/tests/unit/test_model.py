@@ -2666,6 +2666,12 @@ class TestModel:
         value = unittest.mock.sentinel.value
         assert model.Model._validate_key(value) is value
 
+    @staticmethod
+    def test__put():
+        entity = model.Model()
+        with pytest.raises(NotImplementedError):
+            entity._put()
+
 
 class TestExpando:
     @staticmethod
