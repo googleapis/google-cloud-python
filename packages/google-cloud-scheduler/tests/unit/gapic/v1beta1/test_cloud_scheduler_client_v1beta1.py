@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import scheduler_v1beta1
@@ -74,7 +75,10 @@ class TestCloudSchedulerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -92,7 +96,10 @@ class TestCloudSchedulerClient(object):
 
     def test_list_jobs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -117,7 +124,10 @@ class TestCloudSchedulerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup Request
         name = client.job_path('[PROJECT]', '[LOCATION]', '[JOB]')
@@ -133,7 +143,10 @@ class TestCloudSchedulerClient(object):
     def test_get_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup request
         name = client.job_path('[PROJECT]', '[LOCATION]', '[JOB]')
@@ -157,7 +170,10 @@ class TestCloudSchedulerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -175,7 +191,10 @@ class TestCloudSchedulerClient(object):
     def test_create_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -200,7 +219,10 @@ class TestCloudSchedulerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup Request
         job = {}
@@ -216,7 +238,10 @@ class TestCloudSchedulerClient(object):
     def test_update_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup request
         job = {}
@@ -226,7 +251,10 @@ class TestCloudSchedulerClient(object):
 
     def test_delete_job(self):
         channel = ChannelStub()
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup Request
         name = client.job_path('[PROJECT]', '[LOCATION]', '[JOB]')
@@ -241,7 +269,10 @@ class TestCloudSchedulerClient(object):
     def test_delete_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup request
         name = client.job_path('[PROJECT]', '[LOCATION]', '[JOB]')
@@ -265,7 +296,10 @@ class TestCloudSchedulerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup Request
         name = client.job_path('[PROJECT]', '[LOCATION]', '[JOB]')
@@ -281,7 +315,10 @@ class TestCloudSchedulerClient(object):
     def test_pause_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup request
         name = client.job_path('[PROJECT]', '[LOCATION]', '[JOB]')
@@ -305,7 +342,10 @@ class TestCloudSchedulerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup Request
         name = client.job_path('[PROJECT]', '[LOCATION]', '[JOB]')
@@ -321,7 +361,10 @@ class TestCloudSchedulerClient(object):
     def test_resume_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup request
         name = client.job_path('[PROJECT]', '[LOCATION]', '[JOB]')
@@ -345,7 +388,10 @@ class TestCloudSchedulerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup Request
         name = client.job_path('[PROJECT]', '[LOCATION]', '[JOB]')
@@ -361,7 +407,10 @@ class TestCloudSchedulerClient(object):
     def test_run_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = scheduler_v1beta1.CloudSchedulerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = scheduler_v1beta1.CloudSchedulerClient()
 
         # Setup request
         name = client.job_path('[PROJECT]', '[LOCATION]', '[JOB]')
