@@ -20,9 +20,9 @@ import pytest
 
 from google.rpc import status_pb2
 
-from google.cloud import videointelligence_v1beta1
-from google.cloud.videointelligence_v1beta1 import enums
-from google.cloud.videointelligence_v1beta1.proto import video_intelligence_pb2
+from google.cloud import videointelligence_v1p2beta1
+from google.cloud.videointelligence_v1p2beta1 import enums
+from google.cloud.videointelligence_v1p2beta1.proto import video_intelligence_pb2
 from google.longrunning import operations_pb2
 
 
@@ -80,14 +80,16 @@ class TestVideoIntelligenceServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = videointelligence_v1beta1.VideoIntelligenceServiceClient()
+            client = videointelligence_v1p2beta1.VideoIntelligenceServiceClient(
+            )
 
         # Setup Request
         input_uri = 'gs://demomaker/cat.mp4'
         features_element = enums.Feature.LABEL_DETECTION
         features = [features_element]
 
-        response = client.annotate_video(input_uri, features)
+        response = client.annotate_video(
+            input_uri=input_uri, features=features)
         result = response.result()
         assert expected_response == result
 
@@ -109,13 +111,15 @@ class TestVideoIntelligenceServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = videointelligence_v1beta1.VideoIntelligenceServiceClient()
+            client = videointelligence_v1p2beta1.VideoIntelligenceServiceClient(
+            )
 
         # Setup Request
         input_uri = 'gs://demomaker/cat.mp4'
         features_element = enums.Feature.LABEL_DETECTION
         features = [features_element]
 
-        response = client.annotate_video(input_uri, features)
+        response = client.annotate_video(
+            input_uri=input_uri, features=features)
         exception = response.exception()
         assert exception.errors[0] == error
