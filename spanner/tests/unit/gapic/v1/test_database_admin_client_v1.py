@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -81,7 +82,10 @@ class TestDatabaseAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -100,7 +104,10 @@ class TestDatabaseAdminClient(object):
 
     def test_list_databases_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -121,7 +128,10 @@ class TestDatabaseAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -146,7 +156,10 @@ class TestDatabaseAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -165,7 +178,10 @@ class TestDatabaseAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         name = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
@@ -182,7 +198,10 @@ class TestDatabaseAdminClient(object):
     def test_get_database_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup request
         name = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
@@ -200,7 +219,10 @@ class TestDatabaseAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -226,7 +248,10 @@ class TestDatabaseAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -239,7 +264,10 @@ class TestDatabaseAdminClient(object):
 
     def test_drop_database(self):
         channel = ChannelStub()
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -256,7 +284,10 @@ class TestDatabaseAdminClient(object):
     def test_drop_database_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -273,7 +304,10 @@ class TestDatabaseAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -291,7 +325,10 @@ class TestDatabaseAdminClient(object):
     def test_get_database_ddl_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -309,7 +346,10 @@ class TestDatabaseAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         resource = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -328,7 +368,10 @@ class TestDatabaseAdminClient(object):
     def test_set_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup request
         resource = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -347,7 +390,10 @@ class TestDatabaseAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         resource = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -365,7 +411,10 @@ class TestDatabaseAdminClient(object):
     def test_get_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup request
         resource = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -382,7 +431,10 @@ class TestDatabaseAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
         resource = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -401,7 +453,10 @@ class TestDatabaseAdminClient(object):
     def test_test_iam_permissions_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_database_v1.DatabaseAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup request
         resource = client.database_path('[PROJECT]', '[INSTANCE]',
