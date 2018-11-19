@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import tasks_v2beta2
@@ -82,7 +83,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -100,7 +104,10 @@ class TestCloudTasksClient(object):
 
     def test_list_queues_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -117,7 +124,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -133,7 +143,10 @@ class TestCloudTasksClient(object):
     def test_get_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -149,7 +162,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -167,7 +183,10 @@ class TestCloudTasksClient(object):
     def test_create_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -184,7 +203,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         queue = {}
@@ -200,7 +222,10 @@ class TestCloudTasksClient(object):
     def test_update_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         queue = {}
@@ -210,7 +235,10 @@ class TestCloudTasksClient(object):
 
     def test_delete_queue(self):
         channel = ChannelStub()
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -225,7 +253,10 @@ class TestCloudTasksClient(object):
     def test_delete_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -241,7 +272,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -257,7 +291,10 @@ class TestCloudTasksClient(object):
     def test_purge_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -273,7 +310,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -289,7 +329,10 @@ class TestCloudTasksClient(object):
     def test_pause_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -305,7 +348,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -321,7 +367,10 @@ class TestCloudTasksClient(object):
     def test_resume_queue_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -338,7 +387,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -355,7 +407,10 @@ class TestCloudTasksClient(object):
     def test_get_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -372,7 +427,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -390,7 +448,10 @@ class TestCloudTasksClient(object):
     def test_set_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -407,7 +468,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -425,7 +489,10 @@ class TestCloudTasksClient(object):
     def test_test_iam_permissions_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -448,7 +515,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -466,7 +536,10 @@ class TestCloudTasksClient(object):
 
     def test_list_tasks_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -483,7 +556,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -499,7 +575,10 @@ class TestCloudTasksClient(object):
     def test_get_task_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -515,7 +594,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -533,7 +615,10 @@ class TestCloudTasksClient(object):
     def test_create_task_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -544,7 +629,10 @@ class TestCloudTasksClient(object):
 
     def test_delete_task(self):
         channel = ChannelStub()
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -559,7 +647,10 @@ class TestCloudTasksClient(object):
     def test_delete_task_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -575,7 +666,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -593,7 +687,10 @@ class TestCloudTasksClient(object):
     def test_lease_tasks_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
@@ -604,7 +701,10 @@ class TestCloudTasksClient(object):
 
     def test_acknowledge_task(self):
         channel = ChannelStub()
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -621,7 +721,10 @@ class TestCloudTasksClient(object):
     def test_acknowledge_task_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -638,7 +741,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -659,7 +765,10 @@ class TestCloudTasksClient(object):
     def test_renew_lease_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -677,7 +786,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -695,7 +807,10 @@ class TestCloudTasksClient(object):
     def test_cancel_lease_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -712,7 +827,10 @@ class TestCloudTasksClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
@@ -728,7 +846,10 @@ class TestCloudTasksClient(object):
     def test_run_task_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = tasks_v2beta2.CloudTasksClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
         name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
