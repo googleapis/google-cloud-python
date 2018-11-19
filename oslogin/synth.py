@@ -29,6 +29,7 @@ library = gapic.py_library(
     artman_output_name='os-login-v1')
 
 s.move(library / 'google/cloud/oslogin_v1')
+s.move(library / 'tests/unit/gapic/v1')
 
 # Fix up imports
 s.replace(
