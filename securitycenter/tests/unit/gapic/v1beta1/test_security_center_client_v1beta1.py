@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -87,7 +88,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -105,7 +109,10 @@ class TestSecurityCenterClient(object):
     def test_create_source_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         parent = client.organization_path('[ORGANIZATION]')
@@ -132,7 +139,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         parent = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -151,7 +161,10 @@ class TestSecurityCenterClient(object):
     def test_create_finding_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         parent = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -170,7 +183,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         resource = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -187,7 +203,10 @@ class TestSecurityCenterClient(object):
     def test_get_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         resource = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -208,7 +227,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         name = client.organization_settings_path('[ORGANIZATION]')
@@ -225,7 +247,10 @@ class TestSecurityCenterClient(object):
     def test_get_organization_settings_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         name = client.organization_settings_path('[ORGANIZATION]')
@@ -247,7 +272,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         name = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -264,7 +292,10 @@ class TestSecurityCenterClient(object):
     def test_get_source_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         name = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -286,7 +317,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -306,7 +340,10 @@ class TestSecurityCenterClient(object):
 
     def test_group_assets_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         parent = client.organization_path('[ORGANIZATION]')
@@ -330,7 +367,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         parent = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -350,7 +390,10 @@ class TestSecurityCenterClient(object):
 
     def test_group_findings_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         parent = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -376,7 +419,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -395,7 +441,10 @@ class TestSecurityCenterClient(object):
 
     def test_list_assets_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         parent = client.organization_path('[ORGANIZATION]')
@@ -420,7 +469,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         parent = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -439,7 +491,10 @@ class TestSecurityCenterClient(object):
 
     def test_list_findings_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         parent = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -462,7 +517,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -481,7 +539,10 @@ class TestSecurityCenterClient(object):
 
     def test_list_sources_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         parent = client.organization_path('[ORGANIZATION]')
@@ -500,7 +561,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -524,7 +588,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         parent = client.organization_path('[ORGANIZATION]')
@@ -551,7 +618,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         name = client.finding_path('[ORGANIZATION]', '[SOURCE]', '[FINDING]')
@@ -570,7 +640,10 @@ class TestSecurityCenterClient(object):
     def test_set_finding_state_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         name = client.finding_path('[ORGANIZATION]', '[SOURCE]', '[FINDING]')
@@ -589,7 +662,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         resource = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -607,7 +683,10 @@ class TestSecurityCenterClient(object):
     def test_set_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         resource = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -624,7 +703,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         resource = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -642,7 +724,10 @@ class TestSecurityCenterClient(object):
     def test_test_iam_permissions_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         resource = client.source_path('[ORGANIZATION]', '[SOURCE]')
@@ -669,7 +754,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         finding = {}
@@ -686,7 +774,10 @@ class TestSecurityCenterClient(object):
     def test_update_finding_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         finding = {}
@@ -707,7 +798,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         organization_settings = {}
@@ -724,7 +818,10 @@ class TestSecurityCenterClient(object):
     def test_update_organization_settings_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         organization_settings = {}
@@ -746,7 +843,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         source = {}
@@ -763,7 +863,10 @@ class TestSecurityCenterClient(object):
     def test_update_source_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         source = {}
@@ -780,7 +883,10 @@ class TestSecurityCenterClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup Request
         security_marks = {}
@@ -797,7 +903,10 @@ class TestSecurityCenterClient(object):
     def test_update_security_marks_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = securitycenter_v1beta1.SecurityCenterClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = securitycenter_v1beta1.SecurityCenterClient()
 
         # Setup request
         security_marks = {}
