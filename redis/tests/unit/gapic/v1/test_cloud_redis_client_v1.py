@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -81,7 +82,10 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = redis_v1.CloudRedisClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -99,7 +103,10 @@ class TestCloudRedisClient(object):
 
     def test_list_instances_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = redis_v1.CloudRedisClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -140,7 +147,10 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = redis_v1.CloudRedisClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
 
         # Setup Request
         name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
@@ -156,7 +166,10 @@ class TestCloudRedisClient(object):
     def test_get_instance_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = redis_v1.CloudRedisClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
 
         # Setup request
         name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
@@ -199,7 +212,10 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1.CloudRedisClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -227,7 +243,10 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1.CloudRedisClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -275,7 +294,10 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1.CloudRedisClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
 
         # Setup Request
         paths_element = 'display_name'
@@ -308,7 +330,10 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1.CloudRedisClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
 
         # Setup Request
         paths_element = 'display_name'
@@ -336,7 +361,10 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1.CloudRedisClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
 
         # Setup Request
         name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
@@ -359,7 +387,10 @@ class TestCloudRedisClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = redis_v1.CloudRedisClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
 
         # Setup Request
         name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
