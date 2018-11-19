@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import texttospeech_v1
@@ -69,7 +70,10 @@ class TestTextToSpeechClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = texttospeech_v1.TextToSpeechClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = texttospeech_v1.TextToSpeechClient()
 
         response = client.list_voices()
         assert expected_response == response
@@ -82,7 +86,10 @@ class TestTextToSpeechClient(object):
     def test_list_voices_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = texttospeech_v1.TextToSpeechClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = texttospeech_v1.TextToSpeechClient()
 
         with pytest.raises(CustomException):
             client.list_voices()
@@ -96,7 +103,10 @@ class TestTextToSpeechClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = texttospeech_v1.TextToSpeechClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = texttospeech_v1.TextToSpeechClient()
 
         # Setup Request
         input_ = {}
@@ -115,7 +125,10 @@ class TestTextToSpeechClient(object):
     def test_synthesize_speech_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = texttospeech_v1.TextToSpeechClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = texttospeech_v1.TextToSpeechClient()
 
         # Setup request
         input_ = {}
