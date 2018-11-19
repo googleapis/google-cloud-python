@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.api import metric_pb2 as api_metric_pb2
@@ -81,7 +82,10 @@ class TestMetricServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup Request
         name = client.project_path('[PROJECT]')
@@ -100,7 +104,10 @@ class TestMetricServiceClient(object):
 
     def test_list_monitored_resource_descriptors_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup request
         name = client.project_path('[PROJECT]')
@@ -126,7 +133,10 @@ class TestMetricServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup Request
         name = client.monitored_resource_descriptor_path(
@@ -144,7 +154,10 @@ class TestMetricServiceClient(object):
     def test_get_monitored_resource_descriptor_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup request
         name = client.monitored_resource_descriptor_path(
@@ -167,7 +180,10 @@ class TestMetricServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup Request
         name = client.project_path('[PROJECT]')
@@ -186,7 +202,10 @@ class TestMetricServiceClient(object):
 
     def test_list_metric_descriptors_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup request
         name = client.project_path('[PROJECT]')
@@ -214,7 +233,10 @@ class TestMetricServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup Request
         name = client.metric_descriptor_path('[PROJECT]',
@@ -232,7 +254,10 @@ class TestMetricServiceClient(object):
     def test_get_metric_descriptor_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup request
         name = client.metric_descriptor_path('[PROJECT]',
@@ -260,7 +285,10 @@ class TestMetricServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup Request
         name = client.project_path('[PROJECT]')
@@ -278,7 +306,10 @@ class TestMetricServiceClient(object):
     def test_create_metric_descriptor_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup request
         name = client.project_path('[PROJECT]')
@@ -289,7 +320,10 @@ class TestMetricServiceClient(object):
 
     def test_delete_metric_descriptor(self):
         channel = ChannelStub()
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup Request
         name = client.metric_descriptor_path('[PROJECT]',
@@ -306,7 +340,10 @@ class TestMetricServiceClient(object):
     def test_delete_metric_descriptor_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup request
         name = client.metric_descriptor_path('[PROJECT]',
@@ -329,7 +366,10 @@ class TestMetricServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup Request
         name = client.project_path('[PROJECT]')
@@ -352,7 +392,10 @@ class TestMetricServiceClient(object):
 
     def test_list_time_series_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup request
         name = client.project_path('[PROJECT]')
@@ -367,7 +410,10 @@ class TestMetricServiceClient(object):
 
     def test_create_time_series(self):
         channel = ChannelStub()
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup Request
         name = client.project_path('[PROJECT]')
@@ -384,7 +430,10 @@ class TestMetricServiceClient(object):
     def test_create_time_series_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.MetricServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.MetricServiceClient()
 
         # Setup request
         name = client.project_path('[PROJECT]')
