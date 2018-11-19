@@ -3300,27 +3300,296 @@ class ComputedProperty(GenericProperty):
 
 
 class MetaModel(type):
-    __slots__ = ()
+    """Metaclass for Model.
 
-    def __new__(self, *args, **kwargs):
-        raise NotImplementedError
+    This exists to fix up the properties -- they need to know their name. For
+    example, defining a model:
+
+    .. code-block:: python
+
+        class Book(ndb.Model):
+            pages = ndb.IntegerProperty()
+
+    the ``Book.pages`` property doesn't have the name ``pages`` assigned.
+    This is accomplished by calling the ``_fix_properties()`` method on the
+    class itself.
+    """
+
+    def __init__(cls, name, bases, classdict):
+        super(MetaModel, cls).__init__(name, bases, classdict)
+        cls._fix_up_properties()
+
+    def __repr__(cls):
+        props = []
+        for _, prop in sorted(cls._properties.items()):
+            props.append("{}={!r}".format(prop._code_name, prop))
+        return "{}<{}>".format(cls.__name__, ", ".join(props))
 
 
-class Model:
-    __slots__ = ("_entity_key",)
+class Model(metaclass=MetaModel):
+    """A class describing Cloud Datastore entities.
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    Model instances are usually called entities. All model classes
+    inheriting from :class:`Model` automatically have :class:`MetaModel` as
+    their metaclass, so that the properties are fixed up properly after the
+    class is defined.
+
+    Because of this, you cannot use the same :class:`Property` object to
+    describe multiple properties -- you must create separate :class:`Property`
+    objects for each property. For example, this does not work:
+
+    .. code-block:: python
+
+        reuse_prop = ndb.StringProperty()
+
+        class Wrong(ndb.Model):
+            first = reuse_prop
+            second = reuse_prop
+
+    instead each class attribute needs to be distinct:
+
+    .. code-block:: python
+
+        class NotWrong(ndb.Model):
+            first = ndb.StringProperty()
+            second = ndb.StringProperty()
+
+    The "kind" for a given :class:`Model` subclass is normally equal to the
+    class name (exclusive of the module name or any other parent scope). To
+    override the kind, define :meth:`_get_kind`, as follows:
+
+    .. code-block:: python
+
+        class MyModel(ndb.Model):
+            @classmethod
+            def _get_kind(cls):
+                return "AnotherKind"
+
+    A newly constructed entity will not be persisted to Cloud Datastore without
+    an explicit call to :meth:`put`.
+
+    .. note::
+
+        You cannot define a property named ``key``; the ``.key`` attribute
+        always refers to the entity's ``key``. But you can define properties
+        named ``id`` or ``parent``. Values for the latter cannot be passed
+        through the constructor, but can be assigned to entity attributes
+        after the entity has been created.
+
+    .. automethod:: _get_kind
+
+    Args:
+        key (Key): Datastore key for this entity (kind must match this model).
+            If ``key`` is used, ``id`` and ``parent`` must be unset or
+            :data:`None`.
+        id (str): Key ID for this model. If ``id`` is used, ``key`` must be
+            :data:`None`.
+        parent (Key): The parent model or :data:`None` for a top-level model.
+            If ``parent`` is used, ``key`` must be :data:`None`.
+        namespace (str): Namespace for the entity key.
+        app (str): Application ID for the entity key.
+        kwargs (Dict[str, Any]): Additional keyword arguments. These should map
+            to properties of this model.
+
+    Raises:
+        .BadArgumentError: If the constructor is called with ``key`` and one
+            of ``id``, ``app``, ``namespace`` or ``parent`` specified.
+    """
+
+    # Class variables updated by _fix_up_properties()
+    _properties = None
+    _has_repeated = False
+    _kind_map = {}  # Dict mapping {kind: Model subclass}
+
+    # Defaults for instance variables.
+    _entity_key = None
+    _values = None
+    _projection = ()  # Tuple of names of projected properties.
+
+    # Hardcoded pseudo-property for the key.
+    _key = ModelKey()
+    key = _key
+
+    def __init__(_self, **kwargs):
+        # NOTE: We use ``_self`` rather than ``self`` so users can define a
+        #       property named 'self'.
+        self = _self
+        key = self._get_arg(kwargs, "key")
+        id_ = self._get_arg(kwargs, "id")
+        app = self._get_arg(kwargs, "app")
+        namespace = self._get_arg(kwargs, "namespace")
+        parent = self._get_arg(kwargs, "parent")
+        projection = self._get_arg(kwargs, "projection")
+
+        key_parts_unspecified = (
+            id_ is None
+            and parent is None
+            and app is None
+            and namespace is None
+        )
+        if key is not None:
+            if not key_parts_unspecified:
+                raise exceptions.BadArgumentError(
+                    "Model constructor given ``key`` does not accept "
+                    "``id``, ``app``, ``namespace``, or ``parent``."
+                )
+            self._key = _validate_key(key, entity=self)
+        elif not key_parts_unspecified:
+            self._key = Key(
+                self._get_kind(),
+                id_,
+                parent=parent,
+                app=app,
+                namespace=namespace,
+            )
+
+        self._values = {}
+        self._set_attributes(kwargs)
+        # Set the projection last, otherwise it will prevent _set_attributes().
+        if projection:
+            self._set_projection(projection)
+
+    @classmethod
+    def _get_arg(cls, kwargs, keyword):
+        """Parse keywords that may be property names.
+
+        This is used to re-map special keyword arguments in the presence
+        of name collision. For example if ``id`` is a property on the current
+        :class:`Model`, then it may be desirable to pass ``_id`` (instead of
+        ``id``) to the constructor.
+
+        If the argument is found as ``_{keyword}`` or ``{keyword}``, it will
+        be removed from ``kwargs``.
+
+        Args:
+            kwargs (Dict[str, Any]): A keyword arguments dictionary.
+            keyword (str): A keyword to be converted.
+
+        Returns:
+            Optional[Any]: The ``keyword`` argument, if found.
+        """
+        alt_keyword = "_" + keyword
+        if alt_keyword in kwargs:
+            return kwargs.pop(alt_keyword)
+
+        if keyword in kwargs:
+            obj = getattr(cls, keyword, None)
+            if not isinstance(obj, Property) or isinstance(obj, ModelKey):
+                return kwargs.pop(keyword)
+
+        return None
+
+    def _set_attributes(self, kwargs):
+        """Set attributes from keyword arguments.
+
+        Args:
+            kwargs (Dict[str, Any]): A keyword arguments dictionary.
+        """
+        cls = type(self)
+        for name, value in kwargs.items():
+            # NOTE: This raises an ``AttributeError`` for unknown properties
+            #       and that is the intended behavior.
+            prop = getattr(cls, name)
+            if not isinstance(prop, Property):
+                raise TypeError("Cannot set non-property {}".format(name))
+            prop._set_value(self, value)
 
     @classmethod
     def _get_kind(cls):
-        """Return the kind name for this class.
+        """str: Return the kind name for this class.
 
         This defaults to ``cls.__name__``; users may override this to give a
         class a different name when stored in Google Cloud Datastore than the
         name of the class.
         """
         return cls.__name__
+
+    def _set_projection(self, projection):
+        """Set the projected properties for this instance.
+
+        Args:
+            projection (Union[list, tuple]): An iterable of strings
+                representing the projection for the model instance.
+
+        Raises:
+            ValueError: If a nested projected value (e.g. ``x.y``) is
+                :data:`None`.
+        """
+        # Track any nested projected attributes, if they exist.
+        by_prefix = {}
+        for property_name in projection:
+            if "." in property_name:
+                head, tail = property_name.split(".", 1)
+                if head in by_prefix:
+                    by_prefix[head].append(tail)
+                else:
+                    by_prefix[head] = [tail]
+
+        self._projection = tuple(projection)
+
+        for base_name, nested_projection in by_prefix.items():
+            prop = self._properties.get(base_name)
+            sub_values = prop._get_base_value_unwrapped_as_list(self)
+            for item in sub_values:
+                if item is None:
+                    raise ValueError("Projected value cannot be None.")
+                item._set_projection(nested_projection)
+
+    @classmethod
+    def _fix_up_properties(cls):
+        """Fix up the properties by calling their _fix_up() method.
+
+        .. note::
+
+            This is called by :class:`MetaModel`, but may also be called
+            manually after dynamically updating a model class.
+
+        Raises:
+            KindError: If the returned kind from ``_get_kind`` is not a
+                :class:`str`.
+            TypeError: If a property on this model has a name beginning with
+                an underscore.
+        """
+        kind = cls._get_kind()
+        if not isinstance(kind, str):
+            raise KindError(
+                "Class {} defines a ``_get_kind()`` method that returns "
+                "a non-string ({!r})".format(cls.__name__, kind)
+            )
+
+        # Map of ``kind_name`` -> ``property_instance``.
+        cls._properties = {}
+
+        # Skip the classes in ``ndb.model``.
+        if cls.__module__ == __name__:
+            return
+
+        for name in set(dir(cls)):
+            attr = getattr(cls, name, None)
+            if isinstance(attr, ModelAttribute) and not isinstance(
+                attr, ModelKey
+            ):
+                if name.startswith("_"):
+                    raise TypeError(
+                        "ModelAttribute {} cannot begin with an underscore "
+                        "character. ``_`` prefixed attributes are reserved "
+                        "for temporary Model instance values.".format(name)
+                    )
+                attr._fix_up(cls, name)
+                if isinstance(attr, Property):
+                    if attr._repeated or (
+                        isinstance(attr, StructuredProperty)
+                        and attr._modelclass._has_repeated
+                    ):
+                        cls._has_repeated = True
+                    cls._properties[attr._name] = attr
+
+        cls._update_kind_map()
+
+    @classmethod
+    def _update_kind_map(cls):
+        """Update the kind map to include this class."""
+        cls._kind_map[cls._get_kind()] = cls
 
     @staticmethod
     def _validate_key(key):
