@@ -3466,7 +3466,7 @@ class Model(metaclass=MetaModel):
 
     @classmethod
     def _get_arg(cls, kwargs, keyword):
-        """Parse keywords that may be property names.
+        """Parse keywords for fields that aren't user-defined properties.
 
         This is used to re-map special keyword arguments in the presence
         of name collision. For example if ``id`` is a property on the current
@@ -3525,30 +3525,8 @@ class Model(metaclass=MetaModel):
         Args:
             projection (Union[list, tuple]): An iterable of strings
                 representing the projection for the model instance.
-
-        Raises:
-            ValueError: If a nested projected value (e.g. ``x.y``) is
-                :data:`None`.
         """
-        # Track any nested projected attributes, if they exist.
-        by_prefix = {}
-        for property_name in projection:
-            if "." in property_name:
-                head, tail = property_name.split(".", 1)
-                if head in by_prefix:
-                    by_prefix[head].append(tail)
-                else:
-                    by_prefix[head] = [tail]
-
         self._projection = tuple(projection)
-
-        for base_name, nested_projection in by_prefix.items():
-            prop = self._properties.get(base_name)
-            sub_values = prop._get_base_value_unwrapped_as_list(self)
-            for item in sub_values:
-                if item is None:
-                    raise ValueError("Projected value cannot be None.")
-                item._set_projection(nested_projection)
 
     @classmethod
     def _fix_up_properties(cls):
