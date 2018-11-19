@@ -2056,6 +2056,21 @@ class TextProperty(BlobProperty):
 
         super(TextProperty, self).__init__(*args, **kwargs)
 
+    def _constructor_info(self):
+        """Helper for :meth:`__repr__`.
+
+        Yields:
+            Tuple[str, bool]: Pairs of argument name and a boolean indicating
+            if that argument is a keyword.
+        """
+        parent_init = super(TextProperty, self).__init__
+        signature = inspect.signature(parent_init)
+        for name, parameter in signature.parameters.items():
+            if name == "indexed":
+                continue
+            is_keyword = parameter.kind == inspect.Parameter.KEYWORD_ONLY
+            yield name, is_keyword
+
     @property
     def _indexed(self):
         """bool: Indicates that the property is not indexed."""

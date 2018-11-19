@@ -1704,6 +1704,12 @@ class TestTextProperty:
             model.TextProperty(indexed=True)
 
     @staticmethod
+    def test_repr():
+        prop = model.TextProperty(name="text")
+        expected = "TextProperty('text')"
+        assert repr(prop) == expected
+
+    @staticmethod
     def test__validate():
         prop = model.TextProperty(name="text")
         assert prop._validate("abc") is None
@@ -1772,6 +1778,12 @@ class TestStringProperty:
     def test_constructor_not_allowed():
         with pytest.raises(NotImplementedError):
             model.StringProperty(indexed=False)
+
+    @staticmethod
+    def test_repr():
+        prop = model.StringProperty(name="limited-text")
+        expected = "StringProperty('limited-text')"
+        assert repr(prop) == expected
 
     @staticmethod
     def test__validate_bad_length():
@@ -2528,16 +2540,28 @@ class TestComputedProperty:
 
 class TestMetaModel:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.MetaModel()
+    def test___repr__():
+        expected = "Model<>"
+        assert repr(model.Model) == expected
+
+    @staticmethod
+    def test___repr__extended():
+        class Mine(model.Model):
+            first = model.IntegerProperty()
+            second = model.StringProperty()
+
+        expected = (
+            "Mine<first=IntegerProperty('first'), "
+            "second=StringProperty('second')>"
+        )
+        assert repr(Mine) == expected
 
 
 class TestModel:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.Model()
+        entity = model.Model()
+        assert entity.__dict__ == {'_values': {}}
 
     @staticmethod
     def test__get_kind():
