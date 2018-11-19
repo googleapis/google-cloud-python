@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -74,8 +77,11 @@ class TestVideoIntelligenceServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = videointelligence_v1p1beta1.VideoIntelligenceServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = videointelligence_v1p1beta1.VideoIntelligenceServiceClient(
+            )
 
         # Setup Request
         input_uri = 'gs://demomaker/cat.mp4'
@@ -102,8 +108,11 @@ class TestVideoIntelligenceServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = videointelligence_v1p1beta1.VideoIntelligenceServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = videointelligence_v1p1beta1.VideoIntelligenceServiceClient(
+            )
 
         # Setup Request
         input_uri = 'gs://demomaker/cat.mp4'
