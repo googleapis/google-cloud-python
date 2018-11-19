@@ -28,6 +28,7 @@ for version in ['v1', 'v2']:
     )
 
     s.move(library / f'google/cloud/trace_{version}')
+    s.move(library / f'tests/unit/gapic/{version}')
         
     # Fix up imports
     s.replace(
@@ -43,10 +44,3 @@ s.replace(
     'google/**/proto/*_pb2.py',
     r"(^.*$\n)*",
     r"# -*- coding: utf-8 -*-\n\g<0>")
-
-# GAPIC-Generator is mangling some docstrings
-# Missing blank line after bulleted list
-s.replace(
-    "google/cloud/trace_v1/gapic/trace_service_client.py",
-    '                ::\n\n',
-    '')
