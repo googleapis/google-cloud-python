@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import trace_v1
@@ -62,7 +65,10 @@ class CustomException(Exception):
 class TestTraceServiceClient(object):
     def test_patch_traces(self):
         channel = ChannelStub()
-        client = trace_v1.TraceServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = trace_v1.TraceServiceClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -79,7 +85,10 @@ class TestTraceServiceClient(object):
     def test_patch_traces_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = trace_v1.TraceServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = trace_v1.TraceServiceClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -100,7 +109,10 @@ class TestTraceServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = trace_v1.TraceServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = trace_v1.TraceServiceClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -118,7 +130,10 @@ class TestTraceServiceClient(object):
     def test_get_trace_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = trace_v1.TraceServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = trace_v1.TraceServiceClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -140,7 +155,10 @@ class TestTraceServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = trace_v1.TraceServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = trace_v1.TraceServiceClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -158,7 +176,10 @@ class TestTraceServiceClient(object):
 
     def test_list_traces_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = trace_v1.TraceServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = trace_v1.TraceServiceClient()
 
         # Setup request
         project_id = 'projectId-1969970175'

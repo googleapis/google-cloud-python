@@ -66,6 +66,8 @@ class TraceServiceGrpcTransport(object):
                 credentials=credentials,
             )
 
+        self._channel = channel
+
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
@@ -94,6 +96,15 @@ class TraceServiceGrpcTransport(object):
             credentials=credentials,
             scopes=cls._OAUTH_SCOPES,
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def patch_traces(self):
