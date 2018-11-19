@@ -30,6 +30,7 @@ library = gapic.py_library(
 
 s.move(library / 'google/cloud/spanner_v1/proto')
 s.move(library / 'google/cloud/spanner_v1/gapic')
+s.move(library / 'tests')
 
 # Add grpcio-gcp options
 s.replace(
@@ -89,114 +90,6 @@ s.replace(
 
 # Fix docstrings
 s.replace(
-    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
-    r"""
-        \* The instance is readable via the API, with all requested attributes
-        but no allocated resources. Its state is `CREATING`.""",
-    r"""
-        * The instance is readable via the API, with all requested attributes
-          but no allocated resources. Its state is `CREATING`.""",
-)
-s.replace(
-    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
-    r"""
-        \* Cancelling the operation renders the instance immediately unreadable
-        via the API.""",
-    r"""
-        * Cancelling the operation renders the instance immediately unreadable
-          via the API.""",
-)
-s.replace(
-    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
-    r"""
-        \* Billing for all successfully-allocated resources begins \(some types
-        may have lower than the requested levels\).""",
-    r"""
-        * Billing for all successfully-allocated resources begins (some types
-          may have lower than the requested levels).""",
-)
-s.replace(
-    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
-    r"""
-        \* The instance and \*all of its databases\* immediately and
-        irrevocably disappear from the API. All data in the databases
-        is permanently deleted.""",
-    r"""
-        * The instance and *all of its databases* immediately and
-          irrevocably disappear from the API. All data in the databases
-          is permanently deleted.""",
-)
-s.replace(
-    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
-    r"""
-                  \* ``labels.env:dev`` --> The instance has the label \\"env\\" and the value of
-                ::
-
-                                       the label contains the string \\"dev\\".""",
-    r"""
-                  * ``labels.env:dev`` --> The instance has the label \\"env\\"
-                    and the value of the label contains the string \\"dev\\".""",
-)
-s.replace(
-    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
-    r"""
-                  \* ``name:howl labels.env:dev`` --> The instance's name contains \\"howl\\" and
-                ::
-
-                                                 it has the label \\"env\\" with its value
-                                                 containing \\"dev\\".""",
-    r"""
-                  * ``name:howl labels.env:dev`` --> The instance's name
-                    contains \\"howl\\" and it has the label \\"env\\" with
-                    its value containing \\"dev\\".""",
-)
-s.replace(
-    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
-    r"""
-        \* For resource types for which a decrease in the instance's allocation
-        has been requested, billing is based on the newly-requested level.""",
-    r"""
-        * For resource types for which a decrease in the instance's allocation
-          has been requested, billing is based on the newly-requested level.""",
-)
-s.replace(
-    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
-    r"""
-        \* Cancelling the operation sets its metadata's
-        \[cancel_time\]\[google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time\], and begins
-        restoring resources to their pre-request values. The operation
-        is guaranteed to succeed at undoing all resource changes,
-        after which point it terminates with a `CANCELLED` status.""",
-    r"""
-        * Cancelling the operation sets its metadata's
-          [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time],
-          and begins restoring resources to their pre-request values.
-          The operation is guaranteed to succeed at undoing all resource
-          changes, after which point it terminates with a `CANCELLED` status.""",
-)
-s.replace(
-    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
-    r"""
-        \* Reading the instance via the API continues to give the pre-request
-        resource levels.""",
-    r"""
-        * Reading the instance via the API continues to give the pre-request
-          resource levels.""",
-)
-s.replace(
-    'google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py',
-    r"""
-        \* Billing begins for all successfully-allocated resources \(some types
-        may have lower than the requested levels\).
-        \* All newly-reserved resources are available for serving the instance's
-        tables.""",
-    r"""
-        * Billing begins for all successfully-allocated resources (some types
-          may have lower than the requested levels).
-        * All newly-reserved resources are available for serving the instance's
-          tables.""",
-)
-s.replace(
     'google/cloud/spanner_v1/proto/transaction_pb2.py',
     r"""====*""",
     r"",
@@ -238,11 +131,4 @@ s.replace(
     "google/**/*.py",
     'from google\.cloud\.spanner\.admin\.database_v1.proto',
     'from google.cloud.spanner_admin_database_v1.proto',
-)
-
-# Fix docstrings
-s.replace(
-    'google/cloud/spanner_admin_database_v1/gapic/database_admin_client.py',
-    r'database ID must be enclosed in backticks \(`` `` ``\).',
-    r'database ID must be enclosed in backticks.',
 )

@@ -18,10 +18,7 @@
 import mock
 import pytest
 
-# Manual edit to auto-generated import because we do not expose the
-# auto-generated client in the `g.c.spanner_v1` namespace (unlike most APIs).
-from google.cloud.spanner_v1.gapic import spanner_client as spanner_v1
-
+from google.cloud import spanner_v1
 from google.cloud.spanner_v1.proto import keys_pb2
 from google.cloud.spanner_v1.proto import result_set_pb2
 from google.cloud.spanner_v1.proto import spanner_pb2
@@ -83,7 +80,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -100,7 +100,10 @@ class TestSpannerClient(object):
     def test_create_session_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -117,7 +120,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         name = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -134,7 +140,10 @@ class TestSpannerClient(object):
     def test_get_session_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         name = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -157,7 +166,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -176,7 +188,10 @@ class TestSpannerClient(object):
 
     def test_list_sessions_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         database = client.database_path('[PROJECT]', '[INSTANCE]',
@@ -188,7 +203,10 @@ class TestSpannerClient(object):
 
     def test_delete_session(self):
         channel = ChannelStub()
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         name = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -204,7 +222,10 @@ class TestSpannerClient(object):
     def test_delete_session_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         name = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -220,7 +241,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -239,7 +263,10 @@ class TestSpannerClient(object):
     def test_execute_sql_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -262,7 +289,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -283,7 +313,10 @@ class TestSpannerClient(object):
     def test_execute_streaming_sql_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -300,7 +333,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -321,7 +357,10 @@ class TestSpannerClient(object):
     def test_read_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -346,7 +385,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -369,7 +411,10 @@ class TestSpannerClient(object):
     def test_streaming_read_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -389,7 +434,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -408,7 +456,10 @@ class TestSpannerClient(object):
     def test_begin_transaction_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -425,7 +476,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -444,7 +498,10 @@ class TestSpannerClient(object):
     def test_commit_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -456,7 +513,10 @@ class TestSpannerClient(object):
 
     def test_rollback(self):
         channel = ChannelStub()
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -474,7 +534,10 @@ class TestSpannerClient(object):
     def test_rollback_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -491,7 +554,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -510,7 +576,10 @@ class TestSpannerClient(object):
     def test_partition_query_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -527,7 +596,10 @@ class TestSpannerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup Request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
@@ -547,7 +619,10 @@ class TestSpannerClient(object):
     def test_partition_read_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_v1.SpannerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
 
         # Setup request
         session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
