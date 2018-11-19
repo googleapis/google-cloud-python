@@ -648,6 +648,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     @RetryErrors(exception=exceptions.ServerError)
     @RetryErrors(exception=exceptions.Conflict)
     def test_transaction_read_and_insert_or_update_then_commit(self):
+        # [START spanner_test_dml_read_your_writes]
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -671,6 +672,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_rows_data(rows)
+        # [END spanner_test_dml_read_your_writes]
 
     def _generate_insert_statements(self):
         insert_template = (
@@ -687,6 +689,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     @RetryErrors(exception=exceptions.ServerError)
     @RetryErrors(exception=exceptions.Conflict)
     def test_transaction_execute_sql_w_dml_read_rollback(self):
+        # [START spanner_test_dml_rollback_txn_not_committed]
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -718,10 +721,12 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_rows_data(rows, [])
+        # [END spanner_test_dml_rollback_txn_not_committed]
 
     @RetryErrors(exception=exceptions.ServerError)
     @RetryErrors(exception=exceptions.Conflict)
     def test_transaction_execute_update_read_commit(self):
+        # [START spanner_test_dml_read_your_writes]
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -747,10 +752,13 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_rows_data(rows)
+        # [END spanner_test_dml_read_your_writes]
 
     @RetryErrors(exception=exceptions.ServerError)
     @RetryErrors(exception=exceptions.Conflict)
     def test_transaction_execute_update_then_insert_commit(self):
+        # [START spanner_test_dml_with_mutation]
+        # [START spanner_test_dml_update]
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -774,8 +782,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_rows_data(rows)
+        # [END spanner_test_dml_update]
+        # [END spanner_test_dml_with_mutation]
 
     def test_execute_partitioned_dml(self):
+        # [START spanner_test_dml_partioned_dml_update]
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -830,6 +841,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                     self.TABLE, self.COLUMNS, self.ALL))
 
         self._check_rows_data(after_delete, [])
+        # [END spanner_test_dml_partioned_dml_update]
 
     def _transaction_concurrency_helper(self, unit_of_work, pkey):
         INITIAL_VALUE = 123
