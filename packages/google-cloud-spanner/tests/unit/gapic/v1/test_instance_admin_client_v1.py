@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -82,7 +83,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -101,7 +105,10 @@ class TestInstanceAdminClient(object):
 
     def test_list_instance_configs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -120,7 +127,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         name = client.instance_config_path('[PROJECT]', '[INSTANCE_CONFIG]')
@@ -137,7 +147,10 @@ class TestInstanceAdminClient(object):
     def test_get_instance_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
         name = client.instance_config_path('[PROJECT]', '[INSTANCE_CONFIG]')
@@ -159,7 +172,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -178,7 +194,10 @@ class TestInstanceAdminClient(object):
 
     def test_list_instances_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -204,7 +223,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         name = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -221,7 +243,10 @@ class TestInstanceAdminClient(object):
     def test_get_instance_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
         name = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -249,7 +274,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -275,7 +303,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -306,7 +337,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         instance = {}
@@ -331,7 +365,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         instance = {}
@@ -343,7 +380,10 @@ class TestInstanceAdminClient(object):
 
     def test_delete_instance(self):
         channel = ChannelStub()
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         name = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -359,7 +399,10 @@ class TestInstanceAdminClient(object):
     def test_delete_instance_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
         name = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -376,7 +419,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         resource = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -394,7 +440,10 @@ class TestInstanceAdminClient(object):
     def test_set_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
         resource = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -412,7 +461,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         resource = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -429,7 +481,10 @@ class TestInstanceAdminClient(object):
     def test_get_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
         resource = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -445,7 +500,10 @@ class TestInstanceAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
         resource = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -463,7 +521,10 @@ class TestInstanceAdminClient(object):
     def test_test_iam_permissions_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = spanner_admin_instance_v1.InstanceAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
         resource = client.instance_path('[PROJECT]', '[INSTANCE]')
