@@ -3541,7 +3541,7 @@ class Model(metaclass=MetaModel):
 
     @classmethod
     def _fix_up_properties(cls):
-        """Fix up the properties by calling their _fix_up() method.
+        """Fix up the properties by calling their ``_fix_up()`` method.
 
         .. note::
 
@@ -3549,7 +3549,7 @@ class Model(metaclass=MetaModel):
             manually after dynamically updating a model class.
 
         Raises:
-            KindError: If the returned kind from ``_get_kind`` is not a
+            KindError: If the returned kind from ``_get_kind()`` is not a
                 :class:`str`.
             TypeError: If a property on this model has a name beginning with
                 an underscore.
