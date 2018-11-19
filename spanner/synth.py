@@ -59,6 +59,11 @@ s.replace(
     '\g<1>options = [(grpc_gcp.API_CONFIG_CHANNEL_ARG, grpc_gcp_config)]'
     '\g<0>',
 )
+s.replace(
+    "tests/unit/gapic/v1/test_spanner_client_v1.py",
+    "from google.cloud import spanner_v1",
+    "from google.cloud.spanner_v1.gapic import spanner_client as spanner_v1",
+)
 
 #----------------------------------------------------------------------------
 # Generate instance admin client
