@@ -333,7 +333,9 @@ class Test_SnapshotBase(unittest.TestCase):
             derived.execute_sql(SQL_QUERY_WITH_PARAM, PARAMS)
 
     def _execute_sql_helper(
-            self, multi_use, first=True, count=0, partition=None, sql_count=0):
+            self, multi_use, first=True, count=0, partition=None, sql_count=0,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            retry=google.api_core.gapic_v1.method.DEFAULT):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1.proto.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
@@ -380,7 +382,7 @@ class Test_SnapshotBase(unittest.TestCase):
 
         result_set = derived.execute_sql(
             SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
-            query_mode=MODE, partition=partition)
+            query_mode=MODE, partition=partition, retry=retry, timeout=timeout)
 
         self.assertEqual(derived._read_request_count, count + 1)
 
@@ -417,8 +419,8 @@ class Test_SnapshotBase(unittest.TestCase):
             partition_token=partition,
             seqno=sql_count,
             metadata=[('google-cloud-resource-prefix', database.name)],
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            retry=google.api_core.gapic_v1.method.DEFAULT
+            timeout=timeout,
+            retry=retry,
         )
 
         self.assertEqual(derived._execute_sql_count, sql_count + 1)
@@ -442,6 +444,12 @@ class Test_SnapshotBase(unittest.TestCase):
     def test_execute_sql_w_multi_use_w_first_w_count_gt_0(self):
         with self.assertRaises(ValueError):
             self._execute_sql_helper(multi_use=True, first=True, count=1)
+
+    def test_execute_sql_w_retry(self):
+        self._execute_sql_helper(multi_use=False, retry=None)
+
+    def test_execute_sql_w_timeout(self):
+        self._execute_sql_helper(multi_use=False, timeout=None)
 
     def _partition_read_helper(
             self, multi_use, w_txn,
