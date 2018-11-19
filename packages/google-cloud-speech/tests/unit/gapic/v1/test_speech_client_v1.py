@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -79,7 +80,10 @@ class TestSpeechClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = speech_v1.SpeechClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = speech_v1.SpeechClient()
 
         # Setup Request
         encoding = enums.RecognitionConfig.AudioEncoding.FLAC
@@ -105,7 +109,10 @@ class TestSpeechClient(object):
     def test_recognize_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = speech_v1.SpeechClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = speech_v1.SpeechClient()
 
         # Setup request
         encoding = enums.RecognitionConfig.AudioEncoding.FLAC
@@ -133,7 +140,10 @@ class TestSpeechClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = speech_v1.SpeechClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = speech_v1.SpeechClient()
 
         # Setup Request
         encoding = enums.RecognitionConfig.AudioEncoding.FLAC
@@ -166,7 +176,10 @@ class TestSpeechClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = speech_v1.SpeechClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = speech_v1.SpeechClient()
 
         # Setup Request
         encoding = enums.RecognitionConfig.AudioEncoding.FLAC
@@ -192,7 +205,10 @@ class TestSpeechClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = speech_v1.SpeechClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = speech_v1.SpeechClient()
 
         # Setup Request
         request = {}
@@ -213,7 +229,10 @@ class TestSpeechClient(object):
     def test_streaming_recognize_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = speech_v1.SpeechClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = speech_v1.SpeechClient()
 
         # Setup request
         request = {}
