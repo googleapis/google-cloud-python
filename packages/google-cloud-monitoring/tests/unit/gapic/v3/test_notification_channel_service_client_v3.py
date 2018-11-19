@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import monitoring_v3
@@ -77,8 +78,10 @@ class TestNotificationChannelServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup Request
         name = client.project_path('[PROJECT]')
@@ -98,8 +101,10 @@ class TestNotificationChannelServiceClient(object):
 
     def test_list_notification_channel_descriptors_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup request
         name = client.project_path('[PROJECT]')
@@ -126,8 +131,10 @@ class TestNotificationChannelServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup Request
         name = client.notification_channel_descriptor_path(
@@ -145,8 +152,10 @@ class TestNotificationChannelServiceClient(object):
     def test_get_notification_channel_descriptor_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup request
         name = client.notification_channel_descriptor_path(
@@ -169,8 +178,10 @@ class TestNotificationChannelServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup Request
         name = client.project_path('[PROJECT]')
@@ -189,8 +200,10 @@ class TestNotificationChannelServiceClient(object):
 
     def test_list_notification_channels_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup request
         name = client.project_path('[PROJECT]')
@@ -216,8 +229,10 @@ class TestNotificationChannelServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup Request
         name = client.notification_channel_path('[PROJECT]',
@@ -235,8 +250,10 @@ class TestNotificationChannelServiceClient(object):
     def test_get_notification_channel_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup request
         name = client.notification_channel_path('[PROJECT]',
@@ -262,8 +279,10 @@ class TestNotificationChannelServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup Request
         name = client.project_path('[PROJECT]')
@@ -282,8 +301,10 @@ class TestNotificationChannelServiceClient(object):
     def test_create_notification_channel_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup request
         name = client.project_path('[PROJECT]')
@@ -309,8 +330,10 @@ class TestNotificationChannelServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup Request
         notification_channel = {}
@@ -327,8 +350,10 @@ class TestNotificationChannelServiceClient(object):
     def test_update_notification_channel_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup request
         notification_channel = {}
@@ -338,8 +363,10 @@ class TestNotificationChannelServiceClient(object):
 
     def test_delete_notification_channel(self):
         channel = ChannelStub()
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup Request
         name = client.notification_channel_path('[PROJECT]',
@@ -356,8 +383,10 @@ class TestNotificationChannelServiceClient(object):
     def test_delete_notification_channel_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.NotificationChannelServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
 
         # Setup request
         name = client.notification_channel_path('[PROJECT]',

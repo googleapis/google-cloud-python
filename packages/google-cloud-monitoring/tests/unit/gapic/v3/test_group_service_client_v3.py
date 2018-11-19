@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.api import monitored_resource_pb2
@@ -78,7 +79,10 @@ class TestGroupServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup Request
         name = client.project_path('[PROJECT]')
@@ -96,7 +100,10 @@ class TestGroupServiceClient(object):
 
     def test_list_groups_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup request
         name = client.project_path('[PROJECT]')
@@ -123,7 +130,10 @@ class TestGroupServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup Request
         name = client.group_path('[PROJECT]', '[GROUP]')
@@ -139,7 +149,10 @@ class TestGroupServiceClient(object):
     def test_get_group_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup request
         name = client.group_path('[PROJECT]', '[GROUP]')
@@ -165,7 +178,10 @@ class TestGroupServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup Request
         name = client.project_path('[PROJECT]')
@@ -183,7 +199,10 @@ class TestGroupServiceClient(object):
     def test_create_group_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup request
         name = client.project_path('[PROJECT]')
@@ -210,7 +229,10 @@ class TestGroupServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup Request
         group = {}
@@ -226,7 +248,10 @@ class TestGroupServiceClient(object):
     def test_update_group_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup request
         group = {}
@@ -236,7 +261,10 @@ class TestGroupServiceClient(object):
 
     def test_delete_group(self):
         channel = ChannelStub()
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup Request
         name = client.group_path('[PROJECT]', '[GROUP]')
@@ -251,7 +279,10 @@ class TestGroupServiceClient(object):
     def test_delete_group_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup request
         name = client.group_path('[PROJECT]', '[GROUP]')
@@ -275,7 +306,10 @@ class TestGroupServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup Request
         name = client.group_path('[PROJECT]', '[GROUP]')
@@ -293,7 +327,10 @@ class TestGroupServiceClient(object):
 
     def test_list_group_members_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.GroupServiceClient()
 
         # Setup request
         name = client.group_path('[PROJECT]', '[GROUP]')
