@@ -1035,6 +1035,9 @@ class ExtractDocumentTransforms(object):
         self.field_paths = []
         self.deleted_fields = []
         self.server_timestamps = []
+        self.data_merge = []
+        self.transform_merge = []
+        self.merge = []
         self.set_fields = {}
         self.empty_document = False
 
@@ -1059,6 +1062,10 @@ class ExtractDocumentTransforms(object):
     @property
     def has_transforms(self):
         return bool(self.server_timestamps)
+
+    @property
+    def transform_paths(self):
+        return sorted(self.server_timestamps)
 
     def get_update_pb(self, document_path, exists=None):
         update_pb = write_pb2.Write(

@@ -1820,9 +1820,13 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertTrue(inst.empty_document)
         self.assertFalse(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [])
 
     def test_ctor_w_delete_field_shallow(self):
         from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
@@ -1837,9 +1841,13 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [_make_field_path('a')])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [])
 
     def test_ctor_w_delete_field_nested(self):
         from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
@@ -1859,9 +1867,13 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(
             inst.deleted_fields, [_make_field_path('a', 'b', 'c')])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [])
 
     def test_ctor_w_server_timestamp_shallow(self):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
@@ -1876,9 +1888,13 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [_make_field_path('a')])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [_make_field_path('a')])
 
     def test_ctor_w_server_timestamp_nested(self):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
@@ -1898,9 +1914,14 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(
             inst.server_timestamps, [_make_field_path('a', 'b', 'c')])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
+        self.assertEqual(
+            inst.transform_paths, [_make_field_path('a', 'b', 'c')])
 
     def test_ctor_w_empty_dict_shallow(self):
         document_data = {
@@ -1916,9 +1937,13 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [])
 
     def test_ctor_w_empty_dict_nested(self):
         document_data = {
@@ -1939,9 +1964,13 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [])
 
     def test_ctor_w_normal_value_shallow(self):
         document_data = {
@@ -1961,6 +1990,9 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1989,6 +2021,9 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
