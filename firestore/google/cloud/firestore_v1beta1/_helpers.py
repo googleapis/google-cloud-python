@@ -1067,6 +1067,75 @@ class ExtractDocumentTransforms(object):
     def transform_paths(self):
         return sorted(self.server_timestamps)
 
+    def _apply_merge_all(self):
+        self.data_merge = sorted(self.field_paths + self.deleted_fields)
+        # TODO: other transforms
+        self.transform_merge = self.transform_paths
+        self.merge = sorted(self.data_merge + self.transform_paths)
+
+    def _construct_merge_paths(self, merge):
+        for merge_field in merge:
+            if isinstance(merge_field, FieldPath):
+                yield merge_field
+            else:
+                yield FieldPath(*parse_field_path(merge_field))
+
+    def _normalize_merge_paths(self, merge):
+        merge_paths = sorted(self._construct_merge_paths(merge))
+
+        # Raise if any merge path is a parent of another.  Leverage sorting
+        # to avoid quadratic behavior.
+        for index in range(len(merge_paths) - 1):
+            lhs, rhs = merge_paths[index], merge_paths[index + 1]
+            if lhs.eq_or_parent(rhs):
+                raise ValueError ("Merge paths overlap: {}, {}".format(
+                    lhs, rhs))
+
+        for merge_path in merge_paths:
+            try:
+                get_field_value(self.document_data, merge_path)
+            except KeyError:
+                raise ValueError("Invalid merge path: {}".format(merge_path))
+
+        return merge_paths
+
+    def _apply_merge_paths(self, merge):
+
+        if self.empty_document:
+            raise ValueError(
+                "Cannot merge specific fields with empty document.")
+
+        if self.deleted_fields:
+            raise ValueError(
+                "Cannot merge specific fields with delete.")
+
+        merge_paths = self._normalize_merge_paths(merge)
+
+        del self.data_merge[:]
+        del self.transform_merge[:]
+        self.merge = merge_paths
+
+        for merge_path in merge_paths:
+
+            if merge_path in self.transform_paths:
+                self.transform_merge.append(merge_path)
+
+            for field_path in self.field_paths:
+                if merge_path.eq_or_parent(field_path):
+                    self.data_merge.append(field_path)
+
+        # Clear out data for fields not merged.
+        self.set_fields = {
+            field_path: get_field_value(self.document_data, field_path)
+            for field_path in self.data_merge
+        }
+
+    def apply_merge(self, merge):
+        if merge is True:  # merge all fields
+            self._apply_merge_all()
+        else:
+            self._apply_merge_paths(merge)
+
     def get_update_pb(self, document_path, exists=None):
         update_pb = write_pb2.Write(
             update=document_pb2.Document(

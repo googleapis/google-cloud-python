@@ -2028,6 +2028,145 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
 
+    def test_apply_merge_all_w_empty_document(self):
+        document_data = {}
+        inst = self._make_one(document_data)
+
+        inst.apply_merge(True)
+
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
+
+    def test_apply_merge_all_w_delete(self):
+        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+
+        document_data = {
+            'write_me': 'value',
+            'delete_me': DELETE_FIELD,
+        }
+        inst = self._make_one(document_data)
+
+        inst.apply_merge(True)
+
+        expected_data_merge = [
+            _make_field_path('delete_me'),
+            _make_field_path('write_me'),
+        ]
+        expected_transform_merge = []
+        self.assertEqual(inst.data_merge, expected_data_merge)
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, expected_data_merge)
+
+    def test_apply_merge_all_w_server_timestamp(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {
+            'write_me': 'value',
+            'timestamp': SERVER_TIMESTAMP,
+        }
+        inst = self._make_one(document_data)
+
+        inst.apply_merge(True)
+
+        expected_data_merge = [
+            _make_field_path('write_me'),
+        ]
+        expected_transform_merge = [
+            _make_field_path('timestamp'),
+        ]
+        expected_merge = [
+            _make_field_path('timestamp'),
+            _make_field_path('write_me'),
+        ]
+        self.assertEqual(inst.data_merge, expected_data_merge)
+        self.assertEqual(inst.transform_merge, expected_transform_merge)
+        self.assertEqual(inst.merge, expected_merge)
+
+    def test_apply_merge_list_fields_w_empty_document(self):
+        document_data = {}
+        inst = self._make_one(document_data)
+
+        with self.assertRaises(ValueError):
+            inst.apply_merge(['nonesuch', 'or.this'])
+
+    def test_apply_merge_list_fields_w_delete(self):
+        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+
+        document_data = {
+            'write_me': 'value',
+            'delete_me': DELETE_FIELD,
+            'ignore_me': 123,
+        }
+        inst = self._make_one(document_data)
+
+        with self.assertRaises(ValueError):
+            inst.apply_merge(['write_me', 'delete_me'])
+
+    def test_apply_merge_list_fields_w_prefixes(self):
+
+        document_data = {
+            'a': {
+                'b': {
+                    'c': 123,
+                },
+            },
+        }
+        inst = self._make_one(document_data)
+
+        with self.assertRaises(ValueError):
+            inst.apply_merge(['a', 'a.b'])
+
+    def test_apply_merge_list_fields_w_missing_data_string_paths(self):
+
+        document_data = {
+            'write_me': 'value',
+            'ignore_me': 123,
+        }
+        inst = self._make_one(document_data)
+
+        with self.assertRaises(ValueError):
+            inst.apply_merge(['write_me', 'nonesuch'])
+
+    def test_apply_merge_list_fields_w_non_merge_field(self):
+
+        document_data = {
+            'write_me': 'value',
+            'ignore_me': 123,
+        }
+        inst = self._make_one(document_data)
+
+        inst.apply_merge([_make_field_path('write_me')])
+
+        self.assertFalse('ignore_me' in inst.set_fields)
+
+    def test_apply_merge_list_fields_w_server_timestamp(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {
+            'write_me': 'value',
+            'timestamp': SERVER_TIMESTAMP,
+            'ignore_me': 3,
+        }
+        inst = self._make_one(document_data)
+
+        inst.apply_merge(
+            [_make_field_path('write_me'), _make_field_path('timestamp')])
+
+        expected_data_merge = [
+            _make_field_path('write_me'),
+        ]
+        expected_transform_merge = [
+            _make_field_path('timestamp'),
+        ]
+        expected_merge = [
+            _make_field_path('timestamp'),
+            _make_field_path('write_me'),
+        ]
+        self.assertEqual(inst.data_merge, expected_data_merge)
+        self.assertEqual(inst.transform_merge, expected_transform_merge)
+        self.assertEqual(inst.merge, expected_merge)
+
     def test_get_update_pb_w_exists_precondition(self):
         from google.cloud.firestore_v1beta1.proto import write_pb2
 
