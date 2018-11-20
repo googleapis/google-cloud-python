@@ -1308,7 +1308,7 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    create_empty = not document_data
+    merge_empty = not document_data
 
     if merge is True:
         (
@@ -1332,7 +1332,7 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
             parent_fp = FieldPath(*transform_path.parts[:-1])
             update_paths.add(parent_fp)
 
-    if actual_data or create_empty or update_paths:
+    if actual_data or merge_empty or update_paths:
         update = document_pb2.Document(
             name=document_path,
             fields=encode_dict(actual_data),
@@ -1343,7 +1343,7 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
             fp.to_api_repr() for fp in merge if fp not in transform_merge
         ]
 
-        if mask_paths or create_empty:
+        if mask_paths or merge_empty:
             mask = common_pb2.DocumentMask(field_paths=mask_paths)
             update_pb.update_mask.CopyFrom(mask)
 
