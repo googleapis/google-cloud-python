@@ -1751,6 +1751,55 @@ class Test_set_field_value(unittest.TestCase):
         self.assertEqual(document, {'a': {'b': {'c': {}}}})
 
 
+class Test_get_field_value(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(document_data, field_path):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.get_field_value(document_data, field_path)
+
+    def test_w_empty_path(self):
+        document = {}
+
+        with self.assertRaises(ValueError):
+            self._call_fut(document, _make_field_path())
+
+    def test_miss_shallow(self):
+        document = {}
+
+        with self.assertRaises(KeyError):
+            self._call_fut(document, _make_field_path('nonesuch'))
+
+    def test_miss_nested(self):
+        document = {
+            'a': {
+                'b': {
+                },
+            },
+        }
+
+        with self.assertRaises(KeyError):
+            self._call_fut(document, _make_field_path('a', 'b', 'c'))
+
+    def test_hit_shallow(self):
+        document = {'a': 1}
+
+        self.assertEqual(self._call_fut(document, _make_field_path('a')), 1)
+
+    def test_hit_nested(self):
+        document = {
+            'a': {
+                'b': {
+                    'c': 1,
+                },
+            },
+        }
+
+        self.assertEqual(
+            self._call_fut(document, _make_field_path('a', 'b', 'c')), 1)
+
+
 class TestExtractDocumentTransforms(unittest.TestCase):
 
     @staticmethod

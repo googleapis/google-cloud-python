@@ -1010,6 +1010,16 @@ def set_field_value(document_data, field_path, value):
     current[field_path.parts[-1]] = value
 
 
+def get_field_value(document_data, field_path):
+    if not field_path.parts:
+        raise ValueError("Empty path")
+
+    current = document_data
+    for element in field_path.parts[:-1]:
+        current = current[element]
+    return current[field_path.parts[-1]]
+
+
 class ExtractDocumentTransforms(object):
     """ Break document data up into actual data and transforms.
 
