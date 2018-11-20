@@ -3326,7 +3326,7 @@ class MetaModel(type):
             pages = ndb.IntegerProperty()
 
     the ``Book.pages`` property doesn't have the name ``pages`` assigned.
-    This is accomplished by calling the ``_fix_properties()`` method on the
+    This is accomplished by calling the ``_fix_up_properties()`` method on the
     class itself.
     """
 
@@ -3561,7 +3561,6 @@ class Model(metaclass=MetaModel):
                 "a non-string ({!r})".format(cls.__name__, kind)
             )
 
-        # Map of ``kind_name`` -> ``property_instance``.
         cls._properties = {}
 
         # Skip the classes in ``ndb.model``.
