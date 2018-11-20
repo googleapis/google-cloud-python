@@ -38,6 +38,7 @@
 #include <stdlib.h>
 #include <iostream>  // NOLINT
 #include <map>
+#include <memory>
 #include <set>
 #include <string>
 #include <vector>
@@ -49,9 +50,9 @@
 #endif
 
 // Silence C4800 (C4800: 'int *const ': forcing value
-// to bool 'true' or 'false') for MSVC 14,15
+// to bool 'true' or 'false') for MSVC 15
 #ifdef _MSC_VER
-#if _MSC_VER <= 1900
+#if _MSC_VER == 1900
 #  pragma warning(push)
 #  pragma warning(disable:4800)
 #endif
@@ -848,7 +849,7 @@ void Mock::ClearDefaultActionsLocked(void* mock_obj)
 Expectation::Expectation() {}
 
 Expectation::Expectation(
-    const internal::linked_ptr<internal::ExpectationBase>& an_expectation_base)
+    const std::shared_ptr<internal::ExpectationBase>& an_expectation_base)
     : expectation_base_(an_expectation_base) {}
 
 Expectation::~Expectation() {}
@@ -866,7 +867,7 @@ void Sequence::AddExpectation(const Expectation& expectation) const {
 
 // Creates the implicit sequence if there isn't one.
 InSequence::InSequence() {
-  if (internal::g_gmock_implicit_sequence.get() == NULL) {
+  if (internal::g_gmock_implicit_sequence.get() == nullptr) {
     internal::g_gmock_implicit_sequence.set(new Sequence);
     sequence_created_ = true;
   } else {
@@ -879,14 +880,14 @@ InSequence::InSequence() {
 InSequence::~InSequence() {
   if (sequence_created_) {
     delete internal::g_gmock_implicit_sequence.get();
-    internal::g_gmock_implicit_sequence.set(NULL);
+    internal::g_gmock_implicit_sequence.set(nullptr);
   }
 }
 
 }  // namespace testing
 
 #ifdef _MSC_VER
-#if _MSC_VER <= 1900
+#if _MSC_VER == 1900
 #  pragma warning(pop)
 #endif
 #endif

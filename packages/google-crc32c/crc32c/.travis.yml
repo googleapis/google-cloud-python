@@ -14,10 +14,12 @@ os:
   - osx
 
 env:
-  - GLOG=1 BUILD_TYPE=Debug
-  - GLOG=1 BUILD_TYPE=RelWithDebInfo
-  - GLOG=0 BUILD_TYPE=Debug
-  - GLOG=0 BUILD_TYPE=RelWithDebInfo
+  - GLOG=1 SHARED_LIB=0 BUILD_TYPE=Debug
+  - GLOG=1 SHARED_LIB=0 BUILD_TYPE=RelWithDebInfo
+  - GLOG=0 SHARED_LIB=0 BUILD_TYPE=Debug
+  - GLOG=0 SHARED_LIB=0 BUILD_TYPE=RelWithDebInfo
+  - GLOG=0 SHARED_LIB=1 BUILD_TYPE=Debug
+  - GLOG=0 SHARED_LIB=1 BUILD_TYPE=RelWithDebInfo
 
 matrix:
   exclude:
@@ -58,6 +60,7 @@ install:
 before_script:
 - mkdir -p build && cd build
 - cmake .. -DCRC32C_USE_GLOG=$GLOG -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+           -DBUILD_SHARED_LIBS=$SHARED_LIB
 - cmake --build .
 - cd ..
 
