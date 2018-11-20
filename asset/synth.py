@@ -39,6 +39,10 @@ for version in versions:
 
     s.move(library, excludes=excludes)
 
+templated_files = gcp.CommonTemplates().py_library(
+    unit_cov_level=86, cov_level=85)
+s.move(templated_files)
+
 s.replace(
     "google/cloud/asset_v1beta1/proto/assets_pb2.py",
     "from google.iam.v1 import policy_pb2 as",
