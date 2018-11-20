@@ -21,6 +21,7 @@ from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
 from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
 
 from google.api_core.exceptions import ServiceUnavailable
+import google.api_core.gapic_v1.method
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud.spanner_v1._helpers import _make_value_pb
@@ -143,7 +144,9 @@ class _SnapshotBase(_SessionWrapper):
             return StreamedResultSet(iterator)
 
     def execute_sql(self, sql, params=None, param_types=None,
-                    query_mode=None, partition=None):
+                    query_mode=None, partition=None,
+                    retry=google.api_core.gapic_v1.method.DEFAULT,
+                    timeout=google.api_core.gapic_v1.method.DEFAULT):
         """Perform an ``ExecuteStreamingSql`` API request.
 
         :type sql: str
@@ -204,7 +207,9 @@ class _SnapshotBase(_SessionWrapper):
             query_mode=query_mode,
             partition_token=partition,
             seqno=self._execute_sql_count,
-            metadata=metadata)
+            metadata=metadata,
+            retry=retry,
+            timeout=timeout)
 
         iterator = _restart_on_unavailable(restart)
 

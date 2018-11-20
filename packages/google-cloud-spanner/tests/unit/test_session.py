@@ -14,7 +14,7 @@
 
 
 import unittest
-
+import google.api_core.gapic_v1.method
 import mock
 
 
@@ -371,6 +371,36 @@ class TestSession(unittest.TestCase):
             None,
             None,
             None,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+        )
+
+    def test_execute_sql_non_default_retry(self):
+        from google.protobuf.struct_pb2 import Struct, Value
+        from google.cloud.spanner_v1.proto.type_pb2 import STRING
+
+        SQL = 'SELECT first_name, age FROM citizens'
+        database = self._make_database()
+        session = self._make_one(database)
+        session._session_id = 'DEADBEEF'
+
+        params = Struct(fields={'foo': Value(string_value='bar')})
+        param_types = {'foo': STRING}
+
+        with mock.patch(
+                'google.cloud.spanner_v1.session.Snapshot') as snapshot:
+            found = session.execute_sql(
+                SQL, params, param_types, 'PLAN', retry=None, timeout=None)
+
+        self.assertIs(found, snapshot().execute_sql.return_value)
+
+        snapshot().execute_sql.assert_called_once_with(
+            SQL,
+            params,
+            param_types,
+            'PLAN',
+            timeout=None,
+            retry=None
         )
 
     def test_execute_sql_explicit(self):
@@ -397,6 +427,8 @@ class TestSession(unittest.TestCase):
             params,
             param_types,
             'PLAN',
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
         )
 
     def test_batch_not_created(self):

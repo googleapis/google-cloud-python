@@ -21,6 +21,7 @@ from google.rpc.error_details_pb2 import RetryInfo
 
 # pylint: disable=ungrouped-imports
 from google.api_core.exceptions import Aborted, GoogleAPICallError, NotFound
+import google.api_core.gapic_v1.method
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
@@ -197,7 +198,9 @@ class Session(object):
         """
         return self.snapshot().read(table, columns, keyset, index, limit)
 
-    def execute_sql(self, sql, params=None, param_types=None, query_mode=None):
+    def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
+                    retry=google.api_core.gapic_v1.method.DEFAULT,
+                    timeout=google.api_core.gapic_v1.method.DEFAULT):
         """Perform an ``ExecuteStreamingSql`` API request.
 
         :type sql: str
@@ -222,7 +225,7 @@ class Session(object):
         :returns: a result set instance which can be used to consume rows.
         """
         return self.snapshot().execute_sql(
-            sql, params, param_types, query_mode)
+            sql, params, param_types, query_mode, retry=retry, timeout=timeout)
 
     def batch(self):
         """Factory to create a batch for this session.
