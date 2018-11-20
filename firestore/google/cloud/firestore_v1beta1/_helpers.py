@@ -1088,7 +1088,7 @@ class ExtractDocumentTransforms(object):
         for index in range(len(merge_paths) - 1):
             lhs, rhs = merge_paths[index], merge_paths[index + 1]
             if lhs.eq_or_parent(rhs):
-                raise ValueError ("Merge paths overlap: {}, {}".format(
+                raise ValueError("Merge paths overlap: {}, {}".format(
                     lhs, rhs))
 
         for merge_path in merge_paths:
@@ -1125,10 +1125,26 @@ class ExtractDocumentTransforms(object):
                     self.data_merge.append(field_path)
 
         # Clear out data for fields not merged.
-        self.set_fields = {
-            field_path: get_field_value(self.document_data, field_path)
-            for field_path in self.data_merge
-        }
+        merged_set_fields = {}
+        for field_path in self.data_merge:
+            value = get_field_value(self.document_data, field_path)
+            set_field_value(merged_set_fields, field_path, value)
+        self.set_fields = merged_set_fields
+
+        # Keep only transforms which are within merge.
+        merged_transform_paths = set()
+        for merge_path in self.merge:
+            tranform_merge_paths = [
+                transform_path for transform_path in self.transform_paths
+                if merge_path.eq_or_parent(transform_path)
+            ]
+            merged_transform_paths.update(tranform_merge_paths)
+
+        # TODO:  other transforms
+        self.server_timestamps = [
+            path for path in self.server_timestamps
+            if path in merged_transform_paths
+        ]
 
     def apply_merge(self, merge):
         if merge is True:  # merge all fields
@@ -1136,7 +1152,7 @@ class ExtractDocumentTransforms(object):
         else:
             self._apply_merge_paths(merge)
 
-    def get_update_pb(self, document_path, exists=None):
+    def get_update_pb(self, document_path, exists=None, empty_mask=False):
         update_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
@@ -1147,6 +1163,16 @@ class ExtractDocumentTransforms(object):
         if exists is not None:
             update_pb.current_document.CopyFrom(
                 common_pb2.Precondition(exists=exists))
+
+        # Mask uses dotted / quoted paths.
+        mask_paths = [
+            field_path.to_api_repr() for field_path in self.merge
+            if field_path not in self.transform_merge
+        ]
+
+        if mask_paths or empty_mask:
+            mask = common_pb2.DocumentMask(field_paths=mask_paths)
+            update_pb.update_mask.CopyFrom(mask)
 
         return update_pb
 
@@ -1394,56 +1420,29 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
+    extractor = ExtractDocumentTransforms(document_data)
+    extractor.apply_merge(merge)
+
     merge_empty = not document_data
-
-    if merge is True:
-        (
-            transform_paths, actual_data, data_merge, transform_merge, merge,
-        ) = all_merge_paths(document_data)
-    else:
-        (
-            transform_paths, actual_data, data_merge, transform_merge, merge,
-        ) = normalize_merge_paths(document_data, merge)
-
-    write_pbs = []
-    update_pb = write_pb2.Write()
-
-    update_paths = set(data_merge)
 
     # for whatever reason, the conformance tests want to see the parent
     # of nested transform paths in the update mask
     # (see set-st-merge-nonleaf-alone.textproto)
-    for transform_path in transform_paths:
+    update_paths = set(extractor.data_merge)
+
+    for transform_path in extractor.transform_paths:
         if len(transform_path.parts) > 1:
             parent_fp = FieldPath(*transform_path.parts[:-1])
             update_paths.add(parent_fp)
 
-    if actual_data or merge_empty or update_paths:
-        update = document_pb2.Document(
-            name=document_path,
-            fields=encode_dict(actual_data),
-        )
-        update_pb.update.CopyFrom(update)
+    write_pbs = []
 
-        mask_paths = [
-            fp.to_api_repr() for fp in merge if fp not in transform_merge
-        ]
+    if extractor.set_fields or merge_empty or update_paths:
+        write_pbs.append(
+            extractor.get_update_pb(document_path, empty_mask=merge_empty))
 
-        if mask_paths or merge_empty:
-            mask = common_pb2.DocumentMask(field_paths=mask_paths)
-            update_pb.update_mask.CopyFrom(mask)
-
-        write_pbs.append(update_pb)
-
-    new_transform_paths = []
-    for merge_fp in merge:
-        t_merge_fps = [
-            fp for fp in transform_paths if merge_fp.eq_or_parent(fp)]
-        new_transform_paths.extend(t_merge_fps)
-    transform_paths = new_transform_paths
-
-    if transform_paths:
-        transform_pb = get_transform_pb(document_path, transform_paths)
+    if extractor.transform_paths:
+        transform_pb = extractor.get_transform_pb(document_path)
         write_pbs.append(transform_pb)
 
     return write_pbs

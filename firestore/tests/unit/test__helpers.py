@@ -2053,7 +2053,6 @@ class TestExtractDocumentTransforms(unittest.TestCase):
             _make_field_path('delete_me'),
             _make_field_path('write_me'),
         ]
-        expected_transform_merge = []
         self.assertEqual(inst.data_merge, expected_data_merge)
         self.assertEqual(inst.transform_merge, [])
         self.assertEqual(inst.merge, expected_data_merge)
@@ -2138,7 +2137,10 @@ class TestExtractDocumentTransforms(unittest.TestCase):
 
         inst.apply_merge([_make_field_path('write_me')])
 
-        self.assertFalse('ignore_me' in inst.set_fields)
+        expected_set_fields = {
+            'write_me': 'value',
+        }
+        self.assertEqual(inst.set_fields, expected_set_fields)
 
     def test_apply_merge_list_fields_w_server_timestamp(self):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
@@ -2146,7 +2148,7 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         document_data = {
             'write_me': 'value',
             'timestamp': SERVER_TIMESTAMP,
-            'ignore_me': 3,
+            'ignored_stamp': SERVER_TIMESTAMP,
         }
         inst = self._make_one(document_data)
 
@@ -2166,6 +2168,10 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.data_merge, expected_data_merge)
         self.assertEqual(inst.transform_merge, expected_transform_merge)
         self.assertEqual(inst.merge, expected_merge)
+        expected_server_timestamps = [
+            _make_field_path('timestamp'),
+        ]
+        self.assertEqual(inst.server_timestamps, expected_server_timestamps)
 
     def test_get_update_pb_w_exists_precondition(self):
         from google.cloud.firestore_v1beta1.proto import write_pb2
@@ -2745,7 +2751,7 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         from google.cloud.firestore_v1beta1.proto import common_pb2
 
         update_pb.update_mask.CopyFrom(
-            common_pb2.DocumentMask(field_paths=field_paths))
+            common_pb2.DocumentMask(field_paths=sorted(field_paths)))
 
     def test_with_merge_true_wo_transform(self):
         document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
