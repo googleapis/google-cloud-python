@@ -31,6 +31,7 @@ from google.cloud import exceptions
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud.firestore_v1beta1 import constants
+from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import common_pb2
 from google.cloud.firestore_v1beta1.proto import document_pb2
@@ -1350,12 +1351,10 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
     return write_pbs
 
 
-def pbs_for_update(client, document_path, field_updates, option):
+def pbs_for_update(document_path, field_updates, option):
     """Make ``Write`` protobufs for ``update()`` methods.
 
     Args:
-        client (~.firestore_v1beta1.client.Client): A client that has
-            a write option factory.
         document_path (str): A fully-qualified document path.
         field_updates (dict): Field names or paths to update and values
             to update with.
@@ -1369,7 +1368,7 @@ def pbs_for_update(client, document_path, field_updates, option):
     """
     if option is None:
         # Default uses ``exists=True``.
-        option = client.write_option(exists=True)
+        option = ExistsOption(exists=True)
 
     transform_paths, actual_updates, field_paths = (
         process_server_timestamp(field_updates, split_on_dots=True))
@@ -1481,3 +1480,93 @@ def metadata_with_prefix(prefix, **kw):
         List[Tuple[str, str]]: RPC metadata with supplied prefix
     """
     return [('google-cloud-resource-prefix', prefix)]
+
+
+class WriteOption(object):
+    """Option used to assert a condition on a write operation."""
+
+    def modify_write(self, write_pb, no_create_msg=None):
+        """Modify a ``Write`` protobuf based on the state of this write option.
+
+        This is a virtual method intended to be implemented by subclasses.
+
+        Args:
+            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+                ``Write`` protobuf instance to be modified with a precondition
+                determined by the state of this option.
+            no_create_msg (Optional[str]): A message to use to indicate that
+                a create operation is not allowed.
+
+        Raises:
+            NotImplementedError: Always, this method is virtual.
+        """
+        raise NotImplementedError
+
+
+class LastUpdateOption(WriteOption):
+    """Option used to assert a "last update" condition on a write operation.
+
+    This will typically be created by
+    :meth:`~.firestore_v1beta1.client.Client.write_option`.
+
+    Args:
+        last_update_time (google.protobuf.timestamp_pb2.Timestamp): A
+            timestamp. When set, the target document must exist and have
+            been last updated at that time. Protobuf ``update_time`` timestamps
+            are typically returned from methods that perform write operations
+            as part of a "write result" protobuf or directly.
+    """
+
+    def __init__(self, last_update_time):
+        self._last_update_time = last_update_time
+
+    def modify_write(self, write_pb, **unused_kwargs):
+        """Modify a ``Write`` protobuf based on the state of this write option.
+
+        The ``last_update_time`` is added to ``write_pb`` as an "update time"
+        precondition. When set, the target document must exist and have been
+        last updated at that time.
+
+        Args:
+            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+                ``Write`` protobuf instance to be modified with a precondition
+                determined by the state of this option.
+            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
+                other subclasses that are unused here.
+        """
+        current_doc = types.Precondition(
+            update_time=self._last_update_time)
+        write_pb.current_document.CopyFrom(current_doc)
+
+
+class ExistsOption(WriteOption):
+    """Option used to assert existence on a write operation.
+
+    This will typically be created by
+    :meth:`~.firestore_v1beta1.client.Client.write_option`.
+
+    Args:
+        exists (bool): Indicates if the document being modified
+            should already exist.
+    """
+
+    def __init__(self, exists):
+        self._exists = exists
+
+    def modify_write(self, write_pb, **unused_kwargs):
+        """Modify a ``Write`` protobuf based on the state of this write option.
+
+        If:
+
+        * ``exists=True``, adds a precondition that requires existence
+        * ``exists=False``, adds a precondition that requires non-existence
+
+        Args:
+            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+                ``Write`` protobuf instance to be modified with a precondition
+                determined by the state of this option.
+            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
+                other subclasses that are unused here.
+        """
+        current_doc = types.Precondition(exists=self._exists)
+        write_pb.current_document.CopyFrom(current_doc)
