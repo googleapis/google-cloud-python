@@ -74,7 +74,7 @@ config = {
                 "RunQuery": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default"
+                    "retry_params_name": "streaming"
                 },
                 "Write": {
                     "timeout_millis": 86400000,
