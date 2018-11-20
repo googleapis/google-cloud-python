@@ -84,8 +84,14 @@ def blacken(session):
     Format code to uniform standard.
     """
     session.install("black")
-    session.run("black", "google", "tests", "docs", "--exclude",
-                ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py")
+    session.run(
+        "black",
+        "google",
+        "tests",
+        "docs",
+        "--exclude",
+        ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py",
+    )
 
 
 @nox.session(python="3.7")
@@ -97,8 +103,15 @@ def lint(session):
     """
     session.install("flake8", "black", *LOCAL_DEPS)
     session.install(".")
-    session.run("black", "--check", "google", "tests", "docs", "--exclude",
-                ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py")
+    session.run(
+        "black",
+        "--check",
+        "google",
+        "tests",
+        "docs",
+        "--exclude",
+        ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py",
+    )
     session.run("flake8", "google", "tests")
 
 
