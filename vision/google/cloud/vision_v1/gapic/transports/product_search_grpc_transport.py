@@ -66,6 +66,8 @@ class ProductSearchGrpcTransport(object):
                 credentials=credentials,
             )
 
+        self._channel = channel
+
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
@@ -101,6 +103,15 @@ class ProductSearchGrpcTransport(object):
             credentials=credentials,
             scopes=cls._OAUTH_SCOPES,
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def create_product(self):
@@ -375,8 +386,8 @@ class ProductSearchGrpcTransport(object):
     def delete_product_set(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Permanently deletes a ProductSet. All Products and ReferenceImages in
-        the ProductSet will be deleted.
+        Permanently deletes a ProductSet. Products and ReferenceImages in the
+        ProductSet are not deleted.
 
         The actual image files are not deleted from Google Cloud Storage.
 
