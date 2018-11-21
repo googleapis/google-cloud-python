@@ -69,6 +69,8 @@ class BigtableGrpcTransport(object):
                 credentials=credentials,
             )
 
+        self._channel = channel
+
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
@@ -101,6 +103,15 @@ class BigtableGrpcTransport(object):
                 'grpc.max_receive_message_length': -1,
             }.items(),
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def read_rows(self):
