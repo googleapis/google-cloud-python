@@ -21,7 +21,7 @@ gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
-# Generate bigtable GAPIC layer
+# Generate bigtable and bigtable_admin GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
     'bigtable',
