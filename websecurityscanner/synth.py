@@ -31,3 +31,4 @@ library = gapic.py_library(
 
 s.move(library / 'google/cloud/websecurityscanner_v1alpha/proto')
 s.move(library / 'google/cloud/websecurityscanner_v1alpha/gapic')
+s.move(library / 'tests/unit/gapic/v1alpha')
