@@ -1752,14 +1752,13 @@ class Test_extract_fields(unittest.TestCase):
             (_make_field_path('b', 'a', 'c'), 3),
             (_make_field_path('b', 'a', 'd'), 4),
             (_make_field_path('b', 'a', 'g'), _EmptyDict),
-            (_make_field_path('b', 'a', 'k', 'l', 'm'), 17),
+            (_make_field_path('b', 'a', 'k.l.m'), 17),
             (_make_field_path('b', 'e'), 7),
             (_make_field_path('f'), 5),
             (_make_field_path('h', 'i', 'j'), 9),
         ]
 
-        iterator = self._call_fut(
-            document_data, prefix_path, expand_dots=True)
+        iterator = self._call_fut(document_data, prefix_path, expand_dots=True)
         self.assertEqual(list(iterator), expected)
 
 

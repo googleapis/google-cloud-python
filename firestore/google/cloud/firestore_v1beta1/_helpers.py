@@ -1015,8 +1015,7 @@ def extract_fields(document_data, prefix_path, expand_dots=False):
             field_path = FieldPath(*(prefix_path.parts + sub_key.parts))
 
             if isinstance(value, dict):
-                for s_path, s_value in extract_fields(
-                        value, field_path, expand_dots=expand_dots):
+                for s_path, s_value in extract_fields(value, field_path):
                     yield s_path, s_value
             else:
                 yield field_path, value
