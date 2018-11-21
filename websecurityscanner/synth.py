@@ -17,11 +17,11 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
+common = gcp.CommonTemplates()
 
-
-#----------------------------------------------------------------------------
-# Generate websecurityscanner client
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Generate websecurityscanner GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
     'websecurityscanner',
     'v1alpha',
@@ -31,3 +31,10 @@ library = gapic.py_library(
 
 s.move(library / 'google/cloud/websecurityscanner_v1alpha/proto')
 s.move(library / 'google/cloud/websecurityscanner_v1alpha/gapic')
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

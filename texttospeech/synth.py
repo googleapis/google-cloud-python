@@ -19,10 +19,12 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 versions = ['v1beta1', 'v1']
 
-
+# ----------------------------------------------------------------------------
+# Generate texttospeech GAPIC layer
+# ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library('texttospeech', version)
     s.move(library / f'google/cloud/texttospeech_{version}')
@@ -32,9 +34,15 @@ for version in versions:
 # Use the highest version library to generate import alias.
 s.move(library / 'google/cloud/texttospeech.py')
 
-
 # Fix bad docstrings.
 s.replace(
     '**/gapic/*_client.py',
     r'\\"(.+?)-\*\\"',
     r'"\1-\\*"')
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

@@ -30,13 +30,15 @@ excludes = [
     'docs/index.rst',
 ]
 
+# ----------------------------------------------------------------------------
+# Generate redis GAPIC layer
+# ----------------------------------------------------------------------------
 for version in ['v1beta1', 'v1']:
     library = gapic.py_library(
         'redis', version,
         config_path=f'artman_redis_{version}.yaml')
 
     s.copy(library, excludes=excludes)
-
 
 # Fix docstrings
 s.replace(
@@ -92,3 +94,10 @@ s.replace(
 
     r"""
                 fields from ``Instance``: ``displayName``, ``labels``, ``memorySizeGb``, and ``redisConfig``.""",)
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

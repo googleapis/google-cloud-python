@@ -18,10 +18,13 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 versions = ['v1beta2', 'v1']
 
 
+# ----------------------------------------------------------------------------
+# Generate language GAPIC layer
+# ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library(
         'language',
@@ -33,3 +36,10 @@ for version in versions:
     s.move(library / f'google/cloud/language_{version}/gapic')
     s.move(library / f'tests/unit/gapic/{version}')
     s.move(library / f'tests/system/gapic/{version}')
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

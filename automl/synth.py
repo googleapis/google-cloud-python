@@ -18,10 +18,13 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 versions = ['v1beta1']
 
 
+# ----------------------------------------------------------------------------
+# Generate automl GAPIC layer
+# ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library('automl', version)
     s.move(library / f'google/cloud/automl_{version}')
@@ -30,7 +33,6 @@ for version in versions:
 
 # Use the highest version library to generate import alias.
 s.move(library / 'google/cloud/automl.py')
-
 
 # Fixup issues in generated code
 s.replace(
@@ -47,3 +49,10 @@ s.replace(
 s.replace('google/cloud/automl_v1beta1/gapic/auto_ml_client.py',
           '^(\s+)(::)\n\n\s+?([^\s])',
           '    \g<1>\g<2>\n    \g<1>\g<3>')
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

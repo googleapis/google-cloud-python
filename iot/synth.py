@@ -17,11 +17,11 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
+common = gcp.CommonTemplates()
 
-
-#----------------------------------------------------------------------------
-# Generate iot client
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Generate iot GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
     'iot',
     'v1',
@@ -31,3 +31,11 @@ library = gapic.py_library(
 s.move(library / 'google/cloud/iot_v1')
 s.move(library / 'tests/unit/gapic')
 s.move(library / 'tests/system/gapic')
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)
+

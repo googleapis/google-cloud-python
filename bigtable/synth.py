@@ -18,9 +18,11 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
+common = gcp.CommonTemplates()
 
-
-# Generate client
+# ----------------------------------------------------------------------------
+# Generate bigtable GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
     'bigtable',
     'v2',
@@ -70,3 +72,10 @@ s.replace(
     '        bigtable_instance_admin_client.BigtableInstanceAdminClient.'
     '__doc__)\n',
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

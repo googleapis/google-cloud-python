@@ -18,10 +18,13 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 versions = ['v1', 'v1p1beta1', 'v1p2beta1', 'v1p3beta1']
 
 
+# ----------------------------------------------------------------------------
+# Generate vision GAPIC layer
+# ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library('vision', version)
 
@@ -70,3 +73,10 @@ s.replace(
     'import google.api_core.operations_v1',
     'from google.api_core import operations_v1',
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

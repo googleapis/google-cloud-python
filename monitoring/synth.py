@@ -23,6 +23,9 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
+# ----------------------------------------------------------------------------
+# Generate monitoring GAPIC layer
+# ----------------------------------------------------------------------------
 v3_library = gapic.py_library(
     'monitoring', 'v3',
     config_path='/google/monitoring/artman_monitoring.yaml',
@@ -35,7 +38,7 @@ excludes = [
     'README.rst',
     'docs/index.rst',
 ]
-s.copy(v3_library, excludes=excludes)
+s.move(v3_library, excludes=excludes)
 
 # metadata in tests in none but should be empty list.
 # https://github.com/googleapis/gapic-generator/issues/2014
@@ -95,3 +98,11 @@ s.replace(
     'notification_channel_service_client.NotificationChannelServiceClient',
     'notification_client.NotificationChannelServiceClient',
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)
+

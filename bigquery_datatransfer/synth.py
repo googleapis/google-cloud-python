@@ -18,9 +18,12 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 version = 'v1'
 
+# ----------------------------------------------------------------------------
+# Generate bigquery_datatransfer GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
     'bigquery-datatransfer',
     version,
@@ -54,3 +57,10 @@ s.replace(
     'import google.api_core.gapic_v1.method\n',
     '\g<0>import google.api_core.path_template\n'
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

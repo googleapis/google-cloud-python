@@ -20,10 +20,12 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 version = 'v1'
 
-
+# ----------------------------------------------------------------------------
+# Generate pubsub GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
     'pubsub', version, config_path='/google/pubsub/artman_pubsub.yaml')
 s.move(
@@ -94,3 +96,10 @@ s.replace(
 
                 Format is ``projects/{project}/subscriptions/{sub}``.'''
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = gcp.CommonTemplates().py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

@@ -23,6 +23,9 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
+# ----------------------------------------------------------------------------
+# Generate dlp GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
     "dlp", "v2", config_path="/google/privacy/dlp/artman_dlp_v2.yaml"
 )
@@ -33,7 +36,7 @@ excludes = [
     "setup.py",
     "docs/index.rst",
 ]
-s.copy(library, excludes=excludes)
+s.move(library, excludes=excludes)
 
 # Fix namespace
 s.replace(
@@ -265,3 +268,10 @@ s.replace(
     ".*:raw-latex:.*\n",
     "",
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

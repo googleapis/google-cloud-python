@@ -20,10 +20,13 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 versions = ['v1p1beta1', 'v1']
 
 
+# ----------------------------------------------------------------------------
+# Generate speech GAPIC layer
+# ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library('speech', version)
 
@@ -39,7 +42,6 @@ for version in versions:
 # Use the highest version library to generate documentation import alias.
 s.move(library / 'google/cloud/speech.py')
 
-
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
 s.replace(
@@ -54,3 +56,10 @@ s.replace(
     'tests/unit/**/test*client*.py',
     r'from google\.cloud import speech_(.+?)$',
     r'from google.cloud.speech_\1.gapic import speech_client as speech_\1')
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

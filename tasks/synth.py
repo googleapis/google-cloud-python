@@ -30,6 +30,9 @@ excludes = [
     'docs/index.rst',
 ]
 
+# ----------------------------------------------------------------------------
+# Generate tasks GAPIC layer
+# ----------------------------------------------------------------------------
 for version in ['v2beta2', 'v2beta3']:
     library = gapic.py_library(
         'tasks', version,
@@ -65,3 +68,10 @@ s.replace(
     f"google/cloud/tasks_v2beta2/proto/queue_pb2.py",
     '(uests in queue.yaml/xml) <\n\s+',
     '\g<1>\n          <')
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

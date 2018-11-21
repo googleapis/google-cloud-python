@@ -20,10 +20,12 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 versions = ['v1beta2', 'v1']
 
-
+# ----------------------------------------------------------------------------
+# Generate dataproc GAPIC layer
+# ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library('dataproc', version)
     s.move(
@@ -81,3 +83,10 @@ s.replace(
     '}\n(\s+Similarly, to change the number of preemptible workers in a cluster to 5,)',
     '}\n\n\g<1>'
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)

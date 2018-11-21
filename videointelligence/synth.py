@@ -19,10 +19,13 @@ from synthtool import gcp
 
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 versions = ['v1beta1', 'v1beta2', 'v1p1beta1', 'v1p2beta1', 'v1']
 
 
+# ----------------------------------------------------------------------------
+# Generate videointelligence GAPIC layer
+# ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library(
         'videointelligence',
@@ -55,3 +58,10 @@ s.replace(
     "\g<1>expected_request = video_intelligence_pb2.AnnotateVideoRequest(\n"
         "\g<1>    input_uri=input_uri, features=features)",
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100)
+s.move(templated_files)
