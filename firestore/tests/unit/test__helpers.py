@@ -1840,8 +1840,9 @@ class TestExtractDocumentTransforms(unittest.TestCase):
 
         return _helpers.ExtractDocumentTransforms
 
-    def _make_one(self, document_data):
-        return self._get_target_class()(document_data)
+    def _make_one(self, document_data, expand_dots=False):
+        return self._get_target_class()(
+            document_data, expand_dots=expand_dots)
 
     def test_ctor_w_empty_document(self):
         document_data = {}
@@ -1849,6 +1850,7 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         inst = self._make_one(document_data)
 
         self.assertEqual(inst.document_data, document_data)
+        self.assertFalse(inst.expand_dots)
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
@@ -1870,6 +1872,7 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         inst = self._make_one(document_data)
 
         self.assertEqual(inst.document_data, document_data)
+        self.assertFalse(inst.expand_dots)
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [_make_field_path('a')])
         self.assertEqual(inst.server_timestamps, [])
@@ -1895,6 +1898,30 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         inst = self._make_one(document_data)
 
         self.assertEqual(inst.document_data, document_data)
+        self.assertFalse(inst.expand_dots)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(
+            inst.deleted_fields, [_make_field_path('a', 'b', 'c')])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertFalse(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [])
+
+    def test_ctor_w_delete_field_dotted(self):
+        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+
+        document_data = {
+            'a.b.c': DELETE_FIELD,
+        }
+
+        inst = self._make_one(document_data, expand_dots=True)
+
+        self.assertEqual(inst.document_data, document_data)
+        self.assertTrue(inst.expand_dots)
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(
             inst.deleted_fields, [_make_field_path('a', 'b', 'c')])
@@ -1917,6 +1944,7 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         inst = self._make_one(document_data)
 
         self.assertEqual(inst.document_data, document_data)
+        self.assertFalse(inst.expand_dots)
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [_make_field_path('a')])
@@ -1942,6 +1970,31 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         inst = self._make_one(document_data)
 
         self.assertEqual(inst.document_data, document_data)
+        self.assertFalse(inst.expand_dots)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(
+            inst.server_timestamps, [_make_field_path('a', 'b', 'c')])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(
+            inst.transform_paths, [_make_field_path('a', 'b', 'c')])
+
+    def test_ctor_w_server_timestamp_dotted(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {
+            'a.b.c': SERVER_TIMESTAMP,
+        }
+
+        inst = self._make_one(document_data, expand_dots=True)
+
+        self.assertEqual(inst.document_data, document_data)
+        self.assertTrue(inst.expand_dots)
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(
@@ -1966,6 +2019,7 @@ class TestExtractDocumentTransforms(unittest.TestCase):
             _make_field_path('a'),
         ]
         self.assertEqual(inst.document_data, document_data)
+        self.assertFalse(inst.expand_dots)
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
@@ -1993,6 +2047,7 @@ class TestExtractDocumentTransforms(unittest.TestCase):
             _make_field_path('a', 'b', 'c'),
         ]
         self.assertEqual(inst.document_data, document_data)
+        self.assertFalse(inst.expand_dots)
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
@@ -2000,6 +2055,37 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.transform_merge, [])
         self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, document_data)
+        self.assertFalse(inst.empty_document)
+        self.assertFalse(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [])
+
+    def test_ctor_w_empty_dict_dotted(self):
+        document_data = {
+            'a.b.c': {},
+        }
+
+        inst = self._make_one(document_data, expand_dots=True)
+
+        expected_field_paths = [
+            _make_field_path('a', 'b', 'c'),
+        ]
+        expected_set_fields = {
+            'a': {
+                'b': {
+                    'c': {
+                    },
+                },
+            },
+        }
+        self.assertEqual(inst.document_data, document_data)
+        self.assertTrue(inst.expand_dots)
+        self.assertEqual(inst.field_paths, expected_field_paths)
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
+        self.assertEqual(inst.set_fields, expected_set_fields)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
         self.assertEqual(inst.transform_paths, [])
@@ -2019,6 +2105,7 @@ class TestExtractDocumentTransforms(unittest.TestCase):
             _make_field_path('c'),
         ]
         self.assertEqual(inst.document_data, document_data)
+        self.assertFalse(inst.expand_dots)
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
@@ -2050,6 +2137,7 @@ class TestExtractDocumentTransforms(unittest.TestCase):
             _make_field_path('f'),
         ]
         self.assertEqual(inst.document_data, document_data)
+        self.assertFalse(inst.expand_dots)
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
@@ -2059,6 +2147,55 @@ class TestExtractDocumentTransforms(unittest.TestCase):
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
+
+    def test_ctor_w_normal_value_dotted(self):
+        document_data = {
+            'b.a.d': 4,
+            'b.a.c': 3,
+            'b.e': 7,
+            'f': 5,
+        }
+
+        inst = self._make_one(document_data, expand_dots=True)
+
+        expected_field_paths = [
+            _make_field_path('b', 'a', 'c'),
+            _make_field_path('b', 'a', 'd'),
+            _make_field_path('b', 'e'),
+            _make_field_path('f'),
+        ]
+        expected_set_fields = {
+            'b': {
+                'a': {
+                    'd': 4,
+                    'c': 3,
+                },
+                'e': 7,
+            },
+            'f': 5,
+        }
+        self.assertEqual(inst.document_data, document_data)
+        self.assertTrue(inst.expand_dots)
+        self.assertEqual(inst.field_paths, expected_field_paths)
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
+        self.assertEqual(inst.set_fields, expected_set_fields)
+        self.assertFalse(inst.empty_document)
+        self.assertFalse(inst.has_transforms)
+
+    def test_ctor_w_dotted_and_conflicts(self):
+        document_data = {
+            'b.a.d': 4,
+            'b.a': {
+                'd': 7,
+            },
+        }
+
+        with self.assertRaises(ValueError):
+            self._make_one(document_data, expand_dots=True)
 
     def test_apply_merge_all_w_empty_document(self):
         document_data = {}

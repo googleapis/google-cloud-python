@@ -1039,8 +1039,9 @@ class ExtractDocumentTransforms(object):
             Property names and values to use for sending a change to
             a document.
     """
-    def __init__(self, document_data):
+    def __init__(self, document_data, expand_dots=False):
         self.document_data = document_data
+        self.expand_dots = expand_dots
         self.field_paths = []
         self.deleted_fields = []
         self.server_timestamps = []
@@ -1051,9 +1052,18 @@ class ExtractDocumentTransforms(object):
         self.empty_document = False
 
         prefix_path = FieldPath()
-        iterator = extract_fields(document_data, prefix_path)
+        iterator = extract_fields(
+            document_data, prefix_path, expand_dots=expand_dots)
+
+        seen = set()
 
         for field_path, value in iterator:
+
+            if field_path in seen:
+                raise ValueError(
+                    "Conflicting field path: {}".format(field_path))
+
+            seen.add(field_path)
 
             if field_path == prefix_path and value is _EmptyDict:
                 self.empty_document = True
