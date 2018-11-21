@@ -29,6 +29,7 @@ library = gapic.py_library(
     artman_output_name='container-v1')
 
 s.move(library / 'google/cloud/container_v1')
+s.move(library / 'tests/unit/gapic/v1')
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
@@ -36,3 +37,16 @@ s.replace(
     'google/**/proto/*_pb2.py',
     r"(^.*$\n)*",
     r"# -*- coding: utf-8 -*-\n\g<0>")
+
+
+# Workaround https://github.com/googleapis/gapic-generator/issues/2449
+s.replace(
+    'google/cloud/container_v1/proto/cluster_service_pb2.py',
+    r'nodePool>\n',
+    r'nodePool>`__\n',
+)
+s.replace(
+    'google/cloud/container_v1/proto/cluster_service_pb2.py',
+    r'(\s+)`__ instead',
+    r'\g<1>instead',
+)
