@@ -1660,6 +1660,17 @@ class Test_extract_fields(unittest.TestCase):
         iterator = self._call_fut(document_data, prefix_path)
         self.assertEqual(list(iterator), expected)
 
+    def test_w_invalid_key_and_expand_dots(self):
+        document_data = {
+            'b': 1,
+            'a~d': 2,
+            'c': 3,
+        }
+        prefix_path = _make_field_path()
+
+        with self.assertRaises(ValueError):
+            list(self._call_fut(document_data, prefix_path, expand_dots=True))
+
     def test_w_shallow_keys(self):
         document_data = {
             'b': 1,

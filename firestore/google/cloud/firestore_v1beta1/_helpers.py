@@ -993,13 +993,12 @@ def extract_fields(document_data, prefix_path, expand_dots=False):
     else:
         for key, value in sorted(six.iteritems(document_data)):
 
-            if '.' in key and expand_dots:
+            if expand_dots:
                 sub_key = FieldPath.from_string(key)
-                key_parts = sub_key.parts
             else:
-                key_parts = (key,)
+                sub_key = FieldPath(key)
 
-            field_path = FieldPath(*(prefix_path.parts + key_parts))
+            field_path = FieldPath(*(prefix_path.parts + sub_key.parts))
 
             if isinstance(value, dict):
                 for s_path, s_value in extract_fields(
