@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Model classes for datastore objects and properties for models."""
+"""Model classes for datastore objects and properties for models.
+
+.. testsetup:: *
+
+    from google.cloud import ndb
+"""
 
 
 import datetime
@@ -3383,13 +3388,95 @@ class Model(metaclass=MetaModel):
     A newly constructed entity will not be persisted to Cloud Datastore without
     an explicit call to :meth:`put`.
 
-    .. note::
+    User-defined properties can be passed to the constructor via keyword
+    arguments:
 
-        You cannot define a property named ``key``; the ``.key`` attribute
-        always refers to the entity's ``key``. But you can define properties
-        named ``id`` or ``parent``. Values for the latter cannot be passed
-        through the constructor, but can be assigned to entity attributes
-        after the entity has been created.
+    .. doctest:: model-keywords
+
+        >>> class MyModel(ndb.Model):
+        ...     value = ndb.FloatProperty()
+        ...     description = ndb.StringProperty()
+        ...
+        >>> MyModel(value=7.34e22, description="Mass of the moon")
+        MyModel(description='Mass of the moon', value=7.34e+22)
+
+    In addition to user-defined properties, there are six accepted keyword
+    arguments:
+
+    * ``key``
+    * ``id``
+    * ``app``
+    * ``namespace``
+    * ``parent``
+    * ``projection``
+
+    Of these, ``key`` is a public attribute on :class:`Model` instances:
+
+    .. testsetup:: model-key
+
+        from google.cloud import ndb
+
+
+        class MyModel(ndb.Model):
+            value = ndb.FloatProperty()
+            description = ndb.StringProperty()
+
+    .. doctest:: model-key
+
+        >>> entity1 = MyModel(id=11)
+        >>> entity1.key
+        Key('MyModel', 11)
+        >>> entity2 = MyModel(parent=entity1.key)
+        >>> entity2.key
+        Key('MyModel', 11, 'MyModel', None)
+        >>> entity3 = MyModel(key=ndb.Key(MyModel, "e-three"))
+        >>> entity3.key
+        Key('MyModel', 'e-three')
+
+    However, a user-defined property can be defined on the model with the
+    same name as one of those keyword arguments. In this case, the user-defined
+    property "wins":
+
+    .. doctest:: model-keyword-id-collision
+
+        >>> class IDCollide(ndb.Model):
+        ...     id = ndb.FloatProperty()
+        ...
+        >>> entity = IDCollide(id=17)
+        >>> entity
+        IDCollide(id=17.0)
+        >>> entity.key is None
+        True
+
+    In such cases of argument "collision", an underscore can be used as a
+    keyword argument prefix:
+
+    .. doctest:: model-keyword-id-collision
+
+        >>> entity = IDCollide(id=17, _id=2009)
+        >>> entity
+        IDCollide(key=Key('IDCollide', 2009), id=17.0)
+
+    For the **very** special case of a property named ``key``, the ``key``
+    attribute will no longer be the entity's key but instead to the property
+    value. Instead, the entity's key is accessible via ``_key``:
+
+    .. doctest:: model-keyword-key-collision
+
+        >>> class KeyCollide(ndb.Model):
+        ...     key = ndb.StringProperty()
+        ...
+        >>> entity1 = KeyCollide(key="Take the fork in the road", id=987)
+        >>> entity1
+        KeyCollide(key=Key('KeyCollide', 987), key='Take the fork in the road')
+        >>> entity1.key
+        'Take the fork in the road'
+        >>> entity1._key
+        Key('KeyCollide', 987)
+        >>>
+        >>> entity2 = KeyCollide(key="Go slow", _key=ndb.Key(KeyCollide, 1))
+        >>> entity2
+        KeyCollide(key=Key('KeyCollide', 1), key='Go slow')
 
     .. automethod:: _get_kind
 
@@ -3519,6 +3606,36 @@ class Model(metaclass=MetaModel):
             if not isinstance(prop, Property):
                 raise TypeError("Cannot set non-property {}".format(name))
             prop._set_value(self, value)
+
+    def __repr__(self):
+        """Return an unambiguous string representation of an entity."""
+        by_args = []
+        for prop in self._properties.values():
+            if not prop._has_value(self):
+                continue
+
+            value = prop._retrieve_value(self)
+            if value is None:
+                arg_repr = "None"
+            elif prop._repeated:
+                arg_reprs = [
+                    prop._value_to_repr(sub_value) for sub_value in value
+                ]
+                arg_repr = "[{}]".format(", ".join(arg_reprs))
+            else:
+                arg_repr = prop._value_to_repr(value)
+
+            by_args.append("{}={}".format(prop._code_name, arg_repr))
+
+        by_args.sort()
+
+        if self._key is not None:
+            by_args.insert(0, "key={!r}".format(self._key))
+
+        if self._projection:
+            by_args.append("_projection={!r}".format(self._projection))
+
+        return "{}({})".format(type(self).__name__, ", ".join(by_args))
 
     @classmethod
     def _get_kind(cls):
