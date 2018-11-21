@@ -2149,41 +2149,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertFalse(transform_pb.HasField('current_document'))
 
 
-class Test_canonicalize_field_paths(unittest.TestCase):
-
-    @staticmethod
-    def _call_fut(field_paths):
-        from google.cloud.firestore_v1beta1 import _helpers
-
-        return _helpers.canonicalize_field_paths(field_paths)
-
-    def _test_helper(self, to_convert):
-        from google.cloud.firestore_v1beta1 import _helpers
-
-        paths = [
-            _helpers.FieldPath.from_string(path) for path in to_convert
-        ]
-        found = self._call_fut(paths)
-
-        self.assertEqual(found, sorted(to_convert.values()))
-
-    def test_w_native_strings(self):
-        to_convert = {
-            '0abc.deq': '`0abc`.deq',
-            'abc.654': 'abc.`654`',
-            '321.0deq._321': '`321`.`0deq`._321',
-        }
-        self._test_helper(to_convert)
-
-    def test_w_unicode(self):
-        to_convert = {
-            u'0abc.deq': '`0abc`.deq',
-            u'abc.654': 'abc.`654`',
-            u'321.0deq._321': '`321`.`0deq`._321',
-        }
-        self._test_helper(to_convert)
-
-
 class Test_pbs_for_create(unittest.TestCase):
 
     @staticmethod

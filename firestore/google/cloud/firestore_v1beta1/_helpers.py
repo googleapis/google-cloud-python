@@ -1130,26 +1130,6 @@ class DocumentExtractor(object):
         return transform_pb
 
 
-def canonicalize_field_paths(field_paths):
-    """Converts non-simple field paths to quoted field paths
-
-    Args:
-        field_paths (Sequence[str]): A list of field paths
-
-    Returns:
-        Sequence[str]:
-            The same list of field paths except non-simple field names
-            in the `.` delimited field path have been converted
-            into quoted unicode field paths. Simple field paths match
-            the regex ^[_a-zA-Z][_a-zA-Z0-9]*$.  See `Document`_ page for
-            more information.
-
-    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
-    """
-    field_paths = [path.to_api_repr() for path in field_paths]
-    return sorted(field_paths)  # for testing purposes
-
-
 def pbs_for_create(document_path, document_data):
     """Make ``Write`` protobufs for ``create()`` methods.
 
