@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Container Engine API Client &#8212; google-cloud 1e79622 documentation</title>
+    <title>Types for Google Container Engine API Client &#8212; google-cloud 57dafcb documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -123,20 +123,32 @@ commence with the description of the upgrade.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CancelOperationRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CancelOperationRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CancelOperationRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.CancelOperationRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the operation
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the operation
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CancelOperationRequest.operation_id">
 <code class="descname">operation_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CancelOperationRequest.operation_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.</p>
+<dd><p>Deprecated. The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.
+This field has been deprecated and replaced by the name field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CancelOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.CancelOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, operation id) of the operation to
+cancel. Specified in the format
+‘projects/<em>/locations/</em>/operations/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -156,7 +168,7 @@ resides.</p>
 <dl class="class">
 <dt id="google.cloud.container_v1.types.Cluster">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">Cluster</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster" title="Permalink to this definition">#</a></dt>
-<dd><p>A Google Container Engine cluster.</p>
+<dd><p>A Google Kubernetes Engine cluster.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.Cluster.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.name" title="Permalink to this definition">#</a></dt>
@@ -318,14 +330,26 @@ related Google Compute Engine resources.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.Cluster.master_authorized_networks_config">
 <code class="descname">master_authorized_networks_config</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.master_authorized_networks_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Master authorized networks is a Beta feature. The
-configuration options for master authorized networks feature.</p>
+<dd><p>The configuration options for master authorized networks
+feature.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.Cluster.maintenance_policy">
 <code class="descname">maintenance_policy</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.maintenance_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Configure the maintenance policy for this cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.network_config">
+<code class="descname">network_config</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.network_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for cluster networking.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.private_cluster_config">
+<code class="descname">private_cluster_config</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.private_cluster_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for private cluster.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -338,7 +362,7 @@ configuration options for master authorized networks feature.</p>
 <dt id="google.cloud.container_v1.types.Cluster.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.zone" title="Permalink to this definition">#</a></dt>
 <dd><p>[Output only] The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+resides. This field is deprecated, use location instead.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -358,7 +382,14 @@ password information.</p>
 versions are those found in validMasterVersions returned by
 getServerConfig. The version can be upgraded over time; such
 upgrades are reflected in currentMasterVersion and
-currentNodeVersion.</p>
+currentNodeVersion.  Users may specify either explicit
+versions offered by Kubernetes Engine or version aliases,
+which have the following behavior:  -  “latest”: picks the
+highest valid Kubernetes version -  “1.X”: picks the highest
+valid patch+gke.N patch in the 1.X version -  “1.X.Y”: picks
+the highest valid gke.N patch in the 1.X.Y version -
+“1.X.Y-gke.N”: picks an explicit Kubernetes version -  “”,”-“:
+picks the default Kubernetes version</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -371,7 +402,8 @@ endpoint.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.Cluster.current_node_version">
 <code class="descname">current_node_version</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.current_node_version" title="Permalink to this definition">#</a></dt>
-<dd><p>[Output only] The current version of the node software
+<dd><p>[Output only] Deprecated, use <a class="reference external" href="/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters.nodePool">NodePool.version</a>
+instead. The current version of the node software
 components. If they are currently at multiple versions because
 they’re in the process of being upgraded, this reflects the
 minimum version of all nodes.</p>
@@ -433,6 +465,13 @@ deleted in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.
 text format.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.location">
+<code class="descname">location</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.location" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The name of the Google Compute Engine <a class="reference external" href="/compute/docs/regions-zones/regions-zones#available">zone</a> or
+<a class="reference external" href="/compute/docs/regions-zones/regions-zones#available">region</a> in which the cluster resides.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.container_v1.types.Cluster.ResourceLabelsEntry">
 <em class="property">class </em><code class="descname">ResourceLabelsEntry</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.ResourceLabelsEntry" title="Permalink to this definition">#</a></dt>
@@ -450,8 +489,14 @@ provided.</p>
 <dt id="google.cloud.container_v1.types.ClusterUpdate.desired_node_version">
 <code class="descname">desired_node_version</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_node_version" title="Permalink to this definition">#</a></dt>
 <dd><p>The Kubernetes version to change the nodes to (typically an
-upgrade). Use <code class="docutils literal notranslate"><span class="pre">-</span></code> to upgrade to the latest version supported
-by the server.</p>
+upgrade).  Users may specify either explicit versions offered
+by Kubernetes Engine or version aliases, which have the
+following behavior:  -  “latest”: picks the highest valid
+Kubernetes version -  “1.X”: picks the highest valid
+patch+gke.N patch in the 1.X version -  “1.X.Y”: picks the
+highest valid gke.N patch in the 1.X.Y version -
+“1.X.Y-gke.N”: picks an explicit Kubernetes version -  “-“:
+picks the Kubernetes master version</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -510,16 +555,21 @@ zone.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.ClusterUpdate.desired_master_authorized_networks_config">
 <code class="descname">desired_master_authorized_networks_config</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_master_authorized_networks_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Master authorized networks is a Beta feature. The desired
-configuration options for master authorized networks feature.</p>
+<dd><p>The desired configuration options for master authorized
+networks feature.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.ClusterUpdate.desired_master_version">
 <code class="descname">desired_master_version</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_master_version" title="Permalink to this definition">#</a></dt>
-<dd><p>The Kubernetes version to change the master to. The only valid
-value is the latest supported version. Use “-” to have the
-server automatically select the latest version.</p>
+<dd><p>The Kubernetes version to change the master to.  Users may
+specify either explicit versions offered by Kubernetes Engine
+or version aliases, which have the following behavior:  -
+“latest”: picks the highest valid Kubernetes version -  “1.X”:
+picks the highest valid patch+gke.N patch in the 1.X version -
+“1.X.Y”: picks the highest valid gke.N patch in the 1.X.Y
+version -  “1.X.Y-gke.N”: picks an explicit Kubernetes version
+-  “-“: picks the default Kubernetes version</p>
 </dd></dl>
 
 </dd></dl>
@@ -532,22 +582,32 @@ mode.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CompleteIPRotationRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CompleteIPRotationRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
-ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
-__.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or
+project number</a>. This field has been deprecated and
+replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CompleteIPRotationRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.CompleteIPRotationRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CompleteIPRotationRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CompleteIPRotationRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster.</p>
+<dd><p>Deprecated. The name of the cluster. This field has been
+deprecated and replaced by the name field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CompleteIPRotationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.CompleteIPRotationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster id) of the cluster to
+complete IP rotation. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -559,20 +619,30 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CreateClusterRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateClusterRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the parent field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CreateClusterRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateClusterRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+parent field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CreateClusterRequest.cluster">
 <code class="descname">cluster</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateClusterRequest.cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>A <a class="reference external" href="/container-engine/reference/rest/v1/projects.zones.clusters">cluster resource</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CreateClusterRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateClusterRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The parent (project and location) where the cluster will be
+created. Specified in the format ‘projects/<em>/locations/</em>’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -584,28 +654,38 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CreateNodePoolRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateNodePoolRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
-ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
-__.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or
+project number</a>. This field has been deprecated and
+replaced by the parent field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CreateNodePoolRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateNodePoolRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+parent field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CreateNodePoolRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateNodePoolRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster.</p>
+<dd><p>Deprecated. The name of the cluster. This field has been
+deprecated and replaced by the parent field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CreateNodePoolRequest.node_pool">
 <code class="descname">node_pool</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateNodePoolRequest.node_pool" title="Permalink to this definition">#</a></dt>
 <dd><p>The node pool to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CreateNodePoolRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateNodePoolRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The parent (project, location, cluster id) where the node pool
+will be created. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -645,20 +725,32 @@ format “PTnHnMnS”.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.DeleteClusterRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteClusterRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.DeleteClusterRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteClusterRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.DeleteClusterRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteClusterRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to delete.</p>
+<dd><p>Deprecated. The name of the cluster to delete. This field has
+been deprecated and replaced by the name field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DeleteClusterRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteClusterRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster) of the cluster to
+delete. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -670,28 +762,39 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.DeleteNodePoolRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteNodePoolRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
-ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
-__.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or
+project number</a>. This field has been deprecated and
+replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.DeleteNodePoolRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteNodePoolRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.DeleteNodePoolRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteNodePoolRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster.</p>
+<dd><p>Deprecated. The name of the cluster. This field has been
+deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.DeleteNodePoolRequest.node_pool_id">
 <code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteNodePoolRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the node pool to delete.</p>
+<dd><p>Deprecated. The name of the node pool to delete. This field
+has been deprecated and replaced by the name field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DeleteNodePoolRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteNodePoolRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster, node pool id) of the
+node pool to delete. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -788,20 +891,32 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetClusterRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetClusterRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetClusterRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.GetClusterRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetClusterRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetClusterRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to retrieve.</p>
+<dd><p>Deprecated. The name of the cluster to retrieve. This field
+has been deprecated and replaced by the name field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetClusterRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.GetClusterRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster) of the cluster to
+retrieve. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -813,28 +928,39 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetNodePoolRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetNodePoolRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
-ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
-__.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or
+project number</a>. This field has been deprecated and
+replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetNodePoolRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.GetNodePoolRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetNodePoolRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetNodePoolRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster.</p>
+<dd><p>Deprecated. The name of the cluster. This field has been
+deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetNodePoolRequest.node_pool_id">
 <code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetNodePoolRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the node pool.</p>
+<dd><p>Deprecated. The name of the node pool. This field has been
+deprecated and replaced by the name field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetNodePoolRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.GetNodePoolRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster, node pool id) of the
+node pool to get. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -846,20 +972,32 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetOperationRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetOperationRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetOperationRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.GetOperationRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetOperationRequest.operation_id">
 <code class="descname">operation_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetOperationRequest.operation_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.</p>
+<dd><p>Deprecated. The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.
+This field has been deprecated and replaced by the name field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.GetOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, operation id) of the operation to
+get. Specified in the format
+‘projects/<em>/locations/</em>/operations/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -867,17 +1005,27 @@ resides.</p>
 <dl class="class">
 <dt id="google.cloud.container_v1.types.GetServerConfigRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">GetServerConfigRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.GetServerConfigRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets the current Container Engine service configuration.</p>
+<dd><p>Gets the current Kubernetes Engine service configuration.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetServerConfigRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetServerConfigRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetServerConfigRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.GetServerConfigRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> to return operations for.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> to return operations for.
+This field has been deprecated and replaced by the name field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetServerConfigRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.GetServerConfigRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project and location) of the server config to get
+Specified in the format ‘projects/<em>/locations/</em>’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1069,14 +1217,25 @@ IAM.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.ListClustersRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.ListClustersRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the parent field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.ListClustersRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.ListClustersRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides, or “-” for all zones.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides, or “-” for all zones. This field has been deprecated
+and replaced by the parent field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListClustersRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.container_v1.types.ListClustersRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The parent (project and location) where the clusters will be
+listed. Specified in the format ‘projects/<em>/locations/</em>’.
+Location “-” matches all zones and all regions.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1108,22 +1267,32 @@ may be missing those zones.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.ListNodePoolsRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
-ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
-__.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or
+project number</a>. This field has been deprecated and
+replaced by the parent field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.ListNodePoolsRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+parent field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.ListNodePoolsRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster.</p>
+<dd><p>Deprecated. The name of the cluster. This field has been
+deprecated and replaced by the parent field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListNodePoolsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The parent (project, location, cluster id) where the node
+pools will be listed. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1147,14 +1316,25 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.ListOperationsRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.ListOperationsRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the parent field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.ListOperationsRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.ListOperationsRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> to return operations for,
-or <code class="docutils literal notranslate"><span class="pre">-</span></code> for all zones.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> to return operations for,
+or <code class="docutils literal notranslate"><span class="pre">-</span></code> for all zones. This field has been deprecated and
+replaced by the parent field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListOperationsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.container_v1.types.ListOperationsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The parent (project and location) where the operations will be
+listed. Specified in the format ‘projects/<em>/locations/</em>’.
+Location “-” matches all zones and all regions.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1233,8 +1413,8 @@ is provided for cluster creation, username must be non-empty.</p>
 <dt id="google.cloud.container_v1.types.MasterAuth.client_certificate_config">
 <code class="descname">client_certificate_config</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuth.client_certificate_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration for client certificate authentication on the
-cluster. If no configuration is specified, a client
-certificate is issued.</p>
+cluster. For clusters before v1.12, if no configuration is
+specified, a client certificate is issued.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1263,11 +1443,10 @@ authenticate to the cluster endpoint.</p>
 <dl class="class">
 <dt id="google.cloud.container_v1.types.MasterAuthorizedNetworksConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MasterAuthorizedNetworksConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuthorizedNetworksConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Master authorized networks is a Beta feature. Configuration options for
-the master authorized networks feature. Enabled master authorized
-networks will disallow all external traffic to access Kubernetes master
-through HTTPS except traffic from the given CIDR blocks, Google Compute
-Engine Public IPs and Google Prod IPs.</p>
+<dd><p>Configuration options for the master authorized networks feature.
+Enabled master authorized networks will disallow all external traffic to
+access Kubernetes master through HTTPS except traffic from the given
+CIDR blocks, Google Compute Engine Public IPs and Google Prod IPs.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.enabled">
 <code class="descname">enabled</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.enabled" title="Permalink to this definition">#</a></dt>
@@ -1316,6 +1495,31 @@ blocks.</p>
 <dt id="google.cloud.container_v1.types.MethodOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.NetworkConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">NetworkConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.NetworkConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>NetworkConfig reports the relative names of network &amp; subnetwork.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NetworkConfig.network">
+<code class="descname">network</code><a class="headerlink" href="#google.cloud.container_v1.types.NetworkConfig.network" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The relative name of the Google Compute Engine [n
+etwork][google.container.v1.NetworkConfig.network](/compute/do
+cs/networks-and-firewalls#networks) to which the cluster is
+connected. Example: projects/my-project/global/networks/my-
+network</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NetworkConfig.subnetwork">
+<code class="descname">subnetwork</code><a class="headerlink" href="#google.cloud.container_v1.types.NetworkConfig.subnetwork" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The relative name of the Google Compute Engine
+<a class="reference external" href="/compute/docs/vpc">subnetwork</a> to which the cluster is
+connected. Example: projects/my-project/regions/us-
+central1/subnetworks/my-subnet</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.NetworkPolicy">
@@ -1402,9 +1606,11 @@ cluster.  Keys must conform to the regexp [a-zA-Z0-9-_]+ and
 be less than 128 bytes in length. These are reflected as part
 of a URL in the metadata server. Additionally, to avoid
 ambiguity, keys must not conflict with any other metadata keys
-for the project or be one of the four reserved keys:
-“instance-template”, “kube-env”, “startup-script”, and “user-
-data”  Values are free-form strings, and only have meaning as
+for the project or be one of the reserved keys: “cluster-
+location” “cluster-name” “cluster-uid” “configure-sh” “enable-
+os-login” “gci-update-strategy” “gci-ensure-gke-docker”
+“instance-template” “kube-env” “startup-script” “user-data”
+Values are free-form strings, and only have meaning as
 interpreted by the image running in the instance. The only
 restriction placed on them is that each value’s size must be
 less than or equal to 32 KB.  The total size of all keys and
@@ -1466,6 +1672,14 @@ for more information about preemptible VM instances.</p>
 <dd><p>A list of hardware accelerators to be attached to each node.
 See <a class="reference external" href="https://cloud.google.com/compute/docs/gpus">https://cloud.google.com/compute/docs/gpus</a> for more
 information about support for GPUs.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.disk_type">
+<code class="descname">disk_type</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.disk_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Type of the disk attached to each node (e.g. ‘pd-standard’ or
+‘pd-ssd’)  If unspecified, the default disk type is ‘pd-
+standard’</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1652,7 +1866,7 @@ are happening on the cluster. All fields are output only.</p>
 <dt id="google.cloud.container_v1.types.Operation.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.zone" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the operation is
-taking place.</p>
+taking place. This field is deprecated, use location instead.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1692,6 +1906,13 @@ taking place.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.location">
+<code class="descname">location</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.location" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The name of the Google Compute Engine <a class="reference external" href="/compute/docs/regions-zones/regions-zones#available">zone</a> or
+<a class="reference external" href="/compute/docs/regions-zones/regions-zones#available">region</a> in which the cluster resides.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.container_v1.types.Operation.start_time">
 <code class="descname">start_time</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.start_time" title="Permalink to this definition">#</a></dt>
 <dd><p>[Output only] The time the operation started, in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a> text format.</p>
@@ -1706,6 +1927,51 @@ taking place.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.container_v1.types.PrivateClusterConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">PrivateClusterConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.PrivateClusterConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration options for private clusters.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.PrivateClusterConfig.enable_private_nodes">
+<code class="descname">enable_private_nodes</code><a class="headerlink" href="#google.cloud.container_v1.types.PrivateClusterConfig.enable_private_nodes" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether nodes have internal IP addresses only. If enabled, all
+nodes are given only RFC 1918 private addresses and
+communicate with the master via private networking.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.PrivateClusterConfig.enable_private_endpoint">
+<code class="descname">enable_private_endpoint</code><a class="headerlink" href="#google.cloud.container_v1.types.PrivateClusterConfig.enable_private_endpoint" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether the master’s internal IP address is used as the
+cluster endpoint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.PrivateClusterConfig.master_ipv4_cidr_block">
+<code class="descname">master_ipv4_cidr_block</code><a class="headerlink" href="#google.cloud.container_v1.types.PrivateClusterConfig.master_ipv4_cidr_block" title="Permalink to this definition">#</a></dt>
+<dd><p>The IP range in CIDR notation to use for the hosted master
+network. This range will be used for assigning internal IP
+addresses to the master or set of masters, as well as the ILB
+VIP. This range must not overlap with any other ranges in use
+within the cluster’s network.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.PrivateClusterConfig.private_endpoint">
+<code class="descname">private_endpoint</code><a class="headerlink" href="#google.cloud.container_v1.types.PrivateClusterConfig.private_endpoint" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The internal IP address of this cluster’s master
+endpoint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.PrivateClusterConfig.public_endpoint">
+<code class="descname">public_endpoint</code><a class="headerlink" href="#google.cloud.container_v1.types.PrivateClusterConfig.public_endpoint" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The external IP address of this cluster’s master
+endpoint.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">RollbackNodePoolUpgradeRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>RollbackNodePoolUpgradeRequest rollbacks the previously Aborted or
@@ -1714,26 +1980,39 @@ successfully completed.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to rollback.</p>
+<dd><p>Deprecated. The name of the cluster to rollback. This field
+has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.node_pool_id">
 <code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the node pool to rollback.</p>
+<dd><p>Deprecated. The name of the node pool to rollback. This field
+has been deprecated and replaced by the name field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster, node pool id) of the
+node poll to rollback upgrade. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1741,7 +2020,7 @@ resides.</p>
 <dl class="class">
 <dt id="google.cloud.container_v1.types.ServerConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ServerConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.ServerConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Container Engine service configuration.</p>
+<dd><p>Kubernetes Engine service configuration.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.ServerConfig.default_cluster_version">
 <code class="descname">default_cluster_version</code><a class="headerlink" href="#google.cloud.container_v1.types.ServerConfig.default_cluster_version" title="Permalink to this definition">#</a></dt>
@@ -1791,20 +2070,24 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetAddonsConfigRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetAddonsConfigRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetAddonsConfigRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to upgrade.</p>
+<dd><p>Deprecated. The name of the cluster to upgrade. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1812,6 +2095,14 @@ resides.</p>
 <code class="descname">addons_config</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest.addons_config" title="Permalink to this definition">#</a></dt>
 <dd><p>The desired configurations for the various addons available to
 run in the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetAddonsConfigRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster) of the cluster to set
+addons. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1825,22 +2116,24 @@ Engine resources used by that cluster</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLabelsRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
-ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
-__.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or
+project number</a>. This field has been deprecated and
+replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLabelsRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLabelsRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster.</p>
+<dd><p>Deprecated. The name of the cluster. This field has been
+deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1854,11 +2147,19 @@ resides.</p>
 <code class="descname">label_fingerprint</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.label_fingerprint" title="Permalink to this definition">#</a></dt>
 <dd><p>The fingerprint of the previous set of labels for this
 resource, used to detect conflicts. The fingerprint is
-initially generated by Container Engine and changes after
+initially generated by Kubernetes Engine and changes after
 every request to modify or update labels. You must always
 provide an up-to-date fingerprint hash when updating or
 changing labels. Make a get() request to the resource to get
 the latest fingerprint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLabelsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster id) of the cluster to set
+labels. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1876,26 +2177,38 @@ mechanism for a cluster.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLegacyAbacRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLegacyAbacRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLegacyAbacRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLegacyAbacRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLegacyAbacRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLegacyAbacRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to update.</p>
+<dd><p>Deprecated. The name of the cluster to update. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLegacyAbacRequest.enabled">
 <code class="descname">enabled</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLegacyAbacRequest.enabled" title="Permalink to this definition">#</a></dt>
 <dd><p>Whether ABAC authorization will be enabled in the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLegacyAbacRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLegacyAbacRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster id) of the cluster to set
+legacy abac. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1907,20 +2220,24 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLocationsRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLocationsRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLocationsRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLocationsRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLocationsRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLocationsRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to upgrade.</p>
+<dd><p>Deprecated. The name of the cluster to upgrade. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1934,6 +2251,14 @@ removed.  This list must always include the cluster’s primary
 zone.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLocationsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLocationsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster) of the cluster to set
+locations. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1943,20 +2268,24 @@ zone.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLoggingServiceRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLoggingServiceRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLoggingServiceRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLoggingServiceRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetLoggingServiceRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLoggingServiceRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to upgrade.</p>
+<dd><p>Deprecated. The name of the cluster to upgrade. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1966,6 +2295,14 @@ resides.</p>
 Currently available options:  -  “logging.googleapis.com” -
 the Google Cloud Logging service -  “none” - no metrics will
 be exported from the cluster</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLoggingServiceRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLoggingServiceRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster) of the cluster to set
+logging. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2000,6 +2337,14 @@ resides.</p>
 field clears the existing maintenance policy.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMaintenancePolicyRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMaintenancePolicyRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster id) of the cluster to set
+maintenance policy. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2009,20 +2354,24 @@ field clears the existing maintenance policy.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetMasterAuthRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMasterAuthRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetMasterAuthRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMasterAuthRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetMasterAuthRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMasterAuthRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to upgrade.</p>
+<dd><p>Deprecated. The name of the cluster to upgrade. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2037,6 +2386,14 @@ resides.</p>
 <dd><p>A description of the update.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMasterAuthRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMasterAuthRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster) of the cluster to set
+auth. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2046,20 +2403,24 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetMonitoringServiceRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMonitoringServiceRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetMonitoringServiceRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMonitoringServiceRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetMonitoringServiceRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMonitoringServiceRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to upgrade.</p>
+<dd><p>Deprecated. The name of the cluster to upgrade. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2072,6 +2433,14 @@ service -  “none” - no metrics will be exported from the
 cluster</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMonitoringServiceRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMonitoringServiceRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster) of the cluster to set
+monitoring. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2081,28 +2450,38 @@ cluster</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNetworkPolicyRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNetworkPolicyRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
-ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
-__.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or
+project number</a>. This field has been deprecated and
+replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNetworkPolicyRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNetworkPolicyRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNetworkPolicyRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNetworkPolicyRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster.</p>
+<dd><p>Deprecated. The name of the cluster. This field has been
+deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNetworkPolicyRequest.network_policy">
 <code class="descname">network_policy</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNetworkPolicyRequest.network_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration options for the NetworkPolicy feature.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNetworkPolicyRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNetworkPolicyRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster id) of the cluster to set
+networking policy. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2115,32 +2494,45 @@ pool.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to upgrade.</p>
+<dd><p>Deprecated. The name of the cluster to upgrade. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.node_pool_id">
 <code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the node pool to upgrade.</p>
+<dd><p>Deprecated. The name of the node pool to upgrade. This field
+has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.autoscaling">
 <code class="descname">autoscaling</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.autoscaling" title="Permalink to this definition">#</a></dt>
 <dd><p>Autoscaling configuration for the node pool.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster, node pool) of the node
+pool to set autoscaler settings. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2153,32 +2545,45 @@ node pool.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to update.</p>
+<dd><p>Deprecated. The name of the cluster to update. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.node_pool_id">
 <code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the node pool to update.</p>
+<dd><p>Deprecated. The name of the node pool to update. This field
+has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.management">
 <code class="descname">management</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.management" title="Permalink to this definition">#</a></dt>
 <dd><p>NodeManagement configuration for the node pool.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster, node pool id) of the
+node pool to set management properties. Specified in the
+format ‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2190,32 +2595,45 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to update.</p>
+<dd><p>Deprecated. The name of the cluster to update. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.node_pool_id">
 <code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the node pool to update.</p>
+<dd><p>Deprecated. The name of the node pool to update. This field
+has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.node_count">
 <code class="descname">node_count</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.node_count" title="Permalink to this definition">#</a></dt>
 <dd><p>The desired node count for the pool.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster, node pool id) of the
+node pool to set size. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2238,22 +2656,38 @@ performs a node upgrade on each node pool to point to the new IP.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.StartIPRotationRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
-ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
-__.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or
+project number</a>. This field has been deprecated and
+replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.StartIPRotationRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.StartIPRotationRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster.</p>
+<dd><p>Deprecated. The name of the cluster. This field has been
+deprecated and replaced by the name field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.StartIPRotationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster id) of the cluster to
+start IP rotation. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.StartIPRotationRequest.rotate_credentials">
+<code class="descname">rotate_credentials</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest.rotate_credentials" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether to rotate credentials during IP rotation.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2275,26 +2709,38 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateClusterRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateClusterRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateClusterRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateClusterRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateClusterRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateClusterRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to upgrade.</p>
+<dd><p>Deprecated. The name of the cluster to upgrade. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateClusterRequest.update">
 <code class="descname">update</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateClusterRequest.update" title="Permalink to this definition">#</a></dt>
 <dd><p>A description of the update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateClusterRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateClusterRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster) of the cluster to
+update. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2306,28 +2752,45 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateMasterRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateMasterRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateMasterRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateMasterRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateMasterRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateMasterRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to upgrade.</p>
+<dd><p>Deprecated. The name of the cluster to upgrade. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateMasterRequest.master_version">
 <code class="descname">master_version</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateMasterRequest.master_version" title="Permalink to this definition">#</a></dt>
-<dd><p>The Kubernetes version to change the master to. The only valid
-value is the latest supported version. Use “-” to have the
-server automatically select the latest version.</p>
+<dd><p>The Kubernetes version to change the master to.  Users may
+specify either explicit versions offered by Kubernetes Engine
+or version aliases, which have the following behavior:  -
+“latest”: picks the highest valid Kubernetes version -  “1.X”:
+picks the highest valid patch+gke.N patch in the 1.X version -
+“1.X.Y”: picks the highest valid gke.N patch in the 1.X.Y
+version -  “1.X.Y-gke.N”: picks an explicit Kubernetes version
+-  “-“: picks the default Kubernetes version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateMasterRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateMasterRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster) of the cluster to
+update. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2339,40 +2802,59 @@ server automatically select the latest version.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.project_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+<dd><p>Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or
+project number</a>. This
+field has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
-resides.</p>
+<dd><p>Deprecated. The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides. This field has been deprecated and replaced by the
+name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.cluster_id">
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.cluster_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the cluster to upgrade.</p>
+<dd><p>Deprecated. The name of the cluster to upgrade. This field has
+been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.node_pool_id">
 <code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the node pool to upgrade.</p>
+<dd><p>Deprecated. The name of the node pool to upgrade. This field
+has been deprecated and replaced by the name field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.node_version">
 <code class="descname">node_version</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.node_version" title="Permalink to this definition">#</a></dt>
 <dd><p>The Kubernetes version to change the nodes to (typically an
-upgrade). Use <code class="docutils literal notranslate"><span class="pre">-</span></code> to upgrade to the latest version supported
-by the server.</p>
+upgrade).  Users may specify either explicit versions offered
+by Kubernetes Engine or version aliases, which have the
+following behavior:  -  “latest”: picks the highest valid
+Kubernetes version -  “1.X”: picks the highest valid
+patch+gke.N patch in the 1.X version -  “1.X.Y”: picks the
+highest valid gke.N patch in the 1.X.Y version -
+“1.X.Y-gke.N”: picks an explicit Kubernetes version -  “-“:
+picks the Kubernetes master version</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.image_type">
 <code class="descname">image_type</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.image_type" title="Permalink to this definition">#</a></dt>
 <dd><p>The desired image type for the node pool.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name (project, location, cluster, node pool) of the node
+pool to update. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
 </dd></dl>

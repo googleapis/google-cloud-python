@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Google Container Engine API &#8212; google-cloud 1e79622 documentation</title>
+    <title>Client for Google Container Engine API &#8212; google-cloud 57dafcb documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -38,8 +38,8 @@
 <span id="client-for-google-container-engine-api"></span><h1>Client for Google Container Engine API<a class="headerlink" href="#module-google.cloud.container_v1" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.container_v1.ClusterManagerClient">
-<em class="property">class </em><code class="descclassname">google.cloud.container_v1.</code><code class="descname">ClusterManagerClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.container.v1.ClusterManager': {'methods': {'CancelOperation': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'CompleteIPRotation': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'CreateCluster': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'CreateNodePool': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'DeleteCluster': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'DeleteNodePool': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 30000}, 'GetCluster': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'GetNodePool': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'GetOperation': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'GetServerConfig': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'ListClusters': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'ListNodePools': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'ListOperations': {'retry_codes_name': 'idempotent', 'retry_params_name': 'default', 'timeout_millis': 10000}, 'RollbackNodePoolUpgrade': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetAddonsConfig': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetLabels': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetLegacyAbac': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetLocations': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetLoggingService': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetMaintenancePolicy': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetMasterAuth': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetMonitoringService': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetNetworkPolicy': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetNodePoolAutoscaling': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetNodePoolManagement': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'SetNodePoolSize': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'StartIPRotation': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateCluster': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateMaster': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}, 'UpdateNodePool': {'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default', 'timeout_millis': 60000}}, 'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'initial_rpc_timeout_millis': 20000, 'max_retry_delay_millis': 60000, 'max_rpc_timeout_millis': 20000, 'retry_delay_multiplier': 1.3, 'rpc_timeout_multiplier': 1.0, 'total_timeout_millis': 600000}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1.html#ClusterManagerClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient" title="Permalink to this definition">#</a></dt>
-<dd><p>Google Container Engine Cluster Manager v1</p>
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.</code><code class="descname">ClusterManagerClient</code><span class="sig-paren">(</span><em>transport=None</em>, <em>channel=None</em>, <em>credentials=None</em>, <em>client_config=None</em>, <em>client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1.html#ClusterManagerClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Google Kubernetes Engine Cluster Manager v1</p>
 <p>Constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -77,7 +77,7 @@ your own client library.</li>
 </table>
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.cancel_operation">
-<code class="descname">cancel_operation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>operation_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.cancel_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.cancel_operation" title="Permalink to this definition">#</a></dt>
+<code class="descname">cancel_operation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>operation_id</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.cancel_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.cancel_operation" title="Permalink to this definition">#</a></dt>
 <dd><p>Cancels the specified operation.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -101,12 +101,17 @@ your own client library.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the operation resides.</li>
-<li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.</li>
+which the operation resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, operation id) of the operation to cancel.
+Specified in the format ‘projects/<em>/locations/</em>/operations/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -133,7 +138,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.complete_i_p_rotation">
-<code class="descname">complete_i_p_rotation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.complete_i_p_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.complete_i_p_rotation" title="Permalink to this definition">#</a></dt>
+<code class="descname">complete_i_p_rotation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.complete_i_p_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.complete_i_p_rotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Completes master IP rotation.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -157,12 +162,17 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster id) of the cluster to complete IP
+rotation. Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -192,7 +202,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.create_cluster">
-<code class="descname">create_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.create_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.create_cluster" title="Permalink to this definition">#</a></dt>
+<code class="descname">create_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster</em>, <em>parent=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.create_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.create_cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a cluster, consisting of the specified number and type of Google
 Compute Engine instances.</p>
 <p>By default, the cluster is created in the project’s <a class="reference external" href="https://cloud.google.com/compute/docs/networks-and-firewalls#networks">default
@@ -224,16 +234,20 @@ which CIDR range is being used by the cluster.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the parent field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the parent field.</li>
 <li><strong>cluster</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><em>Cluster</em></a><em>]</em>) – <p>A <a class="reference external" href="https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters">cluster
 resource</a></p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a></p>
 </li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent (project and location) where the cluster will be created.
+Specified in the format ‘projects/<em>/locations/</em>’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -263,7 +277,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.create_node_pool">
-<code class="descname">create_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.create_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.create_node_pool" title="Permalink to this definition">#</a></dt>
+<code class="descname">create_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool</em>, <em>parent=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.create_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.create_node_pool" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a node pool for a cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -290,16 +304,21 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.
+This field has been deprecated and replaced by the parent field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the parent field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster.
+This field has been deprecated and replaced by the parent field.</li>
 <li><strong>node_pool</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><em>NodePool</em></a><em>]</em>) – <p>The node pool to create.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodePool</span></code></a></p>
 </li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent (project, location, cluster id) where the node pool will be
+created. Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -329,7 +348,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.delete_cluster">
-<code class="descname">delete_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.delete_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.delete_cluster" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.delete_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.delete_cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes the cluster, including the Kubernetes endpoint and all worker
 nodes.</p>
 <p>Firewalls and routes that were configured during cluster creation
@@ -359,12 +378,17 @@ at the initial create time.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to delete.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to delete.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster) of the cluster to delete.
+Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -394,7 +418,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.delete_node_pool">
-<code class="descname">delete_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.delete_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.delete_node_pool" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.delete_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.delete_node_pool" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a node pool from a cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -421,13 +445,20 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
-<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to delete.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the node pool to delete.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster, node pool id) of the node pool to
+delete. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -516,7 +547,7 @@ file.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.get_cluster">
-<code class="descname">get_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_cluster" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the details of a specific cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -540,12 +571,17 @@ file.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to retrieve.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to retrieve.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster) of the cluster to retrieve.
+Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -575,7 +611,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.get_node_pool">
-<code class="descname">get_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_node_pool" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_node_pool" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves the node pool requested.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -602,13 +638,20 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
-<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the node pool.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster, node pool id) of the node pool to
+get. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -638,7 +681,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.get_operation">
-<code class="descname">get_operation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>operation_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_operation" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_operation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>operation_id</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_operation" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the specified operation.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -662,12 +705,17 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, operation id) of the operation to get.
+Specified in the format ‘projects/<em>/locations/</em>/operations/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -697,8 +745,8 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.get_server_config">
-<code class="descname">get_server_config</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_server_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_server_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns configuration info about the Container Engine service.</p>
+<code class="descname">get_server_config</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_server_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_server_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns configuration info about the Kubernetes Engine service.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -718,11 +766,15 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> to
-return operations for.</li>
+return operations for. This field has been deprecated and replaced by
+the name field.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project and location) of the server config to get Specified in
+the format ‘projects/<em>/locations/</em>’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -752,7 +804,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.list_clusters">
-<code class="descname">list_clusters</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.list_clusters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.list_clusters" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_clusters</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>parent=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.list_clusters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.list_clusters" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists all clusters owned by a project in either the specified zone or all
 zones.</p>
 <p class="rubric">Example</p>
@@ -774,11 +826,16 @@ zones.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the parent field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides, or “-” for all zones.</li>
+which the cluster resides, or “-” for all zones. This field has been
+deprecated and replaced by the parent field.</li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent (project and location) where the clusters will be listed.
+Specified in the format ‘projects/<em>/locations/</em>’. Location “-” matches
+all zones and all regions.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -808,7 +865,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.list_node_pools">
-<code class="descname">list_node_pools</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.list_node_pools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.list_node_pools" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_node_pools</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>parent=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.list_node_pools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.list_node_pools" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists the node pools for a cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -832,12 +889,17 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.
+This field has been deprecated and replaced by the parent field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the parent field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster.
+This field has been deprecated and replaced by the parent field.</li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent (project, location, cluster id) where the node pools will be
+listed. Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -867,7 +929,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.list_operations">
-<code class="descname">list_operations</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.list_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.list_operations" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_operations</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>parent=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.list_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.list_operations" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists all operations in a project in a specific zone or all zones.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -888,11 +950,16 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the parent field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> to
-return operations for, or <code class="docutils literal notranslate"><span class="pre">-</span></code> for all zones.</li>
+return operations for, or <code class="docutils literal notranslate"><span class="pre">-</span></code> for all zones. This field has been
+deprecated and replaced by the parent field.</li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent (project and location) where the operations will be listed.
+Specified in the format ‘projects/<em>/locations/</em>’. Location “-” matches
+all zones and all regions.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -922,7 +989,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.rollback_node_pool_upgrade">
-<code class="descname">rollback_node_pool_upgrade</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.rollback_node_pool_upgrade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.rollback_node_pool_upgrade" title="Permalink to this definition">#</a></dt>
+<code class="descname">rollback_node_pool_upgrade</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.rollback_node_pool_upgrade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.rollback_node_pool_upgrade" title="Permalink to this definition">#</a></dt>
 <dd><p>Roll back the previously Aborted or Failed NodePool upgrade.
 This will be an no-op if the last upgrade successfully completed.</p>
 <p class="rubric">Example</p>
@@ -950,13 +1017,20 @@ This will be an no-op if the last upgrade successfully completed.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to rollback.</li>
-<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to rollback.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to rollback.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the node pool to rollback.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster, node pool id) of the node poll to
+rollback upgrade. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -986,8 +1060,8 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_addons_config">
-<code class="descname">set_addons_config</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>addons_config</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_addons_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_addons_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the addons of a specific cluster.</p>
+<code class="descname">set_addons_config</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>addons_config</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_addons_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_addons_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the addons for a specific cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1013,17 +1087,22 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to upgrade.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>addons_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.AddonsConfig" title="google.cloud.container_v1.types.AddonsConfig"><em>AddonsConfig</em></a><em>]</em>) – <p>The desired configurations for the various addons available to run in the
 cluster.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.container_v1.types.AddonsConfig" title="google.cloud.container_v1.types.AddonsConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddonsConfig</span></code></a></p>
 </li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster) of the cluster to set addons.
+Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1053,7 +1132,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_labels">
-<code class="descname">set_labels</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>resource_labels</em>, <em>label_fingerprint</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_labels" title="Permalink to this definition">#</a></dt>
+<code class="descname">set_labels</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>resource_labels</em>, <em>label_fingerprint</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_labels" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets labels on a cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -1083,19 +1162,24 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>resource_labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – The labels to set for that cluster.</li>
 <li><strong>label_fingerprint</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The fingerprint of the previous set of labels for this resource,
 used to detect conflicts. The fingerprint is initially generated by
-Container Engine and changes after every request to modify or update
+Kubernetes Engine and changes after every request to modify or update
 labels. You must always provide an up-to-date fingerprint hash when
 updating or changing labels. Make a &lt;code&gt;get()&lt;/code&gt; request to the
 resource to get the latest fingerprint.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster id) of the cluster to set labels.
+Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1125,7 +1209,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_legacy_abac">
-<code class="descname">set_legacy_abac</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>enabled</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_legacy_abac"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_legacy_abac" title="Permalink to this definition">#</a></dt>
+<code class="descname">set_legacy_abac</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>enabled</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_legacy_abac"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_legacy_abac" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables or disables the ABAC authorization mechanism on a cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -1152,13 +1236,18 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to update.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to update.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>enabled</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether ABAC authorization will be enabled in the cluster.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster id) of the cluster to set legacy
+abac. Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1188,8 +1277,8 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_locations">
-<code class="descname">set_locations</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>locations</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_locations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_locations" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the locations of a specific cluster.</p>
+<code class="descname">set_locations</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>locations</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_locations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_locations" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the locations for a specific cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1215,12 +1304,15 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to upgrade.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>locations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>The desired list of Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">locations</a> in
 which the cluster’s nodes should be located. Changing the locations a
@@ -1228,6 +1320,8 @@ cluster is in will result in nodes being either created or removed from
 the cluster, depending on whether locations are being added or removed.</p>
 <p>This list must always include the cluster’s primary zone.</p>
 </li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster) of the cluster to set locations.
+Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1257,8 +1351,8 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_logging_service">
-<code class="descname">set_logging_service</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>logging_service</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_logging_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_logging_service" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the logging service of a specific cluster.</p>
+<code class="descname">set_logging_service</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>logging_service</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_logging_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_logging_service" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the logging service for a specific cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1284,12 +1378,15 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to upgrade.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>logging_service</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The logging service the cluster should use to write metrics. Currently
 available options:</p>
 <ul>
@@ -1297,6 +1394,8 @@ available options:</p>
 <li>”none” - no metrics will be exported from the cluster</li>
 </ul>
 </li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster) of the cluster to set logging.
+Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1326,7 +1425,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_maintenance_policy">
-<code class="descname">set_maintenance_policy</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>maintenance_policy</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_maintenance_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_maintenance_policy" title="Permalink to this definition">#</a></dt>
+<code class="descname">set_maintenance_policy</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>maintenance_policy</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_maintenance_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_maintenance_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the maintenance policy for a cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -1364,6 +1463,9 @@ clears the existing maintenance policy.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.container_v1.types.MaintenancePolicy" title="google.cloud.container_v1.types.MaintenancePolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaintenancePolicy</span></code></a></p>
 </li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster id) of the cluster to set
+maintenance policy. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1393,9 +1495,9 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_master_auth">
-<code class="descname">set_master_auth</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>action</em>, <em>update</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_master_auth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_master_auth" title="Permalink to this definition">#</a></dt>
+<code class="descname">set_master_auth</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>action</em>, <em>update</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_master_auth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_master_auth" title="Permalink to this definition">#</a></dt>
 <dd><p>Used to set master auth materials. Currently supports :-
-Changing the admin password of a specific cluster.
+Changing the admin password for a specific cluster.
 This can be either via password generation or explicitly set the password.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -1426,17 +1528,22 @@ This can be either via password generation or explicitly set the password.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to upgrade.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>action</strong> (<em>Action</em>) – The exact form of action to be taken on the master auth.</li>
 <li><strong>update</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.MasterAuth" title="google.cloud.container_v1.types.MasterAuth"><em>MasterAuth</em></a><em>]</em>) – <p>A description of the update.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.container_v1.types.MasterAuth" title="google.cloud.container_v1.types.MasterAuth"><code class="xref py py-class docutils literal notranslate"><span class="pre">MasterAuth</span></code></a></p>
 </li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster) of the cluster to set auth.
+Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1466,8 +1573,8 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_monitoring_service">
-<code class="descname">set_monitoring_service</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>monitoring_service</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_monitoring_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_monitoring_service" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the monitoring service of a specific cluster.</p>
+<code class="descname">set_monitoring_service</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>monitoring_service</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_monitoring_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_monitoring_service" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the monitoring service for a specific cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1493,12 +1600,15 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to upgrade.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>monitoring_service</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The monitoring service the cluster should use to write metrics.
 Currently available options:</p>
 <ul>
@@ -1506,6 +1616,8 @@ Currently available options:</p>
 <li>”none” - no metrics will be exported from the cluster</li>
 </ul>
 </li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster) of the cluster to set monitoring.
+Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1535,7 +1647,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_network_policy">
-<code class="descname">set_network_policy</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>network_policy</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_network_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_network_policy" title="Permalink to this definition">#</a></dt>
+<code class="descname">set_network_policy</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>network_policy</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_network_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_network_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/Disables Network Policy for a cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -1562,16 +1674,22 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>network_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NetworkPolicy" title="google.cloud.container_v1.types.NetworkPolicy"><em>NetworkPolicy</em></a><em>]</em>) – <p>Configuration options for the NetworkPolicy feature.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NetworkPolicy" title="google.cloud.container_v1.types.NetworkPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkPolicy</span></code></a></p>
 </li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster id) of the cluster to set
+networking policy. Specified in the format
+‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1601,8 +1719,8 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_node_pool_autoscaling">
-<code class="descname">set_node_pool_autoscaling</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>autoscaling</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_node_pool_autoscaling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_node_pool_autoscaling" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the autoscaling settings of a specific node pool.</p>
+<code class="descname">set_node_pool_autoscaling</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>autoscaling</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_node_pool_autoscaling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_node_pool_autoscaling" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the autoscaling settings for a specific node pool.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1631,17 +1749,24 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
-<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to upgrade.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to upgrade.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the node pool to upgrade.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>autoscaling</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePoolAutoscaling" title="google.cloud.container_v1.types.NodePoolAutoscaling"><em>NodePoolAutoscaling</em></a><em>]</em>) – <p>Autoscaling configuration for the node pool.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePoolAutoscaling" title="google.cloud.container_v1.types.NodePoolAutoscaling"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodePoolAutoscaling</span></code></a></p>
 </li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster, node pool) of the node pool to set
+autoscaler settings. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1671,7 +1796,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_node_pool_management">
-<code class="descname">set_node_pool_management</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>management</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_node_pool_management"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_node_pool_management" title="Permalink to this definition">#</a></dt>
+<code class="descname">set_node_pool_management</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>management</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_node_pool_management"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_node_pool_management" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the NodeManagement options for a node pool.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -1701,17 +1826,24 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to update.</li>
-<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to update.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to update.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the node pool to update.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>management</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodeManagement" title="google.cloud.container_v1.types.NodeManagement"><em>NodeManagement</em></a><em>]</em>) – <p>NodeManagement configuration for the node pool.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodeManagement" title="google.cloud.container_v1.types.NodeManagement"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeManagement</span></code></a></p>
 </li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster, node pool id) of the node pool to
+set management properties. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1741,8 +1873,8 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.set_node_pool_size">
-<code class="descname">set_node_pool_size</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>node_count</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_node_pool_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_node_pool_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the size of a specific node pool.</p>
+<code class="descname">set_node_pool_size</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>node_count</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_node_pool_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_node_pool_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the size for a specific node pool.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1771,14 +1903,21 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to update.</li>
-<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to update.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to update.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the node pool to update.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>node_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The desired node count for the pool.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster, node pool id) of the node pool to
+set size. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1808,7 +1947,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.start_i_p_rotation">
-<code class="descname">start_i_p_rotation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.start_i_p_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.start_i_p_rotation" title="Permalink to this definition">#</a></dt>
+<code class="descname">start_i_p_rotation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>name=None</em>, <em>rotate_credentials=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.start_i_p_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.start_i_p_rotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Start master IP rotation.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -1832,12 +1971,18 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://developers.google.com/console/help/new/#projectnumber">project ID or project
+number</a>.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster id) of the cluster to start IP
+rotation. Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
+<li><strong>rotate_credentials</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to rotate credentials during IP rotation.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1867,7 +2012,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.update_cluster">
-<code class="descname">update_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>update</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.update_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.update_cluster" title="Permalink to this definition">#</a></dt>
+<code class="descname">update_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>update</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.update_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.update_cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the settings of a specific cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
@@ -1894,16 +2039,21 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to upgrade.
+This field has been deprecated and replaced by the name field.</li>
 <li><strong>update</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.ClusterUpdate" title="google.cloud.container_v1.types.ClusterUpdate"><em>ClusterUpdate</em></a><em>]</em>) – <p>A description of the update.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.container_v1.types.ClusterUpdate" title="google.cloud.container_v1.types.ClusterUpdate"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClusterUpdate</span></code></a></p>
 </li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster) of the cluster to update.
+Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1933,8 +2083,8 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.update_master">
-<code class="descname">update_master</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>master_version</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.update_master"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.update_master" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the master of a specific cluster.</p>
+<code class="descname">update_master</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>master_version</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.update_master"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.update_master" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates the master for a specific cluster.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1960,15 +2110,28 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
-<li><strong>master_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Kubernetes version to change the master to. The only valid value is the
-latest supported version. Use “-” to have the server automatically select
-the latest version.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to upgrade.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>master_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The Kubernetes version to change the master to.</p>
+<p>Users may specify either explicit versions offered by Kubernetes Engine or
+version aliases, which have the following behavior:</p>
+<ul>
+<li>”latest”: picks the highest valid Kubernetes version</li>
+<li>”1.X”: picks the highest valid patch+gke.N patch in the 1.X version</li>
+<li>”1.X.Y”: picks the highest valid gke.N patch in the 1.X.Y version</li>
+<li>”1.X.Y-gke.N”: picks an explicit Kubernetes version</li>
+<li>”-“: picks the default Kubernetes version</li>
+</ul>
+</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster) of the cluster to update.
+Specified in the format ‘projects/<em>/locations/</em>/clusters/*’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1998,8 +2161,8 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.container_v1.ClusterManagerClient.update_node_pool">
-<code class="descname">update_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>node_version</em>, <em>image_type</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.update_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.update_node_pool" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the version and/or image type of a specific node pool.</p>
+<code class="descname">update_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>node_version</em>, <em>image_type</em>, <em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.update_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.update_node_pool" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates the version and/or image type for a specific node pool.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -2031,16 +2194,33 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
-number</a>.</li>
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the Google Compute Engine
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project
+number</a>. This field
+has been deprecated and replaced by the name field.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in
-which the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
-<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the node pool to upgrade.</li>
-<li><strong>node_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The Kubernetes version to change the nodes to (typically an upgrade).
-Use <code class="docutils literal notranslate"><span class="pre">-</span></code> to upgrade to the latest version supported by the server.</li>
+which the cluster resides. This field has been deprecated and replaced
+by the name field.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the cluster to upgrade.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. The name of the node pool to upgrade.
+This field has been deprecated and replaced by the name field.</li>
+<li><strong>node_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The Kubernetes version to change the nodes to (typically an
+upgrade).</p>
+<p>Users may specify either explicit versions offered by Kubernetes Engine or
+version aliases, which have the following behavior:</p>
+<ul>
+<li>”latest”: picks the highest valid Kubernetes version</li>
+<li>”1.X”: picks the highest valid patch+gke.N patch in the 1.X version</li>
+<li>”1.X.Y”: picks the highest valid gke.N patch in the 1.X.Y version</li>
+<li>”1.X.Y-gke.N”: picks an explicit Kubernetes version</li>
+<li>”-“: picks the Kubernetes master version</li>
+</ul>
+</li>
 <li><strong>image_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The desired image type for the node pool.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (project, location, cluster, node pool) of the node pool to
+update. Specified in the format
+‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
