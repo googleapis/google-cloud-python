@@ -2677,10 +2677,26 @@ class TestModel:
         # With a key.
         with_key = ManyFields(_id=78, **kwargs)
         expected = (
-            "ManyFields(key=Key('ManyFields', 78), id='hi', key=[88.5, 0.0], "
+            "ManyFields(_key=Key('ManyFields', 78), id='hi', key=[88.5, 0.0], "
             "self=909, value=None)"
         )
         assert repr(with_key) == expected
+
+        # No key.
+        kwargs.pop("key")
+        no_key = ManyFields(_id=78, **kwargs)
+        expected = (
+            "ManyFields(_key=Key('ManyFields', 78), id='hi', "
+            "self=909, value=None)"
+        )
+        assert repr(no_key) == expected
+
+        class NoKeyCollision(model.Model):
+            word = model.StringProperty()
+
+        no_key_collision = NoKeyCollision(word="one", id=801)
+        expected = "NoKeyCollision(key=Key('NoKeyCollision', 801), word='one')"
+        assert repr(no_key_collision) == expected
 
     @staticmethod
     def test__get_kind():

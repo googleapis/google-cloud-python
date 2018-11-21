@@ -3466,17 +3466,17 @@ class Model(metaclass=MetaModel):
         >>> class KeyCollide(ndb.Model):
         ...     key = ndb.StringProperty()
         ...
-        >>> entity1 = KeyCollide(key="Take the fork in the road", id=987)
+        >>> entity1 = KeyCollide(key="Take fork in road", id=987)
         >>> entity1
-        KeyCollide(key=Key('KeyCollide', 987), key='Take the fork in the road')
+        KeyCollide(_key=Key('KeyCollide', 987), key='Take fork in road')
         >>> entity1.key
-        'Take the fork in the road'
+        'Take fork in road'
         >>> entity1._key
         Key('KeyCollide', 987)
         >>>
         >>> entity2 = KeyCollide(key="Go slow", _key=ndb.Key(KeyCollide, 1))
         >>> entity2
-        KeyCollide(key=Key('KeyCollide', 1), key='Go slow')
+        KeyCollide(_key=Key('KeyCollide', 1), key='Go slow')
 
     .. automethod:: _get_kind
 
@@ -3610,7 +3610,11 @@ class Model(metaclass=MetaModel):
     def __repr__(self):
         """Return an unambiguous string representation of an entity."""
         by_args = []
+        has_key_property = False
         for prop in self._properties.values():
+            if prop._code_name == "key":
+                has_key_property = True
+
             if not prop._has_value(self):
                 continue
 
@@ -3630,7 +3634,11 @@ class Model(metaclass=MetaModel):
         by_args.sort()
 
         if self._key is not None:
-            by_args.insert(0, "key={!r}".format(self._key))
+            if has_key_property:
+                entity_key_name = "_key"
+            else:
+                entity_key_name = "key"
+            by_args.insert(0, "{}={!r}".format(entity_key_name, self._key))
 
         if self._projection:
             by_args.append("_projection={!r}".format(self._projection))

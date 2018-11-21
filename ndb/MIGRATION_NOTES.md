@@ -119,6 +119,9 @@ The primary differences come from:
   has new support for adding such a user to a `google.cloud.datastore.Entity`
   and for reading one from a new-style `Entity`
 - The `UserProperty` class no longer supports `auto_current_user(_add)`
+- `Model.__repr__` will use `_key` to describe the entity's key when there
+  is also a user-defined property named `key`. For an example, see the
+  class docstring for `Model`.
 
 ## Comments
 
