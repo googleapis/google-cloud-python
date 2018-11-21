@@ -1644,10 +1644,11 @@ class Test_process_server_timestamp(unittest.TestCase):
 class Test_extract_fields(unittest.TestCase):
 
     @staticmethod
-    def _call_fut(document_data, prefix_path):
+    def _call_fut(document_data, prefix_path, expand_dots=False):
         from google.cloud.firestore_v1beta1 import _helpers
 
-        return _helpers.extract_fields(document_data, prefix_path)
+        return _helpers.extract_fields(
+            document_data, prefix_path, expand_dots=expand_dots)
 
     def test_w_empty_document(self):
         from google.cloud.firestore_v1beta1._helpers import _EmptyDict
@@ -1656,8 +1657,8 @@ class Test_extract_fields(unittest.TestCase):
         prefix_path = _make_field_path()
         expected = [(_make_field_path(), _EmptyDict)]
 
-        self.assertEqual(
-            list(self._call_fut(document_data, prefix_path)), expected)
+        iterator = self._call_fut(document_data, prefix_path)
+        self.assertEqual(list(iterator), expected)
 
     def test_w_shallow_keys(self):
         document_data = {
@@ -1672,8 +1673,8 @@ class Test_extract_fields(unittest.TestCase):
             (_make_field_path('c'), 3),
         ]
 
-        self.assertEqual(
-            list(self._call_fut(document_data, prefix_path)), expected)
+        iterator = self._call_fut(document_data, prefix_path)
+        self.assertEqual(list(iterator), expected)
 
     def test_w_nested(self):
         from google.cloud.firestore_v1beta1._helpers import _EmptyDict
@@ -1698,8 +1699,39 @@ class Test_extract_fields(unittest.TestCase):
             (_make_field_path('f'), 5),
         ]
 
-        self.assertEqual(
-            list(self._call_fut(document_data, prefix_path)), expected)
+        iterator = self._call_fut(document_data, prefix_path)
+        self.assertEqual(list(iterator), expected)
+
+    def test_w_expand_dotted(self):
+        from google.cloud.firestore_v1beta1._helpers import _EmptyDict
+
+        document_data = {
+            'b': {
+                'a': {
+                    'd': 4,
+                    'c': 3,
+                    'g': {},
+                    'k.l.m': 17,
+                },
+                'e': 7,
+            },
+            'f': 5,
+            'h.i.j': 9,
+        }
+        prefix_path = _make_field_path()
+        expected = [
+            (_make_field_path('b', 'a', 'c'), 3),
+            (_make_field_path('b', 'a', 'd'), 4),
+            (_make_field_path('b', 'a', 'g'), _EmptyDict),
+            (_make_field_path('b', 'a', 'k', 'l', 'm'), 17),
+            (_make_field_path('b', 'e'), 7),
+            (_make_field_path('f'), 5),
+            (_make_field_path('h', 'i', 'j'), 9),
+        ]
+
+        iterator = self._call_fut(
+            document_data, prefix_path, expand_dots=True)
+        self.assertEqual(list(iterator), expected)
 
 
 class Test_set_field_value(unittest.TestCase):

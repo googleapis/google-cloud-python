@@ -986,16 +986,24 @@ def process_server_timestamp(document_data, split_on_dots):
 _EmptyDict = constants.Sentinel("Marker for an empty dict value")
 
 
-def extract_fields(document_data, prefix_path):
+def extract_fields(document_data, prefix_path, expand_dots=False):
     """Do depth-first walk of tree, yielding field_path, value"""
     if not document_data:
         yield prefix_path, _EmptyDict
     else:
         for key, value in sorted(six.iteritems(document_data)):
-            # XXX split_on_dots
-            field_path = FieldPath(*(prefix_path.parts + (key,)))
+
+            if '.' in key and expand_dots:
+                sub_key = FieldPath.from_string(key)
+                key_parts = sub_key.parts
+            else:
+                key_parts = (key,)
+
+            field_path = FieldPath(*(prefix_path.parts + key_parts))
+
             if isinstance(value, dict):
-                for s_path, s_value in extract_fields(value, field_path):
+                for s_path, s_value in extract_fields(
+                        value, field_path, expand_dots=expand_dots):
                     yield s_path, s_value
             else:
                 yield field_path, value
