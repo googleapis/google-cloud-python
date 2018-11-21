@@ -2770,6 +2770,106 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         self.assertEqual(write_pbs, expected_pbs)
 
 
+class TestDocumentExtractorForUpdate(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.DocumentExtractorForUpdate
+
+    def _make_one(self, document_data):
+        return self._get_target_class()(document_data)
+
+    def test_ctor_w_empty_document(self):
+        document_data = {}
+
+        inst = self._make_one(document_data)
+        self.assertEqual(inst.top_level_paths, [])
+
+    def test_ctor_w_simple_keys(self):
+        document_data = {
+            'a': 1,
+            'b': 2,
+            'c': 3,
+        }
+
+        expected_paths = [
+            _make_field_path('a'),
+            _make_field_path('b'),
+            _make_field_path('c'),
+        ]
+        inst = self._make_one(document_data)
+        self.assertEqual(inst.top_level_paths, expected_paths)
+
+    def test_ctor_w_nested_keys(self):
+        document_data = {
+            'a': {
+                'd': {
+                    'e': 1,
+                },
+            },
+            'b': {
+                'f': 7,
+            },
+            'c': 3,
+        }
+
+        expected_paths = [
+            _make_field_path('a'),
+            _make_field_path('b'),
+            _make_field_path('c'),
+        ]
+        inst = self._make_one(document_data)
+        self.assertEqual(inst.top_level_paths, expected_paths)
+
+    def test_ctor_w_dotted_keys(self):
+        document_data = {
+            'a.d.e': 1,
+            'b.f': 7,
+            'c': 3,
+        }
+
+        expected_paths = [
+            _make_field_path('a', 'd', 'e'),
+            _make_field_path('b', 'f'),
+            _make_field_path('c'),
+        ]
+        inst = self._make_one(document_data)
+        self.assertEqual(inst.top_level_paths, expected_paths)
+
+    def test_ctor_w_nested_dotted_keys(self):
+        document_data = {
+            'a.d.e': 1,
+            'b.f': {
+                'h.i': 9,
+            },
+            'c': 3,
+        }
+
+        expected_paths = [
+            _make_field_path('a', 'd', 'e'),
+            _make_field_path('b', 'f'),
+            _make_field_path('c'),
+        ]
+        expected_set_fields = {
+            'a': {
+                'd': {
+                    'e': 1,
+                },
+            },
+            'b': {
+                'f': {
+                    'h.i': 9,
+                },
+            },
+            'c': 3,
+        }
+        inst = self._make_one(document_data)
+        self.assertEqual(inst.top_level_paths, expected_paths)
+        self.assertEqual(inst.set_fields, expected_set_fields)
+
+
 class Test_pbs_for_update(unittest.TestCase):
 
     @staticmethod

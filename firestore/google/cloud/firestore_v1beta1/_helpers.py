@@ -1060,7 +1060,7 @@ class DocumentExtractor(object):
         self.empty_document = False
 
         prefix_path = FieldPath()
-        iterator = extract_fields(document_data, prefix_path)
+        iterator = self._get_document_iterator(prefix_path)
 
         for field_path, value in iterator:
 
@@ -1076,6 +1076,9 @@ class DocumentExtractor(object):
             else:
                 self.field_paths.append(field_path)
                 set_field_value(self.set_fields, field_path, value)
+
+    def _get_document_iterator(self, prefix_path):
+        return extract_fields(self.document_data, prefix_path)
 
     @property
     def has_transforms(self):
@@ -1385,6 +1388,20 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
         write_pbs.append(transform_pb)
 
     return write_pbs
+
+
+class DocumentExtractorForUpdate(DocumentExtractor):
+    """ Break document data up into actual data and transforms.
+    """
+    def __init__(self, document_data):
+        super(DocumentExtractorForUpdate, self).__init__(document_data)
+        self.top_level_paths = [
+            FieldPath.from_string(key) for key in document_data
+        ]
+
+    def _get_document_iterator(self, prefix_path):
+        return extract_fields(
+            self.document_data, prefix_path, expand_dots=True)
 
 
 def pbs_for_update(document_path, field_updates, option):
