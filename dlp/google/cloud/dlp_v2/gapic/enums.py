@@ -18,6 +18,70 @@
 import enum
 
 
+class Likelihood(enum.IntEnum):
+    """
+    Categorization of results based on how likely they are to represent a match,
+    based on the number of elements they contain which imply a match.
+
+    Attributes:
+      LIKELIHOOD_UNSPECIFIED (int): Default value; same as POSSIBLE.
+      VERY_UNLIKELY (int): Few matching elements.
+      UNLIKELY (int)
+      POSSIBLE (int): Some matching elements.
+      LIKELY (int)
+      VERY_LIKELY (int): Many matching elements.
+    """
+    LIKELIHOOD_UNSPECIFIED = 0
+    VERY_UNLIKELY = 1
+    UNLIKELY = 2
+    POSSIBLE = 3
+    LIKELY = 4
+    VERY_LIKELY = 5
+
+
+class FileType(enum.IntEnum):
+    """
+    Definitions of file type groups to scan.
+
+    Attributes:
+      FILE_TYPE_UNSPECIFIED (int): Includes all files.
+      BINARY_FILE (int): Includes all file extensions not covered by text file types.
+      TEXT_FILE (int): Included file extensions:
+        asc, brf, c, cc, cpp, csv, cxx, c++, cs, css, dart, eml, go, h, hh, hpp,
+        hxx, h++, hs, html, htm, shtml, shtm, xhtml, lhs, ini, java, js, json,
+        ocaml, md, mkd, markdown, m, ml, mli, pl, pm, php, phtml, pht, py, pyw,
+        rb, rbw, rs, rc, scala, sh, sql, tex, txt, text, tsv, vcard, vcs, wml,
+        xml, xsl, xsd, yml, yaml.
+    """
+    FILE_TYPE_UNSPECIFIED = 0
+    BINARY_FILE = 1
+    TEXT_FILE = 2
+
+
+class DayOfWeek(enum.IntEnum):
+    """
+    Represents a day of week.
+
+    Attributes:
+      DAY_OF_WEEK_UNSPECIFIED (int): The unspecified day-of-week.
+      MONDAY (int): The day-of-week of Monday.
+      TUESDAY (int): The day-of-week of Tuesday.
+      WEDNESDAY (int): The day-of-week of Wednesday.
+      THURSDAY (int): The day-of-week of Thursday.
+      FRIDAY (int): The day-of-week of Friday.
+      SATURDAY (int): The day-of-week of Saturday.
+      SUNDAY (int): The day-of-week of Sunday.
+    """
+    DAY_OF_WEEK_UNSPECIFIED = 0
+    MONDAY = 1
+    TUESDAY = 2
+    WEDNESDAY = 3
+    THURSDAY = 4
+    FRIDAY = 5
+    SATURDAY = 6
+    SUNDAY = 7
+
+
 class ContentOption(enum.IntEnum):
     """
     Options describing which parts of the provided content should be scanned.
@@ -135,44 +199,51 @@ class StoredInfoTypeState(enum.IntEnum):
     INVALID = 4
 
 
-class Likelihood(enum.IntEnum):
-    """
-    Categorization of results based on how likely they are to represent a match,
-    based on the number of elements they contain which imply a match.
-
-    Attributes:
-      LIKELIHOOD_UNSPECIFIED (int): Default value; same as POSSIBLE.
-      VERY_UNLIKELY (int): Few matching elements.
-      UNLIKELY (int)
-      POSSIBLE (int): Some matching elements.
-      LIKELY (int)
-      VERY_LIKELY (int): Many matching elements.
-    """
-    LIKELIHOOD_UNSPECIFIED = 0
-    VERY_UNLIKELY = 1
-    UNLIKELY = 2
-    POSSIBLE = 3
-    LIKELY = 4
-    VERY_LIKELY = 5
+class CustomInfoType(object):
+    class ExclusionType(enum.IntEnum):
+        """
+        Attributes:
+          EXCLUSION_TYPE_UNSPECIFIED (int): A finding of this custom info type will not be excluded from results.
+          EXCLUSION_TYPE_EXCLUDE (int): A finding of this custom info type will be excluded from final results,
+          but can still affect rule execution.
+        """
+        EXCLUSION_TYPE_UNSPECIFIED = 0
+        EXCLUSION_TYPE_EXCLUDE = 1
 
 
-class FileType(enum.IntEnum):
-    """
-    Definitions of file type groups to scan.
+class CloudStorageOptions(object):
+    class SampleMethod(enum.IntEnum):
+        """
+        How to sample bytes if not all bytes are scanned. Meaningful only when
+        used in conjunction with bytes\_limit\_per\_file. If not specified,
+        scanning would start from the top.
 
-    Attributes:
-      FILE_TYPE_UNSPECIFIED (int): Includes all files.
-      BINARY_FILE (int): Includes all file extensions not covered by text file types.
-      TEXT_FILE (int): Included file extensions:
-        asc, brf, c, cc, cpp, csv, cxx, c++, cs, css, dart, eml, go, h, hh, hpp,
-        hxx, h++, hs, html, htm, shtml, shtm, xhtml, lhs, ini, java, js, json,
-        ocaml, md, mkd, markdown, m, ml, mli, pl, pm, php, phtml, pht, py, pyw,
-        rb, rbw, rs, rc, scala, sh, sql, tex, txt, text, tsv, vcard, vcs, wml,
-        xml, xsl, xsd, yml, yaml.
-    """
-    FILE_TYPE_UNSPECIFIED = 0
-    BINARY_FILE = 1
-    TEXT_FILE = 2
+        Attributes:
+          SAMPLE_METHOD_UNSPECIFIED (int)
+          TOP (int): Scan from the top (default).
+          RANDOM_START (int): For each file larger than bytes\_limit\_per\_file, randomly pick the
+          offset to start scanning. The scanned bytes are contiguous.
+        """
+        SAMPLE_METHOD_UNSPECIFIED = 0
+        TOP = 1
+        RANDOM_START = 2
+
+
+class BigQueryOptions(object):
+    class SampleMethod(enum.IntEnum):
+        """
+        How to sample rows if not all rows are scanned. Meaningful only when
+        used in conjunction with rows\_limit. If not specified, scanning would
+        start from the top.
+
+        Attributes:
+          SAMPLE_METHOD_UNSPECIFIED (int)
+          TOP (int): Scan from the top (default).
+          RANDOM_START (int): Randomly pick the row to start scanning. The scanned rows are contiguous.
+        """
+        SAMPLE_METHOD_UNSPECIFIED = 0
+        TOP = 1
+        RANDOM_START = 2
 
 
 class ByteContentItem(object):
@@ -343,50 +414,3 @@ class DlpJob(object):
         DONE = 3
         CANCELED = 4
         FAILED = 5
-
-
-class CustomInfoType(object):
-    class ExclusionType(enum.IntEnum):
-        """
-        Attributes:
-          EXCLUSION_TYPE_UNSPECIFIED (int): A finding of this custom info type will not be excluded from results.
-          EXCLUSION_TYPE_EXCLUDE (int): A finding of this custom info type will be excluded from final results,
-          but can still affect rule execution.
-        """
-        EXCLUSION_TYPE_UNSPECIFIED = 0
-        EXCLUSION_TYPE_EXCLUDE = 1
-
-
-class CloudStorageOptions(object):
-    class SampleMethod(enum.IntEnum):
-        """
-        How to sample bytes if not all bytes are scanned. Meaningful only when
-        used in conjunction with bytes\_limit\_per\_file. If not specified,
-        scanning would start from the top.
-
-        Attributes:
-          SAMPLE_METHOD_UNSPECIFIED (int)
-          TOP (int): Scan from the top (default).
-          RANDOM_START (int): For each file larger than bytes\_limit\_per\_file, randomly pick the
-          offset to start scanning. The scanned bytes are contiguous.
-        """
-        SAMPLE_METHOD_UNSPECIFIED = 0
-        TOP = 1
-        RANDOM_START = 2
-
-
-class BigQueryOptions(object):
-    class SampleMethod(enum.IntEnum):
-        """
-        How to sample rows if not all rows are scanned. Meaningful only when
-        used in conjunction with rows\_limit. If not specified, scanning would
-        start from the top.
-
-        Attributes:
-          SAMPLE_METHOD_UNSPECIFIED (int)
-          TOP (int): Scan from the top (default).
-          RANDOM_START (int): Randomly pick the row to start scanning. The scanned rows are contiguous.
-        """
-        SAMPLE_METHOD_UNSPECIFIED = 0
-        TOP = 1
-        RANDOM_START = 2
