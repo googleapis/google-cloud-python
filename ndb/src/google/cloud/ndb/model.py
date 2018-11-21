@@ -3458,8 +3458,8 @@ class Model(metaclass=MetaModel):
         IDCollide(key=Key('IDCollide', 2009), id=17.0)
 
     For the **very** special case of a property named ``key``, the ``key``
-    attribute will no longer be the entity's key but instead to the property
-    value. Instead, the entity's key is accessible via ``_key``:
+    attribute will no longer be the entity's key but instead will be the
+    property value. Instead, the entity's key is accessible via ``_key``:
 
     .. doctest:: model-keyword-key-collision
 
