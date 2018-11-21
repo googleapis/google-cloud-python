@@ -2477,30 +2477,28 @@ class User:
                 contains a user value as the field ``name``.
             name (str): The name of the field containing this user value.
         """
-        user_value = entity_module.Entity()
-        entity[name] = user_value
-        entity._meanings[name] = (_MEANING_PREDEFINED_ENTITY_USER, user_value)
+        user_entity = entity_module.Entity()
+        entity[name] = user_entity
+        entity._meanings[name] = (_MEANING_PREDEFINED_ENTITY_USER, user_entity)
 
         # Set required fields.
-        user_value["email"] = self._email
-        user_value.exclude_from_indexes.add("email")
-        user_value["auth_domain"] = self._auth_domain
-        user_value.exclude_from_indexes.add("auth_domain")
+        user_entity["email"] = self._email
+        user_entity.exclude_from_indexes.add("email")
+        user_entity["auth_domain"] = self._auth_domain
+        user_entity.exclude_from_indexes.add("auth_domain")
         # Set optional field.
         if self._user_id:
-            user_value["user_id"] = self._user_id
-            user_value.exclude_from_indexes.add("user_id")
+            user_entity["user_id"] = self._user_id
+            user_entity.exclude_from_indexes.add("user_id")
 
     def __str__(self):
         return str(self.nickname())
 
     def __repr__(self):
-        values = []
-        if self._email:
-            values.append("email='{}'".format(self._email))
+        values = ["email={!r}".format(self._email)]
         if self._user_id:
-            values.append("_user_id='{}'".format(self._user_id))
-        return "users.User({})".format(",".join(values))
+            values.append("_user_id={!r}".format(self._user_id))
+        return "users.User({})".format(", ".join(values))
 
     def __hash__(self):
         return hash((self._email, self._auth_domain))

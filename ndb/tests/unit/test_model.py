@@ -18,6 +18,7 @@ import types
 import unittest.mock
 import zlib
 
+from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
 import pytest
 
@@ -1890,11 +1891,162 @@ class TestJsonProperty:
             prop._from_base_type("{}")
 
 
+class TestUser:
+    @staticmethod
+    def test_constructor_defaults():
+        with pytest.raises(ValueError):
+            model.User()
+
+    @staticmethod
+    def _make_default():
+        return model.User(email="foo@example.com", _auth_domain="example.com")
+
+    def test_constructor_explicit(self):
+        user_value = self._make_default()
+        assert user_value._auth_domain == "example.com"
+        assert user_value._email == "foo@example.com"
+        assert user_value._user_id is None
+
+    @staticmethod
+    def test_constructor_no_email():
+        with pytest.raises(model.UserNotFoundError):
+            model.User(_auth_domain="example.com")
+        with pytest.raises(model.UserNotFoundError):
+            model.User(email="", _auth_domain="example.com")
+
+    def test_nickname(self):
+        user_value = self._make_default()
+        assert user_value.nickname() == "foo"
+
+    @staticmethod
+    def test_nickname_mismatch_domain():
+        user_value = model.User(
+            email="foo@example.org", _auth_domain="example.com"
+        )
+        assert user_value.nickname() == "foo@example.org"
+
+    def test_email(self):
+        user_value = self._make_default()
+        assert user_value.email() == "foo@example.com"
+
+    @staticmethod
+    def test_user_id():
+        user_value = model.User(
+            email="foo@example.com", _auth_domain="example.com", _user_id="123"
+        )
+        assert user_value.user_id() == "123"
+
+    def test_auth_domain(self):
+        user_value = self._make_default()
+        assert user_value.auth_domain() == "example.com"
+
+    @staticmethod
+    def _add_to_entity_helper(user_value):
+        entity = entity_module.Entity()
+        name = "u"
+
+        user_value.add_to_entity(entity, name)
+        assert list(entity.keys()) == [name]
+        user_entity = entity[name]
+        assert entity._meanings == {
+            name: (model._MEANING_PREDEFINED_ENTITY_USER, user_entity)
+        }
+        assert user_entity["email"] == user_value._email
+        assert user_entity["auth_domain"] == user_value._auth_domain
+        return user_entity
+
+    def test_add_to_entity(self):
+        user_value = self._make_default()
+        user_entity = self._add_to_entity_helper(user_value)
+        assert sorted(user_entity.keys()) == ["auth_domain", "email"]
+        assert user_entity.exclude_from_indexes == set(
+            ["auth_domain", "email"]
+        )
+
+    def test_add_to_entity_with_user_id(self):
+        user_value = model.User(
+            email="foo@example.com",
+            _auth_domain="example.com",
+            _user_id="197382",
+        )
+        user_entity = self._add_to_entity_helper(user_value)
+        assert sorted(user_entity.keys()) == [
+            "auth_domain",
+            "email",
+            "user_id",
+        ]
+        assert user_entity["user_id"] == user_value._user_id
+        assert user_entity.exclude_from_indexes == set(
+            ["auth_domain", "email", "user_id"]
+        )
+
+    def test___str__(self):
+        user_value = self._make_default()
+        assert str(user_value) == "foo"
+
+    def test___repr__(self):
+        user_value = self._make_default()
+        assert repr(user_value) == "users.User(email='foo@example.com')"
+
+    @staticmethod
+    def test___repr__with_user_id():
+        user_value = model.User(
+            email="foo@example.com", _auth_domain="example.com", _user_id="123"
+        )
+        expected = "users.User(email='foo@example.com', _user_id='123')"
+        assert repr(user_value) == expected
+
+    def test___hash__(self):
+        user_value = self._make_default()
+        expected = hash((user_value._email, user_value._auth_domain))
+        assert hash(user_value) == expected
+
+    def test___eq__(self):
+        user_value1 = self._make_default()
+        user_value2 = model.User(
+            email="foo@example.org", _auth_domain="example.com"
+        )
+        user_value3 = model.User(
+            email="foo@example.com", _auth_domain="example.org"
+        )
+        user_value4 = unittest.mock.sentinel.blob_key
+        assert user_value1 == user_value1
+        assert not user_value1 == user_value2
+        assert not user_value1 == user_value3
+        assert not user_value1 == user_value4
+
+    def test___lt__(self):
+        user_value1 = self._make_default()
+        user_value2 = model.User(
+            email="foo@example.org", _auth_domain="example.com"
+        )
+        user_value3 = model.User(
+            email="foo@example.com", _auth_domain="example.org"
+        )
+        user_value4 = unittest.mock.sentinel.blob_key
+        assert not user_value1 < user_value1
+        assert user_value1 < user_value2
+        assert user_value1 < user_value3
+        with pytest.raises(TypeError):
+            user_value1 < user_value4
+
+
 class TestUserProperty:
     @staticmethod
-    def test_constructor():
+    def test_constructor_defaults():
+        prop = model.UserProperty()
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {}
+
+    @staticmethod
+    def test_constructor_auto_current_user():
         with pytest.raises(NotImplementedError):
-            model.UserProperty()
+            model.UserProperty(auto_current_user=True)
+
+    @staticmethod
+    def test_constructor_auto_current_user_add():
+        with pytest.raises(NotImplementedError):
+            model.UserProperty(auto_current_user_add=True)
 
 
 class TestKeyProperty:
