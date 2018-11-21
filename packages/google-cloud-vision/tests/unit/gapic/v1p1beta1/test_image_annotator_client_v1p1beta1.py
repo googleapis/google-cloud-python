@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import vision_v1p1beta1
@@ -69,7 +70,10 @@ class TestImageAnnotatorClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p1beta1.ImageAnnotatorClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p1beta1.ImageAnnotatorClient()
 
         # Setup Request
         requests = []
@@ -86,7 +90,10 @@ class TestImageAnnotatorClient(object):
     def test_batch_annotate_images_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p1beta1.ImageAnnotatorClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p1beta1.ImageAnnotatorClient()
 
         # Setup request
         requests = []

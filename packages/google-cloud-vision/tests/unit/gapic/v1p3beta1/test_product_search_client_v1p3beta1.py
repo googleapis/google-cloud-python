@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -76,7 +77,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -98,7 +102,10 @@ class TestProductSearchClient(object):
     def test_create_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -122,7 +129,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -141,7 +151,10 @@ class TestProductSearchClient(object):
 
     def test_list_product_sets_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -160,7 +173,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         name = client.product_set_path('[PROJECT]', '[LOCATION]',
@@ -178,7 +194,10 @@ class TestProductSearchClient(object):
     def test_get_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         name = client.product_set_path('[PROJECT]', '[LOCATION]',
@@ -197,7 +216,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         product_set = {}
@@ -215,7 +237,10 @@ class TestProductSearchClient(object):
     def test_update_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         product_set = {}
@@ -226,7 +251,10 @@ class TestProductSearchClient(object):
 
     def test_delete_product_set(self):
         channel = ChannelStub()
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         name = client.product_set_path('[PROJECT]', '[LOCATION]',
@@ -243,7 +271,10 @@ class TestProductSearchClient(object):
     def test_delete_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         name = client.product_set_path('[PROJECT]', '[LOCATION]',
@@ -269,7 +300,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -288,7 +322,10 @@ class TestProductSearchClient(object):
     def test_create_product_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -312,7 +349,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -331,7 +371,10 @@ class TestProductSearchClient(object):
 
     def test_list_products_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -357,7 +400,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         name = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
@@ -374,7 +420,10 @@ class TestProductSearchClient(object):
     def test_get_product_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         name = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
@@ -399,7 +448,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         product = {}
@@ -417,7 +469,10 @@ class TestProductSearchClient(object):
     def test_update_product_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         product = {}
@@ -428,7 +483,10 @@ class TestProductSearchClient(object):
 
     def test_delete_product(self):
         channel = ChannelStub()
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         name = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
@@ -444,7 +502,10 @@ class TestProductSearchClient(object):
     def test_delete_product_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         name = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
@@ -462,7 +523,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         parent = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
@@ -484,7 +548,10 @@ class TestProductSearchClient(object):
     def test_create_reference_image_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         parent = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
@@ -497,7 +564,10 @@ class TestProductSearchClient(object):
 
     def test_delete_reference_image(self):
         channel = ChannelStub()
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         name = client.reference_image_path('[PROJECT]', '[LOCATION]',
@@ -514,7 +584,10 @@ class TestProductSearchClient(object):
     def test_delete_reference_image_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         name = client.reference_image_path('[PROJECT]', '[LOCATION]',
@@ -539,7 +612,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         parent = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
@@ -558,7 +634,10 @@ class TestProductSearchClient(object):
 
     def test_list_reference_images_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         parent = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
@@ -577,7 +656,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         name = client.reference_image_path('[PROJECT]', '[LOCATION]',
@@ -595,7 +677,10 @@ class TestProductSearchClient(object):
     def test_get_reference_image_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         name = client.reference_image_path('[PROJECT]', '[LOCATION]',
@@ -606,7 +691,10 @@ class TestProductSearchClient(object):
 
     def test_add_product_to_product_set(self):
         channel = ChannelStub()
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         name = client.product_set_path('[PROJECT]', '[LOCATION]',
@@ -624,7 +712,10 @@ class TestProductSearchClient(object):
     def test_add_product_to_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         name = client.product_set_path('[PROJECT]', '[LOCATION]',
@@ -636,7 +727,10 @@ class TestProductSearchClient(object):
 
     def test_remove_product_from_product_set(self):
         channel = ChannelStub()
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         name = client.product_set_path('[PROJECT]', '[LOCATION]',
@@ -654,7 +748,10 @@ class TestProductSearchClient(object):
     def test_remove_product_from_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         name = client.product_set_path('[PROJECT]', '[LOCATION]',
@@ -678,7 +775,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         name = client.product_set_path('[PROJECT]', '[LOCATION]',
@@ -698,7 +798,10 @@ class TestProductSearchClient(object):
 
     def test_list_products_in_product_set_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup request
         name = client.product_set_path('[PROJECT]', '[LOCATION]',
@@ -719,7 +822,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -744,7 +850,10 @@ class TestProductSearchClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = vision_v1p3beta1.ProductSearchClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
