@@ -47,6 +47,8 @@ class Cluster(object):
           STOPPING (int): The STOPPING state indicates the cluster is being deleted.
           ERROR (int): The ERROR state indicates the cluster may be unusable. Details can be
           found in the ``statusMessage`` field.
+          DEGRADED (int): The DEGRADED state indicates the cluster requires user action to restore
+          full functionality. Details can be found in the ``statusMessage`` field.
         """
         STATUS_UNSPECIFIED = 0
         PROVISIONING = 1
@@ -54,6 +56,7 @@ class Cluster(object):
         RECONCILING = 3
         STOPPING = 4
         ERROR = 5
+        DEGRADED = 6
 
 
 class Operation(object):
