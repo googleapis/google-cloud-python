@@ -2184,50 +2184,6 @@ class Test_canonicalize_field_paths(unittest.TestCase):
         self._test_helper(to_convert)
 
 
-class Test_get_transform_pb(unittest.TestCase):
-
-    @staticmethod
-    def _call_fut(document_path, transform_paths):
-        from google.cloud.firestore_v1beta1._helpers import get_transform_pb
-
-        return get_transform_pb(document_path, transform_paths)
-
-    def test_it(self):
-        from google.cloud.firestore_v1beta1 import _helpers
-        from google.cloud.firestore_v1beta1.gapic import enums
-        from google.cloud.firestore_v1beta1.proto import write_pb2
-
-        document_path = _make_ref_string(
-            u'cereal', u'deebee', u'buzzf', u'beep')
-        transform_paths = [
-            _helpers.FieldPath.from_string('man.bear'),
-            _helpers.FieldPath.from_string('pig'),
-            _helpers.FieldPath.from_string('apple.x.y')]
-        transform_pb = self._call_fut(document_path, transform_paths)
-
-        server_val = enums.DocumentTransform.FieldTransform.ServerValue
-        transform1 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='apple.x.y',
-            set_to_server_value=server_val.REQUEST_TIME,
-        )
-        transform2 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='man.bear',
-            set_to_server_value=server_val.REQUEST_TIME,
-        )
-        transform3 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='pig',
-            set_to_server_value=server_val.REQUEST_TIME,
-        )
-
-        expected_pb = write_pb2.Write(
-            transform=write_pb2.DocumentTransform(
-                document=document_path,
-                field_transforms=[transform1, transform2, transform3],
-            ),
-        )
-        self.assertEqual(transform_pb, expected_pb)
-
-
 class Test_pbs_for_create(unittest.TestCase):
 
     @staticmethod

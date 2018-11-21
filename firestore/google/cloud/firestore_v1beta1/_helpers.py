@@ -1150,35 +1150,6 @@ def canonicalize_field_paths(field_paths):
     return sorted(field_paths)  # for testing purposes
 
 
-def get_transform_pb(document_path, transform_paths):
-    """Get a ``Write`` protobuf for performing a document transform.
-
-    The only document transform is the ``set_to_server_value`` transform,
-    which sets the field to the current time on the server.
-
-    Args:
-        document_path (str): A fully-qualified document path.
-        transform_paths (List[str]): A list of field paths to transform.
-
-    Returns:
-        google.cloud.firestore_v1beta1.types.Write: A
-        ``Write`` protobuf instance for a document transform.
-    """
-    transform_paths = canonicalize_field_paths(transform_paths)
-    return write_pb2.Write(
-        transform=write_pb2.DocumentTransform(
-            document=document_path,
-            field_transforms=[
-                write_pb2.DocumentTransform.FieldTransform(
-                    field_path=field_path,
-                    set_to_server_value=REQUEST_TIME_ENUM,
-                )
-                for field_path in transform_paths
-            ],
-        ),
-    )
-
-
 def pbs_for_create(document_path, document_data):
     """Make ``Write`` protobufs for ``create()`` methods.
 
