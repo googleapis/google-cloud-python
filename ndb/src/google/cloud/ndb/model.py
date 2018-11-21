@@ -2465,7 +2465,7 @@ class User:
         return self._auth_domain
 
     def add_to_entity(self, entity, name):
-        """Convert the user value to a datastore entity.
+        """Add the user value to a datastore entity.
 
         .. note::
 
@@ -2490,6 +2490,39 @@ class User:
         if self._user_id:
             user_entity["user_id"] = self._user_id
             user_entity.exclude_from_indexes.add("user_id")
+
+    @classmethod
+    def read_from_entity(cls, entity, name):
+        """Convert the user value to a datastore entity.
+
+        Args:
+            entity (~google.cloud.datastore.entity.Entity): An entity that
+                contains a user value as the field ``name``.
+            name (str): The name of the field containing this user value.
+
+        Raises:
+            ValueError: If the stored meaning for the ``name`` field is not
+                equal to ``ENTITY_USER=20``.
+            ValueError: If the value stored in the meanings for ``entity``
+                is not the actual stored value under ``name``.
+        """
+        # NOTE: This may fail in a ``KeyError``.
+        user_entity = entity[name]
+        # NOTE: This may result in a ``ValueError`` for failed unpacking.
+        meaning, value = entity._meanings.get(name, (0, None))
+        if meaning != _MEANING_PREDEFINED_ENTITY_USER:
+            raise ValueError("User values should have meaning=20")
+        if user_entity is not value:
+            raise ValueError("Unexpected value stored for meaning")
+
+        # NOTE: We do not check ``exclude_from_indexes``.
+        kwargs = {
+            "email": user_entity["email"],
+            "_auth_domain": user_entity["auth_domain"],
+        }
+        if "user_id" in user_entity:
+            kwargs["_user_id"] = user_entity["user_id"]
+        return cls(**kwargs)
 
     def __str__(self):
         return str(self.nickname())

@@ -1980,6 +1980,68 @@ class TestUser:
             ["auth_domain", "email", "user_id"]
         )
 
+    @staticmethod
+    def _prepare_entity(name, email, auth_domain):
+        entity = entity_module.Entity()
+        user_entity = entity_module.Entity()
+
+        entity[name] = user_entity
+        entity._meanings[name] = (
+            model._MEANING_PREDEFINED_ENTITY_USER,
+            user_entity,
+        )
+        user_entity.exclude_from_indexes.update(["auth_domain", "email"])
+        user_entity["auth_domain"] = auth_domain
+        user_entity["email"] = email
+
+        return entity
+
+    def test_read_from_entity(self):
+        name = "you_sir"
+        email = "foo@example.com"
+        auth_domain = "example.com"
+        entity = self._prepare_entity(name, email, auth_domain)
+
+        user_value = model.User.read_from_entity(entity, name)
+        assert user_value._auth_domain == auth_domain
+        assert user_value._email == email
+        assert user_value._user_id is None
+
+    def test_read_from_entity_bad_meaning(self):
+        name = "you_sir"
+        email = "foo@example.com"
+        auth_domain = "example.com"
+        entity = self._prepare_entity(name, email, auth_domain)
+
+        # Wrong meaning.
+        entity._meanings[name] = ("not-20", entity[name])
+        with pytest.raises(ValueError):
+            model.User.read_from_entity(entity, name)
+
+        # Wrong assocated value.
+        entity._meanings[name] = (model._MEANING_PREDEFINED_ENTITY_USER, None)
+        with pytest.raises(ValueError):
+            model.User.read_from_entity(entity, name)
+
+        # No meaning.
+        entity._meanings.clear()
+        with pytest.raises(ValueError):
+            model.User.read_from_entity(entity, name)
+
+    def test_read_from_entity_with_user_id(self):
+        name = "you_sir"
+        email = "foo@example.com"
+        auth_domain = "example.com"
+        entity = self._prepare_entity(name, email, auth_domain)
+        entity[name].exclude_from_indexes.add("user_id")
+        user_id = "80131394"
+        entity[name]["user_id"] = user_id
+
+        user_value = model.User.read_from_entity(entity, name)
+        assert user_value._auth_domain == auth_domain
+        assert user_value._email == email
+        assert user_value._user_id == user_id
+
     def test___str__(self):
         user_value = self._make_default()
         assert str(user_value) == "foo"
