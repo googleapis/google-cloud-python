@@ -203,6 +203,20 @@ class FieldPath(object):
         """
         return get_field_path(self.parts)
 
+    def lineage(self):
+        """Return field paths for all parents.
+
+        Returns: set(FieldPath)
+        """
+        parts = self.parts[:-1]
+        result = set()
+
+        while parts:
+            result.add(FieldPath(*parts))
+            parts = parts[:-1]
+
+        return result
+
 
 class FieldPathHelper(object):
     """Helper to convert field names and paths for usage in a request.

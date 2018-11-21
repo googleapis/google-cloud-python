@@ -302,6 +302,24 @@ class TestFieldPath(unittest.TestCase):
         self.assertEqual(field_path.to_api_repr(),
                          r'a.`\``.`\\`._3.`03`.a03.`\\\\`.a0332432.`一`')
 
+    def test_lineage_empty(self):
+        field_path = self._make_one()
+        expected = set()
+        self.assertEqual(field_path.lineage(), expected)
+
+    def test_lineage_single(self):
+        field_path = self._make_one('a')
+        expected = set()
+        self.assertEqual(field_path.lineage(), expected)
+
+    def test_lineage_nested(self):
+        field_path = self._make_one('a', 'b', 'c')
+        expected = set([
+            self._make_one('a'),
+            self._make_one('a', 'b'),
+        ])
+        self.assertEqual(field_path.lineage(), expected)
+
 
 class TestFieldPathHelper(unittest.TestCase):
 
