@@ -30,6 +30,7 @@ library = gapic.py_library(
 
 s.move(library / 'google/cloud/logging_v2/proto')
 s.move(library / 'google/cloud/logging_v2/gapic')
+s.move(library / 'tests/unit/gapic/v2')
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
