@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 from google.cloud.vision_v1 import ImageAnnotatorClient
+from google.cloud.vision_v1 import ProductSearchClient
 from google.cloud.vision_v1 import enums
 from google.cloud.vision_v1 import types
 
