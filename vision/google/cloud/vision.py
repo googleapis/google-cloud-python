@@ -23,4 +23,5 @@ __all__ = (
     'enums',
     'types',
     'ImageAnnotatorClient',
+    'ProductSearchClient',
 )
