@@ -18,34 +18,32 @@
 import enum
 
 
-class TargetChange(object):
-    class TargetChangeType(enum.IntEnum):
-        """
-        The type of change.
+class NullValue(enum.IntEnum):
+    """
+    ``NullValue`` is a singleton enumeration to represent the null value for
+    the ``Value`` type union.
 
-        Attributes:
-          NO_CHANGE (int): No change has occurred. Used only to send an updated ``resume_token``.
-          ADD (int): The targets have been added.
-          REMOVE (int): The targets have been removed.
-          CURRENT (int): The targets reflect all changes committed before the targets were added
-          to the stream.
+    The JSON representation for ``NullValue`` is JSON ``null``.
 
-          This will be sent after or with a ``read_time`` that is greater than or
-          equal to the time at which the targets were added.
+    Attributes:
+      NULL_VALUE (int): Null value.
+    """
+    NULL_VALUE = 0
 
-          Listeners can wait for this change if read-after-write semantics are
-          desired.
-          RESET (int): The targets have been reset, and a new initial state for the targets
-          will be returned in subsequent changes.
 
-          After the initial state is complete, ``CURRENT`` will be returned even
-          if the target was previously indicated to be ``CURRENT``.
-        """
-        NO_CHANGE = 0
-        ADD = 1
-        REMOVE = 2
-        CURRENT = 3
-        RESET = 4
+class DocumentTransform(object):
+    class FieldTransform(object):
+        class ServerValue(enum.IntEnum):
+            """
+            A value that is calculated by the server.
+
+            Attributes:
+              SERVER_VALUE_UNSPECIFIED (int): Unspecified. This value must not be used.
+              REQUEST_TIME (int): The time at which the server processed the request, with millisecond
+              precision.
+            """
+            SERVER_VALUE_UNSPECIFIED = 0
+            REQUEST_TIME = 1
 
 
 class StructuredQuery(object):
@@ -112,16 +110,31 @@ class StructuredQuery(object):
             IS_NULL = 3
 
 
-class DocumentTransform(object):
-    class FieldTransform(object):
-        class ServerValue(enum.IntEnum):
-            """
-            A value that is calculated by the server.
+class TargetChange(object):
+    class TargetChangeType(enum.IntEnum):
+        """
+        The type of change.
 
-            Attributes:
-              SERVER_VALUE_UNSPECIFIED (int): Unspecified. This value must not be used.
-              REQUEST_TIME (int): The time at which the server processed the request, with millisecond
-              precision.
-            """
-            SERVER_VALUE_UNSPECIFIED = 0
-            REQUEST_TIME = 1
+        Attributes:
+          NO_CHANGE (int): No change has occurred. Used only to send an updated ``resume_token``.
+          ADD (int): The targets have been added.
+          REMOVE (int): The targets have been removed.
+          CURRENT (int): The targets reflect all changes committed before the targets were added
+          to the stream.
+
+          This will be sent after or with a ``read_time`` that is greater than or
+          equal to the time at which the targets were added.
+
+          Listeners can wait for this change if read-after-write semantics are
+          desired.
+          RESET (int): The targets have been reset, and a new initial state for the targets
+          will be returned in subsequent changes.
+
+          After the initial state is complete, ``CURRENT`` will be returned even
+          if the target was previously indicated to be ``CURRENT``.
+        """
+        NO_CHANGE = 0
+        ADD = 1
+        REMOVE = 2
+        CURRENT = 3
+        RESET = 4
