@@ -1057,9 +1057,6 @@ class DocumentExtractor(object):
         self.field_paths = []
         self.deleted_fields = []
         self.server_timestamps = []
-        self.data_merge = []
-        self.transform_merge = []
-        self.merge = []
         self.set_fields = {}
         self.empty_document = False
 
@@ -1098,112 +1095,25 @@ class DocumentExtractor(object):
     def transform_paths(self):
         return sorted(self.server_timestamps)
 
-    def _apply_merge_all(self):
-        self.data_merge = sorted(self.field_paths + self.deleted_fields)
-        # TODO: other transforms
-        self.transform_merge = self.transform_paths
-        self.merge = sorted(self.data_merge + self.transform_paths)
+    def _get_update_mask(self, allow_empty_mask=False):
+        return None
 
-    def _construct_merge_paths(self, merge):
-        for merge_field in merge:
-            if isinstance(merge_field, FieldPath):
-                yield merge_field
-            else:
-                yield FieldPath(*parse_field_path(merge_field))
+    def get_update_pb(
+            self, document_path, exists=None, allow_empty_mask=False):
 
-    def _normalize_merge_paths(self, merge):
-        merge_paths = sorted(self._construct_merge_paths(merge))
-
-        # Raise if any merge path is a parent of another.  Leverage sorting
-        # to avoid quadratic behavior.
-        for index in range(len(merge_paths) - 1):
-            lhs, rhs = merge_paths[index], merge_paths[index + 1]
-            if lhs.eq_or_parent(rhs):
-                raise ValueError("Merge paths overlap: {}, {}".format(
-                    lhs, rhs))
-
-        for merge_path in merge_paths:
-            try:
-                get_field_value(self.document_data, merge_path)
-            except KeyError:
-                raise ValueError("Invalid merge path: {}".format(merge_path))
-
-        return merge_paths
-
-    def _apply_merge_paths(self, merge):
-
-        if self.empty_document:
-            raise ValueError(
-                "Cannot merge specific fields with empty document.")
-
-        if self.deleted_fields:
-            raise ValueError(
-                "Cannot merge specific fields with delete.")
-
-        merge_paths = self._normalize_merge_paths(merge)
-
-        del self.data_merge[:]
-        del self.transform_merge[:]
-        self.merge = merge_paths
-
-        for merge_path in merge_paths:
-
-            if merge_path in self.transform_paths:
-                self.transform_merge.append(merge_path)
-
-            for field_path in self.field_paths:
-                if merge_path.eq_or_parent(field_path):
-                    self.data_merge.append(field_path)
-
-        # Clear out data for fields not merged.
-        merged_set_fields = {}
-        for field_path in self.data_merge:
-            value = get_field_value(self.document_data, field_path)
-            set_field_value(merged_set_fields, field_path, value)
-        self.set_fields = merged_set_fields
-
-        # Keep only transforms which are within merge.
-        merged_transform_paths = set()
-        for merge_path in self.merge:
-            tranform_merge_paths = [
-                transform_path for transform_path in self.transform_paths
-                if merge_path.eq_or_parent(transform_path)
-            ]
-            merged_transform_paths.update(tranform_merge_paths)
-
-        # TODO:  other transforms
-        self.server_timestamps = [
-            path for path in self.server_timestamps
-            if path in merged_transform_paths
-        ]
-
-    def apply_merge(self, merge):
-        if merge is True:  # merge all fields
-            self._apply_merge_all()
+        if exists is not None:
+            current_document = common_pb2.Precondition(exists=exists)
         else:
-            self._apply_merge_paths(merge)
+            current_document = None
 
-    def get_update_pb(self, document_path, exists=None, empty_mask=False):
         update_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
                 fields=encode_dict(self.set_fields),
-            )
+            ),
+            update_mask=self._get_update_mask(allow_empty_mask),
+            current_document=current_document,
         )
-
-        if exists is not None:
-            update_pb.current_document.CopyFrom(
-                common_pb2.Precondition(exists=exists))
-
-        # Mask uses dotted / quoted paths.
-        mask_paths = [
-            field_path.to_api_repr() for field_path in self.merge
-            if field_path not in self.transform_merge
-        ]
-
-        if mask_paths or empty_mask:
-            mask = common_pb2.DocumentMask(field_paths=mask_paths)
-            update_pb.update_mask.CopyFrom(mask)
 
         return update_pb
 
@@ -1339,6 +1249,112 @@ def pbs_for_set_no_merge(document_path, document_data):
     return write_pbs
 
 
+class DocumentExtractorForMerge(DocumentExtractor):
+    """ Break document data up into actual data and transforms.
+    """
+    def __init__(self, document_data, expand_dots=False):
+        super(DocumentExtractorForMerge, self).__init__(
+            document_data, expand_dots=expand_dots)
+        self.data_merge = []
+        self.transform_merge = []
+        self.merge = []
+
+    def _apply_merge_all(self):
+        self.data_merge = sorted(self.field_paths + self.deleted_fields)
+        # TODO: other transforms
+        self.transform_merge = self.transform_paths
+        self.merge = sorted(self.data_merge + self.transform_paths)
+
+    def _construct_merge_paths(self, merge):
+        for merge_field in merge:
+            if isinstance(merge_field, FieldPath):
+                yield merge_field
+            else:
+                yield FieldPath(*parse_field_path(merge_field))
+
+    def _normalize_merge_paths(self, merge):
+        merge_paths = sorted(self._construct_merge_paths(merge))
+
+        # Raise if any merge path is a parent of another.  Leverage sorting
+        # to avoid quadratic behavior.
+        for index in range(len(merge_paths) - 1):
+            lhs, rhs = merge_paths[index], merge_paths[index + 1]
+            if lhs.eq_or_parent(rhs):
+                raise ValueError("Merge paths overlap: {}, {}".format(
+                    lhs, rhs))
+
+        for merge_path in merge_paths:
+            try:
+                get_field_value(self.document_data, merge_path)
+            except KeyError:
+                raise ValueError("Invalid merge path: {}".format(merge_path))
+
+        return merge_paths
+
+    def _apply_merge_paths(self, merge):
+
+        if self.empty_document:
+            raise ValueError(
+                "Cannot merge specific fields with empty document.")
+
+        if self.deleted_fields:
+            raise ValueError(
+                "Cannot merge specific fields with delete.")
+
+        merge_paths = self._normalize_merge_paths(merge)
+
+        del self.data_merge[:]
+        del self.transform_merge[:]
+        self.merge = merge_paths
+
+        for merge_path in merge_paths:
+
+            if merge_path in self.transform_paths:
+                self.transform_merge.append(merge_path)
+
+            for field_path in self.field_paths:
+                if merge_path.eq_or_parent(field_path):
+                    self.data_merge.append(field_path)
+
+        # Clear out data for fields not merged.
+        merged_set_fields = {}
+        for field_path in self.data_merge:
+            value = get_field_value(self.document_data, field_path)
+            set_field_value(merged_set_fields, field_path, value)
+        self.set_fields = merged_set_fields
+
+        # Keep only transforms which are within merge.
+        merged_transform_paths = set()
+        for merge_path in self.merge:
+            tranform_merge_paths = [
+                transform_path for transform_path in self.transform_paths
+                if merge_path.eq_or_parent(transform_path)
+            ]
+            merged_transform_paths.update(tranform_merge_paths)
+
+        # TODO:  other transforms
+        self.server_timestamps = [
+            path for path in self.server_timestamps
+            if path in merged_transform_paths
+        ]
+
+    def apply_merge(self, merge):
+        if merge is True:  # merge all fields
+            self._apply_merge_all()
+        else:
+            self._apply_merge_paths(merge)
+
+    def _get_update_mask(self, allow_empty_mask=False):
+        # Mask uses dotted / quoted paths.
+        mask_paths = [
+            field_path.to_api_repr() for field_path in self.merge
+            if field_path not in self.transform_merge
+        ]
+
+        if mask_paths or allow_empty_mask:
+            return common_pb2.DocumentMask(field_paths=mask_paths)
+
+
 def pbs_for_set_with_merge(document_path, document_data, merge):
     """Make ``Write`` protobufs for ``set()`` methods.
 
@@ -1353,7 +1369,7 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    extractor = DocumentExtractor(document_data)
+    extractor = DocumentExtractorForMerge(document_data)
     extractor.apply_merge(merge)
 
     merge_empty = not document_data
@@ -1372,7 +1388,8 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
 
     if extractor.set_fields or merge_empty or update_paths:
         write_pbs.append(
-            extractor.get_update_pb(document_path, empty_mask=merge_empty))
+            extractor.get_update_pb(
+                document_path, allow_empty_mask=merge_empty))
 
     if extractor.transform_paths:
         transform_pb = extractor.get_transform_pb(document_path)

@@ -1882,9 +1882,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertTrue(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1904,9 +1901,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [_make_field_path('a')])
         self.assertEqual(inst.server_timestamps, [])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1931,9 +1925,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(
             inst.deleted_fields, [_make_field_path('a', 'b', 'c')])
         self.assertEqual(inst.server_timestamps, [])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1954,9 +1945,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(
             inst.deleted_fields, [_make_field_path('a', 'b', 'c')])
         self.assertEqual(inst.server_timestamps, [])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1976,9 +1964,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [_make_field_path('a')])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
@@ -2003,9 +1988,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(
             inst.server_timestamps, [_make_field_path('a', 'b', 'c')])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
@@ -2027,9 +2009,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(
             inst.server_timestamps, [_make_field_path('a', 'b', 'c')])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
@@ -2051,9 +2030,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -2079,9 +2055,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -2110,9 +2083,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, expected_set_fields)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -2137,9 +2107,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -2169,9 +2136,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -2207,9 +2171,6 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
         self.assertEqual(inst.set_fields, expected_set_fields)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -2224,151 +2185,6 @@ class TestDocumentExtractor(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self._make_one(document_data, expand_dots=True)
-
-    def test_apply_merge_all_w_empty_document(self):
-        document_data = {}
-        inst = self._make_one(document_data)
-
-        inst.apply_merge(True)
-
-        self.assertEqual(inst.data_merge, [])
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, [])
-
-    def test_apply_merge_all_w_delete(self):
-        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
-
-        document_data = {
-            'write_me': 'value',
-            'delete_me': DELETE_FIELD,
-        }
-        inst = self._make_one(document_data)
-
-        inst.apply_merge(True)
-
-        expected_data_merge = [
-            _make_field_path('delete_me'),
-            _make_field_path('write_me'),
-        ]
-        self.assertEqual(inst.data_merge, expected_data_merge)
-        self.assertEqual(inst.transform_merge, [])
-        self.assertEqual(inst.merge, expected_data_merge)
-
-    def test_apply_merge_all_w_server_timestamp(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
-
-        document_data = {
-            'write_me': 'value',
-            'timestamp': SERVER_TIMESTAMP,
-        }
-        inst = self._make_one(document_data)
-
-        inst.apply_merge(True)
-
-        expected_data_merge = [
-            _make_field_path('write_me'),
-        ]
-        expected_transform_merge = [
-            _make_field_path('timestamp'),
-        ]
-        expected_merge = [
-            _make_field_path('timestamp'),
-            _make_field_path('write_me'),
-        ]
-        self.assertEqual(inst.data_merge, expected_data_merge)
-        self.assertEqual(inst.transform_merge, expected_transform_merge)
-        self.assertEqual(inst.merge, expected_merge)
-
-    def test_apply_merge_list_fields_w_empty_document(self):
-        document_data = {}
-        inst = self._make_one(document_data)
-
-        with self.assertRaises(ValueError):
-            inst.apply_merge(['nonesuch', 'or.this'])
-
-    def test_apply_merge_list_fields_w_delete(self):
-        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
-
-        document_data = {
-            'write_me': 'value',
-            'delete_me': DELETE_FIELD,
-            'ignore_me': 123,
-        }
-        inst = self._make_one(document_data)
-
-        with self.assertRaises(ValueError):
-            inst.apply_merge(['write_me', 'delete_me'])
-
-    def test_apply_merge_list_fields_w_prefixes(self):
-
-        document_data = {
-            'a': {
-                'b': {
-                    'c': 123,
-                },
-            },
-        }
-        inst = self._make_one(document_data)
-
-        with self.assertRaises(ValueError):
-            inst.apply_merge(['a', 'a.b'])
-
-    def test_apply_merge_list_fields_w_missing_data_string_paths(self):
-
-        document_data = {
-            'write_me': 'value',
-            'ignore_me': 123,
-        }
-        inst = self._make_one(document_data)
-
-        with self.assertRaises(ValueError):
-            inst.apply_merge(['write_me', 'nonesuch'])
-
-    def test_apply_merge_list_fields_w_non_merge_field(self):
-
-        document_data = {
-            'write_me': 'value',
-            'ignore_me': 123,
-        }
-        inst = self._make_one(document_data)
-
-        inst.apply_merge([_make_field_path('write_me')])
-
-        expected_set_fields = {
-            'write_me': 'value',
-        }
-        self.assertEqual(inst.set_fields, expected_set_fields)
-
-    def test_apply_merge_list_fields_w_server_timestamp(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
-
-        document_data = {
-            'write_me': 'value',
-            'timestamp': SERVER_TIMESTAMP,
-            'ignored_stamp': SERVER_TIMESTAMP,
-        }
-        inst = self._make_one(document_data)
-
-        inst.apply_merge(
-            [_make_field_path('write_me'), _make_field_path('timestamp')])
-
-        expected_data_merge = [
-            _make_field_path('write_me'),
-        ]
-        expected_transform_merge = [
-            _make_field_path('timestamp'),
-        ]
-        expected_merge = [
-            _make_field_path('timestamp'),
-            _make_field_path('write_me'),
-        ]
-        self.assertEqual(inst.data_merge, expected_data_merge)
-        self.assertEqual(inst.transform_merge, expected_transform_merge)
-        self.assertEqual(inst.merge, expected_merge)
-        expected_server_timestamps = [
-            _make_field_path('timestamp'),
-        ]
-        self.assertEqual(inst.server_timestamps, expected_server_timestamps)
 
     def test_get_update_pb_w_exists_precondition(self):
         from google.cloud.firestore_v1beta1.proto import write_pb2
@@ -2727,6 +2543,173 @@ class Test_pbs_for_set_no_merge(unittest.TestCase):
     def test_w_transform_and_empty_value(self):
         # Exercise #5944
         self._helper(do_transform=True, empty_val=True)
+
+
+class TestDocumentExtractorForMerge(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.DocumentExtractorForMerge
+
+    def _make_one(self, document_data, expand_dots=False):
+        return self._get_target_class()(
+            document_data, expand_dots=expand_dots)
+
+    def test_ctor_w_empty_document(self):
+        document_data = {}
+
+        inst = self._make_one(document_data)
+
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
+
+    def test_apply_merge_all_w_empty_document(self):
+        document_data = {}
+        inst = self._make_one(document_data)
+
+        inst.apply_merge(True)
+
+        self.assertEqual(inst.data_merge, [])
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, [])
+
+    def test_apply_merge_all_w_delete(self):
+        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+
+        document_data = {
+            'write_me': 'value',
+            'delete_me': DELETE_FIELD,
+        }
+        inst = self._make_one(document_data)
+
+        inst.apply_merge(True)
+
+        expected_data_merge = [
+            _make_field_path('delete_me'),
+            _make_field_path('write_me'),
+        ]
+        self.assertEqual(inst.data_merge, expected_data_merge)
+        self.assertEqual(inst.transform_merge, [])
+        self.assertEqual(inst.merge, expected_data_merge)
+
+    def test_apply_merge_all_w_server_timestamp(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {
+            'write_me': 'value',
+            'timestamp': SERVER_TIMESTAMP,
+        }
+        inst = self._make_one(document_data)
+
+        inst.apply_merge(True)
+
+        expected_data_merge = [
+            _make_field_path('write_me'),
+        ]
+        expected_transform_merge = [
+            _make_field_path('timestamp'),
+        ]
+        expected_merge = [
+            _make_field_path('timestamp'),
+            _make_field_path('write_me'),
+        ]
+        self.assertEqual(inst.data_merge, expected_data_merge)
+        self.assertEqual(inst.transform_merge, expected_transform_merge)
+        self.assertEqual(inst.merge, expected_merge)
+
+    def test_apply_merge_list_fields_w_empty_document(self):
+        document_data = {}
+        inst = self._make_one(document_data)
+
+        with self.assertRaises(ValueError):
+            inst.apply_merge(['nonesuch', 'or.this'])
+
+    def test_apply_merge_list_fields_w_delete(self):
+        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+
+        document_data = {
+            'write_me': 'value',
+            'delete_me': DELETE_FIELD,
+            'ignore_me': 123,
+        }
+        inst = self._make_one(document_data)
+
+        with self.assertRaises(ValueError):
+            inst.apply_merge(['write_me', 'delete_me'])
+
+    def test_apply_merge_list_fields_w_prefixes(self):
+
+        document_data = {
+            'a': {
+                'b': {
+                    'c': 123,
+                },
+            },
+        }
+        inst = self._make_one(document_data)
+
+        with self.assertRaises(ValueError):
+            inst.apply_merge(['a', 'a.b'])
+
+    def test_apply_merge_list_fields_w_missing_data_string_paths(self):
+
+        document_data = {
+            'write_me': 'value',
+            'ignore_me': 123,
+        }
+        inst = self._make_one(document_data)
+
+        with self.assertRaises(ValueError):
+            inst.apply_merge(['write_me', 'nonesuch'])
+
+    def test_apply_merge_list_fields_w_non_merge_field(self):
+
+        document_data = {
+            'write_me': 'value',
+            'ignore_me': 123,
+        }
+        inst = self._make_one(document_data)
+
+        inst.apply_merge([_make_field_path('write_me')])
+
+        expected_set_fields = {
+            'write_me': 'value',
+        }
+        self.assertEqual(inst.set_fields, expected_set_fields)
+
+    def test_apply_merge_list_fields_w_server_timestamp(self):
+        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+
+        document_data = {
+            'write_me': 'value',
+            'timestamp': SERVER_TIMESTAMP,
+            'ignored_stamp': SERVER_TIMESTAMP,
+        }
+        inst = self._make_one(document_data)
+
+        inst.apply_merge(
+            [_make_field_path('write_me'), _make_field_path('timestamp')])
+
+        expected_data_merge = [
+            _make_field_path('write_me'),
+        ]
+        expected_transform_merge = [
+            _make_field_path('timestamp'),
+        ]
+        expected_merge = [
+            _make_field_path('timestamp'),
+            _make_field_path('write_me'),
+        ]
+        self.assertEqual(inst.data_merge, expected_data_merge)
+        self.assertEqual(inst.transform_merge, expected_transform_merge)
+        self.assertEqual(inst.merge, expected_merge)
+        expected_server_timestamps = [
+            _make_field_path('timestamp'),
+        ]
+        self.assertEqual(inst.server_timestamps, expected_server_timestamps)
 
 
 class Test_pbs_for_set_with_merge(unittest.TestCase):
