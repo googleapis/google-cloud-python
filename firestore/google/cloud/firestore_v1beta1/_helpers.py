@@ -1395,13 +1395,31 @@ class DocumentExtractorForUpdate(DocumentExtractor):
     """
     def __init__(self, document_data):
         super(DocumentExtractorForUpdate, self).__init__(document_data)
-        self.top_level_paths = [
+        self.top_level_paths = sorted([
             FieldPath.from_string(key) for key in document_data
-        ]
+        ])
+        seen = set(self.top_level_paths)
+        for top_level_path in self.top_level_paths:
+            for ancestor in top_level_path.lineage():
+                if ancestor in seen:
+                    raise ValueError("Conflicting field path: {}, {}".format(
+                        top_level_path, ancestor))
 
     def _get_document_iterator(self, prefix_path):
         return extract_fields(
             self.document_data, prefix_path, expand_dots=True)
+
+    def _get_update_mask(self, allow_empty_mask=False):
+        mask_paths = []
+        for field_path in self.top_level_paths:
+            if field_path not in self.transform_paths:
+                mask_paths.append(field_path.to_api_repr())
+            else:
+                prefix = FieldPath(*field_path.parts[:-1])
+                if prefix.parts:
+                    mask_paths.append(prefix.to_api_repr())
+
+        return common_pb2.DocumentMask(field_paths=mask_paths)
 
 
 def pbs_for_update(document_path, field_updates, option):
@@ -1419,45 +1437,24 @@ def pbs_for_update(document_path, field_updates, option):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``update()``.
     """
-    if option is None:
-        # Default uses ``exists=True``.
+    extractor = DocumentExtractorForUpdate(field_updates)
+
+    if extractor.empty_document:
+        raise ValueError('Cannot update with an empty document.')
+
+    if option is None:  # Default is to use ``exists=True``.
         option = ExistsOption(exists=True)
-
-    transform_paths, actual_updates, field_paths = (
-        process_server_timestamp(field_updates, split_on_dots=True))
-    if not (transform_paths or actual_updates):
-        raise ValueError('There are only ServerTimeStamp objects or is empty.')
-    update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
-    update_paths = field_paths[:]
-
-    # for whatever reason, the conformance tests want to see the parent
-    # of nested transform paths in the update mask
-    for transform_path in transform_paths:
-        if len(transform_path.parts) > 1:
-            parent_fp = FieldPath(*transform_path.parts[:-1])
-            if parent_fp not in update_paths:
-                update_paths.append(parent_fp)
-
-    field_paths = canonicalize_field_paths(field_paths)
-    update_paths = canonicalize_field_paths(update_paths)
 
     write_pbs = []
 
-    if update_values:
-        update_pb = write_pb2.Write(
-            update=document_pb2.Document(
-                name=document_path,
-                fields=encode_dict(update_values),
-            ),
-            update_mask=common_pb2.DocumentMask(field_paths=update_paths),
-        )
-        # Due to the default, we don't have to check if ``None``.
+    if extractor.field_paths or extractor.deleted_fields:
+        update_pb = extractor.get_update_pb(document_path)
         option.modify_write(update_pb)
         write_pbs.append(update_pb)
 
-    if transform_paths:
-        transform_pb = get_transform_pb(document_path, transform_paths)
-        if not update_values:
+    if extractor.has_transforms:
+        transform_pb = extractor.get_transform_pb(document_path)
+        if not write_pbs:
             # NOTE: set the write option on the ``transform_pb`` only if there
             #       is no ``update_pb``
             option.modify_write(transform_pb)
