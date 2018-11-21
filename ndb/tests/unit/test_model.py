@@ -2653,6 +2653,36 @@ class TestModel:
             TimeTravelVehicle(speed=28)
 
     @staticmethod
+    def test_repr():
+        class ManyFields(model.Model):
+            self = model.IntegerProperty()
+            id = model.StringProperty()
+            key = model.FloatProperty(repeated=True)
+            value = model.StringProperty()
+            unused = model.FloatProperty()
+
+        kwargs = {"self": 909, "id": "hi", "key": [88.5, 0.0], "value": None}
+        entity = ManyFields(**kwargs)
+        expected = "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None)"
+        assert repr(entity) == expected
+
+        # With a projection.
+        projected = ManyFields(projection=("self", "id"), **kwargs)
+        expected = (
+            "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None, "
+            "_projection=('self', 'id'))"
+        )
+        assert repr(projected) == expected
+
+        # With a key.
+        with_key = ManyFields(_id=78, **kwargs)
+        expected = (
+            "ManyFields(key=Key('ManyFields', 78), id='hi', key=[88.5, 0.0], "
+            "self=909, value=None)"
+        )
+        assert repr(with_key) == expected
+
+    @staticmethod
     def test__get_kind():
         assert model.Model._get_kind() == "Model"
 
