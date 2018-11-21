@@ -2569,6 +2569,9 @@ class UserProperty(Property):
         The ``auto_current_user`` and ``auto_current_user_add`` arguments are
         no longer supported.
 
+    .. automethod:: _validate
+    .. automethod:: _prepare_for_put
+
     Args:
         name (str): The name of the property.
         auto_current_user (bool): Indicates if the value should be indexed.
@@ -2629,6 +2632,47 @@ class UserProperty(Property):
             raise NotImplementedError(
                 "The auto_current_user_add argument is no longer supported."
             )
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (User): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`User`.
+        """
+        if not isinstance(value, User):
+            raise exceptions.BadValueError(
+                "Expected User, got {!r}".format(value)
+            )
+
+    def _prepare_for_put(self, entity):
+        """Pre-put hook
+
+        This is a no-op. In previous versions of ``ndb``, this method
+        populated the value based on ``auto_current_user`` or
+        ``auto_current_user_add``, but these flags have been disabled.
+
+        Args:
+            entity (Model): An entity with values.
+        """
+
+    def _db_set_value(self, v, p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
 
 
 class KeyProperty(Property):

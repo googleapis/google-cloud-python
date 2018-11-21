@@ -2110,6 +2110,37 @@ class TestUserProperty:
         with pytest.raises(NotImplementedError):
             model.UserProperty(auto_current_user_add=True)
 
+    @staticmethod
+    def test__validate():
+        prop = model.UserProperty(name="u")
+        user_value = model.User(
+            email="foo@example.com", _auth_domain="example.com"
+        )
+        assert prop._validate(user_value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.UserProperty(name="u")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__prepare_for_put():
+        prop = model.UserProperty(name="u")
+        assert prop._prepare_for_put(None) is None
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.UserProperty(name="u")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.UserProperty(name="u")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
+
 
 class TestKeyProperty:
     @staticmethod
