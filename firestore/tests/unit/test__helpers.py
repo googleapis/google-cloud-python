@@ -1860,13 +1860,13 @@ class Test_get_field_value(unittest.TestCase):
             self._call_fut(document, _make_field_path('a', 'b', 'c')), 1)
 
 
-class TestExtractDocumentTransforms(unittest.TestCase):
+class TestDocumentExtractor(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
         from google.cloud.firestore_v1beta1 import _helpers
 
-        return _helpers.ExtractDocumentTransforms
+        return _helpers.DocumentExtractor
 
     def _make_one(self, document_data, expand_dots=False):
         return self._get_target_class()(

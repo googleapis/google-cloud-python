@@ -1041,7 +1041,7 @@ def get_field_value(document_data, field_path):
     return current[field_path.parts[-1]]
 
 
-class ExtractDocumentTransforms(object):
+class DocumentExtractor(object):
     """ Break document data up into actual data and transforms.
 
     Handle special values such as ``DELETE_FIELD``, ``SERVER_TIMESTAMP``.
@@ -1288,7 +1288,7 @@ def pbs_for_create(document_path, document_data):
         List[google.cloud.firestore_v1beta1.types.Write]: One or two
         ``Write`` protobuf instances for ``create()``.
     """
-    extractor = ExtractDocumentTransforms(document_data)
+    extractor = DocumentExtractor(document_data)
 
     if extractor.deleted_fields:
         raise ValueError("Cannot apply DELETE_FIELD in a create request.")
@@ -1320,7 +1320,7 @@ def pbs_for_set_no_merge(document_path, document_data):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    extractor = ExtractDocumentTransforms(document_data)
+    extractor = DocumentExtractor(document_data)
 
     if extractor.deleted_fields:
         raise ValueError(
@@ -1353,7 +1353,7 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    extractor = ExtractDocumentTransforms(document_data)
+    extractor = DocumentExtractor(document_data)
     extractor.apply_merge(merge)
 
     merge_empty = not document_data
