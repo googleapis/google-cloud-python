@@ -9,8 +9,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class DeviceManagerStub(object):
-  """Internet of things (IoT) service. Allows to manipulate device registry
-  instances and the registration of devices (Things) to the cloud.
+  """Internet of Things (IoT) service. Securely connect and manage IoT devices.
   """
 
   def __init__(self, channel):
@@ -99,11 +98,25 @@ class DeviceManagerStub(object):
         request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.SerializeToString,
         response_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.FromString,
         )
+    self.SendCommandToDevice = channel.unary_unary(
+        '/google.cloud.iot.v1.DeviceManager/SendCommandToDevice',
+        request_serializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.SendCommandToDeviceRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.SendCommandToDeviceResponse.FromString,
+        )
+    self.BindDeviceToGateway = channel.unary_unary(
+        '/google.cloud.iot.v1.DeviceManager/BindDeviceToGateway',
+        request_serializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.BindDeviceToGatewayRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.BindDeviceToGatewayResponse.FromString,
+        )
+    self.UnbindDeviceFromGateway = channel.unary_unary(
+        '/google.cloud.iot.v1.DeviceManager/UnbindDeviceFromGateway',
+        request_serializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.UnbindDeviceFromGatewayRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.UnbindDeviceFromGatewayResponse.FromString,
+        )
 
 
 class DeviceManagerServicer(object):
-  """Internet of things (IoT) service. Allows to manipulate device registry
-  instances and the registration of devices (Things) to the cloud.
+  """Internet of Things (IoT) service. Securely connect and manage IoT devices.
   """
 
   def CreateDeviceRegistry(self, request, context):
@@ -227,6 +240,39 @@ class DeviceManagerServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def SendCommandToDevice(self, request, context):
+    """Sends a command to the specified device. In order for a device to be able
+    to receive commands, it must:
+    1) be connected to Cloud IoT Core using the MQTT protocol, and
+    2) be subscribed to the group of MQTT topics specified by
+    /devices/{device-id}/commands/#. This subscription will receive commands
+    at the top-level topic /devices/{device-id}/commands as well as commands
+    for subfolders, like /devices/{device-id}/commands/subfolder.
+    Note that subscribing to specific subfolders is not supported.
+    If the command could not be delivered to the device, this method will
+    return an error; in particular, if the device is not subscribed, this
+    method will return FAILED_PRECONDITION. Otherwise, this method will
+    return OK. If the subscription is QoS 1, at least once delivery will be
+    guaranteed; for QoS 0, no acknowledgment will be expected from the device.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def BindDeviceToGateway(self, request, context):
+    """Associates the device with the gateway.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def UnbindDeviceFromGateway(self, request, context):
+    """Deletes the association between the device and the gateway.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_DeviceManagerServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -309,6 +355,21 @@ def add_DeviceManagerServicer_to_server(servicer, server):
           servicer.TestIamPermissions,
           request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.FromString,
           response_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.SerializeToString,
+      ),
+      'SendCommandToDevice': grpc.unary_unary_rpc_method_handler(
+          servicer.SendCommandToDevice,
+          request_deserializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.SendCommandToDeviceRequest.FromString,
+          response_serializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.SendCommandToDeviceResponse.SerializeToString,
+      ),
+      'BindDeviceToGateway': grpc.unary_unary_rpc_method_handler(
+          servicer.BindDeviceToGateway,
+          request_deserializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.BindDeviceToGatewayRequest.FromString,
+          response_serializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.BindDeviceToGatewayResponse.SerializeToString,
+      ),
+      'UnbindDeviceFromGateway': grpc.unary_unary_rpc_method_handler(
+          servicer.UnbindDeviceFromGateway,
+          request_deserializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.UnbindDeviceFromGatewayRequest.FromString,
+          response_serializer=google_dot_cloud_dot_iot__v1_dot_proto_dot_device__manager__pb2.UnbindDeviceFromGatewayResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
