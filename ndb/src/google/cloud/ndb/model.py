@@ -126,6 +126,10 @@ class ComputedPropertyError(ReadonlyPropertyError):
     """Raised when attempting to set or delete a computed property."""
 
 
+class UserNotFoundError(exceptions.Error):
+    """No email argument was specified, and no user is logged in."""
+
+
 class IndexProperty:
     """Immutable object representing a single property in an index."""
 
@@ -2353,10 +2357,6 @@ class JsonProperty(BlobProperty):
         return json.loads(value.decode("ascii"))
 
 
-class UserNotFoundError(exceptions.Error):
-    """No email argument was specified, and no user is logged in."""
-
-
 @functools.total_ordering
 class User:
     """Provides the email address, nickname, and ID for a Google Accounts user.
@@ -2371,8 +2371,10 @@ class User:
         * ``AUTH_DOMAIN`` for the ``_auth_domain`` argument
         * ``USER_EMAIL`` for the ``email`` argument
         * ``USER_ID`` for the ``_user_id`` argument
-        * ``FEDERATED_IDENTITY`` for the ``federated_identity`` argument
-        * ``FEDERATED_PROVIDER`` for the ``federated_provider`` argument
+        * ``FEDERATED_IDENTITY`` for the (now removed) ``federated_identity``
+          argument
+        * ``FEDERATED_PROVIDER`` for the (now removed) ``federated_provider``
+          argument
 
         However in the gVisor Google App Engine runtime (e.g. Python 3.7),
         none of these environment variables will be populated.
@@ -2380,22 +2382,19 @@ class User:
     .. warning::
 
         The ``federated_identity`` and ``federated_provider`` are
-        decommissioned and cannot be used (the constructor will throw an
-        exception if they are provided).
+        decommissioned and have been removed from the constructor. Additionally
+        ``_strict_mode`` has been removed from the constructor and the
+        ``federated_identity()`` and ``federated_provider()`` methods have been
+        removed from this class.
 
     Args:
         email (str): The user's email address.
         _auth_domain (str): The auth domain for the current application.
         _user_id (str): The user ID.
-        federated_identity (str): Decommissioned, don't use.
-        federated_provider (str): Decommissioned, don't use.
-        _strict_mode (bool): Indicates that an ``email`` is required.
 
     Raises:
         ValueError: If the ``_auth_domain`` is not passed in.
-        NotImplementedError: If ``federated_identity`` is passed in.
-        NotImplementedError: If ``federated_provider`` is passed in.
-        UserNotFoundError: If ``email`` is empty and ``_strict_mode`` is set.
+        UserNotFoundError: If ``email`` is empty.
     """
 
     __slots__ = ("_auth_domain", "_email", "_user_id")
@@ -2405,24 +2404,11 @@ class User:
         email=None,
         _auth_domain=None,
         _user_id=None,
-        federated_identity=None,
-        federated_provider=None,
-        _strict_mode=True,
     ):
         if _auth_domain is None:
             raise ValueError("_auth_domain is required")
 
-        if federated_identity is not None:
-            raise NotImplementedError(
-                "federated_identity is decommissioned and should not be used."
-            )
-
-        if federated_provider is not None:
-            raise NotImplementedError(
-                "federated_provider is decommissioned and should not be used."
-            )
-
-        if not email and _strict_mode:
+        if not email:
             raise UserNotFoundError
 
         self._auth_domain = _auth_domain
@@ -2472,28 +2458,6 @@ class User:
         """
         return self._auth_domain
 
-    def federated_identity(self):
-        """Get the federated identity.
-
-        Raises:
-            NotImplementedError: Always. This method is decommissioned, don't
-            use.
-        """
-        raise NotImplementedError(
-            "federated_identity is decommissioned and should not be used."
-        )
-
-    def federated_provider(self):
-        """Get the federated provider.
-
-        Raises:
-            NotImplementedError: Always. This method is decommissioned, don't
-            use.
-        """
-        raise NotImplementedError(
-            "federated_provider is decommissioned and should not be used."
-        )
-
     def __str__(self):
         return str(self.nickname())
 
@@ -2534,8 +2498,12 @@ class UserProperty(Property):
 
         This exists for backwards compatibility with existing Cloud Datastore
         schemas only; storing :class:`.User` objects directly in Cloud
-        Datastore is not recommended. The ``auto_current_user`` and
-        ``auto_current_user_add`` arguments are no longer supported.
+        Datastore is not recommended.
+
+    .. warning::
+
+        The ``auto_current_user`` and ``auto_current_user_add`` arguments are
+        no longer supported.
 
     Args:
         name (str): The name of the property.
