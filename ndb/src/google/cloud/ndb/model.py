@@ -22,6 +22,7 @@ import json
 import pickle
 import zlib
 
+from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
 
 from google.cloud.ndb import _datastore_types
@@ -90,6 +91,7 @@ __all__ = [
 ]
 
 
+_MEANING_PREDEFINED_ENTITY_USER = 20
 _MAX_STRING_LENGTH = 1500
 Key = key_module.Key
 BlobKey = _datastore_types.BlobKey
@@ -2381,6 +2383,13 @@ class User:
         However in the gVisor Google App Engine runtime (e.g. Python 3.7),
         none of these environment variables will be populated.
 
+    .. note::
+
+        Previous versions of the Google Cloud Datastore API had an explicit
+        ``UserValue`` field. However, the ``google.datastore.v1`` API returns
+        previously stored user values as an ``Entity`` with the meaning set to
+        ``ENTITY_USER=20``.
+
     .. warning::
 
         The ``federated_identity`` and ``federated_provider`` are
@@ -2401,12 +2410,7 @@ class User:
 
     __slots__ = ("_auth_domain", "_email", "_user_id")
 
-    def __init__(
-        self,
-        email=None,
-        _auth_domain=None,
-        _user_id=None,
-    ):
+    def __init__(self, email=None, _auth_domain=None, _user_id=None):
         if _auth_domain is None:
             raise ValueError("_auth_domain is required")
 
@@ -2459,6 +2463,33 @@ class User:
             should not be used by client applications.
         """
         return self._auth_domain
+
+    def add_to_entity(self, entity, name):
+        """Convert the user value to a datastore entity.
+
+        .. note::
+
+            This assumes, but does not check, that ``name`` is not already
+            set on ``entity`` or in the meanings of ``entity``.
+
+        Args:
+            entity (~google.cloud.datastore.entity.Entity): An entity that
+                contains a user value as the field ``name``.
+            name (str): The name of the field containing this user value.
+        """
+        user_value = entity_module.Entity()
+        entity[name] = user_value
+        entity._meanings[name] = (_MEANING_PREDEFINED_ENTITY_USER, user_value)
+
+        # Set required fields.
+        user_value["email"] = self._email
+        user_value.exclude_from_indexes.add("email")
+        user_value["auth_domain"] = self._auth_domain
+        user_value.exclude_from_indexes.add("auth_domain")
+        # Set optional field.
+        if self._user_id:
+            user_value["user_id"] = self._user_id
+            user_value.exclude_from_indexes.add("user_id")
 
     def __str__(self):
         return str(self.nickname())
