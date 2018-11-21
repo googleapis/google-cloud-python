@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -74,7 +75,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -93,7 +97,10 @@ class TestBigtableTableAdminClient(object):
     def test_create_table_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -114,7 +121,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -142,7 +152,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -168,7 +181,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -187,7 +203,10 @@ class TestBigtableTableAdminClient(object):
 
     def test_list_tables_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         parent = client.instance_path('[PROJECT]', '[INSTANCE]')
@@ -204,7 +223,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -220,7 +242,10 @@ class TestBigtableTableAdminClient(object):
     def test_get_table_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -230,7 +255,10 @@ class TestBigtableTableAdminClient(object):
 
     def test_delete_table(self):
         channel = ChannelStub()
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -246,7 +274,10 @@ class TestBigtableTableAdminClient(object):
     def test_delete_table_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -262,7 +293,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -280,7 +314,10 @@ class TestBigtableTableAdminClient(object):
     def test_modify_column_families_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -291,7 +328,10 @@ class TestBigtableTableAdminClient(object):
 
     def test_drop_row_range(self):
         channel = ChannelStub()
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -307,7 +347,10 @@ class TestBigtableTableAdminClient(object):
     def test_drop_row_range_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -324,7 +367,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -341,7 +387,10 @@ class TestBigtableTableAdminClient(object):
     def test_generate_consistency_token_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -358,7 +407,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -376,7 +428,10 @@ class TestBigtableTableAdminClient(object):
     def test_check_consistency_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -402,7 +457,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -433,7 +491,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         name = client.table_path('[PROJECT]', '[INSTANCE]', '[TABLE]')
@@ -460,7 +521,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         name = client.snapshot_path('[PROJECT]', '[INSTANCE]', '[CLUSTER]',
@@ -478,7 +542,10 @@ class TestBigtableTableAdminClient(object):
     def test_get_snapshot_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         name = client.snapshot_path('[PROJECT]', '[INSTANCE]', '[CLUSTER]',
@@ -501,7 +568,10 @@ class TestBigtableTableAdminClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         parent = client.cluster_path('[PROJECT]', '[INSTANCE]', '[CLUSTER]')
@@ -520,7 +590,10 @@ class TestBigtableTableAdminClient(object):
 
     def test_list_snapshots_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         parent = client.cluster_path('[PROJECT]', '[INSTANCE]', '[CLUSTER]')
@@ -531,7 +604,10 @@ class TestBigtableTableAdminClient(object):
 
     def test_delete_snapshot(self):
         channel = ChannelStub()
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
         name = client.snapshot_path('[PROJECT]', '[INSTANCE]', '[CLUSTER]',
@@ -548,7 +624,10 @@ class TestBigtableTableAdminClient(object):
     def test_delete_snapshot_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = bigtable_admin_v2.BigtableTableAdminClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
         name = client.snapshot_path('[PROJECT]', '[INSTANCE]', '[CLUSTER]',
