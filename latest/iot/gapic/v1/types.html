@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud IoT API Client &#8212; google-cloud 9c9ca34 documentation</title>
+    <title>Types for Cloud IoT API Client &#8212; google-cloud 99d03c6 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -54,6 +54,40 @@ message.</p>
 policy.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.BindDeviceToGatewayRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">BindDeviceToGatewayRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.BindDeviceToGatewayRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">BindDeviceToGateway</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.BindDeviceToGatewayRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.iot_v1.types.BindDeviceToGatewayRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the registry. For example, <code class="docutils literal notranslate"><span class="pre">projects/example-</span>
+<span class="pre">project/locations/us-central1/registries/my-registry</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.BindDeviceToGatewayRequest.gateway_id">
+<code class="descname">gateway_id</code><a class="headerlink" href="#google.cloud.iot_v1.types.BindDeviceToGatewayRequest.gateway_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The value of <code class="docutils literal notranslate"><span class="pre">gateway_id</span></code> can be either the device numeric
+ID or the user-defined device identifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.BindDeviceToGatewayRequest.device_id">
+<code class="descname">device_id</code><a class="headerlink" href="#google.cloud.iot_v1.types.BindDeviceToGatewayRequest.device_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The device to associate with the specified gateway. The value
+of <code class="docutils literal notranslate"><span class="pre">device_id</span></code> can be either the device numeric ID or the
+user-defined device identifier.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.BindDeviceToGatewayResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">BindDeviceToGatewayResponse</code><a class="headerlink" href="#google.cloud.iot_v1.types.BindDeviceToGatewayResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response for <code class="docutils literal notranslate"><span class="pre">BindDeviceToGateway</span></code>.</p>
 </dd></dl>
 
 <dl class="class">
@@ -157,8 +191,8 @@ created. For example, <code class="docutils literal notranslate"><span class="pr
 <dt id="google.cloud.iot_v1.types.CreateDeviceRequest.device">
 <code class="descname">device</code><a class="headerlink" href="#google.cloud.iot_v1.types.CreateDeviceRequest.device" title="Permalink to this definition">#</a></dt>
 <dd><p>The device registration details. The field <code class="docutils literal notranslate"><span class="pre">name</span></code> must be
-empty. The server will generate that field from the device
-registry <code class="docutils literal notranslate"><span class="pre">id</span></code> provided and the <code class="docutils literal notranslate"><span class="pre">parent</span></code> field.</p>
+empty. The server generates <code class="docutils literal notranslate"><span class="pre">name</span></code> from the device registry
+<code class="docutils literal notranslate"><span class="pre">id</span></code> and the <code class="docutils literal notranslate"><span class="pre">parent</span></code> field.</p>
 </dd></dl>
 
 </dd></dl>
@@ -346,6 +380,13 @@ present.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.log_level">
+<code class="descname">log_level</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.log_level" title="Permalink to this definition">#</a></dt>
+<dd><p><strong>Beta Feature</strong>  The logging verbosity for device activity.
+If unspecified, DeviceRegistry.log_level will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.iot_v1.types.Device.metadata">
 <code class="descname">metadata</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>The metadata key-value pairs assigned to the device. This
@@ -357,6 +398,12 @@ length.  Values are free-form strings. Each value must be less
 than or equal to 32 KB in size.  The total size of all keys
 and values must be less than 256 KB, and the maximum number of
 key-value pairs is 500.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.gateway_config">
+<code class="descname">gateway_config</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.gateway_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Gateway-related configuration and state.</p>
 </dd></dl>
 
 <dl class="class">
@@ -508,6 +555,14 @@ registry.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceRegistry.log_level">
+<code class="descname">log_level</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceRegistry.log_level" title="Permalink to this definition">#</a></dt>
+<dd><p><strong>Beta Feature</strong>  The default logging verbosity for activity
+from devices in this registry. The verbosity level can be
+overridden by Device.log_level.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.iot_v1.types.DeviceRegistry.credentials">
 <code class="descname">credentials</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceRegistry.credentials" title="Permalink to this definition">#</a></dt>
 <dd><p>The credentials used to verify the device credentials. No more
@@ -637,6 +692,81 @@ supported for state changes.</p>
 <dt id="google.cloud.iot_v1.types.FileOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.FileOptions" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.GatewayConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">GatewayConfig</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Gateway-related configuration and state.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GatewayConfig.gateway_type">
+<code class="descname">gateway_type</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayConfig.gateway_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates whether the device is a gateway.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GatewayConfig.gateway_auth_method">
+<code class="descname">gateway_auth_method</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayConfig.gateway_auth_method" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates how to authorize and/or authenticate devices to
+access the gateway.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GatewayConfig.last_accessed_gateway_id">
+<code class="descname">last_accessed_gateway_id</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayConfig.last_accessed_gateway_id" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The ID of the gateway the device accessed most
+recently.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GatewayConfig.last_accessed_gateway_time">
+<code class="descname">last_accessed_gateway_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayConfig.last_accessed_gateway_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The most recent time at which the device
+accessed the gateway specified in <code class="docutils literal notranslate"><span class="pre">last_accessed_gateway</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.GatewayListOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">GatewayListOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayListOptions" title="Permalink to this definition">#</a></dt>
+<dd><p>Options for limiting the list based on gateway type and associations.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GatewayListOptions.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayListOptions.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>If not set, all devices and gateways are returned. If set, the
+list is filtered based on gateway type and associations.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GatewayListOptions.gateway_type">
+<code class="descname">gateway_type</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayListOptions.gateway_type" title="Permalink to this definition">#</a></dt>
+<dd><p>If <code class="docutils literal notranslate"><span class="pre">GATEWAY</span></code> is specified, only gateways are returned. If
+<code class="docutils literal notranslate"><span class="pre">NON_GATEWAY</span></code> is specified, only non-gateway devices are
+returned. If <code class="docutils literal notranslate"><span class="pre">GATEWAY_TYPE_UNSPECIFIED</span></code> is specified, all
+devices are returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GatewayListOptions.associations_gateway_id">
+<code class="descname">associations_gateway_id</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayListOptions.associations_gateway_id" title="Permalink to this definition">#</a></dt>
+<dd><p>If set, only devices associated with the specified gateway are
+returned. The gateway ID can be numeric (<code class="docutils literal notranslate"><span class="pre">num_id</span></code>) or the
+user-defined string (<code class="docutils literal notranslate"><span class="pre">id</span></code>). For example, if <code class="docutils literal notranslate"><span class="pre">123</span></code> is
+specified, only devices bound to the gateway with <code class="docutils literal notranslate"><span class="pre">num_id</span></code>
+123 are returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GatewayListOptions.associations_device_id">
+<code class="descname">associations_device_id</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayListOptions.associations_device_id" title="Permalink to this definition">#</a></dt>
+<dd><p>If set, returns only the gateways with which the specified
+device is associated. The device ID can be numeric
+(<code class="docutils literal notranslate"><span class="pre">num_id</span></code>) or the user-defined string (<code class="docutils literal notranslate"><span class="pre">id</span></code>). For example,
+if <code class="docutils literal notranslate"><span class="pre">456</span></code> is specified, returns only the gateways to which
+the device with <code class="docutils literal notranslate"><span class="pre">num_id</span></code> 456 is bound.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.iot_v1.types.GeneratedCodeInfo">
@@ -780,9 +910,9 @@ one.</p>
 <code class="descname">page_size</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceRegistriesRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum number of registries to return in the response. If
 this value is zero, the service will select a default size. A
-call may return fewer objects than requested, but if there is
-a non-empty <code class="docutils literal notranslate"><span class="pre">page_token</span></code>, it indicates that more entries are
-available.</p>
+call may return fewer objects than requested. A non-empty
+<code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> in the response indicates that more data
+is available.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -790,8 +920,8 @@ available.</p>
 <code class="descname">page_token</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceRegistriesRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>The value returned by the last
 <code class="docutils literal notranslate"><span class="pre">ListDeviceRegistriesResponse</span></code>; indicates that this is a
-continuation of a prior <code class="docutils literal notranslate"><span class="pre">ListDeviceRegistries</span></code> call, and
-that the system should return the next page of data.</p>
+continuation of a prior <code class="docutils literal notranslate"><span class="pre">ListDeviceRegistries</span></code> call and the
+system should return the next page of data.</p>
 </dd></dl>
 
 </dd></dl>
@@ -870,24 +1000,30 @@ one.</p>
 <dl class="attribute">
 <dt id="google.cloud.iot_v1.types.ListDevicesRequest.device_num_ids">
 <code class="descname">device_num_ids</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.device_num_ids" title="Permalink to this definition">#</a></dt>
-<dd><p>A list of device numerical ids. If empty, it will ignore this
-field. This field cannot hold more than 10,000 entries.</p>
+<dd><p>A list of device numeric IDs. If empty, this field is ignored.
+Maximum IDs: 10,000.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.iot_v1.types.ListDevicesRequest.device_ids">
 <code class="descname">device_ids</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.device_ids" title="Permalink to this definition">#</a></dt>
-<dd><p>A list of device string identifiers. If empty, it will ignore
-this field. For example, <code class="docutils literal notranslate"><span class="pre">['device0',</span> <span class="pre">'device12']</span></code>. This
-field cannot hold more than 10,000 entries.</p>
+<dd><p>A list of device string IDs. For example, <code class="docutils literal notranslate"><span class="pre">['device0',</span>
+<span class="pre">'device12']</span></code>. If empty, this field is ignored. Maximum IDs:
+10,000</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.iot_v1.types.ListDevicesRequest.field_mask">
 <code class="descname">field_mask</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.field_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>The fields of the <code class="docutils literal notranslate"><span class="pre">Device</span></code> resource to be returned in the
-response. The fields <code class="docutils literal notranslate"><span class="pre">id</span></code>, and <code class="docutils literal notranslate"><span class="pre">num_id</span></code> are always
-returned by default, along with any other fields specified.</p>
+response. The fields <code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">num_id</span></code> are always
+returned, along with any other fields specified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDevicesRequest.gateway_list_options">
+<code class="descname">gateway_list_options</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.gateway_list_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Options related to gateways.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -895,9 +1031,9 @@ returned by default, along with any other fields specified.</p>
 <code class="descname">page_size</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum number of devices to return in the response. If
 this value is zero, the service will select a default size. A
-call may return fewer objects than requested, but if there is
-a non-empty <code class="docutils literal notranslate"><span class="pre">page_token</span></code>, it indicates that more entries are
-available.</p>
+call may return fewer objects than requested. A non-empty
+<code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> in the response indicates that more data
+is available.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -905,8 +1041,8 @@ available.</p>
 <code class="descname">page_token</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>The value returned by the last <code class="docutils literal notranslate"><span class="pre">ListDevicesResponse</span></code>;
 indicates that this is a continuation of a prior
-<code class="docutils literal notranslate"><span class="pre">ListDevices</span></code> call, and that the system should return the
-next page of data.</p>
+<code class="docutils literal notranslate"><span class="pre">ListDevices</span></code> call and the system should return the next
+page of data.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1140,6 +1276,46 @@ credentials.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.iot_v1.types.SendCommandToDeviceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">SendCommandToDeviceRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.SendCommandToDeviceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">SendCommandToDevice</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.SendCommandToDeviceRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.iot_v1.types.SendCommandToDeviceRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the device. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/{num_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.SendCommandToDeviceRequest.binary_data">
+<code class="descname">binary_data</code><a class="headerlink" href="#google.cloud.iot_v1.types.SendCommandToDeviceRequest.binary_data" title="Permalink to this definition">#</a></dt>
+<dd><p>The command data to send to the device.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.SendCommandToDeviceRequest.subfolder">
+<code class="descname">subfolder</code><a class="headerlink" href="#google.cloud.iot_v1.types.SendCommandToDeviceRequest.subfolder" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional subfolder for the command. If empty, the command will
+be delivered to the /devices/{device-id}/commands topic,
+otherwise it will be delivered to the /devices/{device-
+id}/commands/{subfolder} topic. Multi-level subfolders are
+allowed. This field must not have more than 256 characters,
+and must not contain any MQTT wildcards (“+” or “#”) or null
+characters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.SendCommandToDeviceResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">SendCommandToDeviceResponse</code><a class="headerlink" href="#google.cloud.iot_v1.types.SendCommandToDeviceResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response for <code class="docutils literal notranslate"><span class="pre">SendCommandToDevice</span></code>.</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.iot_v1.types.ServiceDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.iot_v1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -1244,6 +1420,40 @@ caller is allowed.</p>
 <dd></dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.iot_v1.types.UnbindDeviceFromGatewayRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">UnbindDeviceFromGatewayRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.UnbindDeviceFromGatewayRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">UnbindDeviceFromGateway</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.UnbindDeviceFromGatewayRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.iot_v1.types.UnbindDeviceFromGatewayRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the registry. For example, <code class="docutils literal notranslate"><span class="pre">projects/example-</span>
+<span class="pre">project/locations/us-central1/registries/my-registry</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.UnbindDeviceFromGatewayRequest.gateway_id">
+<code class="descname">gateway_id</code><a class="headerlink" href="#google.cloud.iot_v1.types.UnbindDeviceFromGatewayRequest.gateway_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The value of <code class="docutils literal notranslate"><span class="pre">gateway_id</span></code> can be either the device numeric
+ID or the user-defined device identifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.UnbindDeviceFromGatewayRequest.device_id">
+<code class="descname">device_id</code><a class="headerlink" href="#google.cloud.iot_v1.types.UnbindDeviceFromGatewayRequest.device_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The device to disassociate from the specified gateway. The
+value of <code class="docutils literal notranslate"><span class="pre">device_id</span></code> can be either the device numeric ID or
+the user-defined device identifier.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.UnbindDeviceFromGatewayResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">UnbindDeviceFromGatewayResponse</code><a class="headerlink" href="#google.cloud.iot_v1.types.UnbindDeviceFromGatewayResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response for <code class="docutils literal notranslate"><span class="pre">UnbindDeviceFromGateway</span></code>.</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.iot_v1.types.UninterpretedOption">
 <em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.iot_v1.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
 <dd><dl class="class">
@@ -1286,10 +1496,9 @@ Mutable top-level fields: <code class="docutils literal notranslate"><span class
 <dl class="attribute">
 <dt id="google.cloud.iot_v1.types.UpdateDeviceRequest.device">
 <code class="descname">device</code><a class="headerlink" href="#google.cloud.iot_v1.types.UpdateDeviceRequest.device" title="Permalink to this definition">#</a></dt>
-<dd><p>The new values for the device registry. The <code class="docutils literal notranslate"><span class="pre">id</span></code> and
-<code class="docutils literal notranslate"><span class="pre">num_id</span></code> fields must be empty, and the field <code class="docutils literal notranslate"><span class="pre">name</span></code> must
-specify the name path. For example,
-<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<dd><p>The new values for the device. The <code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">num_id</span></code>
+fields must be empty, and the field <code class="docutils literal notranslate"><span class="pre">name</span></code> must specify the
+name path. For example, <code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
 <span class="pre">central1/registries/registry0/devices/device0</span></code>or
 <code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
 <span class="pre">central1/registries/registry0/devices/{num_id}</span></code>.</p>
