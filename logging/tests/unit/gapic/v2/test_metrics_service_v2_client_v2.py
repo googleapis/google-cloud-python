@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import logging_v2
@@ -74,7 +77,10 @@ class TestMetricsServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.MetricsServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.MetricsServiceV2Client()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -93,7 +99,10 @@ class TestMetricsServiceV2Client(object):
 
     def test_list_log_metrics_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.MetricsServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.MetricsServiceV2Client()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -118,7 +127,10 @@ class TestMetricsServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.MetricsServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.MetricsServiceV2Client()
 
         # Setup Request
         metric_name = client.metric_path('[PROJECT]', '[METRIC]')
@@ -135,7 +147,10 @@ class TestMetricsServiceV2Client(object):
     def test_get_log_metric_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.MetricsServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.MetricsServiceV2Client()
 
         # Setup request
         metric_name = client.metric_path('[PROJECT]', '[METRIC]')
@@ -159,7 +174,10 @@ class TestMetricsServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.MetricsServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.MetricsServiceV2Client()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -177,7 +195,10 @@ class TestMetricsServiceV2Client(object):
     def test_create_log_metric_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.MetricsServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.MetricsServiceV2Client()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -202,7 +223,10 @@ class TestMetricsServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.MetricsServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.MetricsServiceV2Client()
 
         # Setup Request
         metric_name = client.metric_path('[PROJECT]', '[METRIC]')
@@ -220,7 +244,10 @@ class TestMetricsServiceV2Client(object):
     def test_update_log_metric_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.MetricsServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.MetricsServiceV2Client()
 
         # Setup request
         metric_name = client.metric_path('[PROJECT]', '[METRIC]')
@@ -231,7 +258,10 @@ class TestMetricsServiceV2Client(object):
 
     def test_delete_log_metric(self):
         channel = ChannelStub()
-        client = logging_v2.MetricsServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.MetricsServiceV2Client()
 
         # Setup Request
         metric_name = client.metric_path('[PROJECT]', '[METRIC]')
@@ -247,7 +277,10 @@ class TestMetricsServiceV2Client(object):
     def test_delete_log_metric_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.MetricsServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.MetricsServiceV2Client()
 
         # Setup request
         metric_name = client.metric_path('[PROJECT]', '[METRIC]')
