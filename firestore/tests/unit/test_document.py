@@ -277,8 +277,10 @@ class TestDocumentReference(unittest.TestCase):
             ),
         )
         if merge:
-            _, _, field_paths = _helpers.process_server_timestamp(
-                document_data, split_on_dots=False)
+            field_paths = [
+                field_path for field_path, value in _helpers.extract_fields(
+                    document_data, _helpers.FieldPath())
+            ]
             field_paths = [
                 field_path.to_api_repr() for field_path in sorted(field_paths)
             ]
