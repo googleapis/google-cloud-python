@@ -20,6 +20,7 @@ from google.cloud.vision_v1.proto import product_search_pb2 as google_dot_cloud_
 from google.cloud.vision_v1.proto import text_annotation_pb2 as google_dot_cloud_dot_vision__v1_dot_proto_dot_text__annotation__pb2
 from google.cloud.vision_v1.proto import web_detection_pb2 as google_dot_cloud_dot_vision__v1_dot_proto_dot_web__detection__pb2
 from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
+from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 from google.type import color_pb2 as google_dot_type_dot_color__pb2
@@ -30,9 +31,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/vision_v1/proto/image_annotator.proto',
   package='google.cloud.vision.v1',
   syntax='proto3',
-  serialized_pb=_b('\n2google/cloud/vision_v1/proto/image_annotator.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\x1a\x31google/cloud/vision_v1/proto/product_search.proto\x1a\x32google/cloud/vision_v1/proto/text_annotation.proto\x1a\x30google/cloud/vision_v1/proto/web_detection.proto\x1a#google/longrunning/operations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x17google/type/color.proto\x1a\x18google/type/latlng.proto\"\x87\x03\n\x07\x46\x65\x61ture\x12\x32\n\x04type\x18\x01 \x01(\x0e\x32$.google.cloud.vision.v1.Feature.Type\x12\x13\n\x0bmax_results\x18\x02 \x01(\x05\x12\r\n\x05model\x18\x03 \x01(\t\"\xa3\x02\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x46\x41\x43\x45_DETECTION\x10\x01\x12\x16\n\x12LANDMARK_DETECTION\x10\x02\x12\x12\n\x0eLOGO_DETECTION\x10\x03\x12\x13\n\x0fLABEL_DETECTION\x10\x04\x12\x12\n\x0eTEXT_DETECTION\x10\x05\x12\x1b\n\x17\x44OCUMENT_TEXT_DETECTION\x10\x0b\x12\x19\n\x15SAFE_SEARCH_DETECTION\x10\x06\x12\x14\n\x10IMAGE_PROPERTIES\x10\x07\x12\x0e\n\nCROP_HINTS\x10\t\x12\x11\n\rWEB_DETECTION\x10\n\x12\x12\n\x0ePRODUCT_SEARCH\x10\x0c\x12\x17\n\x13OBJECT_LOCALIZATION\x10\x13\"7\n\x0bImageSource\x12\x15\n\rgcs_image_uri\x18\x01 \x01(\t\x12\x11\n\timage_uri\x18\x02 \x01(\t\"M\n\x05Image\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\x0c\x12\x33\n\x06source\x18\x02 \x01(\x0b\x32#.google.cloud.vision.v1.ImageSource\"\xc7\r\n\x0e\x46\x61\x63\x65\x41nnotation\x12;\n\rbounding_poly\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12>\n\x10\x66\x64_bounding_poly\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x42\n\tlandmarks\x18\x03 \x03(\x0b\x32/.google.cloud.vision.v1.FaceAnnotation.Landmark\x12\x12\n\nroll_angle\x18\x04 \x01(\x02\x12\x11\n\tpan_angle\x18\x05 \x01(\x02\x12\x12\n\ntilt_angle\x18\x06 \x01(\x02\x12\x1c\n\x14\x64\x65tection_confidence\x18\x07 \x01(\x02\x12\x1e\n\x16landmarking_confidence\x18\x08 \x01(\x02\x12:\n\x0ejoy_likelihood\x18\t \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12=\n\x11sorrow_likelihood\x18\n \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12<\n\x10\x61nger_likelihood\x18\x0b \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12?\n\x13surprise_likelihood\x18\x0c \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12\x44\n\x18under_exposed_likelihood\x18\r \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12>\n\x12\x62lurred_likelihood\x18\x0e \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12?\n\x13headwear_likelihood\x18\x0f \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x1a\xb9\x07\n\x08Landmark\x12\x42\n\x04type\x18\x03 \x01(\x0e\x32\x34.google.cloud.vision.v1.FaceAnnotation.Landmark.Type\x12\x32\n\x08position\x18\x04 \x01(\x0b\x32 .google.cloud.vision.v1.Position\"\xb4\x06\n\x04Type\x12\x14\n\x10UNKNOWN_LANDMARK\x10\x00\x12\x0c\n\x08LEFT_EYE\x10\x01\x12\r\n\tRIGHT_EYE\x10\x02\x12\x18\n\x14LEFT_OF_LEFT_EYEBROW\x10\x03\x12\x19\n\x15RIGHT_OF_LEFT_EYEBROW\x10\x04\x12\x19\n\x15LEFT_OF_RIGHT_EYEBROW\x10\x05\x12\x1a\n\x16RIGHT_OF_RIGHT_EYEBROW\x10\x06\x12\x19\n\x15MIDPOINT_BETWEEN_EYES\x10\x07\x12\x0c\n\x08NOSE_TIP\x10\x08\x12\r\n\tUPPER_LIP\x10\t\x12\r\n\tLOWER_LIP\x10\n\x12\x0e\n\nMOUTH_LEFT\x10\x0b\x12\x0f\n\x0bMOUTH_RIGHT\x10\x0c\x12\x10\n\x0cMOUTH_CENTER\x10\r\x12\x15\n\x11NOSE_BOTTOM_RIGHT\x10\x0e\x12\x14\n\x10NOSE_BOTTOM_LEFT\x10\x0f\x12\x16\n\x12NOSE_BOTTOM_CENTER\x10\x10\x12\x19\n\x15LEFT_EYE_TOP_BOUNDARY\x10\x11\x12\x19\n\x15LEFT_EYE_RIGHT_CORNER\x10\x12\x12\x1c\n\x18LEFT_EYE_BOTTOM_BOUNDARY\x10\x13\x12\x18\n\x14LEFT_EYE_LEFT_CORNER\x10\x14\x12\x1a\n\x16RIGHT_EYE_TOP_BOUNDARY\x10\x15\x12\x1a\n\x16RIGHT_EYE_RIGHT_CORNER\x10\x16\x12\x1d\n\x19RIGHT_EYE_BOTTOM_BOUNDARY\x10\x17\x12\x19\n\x15RIGHT_EYE_LEFT_CORNER\x10\x18\x12\x1f\n\x1bLEFT_EYEBROW_UPPER_MIDPOINT\x10\x19\x12 \n\x1cRIGHT_EYEBROW_UPPER_MIDPOINT\x10\x1a\x12\x14\n\x10LEFT_EAR_TRAGION\x10\x1b\x12\x15\n\x11RIGHT_EAR_TRAGION\x10\x1c\x12\x12\n\x0eLEFT_EYE_PUPIL\x10\x1d\x12\x13\n\x0fRIGHT_EYE_PUPIL\x10\x1e\x12\x15\n\x11\x46OREHEAD_GLABELLA\x10\x1f\x12\x11\n\rCHIN_GNATHION\x10 \x12\x14\n\x10\x43HIN_LEFT_GONION\x10!\x12\x15\n\x11\x43HIN_RIGHT_GONION\x10\"\"4\n\x0cLocationInfo\x12$\n\x07lat_lng\x18\x01 \x01(\x0b\x32\x13.google.type.LatLng\"=\n\x08Property\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x14\n\x0cuint64_value\x18\x03 \x01(\x04\"\xab\x02\n\x10\x45ntityAnnotation\x12\x0b\n\x03mid\x18\x01 \x01(\t\x12\x0e\n\x06locale\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\r\n\x05score\x18\x04 \x01(\x02\x12\x16\n\nconfidence\x18\x05 \x01(\x02\x42\x02\x18\x01\x12\x12\n\ntopicality\x18\x06 \x01(\x02\x12;\n\rbounding_poly\x18\x07 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x37\n\tlocations\x18\x08 \x03(\x0b\x32$.google.cloud.vision.v1.LocationInfo\x12\x34\n\nproperties\x18\t \x03(\x0b\x32 .google.cloud.vision.v1.Property\"\x99\x01\n\x19LocalizedObjectAnnotation\x12\x0b\n\x03mid\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\r\n\x05score\x18\x04 \x01(\x02\x12;\n\rbounding_poly\x18\x05 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\"\x99\x02\n\x14SafeSearchAnnotation\x12\x31\n\x05\x61\x64ult\x18\x01 \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12\x31\n\x05spoof\x18\x02 \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12\x33\n\x07medical\x18\x03 \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12\x34\n\x08violence\x18\x04 \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12\x30\n\x04racy\x18\t \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\"a\n\x0bLatLongRect\x12(\n\x0bmin_lat_lng\x18\x01 \x01(\x0b\x32\x13.google.type.LatLng\x12(\n\x0bmax_lat_lng\x18\x02 \x01(\x0b\x32\x13.google.type.LatLng\"U\n\tColorInfo\x12!\n\x05\x63olor\x18\x01 \x01(\x0b\x32\x12.google.type.Color\x12\r\n\x05score\x18\x02 \x01(\x02\x12\x16\n\x0epixel_fraction\x18\x03 \x01(\x02\"M\n\x18\x44ominantColorsAnnotation\x12\x31\n\x06\x63olors\x18\x01 \x03(\x0b\x32!.google.cloud.vision.v1.ColorInfo\"\\\n\x0fImageProperties\x12I\n\x0f\x64ominant_colors\x18\x01 \x01(\x0b\x32\x30.google.cloud.vision.v1.DominantColorsAnnotation\"x\n\x08\x43ropHint\x12;\n\rbounding_poly\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12\x1b\n\x13importance_fraction\x18\x03 \x01(\x02\"K\n\x13\x43ropHintsAnnotation\x12\x34\n\ncrop_hints\x18\x01 \x03(\x0b\x32 .google.cloud.vision.v1.CropHint\"(\n\x0f\x43ropHintsParams\x12\x15\n\raspect_ratios\x18\x01 \x03(\x02\"1\n\x12WebDetectionParams\x12\x1b\n\x13include_geo_results\x18\x02 \x01(\x08\"\xbc\x02\n\x0cImageContext\x12:\n\rlat_long_rect\x18\x01 \x01(\x0b\x32#.google.cloud.vision.v1.LatLongRect\x12\x16\n\x0elanguage_hints\x18\x02 \x03(\t\x12\x42\n\x11\x63rop_hints_params\x18\x04 \x01(\x0b\x32\'.google.cloud.vision.v1.CropHintsParams\x12J\n\x15product_search_params\x18\x05 \x01(\x0b\x32+.google.cloud.vision.v1.ProductSearchParams\x12H\n\x14web_detection_params\x18\x06 \x01(\x0b\x32*.google.cloud.vision.v1.WebDetectionParams\"\xb4\x01\n\x14\x41nnotateImageRequest\x12,\n\x05image\x18\x01 \x01(\x0b\x32\x1d.google.cloud.vision.v1.Image\x12\x31\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0b\x32\x1f.google.cloud.vision.v1.Feature\x12;\n\rimage_context\x18\x03 \x01(\x0b\x32$.google.cloud.vision.v1.ImageContext\":\n\x16ImageAnnotationContext\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\x13\n\x0bpage_number\x18\x02 \x01(\x05\"\xe4\x07\n\x15\x41nnotateImageResponse\x12@\n\x10\x66\x61\x63\x65_annotations\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1.FaceAnnotation\x12\x46\n\x14landmark_annotations\x18\x02 \x03(\x0b\x32(.google.cloud.vision.v1.EntityAnnotation\x12\x42\n\x10logo_annotations\x18\x03 \x03(\x0b\x32(.google.cloud.vision.v1.EntityAnnotation\x12\x43\n\x11label_annotations\x18\x04 \x03(\x0b\x32(.google.cloud.vision.v1.EntityAnnotation\x12W\n\x1clocalized_object_annotations\x18\x16 \x03(\x0b\x32\x31.google.cloud.vision.v1.LocalizedObjectAnnotation\x12\x42\n\x10text_annotations\x18\x05 \x03(\x0b\x32(.google.cloud.vision.v1.EntityAnnotation\x12\x44\n\x14\x66ull_text_annotation\x18\x0c \x01(\x0b\x32&.google.cloud.vision.v1.TextAnnotation\x12L\n\x16safe_search_annotation\x18\x06 \x01(\x0b\x32,.google.cloud.vision.v1.SafeSearchAnnotation\x12L\n\x1bimage_properties_annotation\x18\x08 \x01(\x0b\x32\'.google.cloud.vision.v1.ImageProperties\x12J\n\x15\x63rop_hints_annotation\x18\x0b \x01(\x0b\x32+.google.cloud.vision.v1.CropHintsAnnotation\x12;\n\rweb_detection\x18\r \x01(\x0b\x32$.google.cloud.vision.v1.WebDetection\x12L\n\x16product_search_results\x18\x0e \x01(\x0b\x32,.google.cloud.vision.v1.ProductSearchResults\x12!\n\x05\x65rror\x18\t \x01(\x0b\x32\x12.google.rpc.Status\x12?\n\x07\x63ontext\x18\x15 \x01(\x0b\x32..google.cloud.vision.v1.ImageAnnotationContext\"\x93\x01\n\x14\x41nnotateFileResponse\x12\x39\n\x0cinput_config\x18\x01 \x01(\x0b\x32#.google.cloud.vision.v1.InputConfig\x12@\n\tresponses\x18\x02 \x03(\x0b\x32-.google.cloud.vision.v1.AnnotateImageResponse\"\\\n\x1a\x42\x61tchAnnotateImagesRequest\x12>\n\x08requests\x18\x01 \x03(\x0b\x32,.google.cloud.vision.v1.AnnotateImageRequest\"_\n\x1b\x42\x61tchAnnotateImagesResponse\x12@\n\tresponses\x18\x01 \x03(\x0b\x32-.google.cloud.vision.v1.AnnotateImageResponse\"\x82\x02\n\x18\x41syncAnnotateFileRequest\x12\x39\n\x0cinput_config\x18\x01 \x01(\x0b\x32#.google.cloud.vision.v1.InputConfig\x12\x31\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0b\x32\x1f.google.cloud.vision.v1.Feature\x12;\n\rimage_context\x18\x03 \x01(\x0b\x32$.google.cloud.vision.v1.ImageContext\x12;\n\routput_config\x18\x04 \x01(\x0b\x32$.google.cloud.vision.v1.OutputConfig\"X\n\x19\x41syncAnnotateFileResponse\x12;\n\routput_config\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1.OutputConfig\"d\n\x1e\x41syncBatchAnnotateFilesRequest\x12\x42\n\x08requests\x18\x01 \x03(\x0b\x32\x30.google.cloud.vision.v1.AsyncAnnotateFileRequest\"g\n\x1f\x41syncBatchAnnotateFilesResponse\x12\x44\n\tresponses\x18\x01 \x03(\x0b\x32\x31.google.cloud.vision.v1.AsyncAnnotateFileResponse\"W\n\x0bInputConfig\x12\x35\n\ngcs_source\x18\x01 \x01(\x0b\x32!.google.cloud.vision.v1.GcsSource\x12\x11\n\tmime_type\x18\x02 \x01(\t\"c\n\x0cOutputConfig\x12?\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32&.google.cloud.vision.v1.GcsDestination\x12\x12\n\nbatch_size\x18\x02 \x01(\x05\"\x18\n\tGcsSource\x12\x0b\n\x03uri\x18\x01 \x01(\t\"\x1d\n\x0eGcsDestination\x12\x0b\n\x03uri\x18\x01 \x01(\t\"\x88\x02\n\x11OperationMetadata\x12>\n\x05state\x18\x01 \x01(\x0e\x32/.google.cloud.vision.v1.OperationMetadata.State\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"Q\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x43REATED\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\x12\r\n\tCANCELLED\x10\x04*e\n\nLikelihood\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x11\n\rVERY_UNLIKELY\x10\x01\x12\x0c\n\x08UNLIKELY\x10\x02\x12\x0c\n\x08POSSIBLE\x10\x03\x12\n\n\x06LIKELY\x10\x04\x12\x0f\n\x0bVERY_LIKELY\x10\x05\x32\xcd\x02\n\x0eImageAnnotator\x12\x9e\x01\n\x13\x42\x61tchAnnotateImages\x12\x32.google.cloud.vision.v1.BatchAnnotateImagesRequest\x1a\x33.google.cloud.vision.v1.BatchAnnotateImagesResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\"\x13/v1/images:annotate:\x01*\x12\x99\x01\n\x17\x41syncBatchAnnotateFiles\x12\x36.google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest\x1a\x1d.google.longrunning.Operation\"\'\x82\xd3\xe4\x93\x02!\"\x1c/v1/files:asyncBatchAnnotate:\x01*B{\n\x1a\x63om.google.cloud.vision.v1B\x13ImageAnnotatorProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\xa2\x02\x04GCVNb\x06proto3')
+  serialized_pb=_b('\n2google/cloud/vision_v1/proto/image_annotator.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\x1a\x31google/cloud/vision_v1/proto/product_search.proto\x1a\x32google/cloud/vision_v1/proto/text_annotation.proto\x1a\x30google/cloud/vision_v1/proto/web_detection.proto\x1a#google/longrunning/operations.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x17google/type/color.proto\x1a\x18google/type/latlng.proto\"\x87\x03\n\x07\x46\x65\x61ture\x12\x32\n\x04type\x18\x01 \x01(\x0e\x32$.google.cloud.vision.v1.Feature.Type\x12\x13\n\x0bmax_results\x18\x02 \x01(\x05\x12\r\n\x05model\x18\x03 \x01(\t\"\xa3\x02\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x46\x41\x43\x45_DETECTION\x10\x01\x12\x16\n\x12LANDMARK_DETECTION\x10\x02\x12\x12\n\x0eLOGO_DETECTION\x10\x03\x12\x13\n\x0fLABEL_DETECTION\x10\x04\x12\x12\n\x0eTEXT_DETECTION\x10\x05\x12\x1b\n\x17\x44OCUMENT_TEXT_DETECTION\x10\x0b\x12\x19\n\x15SAFE_SEARCH_DETECTION\x10\x06\x12\x14\n\x10IMAGE_PROPERTIES\x10\x07\x12\x0e\n\nCROP_HINTS\x10\t\x12\x11\n\rWEB_DETECTION\x10\n\x12\x12\n\x0ePRODUCT_SEARCH\x10\x0c\x12\x17\n\x13OBJECT_LOCALIZATION\x10\x13\"7\n\x0bImageSource\x12\x15\n\rgcs_image_uri\x18\x01 \x01(\t\x12\x11\n\timage_uri\x18\x02 \x01(\t\"M\n\x05Image\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\x0c\x12\x33\n\x06source\x18\x02 \x01(\x0b\x32#.google.cloud.vision.v1.ImageSource\"\xc7\r\n\x0e\x46\x61\x63\x65\x41nnotation\x12;\n\rbounding_poly\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12>\n\x10\x66\x64_bounding_poly\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x42\n\tlandmarks\x18\x03 \x03(\x0b\x32/.google.cloud.vision.v1.FaceAnnotation.Landmark\x12\x12\n\nroll_angle\x18\x04 \x01(\x02\x12\x11\n\tpan_angle\x18\x05 \x01(\x02\x12\x12\n\ntilt_angle\x18\x06 \x01(\x02\x12\x1c\n\x14\x64\x65tection_confidence\x18\x07 \x01(\x02\x12\x1e\n\x16landmarking_confidence\x18\x08 \x01(\x02\x12:\n\x0ejoy_likelihood\x18\t \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12=\n\x11sorrow_likelihood\x18\n \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12<\n\x10\x61nger_likelihood\x18\x0b \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12?\n\x13surprise_likelihood\x18\x0c \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12\x44\n\x18under_exposed_likelihood\x18\r \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12>\n\x12\x62lurred_likelihood\x18\x0e \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12?\n\x13headwear_likelihood\x18\x0f \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x1a\xb9\x07\n\x08Landmark\x12\x42\n\x04type\x18\x03 \x01(\x0e\x32\x34.google.cloud.vision.v1.FaceAnnotation.Landmark.Type\x12\x32\n\x08position\x18\x04 \x01(\x0b\x32 .google.cloud.vision.v1.Position\"\xb4\x06\n\x04Type\x12\x14\n\x10UNKNOWN_LANDMARK\x10\x00\x12\x0c\n\x08LEFT_EYE\x10\x01\x12\r\n\tRIGHT_EYE\x10\x02\x12\x18\n\x14LEFT_OF_LEFT_EYEBROW\x10\x03\x12\x19\n\x15RIGHT_OF_LEFT_EYEBROW\x10\x04\x12\x19\n\x15LEFT_OF_RIGHT_EYEBROW\x10\x05\x12\x1a\n\x16RIGHT_OF_RIGHT_EYEBROW\x10\x06\x12\x19\n\x15MIDPOINT_BETWEEN_EYES\x10\x07\x12\x0c\n\x08NOSE_TIP\x10\x08\x12\r\n\tUPPER_LIP\x10\t\x12\r\n\tLOWER_LIP\x10\n\x12\x0e\n\nMOUTH_LEFT\x10\x0b\x12\x0f\n\x0bMOUTH_RIGHT\x10\x0c\x12\x10\n\x0cMOUTH_CENTER\x10\r\x12\x15\n\x11NOSE_BOTTOM_RIGHT\x10\x0e\x12\x14\n\x10NOSE_BOTTOM_LEFT\x10\x0f\x12\x16\n\x12NOSE_BOTTOM_CENTER\x10\x10\x12\x19\n\x15LEFT_EYE_TOP_BOUNDARY\x10\x11\x12\x19\n\x15LEFT_EYE_RIGHT_CORNER\x10\x12\x12\x1c\n\x18LEFT_EYE_BOTTOM_BOUNDARY\x10\x13\x12\x18\n\x14LEFT_EYE_LEFT_CORNER\x10\x14\x12\x1a\n\x16RIGHT_EYE_TOP_BOUNDARY\x10\x15\x12\x1a\n\x16RIGHT_EYE_RIGHT_CORNER\x10\x16\x12\x1d\n\x19RIGHT_EYE_BOTTOM_BOUNDARY\x10\x17\x12\x19\n\x15RIGHT_EYE_LEFT_CORNER\x10\x18\x12\x1f\n\x1bLEFT_EYEBROW_UPPER_MIDPOINT\x10\x19\x12 \n\x1cRIGHT_EYEBROW_UPPER_MIDPOINT\x10\x1a\x12\x14\n\x10LEFT_EAR_TRAGION\x10\x1b\x12\x15\n\x11RIGHT_EAR_TRAGION\x10\x1c\x12\x12\n\x0eLEFT_EYE_PUPIL\x10\x1d\x12\x13\n\x0fRIGHT_EYE_PUPIL\x10\x1e\x12\x15\n\x11\x46OREHEAD_GLABELLA\x10\x1f\x12\x11\n\rCHIN_GNATHION\x10 \x12\x14\n\x10\x43HIN_LEFT_GONION\x10!\x12\x15\n\x11\x43HIN_RIGHT_GONION\x10\"\"4\n\x0cLocationInfo\x12$\n\x07lat_lng\x18\x01 \x01(\x0b\x32\x13.google.type.LatLng\"=\n\x08Property\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x14\n\x0cuint64_value\x18\x03 \x01(\x04\"\xab\x02\n\x10\x45ntityAnnotation\x12\x0b\n\x03mid\x18\x01 \x01(\t\x12\x0e\n\x06locale\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\r\n\x05score\x18\x04 \x01(\x02\x12\x16\n\nconfidence\x18\x05 \x01(\x02\x42\x02\x18\x01\x12\x12\n\ntopicality\x18\x06 \x01(\x02\x12;\n\rbounding_poly\x18\x07 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x37\n\tlocations\x18\x08 \x03(\x0b\x32$.google.cloud.vision.v1.LocationInfo\x12\x34\n\nproperties\x18\t \x03(\x0b\x32 .google.cloud.vision.v1.Property\"\x99\x01\n\x19LocalizedObjectAnnotation\x12\x0b\n\x03mid\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\r\n\x05score\x18\x04 \x01(\x02\x12;\n\rbounding_poly\x18\x05 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\"\x99\x02\n\x14SafeSearchAnnotation\x12\x31\n\x05\x61\x64ult\x18\x01 \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12\x31\n\x05spoof\x18\x02 \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12\x33\n\x07medical\x18\x03 \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12\x34\n\x08violence\x18\x04 \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\x12\x30\n\x04racy\x18\t \x01(\x0e\x32\".google.cloud.vision.v1.Likelihood\"a\n\x0bLatLongRect\x12(\n\x0bmin_lat_lng\x18\x01 \x01(\x0b\x32\x13.google.type.LatLng\x12(\n\x0bmax_lat_lng\x18\x02 \x01(\x0b\x32\x13.google.type.LatLng\"U\n\tColorInfo\x12!\n\x05\x63olor\x18\x01 \x01(\x0b\x32\x12.google.type.Color\x12\r\n\x05score\x18\x02 \x01(\x02\x12\x16\n\x0epixel_fraction\x18\x03 \x01(\x02\"M\n\x18\x44ominantColorsAnnotation\x12\x31\n\x06\x63olors\x18\x01 \x03(\x0b\x32!.google.cloud.vision.v1.ColorInfo\"\\\n\x0fImageProperties\x12I\n\x0f\x64ominant_colors\x18\x01 \x01(\x0b\x32\x30.google.cloud.vision.v1.DominantColorsAnnotation\"x\n\x08\x43ropHint\x12;\n\rbounding_poly\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12\x1b\n\x13importance_fraction\x18\x03 \x01(\x02\"K\n\x13\x43ropHintsAnnotation\x12\x34\n\ncrop_hints\x18\x01 \x03(\x0b\x32 .google.cloud.vision.v1.CropHint\"(\n\x0f\x43ropHintsParams\x12\x15\n\raspect_ratios\x18\x01 \x03(\x02\"1\n\x12WebDetectionParams\x12\x1b\n\x13include_geo_results\x18\x02 \x01(\x08\"\xbc\x02\n\x0cImageContext\x12:\n\rlat_long_rect\x18\x01 \x01(\x0b\x32#.google.cloud.vision.v1.LatLongRect\x12\x16\n\x0elanguage_hints\x18\x02 \x03(\t\x12\x42\n\x11\x63rop_hints_params\x18\x04 \x01(\x0b\x32\'.google.cloud.vision.v1.CropHintsParams\x12J\n\x15product_search_params\x18\x05 \x01(\x0b\x32+.google.cloud.vision.v1.ProductSearchParams\x12H\n\x14web_detection_params\x18\x06 \x01(\x0b\x32*.google.cloud.vision.v1.WebDetectionParams\"\xb4\x01\n\x14\x41nnotateImageRequest\x12,\n\x05image\x18\x01 \x01(\x0b\x32\x1d.google.cloud.vision.v1.Image\x12\x31\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0b\x32\x1f.google.cloud.vision.v1.Feature\x12;\n\rimage_context\x18\x03 \x01(\x0b\x32$.google.cloud.vision.v1.ImageContext\":\n\x16ImageAnnotationContext\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\x13\n\x0bpage_number\x18\x02 \x01(\x05\"\xe4\x07\n\x15\x41nnotateImageResponse\x12@\n\x10\x66\x61\x63\x65_annotations\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1.FaceAnnotation\x12\x46\n\x14landmark_annotations\x18\x02 \x03(\x0b\x32(.google.cloud.vision.v1.EntityAnnotation\x12\x42\n\x10logo_annotations\x18\x03 \x03(\x0b\x32(.google.cloud.vision.v1.EntityAnnotation\x12\x43\n\x11label_annotations\x18\x04 \x03(\x0b\x32(.google.cloud.vision.v1.EntityAnnotation\x12W\n\x1clocalized_object_annotations\x18\x16 \x03(\x0b\x32\x31.google.cloud.vision.v1.LocalizedObjectAnnotation\x12\x42\n\x10text_annotations\x18\x05 \x03(\x0b\x32(.google.cloud.vision.v1.EntityAnnotation\x12\x44\n\x14\x66ull_text_annotation\x18\x0c \x01(\x0b\x32&.google.cloud.vision.v1.TextAnnotation\x12L\n\x16safe_search_annotation\x18\x06 \x01(\x0b\x32,.google.cloud.vision.v1.SafeSearchAnnotation\x12L\n\x1bimage_properties_annotation\x18\x08 \x01(\x0b\x32\'.google.cloud.vision.v1.ImageProperties\x12J\n\x15\x63rop_hints_annotation\x18\x0b \x01(\x0b\x32+.google.cloud.vision.v1.CropHintsAnnotation\x12;\n\rweb_detection\x18\r \x01(\x0b\x32$.google.cloud.vision.v1.WebDetection\x12L\n\x16product_search_results\x18\x0e \x01(\x0b\x32,.google.cloud.vision.v1.ProductSearchResults\x12!\n\x05\x65rror\x18\t \x01(\x0b\x32\x12.google.rpc.Status\x12?\n\x07\x63ontext\x18\x15 \x01(\x0b\x32..google.cloud.vision.v1.ImageAnnotationContext\"\x93\x01\n\x14\x41nnotateFileResponse\x12\x39\n\x0cinput_config\x18\x01 \x01(\x0b\x32#.google.cloud.vision.v1.InputConfig\x12@\n\tresponses\x18\x02 \x03(\x0b\x32-.google.cloud.vision.v1.AnnotateImageResponse\"\\\n\x1a\x42\x61tchAnnotateImagesRequest\x12>\n\x08requests\x18\x01 \x03(\x0b\x32,.google.cloud.vision.v1.AnnotateImageRequest\"_\n\x1b\x42\x61tchAnnotateImagesResponse\x12@\n\tresponses\x18\x01 \x03(\x0b\x32-.google.cloud.vision.v1.AnnotateImageResponse\"\x82\x02\n\x18\x41syncAnnotateFileRequest\x12\x39\n\x0cinput_config\x18\x01 \x01(\x0b\x32#.google.cloud.vision.v1.InputConfig\x12\x31\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0b\x32\x1f.google.cloud.vision.v1.Feature\x12;\n\rimage_context\x18\x03 \x01(\x0b\x32$.google.cloud.vision.v1.ImageContext\x12;\n\routput_config\x18\x04 \x01(\x0b\x32$.google.cloud.vision.v1.OutputConfig\"X\n\x19\x41syncAnnotateFileResponse\x12;\n\routput_config\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1.OutputConfig\"d\n\x1e\x41syncBatchAnnotateFilesRequest\x12\x42\n\x08requests\x18\x01 \x03(\x0b\x32\x30.google.cloud.vision.v1.AsyncAnnotateFileRequest\"g\n\x1f\x41syncBatchAnnotateFilesResponse\x12\x44\n\tresponses\x18\x01 \x03(\x0b\x32\x31.google.cloud.vision.v1.AsyncAnnotateFileResponse\"W\n\x0bInputConfig\x12\x35\n\ngcs_source\x18\x01 \x01(\x0b\x32!.google.cloud.vision.v1.GcsSource\x12\x11\n\tmime_type\x18\x02 \x01(\t\"c\n\x0cOutputConfig\x12?\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32&.google.cloud.vision.v1.GcsDestination\x12\x12\n\nbatch_size\x18\x02 \x01(\x05\"\x18\n\tGcsSource\x12\x0b\n\x03uri\x18\x01 \x01(\t\"\x1d\n\x0eGcsDestination\x12\x0b\n\x03uri\x18\x01 \x01(\t\"\x88\x02\n\x11OperationMetadata\x12>\n\x05state\x18\x01 \x01(\x0e\x32/.google.cloud.vision.v1.OperationMetadata.State\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"Q\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x43REATED\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\x12\r\n\tCANCELLED\x10\x04*e\n\nLikelihood\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x11\n\rVERY_UNLIKELY\x10\x01\x12\x0c\n\x08UNLIKELY\x10\x02\x12\x0c\n\x08POSSIBLE\x10\x03\x12\n\n\x06LIKELY\x10\x04\x12\x0f\n\x0bVERY_LIKELY\x10\x05\x32\xcd\x02\n\x0eImageAnnotator\x12\x9e\x01\n\x13\x42\x61tchAnnotateImages\x12\x32.google.cloud.vision.v1.BatchAnnotateImagesRequest\x1a\x33.google.cloud.vision.v1.BatchAnnotateImagesResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\"\x13/v1/images:annotate:\x01*\x12\x99\x01\n\x17\x41syncBatchAnnotateFiles\x12\x36.google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest\x1a\x1d.google.longrunning.Operation\"\'\x82\xd3\xe4\x93\x02!\"\x1c/v1/files:asyncBatchAnnotate:\x01*B{\n\x1a\x63om.google.cloud.vision.v1B\x13ImageAnnotatorProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\xa2\x02\x04GCVNb\x06proto3')
   ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_product__search__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_text__annotation__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_web__detection__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,google_dot_type_dot_color__pb2.DESCRIPTOR,google_dot_type_dot_latlng__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_product__search__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_text__annotation__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_web__detection__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,google_dot_type_dot_color__pb2.DESCRIPTOR,google_dot_type_dot_latlng__pb2.DESCRIPTOR,])
 
 _LIKELIHOOD = _descriptor.EnumDescriptor(
   name='Likelihood',
@@ -67,8 +68,8 @@ _LIKELIHOOD = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=7204,
-  serialized_end=7305,
+  serialized_start=7238,
+  serialized_end=7339,
 )
 _sym_db.RegisterEnumDescriptor(_LIKELIHOOD)
 
@@ -142,8 +143,8 @@ _FEATURE_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=553,
-  serialized_end=844,
+  serialized_start=587,
+  serialized_end=878,
 )
 _sym_db.RegisterEnumDescriptor(_FEATURE_TYPE)
 
@@ -296,8 +297,8 @@ _FACEANNOTATION_LANDMARK_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1898,
-  serialized_end=2718,
+  serialized_start=1932,
+  serialized_end=2752,
 )
 _sym_db.RegisterEnumDescriptor(_FACEANNOTATION_LANDMARK_TYPE)
 
@@ -330,8 +331,8 @@ _OPERATIONMETADATA_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=7121,
-  serialized_end=7202,
+  serialized_start=7155,
+  serialized_end=7236,
 )
 _sym_db.RegisterEnumDescriptor(_OPERATIONMETADATA_STATE)
 
@@ -377,8 +378,8 @@ _FEATURE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=453,
-  serialized_end=844,
+  serialized_start=487,
+  serialized_end=878,
 )
 
 
@@ -415,8 +416,8 @@ _IMAGESOURCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=846,
-  serialized_end=901,
+  serialized_start=880,
+  serialized_end=935,
 )
 
 
@@ -453,8 +454,8 @@ _IMAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=903,
-  serialized_end=980,
+  serialized_start=937,
+  serialized_end=1014,
 )
 
 
@@ -492,8 +493,8 @@ _FACEANNOTATION_LANDMARK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1765,
-  serialized_end=2718,
+  serialized_start=1799,
+  serialized_end=2752,
 )
 
 _FACEANNOTATION = _descriptor.Descriptor(
@@ -620,8 +621,8 @@ _FACEANNOTATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=983,
-  serialized_end=2718,
+  serialized_start=1017,
+  serialized_end=2752,
 )
 
 
@@ -651,8 +652,8 @@ _LOCATIONINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2720,
-  serialized_end=2772,
+  serialized_start=2754,
+  serialized_end=2806,
 )
 
 
@@ -696,8 +697,8 @@ _PROPERTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2774,
-  serialized_end=2835,
+  serialized_start=2808,
+  serialized_end=2869,
 )
 
 
@@ -783,8 +784,8 @@ _ENTITYANNOTATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2838,
-  serialized_end=3137,
+  serialized_start=2872,
+  serialized_end=3171,
 )
 
 
@@ -842,8 +843,8 @@ _LOCALIZEDOBJECTANNOTATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3140,
-  serialized_end=3293,
+  serialized_start=3174,
+  serialized_end=3327,
 )
 
 
@@ -901,8 +902,8 @@ _SAFESEARCHANNOTATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3296,
-  serialized_end=3577,
+  serialized_start=3330,
+  serialized_end=3611,
 )
 
 
@@ -939,8 +940,8 @@ _LATLONGRECT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3579,
-  serialized_end=3676,
+  serialized_start=3613,
+  serialized_end=3710,
 )
 
 
@@ -984,8 +985,8 @@ _COLORINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3678,
-  serialized_end=3763,
+  serialized_start=3712,
+  serialized_end=3797,
 )
 
 
@@ -1015,8 +1016,8 @@ _DOMINANTCOLORSANNOTATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3765,
-  serialized_end=3842,
+  serialized_start=3799,
+  serialized_end=3876,
 )
 
 
@@ -1046,8 +1047,8 @@ _IMAGEPROPERTIES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3844,
-  serialized_end=3936,
+  serialized_start=3878,
+  serialized_end=3970,
 )
 
 
@@ -1091,8 +1092,8 @@ _CROPHINT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3938,
-  serialized_end=4058,
+  serialized_start=3972,
+  serialized_end=4092,
 )
 
 
@@ -1122,8 +1123,8 @@ _CROPHINTSANNOTATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4060,
-  serialized_end=4135,
+  serialized_start=4094,
+  serialized_end=4169,
 )
 
 
@@ -1153,8 +1154,8 @@ _CROPHINTSPARAMS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4137,
-  serialized_end=4177,
+  serialized_start=4171,
+  serialized_end=4211,
 )
 
 
@@ -1184,8 +1185,8 @@ _WEBDETECTIONPARAMS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4179,
-  serialized_end=4228,
+  serialized_start=4213,
+  serialized_end=4262,
 )
 
 
@@ -1243,8 +1244,8 @@ _IMAGECONTEXT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4231,
-  serialized_end=4547,
+  serialized_start=4265,
+  serialized_end=4581,
 )
 
 
@@ -1288,8 +1289,8 @@ _ANNOTATEIMAGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4550,
-  serialized_end=4730,
+  serialized_start=4584,
+  serialized_end=4764,
 )
 
 
@@ -1326,8 +1327,8 @@ _IMAGEANNOTATIONCONTEXT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4732,
-  serialized_end=4790,
+  serialized_start=4766,
+  serialized_end=4824,
 )
 
 
@@ -1448,8 +1449,8 @@ _ANNOTATEIMAGERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4793,
-  serialized_end=5789,
+  serialized_start=4827,
+  serialized_end=5823,
 )
 
 
@@ -1486,8 +1487,8 @@ _ANNOTATEFILERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5792,
-  serialized_end=5939,
+  serialized_start=5826,
+  serialized_end=5973,
 )
 
 
@@ -1517,8 +1518,8 @@ _BATCHANNOTATEIMAGESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5941,
-  serialized_end=6033,
+  serialized_start=5975,
+  serialized_end=6067,
 )
 
 
@@ -1548,8 +1549,8 @@ _BATCHANNOTATEIMAGESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6035,
-  serialized_end=6130,
+  serialized_start=6069,
+  serialized_end=6164,
 )
 
 
@@ -1600,8 +1601,8 @@ _ASYNCANNOTATEFILEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6133,
-  serialized_end=6391,
+  serialized_start=6167,
+  serialized_end=6425,
 )
 
 
@@ -1631,8 +1632,8 @@ _ASYNCANNOTATEFILERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6393,
-  serialized_end=6481,
+  serialized_start=6427,
+  serialized_end=6515,
 )
 
 
@@ -1662,8 +1663,8 @@ _ASYNCBATCHANNOTATEFILESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6483,
-  serialized_end=6583,
+  serialized_start=6517,
+  serialized_end=6617,
 )
 
 
@@ -1693,8 +1694,8 @@ _ASYNCBATCHANNOTATEFILESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6585,
-  serialized_end=6688,
+  serialized_start=6619,
+  serialized_end=6722,
 )
 
 
@@ -1731,8 +1732,8 @@ _INPUTCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6690,
-  serialized_end=6777,
+  serialized_start=6724,
+  serialized_end=6811,
 )
 
 
@@ -1769,8 +1770,8 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6779,
-  serialized_end=6878,
+  serialized_start=6813,
+  serialized_end=6912,
 )
 
 
@@ -1800,8 +1801,8 @@ _GCSSOURCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6880,
-  serialized_end=6904,
+  serialized_start=6914,
+  serialized_end=6938,
 )
 
 
@@ -1831,8 +1832,8 @@ _GCSDESTINATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6906,
-  serialized_end=6935,
+  serialized_start=6940,
+  serialized_end=6969,
 )
 
 
@@ -1877,8 +1878,8 @@ _OPERATIONMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6938,
-  serialized_end=7202,
+  serialized_start=6972,
+  serialized_end=7236,
 )
 
 _FEATURE.fields_by_name['type'].enum_type = _FEATURE_TYPE
@@ -2792,8 +2793,8 @@ _IMAGEANNOTATOR = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=7308,
-  serialized_end=7641,
+  serialized_start=7342,
+  serialized_end=7675,
   methods=[
   _descriptor.MethodDescriptor(
     name='BatchAnnotateImages',
