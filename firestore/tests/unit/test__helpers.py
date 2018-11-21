@@ -911,36 +911,6 @@ class Test_encode_dict(unittest.TestCase):
         self.assertEqual(encoded_dict, expected_dict)
 
 
-class Test_extract_field_paths(unittest.TestCase):
-
-    @staticmethod
-    def _call_fut(document):
-        from google.cloud.firestore_v1beta1 import _helpers
-
-        return _helpers.extract_field_paths(document)
-
-    @staticmethod
-    def _make_dotted_field_path(dotted):
-        from google.cloud.firestore_v1beta1 import _helpers
-
-        return _helpers.FieldPath.from_string(dotted)
-
-    def test_w_empty_document(self):
-        document = {}
-        expected = []
-        self.assertEqual(self._call_fut(document), expected)
-
-    def test_w_non_dict_value(self):
-        document = {'a': 'b'}
-        expected = [self._make_dotted_field_path('a')]
-        self.assertEqual(self._call_fut(document), expected)
-
-    def test_w_dict_value(self):
-        document = {'a': {'b': 'c'}}
-        expected = [self._make_dotted_field_path('a.b')]
-        self.assertEqual(self._call_fut(document), expected)
-
-
 class Test_reference_value_to_document(unittest.TestCase):
 
     @staticmethod

@@ -547,28 +547,6 @@ def encode_dict(values_dict):
     }
 
 
-def extract_field_paths(document_data):
-    """Extract field paths from document data
-    Args:
-       document_data (dict): The dictionary of the actual set data.
-    Returns:
-       List[~.firestore_v1beta1._helpers.FieldPath]:
-           A list of `FieldPath` instances from the actual data.
-    """
-    field_paths = []
-    for field_name, value in six.iteritems(document_data):
-
-        if isinstance(value, dict):
-            for sub_path in extract_field_paths(value):
-                field_path = FieldPath(field_name, *sub_path.parts)
-        else:
-            field_path = FieldPath(field_name)
-
-        field_paths.append(field_path)
-
-    return field_paths
-
-
 def reference_value_to_document(reference_value, client):
     """Convert a reference value string to a document.
 
