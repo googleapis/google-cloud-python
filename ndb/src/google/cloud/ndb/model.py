@@ -3567,7 +3567,7 @@ class Model(metaclass=MetaModel):
         if cls.__module__ == __name__:
             return
 
-        for name in set(dir(cls)):
+        for name in dir(cls):
             attr = getattr(cls, name, None)
             if isinstance(attr, ModelAttribute) and not isinstance(
                 attr, ModelKey
