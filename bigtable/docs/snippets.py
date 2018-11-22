@@ -40,7 +40,6 @@ from google.cloud.bigtable import enums
 
 INSTANCE_ID = "snippet-" + unique_resource_id('-')
 CLUSTER_ID = "clus-1-" + unique_resource_id('-')
-TABLE_ID = "tabl-1-" + unique_resource_id('-')
 LOCATION_ID = 'us-central1-f'
 ALT_LOCATION_ID = 'us-central1-a'
 PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -134,6 +133,7 @@ def test_bigtable_create_additional_cluster():
     operation.result(timeout=100)
     # [END bigtable_create_cluster]
     assert cluster.exists()
+
     cluster.delete()
 
 
@@ -244,17 +244,6 @@ def test_bigtable_reload_instance():
     assert instance.type_ == PRODUCTION.value
 
 
-def test_bigtable_list_tables():
-    # [START bigtable_list_tables]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    tables_list = instance.list_tables()
-    # [END bigtable_list_tables]
-    assert len(tables_list) is not 0
-
-
 def test_bigtable_reload_cluster():
     # [START bigtable_reload_cluster]
     from google.cloud.bigtable import Client
@@ -265,6 +254,30 @@ def test_bigtable_reload_cluster():
     cluster.reload()
     # [END bigtable_reload_cluster]
     assert cluster.serve_nodes == SERVER_NODES
+
+
+def test_bigtable_create_table():
+    # [START bigtable_create_table]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table("table_my")
+    # Define the GC policy to retain only the most recent 2 versions.
+    max_versions_rule = column_family.MaxVersionsGCRule(2)
+    table.create(column_families={'cf1': max_versions_rule})
+    # [END bigtable_create_table]
+    assert table.exists()
+
+
+def test_bigtable_list_tables():
+    # [START bigtable_list_tables]
+    from google.cloud.bigtable import Client
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    tables_list = instance.list_tables()
+    # [END bigtable_list_tables]
+    assert len(tables_list) > 0
 
 
 def test_bigtable_update_instance():
