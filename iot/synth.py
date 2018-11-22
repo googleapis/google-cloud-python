@@ -23,18 +23,18 @@ common = gcp.CommonTemplates()
 # Generate iot GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    'iot',
-    'v1',
-    config_path='/google/cloud/iot/artman_cloudiot.yaml',
-    artman_output_name='iot-v1')
+    "iot",
+    "v1",
+    config_path="/google/cloud/iot/artman_cloudiot.yaml",
+    artman_output_name="iot-v1",
+)
 
-s.move(library / 'google/cloud/iot_v1')
-s.move(library / 'tests/unit/gapic')
-s.move(library / 'tests/system/gapic')
+s.move(library / "google/cloud/iot_v1")
+s.move(library / "tests/unit/gapic")
+s.move(library / "tests/system/gapic")
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    unit_cov_level=85, cov_level=85)
+templated_files = common.py_library(unit_cov_level=85, cov_level=85)
 s.move(templated_files)

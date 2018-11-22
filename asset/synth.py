@@ -21,13 +21,7 @@ gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 versions = ["v1beta1"]
 
-excludes = [
-    'setup.py',
-    'nox*.py',
-    'README.rst',
-    'docs/conf.py',
-    'docs/index.rst',
-]
+excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
 
 # ----------------------------------------------------------------------------
 # Generate asset GAPIC layer
@@ -88,6 +82,5 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = gcp.CommonTemplates().py_library(
-    unit_cov_level=86, cov_level=85)
+templated_files = gcp.CommonTemplates().py_library(unit_cov_level=86, cov_level=85)
 s.move(templated_files)

@@ -23,23 +23,20 @@ common = gcp.CommonTemplates()
 # Generate container GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    'container',
-    'v1',
-    config_path='/google/container/artman_container_v1.yaml',
-    artman_output_name='container-v1')
+    "container",
+    "v1",
+    config_path="/google/container/artman_container_v1.yaml",
+    artman_output_name="container-v1",
+)
 
-s.move(library / 'google/cloud/container_v1')
+s.move(library / "google/cloud/container_v1")
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
-s.replace(
-    'google/**/proto/*_pb2.py',
-    r"(^.*$\n)*",
-    r"# -*- coding: utf-8 -*-\n\g<0>")
+s.replace("google/**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    unit_cov_level=86, cov_level=86)
+templated_files = common.py_library(unit_cov_level=86, cov_level=86)
 s.move(templated_files)

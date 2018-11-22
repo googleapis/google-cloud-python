@@ -31,27 +31,20 @@ library = gapic.py_library(
     "scheduler",
     "v1beta1",
     config_path="artman_cloudscheduler_v1beta1.yaml",
-    artman_output_name="cloudscheduler-v1beta1"
+    artman_output_name="cloudscheduler-v1beta1",
 )
 
-excludes = [
-    "README.rst",
-    "nox.py",
-    "setup.py",
-    "docs/conf.py",
-    "docs/index.rst",
-]
+excludes = ["README.rst", "nox.py", "setup.py", "docs/conf.py", "docs/index.rst"]
 s.move(library, excludes=excludes)
 
 s.replace(
     "google/cloud/scheduler_v1beta1/gapic/cloud_scheduler_client.py",
     "google-cloud-cloudscheduler",
-    "google-cloud-scheduler"
+    "google-cloud-scheduler",
 )
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    unit_cov_level=86, cov_level=86)
+templated_files = common.py_library(unit_cov_level=86, cov_level=86)
 s.move(templated_files)

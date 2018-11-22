@@ -22,27 +22,19 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Generate securitycenter GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    'securitycenter',
-    'v1beta1')
+library = gapic.py_library("securitycenter", "v1beta1")
 
 s.move(
     library,
-    excludes=[
-        'setup.py', 'nox.py', 'README.rst', 'docs/index.rst', 'docs/conf.py'
-    ]
+    excludes=["setup.py", "nox.py", "README.rst", "docs/index.rst", "docs/conf.py"],
 )
 
 # Add encoding header to protoc-generated files.
 # See: https://github.com/googleapis/gapic-generator/issues/2097
-s.replace(
-    '**/proto/*_pb2.py',
-    r"(^.*$\n)*",
-    r"# -*- coding: utf-8 -*-\n\g<0>")
+s.replace("**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    unit_cov_level=81, cov_level=80)
+templated_files = common.py_library(unit_cov_level=81, cov_level=80)
 s.move(templated_files)

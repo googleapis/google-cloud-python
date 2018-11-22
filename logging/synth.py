@@ -23,24 +23,21 @@ common = gcp.CommonTemplates()
 # Generate logging GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    'logging',
-    'v2',
-    config_path='/google/logging/artman_logging.yaml',
-    artman_output_name='logging-v2')
+    "logging",
+    "v2",
+    config_path="/google/logging/artman_logging.yaml",
+    artman_output_name="logging-v2",
+)
 
-s.move(library / 'google/cloud/logging_v2/proto')
-s.move(library / 'google/cloud/logging_v2/gapic')
+s.move(library / "google/cloud/logging_v2/proto")
+s.move(library / "google/cloud/logging_v2/gapic")
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
-s.replace(
-    'google/**/proto/*_pb2.py',
-    r"(^.*$\n)*",
-    r"# -*- coding: utf-8 -*-\n\g<0>")
+s.replace("google/**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    unit_cov_level=85, cov_level=85)
+templated_files = common.py_library(unit_cov_level=85, cov_level=85)
 s.move(templated_files)
