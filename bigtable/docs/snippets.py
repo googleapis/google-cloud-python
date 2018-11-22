@@ -256,6 +256,19 @@ def test_bigtable_reload_cluster():
     assert cluster.serve_nodes == SERVER_NODES
 
 
+def test_bigtable_update_instance():
+    # [START bigtable_update_instance]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    display_name = "My new instance"
+    instance.display_name = display_name
+    instance.update()
+    # [END bigtable_update_instance]
+    assert instance.display_name == display_name
+
+
 def test_bigtable_create_table():
     # [START bigtable_create_table]
     from google.cloud.bigtable import Client
@@ -278,19 +291,6 @@ def test_bigtable_list_tables():
     tables_list = instance.list_tables()
     # [END bigtable_list_tables]
     assert len(tables_list) > 0
-
-
-def test_bigtable_update_instance():
-    # [START bigtable_update_instance]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    display_name = "My new instance"
-    instance.display_name = display_name
-    instance.update()
-    # [END bigtable_update_instance]
-    assert instance.display_name == display_name
 
 
 def test_bigtable_update_cluster():
