@@ -112,7 +112,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_table_name]
             :end-before: [END bigtable_table_name]
 
@@ -139,7 +139,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_table_column_family]
             :end-before: [END bigtable_table_column_family]
 
@@ -161,7 +161,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_table_row]
             :end-before: [END bigtable_table_row]
 
@@ -209,7 +209,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_create_table]
             :end-before: [END bigtable_create_table]
 
@@ -247,7 +247,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_check_table_exists]
             :end-before: [END bigtable_check_table_exists]
 
@@ -266,7 +266,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_delete_table]
             :end-before: [END bigtable_delete_table]
 
@@ -279,7 +279,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_list_column_families]
             :end-before: [END bigtable_list_column_families]
 
@@ -307,7 +307,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_get_cluster_states]
             :end-before: [END bigtable_get_cluster_states]
 
@@ -329,7 +329,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_read_row]
             :end-before: [END bigtable_read_row]
 
@@ -361,7 +361,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_read_rows]
             :end-before: [END bigtable_read_rows]
 
@@ -455,7 +455,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_mutate_rows]
             :end-before: [END bigtable_mutate_rows]
 
@@ -495,7 +495,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_sample_row_keys]
             :end-before: [END bigtable_sample_row_keys]
 
@@ -538,7 +538,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_truncate_table]
             :end-before: [END bigtable_truncate_table]
 
@@ -566,7 +566,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_drop_by_prefix]
             :end-before: [END bigtable_drop_by_prefix]
 
@@ -600,7 +600,7 @@ class Table(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_mutations_batcher]
             :end-before: [END bigtable_mutations_batcher]
 
