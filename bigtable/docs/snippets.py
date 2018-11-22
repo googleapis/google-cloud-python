@@ -269,10 +269,24 @@ def test_bigtable_update_instance():
     assert instance.display_name == display_name
 
 
+def test_bigtable_update_cluster():
+    # [START bigtable_update_cluster]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    cluster = instance.cluster(CLUSTER_ID)
+    cluster.serve_nodes = 4
+    cluster.update()
+    # [END bigtable_update_cluster]
+    assert cluster.serve_nodes == 4
+
+
 def test_bigtable_create_table():
     # [START bigtable_create_table]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import column_family
+
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     table = instance.table("table_my")
@@ -286,24 +300,12 @@ def test_bigtable_create_table():
 def test_bigtable_list_tables():
     # [START bigtable_list_tables]
     from google.cloud.bigtable import Client
+
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     tables_list = instance.list_tables()
     # [END bigtable_list_tables]
     assert len(tables_list) > 0
-
-
-def test_bigtable_update_cluster():
-    # [START bigtable_update_cluster]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    cluster = instance.cluster(CLUSTER_ID)
-    cluster.serve_nodes = 4
-    cluster.update()
-    # [END bigtable_update_cluster]
-    assert cluster.serve_nodes == 4
 
 
 def test_bigtable_delete_cluster():
