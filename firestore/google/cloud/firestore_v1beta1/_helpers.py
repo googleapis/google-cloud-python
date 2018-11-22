@@ -859,6 +859,20 @@ class DocumentExtractorForMerge(DocumentExtractor):
         self.transform_merge = []
         self.merge = []
 
+    @property
+    def has_updates(self):
+        # for whatever reason, the conformance tests want to see the parent
+        # of nested transform paths in the update mask
+        # (see set-st-merge-nonleaf-alone.textproto)
+        update_paths = set(self.data_merge)
+
+        for transform_path in self.transform_paths:
+            if len(transform_path.parts) > 1:
+                parent_fp = FieldPath(*transform_path.parts[:-1])
+                update_paths.add(parent_fp)
+
+        return bool(update_paths)
+
     def _apply_merge_all(self):
         self.data_merge = sorted(self.field_paths + self.deleted_fields)
         # TODO: other transforms
@@ -884,6 +898,8 @@ class DocumentExtractorForMerge(DocumentExtractor):
                     lhs, rhs))
 
         for merge_path in merge_paths:
+            if merge_path in self.deleted_fields:
+                continue
             try:
                 get_field_value(self.document_data, merge_path)
             except KeyError:
@@ -896,10 +912,6 @@ class DocumentExtractorForMerge(DocumentExtractor):
         if self.empty_document:
             raise ValueError(
                 "Cannot merge specific fields with empty document.")
-
-        if self.deleted_fields:
-            raise ValueError(
-                "Cannot merge specific fields with delete.")
 
         merge_paths = self._normalize_merge_paths(merge)
 
@@ -922,6 +934,15 @@ class DocumentExtractorForMerge(DocumentExtractor):
             value = get_field_value(self.document_data, field_path)
             set_field_value(merged_set_fields, field_path, value)
         self.set_fields = merged_set_fields
+
+        unmerged_deleted_fields = [
+            field_path for field_path in self.deleted_fields
+            if field_path not in self.merge
+        ]
+        if unmerged_deleted_fields:
+            raise ValueError("Cannot delete unmerged fields: {}".format(
+                unmerged_deleted_fields))
+        self.data_merge = sorted(self.data_merge + self.deleted_fields)
 
         # Keep only transforms which are within merge.
         merged_transform_paths = set()
@@ -974,19 +995,9 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
 
     merge_empty = not document_data
 
-    # for whatever reason, the conformance tests want to see the parent
-    # of nested transform paths in the update mask
-    # (see set-st-merge-nonleaf-alone.textproto)
-    update_paths = set(extractor.data_merge)
-
-    for transform_path in extractor.transform_paths:
-        if len(transform_path.parts) > 1:
-            parent_fp = FieldPath(*transform_path.parts[:-1])
-            update_paths.add(parent_fp)
-
     write_pbs = []
 
-    if extractor.set_fields or merge_empty or update_paths:
+    if extractor.has_updates or merge_empty:
         write_pbs.append(
             extractor.get_update_pb(
                 document_path, allow_empty_mask=merge_empty))
