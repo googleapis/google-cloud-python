@@ -20,7 +20,11 @@ import os
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core"),)
+LOCAL_DEPS = (
+    os.path.join("..", "api_core"),
+    os.path.join("..", "core"),
+    os.path.join("..", "storage"),
+)
 
 
 def default(session):
@@ -39,7 +43,7 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=97",
+        "--cov-fail-under=73",
         os.path.join("tests", "unit"),
         *session.posargs,
     )

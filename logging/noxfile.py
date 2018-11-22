@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright 2018 Google LLC
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,66 +13,105 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+
 import os
+import sys
 
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core"),)
+LOCAL_DEPS = (
+    os.path.join('..', 'api_core'),
+    os.path.join('..', 'core'),
+)
+UNIT_TEST_DEPS = (
+    'mock',
+    'pytest',
+    'pytest-cov',
+    'flask',
+    'webapp2',
+    'webob',
+)
 
 
-def default(session):
+def default(session, django_dep=('django',)):
+    """Default unit test session.
+    """
+  
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov")
+    deps = UNIT_TEST_DEPS
+    deps += django_dep
+
+    session.install(*deps)
     for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-    session.install("-e", ".")
+        session.install('-e', local_dep)
+    session.install('-e', '.')
 
     # Run py.test against the unit tests.
     session.run(
-        "py.test",
-        "--quiet",
-        "--cov=google.cloud",
-        "--cov=tests.unit",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=97",
-        os.path.join("tests", "unit"),
-        *session.posargs,
+        'py.test',
+        '--quiet',
+        '--cov=google.cloud.logging',
+        '--cov=tests.unit',
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        '--cov-fail-under=85',
+        'tests/unit',
+        *session.posargs
     )
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
+@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
 def unit(session):
     """Run the unit test suite."""
-    default(session)
+
+    # Testing multiple version of django
+    # See https://www.djangoproject.com/download/ for supported version
+    django_deps_27 = [
+        ('django==1.8.19',),
+        ('django >= 1.11.0, < 2.0.0dev',),
+    ]
+
+    if session.virtualenv.interpreter == '2.7':
+        [default(session, django_dep=django) for django in django_deps_27]
+    else:
+        default(session)
 
 
-@nox.session(python=["2.7", "3.7"])
+@nox.session(python=['2.7', '3.6'])
 def system(session):
     """Run the system test suite."""
-    system_test_path = os.path.join("tests", "system.py")
-    # Sanity check: Only run tests if the environment variable is set.
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable")
-    # Sanity check: only run tests if found.
-    if not os.path.exists(system_test_path):
-        session.skip("System tests were not found")
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        session.skip('Credentials must be set via environment variable.')
 
     # Use pre-release gRPC for system tests.
-    session.install("--pre", "grpcio")
+    session.install('--pre', 'grpcio')
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest")
+    session.install('mock', 'pytest')
     for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-    session.install("-e", "../test_utils/")
-    session.install("-e", ".")
+        session.install('-e', local_dep)
+    systest_deps = [
+        '../bigquery/',
+        '../pubsub/',
+        '../storage/',
+        '../test_utils/',
+    ]
+    for systest_dep in systest_deps:
+        session.install('-e', systest_dep)
+    session.install('-e', '.')
 
     # Run py.test against the system tests.
-    session.run("py.test", "--quiet", system_test_path, *session.posargs)
+    session.run(
+        'py.test',
+        '-vvv',
+        '-s',
+        'tests/system',
+        *session.posargs)
 
 
 @nox.session(python="3.7")
@@ -121,7 +158,6 @@ def lint_setup_py(session):
     session.install("docutils", "pygments")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
-
 @nox.session(python="3.7")
 def cover(session):
     """Run the final coverage report.
@@ -130,6 +166,6 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing", "--fail-under=85")
 
     session.run("coverage", "erase")

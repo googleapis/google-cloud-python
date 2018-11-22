@@ -54,5 +54,5 @@ s.replace('google/cloud/automl_v1beta1/gapic/auto_ml_client.py',
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    unit_cov_level=97, cov_level=100)
+    unit_cov_level=82, cov_level=80)
 s.move(templated_files)
