@@ -63,12 +63,6 @@ _UNIMPLEMENTED_FEATURES = [
     'update-arrayunion-noarray-nested.textproto',
     'update-arrayunion-noarray.textproto',
     'update-arrayunion.textproto',
-    'update-del-alone.textproto',
-    'update-del-dot.textproto',
-    'update-del-nested.textproto',
-    'update-del-noarray-nested.textproto',
-    'update-del-noarray.textproto',
-    'update-del.textproto',
     ]
 
 

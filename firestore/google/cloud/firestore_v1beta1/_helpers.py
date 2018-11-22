@@ -1017,12 +1017,17 @@ class DocumentExtractorForUpdate(DocumentExtractor):
         self.top_level_paths = sorted([
             FieldPath.from_string(key) for key in document_data
         ])
-        seen = set(self.top_level_paths)
+        tops = set(self.top_level_paths)
         for top_level_path in self.top_level_paths:
             for ancestor in top_level_path.lineage():
-                if ancestor in seen:
+                if ancestor in tops:
                     raise ValueError("Conflicting field path: {}, {}".format(
                         top_level_path, ancestor))
+
+        for field_path in self.deleted_fields:
+            if field_path not in tops:
+                raise ValueError("Cannot update with nest delete: {}".format(
+                    field_path))
 
     def _get_document_iterator(self, prefix_path):
         return extract_fields(

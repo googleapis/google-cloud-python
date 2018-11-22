@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
 import datetime
 import sys
 import unittest
@@ -1800,7 +1799,6 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             inst.apply_merge(['write_me', 'delete_me'])
-
 
     def test_apply_merge_list_fields_w_delete(self):
         from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
