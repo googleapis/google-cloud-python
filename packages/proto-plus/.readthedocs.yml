@@ -1,0 +1,6 @@
+---
+build:
+  image: latest
+python:
+  pip_install: true
+  version: 3.6

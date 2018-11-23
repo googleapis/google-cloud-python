@@ -1,0 +1,177 @@
+---
+version: 2
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - unit-3.5:
+          filters:
+            tags:
+              only: /.*/
+      - unit-cpp-3.5:
+          filters:
+            tags:
+              only: /.*/
+      - unit-3.6:
+          filters:
+            tags:
+              only: /.*/
+      - unit-cpp-3.6:
+          filters:
+            tags:
+              only: /.*/
+      - unit-3.7:
+          filters:
+            tags:
+              only: /.*/
+      - unit-cpp-3.7:
+          filters:
+            tags:
+              only: /.*/
+      - docs:
+          filters:
+            tags:
+              only: /.*/
+      - publish:
+          requires:
+            - unit-3.5
+            - unit-cpp-3.5
+            - unit-3.6
+            - unit-cpp-3.6
+            - unit-3.7
+            - unit-cpp-3.7
+            - docs
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+((a|b|rc)\d+)?$/
+jobs:
+  unit-3.5:
+    docker:
+      - image: python:3.5
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: |
+            pip install --pre nox-automation
+            pip install codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s unit-3.5
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  unit-3.6:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: |
+            pip install --pre nox-automation
+            pip install codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s unit-3.6
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  unit-3.7:
+    docker:
+      - image: python:3.7
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: |
+            pip install --pre nox-automation
+            pip install codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s unit-3.7
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  unit-cpp-3.5:
+    docker:
+      - image: python:3.5
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: |
+            pip install --pre nox-automation
+            pip install codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s unitcpp-3.5
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  unit-cpp-3.6:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: |
+            pip install --pre nox-automation
+            pip install codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s unitcpp-3.6
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  unit-cpp-3.7:
+    docker:
+      - image: python:3.7
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: |
+            pip install --pre nox-automation
+            pip install codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s unitcpp-3.7
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  docs:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Install nox.
+          command: pip install --pre nox-automation
+      - run:
+          name: Build the documentation.
+          command: nox -s docs
+  publish:
+    docker:
+      - image: python:3.7
+    steps:
+      - checkout
+      - run:
+          name: Decrypt the PyPI key.
+          command: |
+            openssl aes-256-cbc -d \
+              -in .circleci/.pypirc.enc \
+              -out ~/.pypirc \
+              -k "${PYPIRC_ENCRYPTION_KEY}"
+      - run:
+          name: Publish to PyPI.
+          command: python setup.py sdist upload
