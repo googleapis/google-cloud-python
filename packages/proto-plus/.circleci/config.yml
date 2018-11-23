@@ -45,7 +45,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^v\d+\.\d+\.\d+((a|b|rc)\d+)?$/
+              only: /^\d+\.\d+\.\d+((a|b|rc)\d+)?$/
 jobs:
   unit-3.5:
     docker:
