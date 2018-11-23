@@ -18,7 +18,7 @@ Documentation
 
 `Documentation`_ is available on Read the Docs.
 
-.. _documentation: https://proto-plus-python.readthedocs.io/
+.. _documentation: https://proto-plus-python.readthedocs.io/en/latest/
 
 
 Disclaimer
@@ -30,7 +30,7 @@ This is not an official Google product.
 .. |release level| image:: https://img.shields.io/badge/release%20level-alpha-red.svg?style&#x3D;flat
   :target: https://cloud.google.com/terms/launch-stages
 .. |docs| image:: https://readthedocs.org/projects/proto-plus-python/badge/?version=latest
-  :target: https://gapic-generator-python.readthedocs.io/
+  :target: https://proto-plus-python.readthedocs.io/en/latest/
 .. |ci| image:: https://circleci.com/gh/googleapis/proto-plus-python.svg?style=shield
   :target: https://circleci.com/gh/googleapis/proto-plus-python
 .. |codecov| image:: https://codecov.io/gh/googleapis/proto-plus-python/graph/badge.svg
