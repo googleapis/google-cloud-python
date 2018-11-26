@@ -26,8 +26,8 @@ from google.cloud.firestore_v1beta1._helpers import WriteOption
 from google.cloud.firestore_v1beta1.batch import WriteBatch
 from google.cloud.firestore_v1beta1.client import Client
 from google.cloud.firestore_v1beta1.collection import CollectionReference
-from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
-from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+from google.cloud.firestore_v1beta1.transforms import DELETE_FIELD
+from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 from google.cloud.firestore_v1beta1.document import DocumentReference
 from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 from google.cloud.firestore_v1beta1.gapic import enums

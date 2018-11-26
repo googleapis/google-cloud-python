@@ -304,7 +304,7 @@ class DocumentReference(object):
            ``field_updates``.
 
         To delete / remove a field from an existing document, use the
-        :attr:`~.firestore_v1beta1.constants.DELETE_FIELD` sentinel. So
+        :attr:`~.firestore_v1beta1.transforms.DELETE_FIELD` sentinel. So
         with the example above, sending
 
         .. code-block:: python
@@ -328,7 +328,7 @@ class DocumentReference(object):
 
         To set a field to the current time on the server when the
         update is received, use the
-        :attr:`~.firestore_v1beta1.constants.SERVER_TIMESTAMP` sentinel.
+        :attr:`~.firestore_v1beta1.transforms.SERVER_TIMESTAMP` sentinel.
         Sending
 
         .. code-block:: python

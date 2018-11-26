@@ -340,7 +340,7 @@ class TestDocumentReference(unittest.TestCase):
         )
 
     def _update_helper(self, **option_kwargs):
-        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+        from google.cloud.firestore_v1beta1.transforms import DELETE_FIELD
 
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=['commit'])

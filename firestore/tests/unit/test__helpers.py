@@ -1247,7 +1247,7 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.transform_paths, [])
 
     def test_ctor_w_delete_field_shallow(self):
-        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+        from google.cloud.firestore_v1beta1.transforms import DELETE_FIELD
 
         document_data = {
             'a': DELETE_FIELD,
@@ -1265,7 +1265,7 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.transform_paths, [])
 
     def test_ctor_w_delete_field_nested(self):
-        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+        from google.cloud.firestore_v1beta1.transforms import DELETE_FIELD
 
         document_data = {
             'a': {
@@ -1288,7 +1288,7 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.transform_paths, [])
 
     def test_ctor_w_server_timestamp_shallow(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_data = {
             'a': SERVER_TIMESTAMP,
@@ -1306,7 +1306,7 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.transform_paths, [_make_field_path('a')])
 
     def test_ctor_w_server_timestamp_nested(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_data = {
             'a': {
@@ -1458,7 +1458,7 @@ class TestDocumentExtractor(unittest.TestCase):
 
     def test_get_transform_pb_w_exists_precondition(self):
         from google.cloud.firestore_v1beta1.proto import write_pb2
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1._helpers import REQUEST_TIME_ENUM
 
         document_data = {
@@ -1483,7 +1483,7 @@ class TestDocumentExtractor(unittest.TestCase):
 
     def test_get_transform_pb_wo_exists_precondition(self):
         from google.cloud.firestore_v1beta1.proto import write_pb2
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1._helpers import REQUEST_TIME_ENUM
 
         document_data = {
@@ -1553,7 +1553,7 @@ class Test_pbs_for_create(unittest.TestCase):
         )
 
     def _helper(self, do_transform=False, empty_val=False):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
         document_data = {
@@ -1646,7 +1646,7 @@ class Test_pbs_for_set_no_merge(unittest.TestCase):
         self.assertEqual(write_pbs, expected_pbs)
 
     def test_w_only_server_timestamp(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
         document_data = {'butter': SERVER_TIMESTAMP}
@@ -1659,7 +1659,7 @@ class Test_pbs_for_set_no_merge(unittest.TestCase):
         self.assertEqual(write_pbs, expected_pbs)
 
     def _helper(self, do_transform=False, empty_val=False):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
         document_data = {
@@ -1734,7 +1734,7 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
         self.assertFalse(inst.has_updates)
 
     def test_apply_merge_all_w_delete(self):
-        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+        from google.cloud.firestore_v1beta1.transforms import DELETE_FIELD
 
         document_data = {
             'write_me': 'value',
@@ -1754,7 +1754,7 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
         self.assertTrue(inst.has_updates)
 
     def test_apply_merge_all_w_server_timestamp(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_data = {
             'write_me': 'value',
@@ -1787,7 +1787,7 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
             inst.apply_merge(['nonesuch', 'or.this'])
 
     def test_apply_merge_list_fields_w_unmerged_delete(self):
-        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+        from google.cloud.firestore_v1beta1.transforms import DELETE_FIELD
 
         document_data = {
             'write_me': 'value',
@@ -1801,7 +1801,7 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
             inst.apply_merge(['write_me', 'delete_me'])
 
     def test_apply_merge_list_fields_w_delete(self):
-        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+        from google.cloud.firestore_v1beta1.transforms import DELETE_FIELD
 
         document_data = {
             'write_me': 'value',
@@ -1864,7 +1864,7 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
         self.assertTrue(inst.has_updates)
 
     def test_apply_merge_list_fields_w_server_timestamp(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_data = {
             'write_me': 'value',
@@ -1977,7 +1977,7 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         self.assertEqual(write_pbs, expected_pbs)
 
     def test_with_merge_true_w_transform(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
         update_data = {
@@ -2001,7 +2001,7 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         self.assertEqual(write_pbs, expected_pbs)
 
     def test_with_merge_field_w_transform(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
         update_data = {
@@ -2026,7 +2026,7 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         self.assertEqual(write_pbs, expected_pbs)
 
     def test_with_merge_field_w_transform_masking_simple(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
         update_data = {
@@ -2049,7 +2049,7 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         self.assertEqual(write_pbs, expected_pbs)
 
     def test_with_merge_field_w_transform_parent(self):
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
 
         document_path = _make_ref_string(u'little', u'town', u'of', u'ham')
         update_data = {
@@ -2190,7 +2190,7 @@ class Test_pbs_for_update(unittest.TestCase):
 
     def _helper(self, option=None, do_transform=False, **write_kwargs):
         from google.cloud.firestore_v1beta1 import _helpers
-        from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1.gapic import enums
         from google.cloud.firestore_v1beta1.proto import common_pb2
         from google.cloud.firestore_v1beta1.proto import document_pb2

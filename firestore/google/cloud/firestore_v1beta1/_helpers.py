@@ -30,7 +30,7 @@ import six
 from google.cloud import exceptions
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud.firestore_v1beta1 import constants
+from google.cloud.firestore_v1beta1 import transforms
 from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import common_pb2
@@ -654,7 +654,7 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-_EmptyDict = constants.Sentinel("Marker for an empty dict value")
+_EmptyDict = transforms.Sentinel("Marker for an empty dict value")
 
 
 def extract_fields(document_data, prefix_path, expand_dots=False):
@@ -724,10 +724,10 @@ class DocumentExtractor(object):
             if field_path == prefix_path and value is _EmptyDict:
                 self.empty_document = True
 
-            elif value is constants.DELETE_FIELD:
+            elif value is transforms.DELETE_FIELD:
                 self.deleted_fields.append(field_path)
 
-            elif value is constants.SERVER_TIMESTAMP:
+            elif value is transforms.SERVER_TIMESTAMP:
                 self.server_timestamps.append(field_path)
 
             else:
