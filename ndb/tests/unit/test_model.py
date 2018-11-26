@@ -2654,49 +2654,53 @@ class TestModel:
 
     @staticmethod
     def test_repr():
-        class ManyFields(model.Model):
-            self = model.IntegerProperty()
-            id = model.StringProperty()
-            key = model.FloatProperty(repeated=True)
-            value = model.StringProperty()
-            unused = model.FloatProperty()
-
-        kwargs = {"self": 909, "id": "hi", "key": [88.5, 0.0], "value": None}
-        entity = ManyFields(**kwargs)
+        entity = ManyFields(self=909, id="hi", key=[88.5, 0.0], value=None)
         expected = "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None)"
         assert repr(entity) == expected
 
-        # With a projection.
-        projected = ManyFields(projection=("self", "id"), **kwargs)
+    @staticmethod
+    def test_repr_with_projection():
+        entity = ManyFields(
+            self=909,
+            id="hi",
+            key=[88.5, 0.0],
+            value=None,
+            projection=("self", "id"),
+        )
         expected = (
             "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None, "
             "_projection=('self', 'id'))"
         )
-        assert repr(projected) == expected
+        assert repr(entity) == expected
 
-        # With a key.
-        with_key = ManyFields(_id=78, **kwargs)
+    @staticmethod
+    def test_repr_with_property_named_key():
+        entity = ManyFields(
+            self=909, id="hi", key=[88.5, 0.0], value=None, _id=78
+        )
         expected = (
             "ManyFields(_key=Key('ManyFields', 78), id='hi', key=[88.5, 0.0], "
             "self=909, value=None)"
         )
-        assert repr(with_key) == expected
+        assert repr(entity) == expected
 
-        # No key.
-        kwargs.pop("key")
-        no_key = ManyFields(_id=78, **kwargs)
+    @staticmethod
+    def test_repr_with_property_named_key_not_set():
+        entity = ManyFields(self=909, id="hi", value=None, _id=78)
         expected = (
             "ManyFields(_key=Key('ManyFields', 78), id='hi', "
             "self=909, value=None)"
         )
-        assert repr(no_key) == expected
+        assert repr(entity) == expected
 
+    @staticmethod
+    def test_repr_no_property_named_key():
         class NoKeyCollision(model.Model):
             word = model.StringProperty()
 
-        no_key_collision = NoKeyCollision(word="one", id=801)
+        entity = NoKeyCollision(word="one", id=801)
         expected = "NoKeyCollision(key=Key('NoKeyCollision', 801), word='one')"
-        assert repr(no_key_collision) == expected
+        assert repr(entity) == expected
 
     @staticmethod
     def test__get_kind():
@@ -2799,3 +2803,11 @@ def test_get_indexes_async():
 def test_get_indexes():
     with pytest.raises(NotImplementedError):
         model.get_indexes()
+
+
+class ManyFields(model.Model):
+    self = model.IntegerProperty()
+    id = model.StringProperty()
+    key = model.FloatProperty(repeated=True)
+    value = model.StringProperty()
+    unused = model.FloatProperty()
