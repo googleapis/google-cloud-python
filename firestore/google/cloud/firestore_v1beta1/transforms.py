@@ -33,14 +33,11 @@ SERVER_TIMESTAMP = Sentinel(
     "Value used to set a document field to the server timestamp.")
 
 
-class ArrayUnion(object):
-    """Field transform: appends missing values to an array field.
-
-    See:
-    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.append_missing_elements
+class _ValueList(object):
+    """Read-only list of values.
 
     Args:
-        values (List | Tuple): values to append.
+        values (List | Tuple): values held in the helper.
     """
     slots = ('_values',)
 
@@ -61,3 +58,14 @@ class ArrayUnion(object):
             values to be appended by the transform.
         """
         return self._values
+
+
+class ArrayUnion(_ValueList):
+    """Field transform: appends missing values to an array field.
+
+    See:
+    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.append_missing_elements
+
+    Args:
+        values (List | Tuple): values to append.
+    """

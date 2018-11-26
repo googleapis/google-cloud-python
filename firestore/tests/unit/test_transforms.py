@@ -15,13 +15,13 @@
 import unittest
 
 
-class TestArrayUnion(unittest.TestCase):
+class Test_ValueList(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.firestore_v1beta1.transforms import ArrayUnion
+        from google.cloud.firestore_v1beta1.transforms import _ValueList
 
-        return ArrayUnion
+        return _ValueList
 
     def _make_one(self, values):
         return self._get_target_class()(values)
