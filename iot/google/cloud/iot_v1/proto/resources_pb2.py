@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/iot_v1/proto/resources.proto',
   package='google.cloud.iot.v1',
   syntax='proto3',
-  serialized_pb=_b('\n)google/cloud/iot_v1/proto/resources.proto\x12\x13google.cloud.iot.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\xcd\x05\n\x06\x44\x65vice\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06num_id\x18\x03 \x01(\x04\x12:\n\x0b\x63redentials\x18\x0c \x03(\x0b\x32%.google.cloud.iot.v1.DeviceCredential\x12\x37\n\x13last_heartbeat_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0flast_event_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0flast_state_time\x18\x14 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14last_config_ack_time\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x39\n\x15last_config_send_time\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0f\n\x07\x62locked\x18\x13 \x01(\x08\x12\x33\n\x0flast_error_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12-\n\x11last_error_status\x18\x0b \x01(\x0b\x32\x12.google.rpc.Status\x12\x31\n\x06\x63onfig\x18\r \x01(\x0b\x32!.google.cloud.iot.v1.DeviceConfig\x12/\n\x05state\x18\x10 \x01(\x0b\x32 .google.cloud.iot.v1.DeviceState\x12;\n\x08metadata\x18\x11 \x03(\x0b\x32).google.cloud.iot.v1.Device.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xf7\x02\n\x0e\x44\x65viceRegistry\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12P\n\x1a\x65vent_notification_configs\x18\n \x03(\x0b\x32,.google.cloud.iot.v1.EventNotificationConfig\x12O\n\x19state_notification_config\x18\x07 \x01(\x0b\x32,.google.cloud.iot.v1.StateNotificationConfig\x12\x34\n\x0bmqtt_config\x18\x04 \x01(\x0b\x32\x1f.google.cloud.iot.v1.MqttConfig\x12\x34\n\x0bhttp_config\x18\t \x01(\x0b\x32\x1f.google.cloud.iot.v1.HttpConfig\x12<\n\x0b\x63redentials\x18\x08 \x03(\x0b\x32\'.google.cloud.iot.v1.RegistryCredential\"H\n\nMqttConfig\x12:\n\x12mqtt_enabled_state\x18\x01 \x01(\x0e\x32\x1e.google.cloud.iot.v1.MqttState\"H\n\nHttpConfig\x12:\n\x12http_enabled_state\x18\x01 \x01(\x0e\x32\x1e.google.cloud.iot.v1.HttpState\"O\n\x17\x45ventNotificationConfig\x12\x19\n\x11subfolder_matches\x18\x02 \x01(\t\x12\x19\n\x11pubsub_topic_name\x18\x01 \x01(\t\"4\n\x17StateNotificationConfig\x12\x19\n\x11pubsub_topic_name\x18\x01 \x01(\t\"o\n\x12RegistryCredential\x12K\n\x16public_key_certificate\x18\x01 \x01(\x0b\x32).google.cloud.iot.v1.PublicKeyCertificateH\x00\x42\x0c\n\ncredential\"\xd0\x01\n\x16X509CertificateDetails\x12\x0e\n\x06issuer\x18\x01 \x01(\t\x12\x0f\n\x07subject\x18\x02 \x01(\t\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x65xpiry_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x13signature_algorithm\x18\x05 \x01(\t\x12\x17\n\x0fpublic_key_type\x18\x06 \x01(\t\"\xaf\x01\n\x14PublicKeyCertificate\x12?\n\x06\x66ormat\x18\x01 \x01(\x0e\x32/.google.cloud.iot.v1.PublicKeyCertificateFormat\x12\x13\n\x0b\x63\x65rtificate\x18\x02 \x01(\t\x12\x41\n\x0cx509_details\x18\x03 \x01(\x0b\x32+.google.cloud.iot.v1.X509CertificateDetails\"\x95\x01\n\x10\x44\x65viceCredential\x12>\n\npublic_key\x18\x02 \x01(\x0b\x32(.google.cloud.iot.v1.PublicKeyCredentialH\x00\x12\x33\n\x0f\x65xpiration_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x0c\n\ncredential\"X\n\x13PublicKeyCredential\x12\x34\n\x06\x66ormat\x18\x01 \x01(\x0e\x32$.google.cloud.iot.v1.PublicKeyFormat\x12\x0b\n\x03key\x18\x02 \x01(\t\"\xa0\x01\n\x0c\x44\x65viceConfig\x12\x0f\n\x07version\x18\x01 \x01(\x03\x12\x35\n\x11\x63loud_update_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0f\x64\x65vice_ack_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x62inary_data\x18\x04 \x01(\x0c\"S\n\x0b\x44\x65viceState\x12/\n\x0bupdate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x62inary_data\x18\x02 \x01(\x0c*L\n\tMqttState\x12\x1a\n\x16MQTT_STATE_UNSPECIFIED\x10\x00\x12\x10\n\x0cMQTT_ENABLED\x10\x01\x12\x11\n\rMQTT_DISABLED\x10\x02*L\n\tHttpState\x12\x1a\n\x16HTTP_STATE_UNSPECIFIED\x10\x00\x12\x10\n\x0cHTTP_ENABLED\x10\x01\x12\x11\n\rHTTP_DISABLED\x10\x02*e\n\x1aPublicKeyCertificateFormat\x12-\n)UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT\x10\x00\x12\x18\n\x14X509_CERTIFICATE_PEM\x10\x01*v\n\x0fPublicKeyFormat\x12!\n\x1dUNSPECIFIED_PUBLIC_KEY_FORMAT\x10\x00\x12\x0b\n\x07RSA_PEM\x10\x03\x12\x10\n\x0cRSA_X509_PEM\x10\x01\x12\r\n\tES256_PEM\x10\x02\x12\x12\n\x0e\x45S256_X509_PEM\x10\x04\x42\x66\n\x17\x63om.google.cloud.iot.v1B\x0eResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\xf8\x01\x01\x62\x06proto3')
+  serialized_pb=_b('\n)google/cloud/iot_v1/proto/resources.proto\x12\x13google.cloud.iot.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\xbb\x06\n\x06\x44\x65vice\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06num_id\x18\x03 \x01(\x04\x12:\n\x0b\x63redentials\x18\x0c \x03(\x0b\x32%.google.cloud.iot.v1.DeviceCredential\x12\x37\n\x13last_heartbeat_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0flast_event_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0flast_state_time\x18\x14 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14last_config_ack_time\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x39\n\x15last_config_send_time\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0f\n\x07\x62locked\x18\x13 \x01(\x08\x12\x33\n\x0flast_error_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12-\n\x11last_error_status\x18\x0b \x01(\x0b\x32\x12.google.rpc.Status\x12\x31\n\x06\x63onfig\x18\r \x01(\x0b\x32!.google.cloud.iot.v1.DeviceConfig\x12/\n\x05state\x18\x10 \x01(\x0b\x32 .google.cloud.iot.v1.DeviceState\x12\x30\n\tlog_level\x18\x15 \x01(\x0e\x32\x1d.google.cloud.iot.v1.LogLevel\x12;\n\x08metadata\x18\x11 \x03(\x0b\x32).google.cloud.iot.v1.Device.MetadataEntry\x12:\n\x0egateway_config\x18\x18 \x01(\x0b\x32\".google.cloud.iot.v1.GatewayConfig\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xee\x01\n\rGatewayConfig\x12\x36\n\x0cgateway_type\x18\x01 \x01(\x0e\x32 .google.cloud.iot.v1.GatewayType\x12\x43\n\x13gateway_auth_method\x18\x02 \x01(\x0e\x32&.google.cloud.iot.v1.GatewayAuthMethod\x12 \n\x18last_accessed_gateway_id\x18\x03 \x01(\t\x12>\n\x1alast_accessed_gateway_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xa9\x03\n\x0e\x44\x65viceRegistry\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12P\n\x1a\x65vent_notification_configs\x18\n \x03(\x0b\x32,.google.cloud.iot.v1.EventNotificationConfig\x12O\n\x19state_notification_config\x18\x07 \x01(\x0b\x32,.google.cloud.iot.v1.StateNotificationConfig\x12\x34\n\x0bmqtt_config\x18\x04 \x01(\x0b\x32\x1f.google.cloud.iot.v1.MqttConfig\x12\x34\n\x0bhttp_config\x18\t \x01(\x0b\x32\x1f.google.cloud.iot.v1.HttpConfig\x12\x30\n\tlog_level\x18\x0b \x01(\x0e\x32\x1d.google.cloud.iot.v1.LogLevel\x12<\n\x0b\x63redentials\x18\x08 \x03(\x0b\x32\'.google.cloud.iot.v1.RegistryCredential\"H\n\nMqttConfig\x12:\n\x12mqtt_enabled_state\x18\x01 \x01(\x0e\x32\x1e.google.cloud.iot.v1.MqttState\"H\n\nHttpConfig\x12:\n\x12http_enabled_state\x18\x01 \x01(\x0e\x32\x1e.google.cloud.iot.v1.HttpState\"O\n\x17\x45ventNotificationConfig\x12\x19\n\x11subfolder_matches\x18\x02 \x01(\t\x12\x19\n\x11pubsub_topic_name\x18\x01 \x01(\t\"4\n\x17StateNotificationConfig\x12\x19\n\x11pubsub_topic_name\x18\x01 \x01(\t\"o\n\x12RegistryCredential\x12K\n\x16public_key_certificate\x18\x01 \x01(\x0b\x32).google.cloud.iot.v1.PublicKeyCertificateH\x00\x42\x0c\n\ncredential\"\xd0\x01\n\x16X509CertificateDetails\x12\x0e\n\x06issuer\x18\x01 \x01(\t\x12\x0f\n\x07subject\x18\x02 \x01(\t\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x65xpiry_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x13signature_algorithm\x18\x05 \x01(\t\x12\x17\n\x0fpublic_key_type\x18\x06 \x01(\t\"\xaf\x01\n\x14PublicKeyCertificate\x12?\n\x06\x66ormat\x18\x01 \x01(\x0e\x32/.google.cloud.iot.v1.PublicKeyCertificateFormat\x12\x13\n\x0b\x63\x65rtificate\x18\x02 \x01(\t\x12\x41\n\x0cx509_details\x18\x03 \x01(\x0b\x32+.google.cloud.iot.v1.X509CertificateDetails\"\x95\x01\n\x10\x44\x65viceCredential\x12>\n\npublic_key\x18\x02 \x01(\x0b\x32(.google.cloud.iot.v1.PublicKeyCredentialH\x00\x12\x33\n\x0f\x65xpiration_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x0c\n\ncredential\"X\n\x13PublicKeyCredential\x12\x34\n\x06\x66ormat\x18\x01 \x01(\x0e\x32$.google.cloud.iot.v1.PublicKeyFormat\x12\x0b\n\x03key\x18\x02 \x01(\t\"\xa0\x01\n\x0c\x44\x65viceConfig\x12\x0f\n\x07version\x18\x01 \x01(\x03\x12\x35\n\x11\x63loud_update_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0f\x64\x65vice_ack_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x62inary_data\x18\x04 \x01(\x0c\"S\n\x0b\x44\x65viceState\x12/\n\x0bupdate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x62inary_data\x18\x02 \x01(\x0c*L\n\tMqttState\x12\x1a\n\x16MQTT_STATE_UNSPECIFIED\x10\x00\x12\x10\n\x0cMQTT_ENABLED\x10\x01\x12\x11\n\rMQTT_DISABLED\x10\x02*L\n\tHttpState\x12\x1a\n\x16HTTP_STATE_UNSPECIFIED\x10\x00\x12\x10\n\x0cHTTP_ENABLED\x10\x01\x12\x11\n\rHTTP_DISABLED\x10\x02*O\n\x08LogLevel\x12\x19\n\x15LOG_LEVEL_UNSPECIFIED\x10\x00\x12\x08\n\x04NONE\x10\n\x12\t\n\x05\x45RROR\x10\x14\x12\x08\n\x04INFO\x10\x1e\x12\t\n\x05\x44\x45\x42UG\x10(*I\n\x0bGatewayType\x12\x1c\n\x18GATEWAY_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07GATEWAY\x10\x01\x12\x0f\n\x0bNON_GATEWAY\x10\x02*\x91\x01\n\x11GatewayAuthMethod\x12#\n\x1fGATEWAY_AUTH_METHOD_UNSPECIFIED\x10\x00\x12\x14\n\x10\x41SSOCIATION_ONLY\x10\x01\x12\x1a\n\x16\x44\x45VICE_AUTH_TOKEN_ONLY\x10\x02\x12%\n!ASSOCIATION_AND_DEVICE_AUTH_TOKEN\x10\x03*e\n\x1aPublicKeyCertificateFormat\x12-\n)UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT\x10\x00\x12\x18\n\x14X509_CERTIFICATE_PEM\x10\x01*v\n\x0fPublicKeyFormat\x12!\n\x1dUNSPECIFIED_PUBLIC_KEY_FORMAT\x10\x00\x12\x0b\n\x07RSA_PEM\x10\x03\x12\x10\n\x0cRSA_X509_PEM\x10\x01\x12\r\n\tES256_PEM\x10\x02\x12\x12\n\x0e\x45S256_X509_PEM\x10\x04\x42\x66\n\x17\x63om.google.cloud.iot.v1B\x0eResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\xf8\x01\x01\x62\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
 
@@ -48,8 +48,8 @@ _MQTTSTATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2527,
-  serialized_end=2603,
+  serialized_start=2928,
+  serialized_end=3004,
 )
 _sym_db.RegisterEnumDescriptor(_MQTTSTATE)
 
@@ -75,12 +75,105 @@ _HTTPSTATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2605,
-  serialized_end=2681,
+  serialized_start=3006,
+  serialized_end=3082,
 )
 _sym_db.RegisterEnumDescriptor(_HTTPSTATE)
 
 HttpState = enum_type_wrapper.EnumTypeWrapper(_HTTPSTATE)
+_LOGLEVEL = _descriptor.EnumDescriptor(
+  name='LogLevel',
+  full_name='google.cloud.iot.v1.LogLevel',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='LOG_LEVEL_UNSPECIFIED', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NONE', index=1, number=10,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ERROR', index=2, number=20,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='INFO', index=3, number=30,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='DEBUG', index=4, number=40,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=3084,
+  serialized_end=3163,
+)
+_sym_db.RegisterEnumDescriptor(_LOGLEVEL)
+
+LogLevel = enum_type_wrapper.EnumTypeWrapper(_LOGLEVEL)
+_GATEWAYTYPE = _descriptor.EnumDescriptor(
+  name='GatewayType',
+  full_name='google.cloud.iot.v1.GatewayType',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='GATEWAY_TYPE_UNSPECIFIED', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='GATEWAY', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NON_GATEWAY', index=2, number=2,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=3165,
+  serialized_end=3238,
+)
+_sym_db.RegisterEnumDescriptor(_GATEWAYTYPE)
+
+GatewayType = enum_type_wrapper.EnumTypeWrapper(_GATEWAYTYPE)
+_GATEWAYAUTHMETHOD = _descriptor.EnumDescriptor(
+  name='GatewayAuthMethod',
+  full_name='google.cloud.iot.v1.GatewayAuthMethod',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='GATEWAY_AUTH_METHOD_UNSPECIFIED', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ASSOCIATION_ONLY', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='DEVICE_AUTH_TOKEN_ONLY', index=2, number=2,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ASSOCIATION_AND_DEVICE_AUTH_TOKEN', index=3, number=3,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=3241,
+  serialized_end=3386,
+)
+_sym_db.RegisterEnumDescriptor(_GATEWAYAUTHMETHOD)
+
+GatewayAuthMethod = enum_type_wrapper.EnumTypeWrapper(_GATEWAYAUTHMETHOD)
 _PUBLICKEYCERTIFICATEFORMAT = _descriptor.EnumDescriptor(
   name='PublicKeyCertificateFormat',
   full_name='google.cloud.iot.v1.PublicKeyCertificateFormat',
@@ -98,8 +191,8 @@ _PUBLICKEYCERTIFICATEFORMAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2683,
-  serialized_end=2784,
+  serialized_start=3388,
+  serialized_end=3489,
 )
 _sym_db.RegisterEnumDescriptor(_PUBLICKEYCERTIFICATEFORMAT)
 
@@ -133,8 +226,8 @@ _PUBLICKEYFORMAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2786,
-  serialized_end=2904,
+  serialized_start=3491,
+  serialized_end=3609,
 )
 _sym_db.RegisterEnumDescriptor(_PUBLICKEYFORMAT)
 
@@ -145,6 +238,18 @@ MQTT_DISABLED = 2
 HTTP_STATE_UNSPECIFIED = 0
 HTTP_ENABLED = 1
 HTTP_DISABLED = 2
+LOG_LEVEL_UNSPECIFIED = 0
+NONE = 10
+ERROR = 20
+INFO = 30
+DEBUG = 40
+GATEWAY_TYPE_UNSPECIFIED = 0
+GATEWAY = 1
+NON_GATEWAY = 2
+GATEWAY_AUTH_METHOD_UNSPECIFIED = 0
+ASSOCIATION_ONLY = 1
+DEVICE_AUTH_TOKEN_ONLY = 2
+ASSOCIATION_AND_DEVICE_AUTH_TOKEN = 3
 UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT = 0
 X509_CERTIFICATE_PEM = 1
 UNSPECIFIED_PUBLIC_KEY_FORMAT = 0
@@ -188,8 +293,8 @@ _DEVICE_METADATAENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=825,
-  serialized_end=872,
+  serialized_start=935,
+  serialized_end=982,
 )
 
 _DEVICE = _descriptor.Descriptor(
@@ -298,9 +403,23 @@ _DEVICE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='metadata', full_name='google.cloud.iot.v1.Device.metadata', index=14,
+      name='log_level', full_name='google.cloud.iot.v1.Device.log_level', index=14,
+      number=21, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='metadata', full_name='google.cloud.iot.v1.Device.metadata', index=15,
       number=17, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='gateway_config', full_name='google.cloud.iot.v1.Device.gateway_config', index=16,
+      number=24, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
@@ -317,7 +436,59 @@ _DEVICE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=155,
-  serialized_end=872,
+  serialized_end=982,
+)
+
+
+_GATEWAYCONFIG = _descriptor.Descriptor(
+  name='GatewayConfig',
+  full_name='google.cloud.iot.v1.GatewayConfig',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='gateway_type', full_name='google.cloud.iot.v1.GatewayConfig.gateway_type', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='gateway_auth_method', full_name='google.cloud.iot.v1.GatewayConfig.gateway_auth_method', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='last_accessed_gateway_id', full_name='google.cloud.iot.v1.GatewayConfig.last_accessed_gateway_id', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='last_accessed_gateway_time', full_name='google.cloud.iot.v1.GatewayConfig.last_accessed_gateway_time', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=985,
+  serialized_end=1223,
 )
 
 
@@ -371,7 +542,14 @@ _DEVICEREGISTRY = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='credentials', full_name='google.cloud.iot.v1.DeviceRegistry.credentials', index=6,
+      name='log_level', full_name='google.cloud.iot.v1.DeviceRegistry.log_level', index=6,
+      number=11, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='credentials', full_name='google.cloud.iot.v1.DeviceRegistry.credentials', index=7,
       number=8, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -389,8 +567,8 @@ _DEVICEREGISTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=875,
-  serialized_end=1250,
+  serialized_start=1226,
+  serialized_end=1651,
 )
 
 
@@ -420,8 +598,8 @@ _MQTTCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1252,
-  serialized_end=1324,
+  serialized_start=1653,
+  serialized_end=1725,
 )
 
 
@@ -451,8 +629,8 @@ _HTTPCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1326,
-  serialized_end=1398,
+  serialized_start=1727,
+  serialized_end=1799,
 )
 
 
@@ -489,8 +667,8 @@ _EVENTNOTIFICATIONCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1400,
-  serialized_end=1479,
+  serialized_start=1801,
+  serialized_end=1880,
 )
 
 
@@ -520,8 +698,8 @@ _STATENOTIFICATIONCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1481,
-  serialized_end=1533,
+  serialized_start=1882,
+  serialized_end=1934,
 )
 
 
@@ -554,8 +732,8 @@ _REGISTRYCREDENTIAL = _descriptor.Descriptor(
       name='credential', full_name='google.cloud.iot.v1.RegistryCredential.credential',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1535,
-  serialized_end=1646,
+  serialized_start=1936,
+  serialized_end=2047,
 )
 
 
@@ -620,8 +798,8 @@ _X509CERTIFICATEDETAILS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1649,
-  serialized_end=1857,
+  serialized_start=2050,
+  serialized_end=2258,
 )
 
 
@@ -665,8 +843,8 @@ _PUBLICKEYCERTIFICATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1860,
-  serialized_end=2035,
+  serialized_start=2261,
+  serialized_end=2436,
 )
 
 
@@ -706,8 +884,8 @@ _DEVICECREDENTIAL = _descriptor.Descriptor(
       name='credential', full_name='google.cloud.iot.v1.DeviceCredential.credential',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2038,
-  serialized_end=2187,
+  serialized_start=2439,
+  serialized_end=2588,
 )
 
 
@@ -744,8 +922,8 @@ _PUBLICKEYCREDENTIAL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2189,
-  serialized_end=2277,
+  serialized_start=2590,
+  serialized_end=2678,
 )
 
 
@@ -796,8 +974,8 @@ _DEVICECONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2280,
-  serialized_end=2440,
+  serialized_start=2681,
+  serialized_end=2841,
 )
 
 
@@ -834,8 +1012,8 @@ _DEVICESTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2442,
-  serialized_end=2525,
+  serialized_start=2843,
+  serialized_end=2926,
 )
 
 _DEVICE_METADATAENTRY.containing_type = _DEVICE
@@ -849,11 +1027,17 @@ _DEVICE.fields_by_name['last_error_time'].message_type = google_dot_protobuf_dot
 _DEVICE.fields_by_name['last_error_status'].message_type = google_dot_rpc_dot_status__pb2._STATUS
 _DEVICE.fields_by_name['config'].message_type = _DEVICECONFIG
 _DEVICE.fields_by_name['state'].message_type = _DEVICESTATE
+_DEVICE.fields_by_name['log_level'].enum_type = _LOGLEVEL
 _DEVICE.fields_by_name['metadata'].message_type = _DEVICE_METADATAENTRY
+_DEVICE.fields_by_name['gateway_config'].message_type = _GATEWAYCONFIG
+_GATEWAYCONFIG.fields_by_name['gateway_type'].enum_type = _GATEWAYTYPE
+_GATEWAYCONFIG.fields_by_name['gateway_auth_method'].enum_type = _GATEWAYAUTHMETHOD
+_GATEWAYCONFIG.fields_by_name['last_accessed_gateway_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _DEVICEREGISTRY.fields_by_name['event_notification_configs'].message_type = _EVENTNOTIFICATIONCONFIG
 _DEVICEREGISTRY.fields_by_name['state_notification_config'].message_type = _STATENOTIFICATIONCONFIG
 _DEVICEREGISTRY.fields_by_name['mqtt_config'].message_type = _MQTTCONFIG
 _DEVICEREGISTRY.fields_by_name['http_config'].message_type = _HTTPCONFIG
+_DEVICEREGISTRY.fields_by_name['log_level'].enum_type = _LOGLEVEL
 _DEVICEREGISTRY.fields_by_name['credentials'].message_type = _REGISTRYCREDENTIAL
 _MQTTCONFIG.fields_by_name['mqtt_enabled_state'].enum_type = _MQTTSTATE
 _HTTPCONFIG.fields_by_name['http_enabled_state'].enum_type = _HTTPSTATE
@@ -875,6 +1059,7 @@ _DEVICECONFIG.fields_by_name['cloud_update_time'].message_type = google_dot_prot
 _DEVICECONFIG.fields_by_name['device_ack_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _DEVICESTATE.fields_by_name['update_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 DESCRIPTOR.message_types_by_name['Device'] = _DEVICE
+DESCRIPTOR.message_types_by_name['GatewayConfig'] = _GATEWAYCONFIG
 DESCRIPTOR.message_types_by_name['DeviceRegistry'] = _DEVICEREGISTRY
 DESCRIPTOR.message_types_by_name['MqttConfig'] = _MQTTCONFIG
 DESCRIPTOR.message_types_by_name['HttpConfig'] = _HTTPCONFIG
@@ -889,6 +1074,9 @@ DESCRIPTOR.message_types_by_name['DeviceConfig'] = _DEVICECONFIG
 DESCRIPTOR.message_types_by_name['DeviceState'] = _DEVICESTATE
 DESCRIPTOR.enum_types_by_name['MqttState'] = _MQTTSTATE
 DESCRIPTOR.enum_types_by_name['HttpState'] = _HTTPSTATE
+DESCRIPTOR.enum_types_by_name['LogLevel'] = _LOGLEVEL
+DESCRIPTOR.enum_types_by_name['GatewayType'] = _GATEWAYTYPE
+DESCRIPTOR.enum_types_by_name['GatewayAuthMethod'] = _GATEWAYAUTHMETHOD
 DESCRIPTOR.enum_types_by_name['PublicKeyCertificateFormat'] = _PUBLICKEYCERTIFICATEFORMAT
 DESCRIPTOR.enum_types_by_name['PublicKeyFormat'] = _PUBLICKEYFORMAT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -980,6 +1168,9 @@ Device = _reflection.GeneratedProtocolMessageType('Device', (_message.Message,),
           [Output only] The state most recently received from the
           device. If no state has been reported, this field is not
           present.
+      log_level:
+          **Beta Feature**  The logging verbosity for device activity.
+          If unspecified, DeviceRegistry.log\_level will be used.
       metadata:
           The metadata key-value pairs assigned to the device. This
           metadata is not interpreted or indexed by Cloud IoT Core. It
@@ -990,11 +1181,37 @@ Device = _reflection.GeneratedProtocolMessageType('Device', (_message.Message,),
           than or equal to 32 KB in size.  The total size of all keys
           and values must be less than 256 KB, and the maximum number of
           key-value pairs is 500.
+      gateway_config:
+          Gateway-related configuration and state.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.Device)
   ))
 _sym_db.RegisterMessage(Device)
 _sym_db.RegisterMessage(Device.MetadataEntry)
+
+GatewayConfig = _reflection.GeneratedProtocolMessageType('GatewayConfig', (_message.Message,), dict(
+  DESCRIPTOR = _GATEWAYCONFIG,
+  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
+  ,
+  __doc__ = """Gateway-related configuration and state.
+  
+  
+  Attributes:
+      gateway_type:
+          Indicates whether the device is a gateway.
+      gateway_auth_method:
+          Indicates how to authorize and/or authenticate devices to
+          access the gateway.
+      last_accessed_gateway_id:
+          [Output only] The ID of the gateway the device accessed most
+          recently.
+      last_accessed_gateway_time:
+          [Output only] The most recent time at which the device
+          accessed the gateway specified in ``last_accessed_gateway``.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.GatewayConfig)
+  ))
+_sym_db.RegisterMessage(GatewayConfig)
 
 DeviceRegistry = _reflection.GeneratedProtocolMessageType('DeviceRegistry', (_message.Message,), dict(
   DESCRIPTOR = _DEVICEREGISTRY,
@@ -1034,6 +1251,10 @@ DeviceRegistry = _reflection.GeneratedProtocolMessageType('DeviceRegistry', (_me
       http_config:
           The DeviceService (HTTP) configuration for this device
           registry.
+      log_level:
+          **Beta Feature**  The default logging verbosity for activity
+          from devices in this registry. The verbosity level can be
+          overridden by Device.log\_level.
       credentials:
           The credentials used to verify the device credentials. No more
           than 10 credentials can be bound to a single registry at a

@@ -49,6 +49,66 @@ class HttpState(enum.IntEnum):
     HTTP_DISABLED = 2
 
 
+class LogLevel(enum.IntEnum):
+    """
+    **Beta Feature**
+
+    The logging verbosity for device activity. Specifies which events should
+    be written to logs. For example, if the LogLevel is ERROR, only events
+    that terminate in errors will be logged. LogLevel is inclusive; enabling
+    INFO logging will also enable ERROR logging.
+
+    Attributes:
+      LOG_LEVEL_UNSPECIFIED (int): No logging specified. If not specified, logging will be disabled.
+      NONE (int): Disables logging.
+      ERROR (int): Error events will be logged.
+      INFO (int): Informational events will be logged, such as connections and
+      disconnections.
+      DEBUG (int): All events will be logged.
+    """
+    LOG_LEVEL_UNSPECIFIED = 0
+    NONE = 10
+    ERROR = 20
+    INFO = 30
+    DEBUG = 40
+
+
+class GatewayType(enum.IntEnum):
+    """
+    Gateway type.
+
+    Attributes:
+      GATEWAY_TYPE_UNSPECIFIED (int): If unspecified, the device is considered a non-gateway device.
+      GATEWAY (int): The device is a gateway.
+      NON_GATEWAY (int): The device is not a gateway.
+    """
+    GATEWAY_TYPE_UNSPECIFIED = 0
+    GATEWAY = 1
+    NON_GATEWAY = 2
+
+
+class GatewayAuthMethod(enum.IntEnum):
+    """
+    The gateway authorization/authentication method. This setting determines how
+    Cloud IoT Core authorizes/authenticate devices to access the gateway.
+
+    Attributes:
+      GATEWAY_AUTH_METHOD_UNSPECIFIED (int): No authentication/authorization method specified. No devices are allowed to
+      access the gateway.
+      ASSOCIATION_ONLY (int): The device is authenticated through the gateway association only. Device
+      credentials are ignored even if provided.
+      DEVICE_AUTH_TOKEN_ONLY (int): The device is authenticated through its own credentials. Gateway
+      association is not checked.
+      ASSOCIATION_AND_DEVICE_AUTH_TOKEN (int): The device is authenticated through both device credentials and gateway
+      association. The device must be bound to the gateway and must provide its
+      own credentials.
+    """
+    GATEWAY_AUTH_METHOD_UNSPECIFIED = 0
+    ASSOCIATION_ONLY = 1
+    DEVICE_AUTH_TOKEN_ONLY = 2
+    ASSOCIATION_AND_DEVICE_AUTH_TOKEN = 3
+
+
 class PublicKeyCertificateFormat(enum.IntEnum):
     """
     The supported formats for the public key.

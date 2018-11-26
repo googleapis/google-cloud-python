@@ -6,7 +6,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class ClusterManagerStub(object):
-  """Google Container Engine Cluster Manager v1
+  """Google Kubernetes Engine Cluster Manager v1
   """
 
   def __init__(self, channel):
@@ -168,7 +168,7 @@ class ClusterManagerStub(object):
 
 
 class ClusterManagerServicer(object):
-  """Google Container Engine Cluster Manager v1
+  """Google Kubernetes Engine Cluster Manager v1
   """
 
   def ListClusters(self, request, context):
@@ -213,49 +213,49 @@ class ClusterManagerServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def UpdateNodePool(self, request, context):
-    """Updates the version and/or image type of a specific node pool.
+    """Updates the version and/or image type for a specific node pool.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def SetNodePoolAutoscaling(self, request, context):
-    """Sets the autoscaling settings of a specific node pool.
+    """Sets the autoscaling settings for a specific node pool.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def SetLoggingService(self, request, context):
-    """Sets the logging service of a specific cluster.
+    """Sets the logging service for a specific cluster.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def SetMonitoringService(self, request, context):
-    """Sets the monitoring service of a specific cluster.
+    """Sets the monitoring service for a specific cluster.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def SetAddonsConfig(self, request, context):
-    """Sets the addons of a specific cluster.
+    """Sets the addons for a specific cluster.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def SetLocations(self, request, context):
-    """Sets the locations of a specific cluster.
+    """Sets the locations for a specific cluster.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def UpdateMaster(self, request, context):
-    """Updates the master of a specific cluster.
+    """Updates the master for a specific cluster.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -263,7 +263,7 @@ class ClusterManagerServicer(object):
 
   def SetMasterAuth(self, request, context):
     """Used to set master auth materials. Currently supports :-
-    Changing the admin password of a specific cluster.
+    Changing the admin password for a specific cluster.
     This can be either via password generation or explicitly set the password.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -307,7 +307,7 @@ class ClusterManagerServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def GetServerConfig(self, request, context):
-    """Returns configuration info about the Container Engine service.
+    """Returns configuration info about the Kubernetes Engine service.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -385,7 +385,7 @@ class ClusterManagerServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def SetNodePoolSize(self, request, context):
-    """Sets the size of a specific node pool.
+    """Sets the size for a specific node pool.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

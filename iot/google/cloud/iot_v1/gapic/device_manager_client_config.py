@@ -107,6 +107,21 @@ config = {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
+                },
+                "SendCommandToDevice": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "rate_limited_aware",
+                    "retry_params_name": "rate_limited_aware"
+                },
+                "BindDeviceToGateway": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "UnbindDeviceFromGateway": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
                 }
             }
         }

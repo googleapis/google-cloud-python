@@ -45,10 +45,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 
 class DeviceManagerClient(object):
-    """
-    Internet of things (IoT) service. Allows to manipulate device registry
-    instances and the registration of devices (Things) to the cloud.
-    """
+    """Internet of Things (IoT) service. Securely connect and manage IoT devices."""
 
     SERVICE_ADDRESS = 'cloudiot.googleapis.com:443'
     """The default address of the service."""
@@ -631,8 +628,8 @@ class DeviceManagerClient(object):
                 example,
                 ``projects/example-project/locations/us-central1/registries/my-registry``.
             device (Union[dict, ~google.cloud.iot_v1.types.Device]): The device registration details. The field ``name`` must be empty. The
-                server will generate that field from the device registry ``id`` provided
-                and the ``parent`` field.
+                server generates ``name`` from the device registry ``id`` and the
+                ``parent`` field.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.Device`
@@ -784,9 +781,8 @@ class DeviceManagerClient(object):
             >>> response = client.update_device(device, update_mask)
 
         Args:
-            device (Union[dict, ~google.cloud.iot_v1.types.Device]): The new values for the device registry. The ``id`` and ``num_id`` fields
-                must be empty, and the field ``name`` must specify the name path. For
-                example,
+            device (Union[dict, ~google.cloud.iot_v1.types.Device]): The new values for the device. The ``id`` and ``num_id`` fields must be
+                empty, and the field ``name`` must specify the name path. For example,
                 ``projects/p0/locations/us-central1/registries/registry0/devices/device0``\ or
                 ``projects/p0/locations/us-central1/registries/registry0/devices/{num_id}``.
 
@@ -918,6 +914,7 @@ class DeviceManagerClient(object):
                      device_num_ids=None,
                      device_ids=None,
                      field_mask=None,
+                     gateway_list_options=None,
                      page_size=None,
                      retry=google.api_core.gapic_v1.method.DEFAULT,
                      timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -949,17 +946,20 @@ class DeviceManagerClient(object):
         Args:
             parent (str): The device registry path. Required. For example,
                 ``projects/my-project/locations/us-central1/registries/my-registry``.
-            device_num_ids (list[long]): A list of device numerical ids. If empty, it will ignore this field. This
-                field cannot hold more than 10,000 entries.
-            device_ids (list[str]): A list of device string identifiers. If empty, it will ignore this
-                field. For example, ``['device0', 'device12']``. This field cannot hold
-                more than 10,000 entries.
+            device_num_ids (list[long]): A list of device numeric IDs. If empty, this field is ignored. Maximum
+                IDs: 10,000.
+            device_ids (list[str]): A list of device string IDs. For example, ``['device0', 'device12']``.
+                If empty, this field is ignored. Maximum IDs: 10,000
             field_mask (Union[dict, ~google.cloud.iot_v1.types.FieldMask]): The fields of the ``Device`` resource to be returned in the response.
-                The fields ``id``, and ``num_id`` are always returned by default, along
-                with any other fields specified.
+                The fields ``id`` and ``num_id`` are always returned, along with any
+                other fields specified.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iot_v1.types.FieldMask`
+            gateway_list_options (Union[dict, ~google.cloud.iot_v1.types.GatewayListOptions]): Options related to gateways.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.iot_v1.types.GatewayListOptions`
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1003,6 +1003,7 @@ class DeviceManagerClient(object):
             device_num_ids=device_num_ids,
             device_ids=device_ids,
             field_mask=field_mask,
+            gateway_list_options=gateway_list_options,
             page_size=page_size,
         )
         if metadata is None:
@@ -1503,4 +1504,269 @@ class DeviceManagerClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls['test_iam_permissions'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def send_command_to_device(self,
+                               name,
+                               binary_data,
+                               subfolder=None,
+                               retry=google.api_core.gapic_v1.method.DEFAULT,
+                               timeout=google.api_core.gapic_v1.method.DEFAULT,
+                               metadata=None):
+        """
+        Sends a command to the specified device. In order for a device to be
+        able to receive commands, it must: 1) be connected to Cloud IoT Core
+        using the MQTT protocol, and 2) be subscribed to the group of MQTT
+        topics specified by /devices/{device-id}/commands/#. This subscription
+        will receive commands at the top-level topic
+        /devices/{device-id}/commands as well as commands for subfolders, like
+        /devices/{device-id}/commands/subfolder. Note that subscribing to
+        specific subfolders is not supported. If the command could not be
+        delivered to the device, this method will return an error; in
+        particular, if the device is not subscribed, this method will return
+        FAILED\_PRECONDITION. Otherwise, this method will return OK. If the
+        subscription is QoS 1, at least once delivery will be guaranteed; for
+        QoS 0, no acknowledgment will be expected from the device.
+
+        Example:
+            >>> from google.cloud import iot_v1
+            >>>
+            >>> client = iot_v1.DeviceManagerClient()
+            >>>
+            >>> name = client.device_path('[PROJECT]', '[LOCATION]', '[REGISTRY]', '[DEVICE]')
+            >>>
+            >>> # TODO: Initialize `binary_data`:
+            >>> binary_data = b''
+            >>>
+            >>> response = client.send_command_to_device(name, binary_data)
+
+        Args:
+            name (str): The name of the device. For example,
+                ``projects/p0/locations/us-central1/registries/registry0/devices/device0``
+                or
+                ``projects/p0/locations/us-central1/registries/registry0/devices/{num_id}``.
+            binary_data (bytes): The command data to send to the device.
+            subfolder (str): Optional subfolder for the command. If empty, the command will be delivered
+                to the /devices/{device-id}/commands topic, otherwise it will be delivered
+                to the /devices/{device-id}/commands/{subfolder} topic. Multi-level
+                subfolders are allowed. This field must not have more than 256 characters,
+                and must not contain any MQTT wildcards ("+" or "#") or null characters.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.iot_v1.types.SendCommandToDeviceResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'send_command_to_device' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'send_command_to_device'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.send_command_to_device,
+                    default_retry=self._method_configs['SendCommandToDevice'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['SendCommandToDevice'].timeout,
+                    client_info=self._client_info,
+                )
+
+        request = device_manager_pb2.SendCommandToDeviceRequest(
+            name=name,
+            binary_data=binary_data,
+            subfolder=subfolder,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['send_command_to_device'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def bind_device_to_gateway(self,
+                               parent,
+                               gateway_id,
+                               device_id,
+                               retry=google.api_core.gapic_v1.method.DEFAULT,
+                               timeout=google.api_core.gapic_v1.method.DEFAULT,
+                               metadata=None):
+        """
+        Associates the device with the gateway.
+
+        Example:
+            >>> from google.cloud import iot_v1
+            >>>
+            >>> client = iot_v1.DeviceManagerClient()
+            >>>
+            >>> parent = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
+            >>>
+            >>> # TODO: Initialize `gateway_id`:
+            >>> gateway_id = ''
+            >>>
+            >>> # TODO: Initialize `device_id`:
+            >>> device_id = ''
+            >>>
+            >>> response = client.bind_device_to_gateway(parent, gateway_id, device_id)
+
+        Args:
+            parent (str): The name of the registry. For example,
+                ``projects/example-project/locations/us-central1/registries/my-registry``.
+            gateway_id (str): The value of ``gateway_id`` can be either the device numeric ID or the
+                user-defined device identifier.
+            device_id (str): The device to associate with the specified gateway. The value of
+                ``device_id`` can be either the device numeric ID or the user-defined
+                device identifier.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.iot_v1.types.BindDeviceToGatewayResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'bind_device_to_gateway' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'bind_device_to_gateway'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.bind_device_to_gateway,
+                    default_retry=self._method_configs['BindDeviceToGateway'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['BindDeviceToGateway'].timeout,
+                    client_info=self._client_info,
+                )
+
+        request = device_manager_pb2.BindDeviceToGatewayRequest(
+            parent=parent,
+            gateway_id=gateway_id,
+            device_id=device_id,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['bind_device_to_gateway'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def unbind_device_from_gateway(
+            self,
+            parent,
+            gateway_id,
+            device_id,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
+        """
+        Deletes the association between the device and the gateway.
+
+        Example:
+            >>> from google.cloud import iot_v1
+            >>>
+            >>> client = iot_v1.DeviceManagerClient()
+            >>>
+            >>> parent = client.registry_path('[PROJECT]', '[LOCATION]', '[REGISTRY]')
+            >>>
+            >>> # TODO: Initialize `gateway_id`:
+            >>> gateway_id = ''
+            >>>
+            >>> # TODO: Initialize `device_id`:
+            >>> device_id = ''
+            >>>
+            >>> response = client.unbind_device_from_gateway(parent, gateway_id, device_id)
+
+        Args:
+            parent (str): The name of the registry. For example,
+                ``projects/example-project/locations/us-central1/registries/my-registry``.
+            gateway_id (str): The value of ``gateway_id`` can be either the device numeric ID or the
+                user-defined device identifier.
+            device_id (str): The device to disassociate from the specified gateway. The value of
+                ``device_id`` can be either the device numeric ID or the user-defined
+                device identifier.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.iot_v1.types.UnbindDeviceFromGatewayResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if 'unbind_device_from_gateway' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'unbind_device_from_gateway'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.unbind_device_from_gateway,
+                    default_retry=self.
+                    _method_configs['UnbindDeviceFromGateway'].retry,
+                    default_timeout=self.
+                    _method_configs['UnbindDeviceFromGateway'].timeout,
+                    client_info=self._client_info,
+                )
+
+        request = device_manager_pb2.UnbindDeviceFromGatewayRequest(
+            parent=parent,
+            gateway_id=gateway_id,
+            device_id=device_id,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['unbind_device_from_gateway'](
             request, retry=retry, timeout=timeout, metadata=metadata)

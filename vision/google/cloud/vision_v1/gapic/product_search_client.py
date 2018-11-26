@@ -99,16 +99,6 @@ class ProductSearchClient(object):
         )
 
     @classmethod
-    def product_path(cls, project, location, product):
-        """Return a fully-qualified product string."""
-        return google.api_core.path_template.expand(
-            'projects/{project}/locations/{location}/products/{product}',
-            project=project,
-            location=location,
-            product=product,
-        )
-
-    @classmethod
     def product_set_path(cls, project, location, product_set):
         """Return a fully-qualified product_set string."""
         return google.api_core.path_template.expand(
@@ -119,21 +109,31 @@ class ProductSearchClient(object):
         )
 
     @classmethod
-    def image_path(cls, project, location, product, image):
-        """Return a fully-qualified image string."""
+    def product_path(cls, project, location, product):
+        """Return a fully-qualified product string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/locations/{location}/products/{product}/referenceImages/{image}',
+            'projects/{project}/locations/{location}/products/{product}',
             project=project,
             location=location,
             product=product,
-            image=image,
+        )
+
+    @classmethod
+    def reference_image_path(cls, project, location, product, reference_image):
+        """Return a fully-qualified reference_image string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/locations/{location}/products/{product}/referenceImages/{reference_image}',
+            project=project,
+            location=location,
+            product=product,
+            reference_image=reference_image,
         )
 
     def __init__(self,
                  transport=None,
                  channel=None,
                  credentials=None,
-                 client_config=product_search_client_config.config,
+                 client_config=None,
                  client_info=None):
         """Constructor.
 
@@ -166,13 +166,20 @@ class ProductSearchClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
-            warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+        if client_config is not None:
+            warnings.warn(
+                'The `client_config` argument is deprecated.',
+                PendingDeprecationWarning,
+                stacklevel=2)
+        else:
+            client_config = product_search_client_config.config
+
         if channel:
             warnings.warn(
                 'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                '`transport` instead.',
+                PendingDeprecationWarning,
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -707,7 +714,7 @@ class ProductSearchClient(object):
             >>>
             >>> client = vision_v1.ProductSearchClient()
             >>>
-            >>> name = client.image_path('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[IMAGE]')
+            >>> name = client.reference_image_path('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[REFERENCE_IMAGE]')
             >>>
             >>> response = client.get_reference_image(name)
 
@@ -776,7 +783,7 @@ class ProductSearchClient(object):
             >>>
             >>> client = vision_v1.ProductSearchClient()
             >>>
-            >>> name = client.image_path('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[IMAGE]')
+            >>> name = client.reference_image_path('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[REFERENCE_IMAGE]')
             >>>
             >>> client.delete_reference_image(name)
 
@@ -1228,8 +1235,8 @@ class ProductSearchClient(object):
                            timeout=google.api_core.gapic_v1.method.DEFAULT,
                            metadata=None):
         """
-        Permanently deletes a ProductSet. All Products and ReferenceImages in
-        the ProductSet will be deleted.
+        Permanently deletes a ProductSet. Products and ReferenceImages in the
+        ProductSet are not deleted.
 
         The actual image files are not deleted from Google Cloud Storage.
 
