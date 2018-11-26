@@ -2574,8 +2574,18 @@ class UserProperty(Property):
 
     Args:
         name (str): The name of the property.
-        auto_current_user (bool): Indicates if the value should be indexed.
-        auto_current_user_add (bool): Indicates if the value should be indexed.
+        auto_current_user (bool): Deprecated flag. When supported, if this flag
+            was set to :data:`True`, the property value would be set to the
+            currently signed-in user whenever the model instance is stored in
+            the datastore, overwriting the property's previous value.
+            This was useful for tracking which user modifies a model instance.
+        auto_current_user_add (bool): Deprecated flag. When supported, if this
+            flag was set to :data:`True`, the property value would be set to
+            the urrently signed-in user he first time the model instance is
+            stored in the datastore, unless the property has already been
+            assigned a value. This was useful for tracking which user creates
+            a model instance, which may not be the same user that modifies it
+            later.
         indexed (bool): Indicates if the value should be indexed.
         repeated (bool): Indicates if this property is repeated, i.e. contains
             multiple values.
