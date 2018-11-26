@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.35.1
+
+11-21-2018 11:25 PST
+
+### Implementation Changes
+- Add ProductSearchClient to vision.py ([#6635](https://github.com/googleapis/google-cloud-python/pull/6635))
+
+### Internal / Testing Changes
+- Merge fixes to GAPIC generator. ([#6632](https://github.com/googleapis/google-cloud-python/pull/6632))
+
 ## 0.35.0
 
 11-13-2018 09:55 PST
