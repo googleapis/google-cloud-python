@@ -31,3 +31,33 @@ DELETE_FIELD = Sentinel("Value used to delete a field in a document.")
 
 SERVER_TIMESTAMP = Sentinel(
     "Value used to set a document field to the server timestamp.")
+
+
+class ArrayUnion(object):
+    """Field transform: appends missing values to an array field.
+
+    See:
+    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.append_missing_elements
+
+    Args:
+        values (List | Tuple): values to append.
+    """
+    slots = ('_values',)
+
+    def __init__(self, values):
+        if not isinstance(values, (list, tuple)):
+            raise ValueError("'values' must be a list or tuple.")
+
+        if len(values) == 0:
+            raise ValueError("'values' must be non-empty.")
+
+        self._values = list(values)
+
+    @property
+    def values(self):
+        """Values to append.
+
+        Returns (List):
+            values to be appended by the transform.
+        """
+        return self._values
