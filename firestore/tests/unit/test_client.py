@@ -226,6 +226,44 @@ class TestClient(unittest.TestCase):
         extra = '{!r} was provided'.format('spinach')
         self.assertEqual(exc_info.exception.args, (_BAD_OPTION_ERR, extra))
 
+    def test_collections(self):
+        from google.api_core.page_iterator import Iterator
+        from google.api_core.page_iterator import Page
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
+
+        collection_ids = ['users', 'projects']
+        client = self._make_default_one()
+        firestore_api = mock.Mock(spec=['list_collection_ids'])
+        client._firestore_api_internal = firestore_api
+
+        class _Iterator(Iterator):
+
+            def __init__(self, pages):
+                super(_Iterator, self).__init__(client=None)
+                self._pages = pages
+
+            def _next_page(self):
+                if self._pages:
+                    page, self._pages = self._pages[0], self._pages[1:]
+                    return Page(self, page, self.item_to_value)
+
+        iterator = _Iterator(pages=[collection_ids])
+        firestore_api.list_collection_ids.return_value = iterator
+
+        collections = list(client.collections())
+
+        self.assertEqual(len(collections), len(collection_ids))
+        for collection, collection_id in zip(collections, collection_ids):
+            self.assertIsInstance(collection, CollectionReference)
+            self.assertEqual(collection.parent, None)
+            self.assertEqual(collection.id, collection_id)
+
+        firestore_api.list_collection_ids.assert_called_once_with(
+            client._database_string,
+            metadata=client._rpc_metadata,
+        )
+
     def _get_all_helper(self, client, references, document_pbs, **kwargs):
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=['batch_get_documents'])

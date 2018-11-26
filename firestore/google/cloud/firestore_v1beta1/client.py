@@ -332,6 +332,19 @@ class Client(ClientWithProject):
         for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
 
+    def collections(self):
+        """List top-level collections of the client's database.
+
+        Returns:
+            Sequence[~.firestore_v1beta1.collection.CollectionReference]:
+                iterator of subcollections of the current document.
+        """
+        iterator = self._firestore_api.list_collection_ids(
+            self._database_string, metadata=self._rpc_metadata)
+        iterator.client = self
+        iterator.item_to_value = _item_to_collection_ref
+        return iterator
+
     def batch(self):
         """Get a batch instance from this client.
 
@@ -567,3 +580,14 @@ def _get_doc_mask(field_paths):
         return None
     else:
         return types.DocumentMask(field_paths=field_paths)
+
+
+def _item_to_collection_ref(iterator, item):
+    """Convert collection ID to collection ref.
+
+    Args:
+        iterator (google.api_core.page_iterator.GRPCIterator):
+            iterator response
+        item (str): ID of the collection
+    """
+    return iterator.client.collection(item)
