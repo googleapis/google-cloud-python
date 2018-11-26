@@ -25,46 +25,6 @@ from google.cloud.firestore_v1beta1.proto import firestore_pb2
 from google.cloud.firestore_v1beta1.proto import test_pb2
 from google.cloud.firestore_v1beta1.proto import write_pb2
 
-_UNIMPLEMENTED_FEATURES = [
-    #  tests having to do with the ArrayUnion, ArrayRemove, and Delete
-    # transforms
-    'create-all-transforms.textproto',
-    'create-arrayremove-multi.textproto',
-    'create-arrayremove-nested.textproto',
-    'create-arrayremove-noarray-nested.textproto',
-    'create-arrayremove-noarray.textproto',
-    'create-arrayremove.textproto',
-    'create-arrayunion-multi.textproto',
-    'create-arrayunion-nested.textproto',
-    'create-arrayunion-noarray-nested.textproto',
-    'create-arrayunion-noarray.textproto',
-    'create-arrayunion.textproto',
-    'set-all-transforms.textproto',
-    'set-arrayremove-multi.textproto',
-    'set-arrayremove-nested.textproto',
-    'set-arrayremove-noarray-nested.textproto',
-    'set-arrayremove-noarray.textproto',
-    'set-arrayremove.textproto',
-    'set-arrayunion-multi.textproto',
-    'set-arrayunion-nested.textproto',
-    'set-arrayunion-noarray-nested.textproto',
-    'set-arrayunion-noarray.textproto',
-    'set-arrayunion.textproto',
-    'update-all-transforms.textproto',
-    'update-arrayremove-alone.textproto',
-    'update-arrayremove-multi.textproto',
-    'update-arrayremove-nested.textproto',
-    'update-arrayremove-noarray-nested.textproto',
-    'update-arrayremove-noarray.textproto',
-    'update-arrayremove.textproto',
-    'update-arrayunion-alone.textproto',
-    'update-arrayunion-multi.textproto',
-    'update-arrayunion-nested.textproto',
-    'update-arrayunion-noarray-nested.textproto',
-    'update-arrayunion-noarray.textproto',
-    'update-arrayunion.textproto',
-    ]
-
 
 def _load_testproto(filename):
     with open(filename, 'r') as tp_file:
@@ -78,44 +38,37 @@ def _load_testproto(filename):
     return test_proto
 
 
-_UNIMPLEMENTED_FEATURE_TESTPROTOS = [
+ALL_TESTPROTOS = [
     _load_testproto(filename) for filename in sorted(
         glob.glob('tests/unit/testdata/*.textproto'))
-    if os.path.split(filename)[-1] in _UNIMPLEMENTED_FEATURES
-]
-
-IMPLEMENTED_FEATURE_TESTPROTOS = [
-    _load_testproto(filename) for filename in sorted(
-        glob.glob('tests/unit/testdata/*.textproto'))
-    if not os.path.split(filename)[-1] in _UNIMPLEMENTED_FEATURES
 ]
 
 _CREATE_TESTPROTOS = [
-    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
+    test_proto for test_proto in ALL_TESTPROTOS
     if test_proto.WhichOneof('test') == 'create']
 
 _GET_TESTPROTOS = [
-    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
+    test_proto for test_proto in ALL_TESTPROTOS
     if test_proto.WhichOneof('test') == 'get']
 
 _SET_TESTPROTOS = [
-    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
+    test_proto for test_proto in ALL_TESTPROTOS
     if test_proto.WhichOneof('test') == 'set']
 
 _UPDATE_TESTPROTOS = [
-    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
+    test_proto for test_proto in ALL_TESTPROTOS
     if test_proto.WhichOneof('test') == 'update']
 
 _UPDATE_PATHS_TESTPROTOS = [
-    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
+    test_proto for test_proto in ALL_TESTPROTOS
     if test_proto.WhichOneof('test') == 'update_paths']
 
 _DELETE_TESTPROTOS = [
-    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
+    test_proto for test_proto in ALL_TESTPROTOS
     if test_proto.WhichOneof('test') == 'delete']
 
 _LISTEN_TESTPROTOS = [
-    test_proto for test_proto in IMPLEMENTED_FEATURE_TESTPROTOS
+    test_proto for test_proto in ALL_TESTPROTOS
     if test_proto.WhichOneof('test') == 'listen']
 
 
@@ -239,22 +192,23 @@ def test_listen_paths_testprotos(test_proto):  # pragma: NO COVER
     pass
 
 
-@pytest.mark.skip(reason="Feature not yet implemented in Python.")
-@pytest.mark.parametrize('test_proto', _UNIMPLEMENTED_FEATURE_TESTPROTOS)
-def test_unimplemented_features_testprotos(test_proto):  # pragma: NO COVER
-    pass
-
-
 def convert_data(v):
     # Replace the strings 'ServerTimestamp' and 'Delete' with the corresponding
     # sentinels.
-    from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP, DELETE_FIELD
+    from google.cloud.firestore_v1beta1 import ArrayRemove
+    from google.cloud.firestore_v1beta1 import ArrayUnion
+    from google.cloud.firestore_v1beta1 import DELETE_FIELD
+    from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
 
     if v == 'ServerTimestamp':
         return SERVER_TIMESTAMP
     elif v == 'Delete':
         return DELETE_FIELD
     elif isinstance(v, list):
+        if v[0] == 'ArrayRemove':
+            return ArrayRemove([convert_data(e) for e in v[1:]])
+        if v[0] == 'ArrayUnion':
+            return ArrayUnion([convert_data(e) for e in v[1:]])
         return [convert_data(e) for e in v]
     elif isinstance(v, dict):
         return {k: convert_data(v2) for k, v2 in v.items()}
