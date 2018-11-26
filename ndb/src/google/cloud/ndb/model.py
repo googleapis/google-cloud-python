@@ -2569,6 +2569,33 @@ class UserProperty(Property):
         The ``auto_current_user`` and ``auto_current_user_add`` arguments are
         no longer supported.
 
+    .. note::
+
+        On Google App Engine standard, after saving a :class:`User` the user ID
+        would automatically be populated by the datastore, even if it wasn't
+        set in the :class:`User` value being stored. For example:
+
+        .. code-block:: python
+
+            >>> class Simple(ndb.Model):
+            ...     u = ndb.UserProperty()
+            ...
+            >>> entity = Simple(u=users.User("user@example.com"))
+            >>> entity.u.user_id() is None
+            True
+            >>>
+            >>> entity.put()
+            >>> # Reload without the cached values
+            >>> entity = entity.key.get(use_cache=False, use_memcache=False)
+            >>> entity.u.user_id()
+            '...9174...'
+
+        However in the gVisor Google App Engine runtime (e.g. Python 3.7),
+        this will behave differently. The user ID will only be stored if it
+        is manually set in the :class:`User` instance, either by the running
+        application or by retrieving a stored :class:`User` that already has
+        a user ID set.
+
     .. automethod:: _validate
     .. automethod:: _prepare_for_put
 
