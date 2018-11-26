@@ -12,7 +12,7 @@
 - Add ProductSearchClient to vision.py ([#6635](https://github.com/googleapis/google-cloud-python/pull/6635))
 
 ### Internal / Testing Changes
-- Vision: pick up fixes to GAPIC generator. ([#6632](https://github.com/googleapis/google-cloud-python/pull/6632))
+- Merge fixes to GAPIC generator. ([#6632](https://github.com/googleapis/google-cloud-python/pull/6632))
 
 ## 0.35.0
 
