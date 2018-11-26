@@ -26,6 +26,7 @@ from google.cloud.firestore_v1beta1._helpers import WriteOption
 from google.cloud.firestore_v1beta1.batch import WriteBatch
 from google.cloud.firestore_v1beta1.client import Client
 from google.cloud.firestore_v1beta1.collection import CollectionReference
+from google.cloud.firestore_v1beta1.transforms import ArrayRemove
 from google.cloud.firestore_v1beta1.transforms import ArrayUnion
 from google.cloud.firestore_v1beta1.transforms import DELETE_FIELD
 from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
@@ -40,6 +41,7 @@ from google.cloud.firestore_v1beta1.watch import Watch
 
 __all__ = [
     '__version__',
+    'ArrayRemove',
     'ArrayUnion',
     'Client',
     'CollectionReference',
