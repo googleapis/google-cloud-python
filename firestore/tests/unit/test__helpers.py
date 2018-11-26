@@ -1241,6 +1241,8 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
         self.assertEqual(inst.set_fields, {})
         self.assertTrue(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1259,6 +1261,8 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [_make_field_path('a')])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1282,6 +1286,8 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(
             inst.deleted_fields, [_make_field_path('a', 'b', 'c')])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1300,6 +1306,8 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, [])
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [_make_field_path('a')])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
@@ -1323,6 +1331,114 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(
             inst.server_timestamps, [_make_field_path('a', 'b', 'c')])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(
+            inst.transform_paths, [_make_field_path('a', 'b', 'c')])
+
+    def test_ctor_w_array_remove_shallow(self):
+        from google.cloud.firestore_v1beta1.transforms import ArrayRemove
+
+        values = [1, 3, 5]
+        document_data = {
+            'a': ArrayRemove(values),
+        }
+
+        inst = self._make_one(document_data)
+
+        expected_array_removes = {
+            _make_field_path('a'): values,
+        }
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, expected_array_removes)
+        self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [_make_field_path('a')])
+
+    def test_ctor_w_array_remove_nested(self):
+        from google.cloud.firestore_v1beta1.transforms import ArrayRemove
+
+        values = [2, 4, 8]
+        document_data = {
+            'a': {
+                'b': {
+                    'c': ArrayRemove(values),
+                }
+            }
+        }
+
+        inst = self._make_one(document_data)
+
+        expected_array_removes = {
+            _make_field_path('a', 'b', 'c'): values,
+        }
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, expected_array_removes)
+        self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(
+            inst.transform_paths, [_make_field_path('a', 'b', 'c')])
+
+    def test_ctor_w_array_union_shallow(self):
+        from google.cloud.firestore_v1beta1.transforms import ArrayUnion
+
+        values = [1, 3, 5]
+        document_data = {
+            'a': ArrayUnion(values),
+        }
+
+        inst = self._make_one(document_data)
+
+        expected_array_unions = {
+            _make_field_path('a'): values,
+        }
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, expected_array_unions)
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [_make_field_path('a')])
+
+    def test_ctor_w_array_union_nested(self):
+        from google.cloud.firestore_v1beta1.transforms import ArrayUnion
+
+        values = [2, 4, 8]
+        document_data = {
+            'a': {
+                'b': {
+                    'c': ArrayUnion(values),
+                }
+            }
+        }
+
+        inst = self._make_one(document_data)
+
+        expected_array_unions = {
+            _make_field_path('a', 'b', 'c'): values,
+        }
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, expected_array_unions)
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
@@ -1343,6 +1459,8 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1367,6 +1485,8 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1390,6 +1510,8 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1418,6 +1540,8 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.field_paths, expected_field_paths)
         self.assertEqual(inst.deleted_fields, [])
         self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1456,7 +1580,7 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(update_pb.update.fields, encode_dict(document_data))
         self.assertFalse(update_pb.HasField('current_document'))
 
-    def test_get_transform_pb_w_exists_precondition(self):
+    def test_get_transform_pb_w_server_timestamp_w_exists_precondition(self):
         from google.cloud.firestore_v1beta1.proto import write_pb2
         from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1._helpers import REQUEST_TIME_ENUM
@@ -1481,7 +1605,7 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertTrue(transform_pb.HasField('current_document'))
         self.assertFalse(transform_pb.current_document.exists)
 
-    def test_get_transform_pb_wo_exists_precondition(self):
+    def test_get_transform_pb_w_server_timestamp_wo_exists_precondition(self):
         from google.cloud.firestore_v1beta1.proto import write_pb2
         from google.cloud.firestore_v1beta1.transforms import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1._helpers import REQUEST_TIME_ENUM
@@ -1507,6 +1631,73 @@ class TestDocumentExtractor(unittest.TestCase):
         transform = transforms[0]
         self.assertEqual(transform.field_path, 'a.b.c')
         self.assertEqual(transform.set_to_server_value, REQUEST_TIME_ENUM)
+        self.assertFalse(transform_pb.HasField('current_document'))
+
+    @staticmethod
+    def _array_value_to_list(array_value):
+        from google.cloud.firestore_v1beta1._helpers import decode_value
+
+        return [
+            decode_value(element, client=None)
+            for element in array_value.values
+        ]
+
+    def test_get_transform_pb_w_array_remove(self):
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.transforms import ArrayRemove
+
+        values = [2, 4, 8]
+        document_data = {
+            'a': {
+                'b': {
+                    'c': ArrayRemove(values),
+                },
+            },
+        }
+        inst = self._make_one(document_data)
+        document_path = (
+            'projects/project-id/databases/(default)/'
+            'documents/document-id')
+
+        transform_pb = inst.get_transform_pb(document_path)
+
+        self.assertIsInstance(transform_pb, write_pb2.Write)
+        self.assertEqual(transform_pb.transform.document, document_path)
+        transforms = transform_pb.transform.field_transforms
+        self.assertEqual(len(transforms), 1)
+        transform = transforms[0]
+        self.assertEqual(transform.field_path, 'a.b.c')
+        removed = self._array_value_to_list(transform.remove_all_from_array)
+        self.assertEqual(removed, values)
+        self.assertFalse(transform_pb.HasField('current_document'))
+
+    def test_get_transform_pb_w_array_union(self):
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.transforms import ArrayUnion
+
+        values = [1, 3, 5]
+        document_data = {
+            'a': {
+                'b': {
+                    'c': ArrayUnion(values),
+                },
+            },
+        }
+        inst = self._make_one(document_data)
+        document_path = (
+            'projects/project-id/databases/(default)/'
+            'documents/document-id')
+
+        transform_pb = inst.get_transform_pb(document_path)
+
+        self.assertIsInstance(transform_pb, write_pb2.Write)
+        self.assertEqual(transform_pb.transform.document, document_path)
+        transforms = transform_pb.transform.field_transforms
+        self.assertEqual(len(transforms), 1)
+        transform = transforms[0]
+        self.assertEqual(transform.field_path, 'a.b.c')
+        added = self._array_value_to_list(transform.append_missing_elements)
+        self.assertEqual(added, values)
         self.assertFalse(transform_pb.HasField('current_document'))
 
 
@@ -1893,6 +2084,72 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
             _make_field_path('timestamp'),
         ]
         self.assertEqual(inst.server_timestamps, expected_server_timestamps)
+        self.assertTrue(inst.has_updates)
+
+    def test_apply_merge_list_fields_w_array_remove(self):
+        from google.cloud.firestore_v1beta1.transforms import ArrayRemove
+
+        values = [2, 4, 8]
+        document_data = {
+            'write_me': 'value',
+            'remove_me': ArrayRemove(values),
+            'ignored_remove_me': ArrayRemove((1, 3, 5)),
+        }
+        inst = self._make_one(document_data)
+
+        inst.apply_merge(
+            [_make_field_path('write_me'), _make_field_path('remove_me')])
+
+        expected_data_merge = [
+            _make_field_path('write_me'),
+        ]
+        expected_transform_merge = [
+            _make_field_path('remove_me'),
+        ]
+        expected_merge = [
+            _make_field_path('remove_me'),
+            _make_field_path('write_me'),
+        ]
+        self.assertEqual(inst.data_merge, expected_data_merge)
+        self.assertEqual(inst.transform_merge, expected_transform_merge)
+        self.assertEqual(inst.merge, expected_merge)
+        expected_array_removes = {
+            _make_field_path('remove_me'): values,
+        }
+        self.assertEqual(inst.array_removes, expected_array_removes)
+        self.assertTrue(inst.has_updates)
+
+    def test_apply_merge_list_fields_w_array_union(self):
+        from google.cloud.firestore_v1beta1.transforms import ArrayUnion
+
+        values = [1, 3, 5]
+        document_data = {
+            'write_me': 'value',
+            'union_me': ArrayUnion(values),
+            'ignored_union_me': ArrayUnion((2, 4, 8)),
+        }
+        inst = self._make_one(document_data)
+
+        inst.apply_merge(
+            [_make_field_path('write_me'), _make_field_path('union_me')])
+
+        expected_data_merge = [
+            _make_field_path('write_me'),
+        ]
+        expected_transform_merge = [
+            _make_field_path('union_me'),
+        ]
+        expected_merge = [
+            _make_field_path('union_me'),
+            _make_field_path('write_me'),
+        ]
+        self.assertEqual(inst.data_merge, expected_data_merge)
+        self.assertEqual(inst.transform_merge, expected_transform_merge)
+        self.assertEqual(inst.merge, expected_merge)
+        expected_array_unions = {
+            _make_field_path('union_me'): values,
+        }
+        self.assertEqual(inst.array_unions, expected_array_unions)
         self.assertTrue(inst.has_updates)
 
 
