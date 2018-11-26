@@ -16,11 +16,13 @@
 
 
 import datetime
+import functools
 import inspect
 import json
 import pickle
 import zlib
 
+from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
 
 from google.cloud.ndb import _datastore_types
@@ -39,6 +41,7 @@ __all__ = [
     "UnprojectedPropertyError",
     "ReadonlyPropertyError",
     "ComputedPropertyError",
+    "UserNotFoundError",
     "IndexProperty",
     "Index",
     "IndexState",
@@ -56,6 +59,7 @@ __all__ = [
     "GeoPtProperty",
     "PickleProperty",
     "JsonProperty",
+    "User",
     "UserProperty",
     "KeyProperty",
     "BlobKeyProperty",
@@ -87,6 +91,7 @@ __all__ = [
 ]
 
 
+_MEANING_PREDEFINED_ENTITY_USER = 20
 _MAX_STRING_LENGTH = 1500
 Key = key_module.Key
 BlobKey = _datastore_types.BlobKey
@@ -123,6 +128,10 @@ class ReadonlyPropertyError(exceptions.Error):
 
 class ComputedPropertyError(ReadonlyPropertyError):
     """Raised when attempting to set or delete a computed property."""
+
+
+class UserNotFoundError(exceptions.Error):
+    """No email argument was specified, and no user is logged in."""
 
 
 class IndexProperty:
@@ -2352,10 +2361,354 @@ class JsonProperty(BlobProperty):
         return json.loads(value.decode("ascii"))
 
 
-class UserProperty(Property):
-    __slots__ = ()
+@functools.total_ordering
+class User:
+    """Provides the email address, nickname, and ID for a Google Accounts user.
 
-    def __init__(self, *args, **kwargs):
+    .. note::
+
+        This class is a port of ``google.appengine.api.users.User``.
+        In the (legacy) Google App Engine standard environment, this
+        constructor relied on several environment variables to provide a
+        fallback for inputs. In particular:
+
+        * ``AUTH_DOMAIN`` for the ``_auth_domain`` argument
+        * ``USER_EMAIL`` for the ``email`` argument
+        * ``USER_ID`` for the ``_user_id`` argument
+        * ``FEDERATED_IDENTITY`` for the (now removed) ``federated_identity``
+          argument
+        * ``FEDERATED_PROVIDER`` for the (now removed) ``federated_provider``
+          argument
+
+        However in the gVisor Google App Engine runtime (e.g. Python 3.7),
+        none of these environment variables will be populated.
+
+    .. note::
+
+        Previous versions of the Google Cloud Datastore API had an explicit
+        ``UserValue`` field. However, the ``google.datastore.v1`` API returns
+        previously stored user values as an ``Entity`` with the meaning set to
+        ``ENTITY_USER=20``.
+
+    .. warning::
+
+        The ``federated_identity`` and ``federated_provider`` are
+        decommissioned and have been removed from the constructor. Additionally
+        ``_strict_mode`` has been removed from the constructor and the
+        ``federated_identity()`` and ``federated_provider()`` methods have been
+        removed from this class.
+
+    Args:
+        email (str): The user's email address.
+        _auth_domain (str): The auth domain for the current application.
+        _user_id (str): The user ID.
+
+    Raises:
+        ValueError: If the ``_auth_domain`` is not passed in.
+        UserNotFoundError: If ``email`` is empty.
+    """
+
+    __slots__ = ("_auth_domain", "_email", "_user_id")
+
+    def __init__(self, email=None, _auth_domain=None, _user_id=None):
+        if _auth_domain is None:
+            raise ValueError("_auth_domain is required")
+
+        if not email:
+            raise UserNotFoundError
+
+        self._auth_domain = _auth_domain
+        self._email = email
+        self._user_id = _user_id
+
+    def nickname(self):
+        """The nickname for this user.
+
+        A nickname is a human-readable string that uniquely identifies a Google
+        user with respect to this application, akin to a username. For some
+        users, this nickname is an email address or part of the email address.
+
+        Returns:
+            str: The nickname of the user.
+        """
+        if (
+            self._email
+            and self._auth_domain
+            and self._email.endswith("@" + self._auth_domain)
+        ):
+            suffix_len = len(self._auth_domain) + 1
+            return self._email[:-suffix_len]
+        else:
+            return self._email
+
+    def email(self):
+        """Returns the user's email address."""
+        return self._email
+
+    def user_id(self):
+        """Obtains the user ID of the user.
+
+        Returns:
+            Optional[str]: A permanent unique identifying string or
+            :data:`None`. If the email address was set explicity, this will
+            return :data:`None`.
+        """
+        return self._user_id
+
+    def auth_domain(self):
+        """Obtains the user's authentication domain.
+
+        Returns:
+            str: The authentication domain. This method is internal and
+            should not be used by client applications.
+        """
+        return self._auth_domain
+
+    def add_to_entity(self, entity, name):
+        """Add the user value to a datastore entity.
+
+        .. note::
+
+            This assumes, but does not check, that ``name`` is not already
+            set on ``entity`` or in the meanings of ``entity``.
+
+        Args:
+            entity (~google.cloud.datastore.entity.Entity): An entity that
+                contains a user value as the field ``name``.
+            name (str): The name of the field containing this user value.
+        """
+        user_entity = entity_module.Entity()
+        entity[name] = user_entity
+        entity._meanings[name] = (_MEANING_PREDEFINED_ENTITY_USER, user_entity)
+
+        # Set required fields.
+        user_entity["email"] = self._email
+        user_entity.exclude_from_indexes.add("email")
+        user_entity["auth_domain"] = self._auth_domain
+        user_entity.exclude_from_indexes.add("auth_domain")
+        # Set optional field.
+        if self._user_id:
+            user_entity["user_id"] = self._user_id
+            user_entity.exclude_from_indexes.add("user_id")
+
+    @classmethod
+    def read_from_entity(cls, entity, name):
+        """Convert the user value to a datastore entity.
+
+        Args:
+            entity (~google.cloud.datastore.entity.Entity): An entity that
+                contains a user value as the field ``name``.
+            name (str): The name of the field containing this user value.
+
+        Raises:
+            ValueError: If the stored meaning for the ``name`` field is not
+                equal to ``ENTITY_USER=20``.
+            ValueError: If the value stored in the meanings for ``entity``
+                is not the actual stored value under ``name``.
+        """
+        # NOTE: This may fail in a ``KeyError``.
+        user_entity = entity[name]
+        # NOTE: This may result in a ``ValueError`` for failed unpacking.
+        meaning, value = entity._meanings.get(name, (0, None))
+        if meaning != _MEANING_PREDEFINED_ENTITY_USER:
+            raise ValueError("User values should have meaning=20")
+        if user_entity is not value:
+            raise ValueError("Unexpected value stored for meaning")
+
+        # NOTE: We do not check ``exclude_from_indexes``.
+        kwargs = {
+            "email": user_entity["email"],
+            "_auth_domain": user_entity["auth_domain"],
+        }
+        if "user_id" in user_entity:
+            kwargs["_user_id"] = user_entity["user_id"]
+        return cls(**kwargs)
+
+    def __str__(self):
+        return str(self.nickname())
+
+    def __repr__(self):
+        values = ["email={!r}".format(self._email)]
+        if self._user_id:
+            values.append("_user_id={!r}".format(self._user_id))
+        return "users.User({})".format(", ".join(values))
+
+    def __hash__(self):
+        return hash((self._email, self._auth_domain))
+
+    def __eq__(self, other):
+        if not isinstance(other, User):
+            return NotImplemented
+
+        return (
+            self._email == other._email
+            and self._auth_domain == other._auth_domain
+        )
+
+    def __lt__(self, other):
+        if not isinstance(other, User):
+            return NotImplemented
+
+        return (self._email, self._auth_domain) < (
+            other._email,
+            other._auth_domain,
+        )
+
+
+class UserProperty(Property):
+    """A property that contains :class:`.User` values.
+
+    .. warning::
+
+        This exists for backwards compatibility with existing Cloud Datastore
+        schemas only; storing :class:`.User` objects directly in Cloud
+        Datastore is not recommended.
+
+    .. warning::
+
+        The ``auto_current_user`` and ``auto_current_user_add`` arguments are
+        no longer supported.
+
+    .. note::
+
+        On Google App Engine standard, after saving a :class:`User` the user ID
+        would automatically be populated by the datastore, even if it wasn't
+        set in the :class:`User` value being stored. For example:
+
+        .. code-block:: python
+
+            >>> class Simple(ndb.Model):
+            ...     u = ndb.UserProperty()
+            ...
+            >>> entity = Simple(u=users.User("user@example.com"))
+            >>> entity.u.user_id() is None
+            True
+            >>>
+            >>> entity.put()
+            >>> # Reload without the cached values
+            >>> entity = entity.key.get(use_cache=False, use_memcache=False)
+            >>> entity.u.user_id()
+            '...9174...'
+
+        However in the gVisor Google App Engine runtime (e.g. Python 3.7),
+        this will behave differently. The user ID will only be stored if it
+        is manually set in the :class:`User` instance, either by the running
+        application or by retrieving a stored :class:`User` that already has
+        a user ID set.
+
+    .. automethod:: _validate
+    .. automethod:: _prepare_for_put
+
+    Args:
+        name (str): The name of the property.
+        auto_current_user (bool): Deprecated flag. When supported, if this flag
+            was set to :data:`True`, the property value would be set to the
+            currently signed-in user whenever the model instance is stored in
+            the datastore, overwriting the property's previous value.
+            This was useful for tracking which user modifies a model instance.
+        auto_current_user_add (bool): Deprecated flag. When supported, if this
+            flag was set to :data:`True`, the property value would be set to
+            the urrently signed-in user he first time the model instance is
+            stored in the datastore, unless the property has already been
+            assigned a value. This was useful for tracking which user creates
+            a model instance, which may not be the same user that modifies it
+            later.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (bytes): The default value for this property.
+        choices (Iterable[bytes]): A container of allowed values for this
+            property.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+
+    Raises:
+        NotImplementedError: If ``auto_current_user`` is provided.
+        NotImplementedError: If ``auto_current_user_add`` is provided.
+    """
+
+    _auto_current_user = False
+    _auto_current_user_add = False
+
+    def __init__(
+        self,
+        name=None,
+        *,
+        auto_current_user=None,
+        auto_current_user_add=None,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        super(UserProperty, self).__init__(
+            name=name,
+            indexed=indexed,
+            repeated=repeated,
+            required=required,
+            default=default,
+            choices=choices,
+            validator=validator,
+            verbose_name=verbose_name,
+            write_empty_list=write_empty_list,
+        )
+        if auto_current_user is not None:
+            raise NotImplementedError(
+                "The auto_current_user argument is no longer supported."
+            )
+        if auto_current_user_add is not None:
+            raise NotImplementedError(
+                "The auto_current_user_add argument is no longer supported."
+            )
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (User): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`User`.
+        """
+        if not isinstance(value, User):
+            raise exceptions.BadValueError(
+                "Expected User, got {!r}".format(value)
+            )
+
+    def _prepare_for_put(self, entity):
+        """Pre-put hook
+
+        This is a no-op. In previous versions of ``ndb``, this method
+        populated the value based on ``auto_current_user`` or
+        ``auto_current_user_add``, but these flags have been disabled.
+
+        Args:
+            entity (Model): An entity with values.
+        """
+
+    def _db_set_value(self, v, p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
