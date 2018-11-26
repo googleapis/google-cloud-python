@@ -181,7 +181,7 @@ class PartialRowData(object):
                   and second for column names/qualifiers within a family). For
                   a given column, a list of :class:`Cell` objects is stored.
         """
-        return copy.deepcopy(self._cells)
+        return self._cells
 
     @property
     def row_key(self):

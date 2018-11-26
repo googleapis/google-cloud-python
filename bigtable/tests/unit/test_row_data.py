@@ -305,8 +305,6 @@ class TestPartialRowData(unittest.TestCase):
         partial_row_data = self._make_one(None)
         cells = {1: 2}
         partial_row_data._cells = cells
-        # Make sure we get a copy, not the original.
-        self.assertIsNot(partial_row_data.cells, cells)
         self.assertEqual(partial_row_data.cells, cells)
 
     def test_row_key_getter(self):
