@@ -24,7 +24,7 @@ import pytest
 
 from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
-from google.cloud.ndb import key
+from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import query
 import tests.unit.utils
@@ -35,7 +35,7 @@ def test___all__():
 
 
 def test_Key():
-    assert model.Key is key.Key
+    assert model.Key is key_module.Key
 
 
 def test_BlobKey():
@@ -1362,7 +1362,7 @@ class TestModelKey:
     @staticmethod
     def test_compare_valid():
         prop = model.ModelKey()
-        value = key.Key("say", "quay")
+        value = key_module.Key("say", "quay")
         filter_node = prop._comparison(">=", value)
         assert filter_node == query.FilterNode("__key__", ">=", value)
 
@@ -1375,7 +1375,7 @@ class TestModelKey:
     @staticmethod
     def test__validate():
         prop = model.ModelKey()
-        value = key.Key("Up", 909)
+        value = key_module.Key("Up", 909)
         assert prop._validate(value) is value
 
     @staticmethod
@@ -1387,7 +1387,7 @@ class TestModelKey:
     @staticmethod
     def test__set_value():
         entity = object.__new__(model.Model)
-        value = key.Key("Map", 8898)
+        value = key_module.Key("Map", 8898)
 
         model.ModelKey._set_value(entity, value)
         assert entity._entity_key is value
@@ -1704,6 +1704,12 @@ class TestTextProperty:
             model.TextProperty(indexed=True)
 
     @staticmethod
+    def test_repr():
+        prop = model.TextProperty(name="text")
+        expected = "TextProperty('text')"
+        assert repr(prop) == expected
+
+    @staticmethod
     def test__validate():
         prop = model.TextProperty(name="text")
         assert prop._validate("abc") is None
@@ -1772,6 +1778,12 @@ class TestStringProperty:
     def test_constructor_not_allowed():
         with pytest.raises(NotImplementedError):
             model.StringProperty(indexed=False)
+
+    @staticmethod
+    def test_repr():
+        prop = model.StringProperty(name="limited-text")
+        expected = "StringProperty('limited-text')"
+        assert repr(prop) == expected
 
     @staticmethod
     def test__validate_bad_length():
@@ -2239,13 +2251,13 @@ class TestKeyProperty:
     def test__validate():
         kind = "Simple"
         prop = model.KeyProperty("keyp", kind=kind)
-        value = key.Key(kind, 182983)
+        value = key_module.Key(kind, 182983)
         assert prop._validate(value) is None
 
     @staticmethod
     def test__validate_without_kind():
         prop = model.KeyProperty("keyp")
-        value = key.Key("Foo", "Bar")
+        value = key_module.Key("Foo", "Bar")
         assert prop._validate(value) is None
 
     @staticmethod
@@ -2257,14 +2269,14 @@ class TestKeyProperty:
     @staticmethod
     def test__validate_partial_key():
         prop = model.KeyProperty("keyp")
-        value = key.Key("Kynd", None)
+        value = key_module.Key("Kynd", None)
         with pytest.raises(exceptions.BadValueError):
             prop._validate(value)
 
     @staticmethod
     def test__validate_wrong_kind():
         prop = model.KeyProperty("keyp", kind="Simple")
-        value = key.Key("Kynd", 184939)
+        value = key_module.Key("Kynd", 184939)
         with pytest.raises(exceptions.BadValueError):
             prop._validate(value)
 
@@ -2528,16 +2540,167 @@ class TestComputedProperty:
 
 class TestMetaModel:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.MetaModel()
+    def test___repr__():
+        expected = "Model<>"
+        assert repr(model.Model) == expected
+
+    @staticmethod
+    def test___repr__extended():
+        class Mine(model.Model):
+            first = model.IntegerProperty()
+            second = model.StringProperty()
+
+        expected = (
+            "Mine<first=IntegerProperty('first'), "
+            "second=StringProperty('second')>"
+        )
+        assert repr(Mine) == expected
+
+    @staticmethod
+    def test_bad_kind():
+        with pytest.raises(model.KindError):
+
+            class Mine(model.Model):
+                @classmethod
+                def _get_kind(cls):
+                    return 525600
+
+    @staticmethod
+    def test_invalid_property_name():
+        with pytest.raises(TypeError):
+
+            class Mine(model.Model):
+                _foo = model.StringProperty()
+
+    @staticmethod
+    def test_repeated_property():
+        class Mine(model.Model):
+            foo = model.StringProperty(repeated=True)
+
+        assert Mine._has_repeated
+
+    @staticmethod
+    def test_non_property_attribute():
+        model_attr = unittest.mock.Mock(spec=model.ModelAttribute)
+
+        class Mine(model.Model):
+            baz = model_attr
+
+        model_attr._fix_up.assert_called_once_with(Mine, "baz")
 
 
 class TestModel:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.Model()
+    def test_constructor_defaults():
+        entity = model.Model()
+        assert entity.__dict__ == {"_values": {}}
+
+    @staticmethod
+    def test_constructor_key():
+        key = key_module.Key("Foo", "bar")
+        entity = model.Model(key=key)
+        assert entity.__dict__ == {"_values": {}, "_entity_key": key}
+
+        entity = model.Model(_key=key)
+        assert entity.__dict__ == {"_values": {}, "_entity_key": key}
+
+    @staticmethod
+    def test_constructor_key_parts():
+        entity = model.Model(id=124)
+        key = key_module.Key("Model", 124)
+        assert entity.__dict__ == {"_values": {}, "_entity_key": key}
+
+    @staticmethod
+    def test_constructor_key_and_key_parts():
+        key = key_module.Key("Foo", "bar")
+        with pytest.raises(exceptions.BadArgumentError):
+            model.Model(key=key, id=124)
+
+    @staticmethod
+    def test_constructor_user_property_collision():
+        class SecretMap(model.Model):
+            key = model.IntegerProperty()
+
+        entity = SecretMap(key=1001)
+        assert entity.__dict__ == {"_values": {"key": 1001}}
+
+    @staticmethod
+    def test_constructor_with_projection():
+        class Book(model.Model):
+            pages = model.IntegerProperty()
+            author = model.StringProperty()
+            publisher = model.StringProperty()
+
+        entity = Book(
+            pages=287, author="Tim Robert", projection=("pages", "author")
+        )
+        assert entity.__dict__ == {
+            "_values": {"pages": 287, "author": "Tim Robert"},
+            "_projection": ("pages", "author"),
+        }
+
+    @staticmethod
+    def test_constructor_non_existent_property():
+        with pytest.raises(AttributeError):
+            model.Model(pages=287)
+
+    @staticmethod
+    def test_constructor_non_property():
+        class TimeTravelVehicle(model.Model):
+            speed = 88
+
+        with pytest.raises(TypeError):
+            TimeTravelVehicle(speed=28)
+
+    @staticmethod
+    def test_repr():
+        entity = ManyFields(self=909, id="hi", key=[88.5, 0.0], value=None)
+        expected = "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None)"
+        assert repr(entity) == expected
+
+    @staticmethod
+    def test_repr_with_projection():
+        entity = ManyFields(
+            self=909,
+            id="hi",
+            key=[88.5, 0.0],
+            value=None,
+            projection=("self", "id"),
+        )
+        expected = (
+            "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None, "
+            "_projection=('self', 'id'))"
+        )
+        assert repr(entity) == expected
+
+    @staticmethod
+    def test_repr_with_property_named_key():
+        entity = ManyFields(
+            self=909, id="hi", key=[88.5, 0.0], value=None, _id=78
+        )
+        expected = (
+            "ManyFields(_key=Key('ManyFields', 78), id='hi', key=[88.5, 0.0], "
+            "self=909, value=None)"
+        )
+        assert repr(entity) == expected
+
+    @staticmethod
+    def test_repr_with_property_named_key_not_set():
+        entity = ManyFields(self=909, id="hi", value=None, _id=78)
+        expected = (
+            "ManyFields(_key=Key('ManyFields', 78), id='hi', "
+            "self=909, value=None)"
+        )
+        assert repr(entity) == expected
+
+    @staticmethod
+    def test_repr_no_property_named_key():
+        class NoKeyCollision(model.Model):
+            word = model.StringProperty()
+
+        entity = NoKeyCollision(word="one", id=801)
+        expected = "NoKeyCollision(key=Key('NoKeyCollision', 801), word='one')"
+        assert repr(entity) == expected
 
     @staticmethod
     def test__get_kind():
@@ -2552,6 +2715,12 @@ class TestModel:
     def test__validate_key():
         value = unittest.mock.sentinel.value
         assert model.Model._validate_key(value) is value
+
+    @staticmethod
+    def test__put():
+        entity = model.Model()
+        with pytest.raises(NotImplementedError):
+            entity._put()
 
 
 class TestExpando:
@@ -2634,3 +2803,11 @@ def test_get_indexes_async():
 def test_get_indexes():
     with pytest.raises(NotImplementedError):
         model.get_indexes()
+
+
+class ManyFields(model.Model):
+    self = model.IntegerProperty()
+    id = model.StringProperty()
+    key = model.FloatProperty(repeated=True)
+    value = model.StringProperty()
+    unused = model.FloatProperty()
