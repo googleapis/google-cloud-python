@@ -41,4 +41,5 @@ s.replace("google/**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=95, cov_level=100)
-s.move(templated_files)
+# Don't move noxfile. logging has special testing setups for django, etc
+s.move(templated_files, exclude="noxfile.py")
