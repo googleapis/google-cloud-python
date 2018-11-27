@@ -107,7 +107,7 @@ class WriteBatch(object):
             raise ValueError('you must not pass an explicit write option to '
                              'update.')
         write_pbs = _helpers.pbs_for_update(
-            self._client, reference._document_path, field_updates, option)
+            reference._document_path, field_updates, option)
         self._add_write_pbs(write_pbs)
 
     def delete(self, reference, option=None):
