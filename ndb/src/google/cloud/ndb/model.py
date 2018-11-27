@@ -3478,6 +3478,27 @@ class Model(metaclass=MetaModel):
         >>> entity2
         KeyCollide(_key=Key('KeyCollide', 1), key='Go slow')
 
+    The constructor accepts keyword arguments based on the properties
+    defined on model subclass. However, using keywords for nonexistent
+    or non-:class:`Property` class attributes will cause a failure:
+
+    .. doctest:: model-keywords-fail
+
+        >>> class Simple(ndb.Model):
+        ...     marker = 1001
+        ...     some_name = ndb.StringProperty()
+        ...
+        >>> Simple(some_name="Value set here.")
+        Simple(some_name='Value set here.')
+        >>> Simple(some_name="Value set here.", marker=29)
+        Traceback (most recent call last):
+          ...
+        TypeError: Cannot set non-property marker
+        >>> Simple(some_name="Value set here.", missing=29)
+        Traceback (most recent call last):
+          ...
+        AttributeError: type object 'Simple' has no attribute 'missing'
+
     .. automethod:: _get_kind
 
     Args:
