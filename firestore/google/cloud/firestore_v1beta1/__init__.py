@@ -19,12 +19,12 @@ __version__ = get_distribution('google-cloud-firestore').version
 
 from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1._helpers import GeoPoint
+from google.cloud.firestore_v1beta1._helpers import ExistsOption
+from google.cloud.firestore_v1beta1._helpers import LastUpdateOption
 from google.cloud.firestore_v1beta1._helpers import ReadAfterWriteError
+from google.cloud.firestore_v1beta1._helpers import WriteOption
 from google.cloud.firestore_v1beta1.batch import WriteBatch
 from google.cloud.firestore_v1beta1.client import Client
-from google.cloud.firestore_v1beta1.client import ExistsOption
-from google.cloud.firestore_v1beta1.client import LastUpdateOption
-from google.cloud.firestore_v1beta1.client import WriteOption
 from google.cloud.firestore_v1beta1.collection import CollectionReference
 from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
 from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP

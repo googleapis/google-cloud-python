@@ -171,7 +171,7 @@ class TestClient(unittest.TestCase):
 
     def test_write_option_last_update(self):
         from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1beta1.client import LastUpdateOption
+        from google.cloud.firestore_v1beta1._helpers import LastUpdateOption
 
         timestamp = timestamp_pb2.Timestamp(
             seconds=1299767599,
@@ -184,7 +184,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(option._last_update_time, timestamp)
 
     def test_write_option_exists(self):
-        from google.cloud.firestore_v1beta1.client import ExistsOption
+        from google.cloud.firestore_v1beta1._helpers import ExistsOption
 
         klass = self._get_target_class()
 
@@ -396,88 +396,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(transaction._max_attempts, 3)
         self.assertTrue(transaction._read_only)
         self.assertIsNone(transaction._id)
-
-
-class TestWriteOption(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.firestore_v1beta1.client import WriteOption
-
-        return WriteOption
-
-    def _make_one(self, *args, **kwargs):
-        klass = self._get_target_class()
-        return klass(*args, **kwargs)
-
-    def test_modify_write(self):
-        option = self._make_one()
-        with self.assertRaises(NotImplementedError):
-            option.modify_write(None)
-
-
-class TestLastUpdateOption(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.firestore_v1beta1.client import LastUpdateOption
-
-        return LastUpdateOption
-
-    def _make_one(self, *args, **kwargs):
-        klass = self._get_target_class()
-        return klass(*args, **kwargs)
-
-    def test_constructor(self):
-        option = self._make_one(mock.sentinel.timestamp)
-        self.assertIs(option._last_update_time, mock.sentinel.timestamp)
-
-    def test_modify_write_update_time(self):
-        from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.proto import write_pb2
-
-        timestamp_pb = timestamp_pb2.Timestamp(
-            seconds=683893592,
-            nanos=229362000,
-        )
-        option = self._make_one(timestamp_pb)
-        write_pb = write_pb2.Write()
-        ret_val = option.modify_write(write_pb)
-
-        self.assertIsNone(ret_val)
-        expected_doc = common_pb2.Precondition(update_time=timestamp_pb)
-        self.assertEqual(write_pb.current_document, expected_doc)
-
-
-class TestExistsOption(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.firestore_v1beta1.client import ExistsOption
-
-        return ExistsOption
-
-    def _make_one(self, *args, **kwargs):
-        klass = self._get_target_class()
-        return klass(*args, **kwargs)
-
-    def test_constructor(self):
-        option = self._make_one(mock.sentinel.totes_bool)
-        self.assertIs(option._exists, mock.sentinel.totes_bool)
-
-    def test_modify_write(self):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.proto import write_pb2
-
-        for exists in (True, False):
-            option = self._make_one(exists)
-            write_pb = write_pb2.Write()
-            ret_val = option.modify_write(write_pb)
-
-            self.assertIsNone(ret_val)
-            expected_doc = common_pb2.Precondition(exists=exists)
-            self.assertEqual(write_pb.current_document, expected_doc)
 
 
 class Test__reference_info(unittest.TestCase):
