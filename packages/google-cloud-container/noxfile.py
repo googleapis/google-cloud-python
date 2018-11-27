@@ -75,7 +75,7 @@ def system(session):
     session.install('-e', '.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system/')
+    session.run('py.test', '--quiet', 'tests/system/', *session.posargs)
 
 
 @nox.session(python='3.6')
