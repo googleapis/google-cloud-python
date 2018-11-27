@@ -18,7 +18,9 @@ import copy
 
 import six
 
+from google.api_core import exceptions
 from google.cloud.firestore_v1beta1 import _helpers
+from google.cloud.firestore_v1beta1.proto import common_pb2
 from google.cloud.firestore_v1beta1.watch import Watch
 
 
@@ -423,9 +425,37 @@ class DocumentReference(object):
         if isinstance(field_paths, six.string_types):
             raise ValueError(
                 "'field_paths' must be a sequence of paths, not a string.")
-        snapshot_generator = self._client.get_all(
-            [self], field_paths=field_paths, transaction=transaction)
-        return _consume_single_get(snapshot_generator)
+
+        if field_paths is not None:
+            mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+        else:
+            mask = None
+
+        firestore_api = self._client._firestore_api
+        try:
+            document_pb = firestore_api.get_document(
+                self._document_path,
+                mask=mask,
+                transaction=_helpers.get_transaction_id(transaction),
+                metadata=self._client._rpc_metadata)
+        except exceptions.NotFound:
+            data = None
+            exists = False
+            create_time = None
+            update_time = None
+        else:
+            data = _helpers.decode_dict(document_pb.fields, self._client)
+            exists = True
+            create_time = document_pb.create_time
+            update_time = document_pb.update_time
+
+        return DocumentSnapshot(
+            reference=self,
+            data=data,
+            exists=exists,
+            read_time=None,  # No server read_time available
+            create_time=create_time,
+            update_time=update_time)
 
     def collections(self, page_size=None):
         """List subcollections of the current document.
