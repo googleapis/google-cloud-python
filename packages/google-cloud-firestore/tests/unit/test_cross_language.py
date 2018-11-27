@@ -21,6 +21,7 @@ import mock
 import pytest
 
 from google.protobuf import text_format
+from google.cloud.firestore_v1beta1.proto import document_pb2
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
 from google.cloud.firestore_v1beta1.proto import test_pb2
 from google.cloud.firestore_v1beta1.proto import write_pb2
@@ -170,19 +171,18 @@ def test_create_testprotos(test_proto):
 @pytest.mark.parametrize('test_proto', _GET_TESTPROTOS)
 def test_get_testprotos(test_proto):
     testcase = test_proto.get
-    # XXX this stub currently does nothing because no get testcases have
-    # is_error; taking this bit out causes the existing tests to fail
-    # due to a lack of batch getting
-    try:
-        testcase.is_error
-    except AttributeError:
-        return
-    else:  # pragma: NO COVER
-        testcase = test_proto.get
-        firestore_api = _mock_firestore_api()
-        client, document = _make_client_document(firestore_api, testcase)
-        call = functools.partial(document.get, None, None)
-        _run_testcase(testcase, call, firestore_api, client)
+    firestore_api = mock.Mock(spec=['get_document'])
+    response = document_pb2.Document()
+    firestore_api.get_document.return_value = response
+    client, document = _make_client_document(firestore_api, testcase)
+
+    document.get()  # No '.textprotos' for errors, field_paths.
+
+    firestore_api.get_document.assert_called_once_with(
+        document._document_path,
+        mask=None,
+        transaction=None,
+        metadata=client._rpc_metadata)
 
 
 @pytest.mark.parametrize('test_proto', _SET_TESTPROTOS)
