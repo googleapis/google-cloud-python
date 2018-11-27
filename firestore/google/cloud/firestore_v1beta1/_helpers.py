@@ -31,6 +31,7 @@ from google.cloud import exceptions
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud.firestore_v1beta1 import constants
+from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import common_pb2
 from google.cloud.firestore_v1beta1.proto import document_pb2
@@ -202,217 +203,19 @@ class FieldPath(object):
         """
         return get_field_path(self.parts)
 
+    def lineage(self):
+        """Return field paths for all parents.
 
-class FieldPathHelper(object):
-    """Helper to convert field names and paths for usage in a request.
-
-    Also supports field deletes.
-
-    Args:
-        field_updates (dict): Field names or paths to update and values
-            to update with.
-    """
-
-    PATH_END = object()
-    FIELD_PATH_CONFLICT = 'Field paths {!r} and {!r} conflict'
-
-    def __init__(self, field_updates):
-        self.field_updates = field_updates
-        self.update_values = {}
-        """Dict[str, Any]: The stage updates to be sent.
-
-        On success of :meth:`add_value_at_field_path`, the unpacked version of
-        a field path will be added to this as a key, and it will point to
-        the ``value`` provided (unless it is a delete).
+        Returns: set(FieldPath)
         """
-        self.field_paths = []
-        """List[str, ...]: List of field paths already considered.
+        parts = self.parts[:-1]
+        result = set()
 
-        On success of :meth:`add_value_at_field_path`, a ``field_path`` will be
-        appended to this list.
+        while parts:
+            result.add(FieldPath(*parts))
+            parts = parts[:-1]
 
-        """
-        self.unpacked_field_paths = {}
-        """Dict[str, Any]: A structured version of ``field_paths``.
-
-        This is used to check for ambiguity.
-
-        ``update_values`` and ``unpacked_field_paths`` **must** be tracked
-        separately because ``value``-s inserted could be a dictionary, so at a
-        certain level of nesting the distinction between the data and the field
-        path would be lost. For example, ``{'a.b': {'c': 10}`` and
-        ``{'a.b.c': 10}`` would be indistinguishable if only ``update_values``
-        was used to track contradictions. In addition, for deleted values,
-        **only** ``field_paths`` is updated, so there would be no way of
-        tracking a contradiction in ``update_values``.
-        """
-
-    def get_update_values(self, value):
-        """Get the dictionary of updates.
-
-        If the ``value`` is the delete sentinel, we'll use a throw-away
-        dictionary so that the actual updates are not polluted.
-
-        Args:
-            value (Any): A value to (eventually) be added to
-                ``update_values``.
-
-        Returns:
-            dict: The dictionary of updates.
-        """
-        if value is constants.DELETE_FIELD:
-            return {}
-        else:
-            return self.update_values
-
-    def check_conflict(self, field_path, parts, index, curr_paths):
-        """Check if ``field_path`` has a conflict with an existing field path.
-
-        Args:
-            field_path (str): The field path being considered.
-            parts (List[str, ...]): The parts in ``field_path``.
-            index (int): The number of parts (in ``field_path``) we have nested
-                when ``curr_paths`` is reached.
-            curr_paths (Union[dict, object]): Either the field_path end
-                sentinel or a dictionary of the field paths at the next
-                nesting level.
-
-        Raises:
-            ValueError: If there is a conflict.
-        """
-        if curr_paths is self.PATH_END:
-            partial = get_field_path(parts[:index + 1])
-            msg = self.FIELD_PATH_CONFLICT.format(partial, field_path)
-            raise ValueError(msg)
-
-    def path_end_conflict(self, field_path, conflicting_paths):
-        """Help raise a useful exception about field path conflicts.
-
-        Helper for :meth:`add_field_path_end`.
-
-        This method is really only needed for raising a useful error, but
-        is worth isolating as a method since it is not entirely trivial to
-        "re-compute" another field path that conflicts with ``field_path``.
-        There may be multiple conflicts, but this just finds **one** field
-        path which starts with ``field_path``.
-
-        Args:
-            field_path (str): The field path that has conflicts somewhere in
-                ``conflicting_paths``.
-            conflicting_paths (dict): A sub-dictionary containing path parts
-                as keys and nesting until a field path ends, at which point
-                the path end sentinel is the value.
-
-        Returns:
-            ValueError: Always.
-        """
-        conflict_parts = list(field_path.parts)
-        while conflicting_paths is not self.PATH_END:
-            # Grab any item, we are just looking for one example.
-            part, conflicting_paths = next(six.iteritems(conflicting_paths))
-            conflict_parts.append(part)
-
-        conflict = get_field_path(conflict_parts)
-        msg = self.FIELD_PATH_CONFLICT.format(
-            field_path.to_api_repr(), conflict)
-        return ValueError(msg)
-
-    def add_field_path_end(
-            self, field_path, value, final_part, curr_paths, to_update):
-        """Add the last segment in a field path.
-
-        Helper for :meth:`add_value_at_field_path`.
-
-        Args:
-            field_path (str): The field path being considered.
-            value (Any): The value to update a field with.
-            final_part (str): The last segment in ``field_path``.
-            curr_paths (Union[dict, object]): Either the path end sentinel
-                or a dictionary of the paths at the next nesting level.
-            to_update (dict): The dictionary of the unpacked ``field_path``
-                which need be updated with ``value``.
-
-        Raises:
-            ValueError: If there is a conflict.
-        """
-        if final_part in curr_paths:
-            conflicting_paths = curr_paths[final_part]
-            raise self.path_end_conflict(field_path, conflicting_paths)
-        else:
-            curr_paths[final_part] = self.PATH_END
-            # NOTE: For a delete, ``to_update`` won't actually go anywhere
-            #       since ``get_update_values`` returns a throw-away
-            #       dictionary.
-            to_update[final_part] = value
-            self.field_paths.append(field_path)
-
-    def add_value_at_field_path(self, field_path, value):
-        """Add a field path to the staged updates.
-
-        Also makes sure the field path is not ambiguous or contradictory with
-        any existing path in ``field_paths`` / ``unpacked_field_paths``.
-
-        To understand what will be failed, consider the following. If both
-        ``foo`` and ``foo.bar`` are paths, then the update from ``foo``
-        **should** supersede the update from ``foo.bar``. However, if the
-        caller expected the ``foo.bar`` update to occur as well, this could
-        cause unexpected behavior. Hence, that combination cause an error.
-
-        Args:
-            field_path (str): The field path being considered (it may just be
-                a field name).
-            value (Any): The value to update a field with.
-
-        Raises:
-            ValueError: If there is an ambiguity.
-        """
-        if isinstance(field_path, six.string_types):
-            field_path = FieldPath.from_string(field_path)
-        parts = field_path.parts
-        to_update = self.get_update_values(value)
-        curr_paths = self.unpacked_field_paths
-        for index, part in enumerate(parts[:-1]):
-            curr_paths = curr_paths.setdefault(part, {})
-            self.check_conflict(field_path, parts, index, curr_paths)
-            to_update = to_update.setdefault(part, {})
-
-        self.add_field_path_end(
-            field_path, value, parts[-1], curr_paths, to_update)
-
-    def parse(self):
-        """Parse the ``field_updates`` into update values and field paths.
-
-        Returns:
-            Tuple[dict, List[str, ...]]: A pair of
-
-            * The true value dictionary to use for updates (may differ
-              from ``field_updates`` after field paths are "unpacked").
-            * The list of field paths to send (for updates and deletes).
-        """
-        for key, value in six.iteritems(self.field_updates):
-            self.add_value_at_field_path(key, value)
-
-        return self.update_values, self.field_paths
-
-    @classmethod
-    def to_field_paths(cls, field_updates):
-        """Convert field names and paths for usage in a request.
-
-        Also supports field deletes.
-
-        Args:
-            field_updates (dict): Field names or paths to update and values
-                to update with.
-
-        Returns:
-            Tuple[dict, List[str, ...]]: A pair of
-
-            * The true value dictionary to use for updates (may differ
-              from ``field_updates`` after field paths are "unpacked").
-            * The list of field paths to send (for updates and deletes).
-        """
-        helper = cls(field_updates)
-        return helper.parse()
+        return result
 
 
 def verify_path(path, is_collection):
@@ -530,49 +333,6 @@ def encode_dict(values_dict):
         key: encode_value(value)
         for key, value in six.iteritems(values_dict)
     }
-
-
-def extract_field_paths(document_data):
-    """Extract field paths from document data
-    Args:
-       document_data (dict): The dictionary of the actual set data.
-    Returns:
-       List[~.firestore_v1beta1._helpers.FieldPath]:
-           A list of `FieldPath` instances from the actual data.
-    """
-    field_paths = []
-    for field_name, value in six.iteritems(document_data):
-
-        if isinstance(value, dict):
-            for sub_path in extract_field_paths(value):
-                field_path = FieldPath(field_name, *sub_path.parts)
-        else:
-            field_path = FieldPath(field_name)
-
-        field_paths.append(field_path)
-
-    return field_paths
-
-
-def filter_document_data_by_field_paths(document_data, field_paths):
-    flattened = {}
-    toplevel = {}
-
-    for path in field_paths:
-        flattened[path] = get_nested_value(path, document_data)
-
-    for path, value in six.iteritems(flattened):
-        filtered = toplevel
-        parts = parse_field_path(path)
-
-        for part in parts:
-            parent, lastpart = filtered, part
-            filtered.setdefault(part, {})
-            filtered = filtered[part]
-
-        parent[lastpart] = value
-
-    return toplevel
 
 
 def reference_value_to_document(reference_value, client):
@@ -894,141 +654,137 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-def process_server_timestamp(document_data, split_on_dots):
-    """Remove all server timestamp sentinel values from data.
+_EmptyDict = constants.Sentinel("Marker for an empty dict value")
 
-    If the data is nested, for example:
 
-    .. code-block:: python
+def extract_fields(document_data, prefix_path, expand_dots=False):
+    """Do depth-first walk of tree, yielding field_path, value"""
+    if not document_data:
+        yield prefix_path, _EmptyDict
+    else:
+        for key, value in sorted(six.iteritems(document_data)):
 
-       >>> data
-       {
-           'top1': {
-               'bottom2': firestore.SERVER_TIMESTAMP,
-               'bottom3': 1.5,
-           },
-           'top4': firestore.SERVER_TIMESTAMP,
-           'top5': 200,
-       }
+            if expand_dots:
+                sub_key = FieldPath.from_string(key)
+            else:
+                sub_key = FieldPath(key)
 
-    then this method will split out the "actual" data from
-    the server timestamp fields:
+            field_path = FieldPath(*(prefix_path.parts + sub_key.parts))
 
-    .. code-block:: python
+            if isinstance(value, dict):
+                for s_path, s_value in extract_fields(value, field_path):
+                    yield s_path, s_value
+            else:
+                yield field_path, value
 
-       >>> field_paths, actual_data = process_server_timestamp(data)
-       >>> field_paths
-       ['top1.bottom2', 'top4']
-       >>> actual_data
-       {
-           'top1': {
-               'bottom3': 1.5,
-           },
-           'top5': 200,
-       }
+
+def set_field_value(document_data, field_path, value):
+    """Set a value into a document for a field_path"""
+    current = document_data
+    for element in field_path.parts[:-1]:
+        current = current.setdefault(element, {})
+    if value is _EmptyDict:
+        value = {}
+    current[field_path.parts[-1]] = value
+
+
+def get_field_value(document_data, field_path):
+    if not field_path.parts:
+        raise ValueError("Empty path")
+
+    current = document_data
+    for element in field_path.parts[:-1]:
+        current = current[element]
+    return current[field_path.parts[-1]]
+
+
+class DocumentExtractor(object):
+    """ Break document data up into actual data and transforms.
+
+    Handle special values such as ``DELETE_FIELD``, ``SERVER_TIMESTAMP``.
 
     Args:
         document_data (dict):
             Property names and values to use for sending a change to
             a document.
-
-        split_on_dots (bool):
-            Whether to split the property names on dots at the top level
-            (for updates only).
-
-    Returns:
-        List[List[str, ...], Dict[str, Any]], List[List[str, ...]: A
-        three-tuple of:
-
-        * A list of all transform paths that use the server timestamp sentinel
-        * The remaining keys in ``document_data`` after removing the
-          server timestamp sentinels
-        * A list of all field paths that do not use the server timestamp
-          sentinel
     """
-    transform_paths = []
-    actual_data = {}
-    field_paths = []
-    for field_name, value in six.iteritems(document_data):
-        if split_on_dots:
-            top_level_path = FieldPath(*field_name.split("."))
+    def __init__(self, document_data):
+        self.document_data = document_data
+        self.field_paths = []
+        self.deleted_fields = []
+        self.server_timestamps = []
+        self.set_fields = {}
+        self.empty_document = False
+
+        prefix_path = FieldPath()
+        iterator = self._get_document_iterator(prefix_path)
+
+        for field_path, value in iterator:
+
+            if field_path == prefix_path and value is _EmptyDict:
+                self.empty_document = True
+
+            elif value is constants.DELETE_FIELD:
+                self.deleted_fields.append(field_path)
+
+            elif value is constants.SERVER_TIMESTAMP:
+                self.server_timestamps.append(field_path)
+
+            else:
+                self.field_paths.append(field_path)
+                set_field_value(self.set_fields, field_path, value)
+
+    def _get_document_iterator(self, prefix_path):
+        return extract_fields(self.document_data, prefix_path)
+
+    @property
+    def has_transforms(self):
+        return bool(self.server_timestamps)
+
+    @property
+    def transform_paths(self):
+        return sorted(self.server_timestamps)
+
+    def _get_update_mask(self, allow_empty_mask=False):
+        return None
+
+    def get_update_pb(
+            self, document_path, exists=None, allow_empty_mask=False):
+
+        if exists is not None:
+            current_document = common_pb2.Precondition(exists=exists)
         else:
-            top_level_path = FieldPath(field_name)
-        if isinstance(value, dict):
-            if len(value) == 0:
-                actual_data[field_name] = value
-                continue
-            sub_transform_paths, sub_data, sub_field_paths = (
-                process_server_timestamp(value, split_on_dots=False))
-            for sub_transform_path in sub_transform_paths:
-                transform_path = FieldPath.from_string(field_name)
-                transform_path.parts = (
-                    transform_path.parts + sub_transform_path.parts)
-                transform_paths.extend([transform_path])
-            if sub_data:
-                # Only add a key to ``actual_data`` if there is data.
-                actual_data[field_name] = sub_data
-                for sub_field_path in sub_field_paths:
-                    field_path = FieldPath(field_name)
-                    field_path.parts = field_path.parts + sub_field_path.parts
-                    field_paths.append(field_path)
-        elif value is constants.SERVER_TIMESTAMP:
-            transform_paths.append(top_level_path)
-        else:
-            actual_data[field_name] = value
-            field_paths.append(top_level_path)
-    if not transform_paths:
-        actual_data = document_data
-    return transform_paths, actual_data, field_paths
+            current_document = None
 
+        update_pb = write_pb2.Write(
+            update=document_pb2.Document(
+                name=document_path,
+                fields=encode_dict(self.set_fields),
+            ),
+            update_mask=self._get_update_mask(allow_empty_mask),
+            current_document=current_document,
+        )
 
-def canonicalize_field_paths(field_paths):
-    """Converts non-simple field paths to quoted field paths
+        return update_pb
 
-    Args:
-        field_paths (Sequence[str]): A list of field paths
+    def get_transform_pb(self, document_path, exists=None):
+        transform_pb = write_pb2.Write(
+            transform=write_pb2.DocumentTransform(
+                document=document_path,
+                field_transforms=[
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(),
+                        set_to_server_value=REQUEST_TIME_ENUM,
+                    )
+                    for path in self.server_timestamps
+                ],
+            ),
+        )
+        if exists is not None:
+            transform_pb.current_document.CopyFrom(
+                common_pb2.Precondition(exists=exists))
 
-    Returns:
-        Sequence[str]:
-            The same list of field paths except non-simple field names
-            in the `.` delimited field path have been converted
-            into quoted unicode field paths. Simple field paths match
-            the regex ^[_a-zA-Z][_a-zA-Z0-9]*$.  See `Document`_ page for
-            more information.
-
-    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
-    """
-    field_paths = [path.to_api_repr() for path in field_paths]
-    return sorted(field_paths)  # for testing purposes
-
-
-def get_transform_pb(document_path, transform_paths):
-    """Get a ``Write`` protobuf for performing a document transform.
-
-    The only document transform is the ``set_to_server_value`` transform,
-    which sets the field to the current time on the server.
-
-    Args:
-        document_path (str): A fully-qualified document path.
-        transform_paths (List[str]): A list of field paths to transform.
-
-    Returns:
-        google.cloud.firestore_v1beta1.types.Write: A
-        ``Write`` protobuf instance for a document transform.
-    """
-    transform_paths = canonicalize_field_paths(transform_paths)
-    return write_pb2.Write(
-        transform=write_pb2.DocumentTransform(
-            document=document_path,
-            field_transforms=[
-                write_pb2.DocumentTransform.FieldTransform(
-                    field_path=field_path,
-                    set_to_server_value=REQUEST_TIME_ENUM,
-                )
-                for field_path in transform_paths
-            ],
-        ),
-    )
+        return transform_pb
 
 
 def pbs_for_create(document_path, document_data):
@@ -1043,30 +799,21 @@ def pbs_for_create(document_path, document_data):
         List[google.cloud.firestore_v1beta1.types.Write]: One or two
         ``Write`` protobuf instances for ``create()``.
     """
-    transform_paths, actual_data, field_paths = process_server_timestamp(
-        document_data, split_on_dots=False)
+    extractor = DocumentExtractor(document_data)
+
+    if extractor.deleted_fields:
+        raise ValueError("Cannot apply DELETE_FIELD in a create request.")
 
     write_pbs = []
 
-    empty_document = not document_data
+    # Conformance tests require skipping the 'update_pb' if the document
+    # contains only transforms.
+    if extractor.empty_document or extractor.set_fields:
+        write_pbs.append(extractor.get_update_pb(document_path, exists=False))
 
-    if empty_document or actual_data:
-
-        update_pb = write_pb2.Write(
-            update=document_pb2.Document(
-                name=document_path,
-                fields=encode_dict(actual_data),
-            ),
-            current_document=common_pb2.Precondition(exists=False),
-        )
-
-        write_pbs.append(update_pb)
-
-    if transform_paths:
-        transform_pb = get_transform_pb(document_path, transform_paths)
-        if not actual_data:
-            transform_pb.current_document.CopyFrom(
-                common_pb2.Precondition(exists=False))
+    if extractor.has_transforms:
+        exists = None if write_pbs else False
+        transform_pb = extractor.get_transform_pb(document_path, exists)
         write_pbs.append(transform_pb)
 
     return write_pbs
@@ -1084,121 +831,149 @@ def pbs_for_set_no_merge(document_path, document_data):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    transform_paths, actual_data, field_paths = process_server_timestamp(
-        document_data, split_on_dots=False)
+    extractor = DocumentExtractor(document_data)
 
-    write_pbs = [
-        write_pb2.Write(
-            update=document_pb2.Document(
-                name=document_path,
-                fields=encode_dict(actual_data),
-            )
-        ),
-    ]
+    if extractor.deleted_fields:
+        raise ValueError(
+            "Cannot apply DELETE_FIELD in a set request without "
+            "specifying 'merge=True' or 'merge=[field_paths]'."
+        )
 
-    if transform_paths:
-        transform_pb = get_transform_pb(document_path, transform_paths)
+    # Conformance tests require send the 'update_pb' even if the document
+    # contains only transforms.
+    write_pbs = [extractor.get_update_pb(document_path)]
+
+    if extractor.has_transforms:
+        transform_pb = extractor.get_transform_pb(document_path)
         write_pbs.append(transform_pb)
 
     return write_pbs
 
 
-def all_merge_paths(document_data):
-    """Compute all merge paths from document data.
-
-    Args:
-        document_data (dict): Property names and values to use for
-            replacing a document.
-
-    Returns:
-        Tuple: (
-            transform_paths,
-            actual_data,
-            data_merge,
-            transform_merge,
-            merge,
-        )
+class DocumentExtractorForMerge(DocumentExtractor):
+    """ Break document data up into actual data and transforms.
     """
-    transform_paths, actual_data, field_paths = process_server_timestamp(
-        document_data, split_on_dots=False)
+    def __init__(self, document_data):
+        super(DocumentExtractorForMerge, self).__init__(document_data)
+        self.data_merge = []
+        self.transform_merge = []
+        self.merge = []
 
-    merge = sorted(field_paths + transform_paths)
+    @property
+    def has_updates(self):
+        # for whatever reason, the conformance tests want to see the parent
+        # of nested transform paths in the update mask
+        # (see set-st-merge-nonleaf-alone.textproto)
+        update_paths = set(self.data_merge)
 
-    return (
-        transform_paths, actual_data, field_paths, transform_paths, merge)
+        for transform_path in self.transform_paths:
+            if len(transform_path.parts) > 1:
+                parent_fp = FieldPath(*transform_path.parts[:-1])
+                update_paths.add(parent_fp)
 
+        return bool(update_paths)
 
-def normalize_merge_paths(document_data, merge):
-    """Normalize merge paths against document data.
+    def _apply_merge_all(self):
+        self.data_merge = sorted(self.field_paths + self.deleted_fields)
+        # TODO: other transforms
+        self.transform_merge = self.transform_paths
+        self.merge = sorted(self.data_merge + self.transform_paths)
 
-    Args:
-        document_data (dict): Property names and values to use for
-            replacing a document.
-        merge (Optional[bool] or Optional[List<apispec>]):
-            If True, merge all fields; else, merge only the named fields.
+    def _construct_merge_paths(self, merge):
+        for merge_field in merge:
+            if isinstance(merge_field, FieldPath):
+                yield merge_field
+            else:
+                yield FieldPath(*parse_field_path(merge_field))
 
-    Returns:
-        Tuple: (
-            transform_paths,
-            actual_data,
-            data_merge,
-            transform_merge,
-            merge,
-        )
-    """
-    transform_paths, actual_data, field_paths = process_server_timestamp(
-        document_data, split_on_dots=False)
+    def _normalize_merge_paths(self, merge):
+        merge_paths = sorted(self._construct_merge_paths(merge))
 
-    # merge is list of paths provided by enduser; convert merge
-    # elements into FieldPaths if they aren't already
-    new_merge = []
-    data_merge = []
-    transform_merge = []
+        # Raise if any merge path is a parent of another.  Leverage sorting
+        # to avoid quadratic behavior.
+        for index in range(len(merge_paths) - 1):
+            lhs, rhs = merge_paths[index], merge_paths[index + 1]
+            if lhs.eq_or_parent(rhs):
+                raise ValueError("Merge paths overlap: {}, {}".format(
+                    lhs, rhs))
 
-    for merge_field in merge:
-        if isinstance(merge_field, FieldPath):
-            merge_fp = merge_field
+        for merge_path in merge_paths:
+            if merge_path in self.deleted_fields:
+                continue
+            try:
+                get_field_value(self.document_data, merge_path)
+            except KeyError:
+                raise ValueError("Invalid merge path: {}".format(merge_path))
+
+        return merge_paths
+
+    def _apply_merge_paths(self, merge):
+
+        if self.empty_document:
+            raise ValueError(
+                "Cannot merge specific fields with empty document.")
+
+        merge_paths = self._normalize_merge_paths(merge)
+
+        del self.data_merge[:]
+        del self.transform_merge[:]
+        self.merge = merge_paths
+
+        for merge_path in merge_paths:
+
+            if merge_path in self.transform_paths:
+                self.transform_merge.append(merge_path)
+
+            for field_path in self.field_paths:
+                if merge_path.eq_or_parent(field_path):
+                    self.data_merge.append(field_path)
+
+        # Clear out data for fields not merged.
+        merged_set_fields = {}
+        for field_path in self.data_merge:
+            value = get_field_value(self.document_data, field_path)
+            set_field_value(merged_set_fields, field_path, value)
+        self.set_fields = merged_set_fields
+
+        unmerged_deleted_fields = [
+            field_path for field_path in self.deleted_fields
+            if field_path not in self.merge
+        ]
+        if unmerged_deleted_fields:
+            raise ValueError("Cannot delete unmerged fields: {}".format(
+                unmerged_deleted_fields))
+        self.data_merge = sorted(self.data_merge + self.deleted_fields)
+
+        # Keep only transforms which are within merge.
+        merged_transform_paths = set()
+        for merge_path in self.merge:
+            tranform_merge_paths = [
+                transform_path for transform_path in self.transform_paths
+                if merge_path.eq_or_parent(transform_path)
+            ]
+            merged_transform_paths.update(tranform_merge_paths)
+
+        # TODO:  other transforms
+        self.server_timestamps = [
+            path for path in self.server_timestamps
+            if path in merged_transform_paths
+        ]
+
+    def apply_merge(self, merge):
+        if merge is True:  # merge all fields
+            self._apply_merge_all()
         else:
-            merge_fp = FieldPath(*parse_field_path(merge_field))
-        new_merge.append(merge_fp)
+            self._apply_merge_paths(merge)
 
-        if merge_fp in transform_paths:
-            transform_merge.append(merge_fp)
+    def _get_update_mask(self, allow_empty_mask=False):
+        # Mask uses dotted / quoted paths.
+        mask_paths = [
+            field_path.to_api_repr() for field_path in self.merge
+            if field_path not in self.transform_merge
+        ]
 
-        for fp in field_paths:
-            if merge_fp.eq_or_parent(fp):
-                data_merge.append(fp)
-
-    merge = new_merge
-
-    # the conformance tests require that one merge path may not be the
-    # prefix of another, XXX quadratic is expensive, fix
-    for fp1 in merge:
-        for fp2 in merge:
-            if fp1 != fp2 and fp1.eq_or_parent(fp2):
-                raise ValueError(
-                    'a merge path may not be a parent of another merge '
-                    'path'
-                )
-
-    # the conformance tests require that an exception be raised if any
-    # merge spec is not in the data, and the below happens to raise a
-    # keyerror XXX do this without so much expense, maybe by ensuring that
-    # each of the merge fieldpaths are in the union of transform_merge and
-    # data_merge
-    filter_document_data_by_field_paths(
-        document_data,
-        field_paths=[fp.to_api_repr() for fp in merge],
-    )
-
-    # XXX dont pass apireprs to filter_d_d_b_p, pass FieldPaths
-    actual_data = filter_document_data_by_field_paths(
-        document_data,
-        field_paths=[fp.to_api_repr() for fp in data_merge],
-    )
-
-    return (
-        transform_paths, actual_data, data_merge, transform_merge, merge)
+        if mask_paths or allow_empty_mask:
+            return common_pb2.DocumentMask(field_paths=mask_paths)
 
 
 def pbs_for_set_with_merge(document_path, document_data, merge):
@@ -1215,67 +990,66 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    create_empty = not document_data
+    extractor = DocumentExtractorForMerge(document_data)
+    extractor.apply_merge(merge)
 
-    if merge is True:
-        (
-            transform_paths, actual_data, data_merge, transform_merge, merge,
-        ) = all_merge_paths(document_data)
-    else:
-        (
-            transform_paths, actual_data, data_merge, transform_merge, merge,
-        ) = normalize_merge_paths(document_data, merge)
+    merge_empty = not document_data
 
     write_pbs = []
-    update_pb = write_pb2.Write()
 
-    update_paths = set(data_merge)
+    if extractor.has_updates or merge_empty:
+        write_pbs.append(
+            extractor.get_update_pb(
+                document_path, allow_empty_mask=merge_empty))
 
-    # for whatever reason, the conformance tests want to see the parent
-    # of nested transform paths in the update mask
-    # (see set-st-merge-nonleaf-alone.textproto)
-    for transform_path in transform_paths:
-        if len(transform_path.parts) > 1:
-            parent_fp = FieldPath(*transform_path.parts[:-1])
-            update_paths.add(parent_fp)
-
-    if actual_data or create_empty or update_paths:
-        update = document_pb2.Document(
-            name=document_path,
-            fields=encode_dict(actual_data),
-        )
-        update_pb.update.CopyFrom(update)
-
-        mask_paths = [
-            fp.to_api_repr() for fp in merge if fp not in transform_merge
-        ]
-
-        if mask_paths or create_empty:
-            mask = common_pb2.DocumentMask(field_paths=mask_paths)
-            update_pb.update_mask.CopyFrom(mask)
-
-        write_pbs.append(update_pb)
-
-    new_transform_paths = []
-    for merge_fp in merge:
-        t_merge_fps = [
-            fp for fp in transform_paths if merge_fp.eq_or_parent(fp)]
-        new_transform_paths.extend(t_merge_fps)
-    transform_paths = new_transform_paths
-
-    if transform_paths:
-        transform_pb = get_transform_pb(document_path, transform_paths)
+    if extractor.transform_paths:
+        transform_pb = extractor.get_transform_pb(document_path)
         write_pbs.append(transform_pb)
 
     return write_pbs
 
 
-def pbs_for_update(client, document_path, field_updates, option):
+class DocumentExtractorForUpdate(DocumentExtractor):
+    """ Break document data up into actual data and transforms.
+    """
+    def __init__(self, document_data):
+        super(DocumentExtractorForUpdate, self).__init__(document_data)
+        self.top_level_paths = sorted([
+            FieldPath.from_string(key) for key in document_data
+        ])
+        tops = set(self.top_level_paths)
+        for top_level_path in self.top_level_paths:
+            for ancestor in top_level_path.lineage():
+                if ancestor in tops:
+                    raise ValueError("Conflicting field path: {}, {}".format(
+                        top_level_path, ancestor))
+
+        for field_path in self.deleted_fields:
+            if field_path not in tops:
+                raise ValueError("Cannot update with nest delete: {}".format(
+                    field_path))
+
+    def _get_document_iterator(self, prefix_path):
+        return extract_fields(
+            self.document_data, prefix_path, expand_dots=True)
+
+    def _get_update_mask(self, allow_empty_mask=False):
+        mask_paths = []
+        for field_path in self.top_level_paths:
+            if field_path not in self.transform_paths:
+                mask_paths.append(field_path.to_api_repr())
+            else:
+                prefix = FieldPath(*field_path.parts[:-1])
+                if prefix.parts:
+                    mask_paths.append(prefix.to_api_repr())
+
+        return common_pb2.DocumentMask(field_paths=mask_paths)
+
+
+def pbs_for_update(document_path, field_updates, option):
     """Make ``Write`` protobufs for ``update()`` methods.
 
     Args:
-        client (~.firestore_v1beta1.client.Client): A client that has
-            a write option factory.
         document_path (str): A fully-qualified document path.
         field_updates (dict): Field names or paths to update and values
             to update with.
@@ -1287,45 +1061,24 @@ def pbs_for_update(client, document_path, field_updates, option):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``update()``.
     """
-    if option is None:
-        # Default uses ``exists=True``.
-        option = client.write_option(exists=True)
+    extractor = DocumentExtractorForUpdate(field_updates)
 
-    transform_paths, actual_updates, field_paths = (
-        process_server_timestamp(field_updates, split_on_dots=True))
-    if not (transform_paths or actual_updates):
-        raise ValueError('There are only ServerTimeStamp objects or is empty.')
-    update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
-    update_paths = field_paths[:]
+    if extractor.empty_document:
+        raise ValueError('Cannot update with an empty document.')
 
-    # for whatever reason, the conformance tests want to see the parent
-    # of nested transform paths in the update mask
-    for transform_path in transform_paths:
-        if len(transform_path.parts) > 1:
-            parent_fp = FieldPath(*transform_path.parts[:-1])
-            if parent_fp not in update_paths:
-                update_paths.append(parent_fp)
-
-    field_paths = canonicalize_field_paths(field_paths)
-    update_paths = canonicalize_field_paths(update_paths)
+    if option is None:  # Default is to use ``exists=True``.
+        option = ExistsOption(exists=True)
 
     write_pbs = []
 
-    if update_values:
-        update_pb = write_pb2.Write(
-            update=document_pb2.Document(
-                name=document_path,
-                fields=encode_dict(update_values),
-            ),
-            update_mask=common_pb2.DocumentMask(field_paths=update_paths),
-        )
-        # Due to the default, we don't have to check if ``None``.
+    if extractor.field_paths or extractor.deleted_fields:
+        update_pb = extractor.get_update_pb(document_path)
         option.modify_write(update_pb)
         write_pbs.append(update_pb)
 
-    if transform_paths:
-        transform_pb = get_transform_pb(document_path, transform_paths)
-        if not update_values:
+    if extractor.has_transforms:
+        transform_pb = extractor.get_transform_pb(document_path)
+        if not write_pbs:
             # NOTE: set the write option on the ``transform_pb`` only if there
             #       is no ``update_pb``
             option.modify_write(transform_pb)
@@ -1401,3 +1154,93 @@ def metadata_with_prefix(prefix, **kw):
         List[Tuple[str, str]]: RPC metadata with supplied prefix
     """
     return [('google-cloud-resource-prefix', prefix)]
+
+
+class WriteOption(object):
+    """Option used to assert a condition on a write operation."""
+
+    def modify_write(self, write_pb, no_create_msg=None):
+        """Modify a ``Write`` protobuf based on the state of this write option.
+
+        This is a virtual method intended to be implemented by subclasses.
+
+        Args:
+            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+                ``Write`` protobuf instance to be modified with a precondition
+                determined by the state of this option.
+            no_create_msg (Optional[str]): A message to use to indicate that
+                a create operation is not allowed.
+
+        Raises:
+            NotImplementedError: Always, this method is virtual.
+        """
+        raise NotImplementedError
+
+
+class LastUpdateOption(WriteOption):
+    """Option used to assert a "last update" condition on a write operation.
+
+    This will typically be created by
+    :meth:`~.firestore_v1beta1.client.Client.write_option`.
+
+    Args:
+        last_update_time (google.protobuf.timestamp_pb2.Timestamp): A
+            timestamp. When set, the target document must exist and have
+            been last updated at that time. Protobuf ``update_time`` timestamps
+            are typically returned from methods that perform write operations
+            as part of a "write result" protobuf or directly.
+    """
+
+    def __init__(self, last_update_time):
+        self._last_update_time = last_update_time
+
+    def modify_write(self, write_pb, **unused_kwargs):
+        """Modify a ``Write`` protobuf based on the state of this write option.
+
+        The ``last_update_time`` is added to ``write_pb`` as an "update time"
+        precondition. When set, the target document must exist and have been
+        last updated at that time.
+
+        Args:
+            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+                ``Write`` protobuf instance to be modified with a precondition
+                determined by the state of this option.
+            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
+                other subclasses that are unused here.
+        """
+        current_doc = types.Precondition(
+            update_time=self._last_update_time)
+        write_pb.current_document.CopyFrom(current_doc)
+
+
+class ExistsOption(WriteOption):
+    """Option used to assert existence on a write operation.
+
+    This will typically be created by
+    :meth:`~.firestore_v1beta1.client.Client.write_option`.
+
+    Args:
+        exists (bool): Indicates if the document being modified
+            should already exist.
+    """
+
+    def __init__(self, exists):
+        self._exists = exists
+
+    def modify_write(self, write_pb, **unused_kwargs):
+        """Modify a ``Write`` protobuf based on the state of this write option.
+
+        If:
+
+        * ``exists=True``, adds a precondition that requires existence
+        * ``exists=False``, adds a precondition that requires non-existence
+
+        Args:
+            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+                ``Write`` protobuf instance to be modified with a precondition
+                determined by the state of this option.
+            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
+                other subclasses that are unused here.
+        """
+        current_doc = types.Precondition(exists=self._exists)
+        write_pb.current_document.CopyFrom(current_doc)
