@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.constants &#8212; google-cloud 70ab243 documentation</title>
+    <title>google.cloud.firestore_v1beta1.transforms &#8212; google-cloud 616255b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -32,7 +32,7 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.firestore_v1beta1.constants</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.firestore_v1beta1.transforms</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2017 Google LLC All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -50,7 +50,7 @@
 <span class="sd">&quot;&quot;&quot;Helpful constants to use for Google Cloud Firestore.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="Sentinel"><a class="viewcode-back" href="../../../../firestore/constants.html#google.cloud.firestore_v1beta1.constants.Sentinel">[docs]</a><span class="k">class</span> <span class="nc">Sentinel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Sentinel"><a class="viewcode-back" href="../../../../firestore/transforms.html#google.cloud.firestore_v1beta1.transforms.Sentinel">[docs]</a><span class="k">class</span> <span class="nc">Sentinel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Sentinel objects used to signal special handling.&quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">,)</span>
 
@@ -66,6 +66,55 @@
 
 <span class="n">SERVER_TIMESTAMP</span> <span class="o">=</span> <span class="n">Sentinel</span><span class="p">(</span>
     <span class="s2">&quot;Value used to set a document field to the server timestamp.&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_ValueList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read-only list of values.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        values (List | Tuple): values held in the helper.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">slots</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_values&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;values&#39; must be a list or tuple.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;values&#39; must be non-empty.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Values to append.</span>
+
+<span class="sd">        Returns (List):</span>
+<span class="sd">            values to be appended by the transform.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span>
+
+
+<div class="viewcode-block" id="ArrayUnion"><a class="viewcode-back" href="../../../../firestore/transforms.html#google.cloud.firestore_v1beta1.transforms.ArrayUnion">[docs]</a><span class="k">class</span> <span class="nc">ArrayUnion</span><span class="p">(</span><span class="n">_ValueList</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Field transform: appends missing values to an array field.</span>
+
+<span class="sd">    See:</span>
+<span class="sd">    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.append_missing_elements</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        values (List | Tuple): values to append.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ArrayRemove"><a class="viewcode-back" href="../../../../firestore/transforms.html#google.cloud.firestore_v1beta1.transforms.ArrayRemove">[docs]</a><span class="k">class</span> <span class="nc">ArrayRemove</span><span class="p">(</span><span class="n">_ValueList</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Field transform: remove values from an array field.</span>
+
+<span class="sd">    See:</span>
+<span class="sd">    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.remove_all_from_array</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        values (List | Tuple): values to remove.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
 </pre></div>
 
           </div>

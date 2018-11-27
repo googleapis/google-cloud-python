@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.document &#8212; google-cloud 70ab243 documentation</title>
+    <title>google.cloud.firestore_v1beta1.document &#8212; google-cloud 616255b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -53,7 +53,9 @@
 
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.proto</span> <span class="k">import</span> <span class="n">common_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.watch</span> <span class="k">import</span> <span class="n">Watch</span>
 
 
@@ -339,7 +341,7 @@
 <span class="sd">           ``field_updates``.</span>
 
 <span class="sd">        To delete / remove a field from an existing document, use the</span>
-<span class="sd">        :attr:`~.firestore_v1beta1.constants.DELETE_FIELD` sentinel. So</span>
+<span class="sd">        :attr:`~.firestore_v1beta1.transforms.DELETE_FIELD` sentinel. So</span>
 <span class="sd">        with the example above, sending</span>
 
 <span class="sd">        .. code-block:: python</span>
@@ -363,7 +365,7 @@
 
 <span class="sd">        To set a field to the current time on the server when the</span>
 <span class="sd">        update is received, use the</span>
-<span class="sd">        :attr:`~.firestore_v1beta1.constants.SERVER_TIMESTAMP` sentinel.</span>
+<span class="sd">        :attr:`~.firestore_v1beta1.transforms.SERVER_TIMESTAMP` sentinel.</span>
 <span class="sd">        Sending</span>
 
 <span class="sd">        .. code-block:: python</span>
@@ -458,9 +460,37 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_paths</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;&#39;field_paths&#39; must be a sequence of paths, not a string.&quot;</span><span class="p">)</span>
-        <span class="n">snapshot_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span>
-            <span class="p">[</span><span class="bp">self</span><span class="p">],</span> <span class="n">field_paths</span><span class="o">=</span><span class="n">field_paths</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_consume_single_get</span><span class="p">(</span><span class="n">snapshot_generator</span><span class="p">)</span></div>
+
+        <span class="k">if</span> <span class="n">field_paths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">common_pb2</span><span class="o">.</span><span class="n">DocumentMask</span><span class="p">(</span><span class="n">field_paths</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">field_paths</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">firestore_api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_firestore_api</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">document_pb</span> <span class="o">=</span> <span class="n">firestore_api</span><span class="o">.</span><span class="n">get_document</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_document_path</span><span class="p">,</span>
+                <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
+                <span class="n">transaction</span><span class="o">=</span><span class="n">_helpers</span><span class="o">.</span><span class="n">get_transaction_id</span><span class="p">(</span><span class="n">transaction</span><span class="p">),</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">exists</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">create_time</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">update_time</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">decode_dict</span><span class="p">(</span><span class="n">document_pb</span><span class="o">.</span><span class="n">fields</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+            <span class="n">exists</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">create_time</span> <span class="o">=</span> <span class="n">document_pb</span><span class="o">.</span><span class="n">create_time</span>
+            <span class="n">update_time</span> <span class="o">=</span> <span class="n">document_pb</span><span class="o">.</span><span class="n">update_time</span>
+
+        <span class="k">return</span> <span class="n">DocumentSnapshot</span><span class="p">(</span>
+            <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">exists</span><span class="o">=</span><span class="n">exists</span><span class="p">,</span>
+            <span class="n">read_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># No server read_time available</span>
+            <span class="n">create_time</span><span class="o">=</span><span class="n">create_time</span><span class="p">,</span>
+            <span class="n">update_time</span><span class="o">=</span><span class="n">update_time</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DocumentReference.collections"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentReference.collections">[docs]</a>    <span class="k">def</span> <span class="nf">collections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List subcollections of the current document.</span>

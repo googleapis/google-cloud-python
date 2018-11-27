@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Constants &#8212; google-cloud 70ab243 documentation</title>
+    <title>Transforms &#8212; google-cloud 616255b documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -34,12 +34,46 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-google.cloud.firestore_v1beta1.constants">
-<span id="constants"></span><h1>Constants<a class="headerlink" href="#module-google.cloud.firestore_v1beta1.constants" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="module-google.cloud.firestore_v1beta1.transforms">
+<span id="transforms"></span><h1>Transforms<a class="headerlink" href="#module-google.cloud.firestore_v1beta1.transforms" title="Permalink to this headline">#</a></h1>
 <p>Helpful constants to use for Google Cloud Firestore.</p>
 <dl class="class">
-<dt id="google.cloud.firestore_v1beta1.constants.Sentinel">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.constants.</code><code class="descname">Sentinel</code><span class="sig-paren">(</span><em>description</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/constants.html#Sentinel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.constants.Sentinel" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.firestore_v1beta1.transforms.ArrayRemove">
+<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.transforms.</code><code class="descname">ArrayRemove</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/transforms.html#ArrayRemove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.transforms.ArrayRemove" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.firestore_v1beta1.transforms._ValueList</span></code></p>
+<p>Field transform: remove values from an array field.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.remove_all_from_array">https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.remove_all_from_array</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> (<em>List | Tuple</em>) – values to remove.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.firestore_v1beta1.transforms.ArrayUnion">
+<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.transforms.</code><code class="descname">ArrayUnion</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/transforms.html#ArrayUnion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.transforms.ArrayUnion" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.firestore_v1beta1.transforms._ValueList</span></code></p>
+<p>Field transform: appends missing values to an array field.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.append_missing_elements">https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.append_missing_elements</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> (<em>List | Tuple</em>) – values to append.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.firestore_v1beta1.transforms.Sentinel">
+<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.transforms.</code><code class="descname">Sentinel</code><span class="sig-paren">(</span><em>description</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/transforms.html#Sentinel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.transforms.Sentinel" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Sentinel objects used to signal special handling.</p>
 </dd></dl>
@@ -147,7 +181,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/firestore/constants.rst.txt"
+      <a href="../_sources/firestore/transforms.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
