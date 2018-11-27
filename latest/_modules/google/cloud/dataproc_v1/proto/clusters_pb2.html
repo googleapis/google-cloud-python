@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dataproc_v1.proto.clusters_pb2 &#8212; google-cloud b76d094 documentation</title>
+    <title>google.cloud.dataproc_v1.proto.clusters_pb2 &#8212; google-cloud 3a51a1f documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -49,7 +49,6 @@
 
 
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">annotations_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_annotations__pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.dataproc_v1.proto</span> <span class="k">import</span> <span class="n">operations_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_dataproc__v1_dot_proto_dot_operations__pb2</span>
 <span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="k">import</span> <span class="n">operations_pb2</span> <span class="k">as</span> <span class="n">google_dot_longrunning_dot_operations__pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">duration_pb2</span> <span class="k">as</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">field_mask_pb2</span> <span class="k">as</span> <span class="n">google_dot_protobuf_dot_field__mask__pb2</span>
@@ -60,9 +59,9 @@
   <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google/cloud/dataproc_v1/proto/clusters.proto&#39;</span><span class="p">,</span>
   <span class="n">package</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1&#39;</span><span class="p">,</span>
   <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">-google/cloud/dataproc_v1/proto/clusters.proto</span><span class="se">\x12\x18</span><span class="s1">google.cloud.dataproc.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">/google/cloud/dataproc_v1/proto/operations.proto</span><span class="se">\x1a</span><span class="s1">#google/longrunning/operations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a</span><span class="s1"> google/protobuf/field_mask.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\&quot;\xa5\x03\n\x07\x43</span><span class="s1">luster</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x37\n\x06\x63</span><span class="s1">onfig</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.dataproc.v1.ClusterConfig</span><span class="se">\x12</span><span class="s1">=</span><span class="se">\n\x06</span><span class="s1">labels</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.dataproc.v1.Cluster.LabelsEntry</span><span class="se">\x12\x37\n\x06</span><span class="s1">status</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.dataproc.v1.ClusterStatus</span><span class="se">\x12</span><span class="s1">?</span><span class="se">\n\x0e</span><span class="s1">status_history</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.dataproc.v1.ClusterStatus</span><span class="se">\x12\x14\n\x0c\x63</span><span class="s1">luster_uuid</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x39\n\x07</span><span class="s1">metrics</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">(.google.cloud.dataproc.v1.ClusterMetrics</span><span class="se">\x1a</span><span class="s1">-</span><span class="se">\n\x0b</span><span class="s1">LabelsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;\xe1\x03\n\r</span><span class="s1">ClusterConfig</span><span class="se">\x12\x15\n\r</span><span class="s1">config_bucket</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x46\n\x12</span><span class="s1">gce_cluster_config</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">*.google.cloud.dataproc.v1.GceClusterConfig</span><span class="se">\x12\x44\n\r</span><span class="s1">master_config</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.dataproc.v1.InstanceGroupConfig</span><span class="se">\x12\x44\n\r</span><span class="s1">worker_config</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.dataproc.v1.InstanceGroupConfig</span><span class="se">\x12</span><span class="s1">N</span><span class="se">\n\x17</span><span class="s1">secondary_worker_config</span><span class="se">\x18\x0c</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.dataproc.v1.InstanceGroupConfig</span><span class="se">\x12\x41\n\x0f</span><span class="s1">software_config</span><span class="se">\x18\r</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">(.google.cloud.dataproc.v1.SoftwareConfig</span><span class="se">\x12</span><span class="s1">R</span><span class="se">\n\x16</span><span class="s1">initialization_actions</span><span class="se">\x18\x0b</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x32</span><span class="s1">.google.cloud.dataproc.v1.NodeInitializationAction</span><span class="se">\&quot;\xaf\x02\n\x10</span><span class="s1">GceClusterConfig</span><span class="se">\x12\x10\n\x08</span><span class="s1">zone_uri</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x13\n\x0b</span><span class="s1">network_uri</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x16\n\x0e</span><span class="s1">subnetwork_uri</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x18\n\x10</span><span class="s1">internal_ip_only</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x12\x17\n\x0f</span><span class="s1">service_account</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x1e\n\x16</span><span class="s1">service_account_scopes</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\x0c\n\x04</span><span class="s1">tags</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">J</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x38</span><span class="s1">.google.cloud.dataproc.v1.GceClusterConfig.MetadataEntry</span><span class="se">\x1a</span><span class="s1">/</span><span class="se">\n\r</span><span class="s1">MetadataEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;\xd3\x02\n\x13</span><span class="s1">InstanceGroupConfig</span><span class="se">\x12\x15\n\r</span><span class="s1">num_instances</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x16\n\x0e</span><span class="s1">instance_names</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">image_uri</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x18\n\x10</span><span class="s1">machine_type_uri</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x39\n\x0b\x64</span><span class="s1">isk_config</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.dataproc.v1.DiskConfig</span><span class="se">\x12\x16\n\x0e</span><span class="s1">is_preemptible</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x12</span><span class="s1">J</span><span class="se">\n\x14</span><span class="s1">managed_group_config</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.dataproc.v1.ManagedGroupConfig</span><span class="se">\x12\x41\n\x0c\x61\x63\x63\x65</span><span class="s1">lerators</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">+.google.cloud.dataproc.v1.AcceleratorConfig</span><span class="se">\&quot;</span><span class="s1">Y</span><span class="se">\n\x12</span><span class="s1">ManagedGroupConfig</span><span class="se">\x12\x1e\n\x16</span><span class="s1">instance_template_name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">#</span><span class="se">\n\x1b</span><span class="s1">instance_group_manager_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">L</span><span class="se">\n\x11\x41\x63\x63\x65</span><span class="s1">leratorConfig</span><span class="se">\x12\x1c\n\x14\x61\x63\x63\x65</span><span class="s1">lerator_type_uri</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x19\n\x11\x61\x63\x63\x65</span><span class="s1">lerator_count</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\&quot;</span><span class="s1">?</span><span class="se">\n\n</span><span class="s1">DiskConfig</span><span class="se">\x12\x19\n\x11\x62</span><span class="s1">oot_disk_size_gb</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x16\n\x0e</span><span class="s1">num_local_ssds</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\&quot;</span><span class="s1">i</span><span class="se">\n\x18</span><span class="s1">NodeInitializationAction</span><span class="se">\x12\x17\n\x0f\x65</span><span class="s1">xecutable_file</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x34\n\x11\x65</span><span class="s1">xecution_timeout</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration</span><span class="se">\&quot;\xed\x02\n\r</span><span class="s1">ClusterStatus</span><span class="se">\x12</span><span class="s1">&lt;</span><span class="se">\n\x05</span><span class="s1">state</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">-.google.cloud.dataproc.v1.ClusterStatus.State</span><span class="se">\x12\x0e\n\x06\x64\x65</span><span class="s1">tail</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x34\n\x10</span><span class="s1">state_start_time</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x42\n\x08</span><span class="s1">substate</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x30</span><span class="s1">.google.cloud.dataproc.v1.ClusterStatus.Substate</span><span class="se">\&quot;</span><span class="s1">V</span><span class="se">\n\x05</span><span class="s1">State</span><span class="se">\x12\x0b\n\x07</span><span class="s1">UNKNOWN</span><span class="se">\x10\x00\x12\x0c\n\x08\x43</span><span class="s1">REATING</span><span class="se">\x10\x01\x12\x0b\n\x07</span><span class="s1">RUNNING</span><span class="se">\x10\x02\x12\t\n\x05\x45</span><span class="s1">RROR</span><span class="se">\x10\x03\x12\x0c\n\x08\x44\x45</span><span class="s1">LETING</span><span class="se">\x10\x04\x12\x0c\n\x08</span><span class="s1">UPDATING</span><span class="se">\x10\x05\&quot;</span><span class="s1">&lt;</span><span class="se">\n\x08</span><span class="s1">Substate</span><span class="se">\x12\x0f\n\x0b</span><span class="s1">UNSPECIFIED</span><span class="se">\x10\x00\x12\r\n\t</span><span class="s1">UNHEALTHY</span><span class="se">\x10\x01\x12\x10\n\x0c</span><span class="s1">STALE_STATUS</span><span class="se">\x10\x02\&quot;\xa8\x01\n\x0e</span><span class="s1">SoftwareConfig</span><span class="se">\x12\x15\n\r</span><span class="s1">image_version</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">L</span><span class="se">\n\n</span><span class="s1">properties</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x38</span><span class="s1">.google.cloud.dataproc.v1.SoftwareConfig.PropertiesEntry</span><span class="se">\x1a\x31\n\x0f</span><span class="s1">PropertiesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;\x9a\x02\n\x0e\x43</span><span class="s1">lusterMetrics</span><span class="se">\x12</span><span class="s1">O</span><span class="se">\n\x0c</span><span class="s1">hdfs_metrics</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x39</span><span class="s1">.google.cloud.dataproc.v1.ClusterMetrics.HdfsMetricsEntry</span><span class="se">\x12</span><span class="s1">O</span><span class="se">\n\x0c</span><span class="s1">yarn_metrics</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x39</span><span class="s1">.google.cloud.dataproc.v1.ClusterMetrics.YarnMetricsEntry</span><span class="se">\x1a\x32\n\x10</span><span class="s1">HdfsMetricsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03</span><span class="s1">:</span><span class="se">\x02\x38\x01\x1a\x32\n\x10</span><span class="s1">YarnMetricsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;</span><span class="s1">n</span><span class="se">\n\x14\x43</span><span class="s1">reateClusterRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x32\n\x07\x63</span><span class="s1">luster</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.dataproc.v1.Cluster</span><span class="se">\&quot;\xb5\x01\n\x14</span><span class="s1">UpdateClusterRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x32\n\x07\x63</span><span class="s1">luster</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.dataproc.v1.Cluster</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask</span><span class="se">\&quot;</span><span class="s1">P</span><span class="se">\n\x14\x44\x65</span><span class="s1">leteClusterRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">M</span><span class="se">\n\x11</span><span class="s1">GetClusterRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">p</span><span class="se">\n\x13</span><span class="s1">ListClustersRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06\x66</span><span class="s1">ilter</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">d</span><span class="se">\n\x14</span><span class="s1">ListClustersResponse</span><span class="se">\x12\x33\n\x08\x63</span><span class="s1">lusters</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.dataproc.v1.Cluster</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">R</span><span class="se">\n\x16\x44</span><span class="s1">iagnoseClusterRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">,</span><span class="se">\n\x16\x44</span><span class="s1">iagnoseClusterResults</span><span class="se">\x12\x12\n\n</span><span class="s1">output_uri</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">2</span><span class="se">\xb2\x08\n\x11\x43</span><span class="s1">lusterController</span><span class="se">\x12\xa4\x01\n\r</span><span class="s1">CreateCluster</span><span class="se">\x12</span><span class="s1">..google.cloud.dataproc.v1.CreateClusterRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation</span><span class="se">\&quot;</span><span class="s1">D</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&gt;</span><span class="se">\&quot;</span><span class="s1">3/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters:</span><span class="se">\x07\x63</span><span class="s1">luster</span><span class="se">\x12\xb3\x01\n\r</span><span class="s1">UpdateCluster</span><span class="se">\x12</span><span class="s1">..google.cloud.dataproc.v1.UpdateClusterRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation</span><span class="se">\&quot;</span><span class="s1">S</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">M2B/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters/</span><span class="si">{cluster_name}</span><span class="s1">:</span><span class="se">\x07\x63</span><span class="s1">luster</span><span class="se">\x12\xaa\x01\n\r</span><span class="s1">DeleteCluster</span><span class="se">\x12</span><span class="s1">..google.cloud.dataproc.v1.DeleteClusterRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation</span><span class="se">\&quot;</span><span class="s1">J</span><span class="se">\x82\xd3\xe4\x93\x02\x44</span><span class="s1">*B/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters/</span><span class="si">{cluster_name}</span><span class="se">\x12\xa8\x01\n\n</span><span class="s1">GetCluster</span><span class="se">\x12</span><span class="s1">+.google.cloud.dataproc.v1.GetClusterRequest</span><span class="se">\x1a</span><span class="s1">!.google.cloud.dataproc.v1.Cluster</span><span class="se">\&quot;</span><span class="s1">J</span><span class="se">\x82\xd3\xe4\x93\x02\x44\x12\x42</span><span class="s1">/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters/</span><span class="si">{cluster_name}</span><span class="se">\x12\xaa\x01\n\x0c</span><span class="s1">ListClusters</span><span class="se">\x12</span><span class="s1">-.google.cloud.dataproc.v1.ListClustersRequest</span><span class="se">\x1a</span><span class="s1">..google.cloud.dataproc.v1.ListClustersResponse</span><span class="se">\&quot;</span><span class="s1">;</span><span class="se">\x82\xd3\xe4\x93\x02\x35\x12\x33</span><span class="s1">/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters</span><span class="se">\x12\xba\x01\n\x0f\x44</span><span class="s1">iagnoseCluster</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.dataproc.v1.DiagnoseClusterRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation</span><span class="se">\&quot;</span><span class="s1">V</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">P</span><span class="se">\&quot;</span><span class="s1">K/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters/</span><span class="si">{cluster_name}</span><span class="s1">:diagnose:</span><span class="se">\x01</span><span class="s1">*Bq</span><span class="se">\n\x1c\x63</span><span class="s1">om.google.cloud.dataproc.v1B</span><span class="se">\r</span><span class="s1">ClustersProtoP</span><span class="se">\x01</span><span class="s1">Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
+  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">-google/cloud/dataproc_v1/proto/clusters.proto</span><span class="se">\x12\x18</span><span class="s1">google.cloud.dataproc.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">#google/longrunning/operations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a</span><span class="s1"> google/protobuf/field_mask.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\&quot;\xa5\x03\n\x07\x43</span><span class="s1">luster</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x37\n\x06\x63</span><span class="s1">onfig</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.dataproc.v1.ClusterConfig</span><span class="se">\x12</span><span class="s1">=</span><span class="se">\n\x06</span><span class="s1">labels</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.dataproc.v1.Cluster.LabelsEntry</span><span class="se">\x12\x37\n\x06</span><span class="s1">status</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.dataproc.v1.ClusterStatus</span><span class="se">\x12</span><span class="s1">?</span><span class="se">\n\x0e</span><span class="s1">status_history</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.dataproc.v1.ClusterStatus</span><span class="se">\x12\x14\n\x0c\x63</span><span class="s1">luster_uuid</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x39\n\x07</span><span class="s1">metrics</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">(.google.cloud.dataproc.v1.ClusterMetrics</span><span class="se">\x1a</span><span class="s1">-</span><span class="se">\n\x0b</span><span class="s1">LabelsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;\xa8\x04\n\r</span><span class="s1">ClusterConfig</span><span class="se">\x12\x15\n\r</span><span class="s1">config_bucket</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x46\n\x12</span><span class="s1">gce_cluster_config</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">*.google.cloud.dataproc.v1.GceClusterConfig</span><span class="se">\x12\x44\n\r</span><span class="s1">master_config</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.dataproc.v1.InstanceGroupConfig</span><span class="se">\x12\x44\n\r</span><span class="s1">worker_config</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.dataproc.v1.InstanceGroupConfig</span><span class="se">\x12</span><span class="s1">N</span><span class="se">\n\x17</span><span class="s1">secondary_worker_config</span><span class="se">\x18\x0c</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.dataproc.v1.InstanceGroupConfig</span><span class="se">\x12\x41\n\x0f</span><span class="s1">software_config</span><span class="se">\x18\r</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">(.google.cloud.dataproc.v1.SoftwareConfig</span><span class="se">\x12</span><span class="s1">R</span><span class="se">\n\x16</span><span class="s1">initialization_actions</span><span class="se">\x18\x0b</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x32</span><span class="s1">.google.cloud.dataproc.v1.NodeInitializationAction</span><span class="se">\x12\x45\n\x11\x65</span><span class="s1">ncryption_config</span><span class="se">\x18\x0f</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">*.google.cloud.dataproc.v1.EncryptionConfig</span><span class="se">\&quot;</span><span class="s1">/</span><span class="se">\n\x10\x45</span><span class="s1">ncryptionConfig</span><span class="se">\x12\x1b\n\x13</span><span class="s1">gce_pd_kms_key_name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;\xaf\x02\n\x10</span><span class="s1">GceClusterConfig</span><span class="se">\x12\x10\n\x08</span><span class="s1">zone_uri</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x13\n\x0b</span><span class="s1">network_uri</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x16\n\x0e</span><span class="s1">subnetwork_uri</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x18\n\x10</span><span class="s1">internal_ip_only</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x12\x17\n\x0f</span><span class="s1">service_account</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x1e\n\x16</span><span class="s1">service_account_scopes</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\x0c\n\x04</span><span class="s1">tags</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">J</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x38</span><span class="s1">.google.cloud.dataproc.v1.GceClusterConfig.MetadataEntry</span><span class="se">\x1a</span><span class="s1">/</span><span class="se">\n\r</span><span class="s1">MetadataEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;\xd3\x02\n\x13</span><span class="s1">InstanceGroupConfig</span><span class="se">\x12\x15\n\r</span><span class="s1">num_instances</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x16\n\x0e</span><span class="s1">instance_names</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">image_uri</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x18\n\x10</span><span class="s1">machine_type_uri</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x39\n\x0b\x64</span><span class="s1">isk_config</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.dataproc.v1.DiskConfig</span><span class="se">\x12\x16\n\x0e</span><span class="s1">is_preemptible</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x12</span><span class="s1">J</span><span class="se">\n\x14</span><span class="s1">managed_group_config</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.dataproc.v1.ManagedGroupConfig</span><span class="se">\x12\x41\n\x0c\x61\x63\x63\x65</span><span class="s1">lerators</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">+.google.cloud.dataproc.v1.AcceleratorConfig</span><span class="se">\&quot;</span><span class="s1">Y</span><span class="se">\n\x12</span><span class="s1">ManagedGroupConfig</span><span class="se">\x12\x1e\n\x16</span><span class="s1">instance_template_name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">#</span><span class="se">\n\x1b</span><span class="s1">instance_group_manager_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">L</span><span class="se">\n\x11\x41\x63\x63\x65</span><span class="s1">leratorConfig</span><span class="se">\x12\x1c\n\x14\x61\x63\x63\x65</span><span class="s1">lerator_type_uri</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x19\n\x11\x61\x63\x63\x65</span><span class="s1">lerator_count</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\&quot;</span><span class="s1">W</span><span class="se">\n\n</span><span class="s1">DiskConfig</span><span class="se">\x12\x16\n\x0e\x62</span><span class="s1">oot_disk_type</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x19\n\x11\x62</span><span class="s1">oot_disk_size_gb</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x16\n\x0e</span><span class="s1">num_local_ssds</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\&quot;</span><span class="s1">i</span><span class="se">\n\x18</span><span class="s1">NodeInitializationAction</span><span class="se">\x12\x17\n\x0f\x65</span><span class="s1">xecutable_file</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x34\n\x11\x65</span><span class="s1">xecution_timeout</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration</span><span class="se">\&quot;\xed\x02\n\r</span><span class="s1">ClusterStatus</span><span class="se">\x12</span><span class="s1">&lt;</span><span class="se">\n\x05</span><span class="s1">state</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">-.google.cloud.dataproc.v1.ClusterStatus.State</span><span class="se">\x12\x0e\n\x06\x64\x65</span><span class="s1">tail</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x34\n\x10</span><span class="s1">state_start_time</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x42\n\x08</span><span class="s1">substate</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x30</span><span class="s1">.google.cloud.dataproc.v1.ClusterStatus.Substate</span><span class="se">\&quot;</span><span class="s1">V</span><span class="se">\n\x05</span><span class="s1">State</span><span class="se">\x12\x0b\n\x07</span><span class="s1">UNKNOWN</span><span class="se">\x10\x00\x12\x0c\n\x08\x43</span><span class="s1">REATING</span><span class="se">\x10\x01\x12\x0b\n\x07</span><span class="s1">RUNNING</span><span class="se">\x10\x02\x12\t\n\x05\x45</span><span class="s1">RROR</span><span class="se">\x10\x03\x12\x0c\n\x08\x44\x45</span><span class="s1">LETING</span><span class="se">\x10\x04\x12\x0c\n\x08</span><span class="s1">UPDATING</span><span class="se">\x10\x05\&quot;</span><span class="s1">&lt;</span><span class="se">\n\x08</span><span class="s1">Substate</span><span class="se">\x12\x0f\n\x0b</span><span class="s1">UNSPECIFIED</span><span class="se">\x10\x00\x12\r\n\t</span><span class="s1">UNHEALTHY</span><span class="se">\x10\x01\x12\x10\n\x0c</span><span class="s1">STALE_STATUS</span><span class="se">\x10\x02\&quot;\xa8\x01\n\x0e</span><span class="s1">SoftwareConfig</span><span class="se">\x12\x15\n\r</span><span class="s1">image_version</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">L</span><span class="se">\n\n</span><span class="s1">properties</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x38</span><span class="s1">.google.cloud.dataproc.v1.SoftwareConfig.PropertiesEntry</span><span class="se">\x1a\x31\n\x0f</span><span class="s1">PropertiesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;\x9a\x02\n\x0e\x43</span><span class="s1">lusterMetrics</span><span class="se">\x12</span><span class="s1">O</span><span class="se">\n\x0c</span><span class="s1">hdfs_metrics</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x39</span><span class="s1">.google.cloud.dataproc.v1.ClusterMetrics.HdfsMetricsEntry</span><span class="se">\x12</span><span class="s1">O</span><span class="se">\n\x0c</span><span class="s1">yarn_metrics</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x39</span><span class="s1">.google.cloud.dataproc.v1.ClusterMetrics.YarnMetricsEntry</span><span class="se">\x1a\x32\n\x10</span><span class="s1">HdfsMetricsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03</span><span class="s1">:</span><span class="se">\x02\x38\x01\x1a\x32\n\x10</span><span class="s1">YarnMetricsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;\x82\x01\n\x14\x43</span><span class="s1">reateClusterRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x32\n\x07\x63</span><span class="s1">luster</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.dataproc.v1.Cluster</span><span class="se">\x12\x12\n\n</span><span class="s1">request_id</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;\x8b\x02\n\x14</span><span class="s1">UpdateClusterRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x32\n\x07\x63</span><span class="s1">luster</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.dataproc.v1.Cluster</span><span class="se">\x12</span><span class="s1">@</span><span class="se">\n\x1d</span><span class="s1">graceful_decommission_timeout</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask</span><span class="se">\x12\x12\n\n</span><span class="s1">request_id</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">z</span><span class="se">\n\x14\x44\x65</span><span class="s1">leteClusterRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_uuid</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x12\n\n</span><span class="s1">request_id</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">M</span><span class="se">\n\x11</span><span class="s1">GetClusterRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">p</span><span class="se">\n\x13</span><span class="s1">ListClustersRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06\x66</span><span class="s1">ilter</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">d</span><span class="se">\n\x14</span><span class="s1">ListClustersResponse</span><span class="se">\x12\x33\n\x08\x63</span><span class="s1">lusters</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.dataproc.v1.Cluster</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">R</span><span class="se">\n\x16\x44</span><span class="s1">iagnoseClusterRequest</span><span class="se">\x12\x12\n\n</span><span class="s1">project_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">region</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x14\n\x0c\x63</span><span class="s1">luster_name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\&quot;</span><span class="s1">,</span><span class="se">\n\x16\x44</span><span class="s1">iagnoseClusterResults</span><span class="se">\x12\x12\n\n</span><span class="s1">output_uri</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">2</span><span class="se">\xb2\x08\n\x11\x43</span><span class="s1">lusterController</span><span class="se">\x12\xa4\x01\n\r</span><span class="s1">CreateCluster</span><span class="se">\x12</span><span class="s1">..google.cloud.dataproc.v1.CreateClusterRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation</span><span class="se">\&quot;</span><span class="s1">D</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&gt;</span><span class="se">\&quot;</span><span class="s1">3/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters:</span><span class="se">\x07\x63</span><span class="s1">luster</span><span class="se">\x12\xb3\x01\n\r</span><span class="s1">UpdateCluster</span><span class="se">\x12</span><span class="s1">..google.cloud.dataproc.v1.UpdateClusterRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation</span><span class="se">\&quot;</span><span class="s1">S</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">M2B/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters/</span><span class="si">{cluster_name}</span><span class="s1">:</span><span class="se">\x07\x63</span><span class="s1">luster</span><span class="se">\x12\xaa\x01\n\r</span><span class="s1">DeleteCluster</span><span class="se">\x12</span><span class="s1">..google.cloud.dataproc.v1.DeleteClusterRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation</span><span class="se">\&quot;</span><span class="s1">J</span><span class="se">\x82\xd3\xe4\x93\x02\x44</span><span class="s1">*B/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters/</span><span class="si">{cluster_name}</span><span class="se">\x12\xa8\x01\n\n</span><span class="s1">GetCluster</span><span class="se">\x12</span><span class="s1">+.google.cloud.dataproc.v1.GetClusterRequest</span><span class="se">\x1a</span><span class="s1">!.google.cloud.dataproc.v1.Cluster</span><span class="se">\&quot;</span><span class="s1">J</span><span class="se">\x82\xd3\xe4\x93\x02\x44\x12\x42</span><span class="s1">/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters/</span><span class="si">{cluster_name}</span><span class="se">\x12\xaa\x01\n\x0c</span><span class="s1">ListClusters</span><span class="se">\x12</span><span class="s1">-.google.cloud.dataproc.v1.ListClustersRequest</span><span class="se">\x1a</span><span class="s1">..google.cloud.dataproc.v1.ListClustersResponse</span><span class="se">\&quot;</span><span class="s1">;</span><span class="se">\x82\xd3\xe4\x93\x02\x35\x12\x33</span><span class="s1">/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters</span><span class="se">\x12\xba\x01\n\x0f\x44</span><span class="s1">iagnoseCluster</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.dataproc.v1.DiagnoseClusterRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation</span><span class="se">\&quot;</span><span class="s1">V</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">P</span><span class="se">\&quot;</span><span class="s1">K/v1/projects/</span><span class="si">{project_id}</span><span class="s1">/regions/</span><span class="si">{region}</span><span class="s1">/clusters/</span><span class="si">{cluster_name}</span><span class="s1">:diagnose:</span><span class="se">\x01</span><span class="s1">*Bq</span><span class="se">\n\x1c\x63</span><span class="s1">om.google.cloud.dataproc.v1B</span><span class="se">\r</span><span class="s1">ClustersProtoP</span><span class="se">\x01</span><span class="s1">Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
   <span class="p">,</span>
-  <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_cloud_dot_dataproc__v1_dot_proto_dot_operations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_longrunning_dot_operations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_field__mask__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
+  <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_longrunning_dot_operations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_field__mask__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
 
 
 
@@ -99,8 +98,8 @@
   <span class="p">],</span>
   <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
   <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2405</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2491</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2500</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2586</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_CLUSTERSTATUS_STATE</span><span class="p">)</span>
 
@@ -125,8 +124,8 @@
   <span class="p">],</span>
   <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
   <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2493</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2553</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2588</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2648</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_CLUSTERSTATUS_SUBSTATE</span><span class="p">)</span>
 
@@ -164,8 +163,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">667</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">712</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">618</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">663</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CLUSTER</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -243,8 +242,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">291</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">712</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">242</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">663</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -304,6 +303,13 @@
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;encryption_config&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.ClusterConfig.encryption_config&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
   <span class="p">],</span>
   <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
@@ -316,8 +322,39 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">715</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1196</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">666</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1218</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_ENCRYPTIONCONFIG</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;EncryptionConfig&#39;</span><span class="p">,</span>
+  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.EncryptionConfig&#39;</span><span class="p">,</span>
+  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;gce_pd_kms_key_name&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.EncryptionConfig.gce_pd_kms_key_name&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+  <span class="p">],</span>
+  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
+  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
+  <span class="p">],</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1220</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1267</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -354,8 +391,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1455</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1502</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1526</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1573</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_GCECLUSTERCONFIG</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -433,8 +470,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1199</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1502</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1270</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1573</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -513,8 +550,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1505</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1844</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1576</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1915</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -551,8 +588,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1846</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1935</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1917</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2006</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -589,8 +626,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1937</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2013</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2008</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2084</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -602,14 +639,21 @@
   <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
   <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;boot_disk_size_gb&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.DiskConfig.boot_disk_size_gb&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;boot_disk_type&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.DiskConfig.boot_disk_type&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;boot_disk_size_gb&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.DiskConfig.boot_disk_size_gb&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
       <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
       <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;num_local_ssds&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.DiskConfig.num_local_ssds&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;num_local_ssds&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.DiskConfig.num_local_ssds&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
       <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
       <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -627,8 +671,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2015</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2078</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2086</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2173</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -665,8 +709,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2080</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2185</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2175</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2280</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -719,8 +763,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2188</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2553</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2283</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2648</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -757,8 +801,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2675</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2724</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2770</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2819</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_SOFTWARECONFIG</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -794,8 +838,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2556</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2724</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2651</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2819</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -832,8 +876,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2907</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2957</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3002</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3052</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CLUSTERMETRICS_YARNMETRICSENTRY</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -869,8 +913,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2959</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3009</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3054</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3104</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CLUSTERMETRICS</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -906,8 +950,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2727</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3009</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2822</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3104</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -939,6 +983,13 @@
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;request_id&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.CreateClusterRequest.request_id&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
   <span class="p">],</span>
   <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
@@ -951,8 +1002,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3011</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3121</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3107</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3237</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -992,9 +1043,23 @@
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
     <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;update_mask&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.UpdateClusterRequest.update_mask&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;graceful_decommission_timeout&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.UpdateClusterRequest.graceful_decommission_timeout&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;update_mask&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.UpdateClusterRequest.update_mask&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
       <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
       <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;request_id&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.UpdateClusterRequest.request_id&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
@@ -1010,8 +1075,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3124</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3305</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3240</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3507</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1043,6 +1108,20 @@
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;cluster_uuid&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.DeleteClusterRequest.cluster_uuid&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;request_id&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.dataproc.v1.DeleteClusterRequest.request_id&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
   <span class="p">],</span>
   <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
@@ -1055,8 +1134,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3307</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3387</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3509</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3631</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1100,8 +1179,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3389</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3466</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3633</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3710</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1159,8 +1238,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3468</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3580</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3712</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3824</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1197,8 +1276,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3582</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3682</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3826</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3926</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1242,8 +1321,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3684</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3766</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3928</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4010</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1273,8 +1352,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3768</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3812</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4012</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4056</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CLUSTER_LABELSENTRY</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_CLUSTER</span>
@@ -1289,6 +1368,7 @@
 <span class="n">_CLUSTERCONFIG</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;secondary_worker_config&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_INSTANCEGROUPCONFIG</span>
 <span class="n">_CLUSTERCONFIG</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;software_config&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_SOFTWARECONFIG</span>
 <span class="n">_CLUSTERCONFIG</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;initialization_actions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_NODEINITIALIZATIONACTION</span>
+<span class="n">_CLUSTERCONFIG</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;encryption_config&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_ENCRYPTIONCONFIG</span>
 <span class="n">_GCECLUSTERCONFIG_METADATAENTRY</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_GCECLUSTERCONFIG</span>
 <span class="n">_GCECLUSTERCONFIG</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_GCECLUSTERCONFIG_METADATAENTRY</span>
 <span class="n">_INSTANCEGROUPCONFIG</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;disk_config&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_DISKCONFIG</span>
@@ -1308,10 +1388,12 @@
 <span class="n">_CLUSTERMETRICS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;yarn_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_CLUSTERMETRICS_YARNMETRICSENTRY</span>
 <span class="n">_CREATECLUSTERREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;cluster&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_CLUSTER</span>
 <span class="n">_UPDATECLUSTERREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;cluster&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_CLUSTER</span>
+<span class="n">_UPDATECLUSTERREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;graceful_decommission_timeout&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">_DURATION</span>
 <span class="n">_UPDATECLUSTERREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;update_mask&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_field__mask__pb2</span><span class="o">.</span><span class="n">_FIELDMASK</span>
 <span class="n">_LISTCLUSTERSRESPONSE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;clusters&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_CLUSTER</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;Cluster&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_CLUSTER</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;ClusterConfig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_CLUSTERCONFIG</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;EncryptionConfig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_ENCRYPTIONCONFIG</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;GceClusterConfig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_GCECLUSTERCONFIG</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;InstanceGroupConfig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_INSTANCEGROUPCONFIG</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;ManagedGroupConfig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_MANAGEDGROUPCONFIG</span>
@@ -1343,7 +1425,7 @@
   <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.dataproc_v1.proto.clusters_pb2&#39;</span>
   <span class="p">,</span>
   <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Describes the identifying information, config, and status of a cluster</span>
-<span class="s2">  of Google Compute Engine instances.</span>
+<span class="s2">  of Compute Engine instances.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
@@ -1366,11 +1448,11 @@
 <span class="s2">          &lt;https://www.ietf.org/rfc/rfc1035.txt&gt;`__. No more than 32</span>
 <span class="s2">          labels can be associated with a cluster.</span>
 <span class="s2">      status:</span>
-<span class="s2">          Output-only. Cluster status.</span>
+<span class="s2">          Output only. Cluster status.</span>
 <span class="s2">      status_history:</span>
-<span class="s2">          Output-only. The previous cluster status.</span>
+<span class="s2">          Output only. The previous cluster status.</span>
 <span class="s2">      cluster_uuid:</span>
-<span class="s2">          Output-only. A cluster UUID (Unique Universal Identifier).</span>
+<span class="s2">          Output only. A cluster UUID (Unique Universal Identifier).</span>
 <span class="s2">          Cloud Dataproc generates this value when it creates the</span>
 <span class="s2">          cluster.</span>
 <span class="s2">      metrics:</span>
@@ -1392,25 +1474,25 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      config_bucket:</span>
-<span class="s2">          Optional. A Google Cloud Storage staging bucket used for</span>
-<span class="s2">          sharing generated SSH keys and config. If you do not specify a</span>
-<span class="s2">          staging bucket, Cloud Dataproc will determine an appropriate</span>
-<span class="s2">          Cloud Storage location (US, ASIA, or EU) for your cluster&#39;s</span>
-<span class="s2">          staging bucket according to the Google Compute Engine zone</span>
-<span class="s2">          where your cluster is deployed, and then it will create and</span>
-<span class="s2">          manage this project-level, per-location bucket for you.</span>
+<span class="s2">          Optional. A Cloud Storage staging bucket used for sharing</span>
+<span class="s2">          generated SSH keys and config. If you do not specify a staging</span>
+<span class="s2">          bucket, Cloud Dataproc will determine an appropriate Cloud</span>
+<span class="s2">          Storage location (US, ASIA, or EU) for your cluster&#39;s staging</span>
+<span class="s2">          bucket according to the Google Compute Engine zone where your</span>
+<span class="s2">          cluster is deployed, and then it will create and manage this</span>
+<span class="s2">          project-level, per-location bucket for you.</span>
 <span class="s2">      gce_cluster_config:</span>
-<span class="s2">          Required. The shared Google Compute Engine config settings for</span>
-<span class="s2">          all instances in a cluster.</span>
+<span class="s2">          Required. The shared Compute Engine config settings for all</span>
+<span class="s2">          instances in a cluster.</span>
 <span class="s2">      master_config:</span>
-<span class="s2">          Optional. The Google Compute Engine config settings for the</span>
-<span class="s2">          master instance in a cluster.</span>
+<span class="s2">          Optional. The Compute Engine config settings for the master</span>
+<span class="s2">          instance in a cluster.</span>
 <span class="s2">      worker_config:</span>
-<span class="s2">          Optional. The Google Compute Engine config settings for worker</span>
+<span class="s2">          Optional. The Compute Engine config settings for worker</span>
 <span class="s2">          instances in a cluster.</span>
 <span class="s2">      secondary_worker_config:</span>
-<span class="s2">          Optional. The Google Compute Engine config settings for</span>
-<span class="s2">          additional worker instances in a cluster.</span>
+<span class="s2">          Optional. The Compute Engine config settings for additional</span>
+<span class="s2">          worker instances in a cluster.</span>
 <span class="s2">      software_config:</span>
 <span class="s2">          Optional. The config settings for software inside the cluster.</span>
 <span class="s2">      initialization_actions:</span>
@@ -1423,10 +1505,28 @@
 <span class="s2">          ance/attributes/dataproc-role)     if [[ &quot;$</span><span class="si">{ROLE}</span><span class="s2">&quot; == &#39;Master&#39;</span>
 <span class="s2">          ]]; then       ... master specific actions ...     else</span>
 <span class="s2">          ... worker specific actions ...     fi</span>
+<span class="s2">      encryption_config:</span>
+<span class="s2">          Optional. Encryption settings for the cluster.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.ClusterConfig)</span>
   <span class="p">))</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">ClusterConfig</span><span class="p">)</span>
+
+<span class="n">EncryptionConfig</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;EncryptionConfig&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
+  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_ENCRYPTIONCONFIG</span><span class="p">,</span>
+  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.dataproc_v1.proto.clusters_pb2&#39;</span>
+  <span class="p">,</span>
+  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Encryption settings for the cluster.</span>
+<span class="s2">  </span>
+<span class="s2">  </span>
+<span class="s2">  Attributes:</span>
+<span class="s2">      gce_pd_kms_key_name:</span>
+<span class="s2">          Optional. The Cloud KMS key name to use for PD disk encryption</span>
+<span class="s2">          for all instances in the cluster.</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
+  <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.EncryptionConfig)</span>
+  <span class="p">))</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">EncryptionConfig</span><span class="p">)</span>
 
 <span class="n">GceClusterConfig</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;GceClusterConfig&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
 
@@ -1439,28 +1539,27 @@
   <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_GCECLUSTERCONFIG</span><span class="p">,</span>
   <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.dataproc_v1.proto.clusters_pb2&#39;</span>
   <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Common config settings for resources of Google Compute Engine cluster</span>
+  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Common config settings for resources of Compute Engine cluster</span>
 <span class="s2">  instances, applicable to all instances in the cluster.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      zone_uri:</span>
-<span class="s2">          Optional. The zone where the Google Compute Engine cluster</span>
-<span class="s2">          will be located. On a create request, it is required in the</span>
-<span class="s2">          &quot;global&quot; region. If omitted in a non-global Cloud Dataproc</span>
-<span class="s2">          region, the service will pick a zone in the corresponding</span>
-<span class="s2">          Compute Engine region. On a get request, zone will always be</span>
-<span class="s2">          present.  A full URL, partial URI, or short name are valid.</span>
-<span class="s2">          Examples:  -  ``https://www.googleapis.com/compute/v1/projects</span>
-<span class="s2">          /[project_id]/zones/[zone]`` -</span>
-<span class="s2">          ``projects/[project_id]/zones/[zone]`` -  ``us-central1-f``</span>
+<span class="s2">          Optional. The zone where the Compute Engine cluster will be</span>
+<span class="s2">          located. On a create request, it is required in the &quot;global&quot;</span>
+<span class="s2">          region. If omitted in a non-global Cloud Dataproc region, the</span>
+<span class="s2">          service will pick a zone in the corresponding Compute Engine</span>
+<span class="s2">          region. On a get request, zone will always be present.  A full</span>
+<span class="s2">          URL, partial URI, or short name are valid. Examples:  -  ``htt</span>
+<span class="s2">          ps://www.googleapis.com/compute/v1/projects/[project_id]/zones</span>
+<span class="s2">          /[zone]`` -  ``projects/[project_id]/zones/[zone]`` -  ``us-</span>
+<span class="s2">          central1-f``</span>
 <span class="s2">      network_uri:</span>
-<span class="s2">          Optional. The Google Compute Engine network to be used for</span>
-<span class="s2">          machine communications. Cannot be specified with</span>
-<span class="s2">          subnetwork\_uri. If neither ``network_uri`` nor</span>
-<span class="s2">          ``subnetwork_uri`` is specified, the &quot;default&quot; network of the</span>
-<span class="s2">          project is used, if it exists. Cannot be a &quot;Custom Subnet</span>
-<span class="s2">          Network&quot; (see `Using Subnetworks</span>
+<span class="s2">          Optional. The Compute Engine network to be used for machine</span>
+<span class="s2">          communications. Cannot be specified with subnetwork\_uri. If</span>
+<span class="s2">          neither ``network_uri`` nor ``subnetwork_uri`` is specified,</span>
+<span class="s2">          the &quot;default&quot; network of the project is used, if it exists.</span>
+<span class="s2">          Cannot be a &quot;Custom Subnet Network&quot; (see `Using Subnetworks</span>
 <span class="s2">          &lt;/compute/docs/subnetworks&gt;`__ for more information).  A full</span>
 <span class="s2">          URL, partial URI, or short name are valid. Examples:  -  ``htt</span>
 <span class="s2">          ps://www.googleapis.com/compute/v1/projects/[project_id]/regio</span>
@@ -1468,11 +1567,11 @@
 <span class="s2">          ``projects/[project_id]/regions/global/default`` -</span>
 <span class="s2">          ``default``</span>
 <span class="s2">      subnetwork_uri:</span>
-<span class="s2">          Optional. The Google Compute Engine subnetwork to be used for</span>
-<span class="s2">          machine communications. Cannot be specified with network\_uri.</span>
-<span class="s2">          A full URL, partial URI, or short name are valid. Examples:  -</span>
-<span class="s2">          ``https://www.googleapis.com/compute/v1/projects/[project_id]/</span>
-<span class="s2">          regions/us-east1/sub0`` -  ``projects/[project_id]/regions/us-</span>
+<span class="s2">          Optional. The Compute Engine subnetwork to be used for machine</span>
+<span class="s2">          communications. Cannot be specified with network\_uri.  A full</span>
+<span class="s2">          URL, partial URI, or short name are valid. Examples:  -  ``htt</span>
+<span class="s2">          ps://www.googleapis.com/compute/v1/projects/[project_id]/regio</span>
+<span class="s2">          ns/us-east1/sub0`` -  ``projects/[project_id]/regions/us-</span>
 <span class="s2">          east1/sub0`` -  ``sub0``</span>
 <span class="s2">      internal_ip_only:</span>
 <span class="s2">          Optional. If true, all instances in the cluster will only have</span>
@@ -1484,17 +1583,17 @@
 <span class="s2">          to be accessible without external IP addresses.</span>
 <span class="s2">      service_account:</span>
 <span class="s2">          Optional. The service account of the instances. Defaults to</span>
-<span class="s2">          the default Google Compute Engine service account. Custom</span>
-<span class="s2">          service accounts need permissions equivalent to the folloing</span>
-<span class="s2">          IAM roles:  -  roles/logging.logWriter -</span>
+<span class="s2">          the default Compute Engine service account. Custom service</span>
+<span class="s2">          accounts need permissions equivalent to the following IAM</span>
+<span class="s2">          roles:  -  roles/logging.logWriter -</span>
 <span class="s2">          roles/storage.objectAdmin  (see</span>
 <span class="s2">          https://cloud.google.com/compute/docs/access/service-</span>
 <span class="s2">          accounts#custom\_service\_accounts for more information).</span>
 <span class="s2">          Example: ``[account_id]@[project_id].iam.gserviceaccount.com``</span>
 <span class="s2">      service_account_scopes:</span>
 <span class="s2">          Optional. The URIs of service account scopes to be included in</span>
-<span class="s2">          Google Compute Engine instances. The following base set of</span>
-<span class="s2">          scopes is always included:  -</span>
+<span class="s2">          Compute Engine instances. The following base set of scopes is</span>
+<span class="s2">          always included:  -</span>
 <span class="s2">          https://www.googleapis.com/auth/cloud.useraccounts.readonly -</span>
 <span class="s2">          https://www.googleapis.com/auth/devstorage.read\_write -</span>
 <span class="s2">          https://www.googleapis.com/auth/logging.write  If no scopes</span>
@@ -1504,12 +1603,11 @@
 <span class="s2">          https://www.googleapis.com/auth/bigtable.data -</span>
 <span class="s2">          https://www.googleapis.com/auth/devstorage.full\_control</span>
 <span class="s2">      tags:</span>
-<span class="s2">          The Google Compute Engine tags to add to all instances (see</span>
-<span class="s2">          `Tagging instances &lt;/compute/docs/label-or-tag-</span>
-<span class="s2">          resources#tags&gt;`__).</span>
+<span class="s2">          The Compute Engine tags to add to all instances (see `Tagging</span>
+<span class="s2">          instances &lt;/compute/docs/label-or-tag-resources#tags&gt;`__).</span>
 <span class="s2">      metadata:</span>
-<span class="s2">          The Google Compute Engine metadata entries to add to all</span>
-<span class="s2">          instances (see `Project and instance metadata</span>
+<span class="s2">          The Compute Engine metadata entries to add to all instances</span>
+<span class="s2">          (see `Project and instance metadata</span>
 <span class="s2">          &lt;https://cloud.google.com/compute/docs/storing-retrieving-</span>
 <span class="s2">          metadata#project_and_instance_metadata&gt;`__).</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
@@ -1522,7 +1620,7 @@
   <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_INSTANCEGROUPCONFIG</span><span class="p">,</span>
   <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.dataproc_v1.proto.clusters_pb2&#39;</span>
   <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Optional. The config settings for Google Compute Engine resources in an</span>
+  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Optional. The config settings for Compute Engine resources in an</span>
 <span class="s2">  instance group, such as a master or worker group.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
@@ -1531,34 +1629,37 @@
 <span class="s2">          Optional. The number of VM instances in the instance group.</span>
 <span class="s2">          For master instance groups, must be set to 1.</span>
 <span class="s2">      instance_names:</span>
-<span class="s2">          Optional. The list of instance names. Cloud Dataproc derives</span>
-<span class="s2">          the names from ``cluster_name``, ``num_instances``, and the</span>
-<span class="s2">          instance group if not set by user (recommended practice is to</span>
-<span class="s2">          let Cloud Dataproc derive the name).</span>
+<span class="s2">          Output only. The list of instance names. Cloud Dataproc</span>
+<span class="s2">          derives the names from ``cluster_name``, ``num_instances``,</span>
+<span class="s2">          and the instance group.</span>
 <span class="s2">      image_uri:</span>
-<span class="s2">          Output-only. The Google Compute Engine image resource used for</span>
-<span class="s2">          cluster instances. Inferred from</span>
+<span class="s2">          Optional. The Compute Engine image resource used for cluster</span>
+<span class="s2">          instances. It can be specified or may be inferred from</span>
 <span class="s2">          ``SoftwareConfig.image_version``.</span>
 <span class="s2">      machine_type_uri:</span>
-<span class="s2">          Optional. The Google Compute Engine machine type used for</span>
-<span class="s2">          cluster instances.  A full URL, partial URI, or short name are</span>
-<span class="s2">          valid. Examples:  -  ``https://www.googleapis.com/compute/v1/p</span>
-<span class="s2">          rojects/[project_id]/zones/us-</span>
-<span class="s2">          east1-a/machineTypes/n1-standard-2`` -</span>
+<span class="s2">          Optional. The Compute Engine machine type used for cluster</span>
+<span class="s2">          instances.  A full URL, partial URI, or short name are valid.</span>
+<span class="s2">          Examples:  -  ``https://www.googleapis.com/compute/v1/projects</span>
+<span class="s2">          /[project_id]/zones/us-east1-a/machineTypes/n1-standard-2`` -</span>
 <span class="s2">          ``projects/[project_id]/zones/us-</span>
 <span class="s2">          east1-a/machineTypes/n1-standard-2`` -  ``n1-standard-2``</span>
+<span class="s2">          **Auto Zone Exception**: If you are using the Cloud Dataproc</span>
+<span class="s2">          `Auto Zone Placement &lt;/dataproc/docs/concepts/configuring-</span>
+<span class="s2">          clusters/auto-zone#using_auto_zone_placement&gt;`__ feature, you</span>
+<span class="s2">          must use the short name of the machine type resource, for</span>
+<span class="s2">          example, ``n1-standard-2``.</span>
 <span class="s2">      disk_config:</span>
 <span class="s2">          Optional. Disk option config settings.</span>
 <span class="s2">      is_preemptible:</span>
 <span class="s2">          Optional. Specifies that this instance group contains</span>
 <span class="s2">          preemptible instances.</span>
 <span class="s2">      managed_group_config:</span>
-<span class="s2">          Output-only. The config for Google Compute Engine Instance</span>
-<span class="s2">          Group Manager that manages this group. This is only used for</span>
+<span class="s2">          Output only. The config for Compute Engine Instance Group</span>
+<span class="s2">          Manager that manages this group. This is only used for</span>
 <span class="s2">          preemptible instance groups.</span>
 <span class="s2">      accelerators:</span>
-<span class="s2">          Optional. The Google Compute Engine accelerator configuration</span>
-<span class="s2">          for these instances.  **Beta Feature**: This feature is still</span>
+<span class="s2">          Optional. The Compute Engine accelerator configuration for</span>
+<span class="s2">          these instances.  **Beta Feature**: This feature is still</span>
 <span class="s2">          under development. It may be changed before final release.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.InstanceGroupConfig)</span>
@@ -1574,10 +1675,10 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      instance_template_name:</span>
-<span class="s2">          Output-only. The name of the Instance Template used for the</span>
+<span class="s2">          Output only. The name of the Instance Template used for the</span>
 <span class="s2">          Managed Instance Group.</span>
 <span class="s2">      instance_group_manager_name:</span>
-<span class="s2">          Output-only. The name of the Instance Group Manager for this</span>
+<span class="s2">          Output only. The name of the Instance Group Manager for this</span>
 <span class="s2">          group.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.ManagedGroupConfig)</span>
@@ -1589,21 +1690,26 @@
   <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.dataproc_v1.proto.clusters_pb2&#39;</span>
   <span class="p">,</span>
   <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Specifies the type and number of accelerator cards attached to the</span>
-<span class="s2">  instances of an instance group (see `GPUs on Compute</span>
-<span class="s2">  Engine &lt;/compute/docs/gpus/&gt;`__).</span>
+<span class="s2">  instances of an instance. See `GPUs on Compute</span>
+<span class="s2">  Engine &lt;/compute/docs/gpus/&gt;`__.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      accelerator_type_uri:</span>
 <span class="s2">          Full URL, partial URI, or short name of the accelerator type</span>
-<span class="s2">          resource to expose to this instance. See `Google Compute</span>
-<span class="s2">          Engine AcceleratorTypes</span>
-<span class="s2">          &lt;/compute/docs/reference/beta/acceleratorTypes&gt;`__  Examples</span>
-<span class="s2">          \* ``https://www.googleapis.com/compute/beta/projects/[project</span>
-<span class="s2">          _id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80`` \*</span>
+<span class="s2">          resource to expose to this instance. See `Compute Engine</span>
+<span class="s2">          AcceleratorTypes</span>
+<span class="s2">          &lt;/compute/docs/reference/beta/acceleratorTypes&gt;`__.  Examples:</span>
+<span class="s2">          -  ``https://www.googleapis.com/compute/beta/projects/[project</span>
+<span class="s2">          _id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80`` -</span>
 <span class="s2">          ``projects/[project_id]/zones/us-</span>
-<span class="s2">          east1-a/acceleratorTypes/nvidia-tesla-k80`` \* ``nvidia-</span>
-<span class="s2">          tesla-k80``</span>
+<span class="s2">          east1-a/acceleratorTypes/nvidia-tesla-k80`` -  ``nvidia-</span>
+<span class="s2">          tesla-k80``  **Auto Zone Exception**: If you are using the</span>
+<span class="s2">          Cloud Dataproc `Auto Zone Placement</span>
+<span class="s2">          &lt;/dataproc/docs/concepts/configuring-clusters/auto-</span>
+<span class="s2">          zone#using_auto_zone_placement&gt;`__ feature, you must use the</span>
+<span class="s2">          short name of the accelerator type resource, for example,</span>
+<span class="s2">          ``nvidia-tesla-k80``.</span>
 <span class="s2">      accelerator_count:</span>
 <span class="s2">          The number of the accelerator cards of this type exposed to</span>
 <span class="s2">          this instance.</span>
@@ -1620,6 +1726,10 @@
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
+<span class="s2">      boot_disk_type:</span>
+<span class="s2">          Optional. Type of the boot disk (default is &quot;pd-standard&quot;).</span>
+<span class="s2">          Valid values: &quot;pd-ssd&quot; (Persistent Disk Solid State Drive) or</span>
+<span class="s2">          &quot;pd-standard&quot; (Persistent Disk Hard Disk Drive).</span>
 <span class="s2">      boot_disk_size_gb:</span>
 <span class="s2">          Optional. Size in GB of the boot disk (default is 500GB).</span>
 <span class="s2">      num_local_ssds:</span>
@@ -1645,7 +1755,7 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      executable_file:</span>
-<span class="s2">          Required. Google Cloud Storage URI of executable file.</span>
+<span class="s2">          Required. Cloud Storage URI of executable file.</span>
 <span class="s2">      execution_timeout:</span>
 <span class="s2">          Optional. Amount of time executable has to complete. Default</span>
 <span class="s2">          is 10 minutes. Cluster creation fails with an explanatory</span>
@@ -1666,13 +1776,13 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      state:</span>
-<span class="s2">          Output-only. The cluster&#39;s state.</span>
+<span class="s2">          Output only. The cluster&#39;s state.</span>
 <span class="s2">      detail:</span>
-<span class="s2">          Output-only. Optional details of cluster&#39;s state.</span>
+<span class="s2">          Output only. Optional details of cluster&#39;s state.</span>
 <span class="s2">      state_start_time:</span>
-<span class="s2">          Output-only. Time when this state was entered.</span>
+<span class="s2">          Output only. Time when this state was entered.</span>
 <span class="s2">      substate:</span>
-<span class="s2">          Output-only. Additional state information that includes status</span>
+<span class="s2">          Output only. Additional state information that includes status</span>
 <span class="s2">          reported by the agent.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.ClusterStatus)</span>
@@ -1696,9 +1806,14 @@
 <span class="s2">  Attributes:</span>
 <span class="s2">      image_version:</span>
 <span class="s2">          Optional. The version of software inside the cluster. It must</span>
-<span class="s2">          match the regular expression ``[0-9]+\.[0-9]+``. If</span>
-<span class="s2">          unspecified, it defaults to the latest version (see `Cloud</span>
-<span class="s2">          Dataproc Versioning &lt;/dataproc/versioning&gt;`__).</span>
+<span class="s2">          be one of the supported `Cloud Dataproc Versions</span>
+<span class="s2">          &lt;/dataproc/docs/concepts/versioning/dataproc-</span>
+<span class="s2">          versions#supported_cloud_dataproc_versions&gt;`__, such as &quot;1.2&quot;</span>
+<span class="s2">          (including a subminor version, such as &quot;1.2.29&quot;), or the</span>
+<span class="s2">          `&quot;preview&quot; version</span>
+<span class="s2">          &lt;/dataproc/docs/concepts/versioning/dataproc-</span>
+<span class="s2">          versions#other_versions&gt;`__. If unspecified, it defaults to</span>
+<span class="s2">          the latest version.</span>
 <span class="s2">      properties:</span>
 <span class="s2">          Optional. The properties to set on daemon config files.</span>
 <span class="s2">          Property keys are specified in ``prefix:property`` format,</span>
@@ -1768,6 +1883,18 @@
 <span class="s2">          request.</span>
 <span class="s2">      cluster:</span>
 <span class="s2">          Required. The cluster to create.</span>
+<span class="s2">      request_id:</span>
+<span class="s2">          Optional. A unique id used to identify the request. If the</span>
+<span class="s2">          server receives two [CreateClusterRequest][google.cloud.datapr</span>
+<span class="s2">          oc.v1.CreateClusterRequest] requests with the same id, then</span>
+<span class="s2">          the second request will be ignored and the first</span>
+<span class="s2">          [google.longrunning.Operation][google.longrunning.Operation]</span>
+<span class="s2">          created and stored in the backend is returned.  It is</span>
+<span class="s2">          recommended to always set this value to a `UUID &lt;https://en.wi</span>
+<span class="s2">          kipedia.org/wiki/Universally_unique_identifier&gt;`__.  The id</span>
+<span class="s2">          must contain only letters (a-z, A-Z), numbers (0-9),</span>
+<span class="s2">          underscores (\_), and hyphens (-). The maximum length is 40</span>
+<span class="s2">          characters.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.CreateClusterRequest)</span>
   <span class="p">))</span>
@@ -1791,6 +1918,15 @@
 <span class="s2">          Required. The cluster name.</span>
 <span class="s2">      cluster:</span>
 <span class="s2">          Required. The changes to the cluster.</span>
+<span class="s2">      graceful_decommission_timeout:</span>
+<span class="s2">          Optional. Timeout for graceful YARN decomissioning. Graceful</span>
+<span class="s2">          decommissioning allows removing nodes from the cluster without</span>
+<span class="s2">          interrupting jobs in progress. Timeout specifies how long to</span>
+<span class="s2">          wait for jobs in progress to finish before forcefully removing</span>
+<span class="s2">          nodes (and potentially interrupting jobs). Default timeout is</span>
+<span class="s2">          0 (for forceful decommission), and the maximum allowed timeout</span>
+<span class="s2">          is 1 day.  Only supported on Dataproc image versions 1.2 and</span>
+<span class="s2">          higher.</span>
 <span class="s2">      update_mask:</span>
 <span class="s2">          Required. Specifies the path, relative to ``Cluster``, of the</span>
 <span class="s2">          field to update. For example, to change the number of workers</span>
@@ -1821,6 +1957,18 @@
 <span class="s2">          &lt;/td&gt;  .. raw:: html     &lt;td&gt;  Resize secondary worker group</span>
 <span class="s2">          .. raw:: html     &lt;/td&gt;  .. raw:: html     &lt;/tr&gt;  .. raw::</span>
 <span class="s2">          html     &lt;/tbody&gt;  .. raw:: html     &lt;/table&gt;</span>
+<span class="s2">      request_id:</span>
+<span class="s2">          Optional. A unique id used to identify the request. If the</span>
+<span class="s2">          server receives two [UpdateClusterRequest][google.cloud.datapr</span>
+<span class="s2">          oc.v1.UpdateClusterRequest] requests with the same id, then</span>
+<span class="s2">          the second request will be ignored and the first</span>
+<span class="s2">          [google.longrunning.Operation][google.longrunning.Operation]</span>
+<span class="s2">          created and stored in the backend is returned.  It is</span>
+<span class="s2">          recommended to always set this value to a `UUID &lt;https://en.wi</span>
+<span class="s2">          kipedia.org/wiki/Universally_unique_identifier&gt;`__.  The id</span>
+<span class="s2">          must contain only letters (a-z, A-Z), numbers (0-9),</span>
+<span class="s2">          underscores (\_), and hyphens (-). The maximum length is 40</span>
+<span class="s2">          characters.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.UpdateClusterRequest)</span>
   <span class="p">))</span>
@@ -1842,6 +1990,22 @@
 <span class="s2">          request.</span>
 <span class="s2">      cluster_name:</span>
 <span class="s2">          Required. The cluster name.</span>
+<span class="s2">      cluster_uuid:</span>
+<span class="s2">          Optional. Specifying the ``cluster_uuid`` means the RPC should</span>
+<span class="s2">          fail (with error NOT\_FOUND) if cluster with specified UUID</span>
+<span class="s2">          does not exist.</span>
+<span class="s2">      request_id:</span>
+<span class="s2">          Optional. A unique id used to identify the request. If the</span>
+<span class="s2">          server receives two [DeleteClusterRequest][google.cloud.datapr</span>
+<span class="s2">          oc.v1.DeleteClusterRequest] requests with the same id, then</span>
+<span class="s2">          the second request will be ignored and the first</span>
+<span class="s2">          [google.longrunning.Operation][google.longrunning.Operation]</span>
+<span class="s2">          created and stored in the backend is returned.  It is</span>
+<span class="s2">          recommended to always set this value to a `UUID &lt;https://en.wi</span>
+<span class="s2">          kipedia.org/wiki/Universally_unique_identifier&gt;`__.  The id</span>
+<span class="s2">          must contain only letters (a-z, A-Z), numbers (0-9),</span>
+<span class="s2">          underscores (\_), and hyphens (-). The maximum length is 40</span>
+<span class="s2">          characters.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.DeleteClusterRequest)</span>
   <span class="p">))</span>
@@ -1917,9 +2081,9 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      clusters:</span>
-<span class="s2">          Output-only. The clusters in the project.</span>
+<span class="s2">          Output only. The clusters in the project.</span>
 <span class="s2">      next_page_token:</span>
-<span class="s2">          Output-only. This token is included in the response if there</span>
+<span class="s2">          Output only. This token is included in the response if there</span>
 <span class="s2">          are more results to fetch. To fetch additional results,</span>
 <span class="s2">          provide this value as the ``page_token`` in a subsequent</span>
 <span class="s2">          ``ListClustersRequest``.</span>
@@ -1958,9 +2122,9 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      output_uri:</span>
-<span class="s2">          Output-only. The Google Cloud Storage URI of the diagnostic</span>
-<span class="s2">          output. The output report is a plain text file with a summary</span>
-<span class="s2">          of collected diagnostics.</span>
+<span class="s2">          Output only. The Cloud Storage URI of the diagnostic output.</span>
+<span class="s2">          The output report is a plain text file with a summary of</span>
+<span class="s2">          collected diagnostics.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.DiagnoseClusterResults)</span>
   <span class="p">))</span>
@@ -1986,8 +2150,8 @@
   <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
   <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
   <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3815</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4889</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4059</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">5133</span><span class="p">,</span>
   <span class="n">methods</span><span class="o">=</span><span class="p">[</span>
   <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s1">&#39;CreateCluster&#39;</span><span class="p">,</span>

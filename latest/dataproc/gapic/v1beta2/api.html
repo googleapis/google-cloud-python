@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Google Cloud Dataproc API &#8212; google-cloud b76d094 documentation</title>
+    <title>Client for Google Cloud Dataproc API &#8212; google-cloud 3a51a1f documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -582,23 +582,19 @@ request body would be set as follows:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Note: currently only the following fields can be updated:</p>
-<table><tr><td><p>Mask</p>
-</td><td><p>Purpose</p>
-</td></tr><tr><td><p>labels</p>
-</td><td><p>Updates labels</p>
-</td></tr><tr><td><p>config.worker_config.num_instances</p>
-</td><td><p>Resize primary worker group</p>
-</td></tr><tr><td><p>config.secondary_worker_config.num_instances</p>
-</td><td><p>Resize secondary worker group</p>
-</td></tr><tr><td><p>config.lifecycle_config.auto_delete_ttl</p>
-</td><td><p>Reset MAX TTL duration</p>
-</td></tr><tr><td><p>config.lifecycle_config.auto_delete_time</p>
-</td><td><p>Update MAX TTL deletion timestamp</p>
-</td></tr><tr><td><p>config.lifecycle_config.idle_delete_ttl</p>
-</td><td><p>Update Idle TTL duration</p>
-</td></tr></table><p>If a dict is provided, it must be of the same form as the protobuf
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Currently, only the following fields can be updated:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">labels</span></code>: Update labels</li>
+<li><code class="docutils literal notranslate"><span class="pre">config.worker_config.num_instances</span></code>: Resize primary
+worker group</li>
+<li><code class="docutils literal notranslate"><span class="pre">config.secondary_worker_config.num_instances</span></code>: Resize
+secondary worker group</li>
+</ul>
+<p class="last">If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.dataproc_v1beta2.types.FieldMask" title="google.cloud.dataproc_v1beta2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</div>
 </li>
 <li><strong>graceful_decommission_timeout</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dataproc_v1beta2.types.Duration" title="google.cloud.dataproc_v1beta2.types.Duration"><em>Duration</em></a><em>]</em>) – <p>Optional. Timeout for graceful YARN decomissioning. Graceful
 decommissioning allows removing nodes from the cluster without
@@ -1326,7 +1322,7 @@ file.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.dataproc_v1beta2.WorkflowTemplateServiceClient" title="google.cloud.dataproc_v1beta2.WorkflowTemplateServiceClient">WorkflowTemplateServiceClient</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="../v1/api.html#google.cloud.dataproc_v1.WorkflowTemplateServiceClient" title="google.cloud.dataproc_v1.WorkflowTemplateServiceClient">WorkflowTemplateServiceClient</a></p>
 </td>
 </tr>
 </tbody>
@@ -1353,7 +1349,7 @@ file.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.dataproc_v1beta2.WorkflowTemplateServiceClient" title="google.cloud.dataproc_v1beta2.WorkflowTemplateServiceClient">WorkflowTemplateServiceClient</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="../v1/api.html#google.cloud.dataproc_v1.WorkflowTemplateServiceClient" title="google.cloud.dataproc_v1.WorkflowTemplateServiceClient">WorkflowTemplateServiceClient</a></p>
 </td>
 </tr>
 </tbody>
@@ -1416,8 +1412,93 @@ to a retryable error and retry attempts failed.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.dataproc_v1beta2.WorkflowTemplateServiceClient.instantiate_inline_workflow_template">
+<code class="descname">instantiate_inline_workflow_template</code><span class="sig-paren">(</span><em>parent</em>, <em>template</em>, <em>instance_id=None</em>, <em>request_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dataproc_v1beta2/gapic/workflow_template_service_client.html#WorkflowTemplateServiceClient.instantiate_inline_workflow_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dataproc_v1beta2.WorkflowTemplateServiceClient.instantiate_inline_workflow_template" title="Permalink to this definition">#</a></dt>
+<dd><p>Instantiates a template and begins execution.</p>
+<p>This method is equivalent to executing the sequence
+<code class="docutils literal notranslate"><span class="pre">CreateWorkflowTemplate</span></code>, <code class="docutils literal notranslate"><span class="pre">InstantiateWorkflowTemplate</span></code>,
+<code class="docutils literal notranslate"><span class="pre">DeleteWorkflowTemplate</span></code>.</p>
+<p>The returned Operation can be used to track execution of workflow by
+polling <code class="docutils literal notranslate"><span class="pre">operations.get</span></code>. The Operation will complete when entire
+workflow is finished.</p>
+<p>The running workflow can be aborted via <code class="docutils literal notranslate"><span class="pre">operations.cancel</span></code>. This will
+cause any inflight jobs to be cancelled and workflow-owned clusters to
+be deleted.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Operation.metadata</span></code> will be <code class="docutils literal notranslate"><span class="pre">WorkflowMetadata</span></code>.</p>
+<p>On successful completion, <code class="docutils literal notranslate"><span class="pre">Operation.response</span></code> will be <code class="docutils literal notranslate"><span class="pre">Empty</span></code>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dataproc_v1beta2</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dataproc_v1beta2</span><span class="o">.</span><span class="n">WorkflowTemplateServiceClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">region_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[REGION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `template`:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instantiate_inline_workflow_template</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The “resource name” of the workflow template region, as
+described in <a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}</span></code></li>
+<li><strong>template</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dataproc_v1beta2.types.WorkflowTemplate" title="google.cloud.dataproc_v1beta2.types.WorkflowTemplate"><em>WorkflowTemplate</em></a><em>]</em>) – <p>Required. The workflow template to instantiate.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dataproc_v1beta2.types.WorkflowTemplate" title="google.cloud.dataproc_v1beta2.types.WorkflowTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">WorkflowTemplate</span></code></a></p>
+</li>
+<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. Please use <code class="docutils literal notranslate"><span class="pre">request_id</span></code> field instead.</li>
+<li><strong>request_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. A tag that prevents multiple concurrent workflow instances
+with the same tag from running. This mitigates risk of concurrent
+instances started due to retries.</p>
+<p>It is recommended to always set this value to a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a>.</p>
+<p>The tag must contain only letters (a-z, A-Z), numbers (0-9), underscores
+(_), and hyphens (-). The maximum length is 40 characters.</p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.dataproc_v1beta2.WorkflowTemplateServiceClient.instantiate_workflow_template">
-<code class="descname">instantiate_workflow_template</code><span class="sig-paren">(</span><em>name</em>, <em>version=None</em>, <em>instance_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dataproc_v1beta2/gapic/workflow_template_service_client.html#WorkflowTemplateServiceClient.instantiate_workflow_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dataproc_v1beta2.WorkflowTemplateServiceClient.instantiate_workflow_template" title="Permalink to this definition">#</a></dt>
+<code class="descname">instantiate_workflow_template</code><span class="sig-paren">(</span><em>name</em>, <em>version=None</em>, <em>instance_id=None</em>, <em>request_id=None</em>, <em>parameters=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dataproc_v1beta2/gapic/workflow_template_service_client.html#WorkflowTemplateServiceClient.instantiate_workflow_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dataproc_v1beta2.WorkflowTemplateServiceClient.instantiate_workflow_template" title="Permalink to this definition">#</a></dt>
 <dd><p>Instantiates a template and begins execution.</p>
 <p>The returned Operation can be used to track execution of workflow by
 polling <code class="docutils literal notranslate"><span class="pre">operations.get</span></code>. The Operation will complete when entire
@@ -1460,7 +1541,8 @@ the workflow template has the supplied version.</p>
 <p>This option cannot be used to instantiate a previous version of
 workflow template.</p>
 </li>
-<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. A tag that prevents multiple concurrent workflow instances
+<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Deprecated. Please use <code class="docutils literal notranslate"><span class="pre">request_id</span></code> field instead.</li>
+<li><strong>request_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. A tag that prevents multiple concurrent workflow instances
 with the same tag from running. This mitigates risk of concurrent
 instances started due to retries.</p>
 <p>It is recommended to always set this value to a
@@ -1468,6 +1550,8 @@ instances started due to retries.</p>
 <p>The tag must contain only letters (a-z, A-Z), numbers (0-9), underscores
 (_), and hyphens (-). The maximum length is 40 characters.</p>
 </li>
+<li><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – Optional. Map from parameter names to values that should be used for those
+parameters. Values may not exceed 100 characters.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>

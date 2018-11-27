@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Cloud Dataproc API Client &#8212; google-cloud b76d094 documentation</title>
+    <title>Types for Google Cloud Dataproc API Client &#8212; google-cloud 3a51a1f documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -40,19 +40,22 @@
 <dt id="google.cloud.dataproc_v1.types.AcceleratorConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">AcceleratorConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.AcceleratorConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the type and number of accelerator cards attached to the
-instances of an instance group (see <a class="reference external" href="/compute/docs/gpus/">GPUs on Compute
-Engine</a>).</p>
+instances of an instance. See <a class="reference external" href="/compute/docs/gpus/">GPUs on Compute
+Engine</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.AcceleratorConfig.accelerator_type_uri">
 <code class="descname">accelerator_type_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.AcceleratorConfig.accelerator_type_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Full URL, partial URI, or short name of the accelerator type
-resource to expose to this instance. See <a class="reference external" href="/compute/docs/reference/beta/acceleratorTypes">Google Compute
-Engine AcceleratorTypes</a>  Examples
-* <code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/beta/projects/[project</span>
-<span class="pre">_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80</span></code> *
+resource to expose to this instance. See <a class="reference external" href="/compute/docs/reference/beta/acceleratorTypes">Compute Engine
+AcceleratorTypes</a>.  Examples:
+-  <code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/beta/projects/[project</span>
+<span class="pre">_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80</span></code> -
 <code class="docutils literal notranslate"><span class="pre">projects/[project_id]/zones/us-</span>
-<span class="pre">east1-a/acceleratorTypes/nvidia-tesla-k80</span></code> * <code class="docutils literal notranslate"><span class="pre">nvidia-</span>
-<span class="pre">tesla-k80</span></code></p>
+<span class="pre">east1-a/acceleratorTypes/nvidia-tesla-k80</span></code> -  <code class="docutils literal notranslate"><span class="pre">nvidia-</span>
+<span class="pre">tesla-k80</span></code>  <strong>Auto Zone Exception</strong>: If you are using the
+Cloud Dataproc <a class="reference external" href="/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement">Auto Zone Placement</a> feature, you must use the
+short name of the accelerator type resource, for example,
+<code class="docutils literal notranslate"><span class="pre">nvidia-tesla-k80</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -104,7 +107,7 @@ request.</p>
 <dt id="google.cloud.dataproc_v1.types.Cluster">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Cluster</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Describes the identifying information, config, and status of a cluster
-of Google Compute Engine instances.</p>
+of Compute Engine instances.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.Cluster.project_id">
 <code class="descname">project_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Cluster.project_id" title="Permalink to this definition">#</a></dt>
@@ -141,19 +144,19 @@ labels can be associated with a cluster.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.Cluster.status">
 <code class="descname">status</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Cluster.status" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Cluster status.</p>
+<dd><p>Output only. Cluster status.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.Cluster.status_history">
 <code class="descname">status_history</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Cluster.status_history" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The previous cluster status.</p>
+<dd><p>Output only. The previous cluster status.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.Cluster.cluster_uuid">
 <code class="descname">cluster_uuid</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Cluster.cluster_uuid" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. A cluster UUID (Unique Universal Identifier).
+<dd><p>Output only. A cluster UUID (Unique Universal Identifier).
 Cloud Dataproc generates this value when it creates the
 cluster.</p>
 </dd></dl>
@@ -180,41 +183,41 @@ purposes only. It may be changed before final release.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterConfig.config_bucket">
 <code class="descname">config_bucket</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterConfig.config_bucket" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. A Google Cloud Storage staging bucket used for
-sharing generated SSH keys and config. If you do not specify a
-staging bucket, Cloud Dataproc will determine an appropriate
-Cloud Storage location (US, ASIA, or EU) for your cluster’s
-staging bucket according to the Google Compute Engine zone
-where your cluster is deployed, and then it will create and
-manage this project-level, per-location bucket for you.</p>
+<dd><p>Optional. A Cloud Storage staging bucket used for sharing
+generated SSH keys and config. If you do not specify a staging
+bucket, Cloud Dataproc will determine an appropriate Cloud
+Storage location (US, ASIA, or EU) for your cluster’s staging
+bucket according to the Google Compute Engine zone where your
+cluster is deployed, and then it will create and manage this
+project-level, per-location bucket for you.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterConfig.gce_cluster_config">
 <code class="descname">gce_cluster_config</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterConfig.gce_cluster_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The shared Google Compute Engine config settings for
-all instances in a cluster.</p>
+<dd><p>Required. The shared Compute Engine config settings for all
+instances in a cluster.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterConfig.master_config">
 <code class="descname">master_config</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterConfig.master_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The Google Compute Engine config settings for the
-master instance in a cluster.</p>
+<dd><p>Optional. The Compute Engine config settings for the master
+instance in a cluster.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterConfig.worker_config">
 <code class="descname">worker_config</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterConfig.worker_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The Google Compute Engine config settings for worker
+<dd><p>Optional. The Compute Engine config settings for worker
 instances in a cluster.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterConfig.secondary_worker_config">
 <code class="descname">secondary_worker_config</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterConfig.secondary_worker_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The Google Compute Engine config settings for
-additional worker instances in a cluster.</p>
+<dd><p>Optional. The Compute Engine config settings for additional
+worker instances in a cluster.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -235,6 +238,12 @@ Metadata-Flavor:Google http://metadata/computeMetadata/v1/inst
 ance/attributes/dataproc-role)     if [[ “${ROLE}” == ‘Master’
 ]]; then       … master specific actions …     else
 … worker specific actions …     fi</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterConfig.encryption_config">
+<code class="descname">encryption_config</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterConfig.encryption_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Encryption settings for the cluster.</p>
 </dd></dl>
 
 </dd></dl>
@@ -270,55 +279,79 @@ may be changed before final release.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ClusterOperation">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ClusterOperation</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperation" title="Permalink to this definition">#</a></dt>
+<dd><p>The cluster operation triggered by a workflow.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterOperation.operation_id">
+<code class="descname">operation_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperation.operation_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The id of the cluster operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterOperation.error">
+<code class="descname">error</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperation.error" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Error, if operation failed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterOperation.done">
+<code class="descname">done</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperation.done" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Indicates the operation is done.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ClusterOperationMetadata</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Metadata describing the operation.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.cluster_name">
 <code class="descname">cluster_name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.cluster_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Name of the cluster for the operation.</p>
+<dd><p>Output only. Name of the cluster for the operation.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.cluster_uuid">
 <code class="descname">cluster_uuid</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.cluster_uuid" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Cluster UUID for the operation.</p>
+<dd><p>Output only. Cluster UUID for the operation.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.status">
 <code class="descname">status</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.status" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Current operation status.</p>
+<dd><p>Output only. Current operation status.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.status_history">
 <code class="descname">status_history</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.status_history" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The previous operation status.</p>
+<dd><p>Output only. The previous operation status.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.operation_type">
 <code class="descname">operation_type</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.operation_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The operation type.</p>
+<dd><p>Output only. The operation type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.description">
 <code class="descname">description</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.description" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Short description of operation.</p>
+<dd><p>Output only. Short description of operation.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.labels">
 <code class="descname">labels</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Labels associated with the operation</p>
+<dd><p>Output only. Labels associated with the operation</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.warnings">
 <code class="descname">warnings</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.warnings" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Errors encountered during operation execution.</p>
+<dd><p>Output only. Errors encountered during operation execution.</p>
 </dd></dl>
 
 <dl class="class">
@@ -335,28 +368,55 @@ may be changed before final release.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationStatus.state">
 <code class="descname">state</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationStatus.state" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. A message containing the operation state.</p>
+<dd><p>Output only. A message containing the operation state.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationStatus.inner_state">
 <code class="descname">inner_state</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationStatus.inner_state" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. A message containing the detailed operation
+<dd><p>Output only. A message containing the detailed operation
 state.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationStatus.details">
 <code class="descname">details</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationStatus.details" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only.A message containing any operation metadata
+<dd><p>Output only. A message containing any operation metadata
 details.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationStatus.state_start_time">
 <code class="descname">state_start_time</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationStatus.state_start_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The time this state was entered.</p>
+<dd><p>Output only. The time this state was entered.</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ClusterSelector">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ClusterSelector</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterSelector" title="Permalink to this definition">#</a></dt>
+<dd><p>A selector that chooses target cluster for jobs based on metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterSelector.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterSelector.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The zone where workflow process executes. This
+parameter does not affect the selection of the cluster.  If
+unspecified, the zone of the first cluster matching the
+selector is used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterSelector.cluster_labels">
+<code class="descname">cluster_labels</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterSelector.cluster_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The cluster labels. Cluster must have all labels to
+match.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ClusterSelector.ClusterLabelsEntry">
+<em class="property">class </em><code class="descname">ClusterLabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterSelector.ClusterLabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -367,25 +427,25 @@ details.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterStatus.state">
 <code class="descname">state</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterStatus.state" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The cluster’s state.</p>
+<dd><p>Output only. The cluster’s state.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterStatus.detail">
 <code class="descname">detail</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterStatus.detail" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Optional details of cluster’s state.</p>
+<dd><p>Output only. Optional details of cluster’s state.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterStatus.state_start_time">
 <code class="descname">state_start_time</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterStatus.state_start_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Time when this state was entered.</p>
+<dd><p>Output only. Time when this state was entered.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ClusterStatus.substate">
 <code class="descname">substate</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterStatus.substate" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Additional state information that includes status
+<dd><p>Output only. Additional state information that includes status
 reported by the agent.</p>
 </dd></dl>
 
@@ -413,6 +473,41 @@ request.</p>
 <dt id="google.cloud.dataproc_v1.types.CreateClusterRequest.cluster">
 <code class="descname">cluster</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.CreateClusterRequest.cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The cluster to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.CreateClusterRequest.request_id">
+<code class="descname">request_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.CreateClusterRequest.request_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A unique id used to identify the request. If the
+server receives two [CreateClusterRequest][google.cloud.datapr
+oc.v1.CreateClusterRequest] requests with the same id, then
+the second request will be ignored and the first
+[google.longrunning.Operation][google.longrunning.Operation]
+created and stored in the backend is returned.  It is
+recommended to always set this value to a <a class="reference external" href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a>.  The id
+must contain only letters (a-z, A-Z), numbers (0-9),
+underscores (_), and hyphens (-). The maximum length is 40
+characters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">CreateWorkflowTemplateRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to create a workflow template.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The “resource name” of the region, as described in
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest.template">
+<code class="descname">template</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest.template" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The Dataproc workflow template to create.</p>
 </dd></dl>
 
 </dd></dl>
@@ -444,6 +539,29 @@ request.</p>
 <dt id="google.cloud.dataproc_v1.types.DeleteClusterRequest.cluster_name">
 <code class="descname">cluster_name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteClusterRequest.cluster_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The cluster name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.DeleteClusterRequest.cluster_uuid">
+<code class="descname">cluster_uuid</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteClusterRequest.cluster_uuid" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Specifying the <code class="docutils literal notranslate"><span class="pre">cluster_uuid</span></code> means the RPC should
+fail (with error NOT_FOUND) if cluster with specified UUID
+does not exist.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.DeleteClusterRequest.request_id">
+<code class="descname">request_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteClusterRequest.request_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A unique id used to identify the request. If the
+server receives two [DeleteClusterRequest][google.cloud.datapr
+oc.v1.DeleteClusterRequest] requests with the same id, then
+the second request will be ignored and the first
+[google.longrunning.Operation][google.longrunning.Operation]
+created and stored in the backend is returned.  It is
+recommended to always set this value to a <a class="reference external" href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a>.  The id
+must contain only letters (a-z, A-Z), numbers (0-9),
+underscores (_), and hyphens (-). The maximum length is 40
+characters.</p>
 </dd></dl>
 
 </dd></dl>
@@ -478,6 +596,31 @@ request.</p>
 <dt id="google.cloud.dataproc_v1.types.DeleteOperationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">DeleteWorkflowTemplateRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to delete a workflow template.</p>
+<p>Currently started workflows will remain running.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The “resource name” of the workflow template, as
+described in
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}/workflowTemplate</span>
+<span class="pre">s/{template_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The version of workflow template to delete. If
+specified, will only delete the template if the current server
+version matches specified version.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.DescriptorProto">
@@ -527,9 +670,9 @@ request.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.DiagnoseClusterResults.output_uri">
 <code class="descname">output_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DiagnoseClusterResults.output_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The Google Cloud Storage URI of the diagnostic
-output. The output report is a plain text file with a summary
-of collected diagnostics.</p>
+<dd><p>Output only. The Cloud Storage URI of the diagnostic output.
+The output report is a plain text file with a summary of
+collected diagnostics.</p>
 </dd></dl>
 
 </dd></dl>
@@ -538,6 +681,14 @@ of collected diagnostics.</p>
 <dt id="google.cloud.dataproc_v1.types.DiskConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">DiskConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DiskConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the config of disk options for a group of VM instances.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.DiskConfig.boot_disk_type">
+<code class="descname">boot_disk_type</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DiskConfig.boot_disk_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Type of the boot disk (default is “pd-standard”).
+Valid values: “pd-ssd” (Persistent Disk Solid State Drive) or
+“pd-standard” (Persistent Disk Hard Disk Drive).</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.DiskConfig.boot_disk_size_gb">
 <code class="descname">boot_disk_size_gb</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DiskConfig.boot_disk_size_gb" title="Permalink to this definition">#</a></dt>
@@ -566,6 +717,19 @@ binaries.</p>
 <dt id="google.cloud.dataproc_v1.types.Empty">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Empty" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.EncryptionConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">EncryptionConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.EncryptionConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Encryption settings for the cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.EncryptionConfig.gce_pd_kms_key_name">
+<code class="descname">gce_pd_kms_key_name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.EncryptionConfig.gce_pd_kms_key_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The Cloud KMS key name to use for PD disk encryption
+for all instances in the cluster.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.EnumDescriptorProto">
@@ -630,31 +794,30 @@ binaries.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">GceClusterConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Common config settings for resources of Google Compute Engine cluster
+<dd><p>Common config settings for resources of Compute Engine cluster
 instances, applicable to all instances in the cluster.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig.zone_uri">
 <code class="descname">zone_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.zone_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The zone where the Google Compute Engine cluster
-will be located. On a create request, it is required in the
-“global” region. If omitted in a non-global Cloud Dataproc
-region, the service will pick a zone in the corresponding
-Compute Engine region. On a get request, zone will always be
-present.  A full URL, partial URI, or short name are valid.
-Examples:  -  <code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/v1/projects</span>
-<span class="pre">/[project_id]/zones/[zone]</span></code> -
-<code class="docutils literal notranslate"><span class="pre">projects/[project_id]/zones/[zone]</span></code> -  <code class="docutils literal notranslate"><span class="pre">us-central1-f</span></code></p>
+<dd><p>Optional. The zone where the Compute Engine cluster will be
+located. On a create request, it is required in the “global”
+region. If omitted in a non-global Cloud Dataproc region, the
+service will pick a zone in the corresponding Compute Engine
+region. On a get request, zone will always be present.  A full
+URL, partial URI, or short name are valid. Examples:  -  <code class="docutils literal notranslate"><span class="pre">htt</span>
+<span class="pre">ps://www.googleapis.com/compute/v1/projects/[project_id]/zones</span>
+<span class="pre">/[zone]</span></code> -  <code class="docutils literal notranslate"><span class="pre">projects/[project_id]/zones/[zone]</span></code> -  <code class="docutils literal notranslate"><span class="pre">us-</span>
+<span class="pre">central1-f</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig.network_uri">
 <code class="descname">network_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.network_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The Google Compute Engine network to be used for
-machine communications. Cannot be specified with
-subnetwork_uri. If neither <code class="docutils literal notranslate"><span class="pre">network_uri</span></code> nor
-<code class="docutils literal notranslate"><span class="pre">subnetwork_uri</span></code> is specified, the “default” network of the
-project is used, if it exists. Cannot be a “Custom Subnet
-Network” (see <a class="reference external" href="/compute/docs/subnetworks">Using Subnetworks</a> for more information).  A full
+<dd><p>Optional. The Compute Engine network to be used for machine
+communications. Cannot be specified with subnetwork_uri. If
+neither <code class="docutils literal notranslate"><span class="pre">network_uri</span></code> nor <code class="docutils literal notranslate"><span class="pre">subnetwork_uri</span></code> is specified,
+the “default” network of the project is used, if it exists.
+Cannot be a “Custom Subnet Network” (see <a class="reference external" href="/compute/docs/subnetworks">Using Subnetworks</a> for more information).  A full
 URL, partial URI, or short name are valid. Examples:  -  <code class="docutils literal notranslate"><span class="pre">htt</span>
 <span class="pre">ps://www.googleapis.com/compute/v1/projects/[project_id]/regio</span>
 <span class="pre">ns/global/default</span></code> -
@@ -665,11 +828,11 @@ URL, partial URI, or short name are valid. Examples:  -  <code class="docutils l
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig.subnetwork_uri">
 <code class="descname">subnetwork_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.subnetwork_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The Google Compute Engine subnetwork to be used for
-machine communications. Cannot be specified with network_uri.
-A full URL, partial URI, or short name are valid. Examples:  -
-<code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/v1/projects/[project_id]/</span>
-<span class="pre">regions/us-east1/sub0</span></code> -  <code class="docutils literal notranslate"><span class="pre">projects/[project_id]/regions/us-</span>
+<dd><p>Optional. The Compute Engine subnetwork to be used for machine
+communications. Cannot be specified with network_uri.  A full
+URL, partial URI, or short name are valid. Examples:  -  <code class="docutils literal notranslate"><span class="pre">htt</span>
+<span class="pre">ps://www.googleapis.com/compute/v1/projects/[project_id]/regio</span>
+<span class="pre">ns/us-east1/sub0</span></code> -  <code class="docutils literal notranslate"><span class="pre">projects/[project_id]/regions/us-</span>
 <span class="pre">east1/sub0</span></code> -  <code class="docutils literal notranslate"><span class="pre">sub0</span></code></p>
 </dd></dl>
 
@@ -689,9 +852,9 @@ to be accessible without external IP addresses.</p>
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig.service_account">
 <code class="descname">service_account</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.service_account" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The service account of the instances. Defaults to
-the default Google Compute Engine service account. Custom
-service accounts need permissions equivalent to the folloing
-IAM roles:  -  roles/logging.logWriter -
+the default Compute Engine service account. Custom service
+accounts need permissions equivalent to the following IAM
+roles:  -  roles/logging.logWriter -
 roles/storage.objectAdmin  (see
 <a class="reference external" href="https://cloud.google.com/compute/docs/access/service">https://cloud.google.com/compute/docs/access/service</a>-
 accounts#custom_service_accounts for more information).
@@ -702,8 +865,8 @@ Example: <code class="docutils literal notranslate"><span class="pre">[account_i
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig.service_account_scopes">
 <code class="descname">service_account_scopes</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.service_account_scopes" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The URIs of service account scopes to be included in
-Google Compute Engine instances. The following base set of
-scopes is always included:  -
+Compute Engine instances. The following base set of scopes is
+always included:  -
 <a class="reference external" href="https://www.googleapis.com/auth/cloud.useraccounts.readonly">https://www.googleapis.com/auth/cloud.useraccounts.readonly</a> -
 <a class="reference external" href="https://www.googleapis.com/auth/devstorage.read_write">https://www.googleapis.com/auth/devstorage.read_write</a> -
 <a class="reference external" href="https://www.googleapis.com/auth/logging.write">https://www.googleapis.com/auth/logging.write</a>  If no scopes
@@ -717,15 +880,15 @@ are specified, the following defaults are also provided:  -
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig.tags">
 <code class="descname">tags</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.tags" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Compute Engine tags to add to all instances (see
-<a class="reference external" href="/compute/docs/label-or-tag-resources#tags">Tagging instances</a>).</p>
+<dd><p>The Compute Engine tags to add to all instances (see <a class="reference external" href="/compute/docs/label-or-tag-resources#tags">Tagging
+instances</a>).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig.metadata">
 <code class="descname">metadata</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.metadata" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Compute Engine metadata entries to add to all
-instances (see <a class="reference external" href="https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata">Project and instance metadata</a>).</p>
+<dd><p>The Compute Engine metadata entries to add to all instances
+(see <a class="reference external" href="https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata">Project and instance metadata</a>).</p>
 </dd></dl>
 
 <dl class="class">
@@ -801,6 +964,30 @@ request.</p>
 <dt id="google.cloud.dataproc_v1.types.GetOperationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">GetWorkflowTemplateRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to fetch a workflow template.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The “resource name” of the workflow template, as
+described in
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}/workflowTemplate</span>
+<span class="pre">s/{template_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The version of workflow template to retrieve. Only
+previously instatiated versions can be retrieved.  If
+unspecified, retrieves the current version.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.HadoopJob">
@@ -974,7 +1161,7 @@ Hive SerDes and UDFs.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.InstanceGroupConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">InstanceGroupConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstanceGroupConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The config settings for Google Compute Engine resources in an
+<dd><p>Optional. The config settings for Compute Engine resources in an
 instance group, such as a master or worker group.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.InstanceGroupConfig.num_instances">
@@ -986,30 +1173,32 @@ For master instance groups, must be set to 1.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.InstanceGroupConfig.instance_names">
 <code class="descname">instance_names</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstanceGroupConfig.instance_names" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The list of instance names. Cloud Dataproc derives
-the names from <code class="docutils literal notranslate"><span class="pre">cluster_name</span></code>, <code class="docutils literal notranslate"><span class="pre">num_instances</span></code>, and the
-instance group if not set by user (recommended practice is to
-let Cloud Dataproc derive the name).</p>
+<dd><p>Output only. The list of instance names. Cloud Dataproc
+derives the names from <code class="docutils literal notranslate"><span class="pre">cluster_name</span></code>, <code class="docutils literal notranslate"><span class="pre">num_instances</span></code>,
+and the instance group.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.InstanceGroupConfig.image_uri">
 <code class="descname">image_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstanceGroupConfig.image_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The Google Compute Engine image resource used for
-cluster instances. Inferred from
+<dd><p>Optional. The Compute Engine image resource used for cluster
+instances. It can be specified or may be inferred from
 <code class="docutils literal notranslate"><span class="pre">SoftwareConfig.image_version</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.InstanceGroupConfig.machine_type_uri">
 <code class="descname">machine_type_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstanceGroupConfig.machine_type_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The Google Compute Engine machine type used for
-cluster instances.  A full URL, partial URI, or short name are
-valid. Examples:  -  <code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/v1/p</span>
-<span class="pre">rojects/[project_id]/zones/us-</span>
-<span class="pre">east1-a/machineTypes/n1-standard-2</span></code> -
+<dd><p>Optional. The Compute Engine machine type used for cluster
+instances.  A full URL, partial URI, or short name are valid.
+Examples:  -  <code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/v1/projects</span>
+<span class="pre">/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2</span></code> -
 <code class="docutils literal notranslate"><span class="pre">projects/[project_id]/zones/us-</span>
-<span class="pre">east1-a/machineTypes/n1-standard-2</span></code> -  <code class="docutils literal notranslate"><span class="pre">n1-standard-2</span></code></p>
+<span class="pre">east1-a/machineTypes/n1-standard-2</span></code> -  <code class="docutils literal notranslate"><span class="pre">n1-standard-2</span></code>
+<strong>Auto Zone Exception</strong>: If you are using the Cloud Dataproc
+<a class="reference external" href="/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement">Auto Zone Placement</a> feature, you
+must use the short name of the machine type resource, for
+example, <code class="docutils literal notranslate"><span class="pre">n1-standard-2</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1028,18 +1217,102 @@ preemptible instances.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.InstanceGroupConfig.managed_group_config">
 <code class="descname">managed_group_config</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstanceGroupConfig.managed_group_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The config for Google Compute Engine Instance
-Group Manager that manages this group. This is only used for
+<dd><p>Output only. The config for Compute Engine Instance Group
+Manager that manages this group. This is only used for
 preemptible instance groups.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.InstanceGroupConfig.accelerators">
 <code class="descname">accelerators</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstanceGroupConfig.accelerators" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The Google Compute Engine accelerator configuration
-for these instances.  <strong>Beta Feature</strong>: This feature is still
+<dd><p>Optional. The Compute Engine accelerator configuration for
+these instances.  <strong>Beta Feature</strong>: This feature is still
 under development. It may be changed before final release.</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">InstantiateInlineWorkflowTemplateRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to instantiate an inline workflow template.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The “resource name” of the workflow template region,
+as described in
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest.template">
+<code class="descname">template</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest.template" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The workflow template to instantiate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest.request_id">
+<code class="descname">request_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest.request_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A tag that prevents multiple concurrent workflow
+instances with the same tag from running. This mitigates risk
+of concurrent instances started due to retries.  It is
+recommended to always set this value to a <a class="reference external" href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a>.  The tag
+must contain only letters (a-z, A-Z), numbers (0-9),
+underscores (_), and hyphens (-). The maximum length is 40
+characters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">InstantiateWorkflowTemplateRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to instantiate a workflow template.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The “resource name” of the workflow template, as
+described in
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}/workflowTemplate</span>
+<span class="pre">s/{template_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The version of workflow template to instantiate. If
+specified, the workflow will be instantiated only if the
+current version of the workflow template has the supplied
+version.  This option cannot be used to instantiate a previous
+version of workflow template.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.request_id">
+<code class="descname">request_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.request_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A tag that prevents multiple concurrent workflow
+instances with the same tag from running. This mitigates risk
+of concurrent instances started due to retries.  It is
+recommended to always set this value to a <a class="reference external" href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a>.  The tag
+must contain only letters (a-z, A-Z), numbers (0-9),
+underscores (_), and hyphens (-). The maximum length is 40
+characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.parameters">
+<code class="descname">parameters</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Map from parameter names to values that should be
+used for those parameters. Values may not exceed 100
+characters.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry">
+<em class="property">class </em><code class="descname">ParametersEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1109,7 +1382,7 @@ job.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.Job.status">
 <code class="descname">status</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.status" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The job status. Additional application-specific
+<dd><p>Output only. The job status. Additional application-specific
 status information may be contained in the type_job and
 yarn_applications fields.</p>
 </dd></dl>
@@ -1117,13 +1390,13 @@ yarn_applications fields.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.Job.status_history">
 <code class="descname">status_history</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.status_history" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The previous job status.</p>
+<dd><p>Output only. The previous job status.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.Job.yarn_applications">
 <code class="descname">yarn_applications</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.yarn_applications" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The collection of YARN applications spun up by
+<dd><p>Output only. The collection of YARN applications spun up by
 this job.  <strong>Beta</strong> Feature: This report is available for
 testing purposes only. It may be changed before final release.</p>
 </dd></dl>
@@ -1131,14 +1404,14 @@ testing purposes only. It may be changed before final release.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.Job.driver_output_resource_uri">
 <code class="descname">driver_output_resource_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.driver_output_resource_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. A URI pointing to the location of the stdout of
+<dd><p>Output only. A URI pointing to the location of the stdout of
 the job’s driver program.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.Job.driver_control_files_uri">
 <code class="descname">driver_control_files_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.driver_control_files_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. If present, the location of miscellaneous control
+<dd><p>Output only. If present, the location of miscellaneous control
 files which may be used as part of job setup and handling. If
 not present, control files may be placed in the same location
 as <code class="docutils literal notranslate"><span class="pre">driver_output_uri</span></code>.</p>
@@ -1159,6 +1432,14 @@ labels can be associated with a job.</p>
 <dt id="google.cloud.dataproc_v1.types.Job.scheduling">
 <code class="descname">scheduling</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.scheduling" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Job scheduling configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Job.job_uuid">
+<code class="descname">job_uuid</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.job_uuid" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. A UUID that uniquely identifies a job within the
+project over time. This is in contrast to a user-settable
+reference.job_id that may be reused over time.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1182,7 +1463,7 @@ submitted.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.JobPlacement.cluster_uuid">
 <code class="descname">cluster_uuid</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.JobPlacement.cluster_uuid" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. A cluster UUID generated by the Cloud Dataproc
+<dd><p>Output only. A cluster UUID generated by the Cloud Dataproc
 service when the job is submitted.</p>
 </dd></dl>
 
@@ -1216,8 +1497,6 @@ The maximum length is 100 characters.</p>
 <dt id="google.cloud.dataproc_v1.types.JobScheduling">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">JobScheduling</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.JobScheduling" title="Permalink to this definition">#</a></dt>
 <dd><p>Job scheduling options.</p>
-<p><strong>Beta Feature</strong>: These options are available for testing purposes only.
-They may be changed before final release.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.JobScheduling.max_failures_per_hour">
 <code class="descname">max_failures_per_hour</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.JobScheduling.max_failures_per_hour" title="Permalink to this definition">#</a></dt>
@@ -1237,26 +1516,26 @@ minute window.  Maximum value is 10.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.JobStatus.state">
 <code class="descname">state</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.JobStatus.state" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. A state message specifying the overall job state.</p>
+<dd><p>Output only. A state message specifying the overall job state.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.JobStatus.details">
 <code class="descname">details</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.JobStatus.details" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Optional job state details, such as an error
+<dd><p>Output only. Optional job state details, such as an error
 description if the state is ERROR.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.JobStatus.state_start_time">
 <code class="descname">state_start_time</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.JobStatus.state_start_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The time when this state was entered.</p>
+<dd><p>Output only. The time when this state was entered.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.JobStatus.substate">
 <code class="descname">substate</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.JobStatus.substate" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Additional state information, which includes
+<dd><p>Output only. Additional state information, which includes
 status reported by the agent.</p>
 </dd></dl>
 
@@ -1322,13 +1601,13 @@ labels.starred = *</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ListClustersResponse.clusters">
 <code class="descname">clusters</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListClustersResponse.clusters" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The clusters in the project.</p>
+<dd><p>Output only. The clusters in the project.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ListClustersResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListClustersResponse.next_page_token" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. This token is included in the response if there
+<dd><p>Output only. This token is included in the response if there
 are more results to fetch. To fetch additional results,
 provide this value as the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> in a subsequent
 <code class="docutils literal notranslate"><span class="pre">ListClustersRequest</span></code>.</p>
@@ -1406,7 +1685,7 @@ labels.starred = *</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ListJobsResponse.jobs">
 <code class="descname">jobs</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListJobsResponse.jobs" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. Jobs list.</p>
+<dd><p>Output only. Jobs list.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1431,6 +1710,55 @@ ListJobsRequest.</p>
 <dd></dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ListWorkflowTemplatesRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to list workflow templates in a project.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The “resource name” of the region, as described in
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The maximum number of results to return in each
+response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The page token, returned by a previous call, to
+request the next page of results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ListWorkflowTemplatesResponse</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>A response to a request to list workflow templates in a project.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse.templates">
+<code class="descname">templates</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse.templates" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. WorkflowTemplates list.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. This token is included in the response if there
+are more results to fetch. To fetch additional results,
+provide this value as the page_token in a subsequent
+ListWorkflowTemplatesRequest.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1.types.LoggingConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">LoggingConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.LoggingConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>The runtime logging config of the job.</p>
@@ -1450,20 +1778,56 @@ ListJobsRequest.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ManagedCluster">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ManagedCluster</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedCluster" title="Permalink to this definition">#</a></dt>
+<dd><p>Cluster that is managed by the workflow.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ManagedCluster.cluster_name">
+<code class="descname">cluster_name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedCluster.cluster_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The cluster name prefix. A unique cluster name will
+be formed by appending a random suffix.  The name must contain
+only lower-case letters (a-z), numbers (0-9), and hyphens (-).
+Must begin with a letter. Cannot begin or end with hyphen.
+Must consist of between 2 and 35 characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ManagedCluster.config">
+<code class="descname">config</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedCluster.config" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The cluster configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ManagedCluster.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedCluster.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The labels to associate with this cluster.  Label
+keys must be between 1 and 63 characters long. Label values must be between
+1 and 63 characters long. No more than 32
+labels can be associated with a given cluster.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ManagedCluster.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedCluster.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ManagedGroupConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ManagedGroupConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedGroupConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the resources used to actively manage an instance group.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ManagedGroupConfig.instance_template_name">
 <code class="descname">instance_template_name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedGroupConfig.instance_template_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The name of the Instance Template used for the
+<dd><p>Output only. The name of the Instance Template used for the
 Managed Instance Group.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.ManagedGroupConfig.instance_group_manager_name">
 <code class="descname">instance_group_manager_name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedGroupConfig.instance_group_manager_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Output-only. The name of the Instance Group Manager for this
+<dd><p>Output only. The name of the Instance Group Manager for this
 group.</p>
 </dd></dl>
 
@@ -1492,7 +1856,7 @@ period for executable completion.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.NodeInitializationAction.executable_file">
 <code class="descname">executable_file</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.NodeInitializationAction.executable_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. Google Cloud Storage URI of executable file.</p>
+<dd><p>Required. Cloud Storage URI of executable file.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1521,6 +1885,119 @@ not completed at end of the timeout period.</p>
 <dt id="google.cloud.dataproc_v1.types.Operation">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Operation" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">OrderedJob</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob" title="Permalink to this definition">#</a></dt>
+<dd><p>A job executed by the workflow.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.step_id">
+<code class="descname">step_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.step_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The step id. The id must be unique among all jobs
+within the template.  The step id is used as prefix for job
+id, as job <code class="docutils literal notranslate"><span class="pre">goog-dataproc-workflow-step-id</span></code> label, and in [p
+rerequisiteStepIds][google.cloud.dataproc.v1.OrderedJob.prereq
+uisite_step_ids] field from other steps.  The id must
+contain only letters (a-z, A-Z), numbers (0-9), underscores
+(_), and hyphens (-). Cannot begin or end with underscore or
+hyphen. Must consist of between 3 and 50 characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.job_type">
+<code class="descname">job_type</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.job_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The job definition.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.hadoop_job">
+<code class="descname">hadoop_job</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.hadoop_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Job is a Hadoop job.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.spark_job">
+<code class="descname">spark_job</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.spark_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Job is a Spark job.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.pyspark_job">
+<code class="descname">pyspark_job</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.pyspark_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Job is a Pyspark job.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.hive_job">
+<code class="descname">hive_job</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.hive_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Job is a Hive job.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.pig_job">
+<code class="descname">pig_job</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.pig_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Job is a Pig job.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.spark_sql_job">
+<code class="descname">spark_sql_job</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.spark_sql_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Job is a SparkSql job.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The labels to associate with this job.  Label keys
+must be between 1 and 63 characters long. Label values must be between
+1 and 63 characters long. No more than 32 labels can be
+associated with a given job.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.scheduling">
+<code class="descname">scheduling</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.scheduling" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Job scheduling configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.prerequisite_step_ids">
+<code class="descname">prerequisite_step_ids</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.prerequisite_step_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The optional list of prerequisite job step_ids. If
+not specified, the job will start at the beginning of
+workflow.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ParameterValidation">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ParameterValidation</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ParameterValidation" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for parameter validation.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ParameterValidation.validation_type">
+<code class="descname">validation_type</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ParameterValidation.validation_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The type of validation to be performed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ParameterValidation.regex">
+<code class="descname">regex</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ParameterValidation.regex" title="Permalink to this definition">#</a></dt>
+<dd><p>Validation based on regular expressions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ParameterValidation.values">
+<code class="descname">values</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ParameterValidation.values" title="Permalink to this definition">#</a></dt>
+<dd><p>Validation based on a list of allowed values.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.PigJob">
@@ -1690,6 +2167,20 @@ to specify a HiveJob:  ::      “hiveJob”: {       “queryList”:
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1.types.RegexValidation">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">RegexValidation</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.RegexValidation" title="Permalink to this definition">#</a></dt>
+<dd><p>Validation based on regular expressions.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.RegexValidation.regexes">
+<code class="descname">regexes</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.RegexValidation.regexes" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. RE2 regular expressions used to validate the
+parameter’s value. The value must match the regex in its
+entirety (substring matches are not sufficient).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ServiceDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -1707,9 +2198,10 @@ to specify a HiveJob:  ::      “hiveJob”: {       “queryList”:
 <dt id="google.cloud.dataproc_v1.types.SoftwareConfig.image_version">
 <code class="descname">image_version</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SoftwareConfig.image_version" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The version of software inside the cluster. It must
-match the regular expression <code class="docutils literal notranslate"><span class="pre">[0-9]+\.[0-9]+</span></code>. If
-unspecified, it defaults to the latest version (see <a class="reference external" href="/dataproc/versioning">Cloud
-Dataproc Versioning</a>).</p>
+be one of the supported <a class="reference external" href="/dataproc/docs/concepts/versioning/dataproc-versions#supported_cloud_dataproc_versions">Cloud Dataproc Versions</a>, such as “1.2”
+(including a subminor version, such as “1.2.29”), or the
+<a class="reference external" href="/dataproc/docs/concepts/versioning/dataproc-versions#other_versions">“preview” version</a>. If unspecified, it defaults to
+the latest version.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1922,6 +2414,93 @@ request.</p>
 <dd><p>Required. The job resource.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.SubmitJobRequest.request_id">
+<code class="descname">request_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SubmitJobRequest.request_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A unique id used to identify the request. If the
+server receives two
+[SubmitJobRequest][google.cloud.dataproc.v1.SubmitJobRequest]
+requests with the same id, then the second request will be
+ignored and the first [Job][google.cloud.dataproc.v1.Job]
+created and stored in the backend is returned.  It is
+recommended to always set this value to a <a class="reference external" href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a>.  The id
+must contain only letters (a-z, A-Z), numbers (0-9),
+underscores (_), and hyphens (-). The maximum length is 40
+characters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.TemplateParameter">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">TemplateParameter</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.TemplateParameter" title="Permalink to this definition">#</a></dt>
+<dd><p>A configurable parameter that replaces one or more fields in the
+template. Parameterizable fields: - Labels - File uris - Job properties
+- Job arguments - Script variables - Main class (in HadoopJob and
+SparkJob) - Zone (in ClusterSelector)</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.TemplateParameter.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.TemplateParameter.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Parameter name. The parameter name is used as the
+key, and paired with the parameter value, which are passed to
+the template when the template is instantiated. The name must
+contain only capital letters (A-Z), numbers (0-9), and
+underscores (_), and must not start with a number. The
+maximum length is 40 characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.TemplateParameter.fields">
+<code class="descname">fields</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.TemplateParameter.fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Paths to all fields that the parameter replaces. A
+field is allowed to appear in at most one parameter’s list of
+field paths.  A field path is similar in syntax to a
+[google.protobuf.FieldMask][google.protobuf.FieldMask]. For
+example, a field path that references the zone field of a
+workflow template’s cluster selector would be specified as
+<code class="docutils literal notranslate"><span class="pre">placement.clusterSelector.zone</span></code>.  Also, field paths can
+reference fields using the following syntax:  -  Values in
+maps can be referenced by key:     -  labels[‘key’]    -
+placement.clusterSelector.clusterLabels[‘key’]    -
+placement.managedCluster.labels[‘key’]    -
+placement.clusterSelector.clusterLabels[‘key’]    -
+jobs[‘step-id’].labels[‘key’]  -  Jobs in the jobs list can be
+referenced by step-id:     -  jobs[‘step-
+id’].hadoopJob.mainJarFileUri    -  jobs[‘step-
+id’].hiveJob.queryFileUri    -  jobs[‘step-
+id’].pySparkJob.mainPythonFileUri    -  jobs[‘step-
+id’].hadoopJob.jarFileUris[0]    -  jobs[‘step-
+id’].hadoopJob.archiveUris[0]    -  jobs[‘step-
+id’].hadoopJob.fileUris[0]    -  jobs[‘step-
+id’].pySparkJob.pythonFileUris[0]  -  Items in repeated fields
+can be referenced by a zero-based index:     -  jobs[‘step-
+id’].sparkJob.args[0]  -  Other examples:     -  jobs[‘step-
+id’].hadoopJob.properties[‘key’]    -  jobs[‘step-
+id’].hadoopJob.args[0]    -  jobs[‘step-
+id’].hiveJob.scriptVariables[‘key’]    -  jobs[‘step-
+id’].hadoopJob.mainJarFileUri    -
+placement.clusterSelector.zone  It may not be possible to
+parameterize maps and repeated fields in their entirety since
+only individual map values and individual items in repeated
+fields can be referenced. For example, the following field
+paths are invalid:  -  placement.clusterSelector.clusterLabels
+-  jobs[‘step-id’].sparkJob.args</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.TemplateParameter.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.TemplateParameter.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Brief description of the parameter. Must not exceed
+1024 characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.TemplateParameter.validation">
+<code class="descname">validation</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.TemplateParameter.validation" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Validation rules to be applied to this parameter’s
+value.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1970,6 +2549,19 @@ request.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.UpdateClusterRequest.graceful_decommission_timeout">
+<code class="descname">graceful_decommission_timeout</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.UpdateClusterRequest.graceful_decommission_timeout" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Timeout for graceful YARN decomissioning. Graceful
+decommissioning allows removing nodes from the cluster without
+interrupting jobs in progress. Timeout specifies how long to
+wait for jobs in progress to finish before forcefully removing
+nodes (and potentially interrupting jobs). Default timeout is
+0 (for forceful decommission), and the maximum allowed timeout
+is 1 day.  Only supported on Dataproc image versions 1.2 and
+higher.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.UpdateClusterRequest.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.UpdateClusterRequest.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. Specifies the path, relative to <code class="docutils literal notranslate"><span class="pre">Cluster</span></code>, of the
@@ -2001,6 +2593,21 @@ config.secondary_worker_config.num_instances  .. raw:: html
 &lt;/td&gt;  .. raw:: html     &lt;td&gt;  Resize secondary worker group
 .. raw:: html     &lt;/td&gt;  .. raw:: html     &lt;/tr&gt;  .. raw::
 html     &lt;/tbody&gt;  .. raw:: html     &lt;/table&gt;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.UpdateClusterRequest.request_id">
+<code class="descname">request_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.UpdateClusterRequest.request_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A unique id used to identify the request. If the
+server receives two [UpdateClusterRequest][google.cloud.datapr
+oc.v1.UpdateClusterRequest] requests with the same id, then
+the second request will be ignored and the first
+[google.longrunning.Operation][google.longrunning.Operation]
+created and stored in the backend is returned.  It is
+recommended to always set this value to a <a class="reference external" href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a>.  The id
+must contain only letters (a-z, A-Z), numbers (0-9),
+underscores (_), and hyphens (-). The maximum length is 40
+characters.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2043,6 +2650,275 @@ update. For example, to update the labels of a Job the
 update_mask parameter would be specified as labels, and the
 <code class="docutils literal notranslate"><span class="pre">PATCH</span></code> request body would specify the new value. Note:
 Currently, labels is the only field that can be updated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">UpdateWorkflowTemplateRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to update a workflow template.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest.template">
+<code class="descname">template</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest.template" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The updated workflow template.  The
+<code class="docutils literal notranslate"><span class="pre">template.version</span></code> field must match the current version.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ValueValidation">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ValueValidation</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ValueValidation" title="Permalink to this definition">#</a></dt>
+<dd><p>Validation based on a list of allowed values.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ValueValidation.values">
+<code class="descname">values</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ValueValidation.values" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. List of allowed values for the parameter.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.WorkflowGraph">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">WorkflowGraph</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowGraph" title="Permalink to this definition">#</a></dt>
+<dd><p>The workflow graph.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowGraph.nodes">
+<code class="descname">nodes</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowGraph.nodes" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The workflow nodes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">WorkflowMetadata</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>A Cloud Dataproc workflow template resource.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.template">
+<code class="descname">template</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.template" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The “resource name” of the template.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The version of template at the time of workflow
+instantiation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.create_cluster">
+<code class="descname">create_cluster</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.create_cluster" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The create cluster operation metadata.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.graph">
+<code class="descname">graph</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.graph" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The workflow graph.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.delete_cluster">
+<code class="descname">delete_cluster</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.delete_cluster" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The delete cluster operation metadata.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.state" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The workflow state.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.cluster_name">
+<code class="descname">cluster_name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.cluster_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The name of the target cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.parameters">
+<code class="descname">parameters</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>Map from parameter names to values that were used for those
+parameters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Workflow start time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Workflow end time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.cluster_uuid">
+<code class="descname">cluster_uuid</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.cluster_uuid" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The UUID of target cluster.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.ParametersEntry">
+<em class="property">class </em><code class="descname">ParametersEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.ParametersEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.WorkflowNode">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">WorkflowNode</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowNode" title="Permalink to this definition">#</a></dt>
+<dd><p>The workflow node.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowNode.step_id">
+<code class="descname">step_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowNode.step_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The name of the node.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowNode.prerequisite_step_ids">
+<code class="descname">prerequisite_step_ids</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowNode.prerequisite_step_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Node’s prerequisite nodes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowNode.job_id">
+<code class="descname">job_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowNode.job_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The job id; populated after the node enters
+RUNNING state.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowNode.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowNode.state" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The node state.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowNode.error">
+<code class="descname">error</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowNode.error" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The error detail.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">WorkflowTemplate</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate" title="Permalink to this definition">#</a></dt>
+<dd><p>A Cloud Dataproc workflow template resource.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.id">
+<code class="descname">id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The template id.  The id must contain only letters
+(a-z, A-Z), numbers (0-9), underscores (_), and hyphens (-).
+Cannot begin or end with underscore or hyphen. Must consist of
+between 3 and 50 characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The “resource name” of the template, as described
+in <a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}/workflowTemplate</span>
+<span class="pre">s/{template_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Used to perform a consistent read-modify-write.
+This field should be left blank for a
+<code class="docutils literal notranslate"><span class="pre">CreateWorkflowTemplate</span></code> request. It is required for an
+<code class="docutils literal notranslate"><span class="pre">UpdateWorkflowTemplate</span></code> request, and must match the current
+server version. A typical update template flow would fetch the
+current template with a <code class="docutils literal notranslate"><span class="pre">GetWorkflowTemplate</span></code> request, which
+will return the current template with the <code class="docutils literal notranslate"><span class="pre">version</span></code> field
+filled in with the current server version. The user updates
+other fields in the template, then returns it as part of the
+<code class="docutils literal notranslate"><span class="pre">UpdateWorkflowTemplate</span></code> request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time template was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.update_time">
+<code class="descname">update_time</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.update_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time template was last updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The labels to associate with this template. These
+labels will be propagated to all jobs and clusters created by
+the workflow instance.  Label <strong>keys</strong> must contain 1 to 63
+characters, and must conform to <a class="reference external" href="https://www.ietf.org/rfc/rfc1035.txt">RFC 1035</a>.  Label <strong>values</strong>
+may be empty, but, if present, must contain 1 to 63
+characters, and must conform to <a class="reference external" href="https://www.ietf.org/rfc/rfc1035.txt">RFC 1035</a>.  No more than 32
+labels can be associated with a template.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.placement">
+<code class="descname">placement</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.placement" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. WorkflowTemplate scheduling information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.jobs">
+<code class="descname">jobs</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.jobs" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The Directed Acyclic Graph of Jobs to submit.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.parameters">
+<code class="descname">parameters</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Template parameters whose values are substituted
+into the template. Values for parameters must be provided when
+the template is instantiated.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplatePlacement">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">WorkflowTemplatePlacement</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplatePlacement" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies workflow execution target.</p>
+<p>Either <code class="docutils literal notranslate"><span class="pre">managed_cluster</span></code> or <code class="docutils literal notranslate"><span class="pre">cluster_selector</span></code> is required.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplatePlacement.placement">
+<code class="descname">placement</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplatePlacement.placement" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Specifies where workflow executes; either on a
+managed cluster or an existing cluster chosen by labels.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplatePlacement.managed_cluster">
+<code class="descname">managed_cluster</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplatePlacement.managed_cluster" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A cluster that is managed by the workflow.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplatePlacement.cluster_selector">
+<code class="descname">cluster_selector</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplatePlacement.cluster_selector" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A selector that chooses target cluster for jobs
+based on metadata.  The selector is evaluated at the time each
+job is submitted.</p>
 </dd></dl>
 
 </dd></dl>
