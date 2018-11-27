@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.dataproc.v1beta2 WorkflowTemplateService API."""
+"""Accesses the google.cloud.dataproc.v1 WorkflowTemplateService API."""
 
 import functools
 import pkg_resources
@@ -30,16 +30,16 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
-from google.cloud.dataproc_v1beta2.gapic import enums
-from google.cloud.dataproc_v1beta2.gapic import workflow_template_service_client_config
-from google.cloud.dataproc_v1beta2.gapic.transports import workflow_template_service_grpc_transport
-from google.cloud.dataproc_v1beta2.proto import clusters_pb2
-from google.cloud.dataproc_v1beta2.proto import clusters_pb2_grpc
-from google.cloud.dataproc_v1beta2.proto import jobs_pb2
-from google.cloud.dataproc_v1beta2.proto import jobs_pb2_grpc
-from google.cloud.dataproc_v1beta2.proto import operations_pb2 as proto_operations_pb2
-from google.cloud.dataproc_v1beta2.proto import workflow_templates_pb2
-from google.cloud.dataproc_v1beta2.proto import workflow_templates_pb2_grpc
+from google.cloud.dataproc_v1.gapic import enums
+from google.cloud.dataproc_v1.gapic import workflow_template_service_client_config
+from google.cloud.dataproc_v1.gapic.transports import workflow_template_service_grpc_transport
+from google.cloud.dataproc_v1.proto import clusters_pb2
+from google.cloud.dataproc_v1.proto import clusters_pb2_grpc
+from google.cloud.dataproc_v1.proto import jobs_pb2
+from google.cloud.dataproc_v1.proto import jobs_pb2_grpc
+from google.cloud.dataproc_v1.proto import operations_pb2 as proto_operations_pb2
+from google.cloud.dataproc_v1.proto import workflow_templates_pb2
+from google.cloud.dataproc_v1.proto import workflow_templates_pb2_grpc
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
@@ -60,7 +60,7 @@ class WorkflowTemplateServiceClient(object):
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.dataproc.v1beta2.WorkflowTemplateService'
+    _INTERFACE_NAME = 'google.cloud.dataproc.v1.WorkflowTemplateService'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -209,9 +209,9 @@ class WorkflowTemplateServiceClient(object):
         Creates new workflow template.
 
         Example:
-            >>> from google.cloud import dataproc_v1beta2
+            >>> from google.cloud import dataproc_v1
             >>>
-            >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            >>> client = dataproc_v1.WorkflowTemplateServiceClient()
             >>>
             >>> parent = client.region_path('[PROJECT]', '[REGION]')
             >>>
@@ -224,10 +224,10 @@ class WorkflowTemplateServiceClient(object):
             parent (str): Required. The "resource name" of the region, as described in
                 https://cloud.google.com/apis/design/resource\_names of the form
                 ``projects/{project_id}/regions/{region}``
-            template (Union[dict, ~google.cloud.dataproc_v1beta2.types.WorkflowTemplate]): Required. The Dataproc workflow template to create.
+            template (Union[dict, ~google.cloud.dataproc_v1.types.WorkflowTemplate]): Required. The Dataproc workflow template to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate`
+                message :class:`~google.cloud.dataproc_v1.types.WorkflowTemplate`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -238,7 +238,7 @@ class WorkflowTemplateServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate` instance.
+            A :class:`~google.cloud.dataproc_v1.types.WorkflowTemplate` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -279,9 +279,9 @@ class WorkflowTemplateServiceClient(object):
         version parameter.
 
         Example:
-            >>> from google.cloud import dataproc_v1beta2
+            >>> from google.cloud import dataproc_v1
             >>>
-            >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            >>> client = dataproc_v1.WorkflowTemplateServiceClient()
             >>>
             >>> name = client.workflow_template_path('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]')
             >>>
@@ -305,7 +305,7 @@ class WorkflowTemplateServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate` instance.
+            A :class:`~google.cloud.dataproc_v1.types.WorkflowTemplate` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -337,7 +337,6 @@ class WorkflowTemplateServiceClient(object):
             self,
             name,
             version=None,
-            instance_id=None,
             request_id=None,
             parameters=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -359,9 +358,9 @@ class WorkflowTemplateServiceClient(object):
         On successful completion, ``Operation.response`` will be ``Empty``.
 
         Example:
-            >>> from google.cloud import dataproc_v1beta2
+            >>> from google.cloud import dataproc_v1
             >>>
-            >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            >>> client = dataproc_v1.WorkflowTemplateServiceClient()
             >>>
             >>> name = client.workflow_template_path('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]')
             >>>
@@ -386,7 +385,6 @@ class WorkflowTemplateServiceClient(object):
 
                 This option cannot be used to instantiate a previous version of
                 workflow template.
-            instance_id (str): Deprecated. Please use ``request_id`` field instead.
             request_id (str): Optional. A tag that prevents multiple concurrent workflow instances
                 with the same tag from running. This mitigates risk of concurrent
                 instances started due to retries.
@@ -408,7 +406,7 @@ class WorkflowTemplateServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1beta2.types._OperationFuture` instance.
+            A :class:`~google.cloud.dataproc_v1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -432,7 +430,6 @@ class WorkflowTemplateServiceClient(object):
         request = workflow_templates_pb2.InstantiateWorkflowTemplateRequest(
             name=name,
             version=version,
-            instance_id=instance_id,
             request_id=request_id,
             parameters=parameters,
         )
@@ -449,7 +446,6 @@ class WorkflowTemplateServiceClient(object):
             self,
             parent,
             template,
-            instance_id=None,
             request_id=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -474,9 +470,9 @@ class WorkflowTemplateServiceClient(object):
         On successful completion, ``Operation.response`` will be ``Empty``.
 
         Example:
-            >>> from google.cloud import dataproc_v1beta2
+            >>> from google.cloud import dataproc_v1
             >>>
-            >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            >>> client = dataproc_v1.WorkflowTemplateServiceClient()
             >>>
             >>> parent = client.region_path('[PROJECT]', '[REGION]')
             >>>
@@ -498,11 +494,10 @@ class WorkflowTemplateServiceClient(object):
             parent (str): Required. The "resource name" of the workflow template region, as
                 described in https://cloud.google.com/apis/design/resource\_names of the
                 form ``projects/{project_id}/regions/{region}``
-            template (Union[dict, ~google.cloud.dataproc_v1beta2.types.WorkflowTemplate]): Required. The workflow template to instantiate.
+            template (Union[dict, ~google.cloud.dataproc_v1.types.WorkflowTemplate]): Required. The workflow template to instantiate.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate`
-            instance_id (str): Deprecated. Please use ``request_id`` field instead.
+                message :class:`~google.cloud.dataproc_v1.types.WorkflowTemplate`
             request_id (str): Optional. A tag that prevents multiple concurrent workflow instances
                 with the same tag from running. This mitigates risk of concurrent
                 instances started due to retries.
@@ -522,7 +517,7 @@ class WorkflowTemplateServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1beta2.types._OperationFuture` instance.
+            A :class:`~google.cloud.dataproc_v1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -546,7 +541,6 @@ class WorkflowTemplateServiceClient(object):
         request = workflow_templates_pb2.InstantiateInlineWorkflowTemplateRequest(
             parent=parent,
             template=template,
-            instance_id=instance_id,
             request_id=request_id,
         )
         operation = self._inner_api_calls[
@@ -570,9 +564,9 @@ class WorkflowTemplateServiceClient(object):
         must contain version that matches the current server version.
 
         Example:
-            >>> from google.cloud import dataproc_v1beta2
+            >>> from google.cloud import dataproc_v1
             >>>
-            >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            >>> client = dataproc_v1.WorkflowTemplateServiceClient()
             >>>
             >>> # TODO: Initialize `template`:
             >>> template = {}
@@ -580,12 +574,12 @@ class WorkflowTemplateServiceClient(object):
             >>> response = client.update_workflow_template(template)
 
         Args:
-            template (Union[dict, ~google.cloud.dataproc_v1beta2.types.WorkflowTemplate]): Required. The updated workflow template.
+            template (Union[dict, ~google.cloud.dataproc_v1.types.WorkflowTemplate]): Required. The updated workflow template.
 
                 The ``template.version`` field must match the current version.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate`
+                message :class:`~google.cloud.dataproc_v1.types.WorkflowTemplate`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -596,7 +590,7 @@ class WorkflowTemplateServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate` instance.
+            A :class:`~google.cloud.dataproc_v1.types.WorkflowTemplate` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -633,9 +627,9 @@ class WorkflowTemplateServiceClient(object):
         Lists workflows that match the specified filter in the request.
 
         Example:
-            >>> from google.cloud import dataproc_v1beta2
+            >>> from google.cloud import dataproc_v1
             >>>
-            >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            >>> client = dataproc_v1.WorkflowTemplateServiceClient()
             >>>
             >>> parent = client.region_path('[PROJECT]', '[REGION]')
             >>>
@@ -673,7 +667,7 @@ class WorkflowTemplateServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dataproc_v1beta2.types.WorkflowTemplate` instances.
+            is an iterable of :class:`~google.cloud.dataproc_v1.types.WorkflowTemplate` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -725,9 +719,9 @@ class WorkflowTemplateServiceClient(object):
         Deletes a workflow template. It does not cancel in-progress workflows.
 
         Example:
-            >>> from google.cloud import dataproc_v1beta2
+            >>> from google.cloud import dataproc_v1
             >>>
-            >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            >>> client = dataproc_v1.WorkflowTemplateServiceClient()
             >>>
             >>> name = client.workflow_template_path('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]')
             >>>
