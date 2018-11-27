@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.39.0
+
+11-27-2018 13:32 PST
+
+### Implementation Changes
+- Pick up fixes to GAPIC generator. ([#6503](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6503))
+- Override client classmethod factories inherited from GAPIC. ([#6453](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6453))
+- Fix imports for hand-written client docstring examples. ([#6345](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6345))
+- Fix path for patch of 'bidi' elements. ([#6243](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6243))
+- Move bidi to api-core. ([#6211](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6211))
+- Re-generate library using pubsub/synth.py ([#6059](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6059))
+- Re-generate library using pubsub/synth.py ([#5978](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5978))
+
+### New Features
+- Add 'expiration_policy' to subscriber client. ([#6223](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6223))
+
+### Dependencies
+- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6391))
+- Update IAM version in dependencies. ([#6362](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6362))
+- Bump minimum 'api_core' version to '1.4.1'. ([#6134](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6134))
+
+### Documentation
+- Fix client_info bug, update docstrings. ([#6418](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6418))
+- Fix docstring reference to wrong future class. ([#6382](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6382))
+- Normalize use of support level badges. ([#6159](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6159))
+- Update subscriber example in README to current patterns. ([#6194](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6194))
+- Prep pubsub docs for repo split. ([#6001](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6001))
+
+### Internal / Testing Changes
+- Fix error from new flake8 version. ([#6346](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6346))
+- Use new Nox. ([#6175](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175))
+
 ## 0.38.0
 
 ### Implementation Changes
