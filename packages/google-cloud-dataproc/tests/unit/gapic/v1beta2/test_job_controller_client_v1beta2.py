@@ -66,11 +66,15 @@ class CustomException(Exception):
 class TestJobControllerClient(object):
     def test_submit_job(self):
         # Setup Expected Response
+        submitted_by = 'submittedBy-2047729125'
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
+            'submitted_by': submitted_by,
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
@@ -113,11 +117,15 @@ class TestJobControllerClient(object):
 
     def test_get_job(self):
         # Setup Expected Response
+        submitted_by = 'submittedBy-2047729125'
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
+            'submitted_by': submitted_by,
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
@@ -206,11 +214,15 @@ class TestJobControllerClient(object):
 
     def test_update_job(self):
         # Setup Expected Response
+        submitted_by = 'submittedBy-2047729125'
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
+            'submitted_by': submitted_by,
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
@@ -262,11 +274,15 @@ class TestJobControllerClient(object):
 
     def test_cancel_job(self):
         # Setup Expected Response
+        submitted_by = 'submittedBy-2047729125'
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
+            'submitted_by': submitted_by,
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 

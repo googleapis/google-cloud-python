@@ -7,7 +7,7 @@ from google.longrunning import operations_pb2 as google_dot_longrunning_dot_oper
 
 class ClusterControllerStub(object):
   """The ClusterControllerService provides methods to manage clusters
-  of Google Compute Engine instances.
+  of Compute Engine instances.
   """
 
   def __init__(self, channel):
@@ -50,7 +50,7 @@ class ClusterControllerStub(object):
 
 class ClusterControllerServicer(object):
   """The ClusterControllerService provides methods to manage clusters
-  of Google Compute Engine instances.
+  of Compute Engine instances.
   """
 
   def CreateCluster(self, request, context):

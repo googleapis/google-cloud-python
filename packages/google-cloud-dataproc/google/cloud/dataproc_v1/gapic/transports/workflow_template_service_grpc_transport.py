@@ -17,12 +17,12 @@
 import google.api_core.grpc_helpers
 import google.api_core.operations_v1
 
-from google.cloud.dataproc_v1beta2.proto import workflow_templates_pb2_grpc
+from google.cloud.dataproc_v1.proto import workflow_templates_pb2_grpc
 
 
 class WorkflowTemplateServiceGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.cloud.dataproc.v1beta2 WorkflowTemplateService API.
+    google.cloud.dataproc.v1 WorkflowTemplateService API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced
