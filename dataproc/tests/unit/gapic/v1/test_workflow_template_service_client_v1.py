@@ -20,8 +20,8 @@ import pytest
 
 from google.rpc import status_pb2
 
-from google.cloud import dataproc_v1beta2
-from google.cloud.dataproc_v1beta2.proto import workflow_templates_pb2
+from google.cloud import dataproc_v1
+from google.cloud.dataproc_v1.proto import workflow_templates_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
@@ -80,7 +80,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup Request
         parent = client.region_path('[PROJECT]', '[REGION]')
@@ -101,7 +101,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup request
         parent = client.region_path('[PROJECT]', '[REGION]')
@@ -124,7 +124,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup Request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',
@@ -145,7 +145,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',
@@ -167,7 +167,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup Request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',
@@ -196,7 +196,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup Request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',
@@ -220,7 +220,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup Request
         parent = client.region_path('[PROJECT]', '[REGION]')
@@ -251,7 +251,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup Request
         parent = client.region_path('[PROJECT]', '[REGION]')
@@ -276,7 +276,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup Request
         template = {}
@@ -296,7 +296,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup request
         template = {}
@@ -321,7 +321,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup Request
         parent = client.region_path('[PROJECT]', '[REGION]')
@@ -343,7 +343,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup request
         parent = client.region_path('[PROJECT]', '[REGION]')
@@ -357,7 +357,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup Request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',
@@ -377,7 +377,7 @@ class TestWorkflowTemplateServiceClient(object):
         patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
-            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+            client = dataproc_v1.WorkflowTemplateServiceClient()
 
         # Setup request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',

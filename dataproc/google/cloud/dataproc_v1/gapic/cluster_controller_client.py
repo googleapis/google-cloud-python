@@ -36,6 +36,7 @@ from google.cloud.dataproc_v1.proto import clusters_pb2
 from google.cloud.dataproc_v1.proto import clusters_pb2_grpc
 from google.cloud.dataproc_v1.proto import operations_pb2 as proto_operations_pb2
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
+from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -46,7 +47,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 class ClusterControllerClient(object):
     """
     The ClusterControllerService provides methods to manage clusters
-    of Google Compute Engine instances.
+    of Compute Engine instances.
     """
 
     SERVICE_ADDRESS = 'dataproc.googleapis.com:443'
@@ -177,6 +178,7 @@ class ClusterControllerClient(object):
                        project_id,
                        region,
                        cluster,
+                       request_id=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
@@ -216,6 +218,17 @@ class ClusterControllerClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1.types.Cluster`
+            request_id (str): Optional. A unique id used to identify the request. If the server
+                receives two ``CreateClusterRequest`` requests with the same id, then
+                the second request will be ignored and the first
+                ``google.longrunning.Operation`` created and stored in the backend is
+                returned.
+
+                It is recommended to always set this value to a
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
+
+                The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+                (\_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -250,6 +263,7 @@ class ClusterControllerClient(object):
             project_id=project_id,
             region=region,
             cluster=cluster,
+            request_id=request_id,
         )
         operation = self._inner_api_calls['create_cluster'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -266,6 +280,8 @@ class ClusterControllerClient(object):
                        cluster_name,
                        cluster,
                        update_mask,
+                       graceful_decommission_timeout=None,
+                       request_id=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
@@ -343,138 +359,40 @@ class ClusterControllerClient(object):
                        }
                      }
 
-                Note: Currently, only the following fields can be updated:
-
-                .. raw:: html
-
-                   <table>
-
-                .. raw:: html
-
-                   <tbody>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                Mask
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Purpose
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                labels
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Update labels
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                config.worker\_config.num\_instances
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Resize primary worker group
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                config.secondary\_worker\_config.num\_instances
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Resize secondary worker group
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   </tbody>
-
-                .. raw:: html
-
-                   </table>
+                .. note::
+
+                    Currently, only the following fields can be updated:
+
+                    * ``labels``: Update labels
+                    * ``config.worker_config.num_instances``: Resize primary
+                      worker group
+                    * ``config.secondary_worker_config.num_instances``: Resize
+                      secondary worker group
+
+                    If a dict is provided, it must be of the same form as the protobuf
+                    message :class:`~google.cloud.dataproc_v1.types.FieldMask`
+            graceful_decommission_timeout (Union[dict, ~google.cloud.dataproc_v1.types.Duration]): Optional. Timeout for graceful YARN decomissioning. Graceful
+                decommissioning allows removing nodes from the cluster without
+                interrupting jobs in progress. Timeout specifies how long to wait for jobs
+                in progress to finish before forcefully removing nodes (and potentially
+                interrupting jobs). Default timeout is 0 (for forceful decommission), and
+                the maximum allowed timeout is 1 day.
+
+                Only supported on Dataproc image versions 1.2 and higher.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1.types.FieldMask`
+                message :class:`~google.cloud.dataproc_v1.types.Duration`
+            request_id (str): Optional. A unique id used to identify the request. If the server
+                receives two ``UpdateClusterRequest`` requests with the same id, then
+                the second request will be ignored and the first
+                ``google.longrunning.Operation`` created and stored in the backend is
+                returned.
+
+                It is recommended to always set this value to a
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
+
+                The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+                (\_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -511,6 +429,8 @@ class ClusterControllerClient(object):
             cluster_name=cluster_name,
             cluster=cluster,
             update_mask=update_mask,
+            graceful_decommission_timeout=graceful_decommission_timeout,
+            request_id=request_id,
         )
         operation = self._inner_api_calls['update_cluster'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -525,6 +445,8 @@ class ClusterControllerClient(object):
                        project_id,
                        region,
                        cluster_name,
+                       cluster_uuid=None,
+                       request_id=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
@@ -561,6 +483,19 @@ class ClusterControllerClient(object):
                 belongs to.
             region (str): Required. The Cloud Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
+            cluster_uuid (str): Optional. Specifying the ``cluster_uuid`` means the RPC should fail
+                (with error NOT\_FOUND) if cluster with specified UUID does not exist.
+            request_id (str): Optional. A unique id used to identify the request. If the server
+                receives two ``DeleteClusterRequest`` requests with the same id, then
+                the second request will be ignored and the first
+                ``google.longrunning.Operation`` created and stored in the backend is
+                returned.
+
+                It is recommended to always set this value to a
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
+
+                The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+                (\_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -595,6 +530,8 @@ class ClusterControllerClient(object):
             project_id=project_id,
             region=region,
             cluster_name=cluster_name,
+            cluster_uuid=cluster_uuid,
+            request_id=request_id,
         )
         operation = self._inner_api_calls['delete_cluster'](
             request, retry=retry, timeout=timeout, metadata=metadata)
