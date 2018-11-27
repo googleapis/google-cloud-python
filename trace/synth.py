@@ -48,5 +48,5 @@ s.replace("google/**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=56, cov_level=57)
+templated_files = common.py_library(unit_cov_level=41, cov_level=41)
 s.move(templated_files)

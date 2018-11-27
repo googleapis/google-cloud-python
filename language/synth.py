@@ -41,5 +41,5 @@ for version in versions:
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=87, cov_level=59)
+templated_files = common.py_library(unit_cov_level=87, cov_level=87)
 s.move(templated_files)

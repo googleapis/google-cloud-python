@@ -255,5 +255,5 @@ s.replace("google/cloud/dlp_v2/gapic/enums.py", ".*:raw-latex:.*\n", "")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=80, cov_level=62)
+templated_files = common.py_library(unit_cov_level=80, cov_level=80)
 s.move(templated_files)

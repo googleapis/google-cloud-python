@@ -84,5 +84,5 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=94, cov_level=95)
+templated_files = common.py_library(unit_cov_level=97, cov_level=97)
 s.move(templated_files)
