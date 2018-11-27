@@ -23,6 +23,7 @@ from __future__ import absolute_import
 
 import google.api_core.gapic_v1.method
 
+from google.cloud.bigquery_storage_v1beta1 import reader
 from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client  # noqa
 
 
@@ -60,8 +61,20 @@ class BigQueryStorageClient(big_query_storage_client.BigQueryStorageClient):
             >>>
             >>> client = bigquery_storage_v1beta1.BigQueryStorageClient()
             >>>
-            >>> # TODO: Initialize ``read_position``:
-            >>> read_position = {}
+            >>> # TODO: Initialize ``table_reference``:
+            >>> table_reference = {
+            ...     'project_id': 'your-data-project-id',
+            ...     'dataset_id': 'your_dataset_id',
+            ...     'table_id': 'your_table_id',
+            ... }
+            >>>
+            >>> # TODO: Initialize `parent`:
+            >>> parent = 'projects/your-billing-project-id'
+            >>>
+            >>> session = client.create_read_session(table_reference, parent)
+            >>> read_position = bigquery_storage_v1beta1.types.StreamPosition(
+            ...     stream=session.streams[0],  # TODO: Read the other streams.
+            ... )
             >>>
             >>> for element in client.read_rows(read_position):
             ...     # process element
@@ -88,7 +101,9 @@ class BigQueryStorageClient(big_query_storage_client.BigQueryStorageClient):
                 that is provided to the method.
 
         Returns:
-            Iterable[~google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse].
+            ~google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream:
+                An iterable of
+                :class:`~google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse`.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -97,12 +112,20 @@ class BigQueryStorageClient(big_query_storage_client.BigQueryStorageClient):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        # TODO: Accept a stream and start at offset 0.
-        # TODO: Return a custom iterator which reconnects to the stream
-        #       automatically. See: Spanner's StreamedResultSet.
-        return super(BigQueryStorageClient, self).read_rows(
+        gapic_client = super(BigQueryStorageClient, self)
+        stream = gapic_client.read_rows(
             read_position,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+        return reader.ReadRowsStream(
+            stream,
+            gapic_client,
+            read_position,
+            {
+                'retry': retry,
+                'timeout': timeout,
+                'metadata': metadata,
+            },
         )

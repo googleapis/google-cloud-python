@@ -1,8 +1,16 @@
 [run]
-omit =
-    *_pb2_grpc.py
+branch = True
 
 [report]
+fail_under = 100
+show_missing = True
 exclude_lines =
-    pragma: no cover
-    def from_service_account_file
+    # Re-enable the standard pragma
+    pragma: NO COVER
+    # Ignore debug-only repr
+    def __repr__
+    # Ignore abstract methods
+    raise NotImplementedError
+omit =
+  */gapic/*.py
+  */proto/*.py

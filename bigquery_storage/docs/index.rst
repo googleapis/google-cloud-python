@@ -6,4 +6,5 @@ API Reference
     :maxdepth: 2
 
     gapic/v1beta1/api
+    gapic/v1beta1/reader
     gapic/v1beta1/types

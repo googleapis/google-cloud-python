@@ -27,6 +27,10 @@ dependencies = [
     'google-api-core[grpc] >= 1.5.1, < 2.0.0dev',
     'enum34; python_version < "3.4"',
 ]
+extras = {
+    'pandas': 'pandas>=0.17.1',
+    'fastavro': 'fastavro>=0.21.2',
+}
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -70,6 +74,7 @@ setuptools.setup(
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
+    extras_require=extras,
     include_package_data=True,
     zip_safe=False,
 )

@@ -41,20 +41,51 @@ def table_reference():
     return table_ref
 
 
-def test_read_rows(client, project_id, table_reference):
+@pytest.fixture()
+def small_table_reference():
+    table_ref = bigquery_storage_v1beta1.types.TableReference()
+    table_ref.project_id = 'bigquery-public-data'
+    table_ref.dataset_id = 'utility_us'
+    table_ref.table_id = 'country_code_iso'
+    return table_ref
+
+
+def test_read_rows_full_table(client, project_id, small_table_reference):
     session = client.create_read_session(
-        table_reference,
+        small_table_reference,
         'projects/{}'.format(project_id),
         requested_streams=1,
     )
 
     stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
         stream=session.streams[0])
-    rowstream = client.read_rows(stream_pos)
-    page = rowstream.next()
+    blocks = list(client.read_rows(stream_pos))
 
-    assert page.status.estimated_row_count > 0
-    assert len(page.avro_rows.serialized_binary_rows) > 0
+    assert len(blocks) > 0
+    block = blocks[0]
+    assert block.status.estimated_row_count > 0
+    assert len(block.avro_rows.serialized_binary_rows) > 0
+
+
+def test_read_rows_to_dataframe(client, project_id):
+    table_ref = bigquery_storage_v1beta1.types.TableReference()
+    table_ref.project_id = 'bigquery-public-data'
+    table_ref.dataset_id = 'new_york_citibike'
+    table_ref.table_id = 'citibike_stations'
+    session = client.create_read_session(
+        table_ref,
+        'projects/{}'.format(project_id),
+        requested_streams=1,
+    )
+    stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
+        stream=session.streams[0])
+
+    frame = client.read_rows(stream_pos).to_dataframe(session)
+
+    # Station ID is a required field (no nulls), so the datatype should always
+    # be integer.
+    assert frame.station_id.dtype.name == 'int64'
+    assert frame['name'].str.startswith('Central Park').any()
 
 
 def test_split_read_stream(client, project_id, table_reference):

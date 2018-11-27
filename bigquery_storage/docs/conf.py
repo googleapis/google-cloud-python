@@ -296,6 +296,8 @@ texinfo_documents = [
 intersphinx_mapping = {
     'python': ('http://python.readthedocs.org/en/latest/', None),
     'gax': ('https://gax-python.readthedocs.org/en/latest/', None),
+    'fastavro': ('https://fastavro.readthedocs.io/en/stable/', None),
+    'pandas': ('https://pandas.pydata.org/pandas-docs/stable/', None),
 }
 
 # Napoleon settings
