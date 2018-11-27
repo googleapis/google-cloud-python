@@ -182,6 +182,8 @@ from google.cloud.ndb.model import transactional
 from google.cloud.ndb.model import transactional_async
 from google.cloud.ndb.model import transactional_tasklet
 from google.cloud.ndb.model import UnprojectedPropertyError
+from google.cloud.ndb.model import User
+from google.cloud.ndb.model import UserNotFoundError
 from google.cloud.ndb.model import UserProperty
 from google.cloud.ndb.query import ConjunctionNode
 from google.cloud.ndb.query import AND

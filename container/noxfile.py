@@ -54,7 +54,7 @@ def unit(session):
 @nox.session(python=["2.7", "3.7"])
 def system(session):
     """Run the system test suite."""
-    system_test_path = os.path.join("tests", "system.py")
+    system_test_path = os.path.join("tests", "system")
     # Sanity check: Only run tests if the environment variable is set.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
         session.skip("Credentials must be set via environment variable")
