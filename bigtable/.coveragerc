@@ -14,4 +14,4 @@ exclude_lines =
 omit =
   */gapic/*.py
   */proto/*.py
-  */_generated/°.py
+

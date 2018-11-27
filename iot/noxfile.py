@@ -20,7 +20,51 @@ import os
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core"),)
+LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
+
+@nox.session(python="3.7")
+def blacken(session):
+    """Run black.
+
+    Format code to uniform standard.
+    """
+    session.install("black")
+    session.run(
+        "black",
+        "google",
+        "tests",
+        "docs",
+        "--exclude",
+        ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py",
+    )
+
+
+@nox.session(python="3.7")
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install("flake8", "black", *LOCAL_DEPS)
+    session.install(".")
+    session.run(
+        "black",
+        "--check",
+        "google",
+        "tests",
+        "docs",
+        "--exclude",
+        ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py",
+    )
+    session.run("flake8", "google", "tests")
+
+
+@nox.session(python="3.7")
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.install("docutils", "pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
 def default(session):
@@ -34,7 +78,7 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
-        "--cov=google.cloud.iot",
+        "--cov=google.cloud",
         "--cov=tests.unit",
         "--cov-append",
         "--cov-config=.coveragerc",
@@ -82,51 +126,6 @@ def system(session):
         session.run("py.test", "--quiet", system_test_path, *session.posargs)
     if system_test_folder_exists:
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
-
-
-@nox.session(python="3.7")
-def blacken(session):
-    """Run black.
-
-    Format code to uniform standard.
-    """
-    session.install("black")
-    session.run(
-        "black",
-        "google",
-        "tests",
-        "docs",
-        "--exclude",
-        ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py",
-    )
-
-
-@nox.session(python="3.7")
-def lint(session):
-    """Run linters.
-
-    Returns a failure if the linters find linting errors or sufficiently
-    serious code quality issues.
-    """
-    session.install("flake8", "black", *LOCAL_DEPS)
-    session.install(".")
-    session.run(
-        "black",
-        "--check",
-        "google",
-        "tests",
-        "docs",
-        "--exclude",
-        ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py",
-    )
-    session.run("flake8", "google", "tests")
-
-
-@nox.session(python="3.7")
-def lint_setup_py(session):
-    """Verify that setup.py is valid (including RST check)."""
-    session.install("docutils", "pygments")
-    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
 @nox.session(python="3.7")
