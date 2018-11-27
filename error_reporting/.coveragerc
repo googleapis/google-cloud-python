@@ -14,5 +14,5 @@ exclude_lines =
 omit =
   */gapic/*.py
   */proto/*.py
-  */google-cloud-python/core/google/cloud/*.py
-
+  */google-cloud-python/core/*.py
+  */site-packages/*.py

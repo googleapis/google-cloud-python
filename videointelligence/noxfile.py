@@ -47,7 +47,6 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", "black", *LOCAL_DEPS)
-    session.install(".")
     session.run(
         "black",
         "--check",
