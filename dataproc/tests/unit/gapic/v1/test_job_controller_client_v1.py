@@ -68,9 +68,11 @@ class TestJobControllerClient(object):
         # Setup Expected Response
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
@@ -115,9 +117,11 @@ class TestJobControllerClient(object):
         # Setup Expected Response
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
@@ -208,9 +212,11 @@ class TestJobControllerClient(object):
         # Setup Expected Response
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
@@ -264,9 +270,11 @@ class TestJobControllerClient(object):
         # Setup Expected Response
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
