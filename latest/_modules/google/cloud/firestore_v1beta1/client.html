@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.client &#8212; google-cloud a029c82 documentation</title>
+    <title>google.cloud.firestore_v1beta1.client &#8212; google-cloud b76d094 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -315,9 +315,9 @@
 
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;last_update_time&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">LastUpdateOption</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">LastUpdateOption</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;exists&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ExistsOption</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">ExistsOption</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{!r}</span><span class="s1"> was provided&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">_BAD_OPTION_ERR</span><span class="p">,</span> <span class="n">extra</span><span class="p">)</span></div>
@@ -394,96 +394,6 @@
 <span class="sd">            attached to this client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
-
-
-<div class="viewcode-block" id="WriteOption"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.WriteOption">[docs]</a><span class="k">class</span> <span class="nc">WriteOption</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Option used to assert a condition on a write operation.&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="WriteOption.modify_write"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.WriteOption.modify_write">[docs]</a>    <span class="k">def</span> <span class="nf">modify_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write_pb</span><span class="p">,</span> <span class="n">no_create_msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Modify a ``Write`` protobuf based on the state of this write option.</span>
-
-<span class="sd">        This is a virtual method intended to be implemented by subclasses.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            write_pb (google.cloud.firestore_v1beta1.types.Write): A</span>
-<span class="sd">                ``Write`` protobuf instance to be modified with a precondition</span>
-<span class="sd">                determined by the state of this option.</span>
-<span class="sd">            no_create_msg (Optional[str]): A message to use to indicate that</span>
-<span class="sd">                a create operation is not allowed.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            NotImplementedError: Always, this method is virtual.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
-
-
-<div class="viewcode-block" id="LastUpdateOption"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.LastUpdateOption">[docs]</a><span class="k">class</span> <span class="nc">LastUpdateOption</span><span class="p">(</span><span class="n">WriteOption</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Option used to assert a &quot;last update&quot; condition on a write operation.</span>
-
-<span class="sd">    This will typically be created by</span>
-<span class="sd">    :meth:`~.firestore_v1beta1.client.Client.write_option`.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        last_update_time (google.protobuf.timestamp_pb2.Timestamp): A</span>
-<span class="sd">            timestamp. When set, the target document must exist and have</span>
-<span class="sd">            been last updated at that time. Protobuf ``update_time`` timestamps</span>
-<span class="sd">            are typically returned from methods that perform write operations</span>
-<span class="sd">            as part of a &quot;write result&quot; protobuf or directly.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_update_time</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_update_time</span> <span class="o">=</span> <span class="n">last_update_time</span>
-
-<div class="viewcode-block" id="LastUpdateOption.modify_write"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.LastUpdateOption.modify_write">[docs]</a>    <span class="k">def</span> <span class="nf">modify_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write_pb</span><span class="p">,</span> <span class="o">**</span><span class="n">unused_kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Modify a ``Write`` protobuf based on the state of this write option.</span>
-
-<span class="sd">        The ``last_update_time`` is added to ``write_pb`` as an &quot;update time&quot;</span>
-<span class="sd">        precondition. When set, the target document must exist and have been</span>
-<span class="sd">        last updated at that time.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            write_pb (google.cloud.firestore_v1beta1.types.Write): A</span>
-<span class="sd">                ``Write`` protobuf instance to be modified with a precondition</span>
-<span class="sd">                determined by the state of this option.</span>
-<span class="sd">            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by</span>
-<span class="sd">                other subclasses that are unused here.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">current_doc</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">Precondition</span><span class="p">(</span>
-            <span class="n">update_time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_update_time</span><span class="p">)</span>
-        <span class="n">write_pb</span><span class="o">.</span><span class="n">current_document</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">current_doc</span><span class="p">)</span></div></div>
-
-
-<div class="viewcode-block" id="ExistsOption"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.ExistsOption">[docs]</a><span class="k">class</span> <span class="nc">ExistsOption</span><span class="p">(</span><span class="n">WriteOption</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Option used to assert existence on a write operation.</span>
-
-<span class="sd">    This will typically be created by</span>
-<span class="sd">    :meth:`~.firestore_v1beta1.client.Client.write_option`.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        exists (bool): Indicates if the document being modified</span>
-<span class="sd">            should already exist.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exists</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span> <span class="o">=</span> <span class="n">exists</span>
-
-<div class="viewcode-block" id="ExistsOption.modify_write"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.ExistsOption.modify_write">[docs]</a>    <span class="k">def</span> <span class="nf">modify_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write_pb</span><span class="p">,</span> <span class="o">**</span><span class="n">unused_kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Modify a ``Write`` protobuf based on the state of this write option.</span>
-
-<span class="sd">        If:</span>
-
-<span class="sd">        * ``exists=True``, adds a precondition that requires existence</span>
-<span class="sd">        * ``exists=False``, adds a precondition that requires non-existence</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            write_pb (google.cloud.firestore_v1beta1.types.Write): A</span>
-<span class="sd">                ``Write`` protobuf instance to be modified with a precondition</span>
-<span class="sd">                determined by the state of this option.</span>
-<span class="sd">            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by</span>
-<span class="sd">                other subclasses that are unused here.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">current_doc</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">Precondition</span><span class="p">(</span><span class="n">exists</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">)</span>
-        <span class="n">write_pb</span><span class="o">.</span><span class="n">current_document</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">current_doc</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_reference_info</span><span class="p">(</span><span class="n">references</span><span class="p">):</span>
