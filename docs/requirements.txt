@@ -29,6 +29,7 @@ grpcio-gcp >= 0.2.2
 -e redis/
 -e resource_manager/
 -e runtimeconfig/
+-e scheduler/
 -e securitycenter/
 -e spanner/
 -e speech/

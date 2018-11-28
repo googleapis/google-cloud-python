@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import logging_v2
@@ -75,7 +78,10 @@ class TestConfigServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -93,7 +99,10 @@ class TestConfigServiceV2Client(object):
 
     def test_list_sinks_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -120,7 +129,10 @@ class TestConfigServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup Request
         sink_name = client.sink_path('[PROJECT]', '[SINK]')
@@ -137,7 +149,10 @@ class TestConfigServiceV2Client(object):
     def test_get_sink_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup request
         sink_name = client.sink_path('[PROJECT]', '[SINK]')
@@ -163,7 +178,10 @@ class TestConfigServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -181,7 +199,10 @@ class TestConfigServiceV2Client(object):
     def test_create_sink_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -208,7 +229,10 @@ class TestConfigServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup Request
         sink_name = client.sink_path('[PROJECT]', '[SINK]')
@@ -226,7 +250,10 @@ class TestConfigServiceV2Client(object):
     def test_update_sink_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup request
         sink_name = client.sink_path('[PROJECT]', '[SINK]')
@@ -237,7 +264,10 @@ class TestConfigServiceV2Client(object):
 
     def test_delete_sink(self):
         channel = ChannelStub()
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup Request
         sink_name = client.sink_path('[PROJECT]', '[SINK]')
@@ -253,7 +283,10 @@ class TestConfigServiceV2Client(object):
     def test_delete_sink_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup request
         sink_name = client.sink_path('[PROJECT]', '[SINK]')
@@ -275,7 +308,10 @@ class TestConfigServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -294,7 +330,10 @@ class TestConfigServiceV2Client(object):
 
     def test_list_exclusions_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -320,7 +359,10 @@ class TestConfigServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup Request
         name = client.exclusion_path('[PROJECT]', '[EXCLUSION]')
@@ -336,7 +378,10 @@ class TestConfigServiceV2Client(object):
     def test_get_exclusion_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup request
         name = client.exclusion_path('[PROJECT]', '[EXCLUSION]')
@@ -361,7 +406,10 @@ class TestConfigServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -379,7 +427,10 @@ class TestConfigServiceV2Client(object):
     def test_create_exclusion_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -405,7 +456,10 @@ class TestConfigServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup Request
         name = client.exclusion_path('[PROJECT]', '[EXCLUSION]')
@@ -424,7 +478,10 @@ class TestConfigServiceV2Client(object):
     def test_update_exclusion_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup request
         name = client.exclusion_path('[PROJECT]', '[EXCLUSION]')
@@ -436,7 +493,10 @@ class TestConfigServiceV2Client(object):
 
     def test_delete_exclusion(self):
         channel = ChannelStub()
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup Request
         name = client.exclusion_path('[PROJECT]', '[EXCLUSION]')
@@ -451,7 +511,10 @@ class TestConfigServiceV2Client(object):
     def test_delete_exclusion_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.ConfigServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
 
         # Setup request
         name = client.exclusion_path('[PROJECT]', '[EXCLUSION]')

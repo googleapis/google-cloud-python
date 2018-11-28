@@ -21,9 +21,9 @@ from google.cloud.container_v1.proto import cluster_service_pb2
 
 class TestSystemClusterManager(object):
     def test_list_clusters(self):
-        project_id = os.environ['PROJECT_ID']
+        project_id = os.environ["PROJECT_ID"]
 
         client = container_v1.ClusterManagerClient()
         project_id_2 = project_id
-        zone = 'us-central1-a'
+        zone = "us-central1-a"
         response = client.list_clusters(project_id_2, zone)

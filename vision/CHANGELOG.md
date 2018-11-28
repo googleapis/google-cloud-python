@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.35.1
+
+11-21-2018 11:25 PST
+
+### Implementation Changes
+- Add ProductSearchClient to vision.py ([#6635](https://github.com/googleapis/google-cloud-python/pull/6635))
+
+### Internal / Testing Changes
+- Merge fixes to GAPIC generator. ([#6632](https://github.com/googleapis/google-cloud-python/pull/6632))
+
+## 0.35.0
+
+11-13-2018 09:55 PST
+
+
+### Implementation Changes
+- Fix client_info bug, update docstrings via synth. ([#6437](https://github.com/googleapis/google-cloud-python/pull/6437))
+
+### New Features
+- Add 'product_search_client' to 'vision_v1'. ([#6361](https://github.com/googleapis/google-cloud-python/pull/6361))
+
+### Dependencies
+- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+### Documentation
+- Fix GAX fossils. ([#6264](https://github.com/googleapis/google-cloud-python/pull/6264))
+- Normalize use of support level badges. ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Harmonize / DRY 'README.rst' / 'docs/index.rst'. ([#6003](https://github.com/googleapis/google-cloud-python/pull/6003))
+
+### Internal / Testing Changes
+- Use new Nox. ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+
 ## 0.34.0
 
 ### Implementation Changes

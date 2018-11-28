@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -53,10 +54,7 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -67,25 +65,27 @@ class CustomException(Exception):
 class TestProductSearchClient(object):
     def test_create_product(self):
         # Setup Expected Response
-        name = 'name3373707'
-        display_name = 'displayName1615086568'
-        description = 'description-1724546052'
-        product_category = 'productCategory-1607451058'
+        name = "name3373707"
+        display_name = "displayName1615086568"
+        description = "description-1724546052"
+        product_category = "productCategory-1607451058"
         expected_response = {
-            'name': name,
-            'display_name': display_name,
-            'description': description,
-            'product_category': product_category
+            "name": name,
+            "display_name": display_name,
+            "description": description,
+            "product_category": product_category,
         }
-        expected_response = product_search_service_pb2.Product(
-            **expected_response)
+        expected_response = product_search_service_pb2.Product(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
         product = {}
 
         response = client.create_product(parent, product)
@@ -93,17 +93,21 @@ class TestProductSearchClient(object):
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.CreateProductRequest(
-            parent=parent, product=product)
+            parent=parent, product=product
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_create_product_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
         product = {}
 
         with pytest.raises(CustomException):
@@ -111,22 +115,23 @@ class TestProductSearchClient(object):
 
     def test_list_products(self):
         # Setup Expected Response
-        next_page_token = ''
+        next_page_token = ""
         products_element = {}
         products = [products_element]
-        expected_response = {
-            'next_page_token': next_page_token,
-            'products': products
-        }
+        expected_response = {"next_page_token": next_page_token, "products": products}
         expected_response = product_search_service_pb2.ListProductsResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
 
         paged_list_response = client.list_products(parent)
         resources = list(paged_list_response)
@@ -135,17 +140,19 @@ class TestProductSearchClient(object):
         assert expected_response.products[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = product_search_service_pb2.ListProductsRequest(
-            parent=parent)
+        expected_request = product_search_service_pb2.ListProductsRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_products_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
 
         paged_list_response = client.list_products(parent)
         with pytest.raises(CustomException):
@@ -153,64 +160,70 @@ class TestProductSearchClient(object):
 
     def test_get_product(self):
         # Setup Expected Response
-        name_2 = 'name2-1052831874'
-        display_name = 'displayName1615086568'
-        description = 'description-1724546052'
-        product_category = 'productCategory-1607451058'
+        name_2 = "name2-1052831874"
+        display_name = "displayName1615086568"
+        description = "description-1724546052"
+        product_category = "productCategory-1607451058"
         expected_response = {
-            'name': name_2,
-            'display_name': display_name,
-            'description': description,
-            'product_category': product_category
+            "name": name_2,
+            "display_name": display_name,
+            "description": description,
+            "product_category": product_category,
         }
-        expected_response = product_search_service_pb2.Product(
-            **expected_response)
+        expected_response = product_search_service_pb2.Product(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        name = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
+        name = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         response = client.get_product(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = product_search_service_pb2.GetProductRequest(
-            name=name)
+        expected_request = product_search_service_pb2.GetProductRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_get_product_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        name = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
+        name = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         with pytest.raises(CustomException):
             client.get_product(name)
 
     def test_update_product(self):
         # Setup Expected Response
-        name = 'name3373707'
-        display_name = 'displayName1615086568'
-        description = 'description-1724546052'
-        product_category = 'productCategory-1607451058'
+        name = "name3373707"
+        display_name = "displayName1615086568"
+        description = "description-1724546052"
+        product_category = "productCategory-1607451058"
         expected_response = {
-            'name': name,
-            'display_name': display_name,
-            'description': description,
-            'product_category': product_category
+            "name": name,
+            "display_name": display_name,
+            "description": description,
+            "product_category": product_category,
         }
-        expected_response = product_search_service_pb2.Product(
-            **expected_response)
+        expected_response = product_search_service_pb2.Product(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
         product = {}
@@ -220,14 +233,18 @@ class TestProductSearchClient(object):
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.UpdateProductRequest(
-            product=product)
+            product=product
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_update_product_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
         product = {}
@@ -237,26 +254,31 @@ class TestProductSearchClient(object):
 
     def test_delete_product(self):
         channel = ChannelStub()
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        name = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
+        name = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         client.delete_product(name)
 
         assert len(channel.requests) == 1
-        expected_request = product_search_service_pb2.DeleteProductRequest(
-            name=name)
+        expected_request = product_search_service_pb2.DeleteProductRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_delete_product_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        name = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
+        name = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         with pytest.raises(CustomException):
             client.delete_product(name)
@@ -264,23 +286,27 @@ class TestProductSearchClient(object):
     def test_list_reference_images(self):
         # Setup Expected Response
         page_size = 883849137
-        next_page_token = ''
+        next_page_token = ""
         reference_images_element = {}
         reference_images = [reference_images_element]
         expected_response = {
-            'page_size': page_size,
-            'next_page_token': next_page_token,
-            'reference_images': reference_images
+            "page_size": page_size,
+            "next_page_token": next_page_token,
+            "reference_images": reference_images,
         }
         expected_response = product_search_service_pb2.ListReferenceImagesResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        parent = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
+        parent = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         paged_list_response = client.list_reference_images(parent)
         resources = list(paged_list_response)
@@ -290,16 +316,20 @@ class TestProductSearchClient(object):
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.ListReferenceImagesRequest(
-            parent=parent)
+            parent=parent
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_reference_images_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        parent = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
+        parent = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         paged_list_response = client.list_reference_images(parent)
         with pytest.raises(CustomException):
@@ -307,83 +337,106 @@ class TestProductSearchClient(object):
 
     def test_get_reference_image(self):
         # Setup Expected Response
-        name_2 = 'name2-1052831874'
-        uri = 'uri116076'
-        expected_response = {'name': name_2, 'uri': uri}
+        name_2 = "name2-1052831874"
+        uri = "uri116076"
+        expected_response = {"name": name_2, "uri": uri}
         expected_response = product_search_service_pb2.ReferenceImage(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        name = client.image_path('[PROJECT]', '[LOCATION]', '[PRODUCT]',
-                                 '[IMAGE]')
+        name = client.reference_image_path(
+            "[PROJECT]", "[LOCATION]", "[PRODUCT]", "[REFERENCE_IMAGE]"
+        )
 
         response = client.get_reference_image(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.GetReferenceImageRequest(
-            name=name)
+            name=name
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_get_reference_image_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        name = client.image_path('[PROJECT]', '[LOCATION]', '[PRODUCT]',
-                                 '[IMAGE]')
+        name = client.reference_image_path(
+            "[PROJECT]", "[LOCATION]", "[PRODUCT]", "[REFERENCE_IMAGE]"
+        )
 
         with pytest.raises(CustomException):
             client.get_reference_image(name)
 
     def test_delete_reference_image(self):
         channel = ChannelStub()
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        name = client.image_path('[PROJECT]', '[LOCATION]', '[PRODUCT]',
-                                 '[IMAGE]')
+        name = client.reference_image_path(
+            "[PROJECT]", "[LOCATION]", "[PRODUCT]", "[REFERENCE_IMAGE]"
+        )
 
         client.delete_reference_image(name)
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.DeleteReferenceImageRequest(
-            name=name)
+            name=name
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_delete_reference_image_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        name = client.image_path('[PROJECT]', '[LOCATION]', '[PRODUCT]',
-                                 '[IMAGE]')
+        name = client.reference_image_path(
+            "[PROJECT]", "[LOCATION]", "[PRODUCT]", "[REFERENCE_IMAGE]"
+        )
 
         with pytest.raises(CustomException):
             client.delete_reference_image(name)
 
     def test_create_reference_image(self):
         # Setup Expected Response
-        name = 'name3373707'
-        uri = 'uri116076'
-        expected_response = {'name': name, 'uri': uri}
+        name = "name3373707"
+        uri = "uri116076"
+        expected_response = {"name": name, "uri": uri}
         expected_response = product_search_service_pb2.ReferenceImage(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        parent = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
+        parent = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
         reference_image = {}
 
         response = client.create_reference_image(parent, reference_image)
@@ -391,17 +444,21 @@ class TestProductSearchClient(object):
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.CreateReferenceImageRequest(
-            parent=parent, reference_image=reference_image)
+            parent=parent, reference_image=reference_image
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_create_reference_image_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        parent = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
+        parent = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
         reference_image = {}
 
         with pytest.raises(CustomException):
@@ -409,18 +466,20 @@ class TestProductSearchClient(object):
 
     def test_create_product_set(self):
         # Setup Expected Response
-        name = 'name3373707'
-        display_name = 'displayName1615086568'
-        expected_response = {'name': name, 'display_name': display_name}
-        expected_response = product_search_service_pb2.ProductSet(
-            **expected_response)
+        name = "name3373707"
+        display_name = "displayName1615086568"
+        expected_response = {"name": name, "display_name": display_name}
+        expected_response = product_search_service_pb2.ProductSet(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
         product_set = {}
 
         response = client.create_product_set(parent, product_set)
@@ -428,17 +487,21 @@ class TestProductSearchClient(object):
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.CreateProductSetRequest(
-            parent=parent, product_set=product_set)
+            parent=parent, product_set=product_set
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_create_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
         product_set = {}
 
         with pytest.raises(CustomException):
@@ -446,22 +509,26 @@ class TestProductSearchClient(object):
 
     def test_list_product_sets(self):
         # Setup Expected Response
-        next_page_token = ''
+        next_page_token = ""
         product_sets_element = {}
         product_sets = [product_sets_element]
         expected_response = {
-            'next_page_token': next_page_token,
-            'product_sets': product_sets
+            "next_page_token": next_page_token,
+            "product_sets": product_sets,
         }
         expected_response = product_search_service_pb2.ListProductSetsResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
 
         paged_list_response = client.list_product_sets(parent)
         resources = list(paged_list_response)
@@ -471,16 +538,20 @@ class TestProductSearchClient(object):
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.ListProductSetsRequest(
-            parent=parent)
+            parent=parent
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_product_sets_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
 
         paged_list_response = client.list_product_sets(parent)
         with pytest.raises(CustomException):
@@ -488,52 +559,56 @@ class TestProductSearchClient(object):
 
     def test_get_product_set(self):
         # Setup Expected Response
-        name_2 = 'name2-1052831874'
-        display_name = 'displayName1615086568'
-        expected_response = {'name': name_2, 'display_name': display_name}
-        expected_response = product_search_service_pb2.ProductSet(
-            **expected_response)
+        name_2 = "name2-1052831874"
+        display_name = "displayName1615086568"
+        expected_response = {"name": name_2, "display_name": display_name}
+        expected_response = product_search_service_pb2.ProductSet(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        name = client.product_set_path('[PROJECT]', '[LOCATION]',
-                                       '[PRODUCT_SET]')
+        name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
 
         response = client.get_product_set(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = product_search_service_pb2.GetProductSetRequest(
-            name=name)
+        expected_request = product_search_service_pb2.GetProductSetRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_get_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        name = client.product_set_path('[PROJECT]', '[LOCATION]',
-                                       '[PRODUCT_SET]')
+        name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
 
         with pytest.raises(CustomException):
             client.get_product_set(name)
 
     def test_update_product_set(self):
         # Setup Expected Response
-        name = 'name3373707'
-        display_name = 'displayName1615086568'
-        expected_response = {'name': name, 'display_name': display_name}
-        expected_response = product_search_service_pb2.ProductSet(
-            **expected_response)
+        name = "name3373707"
+        display_name = "displayName1615086568"
+        expected_response = {"name": name, "display_name": display_name}
+        expected_response = product_search_service_pb2.ProductSet(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
         product_set = {}
@@ -543,14 +618,18 @@ class TestProductSearchClient(object):
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.UpdateProductSetRequest(
-            product_set=product_set)
+            product_set=product_set
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_update_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
         product_set = {}
@@ -560,111 +639,124 @@ class TestProductSearchClient(object):
 
     def test_delete_product_set(self):
         channel = ChannelStub()
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        name = client.product_set_path('[PROJECT]', '[LOCATION]',
-                                       '[PRODUCT_SET]')
+        name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
 
         client.delete_product_set(name)
 
         assert len(channel.requests) == 1
-        expected_request = product_search_service_pb2.DeleteProductSetRequest(
-            name=name)
+        expected_request = product_search_service_pb2.DeleteProductSetRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_delete_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        name = client.product_set_path('[PROJECT]', '[LOCATION]',
-                                       '[PRODUCT_SET]')
+        name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
 
         with pytest.raises(CustomException):
             client.delete_product_set(name)
 
     def test_add_product_to_product_set(self):
         channel = ChannelStub()
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        name = client.product_set_path('[PROJECT]', '[LOCATION]',
-                                       '[PRODUCT_SET]')
-        product = 'product-309474065'
+        name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
+        product = "product-309474065"
 
         client.add_product_to_product_set(name, product)
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.AddProductToProductSetRequest(
-            name=name, product=product)
+            name=name, product=product
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_add_product_to_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        name = client.product_set_path('[PROJECT]', '[LOCATION]',
-                                       '[PRODUCT_SET]')
-        product = 'product-309474065'
+        name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
+        product = "product-309474065"
 
         with pytest.raises(CustomException):
             client.add_product_to_product_set(name, product)
 
     def test_remove_product_from_product_set(self):
         channel = ChannelStub()
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        name = client.product_set_path('[PROJECT]', '[LOCATION]',
-                                       '[PRODUCT_SET]')
-        product = 'product-309474065'
+        name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
+        product = "product-309474065"
 
         client.remove_product_from_product_set(name, product)
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.RemoveProductFromProductSetRequest(
-            name=name, product=product)
+            name=name, product=product
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_remove_product_from_product_set_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        name = client.product_set_path('[PROJECT]', '[LOCATION]',
-                                       '[PRODUCT_SET]')
-        product = 'product-309474065'
+        name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
+        product = "product-309474065"
 
         with pytest.raises(CustomException):
             client.remove_product_from_product_set(name, product)
 
     def test_list_products_in_product_set(self):
         # Setup Expected Response
-        next_page_token = ''
+        next_page_token = ""
         products_element = {}
         products = [products_element]
-        expected_response = {
-            'next_page_token': next_page_token,
-            'products': products
-        }
+        expected_response = {"next_page_token": next_page_token, "products": products}
         expected_response = product_search_service_pb2.ListProductsInProductSetResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        name = client.product_set_path('[PROJECT]', '[LOCATION]',
-                                       '[PRODUCT_SET]')
+        name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
 
         paged_list_response = client.list_products_in_product_set(name)
         resources = list(paged_list_response)
@@ -674,17 +766,20 @@ class TestProductSearchClient(object):
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.ListProductsInProductSetRequest(
-            name=name)
+            name=name
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_products_in_product_set_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup request
-        name = client.product_set_path('[PROJECT]', '[LOCATION]',
-                                       '[PRODUCT_SET]')
+        name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
 
         paged_list_response = client.list_products_in_product_set(name)
         with pytest.raises(CustomException):
@@ -694,17 +789,22 @@ class TestProductSearchClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = product_search_service_pb2.ImportProductSetsResponse(
-            **expected_response)
+            **expected_response
+        )
         operation = operations_pb2.Operation(
-            name='operations/test_import_product_sets', done=True)
+            name="operations/test_import_product_sets", done=True
+        )
         operation.response.Pack(expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
         input_config = {}
 
         response = client.import_product_sets(parent, input_config)
@@ -713,7 +813,8 @@ class TestProductSearchClient(object):
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.ImportProductSetsRequest(
-            parent=parent, input_config=input_config)
+            parent=parent, input_config=input_config
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -721,15 +822,19 @@ class TestProductSearchClient(object):
         # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
-            name='operations/test_import_product_sets_exception', done=True)
+            name="operations/test_import_product_sets_exception", done=True
+        )
         operation.error.CopyFrom(error)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = vision_v1.ProductSearchClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
 
         # Setup Request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
         input_config = {}
 
         response = client.import_product_sets(parent, input_config)

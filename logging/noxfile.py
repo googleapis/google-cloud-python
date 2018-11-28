@@ -33,11 +33,54 @@ UNIT_TEST_DEPS = (
     'webob',
 )
 
+@nox.session(python="3.7")
+def blacken(session):
+    """Run black.
+
+    Format code to uniform standard.
+    """
+    session.install("black")
+    session.run(
+        "black",
+        "google",
+        "tests",
+        "docs",
+        "--exclude",
+        ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py",
+    )
+
+
+@nox.session(python="3.7")
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install("flake8", "black", *LOCAL_DEPS)
+    session.run(
+        "black",
+        "--check",
+        "google",
+        "tests",
+        "docs",
+        "--exclude",
+        ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py",
+    )
+    session.run("flake8", "google", "tests")
+
+
+@nox.session(python="3.7")
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.install("docutils", "pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+
 
 def default(session, django_dep=('django',)):
     """Default unit test session.
     """
-  
+
     # Install all test dependencies, then install this package in-place.
     deps = UNIT_TEST_DEPS
     deps += django_dep
@@ -114,34 +157,14 @@ def system(session):
         *session.posargs)
 
 
-@nox.session(python='3.6')
-def lint(session):
-    """Run linters.
-
-    Returns a failure if the linters find linting errors or sufficiently
-    serious code quality issues.
-    """
-    session.install('flake8', *LOCAL_DEPS)
-    session.install('.')
-    session.run('flake8', 'google', 'tests')
-
-
-@nox.session(python='3.6')
-def lint_setup_py(session):
-    """Verify that setup.py is valid (including RST check)."""
-
-    session.install('docutils', 'Pygments')
-    session.run(
-        'python', 'setup.py', 'check', '--restructuredtext', '--strict')
-
-
-@nox.session(python='3.6')
+@nox.session(python="3.7")
 def cover(session):
     """Run the final coverage report.
 
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.install('coverage', 'pytest-cov')
-    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
-    session.run('coverage', 'erase')
+    session.install("coverage", "pytest-cov")
+    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+
+    session.run("coverage", "erase")

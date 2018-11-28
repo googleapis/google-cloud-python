@@ -27,14 +27,17 @@ class DataTransferServiceGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='bigquerydatatransfer.googleapis.com:443'):
+    def __init__(
+        self,
+        channel=None,
+        credentials=None,
+        address="bigquerydatatransfer.googleapis.com:443",
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -52,27 +55,27 @@ class DataTransferServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'data_transfer_service_stub':
-            datatransfer_pb2_grpc.DataTransferServiceStub(channel),
+            "data_transfer_service_stub": datatransfer_pb2_grpc.DataTransferServiceStub(
+                channel
+            )
         }
 
     @classmethod
-    def create_channel(cls,
-                       address='bigquerydatatransfer.googleapis.com:443',
-                       credentials=None):
+    def create_channel(
+        cls, address="bigquerydatatransfer.googleapis.com:443", credentials=None
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -87,10 +90,17 @@ class DataTransferServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def get_data_source(self):
@@ -104,7 +114,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].GetDataSource
+        return self._stubs["data_transfer_service_stub"].GetDataSource
 
     @property
     def list_data_sources(self):
@@ -118,7 +128,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].ListDataSources
+        return self._stubs["data_transfer_service_stub"].ListDataSources
 
     @property
     def create_transfer_config(self):
@@ -131,7 +141,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].CreateTransferConfig
+        return self._stubs["data_transfer_service_stub"].CreateTransferConfig
 
     @property
     def update_transfer_config(self):
@@ -145,7 +155,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].UpdateTransferConfig
+        return self._stubs["data_transfer_service_stub"].UpdateTransferConfig
 
     @property
     def delete_transfer_config(self):
@@ -159,7 +169,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].DeleteTransferConfig
+        return self._stubs["data_transfer_service_stub"].DeleteTransferConfig
 
     @property
     def get_transfer_config(self):
@@ -172,7 +182,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].GetTransferConfig
+        return self._stubs["data_transfer_service_stub"].GetTransferConfig
 
     @property
     def list_transfer_configs(self):
@@ -185,7 +195,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].ListTransferConfigs
+        return self._stubs["data_transfer_service_stub"].ListTransferConfigs
 
     @property
     def schedule_transfer_runs(self):
@@ -201,7 +211,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].ScheduleTransferRuns
+        return self._stubs["data_transfer_service_stub"].ScheduleTransferRuns
 
     @property
     def get_transfer_run(self):
@@ -214,7 +224,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].GetTransferRun
+        return self._stubs["data_transfer_service_stub"].GetTransferRun
 
     @property
     def delete_transfer_run(self):
@@ -227,7 +237,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].DeleteTransferRun
+        return self._stubs["data_transfer_service_stub"].DeleteTransferRun
 
     @property
     def list_transfer_runs(self):
@@ -240,7 +250,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].ListTransferRuns
+        return self._stubs["data_transfer_service_stub"].ListTransferRuns
 
     @property
     def list_transfer_logs(self):
@@ -253,7 +263,7 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].ListTransferLogs
+        return self._stubs["data_transfer_service_stub"].ListTransferLogs
 
     @property
     def check_valid_creds(self):
@@ -271,4 +281,4 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['data_transfer_service_stub'].CheckValidCreds
+        return self._stubs["data_transfer_service_stub"].CheckValidCreds

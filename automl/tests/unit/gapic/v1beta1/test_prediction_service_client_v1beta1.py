@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import automl_v1beta1
@@ -50,10 +51,7 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -65,15 +63,17 @@ class TestPredictionServiceClient(object):
     def test_predict(self):
         # Setup Expected Response
         expected_response = {}
-        expected_response = prediction_service_pb2.PredictResponse(
-            **expected_response)
+        expected_response = prediction_service_pb2.PredictResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = automl_v1beta1.PredictionServiceClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.PredictionServiceClient()
 
         # Setup Request
-        name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
+        name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
         payload = {}
 
         response = client.predict(name, payload)
@@ -81,17 +81,21 @@ class TestPredictionServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = prediction_service_pb2.PredictRequest(
-            name=name, payload=payload)
+            name=name, payload=payload
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_predict_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = automl_v1beta1.PredictionServiceClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.PredictionServiceClient()
 
         # Setup request
-        name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
+        name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
         payload = {}
 
         with pytest.raises(CustomException):

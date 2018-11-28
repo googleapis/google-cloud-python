@@ -81,9 +81,11 @@ def _error_result_to_exception(error_result):
     """
     reason = error_result.get('reason')
     status_code = _ERROR_REASON_TO_EXCEPTION.get(
-        reason, http_client.INTERNAL_SERVER_ERROR)
+        reason, http_client.INTERNAL_SERVER_ERROR
+    )
     return exceptions.from_http_status(
-        status_code, error_result.get('message', ''), errors=[error_result])
+        status_code, error_result.get('message', ''), errors=[error_result]
+    )
 
 
 class Compression(object):
@@ -235,10 +237,7 @@ class _JobReference(object):
     """
 
     def __init__(self, job_id, project, location):
-        self._properties = {
-            'jobId': job_id,
-            'projectId': project,
-        }
+        self._properties = {'jobId': job_id, 'projectId': project}
         # The location field must not be populated if it is None.
         if location:
             self._properties['location'] = location
@@ -282,6 +281,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         client (google.cloud.bigquery.client.Client):
             Client which holds credentials and project configuration.
     """
+
     def __init__(self, job_id, client):
         super(_AsyncJob, self).__init__()
 
@@ -291,9 +291,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         job_ref = job_id
         if not isinstance(job_id, _JobReference):
             job_ref = _JobReference(job_id, client.project, None)
-        self._properties = {
-            'jobReference': job_ref._to_api_repr(),
-        }
+        self._properties = {'jobReference': job_ref._to_api_repr()}
 
         self._client = client
         self._result_set = False
@@ -302,8 +300,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     @property
     def job_id(self):
         """str: ID of the job."""
-        return _helpers._get_sub_prop(
-            self._properties, ['jobReference', 'jobId'])
+        return _helpers._get_sub_prop(self._properties, ['jobReference', 'jobId'])
 
     @property
     def project(self):
@@ -312,14 +309,12 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         :rtype: str
         :returns: the project (derived from the client).
         """
-        return _helpers._get_sub_prop(
-            self._properties, ['jobReference', 'projectId'])
+        return _helpers._get_sub_prop(self._properties, ['jobReference', 'projectId'])
 
     @property
     def location(self):
         """str: Location where the job runs."""
-        return _helpers._get_sub_prop(
-            self._properties, ['jobReference', 'location'])
+        return _helpers._get_sub_prop(self._properties, ['jobReference', 'location'])
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -508,15 +503,20 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         :raises: :class:`KeyError` if the resource has no identifier, or
                  is missing the appropriate configuration.
         """
-        if ('jobReference' not in resource or
-                'jobId' not in resource['jobReference']):
-            raise KeyError('Resource lacks required identity information: '
-                           '["jobReference"]["jobId"]')
+        if 'jobReference' not in resource or 'jobId' not in resource['jobReference']:
+            raise KeyError(
+                'Resource lacks required identity information: '
+                '["jobReference"]["jobId"]'
+            )
         job_id = resource['jobReference']['jobId']
-        if ('configuration' not in resource or
-                cls._JOB_TYPE not in resource['configuration']):
-            raise KeyError('Resource lacks required configuration: '
-                           '["configuration"]["%s"]' % cls._JOB_TYPE)
+        if (
+            'configuration' not in resource
+            or cls._JOB_TYPE not in resource['configuration']
+        ):
+            raise KeyError(
+                'Resource lacks required configuration: '
+                '["configuration"]["%s"]' % cls._JOB_TYPE
+            )
         return job_id, resource['configuration']
 
     def to_api_repr(self):
@@ -550,8 +550,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         # jobs.insert is idempotent because we ensure that every new
         # job has an ID.
         api_response = client._call_api(
-            retry,
-            method='POST', path=path, data=self.to_api_repr())
+            retry, method='POST', path=path, data=self.to_api_repr()
+        )
         self._set_properties(api_response)
 
     def exists(self, client=None, retry=DEFAULT_RETRY):
@@ -578,9 +578,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             extra_params['location'] = self.location
 
         try:
-            client._call_api(retry,
-                             method='GET', path=self.path,
-                             query_params=extra_params)
+            client._call_api(
+                retry, method='GET', path=self.path, query_params=extra_params
+            )
         except NotFound:
             return False
         else:
@@ -607,7 +607,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             extra_params['location'] = self.location
 
         api_response = client._call_api(
-            retry, method='GET', path=self.path, query_params=extra_params)
+            retry, method='GET', path=self.path, query_params=extra_params
+        )
         self._set_properties(api_response)
 
     def cancel(self, client=None):
@@ -631,8 +632,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             extra_params['location'] = self.location
 
         api_response = client._connection.api_request(
-            method='POST', path='%s/cancel' % (self.path,),
-            query_params=extra_params)
+            method='POST', path='%s/cancel' % (self.path,), query_params=extra_params
+        )
         self._set_properties(api_response['job'])
         # The Future interface requires that we return True if the *attempt*
         # to cancel was successful.
@@ -708,8 +709,10 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         :rtype: bool
         :returns: False
         """
-        return (self.error_result is not None
-                and self.error_result.get('reason') == _STOPPED_REASON)
+        return (
+            self.error_result is not None
+            and self.error_result.get('reason') == _STOPPED_REASON
+        )
 
 
 class _JobConfig(object):
@@ -770,7 +773,8 @@ class _JobConfig(object):
             object: The value if present or the default.
         """
         return _helpers._get_sub_prop(
-            self._properties, [self._job_type, key], default=default)
+            self._properties, [self._job_type, key], default=default
+        )
 
     def _set_sub_prop(self, key, value):
         """Set a value in the ``self._properties[self._job_type]`` dictionary.
@@ -840,8 +844,10 @@ class _JobConfig(object):
         if self._job_type != default_job_config._job_type:
             raise TypeError(
                 "attempted to merge two incompatible job types: "
-                + repr(self._job_type) + ', '
-                + repr(default_job_config._job_type))
+                + repr(self._job_type)
+                + ', '
+                + repr(default_job_config._job_type)
+            )
 
         new_job_config = self.__class__()
 
@@ -850,8 +856,7 @@ class _JobConfig(object):
             if key != self._job_type:
                 default_job_properties[key] = self._properties[key]
 
-        default_job_properties[self._job_type] \
-            .update(self._properties[self._job_type])
+        default_job_properties[self._job_type].update(self._properties[self._job_type])
         new_job_config._properties = default_job_properties
 
         return new_job_config
@@ -1115,8 +1120,7 @@ class LoadJobConfig(_JobConfig):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.schema
         """
-        schema = _helpers._get_sub_prop(
-            self._properties, ['load', 'schema', 'fields'])
+        schema = _helpers._get_sub_prop(self._properties, ['load', 'schema', 'fields'])
         if schema is None:
             return
         return [SchemaField.from_api_repr(field) for field in schema]
@@ -1128,7 +1132,8 @@ class LoadJobConfig(_JobConfig):
         _helpers._set_sub_prop(
             self._properties,
             ['load', 'schema', 'fields'],
-            [field.to_api_repr() for field in value])
+            [field.to_api_repr() for field in value],
+        )
 
     @property
     def schema_update_options(self):
@@ -1226,8 +1231,7 @@ class LoadJob(_AsyncJob):
 
     _JOB_TYPE = 'load'
 
-    def __init__(self, job_id, source_uris, destination, client,
-                 job_config=None):
+    def __init__(self, job_id, source_uris, destination, client, job_config=None):
         super(LoadJob, self).__init__(job_id, client)
 
         if job_config is None:
@@ -1377,9 +1381,11 @@ class LoadJob(_AsyncJob):
         :returns: the count (None until set from the server).
         :raises: ValueError for invalid value types.
         """
-        return _helpers._int_or_none(_helpers._get_sub_prop(
+        return _helpers._int_or_none(
+            _helpers._get_sub_prop(
                 self._properties, ['statistics', 'load', 'inputFileBytes']
-            ))
+            )
+        )
 
     @property
     def input_files(self):
@@ -1388,9 +1394,11 @@ class LoadJob(_AsyncJob):
         :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
         """
-        return _helpers._int_or_none(_helpers._get_sub_prop(
+        return _helpers._int_or_none(
+            _helpers._get_sub_prop(
                 self._properties, ['statistics', 'load', 'inputFiles']
-            ))
+            )
+        )
 
     @property
     def output_bytes(self):
@@ -1399,9 +1407,11 @@ class LoadJob(_AsyncJob):
         :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
         """
-        return _helpers._int_or_none(_helpers._get_sub_prop(
+        return _helpers._int_or_none(
+            _helpers._get_sub_prop(
                 self._properties, ['statistics', 'load', 'outputBytes']
-            ))
+            )
+        )
 
     @property
     def output_rows(self):
@@ -1410,20 +1420,22 @@ class LoadJob(_AsyncJob):
         :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
         """
-        return _helpers._int_or_none(_helpers._get_sub_prop(
+        return _helpers._int_or_none(
+            _helpers._get_sub_prop(
                 self._properties, ['statistics', 'load', 'outputRows']
-            ))
+            )
+        )
 
     def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
         configuration = self._configuration.to_api_repr()
         if self.source_uris is not None:
             _helpers._set_sub_prop(
-                configuration, ['load', 'sourceUris'], self.source_uris)
+                configuration, ['load', 'sourceUris'], self.source_uris
+            )
         _helpers._set_sub_prop(
-            configuration,
-            ['load', 'destinationTable'],
-            self.destination.to_api_repr())
+            configuration, ['load', 'destinationTable'], self.destination.to_api_repr()
+        )
 
         return {
             'jobReference': self._properties['jobReference'],
@@ -1457,12 +1469,10 @@ class LoadJob(_AsyncJob):
         config = LoadJobConfig.from_api_repr(config_resource)
         # A load job requires a destination table.
         dest_config = config_resource['load']['destinationTable']
-        ds_ref = DatasetReference(
-            dest_config['projectId'], dest_config['datasetId'])
+        ds_ref = DatasetReference(dest_config['projectId'], dest_config['datasetId'])
         destination = TableReference(ds_ref, dest_config['tableId'])
         # sourceUris will be absent if this is a file upload.
-        source_uris = _helpers._get_sub_prop(
-            config_resource, ['load', 'sourceUris'])
+        source_uris = _helpers._get_sub_prop(config_resource, ['load', 'sourceUris'])
         job_ref = _JobReference._from_api_repr(resource['jobReference'])
         job = cls(job_ref, source_uris, destination, client, config)
         job._set_properties(resource)
@@ -1552,6 +1562,7 @@ class CopyJob(_AsyncJob):
     :param job_config:
         (Optional) Extra configuration options for the copy job.
     """
+
     _JOB_TYPE = 'copy'
 
     def __init__(self, job_id, sources, destination, client, job_config=None):
@@ -1594,15 +1605,17 @@ class CopyJob(_AsyncJob):
     def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
 
-        source_refs = [{
-            'projectId': table.project,
-            'datasetId': table.dataset_id,
-            'tableId': table.table_id,
-        } for table in self.sources]
+        source_refs = [
+            {
+                'projectId': table.project,
+                'datasetId': table.dataset_id,
+                'tableId': table.table_id,
+            }
+            for table in self.sources
+        ]
 
         configuration = self._configuration.to_api_repr()
-        _helpers._set_sub_prop(
-            configuration, ['copy', 'sourceTables'], source_refs)
+        _helpers._set_sub_prop(configuration, ['copy', 'sourceTables'], source_refs)
         _helpers._set_sub_prop(
             configuration,
             ['copy', 'destinationTable'],
@@ -1610,7 +1623,8 @@ class CopyJob(_AsyncJob):
                 'projectId': self.destination.project,
                 'datasetId': self.destination.dataset_id,
                 'tableId': self.destination.table_id,
-            })
+            },
+        )
 
         return {
             'jobReference': self._properties['jobReference'],
@@ -1644,21 +1658,18 @@ class CopyJob(_AsyncJob):
         config = CopyJobConfig.from_api_repr(config_resource)
         # Copy required fields to the job.
         copy_resource = config_resource['copy']
-        destination = TableReference.from_api_repr(
-            copy_resource['destinationTable'])
+        destination = TableReference.from_api_repr(copy_resource['destinationTable'])
         sources = []
         source_configs = copy_resource.get('sourceTables')
         if source_configs is None:
             single = copy_resource.get('sourceTable')
             if single is None:
-                raise KeyError(
-                    "Resource missing 'sourceTables' / 'sourceTable'")
+                raise KeyError("Resource missing 'sourceTables' / 'sourceTable'")
             source_configs = [single]
         for source_config in source_configs:
             table_ref = TableReference.from_api_repr(source_config)
             sources.append(table_ref)
-        job = cls(
-            job_id, sources, destination, client=client, job_config=config)
+        job = cls(job_id, sources, destination, client=client, job_config=config)
         job._set_properties(resource)
         return job
 
@@ -1750,10 +1761,10 @@ class ExtractJob(_AsyncJob):
     :param job_config:
         (Optional) Extra configuration options for the extract job.
     """
+
     _JOB_TYPE = 'extract'
 
-    def __init__(
-            self, job_id, source, destination_uris, client, job_config=None):
+    def __init__(self, job_id, source, destination_uris, client, job_config=None):
         super(ExtractJob, self).__init__(job_id, client)
 
         if job_config is None:
@@ -1820,12 +1831,10 @@ class ExtractJob(_AsyncJob):
         }
 
         configuration = self._configuration.to_api_repr()
+        _helpers._set_sub_prop(configuration, ['extract', 'sourceTable'], source_ref)
         _helpers._set_sub_prop(
-            configuration, ['extract', 'sourceTable'], source_ref)
-        _helpers._set_sub_prop(
-            configuration,
-            ['extract', 'destinationUris'],
-            self.destination_uris)
+            configuration, ['extract', 'destinationUris'], self.destination_uris
+        )
 
         return {
             'jobReference': self._properties['jobReference'],
@@ -1858,31 +1867,27 @@ class ExtractJob(_AsyncJob):
         job_id, config_resource = cls._get_resource_config(resource)
         config = ExtractJobConfig.from_api_repr(config_resource)
         source_config = _helpers._get_sub_prop(
-            config_resource, ['extract', 'sourceTable'])
+            config_resource, ['extract', 'sourceTable']
+        )
         dataset = DatasetReference(
-            source_config['projectId'], source_config['datasetId'])
+            source_config['projectId'], source_config['datasetId']
+        )
         source = dataset.table(source_config['tableId'])
         destination_uris = _helpers._get_sub_prop(
-            config_resource, ['extract', 'destinationUris'])
+            config_resource, ['extract', 'destinationUris']
+        )
 
-        job = cls(
-            job_id, source, destination_uris, client=client, job_config=config)
+        job = cls(job_id, source, destination_uris, client=client, job_config=config)
         job._set_properties(resource)
         return job
 
 
 def _from_api_repr_query_parameters(resource):
-    return [
-        _query_param_from_api_repr(mapping)
-        for mapping in resource
-    ]
+    return [_query_param_from_api_repr(mapping) for mapping in resource]
 
 
 def _to_api_repr_query_parameters(value):
-    return [
-        query_parameter.to_api_repr()
-        for query_parameter in value
-    ]
+    return [query_parameter.to_api_repr() for query_parameter in value]
 
 
 def _from_api_repr_udf_resources(resource):
@@ -1894,10 +1899,7 @@ def _from_api_repr_udf_resources(resource):
 
 
 def _to_api_repr_udf_resources(value):
-    return [
-        {udf_resource.udf_type: udf_resource.value}
-        for udf_resource in value
-    ]
+    return [{udf_resource.udf_type: udf_resource.value} for udf_resource in value]
 
 
 def _from_api_repr_table_defs(resource):
@@ -2092,8 +2094,7 @@ class QueryJobConfig(_JobConfig):
 
     @query_parameters.setter
     def query_parameters(self, values):
-        self._set_sub_prop(
-            'queryParameters', _to_api_repr_query_parameters(values))
+        self._set_sub_prop('queryParameters', _to_api_repr_query_parameters(values))
 
     @property
     def udf_resources(self):
@@ -2109,8 +2110,8 @@ class QueryJobConfig(_JobConfig):
     @udf_resources.setter
     def udf_resources(self, values):
         self._set_sub_prop(
-            'userDefinedFunctionResources',
-            _to_api_repr_udf_resources(values))
+            'userDefinedFunctionResources', _to_api_repr_udf_resources(values)
+        )
 
     @property
     def use_legacy_sql(self):
@@ -2167,8 +2168,7 @@ class QueryJobConfig(_JobConfig):
 
     @table_definitions.setter
     def table_definitions(self, values):
-        self._set_sub_prop(
-            'tableDefinitions',  _to_api_repr_table_defs(values))
+        self._set_sub_prop('tableDefinitions', _to_api_repr_table_defs(values))
 
     @property
     def time_partitioning(self):
@@ -2264,6 +2264,7 @@ class QueryJob(_AsyncJob):
     :param job_config:
         (Optional) Extra configuration options for the query job.
     """
+
     _JOB_TYPE = 'query'
     _UDF_KEY = 'userDefinedFunctionResources'
 
@@ -2638,8 +2639,7 @@ class QueryJob(_AsyncJob):
                   not yet completed.
         """
         parameters = []
-        undeclared = self._job_statistics().get(
-            'undeclaredQueryParameters', ())
+        undeclared = self._job_statistics().get('undeclaredQueryParameters', ())
 
         for parameter in undeclared:
             p_type = parameter['parameterType']
@@ -2694,9 +2694,12 @@ class QueryJob(_AsyncJob):
         # change once complete.
         if self.state != _DONE_STATE:
             self._query_results = self._client._get_query_results(
-                self.job_id, retry,
-                project=self.project, timeout_ms=timeout_ms,
-                location=self.location)
+                self.job_id,
+                retry,
+                project=self.project,
+                timeout_ms=timeout_ms,
+                location=self.location,
+            )
 
             # Only reload the job once we know the query is complete.
             # This will ensure that fields such as the destination table are
@@ -2738,8 +2741,8 @@ class QueryJob(_AsyncJob):
         # Return an iterator instead of returning the job.
         if not self._query_results:
             self._query_results = self._client._get_query_results(
-                self.job_id, retry, project=self.project,
-                location=self.location)
+                self.job_id, retry, project=self.project, location=self.location
+            )
 
         # If the query job is complete but there are no query results, this was
         # special job, such as a DDL query. Return an empty result set to
@@ -2779,6 +2782,7 @@ class QueryPlanEntryStep(object):
     :type substeps:
     :param substeps: names of substeps
     """
+
     def __init__(self, kind, substeps):
         self.kind = kind
         self.substeps = list(substeps)
@@ -2793,10 +2797,7 @@ class QueryPlanEntryStep(object):
         :rtype: :class:`QueryPlanEntryStep`
         :return: new instance built from the resource
         """
-        return cls(
-            kind=resource.get('kind'),
-            substeps=resource.get('substeps', ()),
-        )
+        return cls(kind=resource.get('kind'), substeps=resource.get('substeps', ()))
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -2848,7 +2849,8 @@ class QueryPlanEntry(object):
         if self._properties.get('startMs') is None:
             return None
         return _helpers._datetime_from_microseconds(
-                int(self._properties.get('startMs')) * 1000.0)
+            int(self._properties.get('startMs')) * 1000.0
+        )
 
     @property
     def end(self):
@@ -2856,15 +2858,18 @@ class QueryPlanEntry(object):
         if self._properties.get('endMs') is None:
             return None
         return _helpers._datetime_from_microseconds(
-                int(self._properties.get('endMs')) * 1000.0)
+            int(self._properties.get('endMs')) * 1000.0
+        )
 
     @property
     def input_stages(self):
         """List(int): Entry IDs for stages that were inputs for this stage."""
         if self._properties.get('inputStages') is None:
             return []
-        return [_helpers._int_or_none(entry)
-                for entry in self._properties.get('inputStages')]
+        return [
+            _helpers._int_or_none(entry)
+            for entry in self._properties.get('inputStages')
+        ]
 
     @property
     def parallel_inputs(self):
@@ -2876,8 +2881,7 @@ class QueryPlanEntry(object):
     @property
     def completed_parallel_inputs(self):
         """Union[int, None]: Number of parallel input segments completed."""
-        return _helpers._int_or_none(
-            self._properties.get('completedParallelInputs'))
+        return _helpers._int_or_none(self._properties.get('completedParallelInputs'))
 
     @property
     def wait_ms_avg(self):
@@ -3019,24 +3023,24 @@ class QueryPlanEntry(object):
         """Union[int, None]: Number of bytes written by this stage to
         intermediate shuffle.
         """
-        return _helpers._int_or_none(
-            self._properties.get('shuffleOutputBytes'))
+        return _helpers._int_or_none(self._properties.get('shuffleOutputBytes'))
 
     @property
     def shuffle_output_bytes_spilled(self):
         """Union[int, None]: Number of bytes written by this stage to
         intermediate shuffle and spilled to disk.
         """
-        return _helpers._int_or_none(
-            self._properties.get('shuffleOutputBytesSpilled'))
+        return _helpers._int_or_none(self._properties.get('shuffleOutputBytesSpilled'))
 
     @property
     def steps(self):
         """List(QueryPlanEntryStep): List of step operations performed by
         each worker in the stage.
         """
-        return [QueryPlanEntryStep.from_api_repr(step)
-                for step in self._properties.get('steps', [])]
+        return [
+            QueryPlanEntryStep.from_api_repr(step)
+            for step in self._properties.get('steps', [])
+        ]
 
 
 class TimelineEntry(object):
@@ -3114,8 +3118,7 @@ class UnknownJob(_AsyncJob):
         Returns:
             UnknownJob: Job corresponding to the resource.
         """
-        job_ref_properties = resource.get(
-            'jobReference', {'projectId': client.project})
+        job_ref_properties = resource.get('jobReference', {'projectId': client.project})
         job_ref = _JobReference._from_api_repr(job_ref_properties)
         job = cls(job_ref, client)
         # Populate the job reference with the project, even if it has been

@@ -12,17 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Model classes for datastore objects and properties for models."""
+"""Model classes for datastore objects and properties for models.
+
+.. testsetup:: *
+
+    from google.cloud import ndb
+"""
 
 
 import datetime
+import functools
 import inspect
 import json
 import pickle
 import zlib
 
+from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
 
+from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
@@ -38,6 +46,7 @@ __all__ = [
     "UnprojectedPropertyError",
     "ReadonlyPropertyError",
     "ComputedPropertyError",
+    "UserNotFoundError",
     "IndexProperty",
     "Index",
     "IndexState",
@@ -55,6 +64,7 @@ __all__ = [
     "GeoPtProperty",
     "PickleProperty",
     "JsonProperty",
+    "User",
     "UserProperty",
     "KeyProperty",
     "BlobKeyProperty",
@@ -86,9 +96,10 @@ __all__ = [
 ]
 
 
+_MEANING_PREDEFINED_ENTITY_USER = 20
 _MAX_STRING_LENGTH = 1500
 Key = key_module.Key
-BlobKey = NotImplemented  # From `google.appengine.api.datastore_types`
+BlobKey = _datastore_types.BlobKey
 GeoPt = helpers.GeoPoint
 Rollback = exceptions.Rollback
 
@@ -124,6 +135,10 @@ class ComputedPropertyError(ReadonlyPropertyError):
     """Raised when attempting to set or delete a computed property."""
 
 
+class UserNotFoundError(exceptions.Error):
+    """No email argument was specified, and no user is logged in."""
+
+
 class IndexProperty:
     """Immutable object representing a single property in an index."""
 
@@ -148,7 +163,7 @@ class IndexProperty:
     def __repr__(self):
         """Return a string representation."""
         return "{}(name={!r}, direction={!r})".format(
-            self.__class__.__name__, self.name, self.direction
+            type(self).__name__, self.name, self.direction
         )
 
     def __eq__(self, other):
@@ -195,7 +210,7 @@ class Index:
     def __repr__(self):
         """Return a string representation."""
         return "{}(kind={!r}, properties={!r}, ancestor={})".format(
-            self.__class__.__name__, self.kind, self.properties, self.ancestor
+            type(self).__name__, self.kind, self.properties, self.ancestor
         )
 
     def __eq__(self, other):
@@ -251,7 +266,7 @@ class IndexState:
     def __repr__(self):
         """Return a string representation."""
         return "{}(definition={!r}, state={!r}, id={:d})".format(
-            self.__class__.__name__, self.definition, self.state, self.id
+            type(self).__name__, self.definition, self.state, self.id
         )
 
     def __eq__(self, other):
@@ -547,25 +562,19 @@ class Property(ModelAttribute):
         """Verify the name of the property.
 
         Args:
-            name (Union[str, bytes]): The name of the property.
+            name (str): The name of the property.
 
         Returns:
-            bytes: The UTF-8 encoded version of the ``name``, if not already
-            passed in as bytes.
+            str: The ``name`` passed in.
 
         Raises:
-            TypeError: If the ``name`` is not a string or bytes.
+            TypeError: If the ``name`` is not a string.
             ValueError: If the name contains a ``.``.
         """
-        if isinstance(name, str):
-            name = name.encode("utf-8")
+        if not isinstance(name, str):
+            raise TypeError("Name {!r} is not a string".format(name))
 
-        if not isinstance(name, bytes):
-            raise TypeError(
-                "Name {!r} is not a string or byte string".format(name)
-            )
-
-        if b"." in name:
+        if "." in name:
             raise ValueError(
                 "Name {!r} cannot contain period characters".format(name)
             )
@@ -644,6 +653,18 @@ class Property(ModelAttribute):
 
         return validator
 
+    def _constructor_info(self):
+        """Helper for :meth:`__repr__`.
+
+        Yields:
+            Tuple[str, bool]: Pairs of argument name and a boolean indicating
+            if that argument is a keyword.
+        """
+        signature = inspect.signature(self.__init__)
+        for name, parameter in signature.parameters.items():
+            is_keyword = parameter.kind == inspect.Parameter.KEYWORD_ONLY
+            yield name, is_keyword
+
     def __repr__(self):
         """Return a compact unambiguous string representation of a property.
 
@@ -651,9 +672,8 @@ class Property(ModelAttribute):
         differ from the default values.
         """
         args = []
-        cls = self.__class__
-        signature = inspect.signature(self.__init__)
-        for name, parameter in signature.parameters.items():
+        cls = type(self)
+        for name, is_keyword in self._constructor_info():
             attr = "_{}".format(name)
             instance_val = getattr(self, attr)
             default_val = getattr(cls, attr)
@@ -664,11 +684,11 @@ class Property(ModelAttribute):
                 else:
                     as_str = repr(instance_val)
 
-                if parameter.kind == inspect.Parameter.KEYWORD_ONLY:
+                if is_keyword:
                     as_str = "{}={}".format(name, as_str)
                 args.append(as_str)
 
-        return "{}({})".format(self.__class__.__name__, ", ".join(args))
+        return "{}({})".format(cls.__name__, ", ".join(args))
 
     def _datastore_type(self, value):
         """Internal hook used by property filters.
@@ -692,6 +712,7 @@ class Property(ModelAttribute):
         Args:
             op (str): The comparison operator. One of ``=``, ``!=``, ``<``,
                 ``<=``, ``>``, ``>=`` or ``in``.
+            value (Any): The value to compare against.
 
         Returns:
             FilterNode: A FilterNode instance representing the requested
@@ -1536,11 +1557,123 @@ class Property(ModelAttribute):
         return self._get_value(entity)
 
 
+def _validate_key(value, entity=None):
+    """Validate a key.
+
+    Args:
+        value (.Key): The key to be validated.
+        entity (Optional[Model]): The entity that the key is being validated
+            for.
+
+    Returns:
+        .Key: The passed in ``value``.
+
+    Raises:
+        .BadValueError: If ``value`` is not a :class:`.Key`.
+        KindError: If ``entity`` is specified, but the kind of the entity
+            doesn't match the kind of ``value``.
+    """
+    if not isinstance(value, Key):
+        raise exceptions.BadValueError("Expected Key, got {!r}".format(value))
+
+    if entity and type(entity) not in (Model, Expando):
+        if value.kind() != entity._get_kind():
+            raise KindError(
+                "Expected Key kind to be {}; received "
+                "{}".format(entity._get_kind(), value.kind())
+            )
+
+    return value
+
+
 class ModelKey(Property):
+    """Special property to store a special "key" for a :class:`Model`.
+
+    This is intended to be used as a psuedo-:class:`Property` on each
+    :class:`Model` subclass. It is **not** intended for other usage in
+    application code.
+
+    It allows key-only queries to be done for a given kind.
+
+    .. automethod:: _validate
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    def __init__(self):
+        super(ModelKey, self).__init__()
+        self._name = "__key__"
+
+    def _comparison(self, op, value):
+        """Internal helper for comparison operators.
+
+        This uses the base implementation in :class:`Property`, but doesn't
+        allow comparison to :data:`None`.
+
+        Args:
+            op (str): The comparison operator. One of ``=``, ``!=``, ``<``,
+                ``<=``, ``>``, ``>=`` or ``in``.
+            value (Any): The value to compare against.
+
+        Returns:
+            FilterNode: A FilterNode instance representing the requested
+            comparison.
+
+        Raises:
+            .BadValueError: If ``value`` is :data:`None`.
+        """
+        if value is not None:
+            return super(ModelKey, self)._comparison(op, value)
+
+        raise exceptions.BadValueError(
+            "__key__ filter query can't be compared to None"
+        )
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (.Key): The value to check.
+
+        Returns:
+            .Key: The passed-in ``value``.
+        """
+        return _validate_key(value)
+
+    @staticmethod
+    def _set_value(entity, value):
+        """Set the entity key on an entity.
+
+        Args:
+            entity (Model): An entity to set the entity key on.
+            value (.Key): The key to be set on the entity.
+        """
+        if value is not None:
+            value = _validate_key(value, entity=entity)
+            value = entity._validate_key(value)
+
+        entity._entity_key = value
+
+    @staticmethod
+    def _get_value(entity):
+        """Get the entity key from an entity.
+
+        Args:
+            entity (Model): An entity to get the entity key from.
+
+        Returns:
+            .Key: The entity key stored on ``entity``.
+        """
+        return entity._entity_key
+
+    @staticmethod
+    def _delete_value(entity):
+        """Remove / disassociate the entity key from an entity.
+
+        Args:
+            entity (Model): An entity to remove the entity key from.
+        """
+        entity._entity_key = None
 
 
 class BooleanProperty(Property):
@@ -1928,6 +2061,21 @@ class TextProperty(BlobProperty):
 
         super(TextProperty, self).__init__(*args, **kwargs)
 
+    def _constructor_info(self):
+        """Helper for :meth:`__repr__`.
+
+        Yields:
+            Tuple[str, bool]: Pairs of argument name and a boolean indicating
+            if that argument is a keyword.
+        """
+        parent_init = super(TextProperty, self).__init__
+        signature = inspect.signature(parent_init)
+        for name, parameter in signature.parameters.items():
+            if name == "indexed":
+                continue
+            is_keyword = parameter.kind == inspect.Parameter.KEYWORD_ONLY
+            yield name, is_keyword
+
     @property
     def _indexed(self):
         """bool: Indicates that the property is not indexed."""
@@ -1964,8 +2112,8 @@ class TextProperty(BlobProperty):
 
         if self._indexed and encoded_length > _MAX_STRING_LENGTH:
             raise exceptions.BadValueError(
-                "Indexed value %s must be at most %d bytes"
-                % (self._name, _MAX_STRING_LENGTH)
+                "Indexed value {} must be at most {:d} "
+                "bytes".format(self._name, _MAX_STRING_LENGTH)
             )
 
     def _to_base_type(self, value):
@@ -2233,24 +2381,629 @@ class JsonProperty(BlobProperty):
         return json.loads(value.decode("ascii"))
 
 
-class UserProperty(Property):
-    __slots__ = ()
+@functools.total_ordering
+class User:
+    """Provides the email address, nickname, and ID for a Google Accounts user.
 
-    def __init__(self, *args, **kwargs):
+    .. note::
+
+        This class is a port of ``google.appengine.api.users.User``.
+        In the (legacy) Google App Engine standard environment, this
+        constructor relied on several environment variables to provide a
+        fallback for inputs. In particular:
+
+        * ``AUTH_DOMAIN`` for the ``_auth_domain`` argument
+        * ``USER_EMAIL`` for the ``email`` argument
+        * ``USER_ID`` for the ``_user_id`` argument
+        * ``FEDERATED_IDENTITY`` for the (now removed) ``federated_identity``
+          argument
+        * ``FEDERATED_PROVIDER`` for the (now removed) ``federated_provider``
+          argument
+
+        However in the gVisor Google App Engine runtime (e.g. Python 3.7),
+        none of these environment variables will be populated.
+
+    .. note::
+
+        Previous versions of the Google Cloud Datastore API had an explicit
+        ``UserValue`` field. However, the ``google.datastore.v1`` API returns
+        previously stored user values as an ``Entity`` with the meaning set to
+        ``ENTITY_USER=20``.
+
+    .. warning::
+
+        The ``federated_identity`` and ``federated_provider`` are
+        decommissioned and have been removed from the constructor. Additionally
+        ``_strict_mode`` has been removed from the constructor and the
+        ``federated_identity()`` and ``federated_provider()`` methods have been
+        removed from this class.
+
+    Args:
+        email (str): The user's email address.
+        _auth_domain (str): The auth domain for the current application.
+        _user_id (str): The user ID.
+
+    Raises:
+        ValueError: If the ``_auth_domain`` is not passed in.
+        UserNotFoundError: If ``email`` is empty.
+    """
+
+    __slots__ = ("_auth_domain", "_email", "_user_id")
+
+    def __init__(self, email=None, _auth_domain=None, _user_id=None):
+        if _auth_domain is None:
+            raise ValueError("_auth_domain is required")
+
+        if not email:
+            raise UserNotFoundError
+
+        self._auth_domain = _auth_domain
+        self._email = email
+        self._user_id = _user_id
+
+    def nickname(self):
+        """The nickname for this user.
+
+        A nickname is a human-readable string that uniquely identifies a Google
+        user with respect to this application, akin to a username. For some
+        users, this nickname is an email address or part of the email address.
+
+        Returns:
+            str: The nickname of the user.
+        """
+        if (
+            self._email
+            and self._auth_domain
+            and self._email.endswith("@" + self._auth_domain)
+        ):
+            suffix_len = len(self._auth_domain) + 1
+            return self._email[:-suffix_len]
+        else:
+            return self._email
+
+    def email(self):
+        """Returns the user's email address."""
+        return self._email
+
+    def user_id(self):
+        """Obtains the user ID of the user.
+
+        Returns:
+            Optional[str]: A permanent unique identifying string or
+            :data:`None`. If the email address was set explicity, this will
+            return :data:`None`.
+        """
+        return self._user_id
+
+    def auth_domain(self):
+        """Obtains the user's authentication domain.
+
+        Returns:
+            str: The authentication domain. This method is internal and
+            should not be used by client applications.
+        """
+        return self._auth_domain
+
+    def add_to_entity(self, entity, name):
+        """Add the user value to a datastore entity.
+
+        .. note::
+
+            This assumes, but does not check, that ``name`` is not already
+            set on ``entity`` or in the meanings of ``entity``.
+
+        Args:
+            entity (~google.cloud.datastore.entity.Entity): An entity that
+                contains a user value as the field ``name``.
+            name (str): The name of the field containing this user value.
+        """
+        user_entity = entity_module.Entity()
+        entity[name] = user_entity
+        entity._meanings[name] = (_MEANING_PREDEFINED_ENTITY_USER, user_entity)
+
+        # Set required fields.
+        user_entity["email"] = self._email
+        user_entity.exclude_from_indexes.add("email")
+        user_entity["auth_domain"] = self._auth_domain
+        user_entity.exclude_from_indexes.add("auth_domain")
+        # Set optional field.
+        if self._user_id:
+            user_entity["user_id"] = self._user_id
+            user_entity.exclude_from_indexes.add("user_id")
+
+    @classmethod
+    def read_from_entity(cls, entity, name):
+        """Convert the user value to a datastore entity.
+
+        Args:
+            entity (~google.cloud.datastore.entity.Entity): An entity that
+                contains a user value as the field ``name``.
+            name (str): The name of the field containing this user value.
+
+        Raises:
+            ValueError: If the stored meaning for the ``name`` field is not
+                equal to ``ENTITY_USER=20``.
+            ValueError: If the value stored in the meanings for ``entity``
+                is not the actual stored value under ``name``.
+        """
+        # NOTE: This may fail in a ``KeyError``.
+        user_entity = entity[name]
+        # NOTE: This may result in a ``ValueError`` for failed unpacking.
+        meaning, value = entity._meanings.get(name, (0, None))
+        if meaning != _MEANING_PREDEFINED_ENTITY_USER:
+            raise ValueError("User values should have meaning=20")
+        if user_entity is not value:
+            raise ValueError("Unexpected value stored for meaning")
+
+        # NOTE: We do not check ``exclude_from_indexes``.
+        kwargs = {
+            "email": user_entity["email"],
+            "_auth_domain": user_entity["auth_domain"],
+        }
+        if "user_id" in user_entity:
+            kwargs["_user_id"] = user_entity["user_id"]
+        return cls(**kwargs)
+
+    def __str__(self):
+        return str(self.nickname())
+
+    def __repr__(self):
+        values = ["email={!r}".format(self._email)]
+        if self._user_id:
+            values.append("_user_id={!r}".format(self._user_id))
+        return "users.User({})".format(", ".join(values))
+
+    def __hash__(self):
+        return hash((self._email, self._auth_domain))
+
+    def __eq__(self, other):
+        if not isinstance(other, User):
+            return NotImplemented
+
+        return (
+            self._email == other._email
+            and self._auth_domain == other._auth_domain
+        )
+
+    def __lt__(self, other):
+        if not isinstance(other, User):
+            return NotImplemented
+
+        return (self._email, self._auth_domain) < (
+            other._email,
+            other._auth_domain,
+        )
+
+
+class UserProperty(Property):
+    """A property that contains :class:`.User` values.
+
+    .. warning::
+
+        This exists for backwards compatibility with existing Cloud Datastore
+        schemas only; storing :class:`.User` objects directly in Cloud
+        Datastore is not recommended.
+
+    .. warning::
+
+        The ``auto_current_user`` and ``auto_current_user_add`` arguments are
+        no longer supported.
+
+    .. note::
+
+        On Google App Engine standard, after saving a :class:`User` the user ID
+        would automatically be populated by the datastore, even if it wasn't
+        set in the :class:`User` value being stored. For example:
+
+        .. code-block:: python
+
+            >>> class Simple(ndb.Model):
+            ...     u = ndb.UserProperty()
+            ...
+            >>> entity = Simple(u=users.User("user@example.com"))
+            >>> entity.u.user_id() is None
+            True
+            >>>
+            >>> entity.put()
+            >>> # Reload without the cached values
+            >>> entity = entity.key.get(use_cache=False, use_memcache=False)
+            >>> entity.u.user_id()
+            '...9174...'
+
+        However in the gVisor Google App Engine runtime (e.g. Python 3.7),
+        this will behave differently. The user ID will only be stored if it
+        is manually set in the :class:`User` instance, either by the running
+        application or by retrieving a stored :class:`User` that already has
+        a user ID set.
+
+    .. automethod:: _validate
+    .. automethod:: _prepare_for_put
+
+    Args:
+        name (str): The name of the property.
+        auto_current_user (bool): Deprecated flag. When supported, if this flag
+            was set to :data:`True`, the property value would be set to the
+            currently signed-in user whenever the model instance is stored in
+            the datastore, overwriting the property's previous value.
+            This was useful for tracking which user modifies a model instance.
+        auto_current_user_add (bool): Deprecated flag. When supported, if this
+            flag was set to :data:`True`, the property value would be set to
+            the urrently signed-in user he first time the model instance is
+            stored in the datastore, unless the property has already been
+            assigned a value. This was useful for tracking which user creates
+            a model instance, which may not be the same user that modifies it
+            later.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (bytes): The default value for this property.
+        choices (Iterable[bytes]): A container of allowed values for this
+            property.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+
+    Raises:
+        NotImplementedError: If ``auto_current_user`` is provided.
+        NotImplementedError: If ``auto_current_user_add`` is provided.
+    """
+
+    _auto_current_user = False
+    _auto_current_user_add = False
+
+    def __init__(
+        self,
+        name=None,
+        *,
+        auto_current_user=None,
+        auto_current_user_add=None,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        super(UserProperty, self).__init__(
+            name=name,
+            indexed=indexed,
+            repeated=repeated,
+            required=required,
+            default=default,
+            choices=choices,
+            validator=validator,
+            verbose_name=verbose_name,
+            write_empty_list=write_empty_list,
+        )
+        if auto_current_user is not None:
+            raise NotImplementedError(
+                "The auto_current_user argument is no longer supported."
+            )
+        if auto_current_user_add is not None:
+            raise NotImplementedError(
+                "The auto_current_user_add argument is no longer supported."
+            )
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (User): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`User`.
+        """
+        if not isinstance(value, User):
+            raise exceptions.BadValueError(
+                "Expected User, got {!r}".format(value)
+            )
+
+    def _prepare_for_put(self, entity):
+        """Pre-put hook
+
+        This is a no-op. In previous versions of ``ndb``, this method
+        populated the value based on ``auto_current_user`` or
+        ``auto_current_user_add``, but these flags have been disabled.
+
+        Args:
+            entity (Model): An entity with values.
+        """
+
+    def _db_set_value(self, v, p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
 class KeyProperty(Property):
-    __slots__ = ()
+    """A property that contains :class:`.Key` values.
 
-    def __init__(self, *args, **kwargs):
+    The constructor for :class:`KeyProperty` allows at most two positional
+    arguments. Any usage of :data:`None` as a positional argument will
+    be ignored. Any of the following signatures are allowed:
+
+    .. testsetup:: key-property-constructor
+
+        from google.cloud import ndb
+
+
+        class SimpleModel(ndb.Model):
+            pass
+
+    .. doctest:: key-property-constructor
+
+        >>> name = "my_value"
+        >>> ndb.KeyProperty(name)
+        KeyProperty('my_value')
+        >>> ndb.KeyProperty(SimpleModel)
+        KeyProperty(kind='SimpleModel')
+        >>> ndb.KeyProperty(name, SimpleModel)
+        KeyProperty('my_value', kind='SimpleModel')
+        >>> ndb.KeyProperty(SimpleModel, name)
+        KeyProperty('my_value', kind='SimpleModel')
+
+    The type of the positional arguments will be used to determine their
+    purpose: a string argument is assumed to be the ``name`` and a
+    :class:`type` argument is assumed to be the ``kind`` (and checked that
+    the type is a subclass of :class:`Model`).
+
+    .. automethod:: _validate
+
+    Args:
+        name (str): The name of the property.
+        kind (Union[type, str]): The (optional) kind to be stored. If provided
+            as a positional argument, this must be a subclass of :class:`Model`
+            otherwise the kind name is sufficient.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (.Key): The default value for this property.
+        choices (Iterable[.Key]): A container of allowed values for this
+            property.
+        validator (Callable[[~google.cloud.ndb.model.Property, .Key], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+    """
+
+    _kind = None
+
+    def __init__(
+        self,
+        *args,
+        name=None,
+        kind=None,
+        indexed=None,
+        repeated=None,
+        required=None,
+        default=None,
+        choices=None,
+        validator=None,
+        verbose_name=None,
+        write_empty_list=None
+    ):
+        name, kind = self._handle_positional(args, name, kind)
+        super(KeyProperty, self).__init__(
+            name=name,
+            indexed=indexed,
+            repeated=repeated,
+            required=required,
+            default=default,
+            choices=choices,
+            validator=validator,
+            verbose_name=verbose_name,
+            write_empty_list=write_empty_list,
+        )
+        if kind is not None:
+            self._kind = kind
+
+    @staticmethod
+    def _handle_positional(args, name, kind):
+        """Handle positional arguments.
+
+        In particular, assign them to the "correct" values and make sure
+        they don't collide with the relevant keyword arguments.
+
+        Args:
+            args (tuple): The positional arguments provided to the
+                constructor.
+            name (Optional[str]): The name that was provided as a keyword
+                argument to the constructor.
+            kind (Optional[Union[type, str]]): The kind that was provided as a
+                keyword argument to the constructor.
+
+        Returns:
+            Tuple[Optional[str], Optional[str]]: The ``name`` and ``kind``
+            inferred from the arguments. Either may be :data:`None`.
+
+        Raises:
+            TypeError: If ``args`` has more than 2 elements.
+            TypeError: If a valid ``name`` type (i.e. a string) is specified
+                twice in ``args``.
+            TypeError: If a valid ``kind`` type (i.e. a subclass of
+                :class:`Model`) is specified twice in ``args``.
+            TypeError: If an element in ``args`` is not a :class:`str` or a
+                subclass of :class:`Model`.
+            TypeError: If a ``name`` is specified both in ``args`` and via
+                the ``name`` keyword.
+            TypeError: If a ``kind`` is specified both in ``args`` and via
+                the ``kind`` keyword.
+            TypeError: If a ``kind`` was provided via ``keyword`` and is
+                not a :class:`str` or a subclass of :class:`Model`.
+        """
+        # Limit positional arguments.
+        if len(args) > 2:
+            raise TypeError(
+                "The KeyProperty constructor accepts at most two "
+                "positional arguments."
+            )
+
+        # Filter out None
+        args = [value for value in args if value is not None]
+
+        # Determine the name / kind inferred from the positional arguments.
+        name_via_positional = None
+        kind_via_positional = None
+        for value in args:
+            if isinstance(value, str):
+                if name_via_positional is None:
+                    name_via_positional = value
+                else:
+                    raise TypeError("You can only specify one name")
+            elif isinstance(value, type) and issubclass(value, Model):
+                if kind_via_positional is None:
+                    kind_via_positional = value
+                else:
+                    raise TypeError("You can only specify one kind")
+            else:
+                raise TypeError(
+                    "Unexpected positional argument: {!r}".format(value)
+                )
+
+        # Reconcile the two possible ``name``` values.
+        if name_via_positional is not None:
+            if name is None:
+                name = name_via_positional
+            else:
+                raise TypeError("You can only specify name once")
+
+        # Reconcile the two possible ``kind``` values.
+        if kind_via_positional is None:
+            if isinstance(kind, type) and issubclass(kind, Model):
+                kind = kind._get_kind()
+        else:
+            if kind is None:
+                kind = kind_via_positional._get_kind()
+            else:
+                raise TypeError("You can only specify kind once")
+
+        # Make sure the ``kind`` is a ``str``.
+        if kind is not None and not isinstance(kind, str):
+            raise TypeError("kind must be a Model class or a string")
+
+        return name, kind
+
+    def _constructor_info(self):
+        """Helper for :meth:`__repr__`.
+
+        Yields:
+            Tuple[str, bool]: Pairs of argument name and a boolean indicating
+            if that argument is a keyword.
+        """
+        yield "name", False
+        yield "kind", True
+        from_inspect = super(KeyProperty, self)._constructor_info()
+        for name, is_keyword in from_inspect:
+            if name in ("args", "name", "kind"):
+                continue
+            yield name, is_keyword
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (.Key): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a :class:`.Key`.
+            .BadValueError: If ``value`` is a partial :class:`.Key` (i.e. it
+                has no name or ID set).
+            .BadValueError: If the current property has an associated ``kind``
+                and ``value`` does not match that kind.
+        """
+        if not isinstance(value, Key):
+            raise exceptions.BadValueError(
+                "Expected Key, got {!r}".format(value)
+            )
+
+        # Reject incomplete keys.
+        if not value.id():
+            raise exceptions.BadValueError(
+                "Expected complete Key, got {!r}".format(value)
+            )
+
+        # Verify kind if provided.
+        if self._kind is not None:
+            if value.kind() != self._kind:
+                raise exceptions.BadValueError(
+                    "Expected Key with kind={!r}, got "
+                    "{!r}".format(self._kind, value)
+                )
+
+    def _db_set_value(self, v, unused_p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
 class BlobKeyProperty(Property):
+    """A property containing :class:`~google.cloud.ndb.model.BlobKey` values.
+
+    .. automethod:: _validate
+    """
+
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (~google.cloud.ndb.model.BlobKey): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is not a
+                :class:`~google.cloud.ndb.model.BlobKey`.
+        """
+        if not isinstance(value, BlobKey):
+            raise exceptions.BadValueError(
+                "Expected BlobKey, got {!r}".format(value)
+            )
+
+    def _db_set_value(self, v, p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
         raise NotImplementedError
 
 
@@ -2288,9 +3041,9 @@ class DateTimeProperty(Property):
             multiple values.
         required (bool): Indicates if this property is required on the given
             model type.
-        default (bytes): The default value for this property.
-        choices (Iterable[bytes]): A container of allowed values for this
-            property.
+        default (~datetime.datetime): The default value for this property.
+        choices (Iterable[~datetime.datetime]): A container of allowed values
+            for this property.
         validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
             validator to be used to check values.
         verbose_name (str): A longer, user-friendly name for this property.
@@ -2567,27 +3320,450 @@ class ComputedProperty(GenericProperty):
 
 
 class MetaModel(type):
-    __slots__ = ()
+    """Metaclass for Model.
 
-    def __new__(self, *args, **kwargs):
-        raise NotImplementedError
+    This exists to fix up the properties -- they need to know their name. For
+    example, defining a model:
+
+    .. code-block:: python
+
+        class Book(ndb.Model):
+            pages = ndb.IntegerProperty()
+
+    the ``Book.pages`` property doesn't have the name ``pages`` assigned.
+    This is accomplished by calling the ``_fix_up_properties()`` method on the
+    class itself.
+    """
+
+    def __init__(cls, name, bases, classdict):
+        super(MetaModel, cls).__init__(name, bases, classdict)
+        cls._fix_up_properties()
+
+    def __repr__(cls):
+        props = []
+        for _, prop in sorted(cls._properties.items()):
+            props.append("{}={!r}".format(prop._code_name, prop))
+        return "{}<{}>".format(cls.__name__, ", ".join(props))
 
 
-class Model:
-    __slots__ = ()
+class Model(metaclass=MetaModel):
+    """A class describing Cloud Datastore entities.
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    Model instances are usually called entities. All model classes
+    inheriting from :class:`Model` automatically have :class:`MetaModel` as
+    their metaclass, so that the properties are fixed up properly after the
+    class is defined.
+
+    Because of this, you cannot use the same :class:`Property` object to
+    describe multiple properties -- you must create separate :class:`Property`
+    objects for each property. For example, this does not work:
+
+    .. code-block:: python
+
+        reuse_prop = ndb.StringProperty()
+
+        class Wrong(ndb.Model):
+            first = reuse_prop
+            second = reuse_prop
+
+    instead each class attribute needs to be distinct:
+
+    .. code-block:: python
+
+        class NotWrong(ndb.Model):
+            first = ndb.StringProperty()
+            second = ndb.StringProperty()
+
+    The "kind" for a given :class:`Model` subclass is normally equal to the
+    class name (exclusive of the module name or any other parent scope). To
+    override the kind, define :meth:`_get_kind`, as follows:
+
+    .. code-block:: python
+
+        class MyModel(ndb.Model):
+            @classmethod
+            def _get_kind(cls):
+                return "AnotherKind"
+
+    A newly constructed entity will not be persisted to Cloud Datastore without
+    an explicit call to :meth:`put`.
+
+    User-defined properties can be passed to the constructor via keyword
+    arguments:
+
+    .. doctest:: model-keywords
+
+        >>> class MyModel(ndb.Model):
+        ...     value = ndb.FloatProperty()
+        ...     description = ndb.StringProperty()
+        ...
+        >>> MyModel(value=7.34e22, description="Mass of the moon")
+        MyModel(description='Mass of the moon', value=7.34e+22)
+
+    In addition to user-defined properties, there are six accepted keyword
+    arguments:
+
+    * ``key``
+    * ``id``
+    * ``app``
+    * ``namespace``
+    * ``parent``
+    * ``projection``
+
+    Of these, ``key`` is a public attribute on :class:`Model` instances:
+
+    .. testsetup:: model-key
+
+        from google.cloud import ndb
+
+
+        class MyModel(ndb.Model):
+            value = ndb.FloatProperty()
+            description = ndb.StringProperty()
+
+    .. doctest:: model-key
+
+        >>> entity1 = MyModel(id=11)
+        >>> entity1.key
+        Key('MyModel', 11)
+        >>> entity2 = MyModel(parent=entity1.key)
+        >>> entity2.key
+        Key('MyModel', 11, 'MyModel', None)
+        >>> entity3 = MyModel(key=ndb.Key(MyModel, "e-three"))
+        >>> entity3.key
+        Key('MyModel', 'e-three')
+
+    However, a user-defined property can be defined on the model with the
+    same name as one of those keyword arguments. In this case, the user-defined
+    property "wins":
+
+    .. doctest:: model-keyword-id-collision
+
+        >>> class IDCollide(ndb.Model):
+        ...     id = ndb.FloatProperty()
+        ...
+        >>> entity = IDCollide(id=17)
+        >>> entity
+        IDCollide(id=17.0)
+        >>> entity.key is None
+        True
+
+    In such cases of argument "collision", an underscore can be used as a
+    keyword argument prefix:
+
+    .. doctest:: model-keyword-id-collision
+
+        >>> entity = IDCollide(id=17, _id=2009)
+        >>> entity
+        IDCollide(key=Key('IDCollide', 2009), id=17.0)
+
+    For the **very** special case of a property named ``key``, the ``key``
+    attribute will no longer be the entity's key but instead will be the
+    property value. Instead, the entity's key is accessible via ``_key``:
+
+    .. doctest:: model-keyword-key-collision
+
+        >>> class KeyCollide(ndb.Model):
+        ...     key = ndb.StringProperty()
+        ...
+        >>> entity1 = KeyCollide(key="Take fork in road", id=987)
+        >>> entity1
+        KeyCollide(_key=Key('KeyCollide', 987), key='Take fork in road')
+        >>> entity1.key
+        'Take fork in road'
+        >>> entity1._key
+        Key('KeyCollide', 987)
+        >>>
+        >>> entity2 = KeyCollide(key="Go slow", _key=ndb.Key(KeyCollide, 1))
+        >>> entity2
+        KeyCollide(_key=Key('KeyCollide', 1), key='Go slow')
+
+    The constructor accepts keyword arguments based on the properties
+    defined on model subclass. However, using keywords for nonexistent
+    or non-:class:`Property` class attributes will cause a failure:
+
+    .. doctest:: model-keywords-fail
+
+        >>> class Simple(ndb.Model):
+        ...     marker = 1001
+        ...     some_name = ndb.StringProperty()
+        ...
+        >>> Simple(some_name="Value set here.")
+        Simple(some_name='Value set here.')
+        >>> Simple(some_name="Value set here.", marker=29)
+        Traceback (most recent call last):
+          ...
+        TypeError: Cannot set non-property marker
+        >>> Simple(some_name="Value set here.", missing=29)
+        Traceback (most recent call last):
+          ...
+        AttributeError: type object 'Simple' has no attribute 'missing'
+
+    .. automethod:: _get_kind
+
+    Args:
+        key (Key): Datastore key for this entity (kind must match this model).
+            If ``key`` is used, ``id`` and ``parent`` must be unset or
+            :data:`None`.
+        id (str): Key ID for this model. If ``id`` is used, ``key`` must be
+            :data:`None`.
+        parent (Key): The parent model or :data:`None` for a top-level model.
+            If ``parent`` is used, ``key`` must be :data:`None`.
+        namespace (str): Namespace for the entity key.
+        app (str): Application ID for the entity key.
+        kwargs (Dict[str, Any]): Additional keyword arguments. These should map
+            to properties of this model.
+
+    Raises:
+        .BadArgumentError: If the constructor is called with ``key`` and one
+            of ``id``, ``app``, ``namespace`` or ``parent`` specified.
+    """
+
+    # Class variables updated by _fix_up_properties()
+    _properties = None
+    _has_repeated = False
+    _kind_map = {}  # Dict mapping {kind: Model subclass}
+
+    # Defaults for instance variables.
+    _entity_key = None
+    _values = None
+    _projection = ()  # Tuple of names of projected properties.
+
+    # Hardcoded pseudo-property for the key.
+    _key = ModelKey()
+    key = _key
+    """A special pseudo-property for key queries.
+
+    For example:
+
+    .. code-block:: python
+
+        key = ndb.Key(MyModel, 808)
+        query = MyModel.query(MyModel.key > key)
+
+    will create a query for the reserved ``__key__`` property.
+    """
+
+    def __init__(_self, **kwargs):
+        # NOTE: We use ``_self`` rather than ``self`` so users can define a
+        #       property named 'self'.
+        self = _self
+        key = self._get_arg(kwargs, "key")
+        id_ = self._get_arg(kwargs, "id")
+        app = self._get_arg(kwargs, "app")
+        namespace = self._get_arg(kwargs, "namespace")
+        parent = self._get_arg(kwargs, "parent")
+        projection = self._get_arg(kwargs, "projection")
+
+        key_parts_unspecified = (
+            id_ is None
+            and parent is None
+            and app is None
+            and namespace is None
+        )
+        if key is not None:
+            if not key_parts_unspecified:
+                raise exceptions.BadArgumentError(
+                    "Model constructor given ``key`` does not accept "
+                    "``id``, ``app``, ``namespace``, or ``parent``."
+                )
+            self._key = _validate_key(key, entity=self)
+        elif not key_parts_unspecified:
+            self._key = Key(
+                self._get_kind(),
+                id_,
+                parent=parent,
+                app=app,
+                namespace=namespace,
+            )
+
+        self._values = {}
+        self._set_attributes(kwargs)
+        # Set the projection last, otherwise it will prevent _set_attributes().
+        if projection:
+            self._set_projection(projection)
+
+    @classmethod
+    def _get_arg(cls, kwargs, keyword):
+        """Parse keywords for fields that aren't user-defined properties.
+
+        This is used to re-map special keyword arguments in the presence
+        of name collision. For example if ``id`` is a property on the current
+        :class:`Model`, then it may be desirable to pass ``_id`` (instead of
+        ``id``) to the constructor.
+
+        If the argument is found as ``_{keyword}`` or ``{keyword}``, it will
+        be removed from ``kwargs``.
+
+        Args:
+            kwargs (Dict[str, Any]): A keyword arguments dictionary.
+            keyword (str): A keyword to be converted.
+
+        Returns:
+            Optional[Any]: The ``keyword`` argument, if found.
+        """
+        alt_keyword = "_" + keyword
+        if alt_keyword in kwargs:
+            return kwargs.pop(alt_keyword)
+
+        if keyword in kwargs:
+            obj = getattr(cls, keyword, None)
+            if not isinstance(obj, Property) or isinstance(obj, ModelKey):
+                return kwargs.pop(keyword)
+
+        return None
+
+    def _set_attributes(self, kwargs):
+        """Set attributes from keyword arguments.
+
+        Args:
+            kwargs (Dict[str, Any]): A keyword arguments dictionary.
+        """
+        cls = type(self)
+        for name, value in kwargs.items():
+            # NOTE: This raises an ``AttributeError`` for unknown properties
+            #       and that is the intended behavior.
+            prop = getattr(cls, name)
+            if not isinstance(prop, Property):
+                raise TypeError("Cannot set non-property {}".format(name))
+            prop._set_value(self, value)
+
+    def __repr__(self):
+        """Return an unambiguous string representation of an entity."""
+        by_args = []
+        has_key_property = False
+        for prop in self._properties.values():
+            if prop._code_name == "key":
+                has_key_property = True
+
+            if not prop._has_value(self):
+                continue
+
+            value = prop._retrieve_value(self)
+            if value is None:
+                arg_repr = "None"
+            elif prop._repeated:
+                arg_reprs = [
+                    prop._value_to_repr(sub_value) for sub_value in value
+                ]
+                arg_repr = "[{}]".format(", ".join(arg_reprs))
+            else:
+                arg_repr = prop._value_to_repr(value)
+
+            by_args.append("{}={}".format(prop._code_name, arg_repr))
+
+        by_args.sort()
+
+        if self._key is not None:
+            if has_key_property:
+                entity_key_name = "_key"
+            else:
+                entity_key_name = "key"
+            by_args.insert(0, "{}={!r}".format(entity_key_name, self._key))
+
+        if self._projection:
+            by_args.append("_projection={!r}".format(self._projection))
+
+        return "{}({})".format(type(self).__name__, ", ".join(by_args))
 
     @classmethod
     def _get_kind(cls):
-        """Return the kind name for this class.
+        """str: Return the kind name for this class.
 
         This defaults to ``cls.__name__``; users may override this to give a
         class a different name when stored in Google Cloud Datastore than the
         name of the class.
         """
         return cls.__name__
+
+    def _set_projection(self, projection):
+        """Set the projected properties for this instance.
+
+        Args:
+            projection (Union[list, tuple]): An iterable of strings
+                representing the projection for the model instance.
+        """
+        self._projection = tuple(projection)
+
+    @classmethod
+    def _fix_up_properties(cls):
+        """Fix up the properties by calling their ``_fix_up()`` method.
+
+        .. note::
+
+            This is called by :class:`MetaModel`, but may also be called
+            manually after dynamically updating a model class.
+
+        Raises:
+            KindError: If the returned kind from ``_get_kind()`` is not a
+                :class:`str`.
+            TypeError: If a property on this model has a name beginning with
+                an underscore.
+        """
+        kind = cls._get_kind()
+        if not isinstance(kind, str):
+            raise KindError(
+                "Class {} defines a ``_get_kind()`` method that returns "
+                "a non-string ({!r})".format(cls.__name__, kind)
+            )
+
+        cls._properties = {}
+
+        # Skip the classes in ``ndb.model``.
+        if cls.__module__ == __name__:
+            return
+
+        for name in dir(cls):
+            attr = getattr(cls, name, None)
+            if isinstance(attr, ModelAttribute) and not isinstance(
+                attr, ModelKey
+            ):
+                if name.startswith("_"):
+                    raise TypeError(
+                        "ModelAttribute {} cannot begin with an underscore "
+                        "character. ``_`` prefixed attributes are reserved "
+                        "for temporary Model instance values.".format(name)
+                    )
+                attr._fix_up(cls, name)
+                if isinstance(attr, Property):
+                    if attr._repeated or (
+                        isinstance(attr, StructuredProperty)
+                        and attr._modelclass._has_repeated
+                    ):
+                        cls._has_repeated = True
+                    cls._properties[attr._name] = attr
+
+        cls._update_kind_map()
+
+    @classmethod
+    def _update_kind_map(cls):
+        """Update the kind map to include this class."""
+        cls._kind_map[cls._get_kind()] = cls
+
+    @staticmethod
+    def _validate_key(key):
+        """Validation for ``_key`` attribute (designed to be overridden).
+
+        Args:
+            key (.Key): Proposed key to use for this entity.
+
+        Returns:
+            .Key: The validated ``key``.
+        """
+        return key
+
+    def _put(self, **ctx_options):
+        """Write this entity to Cloud Datastore.
+
+        If the operation creates or completes a key, the entity's key
+        attribute is set to the new, complete key.
+
+        Raises:
+            NotImplementedError: Always. This is virtual (for now).
+        """
+        raise NotImplementedError
+
+    put = _put
 
 
 class Expando(Model):

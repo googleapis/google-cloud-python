@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -54,10 +55,7 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -68,26 +66,30 @@ class CustomException(Exception):
 class TestClusterControllerClient(object):
     def test_create_cluster(self):
         # Setup Expected Response
-        project_id_2 = 'projectId2939242356'
-        cluster_name = 'clusterName-1018081872'
-        cluster_uuid = 'clusterUuid-1017854240'
+        project_id_2 = "projectId2939242356"
+        cluster_name = "clusterName-1018081872"
+        cluster_uuid = "clusterUuid-1017854240"
         expected_response = {
-            'project_id': project_id_2,
-            'cluster_name': cluster_name,
-            'cluster_uuid': cluster_uuid
+            "project_id": project_id_2,
+            "cluster_name": cluster_name,
+            "cluster_uuid": cluster_uuid,
         }
         expected_response = clusters_pb2.Cluster(**expected_response)
         operation = operations_pb2.Operation(
-            name='operations/test_create_cluster', done=True)
+            name="operations/test_create_cluster", done=True
+        )
         operation.response.Pack(expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
         cluster = {}
 
         response = client.create_cluster(project_id, region, cluster)
@@ -96,7 +98,8 @@ class TestClusterControllerClient(object):
 
         assert len(channel.requests) == 1
         expected_request = clusters_pb2.CreateClusterRequest(
-            project_id=project_id, region=region, cluster=cluster)
+            project_id=project_id, region=region, cluster=cluster
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -104,16 +107,20 @@ class TestClusterControllerClient(object):
         # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
-            name='operations/test_create_cluster_exception', done=True)
+            name="operations/test_create_cluster_exception", done=True
+        )
         operation.error.CopyFrom(error)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
         cluster = {}
 
         response = client.create_cluster(project_id, region, cluster)
@@ -122,32 +129,37 @@ class TestClusterControllerClient(object):
 
     def test_update_cluster(self):
         # Setup Expected Response
-        project_id_2 = 'projectId2939242356'
-        cluster_name_2 = 'clusterName2875867491'
-        cluster_uuid = 'clusterUuid-1017854240'
+        project_id_2 = "projectId2939242356"
+        cluster_name_2 = "clusterName2875867491"
+        cluster_uuid = "clusterUuid-1017854240"
         expected_response = {
-            'project_id': project_id_2,
-            'cluster_name': cluster_name_2,
-            'cluster_uuid': cluster_uuid
+            "project_id": project_id_2,
+            "cluster_name": cluster_name_2,
+            "cluster_uuid": cluster_uuid,
         }
         expected_response = clusters_pb2.Cluster(**expected_response)
         operation = operations_pb2.Operation(
-            name='operations/test_update_cluster', done=True)
+            name="operations/test_update_cluster", done=True
+        )
         operation.response.Pack(expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
-        cluster_name = 'clusterName-1018081872'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
+        cluster_name = "clusterName-1018081872"
         cluster = {}
         update_mask = {}
 
-        response = client.update_cluster(project_id, region, cluster_name,
-                                         cluster, update_mask)
+        response = client.update_cluster(
+            project_id, region, cluster_name, cluster, update_mask
+        )
         result = response.result()
         assert expected_response == result
 
@@ -157,7 +169,8 @@ class TestClusterControllerClient(object):
             region=region,
             cluster_name=cluster_name,
             cluster=cluster,
-            update_mask=update_mask)
+            update_mask=update_mask,
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -165,22 +178,27 @@ class TestClusterControllerClient(object):
         # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
-            name='operations/test_update_cluster_exception', done=True)
+            name="operations/test_update_cluster_exception", done=True
+        )
         operation.error.CopyFrom(error)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
-        cluster_name = 'clusterName-1018081872'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
+        cluster_name = "clusterName-1018081872"
         cluster = {}
         update_mask = {}
 
-        response = client.update_cluster(project_id, region, cluster_name,
-                                         cluster, update_mask)
+        response = client.update_cluster(
+            project_id, region, cluster_name, cluster, update_mask
+        )
         exception = response.exception()
         assert exception.errors[0] == error
 
@@ -189,17 +207,21 @@ class TestClusterControllerClient(object):
         expected_response = {}
         expected_response = empty_pb2.Empty(**expected_response)
         operation = operations_pb2.Operation(
-            name='operations/test_delete_cluster', done=True)
+            name="operations/test_delete_cluster", done=True
+        )
         operation.response.Pack(expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
-        cluster_name = 'clusterName-1018081872'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
+        cluster_name = "clusterName-1018081872"
 
         response = client.delete_cluster(project_id, region, cluster_name)
         result = response.result()
@@ -207,7 +229,8 @@ class TestClusterControllerClient(object):
 
         assert len(channel.requests) == 1
         expected_request = clusters_pb2.DeleteClusterRequest(
-            project_id=project_id, region=region, cluster_name=cluster_name)
+            project_id=project_id, region=region, cluster_name=cluster_name
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -215,17 +238,21 @@ class TestClusterControllerClient(object):
         # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
-            name='operations/test_delete_cluster_exception', done=True)
+            name="operations/test_delete_cluster_exception", done=True
+        )
         operation.error.CopyFrom(error)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
-        cluster_name = 'clusterName-1018081872'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
+        cluster_name = "clusterName-1018081872"
 
         response = client.delete_cluster(project_id, region, cluster_name)
         exception = response.exception()
@@ -233,66 +260,72 @@ class TestClusterControllerClient(object):
 
     def test_get_cluster(self):
         # Setup Expected Response
-        project_id_2 = 'projectId2939242356'
-        cluster_name_2 = 'clusterName2875867491'
-        cluster_uuid = 'clusterUuid-1017854240'
+        project_id_2 = "projectId2939242356"
+        cluster_name_2 = "clusterName2875867491"
+        cluster_uuid = "clusterUuid-1017854240"
         expected_response = {
-            'project_id': project_id_2,
-            'cluster_name': cluster_name_2,
-            'cluster_uuid': cluster_uuid
+            "project_id": project_id_2,
+            "cluster_name": cluster_name_2,
+            "cluster_uuid": cluster_uuid,
         }
         expected_response = clusters_pb2.Cluster(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
-        cluster_name = 'clusterName-1018081872'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
+        cluster_name = "clusterName-1018081872"
 
         response = client.get_cluster(project_id, region, cluster_name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = clusters_pb2.GetClusterRequest(
-            project_id=project_id, region=region, cluster_name=cluster_name)
+            project_id=project_id, region=region, cluster_name=cluster_name
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_get_cluster_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
-        cluster_name = 'clusterName-1018081872'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
+        cluster_name = "clusterName-1018081872"
 
         with pytest.raises(CustomException):
             client.get_cluster(project_id, region, cluster_name)
 
     def test_list_clusters(self):
         # Setup Expected Response
-        next_page_token = ''
+        next_page_token = ""
         clusters_element = {}
         clusters = [clusters_element]
-        expected_response = {
-            'next_page_token': next_page_token,
-            'clusters': clusters
-        }
-        expected_response = clusters_pb2.ListClustersResponse(
-            **expected_response)
+        expected_response = {"next_page_token": next_page_token, "clusters": clusters}
+        expected_response = clusters_pb2.ListClustersResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
 
         paged_list_response = client.list_clusters(project_id, region)
         resources = list(paged_list_response)
@@ -302,17 +335,21 @@ class TestClusterControllerClient(object):
 
         assert len(channel.requests) == 1
         expected_request = clusters_pb2.ListClustersRequest(
-            project_id=project_id, region=region)
+            project_id=project_id, region=region
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_clusters_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
 
         paged_list_response = client.list_clusters(project_id, region)
         with pytest.raises(CustomException):
@@ -323,17 +360,21 @@ class TestClusterControllerClient(object):
         expected_response = {}
         expected_response = empty_pb2.Empty(**expected_response)
         operation = operations_pb2.Operation(
-            name='operations/test_diagnose_cluster', done=True)
+            name="operations/test_diagnose_cluster", done=True
+        )
         operation.response.Pack(expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
-        cluster_name = 'clusterName-1018081872'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
+        cluster_name = "clusterName-1018081872"
 
         response = client.diagnose_cluster(project_id, region, cluster_name)
         result = response.result()
@@ -341,7 +382,8 @@ class TestClusterControllerClient(object):
 
         assert len(channel.requests) == 1
         expected_request = clusters_pb2.DiagnoseClusterRequest(
-            project_id=project_id, region=region, cluster_name=cluster_name)
+            project_id=project_id, region=region, cluster_name=cluster_name
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -349,17 +391,21 @@ class TestClusterControllerClient(object):
         # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
-            name='operations/test_diagnose_cluster_exception', done=True)
+            name="operations/test_diagnose_cluster_exception", done=True
+        )
         operation.error.CopyFrom(error)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        region = 'region-934795532'
-        cluster_name = 'clusterName-1018081872'
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
+        cluster_name = "clusterName-1018081872"
 
         response = client.diagnose_cluster(project_id, region, cluster_name)
         exception = response.exception()

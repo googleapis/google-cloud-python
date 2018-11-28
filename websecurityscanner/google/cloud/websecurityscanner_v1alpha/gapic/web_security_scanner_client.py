@@ -29,8 +29,12 @@ import google.api_core.path_template
 import grpc
 
 from google.cloud.websecurityscanner_v1alpha.gapic import enums
-from google.cloud.websecurityscanner_v1alpha.gapic import web_security_scanner_client_config
-from google.cloud.websecurityscanner_v1alpha.gapic.transports import web_security_scanner_grpc_transport
+from google.cloud.websecurityscanner_v1alpha.gapic import (
+    web_security_scanner_client_config,
+)
+from google.cloud.websecurityscanner_v1alpha.gapic.transports import (
+    web_security_scanner_grpc_transport,
+)
 from google.cloud.websecurityscanner_v1alpha.proto import finding_pb2
 from google.cloud.websecurityscanner_v1alpha.proto import scan_config_pb2
 from google.cloud.websecurityscanner_v1alpha.proto import scan_run_pb2
@@ -40,7 +44,8 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-websecurityscanner', ).version
+    "google-cloud-websecurityscanner"
+).version
 
 
 class WebSecurityScannerClient(object):
@@ -50,12 +55,12 @@ class WebSecurityScannerClient(object):
     attempts to exercise as many user inputs and event handlers as possible.
     """
 
-    SERVICE_ADDRESS = 'websecurityscanner.googleapis.com:443'
+    SERVICE_ADDRESS = "websecurityscanner.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.websecurityscanner.v1alpha.WebSecurityScanner'
+    _INTERFACE_NAME = "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -71,9 +76,8 @@ class WebSecurityScannerClient(object):
         Returns:
             WebSecurityScannerClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -82,15 +86,14 @@ class WebSecurityScannerClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            'projects/{project}',
-            project=project,
+            "projects/{project}", project=project
         )
 
     @classmethod
     def scan_config_path(cls, project, scan_config):
         """Return a fully-qualified scan_config string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/scanConfigs/{scan_config}',
+            "projects/{project}/scanConfigs/{scan_config}",
             project=project,
             scan_config=scan_config,
         )
@@ -99,7 +102,7 @@ class WebSecurityScannerClient(object):
     def scan_run_path(cls, project, scan_config, scan_run):
         """Return a fully-qualified scan_run string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}',
+            "projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}",
             project=project,
             scan_config=scan_config,
             scan_run=scan_run,
@@ -109,19 +112,21 @@ class WebSecurityScannerClient(object):
     def finding_path(cls, project, scan_config, scan_run, finding):
         """Return a fully-qualified finding string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}',
+            "projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}",
             project=project,
             scan_config=scan_config,
             scan_run=scan_run,
             finding=finding,
         )
 
-    def __init__(self,
-                 transport=None,
-                 channel=None,
-                 credentials=None,
-                 client_config=web_security_scanner_client_config.config,
-                 client_info=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+    ):
         """Constructor.
 
         Args:
@@ -153,13 +158,21 @@ class WebSecurityScannerClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
-            warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+        if client_config is not None:
+            warnings.warn(
+                "The `client_config` argument is deprecated.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
+        else:
+            client_config = web_security_scanner_client_config.config
+
         if channel:
             warnings.warn(
-                'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                "The `channel` argument is deprecated; use " "`transport` instead.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -168,25 +181,24 @@ class WebSecurityScannerClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=web_security_scanner_grpc_transport.
-                    WebSecurityScannerGrpcTransport,
+                    default_class=web_security_scanner_grpc_transport.WebSecurityScannerGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        'Received both a transport instance and '
-                        'credentials; these are mutually exclusive.')
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
+                    )
                 self.transport = transport
         else:
             self.transport = web_security_scanner_grpc_transport.WebSecurityScannerGrpcTransport(
-                address=self.SERVICE_ADDRESS,
-                channel=channel,
-                credentials=credentials,
+                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION, )
+                gapic_version=_GAPIC_LIBRARY_VERSION
+            )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -196,7 +208,8 @@ class WebSecurityScannerClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME], )
+            client_config["interfaces"][self._INTERFACE_NAME]
+        )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -205,12 +218,14 @@ class WebSecurityScannerClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def create_scan_config(self,
-                           parent,
-                           scan_config,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def create_scan_config(
+        self,
+        parent,
+        scan_config,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a new ScanConfig.
 
@@ -255,29 +270,30 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_scan_config' not in self._inner_api_calls:
+        if "create_scan_config" not in self._inner_api_calls:
             self._inner_api_calls[
-                'create_scan_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.create_scan_config,
-                    default_retry=self._method_configs['CreateScanConfig'].
-                    retry,
-                    default_timeout=self._method_configs['CreateScanConfig'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "create_scan_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_scan_config,
+                default_retry=self._method_configs["CreateScanConfig"].retry,
+                default_timeout=self._method_configs["CreateScanConfig"].timeout,
+                client_info=self._client_info,
+            )
 
         request = web_security_scanner_pb2.CreateScanConfigRequest(
-            parent=parent,
-            scan_config=scan_config,
+            parent=parent, scan_config=scan_config
         )
-        return self._inner_api_calls['create_scan_config'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_scan_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def delete_scan_config(self,
-                           name,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def delete_scan_config(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes an existing ScanConfig and its child resources.
 
@@ -311,26 +327,28 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_scan_config' not in self._inner_api_calls:
+        if "delete_scan_config" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_scan_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_scan_config,
-                    default_retry=self._method_configs['DeleteScanConfig'].
-                    retry,
-                    default_timeout=self._method_configs['DeleteScanConfig'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "delete_scan_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_scan_config,
+                default_retry=self._method_configs["DeleteScanConfig"].retry,
+                default_timeout=self._method_configs["DeleteScanConfig"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = web_security_scanner_pb2.DeleteScanConfigRequest(name=name, )
-        self._inner_api_calls['delete_scan_config'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = web_security_scanner_pb2.DeleteScanConfigRequest(name=name)
+        self._inner_api_calls["delete_scan_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_scan_config(self,
-                        name,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def get_scan_config(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets a ScanConfig.
 
@@ -367,26 +385,29 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_scan_config' not in self._inner_api_calls:
+        if "get_scan_config" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_scan_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_scan_config,
-                    default_retry=self._method_configs['GetScanConfig'].retry,
-                    default_timeout=self._method_configs['GetScanConfig'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_scan_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_scan_config,
+                default_retry=self._method_configs["GetScanConfig"].retry,
+                default_timeout=self._method_configs["GetScanConfig"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = web_security_scanner_pb2.GetScanConfigRequest(name=name, )
-        return self._inner_api_calls['get_scan_config'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = web_security_scanner_pb2.GetScanConfigRequest(name=name)
+        return self._inner_api_calls["get_scan_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_scan_configs(self,
-                          parent,
-                          page_size=None,
-                          retry=google.api_core.gapic_v1.method.DEFAULT,
-                          timeout=google.api_core.gapic_v1.method.DEFAULT,
-                          metadata=None):
+    def list_scan_configs(
+        self,
+        parent,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists ScanConfigs under a given project.
 
@@ -443,41 +464,42 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_scan_configs' not in self._inner_api_calls:
+        if "list_scan_configs" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_scan_configs'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_scan_configs,
-                    default_retry=self._method_configs['ListScanConfigs'].
-                    retry,
-                    default_timeout=self._method_configs['ListScanConfigs'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_scan_configs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_scan_configs,
+                default_retry=self._method_configs["ListScanConfigs"].retry,
+                default_timeout=self._method_configs["ListScanConfigs"].timeout,
+                client_info=self._client_info,
+            )
 
         request = web_security_scanner_pb2.ListScanConfigsRequest(
-            parent=parent,
-            page_size=page_size,
+            parent=parent, page_size=page_size
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_scan_configs'],
+                self._inner_api_calls["list_scan_configs"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='scan_configs',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="scan_configs",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
-    def update_scan_config(self,
-                           scan_config,
-                           update_mask,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def update_scan_config(
+        self,
+        scan_config,
+        update_mask,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates a ScanConfig. This method support partial update of a ScanConfig.
 
@@ -528,29 +550,30 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_scan_config' not in self._inner_api_calls:
+        if "update_scan_config" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_scan_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_scan_config,
-                    default_retry=self._method_configs['UpdateScanConfig'].
-                    retry,
-                    default_timeout=self._method_configs['UpdateScanConfig'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "update_scan_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_scan_config,
+                default_retry=self._method_configs["UpdateScanConfig"].retry,
+                default_timeout=self._method_configs["UpdateScanConfig"].timeout,
+                client_info=self._client_info,
+            )
 
         request = web_security_scanner_pb2.UpdateScanConfigRequest(
-            scan_config=scan_config,
-            update_mask=update_mask,
+            scan_config=scan_config, update_mask=update_mask
         )
-        return self._inner_api_calls['update_scan_config'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_scan_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def start_scan_run(self,
-                       name,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def start_scan_run(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Start a ScanRun according to the given ScanConfig.
 
@@ -587,25 +610,28 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'start_scan_run' not in self._inner_api_calls:
+        if "start_scan_run" not in self._inner_api_calls:
             self._inner_api_calls[
-                'start_scan_run'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.start_scan_run,
-                    default_retry=self._method_configs['StartScanRun'].retry,
-                    default_timeout=self._method_configs['StartScanRun'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "start_scan_run"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.start_scan_run,
+                default_retry=self._method_configs["StartScanRun"].retry,
+                default_timeout=self._method_configs["StartScanRun"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = web_security_scanner_pb2.StartScanRunRequest(name=name, )
-        return self._inner_api_calls['start_scan_run'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = web_security_scanner_pb2.StartScanRunRequest(name=name)
+        return self._inner_api_calls["start_scan_run"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_scan_run(self,
-                     name,
-                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT,
-                     metadata=None):
+    def get_scan_run(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets a ScanRun.
 
@@ -643,25 +669,29 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_scan_run' not in self._inner_api_calls:
+        if "get_scan_run" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_scan_run'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_scan_run,
-                    default_retry=self._method_configs['GetScanRun'].retry,
-                    default_timeout=self._method_configs['GetScanRun'].timeout,
-                    client_info=self._client_info,
-                )
+                "get_scan_run"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_scan_run,
+                default_retry=self._method_configs["GetScanRun"].retry,
+                default_timeout=self._method_configs["GetScanRun"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = web_security_scanner_pb2.GetScanRunRequest(name=name, )
-        return self._inner_api_calls['get_scan_run'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = web_security_scanner_pb2.GetScanRunRequest(name=name)
+        return self._inner_api_calls["get_scan_run"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_scan_runs(self,
-                       parent,
-                       page_size=None,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def list_scan_runs(
+        self,
+        parent,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists ScanRuns under a given ScanConfig, in descending order of ScanRun
         stop time.
@@ -719,39 +749,41 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_scan_runs' not in self._inner_api_calls:
+        if "list_scan_runs" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_scan_runs'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_scan_runs,
-                    default_retry=self._method_configs['ListScanRuns'].retry,
-                    default_timeout=self._method_configs['ListScanRuns'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_scan_runs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_scan_runs,
+                default_retry=self._method_configs["ListScanRuns"].retry,
+                default_timeout=self._method_configs["ListScanRuns"].timeout,
+                client_info=self._client_info,
+            )
 
         request = web_security_scanner_pb2.ListScanRunsRequest(
-            parent=parent,
-            page_size=page_size,
+            parent=parent, page_size=page_size
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_scan_runs'],
+                self._inner_api_calls["list_scan_runs"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='scan_runs',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="scan_runs",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
-    def stop_scan_run(self,
-                      name,
-                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT,
-                      metadata=None):
+    def stop_scan_run(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Stops a ScanRun. The stopped ScanRun is returned.
 
@@ -789,26 +821,29 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'stop_scan_run' not in self._inner_api_calls:
+        if "stop_scan_run" not in self._inner_api_calls:
             self._inner_api_calls[
-                'stop_scan_run'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.stop_scan_run,
-                    default_retry=self._method_configs['StopScanRun'].retry,
-                    default_timeout=self._method_configs['StopScanRun'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "stop_scan_run"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.stop_scan_run,
+                default_retry=self._method_configs["StopScanRun"].retry,
+                default_timeout=self._method_configs["StopScanRun"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = web_security_scanner_pb2.StopScanRunRequest(name=name, )
-        return self._inner_api_calls['stop_scan_run'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = web_security_scanner_pb2.StopScanRunRequest(name=name)
+        return self._inner_api_calls["stop_scan_run"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_crawled_urls(self,
-                          parent,
-                          page_size=None,
-                          retry=google.api_core.gapic_v1.method.DEFAULT,
-                          timeout=google.api_core.gapic_v1.method.DEFAULT,
-                          metadata=None):
+    def list_crawled_urls(
+        self,
+        parent,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         List CrawledUrls under a given ScanRun.
 
@@ -866,40 +901,41 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_crawled_urls' not in self._inner_api_calls:
+        if "list_crawled_urls" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_crawled_urls'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_crawled_urls,
-                    default_retry=self._method_configs['ListCrawledUrls'].
-                    retry,
-                    default_timeout=self._method_configs['ListCrawledUrls'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_crawled_urls"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_crawled_urls,
+                default_retry=self._method_configs["ListCrawledUrls"].retry,
+                default_timeout=self._method_configs["ListCrawledUrls"].timeout,
+                client_info=self._client_info,
+            )
 
         request = web_security_scanner_pb2.ListCrawledUrlsRequest(
-            parent=parent,
-            page_size=page_size,
+            parent=parent, page_size=page_size
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_crawled_urls'],
+                self._inner_api_calls["list_crawled_urls"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='crawled_urls',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="crawled_urls",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
-    def get_finding(self,
-                    name,
-                    retry=google.api_core.gapic_v1.method.DEFAULT,
-                    timeout=google.api_core.gapic_v1.method.DEFAULT,
-                    metadata=None):
+    def get_finding(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets a Finding.
 
@@ -937,26 +973,30 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_finding' not in self._inner_api_calls:
+        if "get_finding" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_finding'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_finding,
-                    default_retry=self._method_configs['GetFinding'].retry,
-                    default_timeout=self._method_configs['GetFinding'].timeout,
-                    client_info=self._client_info,
-                )
+                "get_finding"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_finding,
+                default_retry=self._method_configs["GetFinding"].retry,
+                default_timeout=self._method_configs["GetFinding"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = web_security_scanner_pb2.GetFindingRequest(name=name, )
-        return self._inner_api_calls['get_finding'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = web_security_scanner_pb2.GetFindingRequest(name=name)
+        return self._inner_api_calls["get_finding"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_findings(self,
-                      parent,
-                      filter_,
-                      page_size=None,
-                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT,
-                      metadata=None):
+    def list_findings(
+        self,
+        parent,
+        filter_,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         List Findings under a given ScanRun.
 
@@ -1019,41 +1059,41 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_findings' not in self._inner_api_calls:
+        if "list_findings" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_findings'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_findings,
-                    default_retry=self._method_configs['ListFindings'].retry,
-                    default_timeout=self._method_configs['ListFindings'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_findings"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_findings,
+                default_retry=self._method_configs["ListFindings"].retry,
+                default_timeout=self._method_configs["ListFindings"].timeout,
+                client_info=self._client_info,
+            )
 
         request = web_security_scanner_pb2.ListFindingsRequest(
-            parent=parent,
-            filter=filter_,
-            page_size=page_size,
+            parent=parent, filter=filter_, page_size=page_size
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_findings'],
+                self._inner_api_calls["list_findings"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='findings',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="findings",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
     def list_finding_type_stats(
-            self,
-            parent,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        parent,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         List all FindingTypeStats under a given ScanRun.
 
@@ -1091,18 +1131,17 @@ class WebSecurityScannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_finding_type_stats' not in self._inner_api_calls:
+        if "list_finding_type_stats" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_finding_type_stats'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_finding_type_stats,
-                    default_retry=self._method_configs['ListFindingTypeStats'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['ListFindingTypeStats'].timeout,
-                    client_info=self._client_info,
-                )
+                "list_finding_type_stats"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_finding_type_stats,
+                default_retry=self._method_configs["ListFindingTypeStats"].retry,
+                default_timeout=self._method_configs["ListFindingTypeStats"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = web_security_scanner_pb2.ListFindingTypeStatsRequest(
-            parent=parent, )
-        return self._inner_api_calls['list_finding_type_stats'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = web_security_scanner_pb2.ListFindingTypeStatsRequest(parent=parent)
+        return self._inner_api_calls["list_finding_type_stats"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )

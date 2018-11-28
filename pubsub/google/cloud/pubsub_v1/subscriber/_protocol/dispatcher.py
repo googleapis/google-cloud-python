@@ -24,7 +24,7 @@ from google.cloud.pubsub_v1.subscriber._protocol import requests
 
 
 _LOGGER = logging.getLogger(__name__)
-_CALLBACK_WORKER_NAME = 'Thread-CallbackRequestDispatcher'
+_CALLBACK_WORKER_NAME = "Thread-CallbackRequestDispatcher"
 
 
 class Dispatcher(object):
@@ -40,23 +40,20 @@ class Dispatcher(object):
         """
         with self._operational_lock:
             if self._thread is not None:
-                raise ValueError('Dispatcher is already running.')
+                raise ValueError("Dispatcher is already running.")
 
             flow_control = self._manager.flow_control
             worker = helper_threads.QueueCallbackWorker(
                 self._queue,
                 self.dispatch_callback,
                 max_items=flow_control.max_request_batch_size,
-                max_latency=flow_control.max_request_batch_latency
+                max_latency=flow_control.max_request_batch_latency,
             )
             # Create and start the helper thread.
-            thread = threading.Thread(
-                name=_CALLBACK_WORKER_NAME,
-                target=worker,
-            )
+            thread = threading.Thread(name=_CALLBACK_WORKER_NAME, target=worker)
             thread.daemon = True
             thread.start()
-            _LOGGER.debug('Started helper thread %s', thread.name)
+            _LOGGER.debug("Started helper thread %s", thread.name)
             self._thread = thread
 
     def stop(self):
@@ -88,13 +85,12 @@ class Dispatcher(object):
         for item in items:
             batched_commands[item.__class__].append(item)
 
-        _LOGGER.debug('Handling %d batched requests', len(items))
+        _LOGGER.debug("Handling %d batched requests", len(items))
 
         if batched_commands[requests.LeaseRequest]:
             self.lease(batched_commands.pop(requests.LeaseRequest))
         if batched_commands[requests.ModAckRequest]:
-            self.modify_ack_deadline(
-                batched_commands.pop(requests.ModAckRequest))
+            self.modify_ack_deadline(batched_commands.pop(requests.ModAckRequest))
         # Note: Drop and ack *must* be after lease. It's possible to get both
         # the lease the and ack/drop request in the same batch.
         if batched_commands[requests.AckRequest]:
@@ -151,8 +147,7 @@ class Dispatcher(object):
         seconds = [item.seconds for item in items]
 
         request = types.StreamingPullRequest(
-            modify_deadline_ack_ids=ack_ids,
-            modify_deadline_seconds=seconds,
+            modify_deadline_ack_ids=ack_ids, modify_deadline_seconds=seconds
         )
         self._manager.send(request)
 
@@ -162,8 +157,7 @@ class Dispatcher(object):
         Args:
             items(Sequence[NackRequest]): The items to deny.
         """
-        self.modify_ack_deadline([
-            requests.ModAckRequest(ack_id=item.ack_id, seconds=0)
-            for item in items])
-        self.drop(
-            [requests.DropRequest(*item) for item in items])
+        self.modify_ack_deadline(
+            [requests.ModAckRequest(ack_id=item.ack_id, seconds=0) for item in items]
+        )
+        self.drop([requests.DropRequest(*item) for item in items])

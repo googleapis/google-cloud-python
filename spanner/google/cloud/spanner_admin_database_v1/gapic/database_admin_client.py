@@ -32,7 +32,9 @@ import grpc
 
 from google.cloud.spanner_admin_database_v1.gapic import database_admin_client_config
 from google.cloud.spanner_admin_database_v1.gapic import enums
-from google.cloud.spanner_admin_database_v1.gapic.transports import database_admin_grpc_transport
+from google.cloud.spanner_admin_database_v1.gapic.transports import (
+    database_admin_grpc_transport,
+)
 from google.cloud.spanner_admin_database_v1.proto import spanner_database_admin_pb2
 from google.cloud.spanner_admin_database_v1.proto import spanner_database_admin_pb2_grpc
 from google.iam.v1 import iam_policy_pb2
@@ -40,8 +42,7 @@ from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-spanner', ).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-spanner").version
 
 
 class DatabaseAdminClient(object):
@@ -53,12 +54,12 @@ class DatabaseAdminClient(object):
     databases.
     """
 
-    SERVICE_ADDRESS = 'spanner.googleapis.com:443'
+    SERVICE_ADDRESS = "spanner.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.spanner.admin.database.v1.DatabaseAdmin'
+    _INTERFACE_NAME = "google.spanner.admin.database.v1.DatabaseAdmin"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -74,9 +75,8 @@ class DatabaseAdminClient(object):
         Returns:
             DatabaseAdminClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -85,7 +85,7 @@ class DatabaseAdminClient(object):
     def instance_path(cls, project, instance):
         """Return a fully-qualified instance string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/instances/{instance}',
+            "projects/{project}/instances/{instance}",
             project=project,
             instance=instance,
         )
@@ -94,18 +94,20 @@ class DatabaseAdminClient(object):
     def database_path(cls, project, instance, database):
         """Return a fully-qualified database string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/instances/{instance}/databases/{database}',
+            "projects/{project}/instances/{instance}/databases/{database}",
             project=project,
             instance=instance,
             database=database,
         )
 
-    def __init__(self,
-                 transport=None,
-                 channel=None,
-                 credentials=None,
-                 client_config=database_admin_client_config.config,
-                 client_info=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+    ):
         """Constructor.
 
         Args:
@@ -137,13 +139,21 @@ class DatabaseAdminClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
-            warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+        if client_config is not None:
+            warnings.warn(
+                "The `client_config` argument is deprecated.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
+        else:
+            client_config = database_admin_client_config.config
+
         if channel:
             warnings.warn(
-                'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                "The `channel` argument is deprecated; use " "`transport` instead.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -152,25 +162,24 @@ class DatabaseAdminClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=database_admin_grpc_transport.
-                    DatabaseAdminGrpcTransport,
+                    default_class=database_admin_grpc_transport.DatabaseAdminGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        'Received both a transport instance and '
-                        'credentials; these are mutually exclusive.')
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
+                    )
                 self.transport = transport
         else:
             self.transport = database_admin_grpc_transport.DatabaseAdminGrpcTransport(
-                address=self.SERVICE_ADDRESS,
-                channel=channel,
-                credentials=credentials,
+                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION, )
+                gapic_version=_GAPIC_LIBRARY_VERSION
+            )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -180,7 +189,8 @@ class DatabaseAdminClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME], )
+            client_config["interfaces"][self._INTERFACE_NAME]
+        )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -189,12 +199,14 @@ class DatabaseAdminClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def list_databases(self,
-                       parent,
-                       page_size=None,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def list_databases(
+        self,
+        parent,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists Cloud Spanner databases.
 
@@ -250,41 +262,43 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_databases' not in self._inner_api_calls:
+        if "list_databases" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_databases'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_databases,
-                    default_retry=self._method_configs['ListDatabases'].retry,
-                    default_timeout=self._method_configs['ListDatabases'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_databases"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_databases,
+                default_retry=self._method_configs["ListDatabases"].retry,
+                default_timeout=self._method_configs["ListDatabases"].timeout,
+                client_info=self._client_info,
+            )
 
         request = spanner_database_admin_pb2.ListDatabasesRequest(
-            parent=parent,
-            page_size=page_size,
+            parent=parent, page_size=page_size
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_databases'],
+                self._inner_api_calls["list_databases"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='databases',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="databases",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
-    def create_database(self,
-                        parent,
-                        create_statement,
-                        extra_statements=None,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def create_database(
+        self,
+        parent,
+        create_statement,
+        extra_statements=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a new Cloud Spanner database and starts to prepare it for
         serving. The returned ``long-running operation`` will have a name of the
@@ -346,23 +360,24 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_database' not in self._inner_api_calls:
+        if "create_database" not in self._inner_api_calls:
             self._inner_api_calls[
-                'create_database'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.create_database,
-                    default_retry=self._method_configs['CreateDatabase'].retry,
-                    default_timeout=self._method_configs['CreateDatabase'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "create_database"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_database,
+                default_retry=self._method_configs["CreateDatabase"].retry,
+                default_timeout=self._method_configs["CreateDatabase"].timeout,
+                client_info=self._client_info,
+            )
 
         request = spanner_database_admin_pb2.CreateDatabaseRequest(
             parent=parent,
             create_statement=create_statement,
             extra_statements=extra_statements,
         )
-        operation = self._inner_api_calls['create_database'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        operation = self._inner_api_calls["create_database"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -370,11 +385,13 @@ class DatabaseAdminClient(object):
             metadata_type=spanner_database_admin_pb2.CreateDatabaseMetadata,
         )
 
-    def get_database(self,
-                     name,
-                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT,
-                     metadata=None):
+    def get_database(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets the state of a Cloud Spanner database.
 
@@ -410,27 +427,30 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_database' not in self._inner_api_calls:
+        if "get_database" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_database'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_database,
-                    default_retry=self._method_configs['GetDatabase'].retry,
-                    default_timeout=self._method_configs['GetDatabase'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_database"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_database,
+                default_retry=self._method_configs["GetDatabase"].retry,
+                default_timeout=self._method_configs["GetDatabase"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = spanner_database_admin_pb2.GetDatabaseRequest(name=name, )
-        return self._inner_api_calls['get_database'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = spanner_database_admin_pb2.GetDatabaseRequest(name=name)
+        return self._inner_api_calls["get_database"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def update_database_ddl(self,
-                            database,
-                            statements,
-                            operation_id=None,
-                            retry=google.api_core.gapic_v1.method.DEFAULT,
-                            timeout=google.api_core.gapic_v1.method.DEFAULT,
-                            metadata=None):
+    def update_database_ddl(
+        self,
+        database,
+        statements,
+        operation_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates the schema of a Cloud Spanner database by
         creating/altering/dropping tables, columns, indexes, etc. The returned
@@ -498,24 +518,22 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_database_ddl' not in self._inner_api_calls:
+        if "update_database_ddl" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_database_ddl'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_database_ddl,
-                    default_retry=self._method_configs['UpdateDatabaseDdl'].
-                    retry,
-                    default_timeout=self._method_configs['UpdateDatabaseDdl'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "update_database_ddl"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_database_ddl,
+                default_retry=self._method_configs["UpdateDatabaseDdl"].retry,
+                default_timeout=self._method_configs["UpdateDatabaseDdl"].timeout,
+                client_info=self._client_info,
+            )
 
         request = spanner_database_admin_pb2.UpdateDatabaseDdlRequest(
-            database=database,
-            statements=statements,
-            operation_id=operation_id,
+            database=database, statements=statements, operation_id=operation_id
         )
-        operation = self._inner_api_calls['update_database_ddl'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        operation = self._inner_api_calls["update_database_ddl"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -523,11 +541,13 @@ class DatabaseAdminClient(object):
             metadata_type=spanner_database_admin_pb2.UpdateDatabaseDdlMetadata,
         )
 
-    def drop_database(self,
-                      database,
-                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT,
-                      metadata=None):
+    def drop_database(
+        self,
+        database,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Drops (aka deletes) a Cloud Spanner database.
 
@@ -559,26 +579,28 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'drop_database' not in self._inner_api_calls:
+        if "drop_database" not in self._inner_api_calls:
             self._inner_api_calls[
-                'drop_database'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.drop_database,
-                    default_retry=self._method_configs['DropDatabase'].retry,
-                    default_timeout=self._method_configs['DropDatabase'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "drop_database"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.drop_database,
+                default_retry=self._method_configs["DropDatabase"].retry,
+                default_timeout=self._method_configs["DropDatabase"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = spanner_database_admin_pb2.DropDatabaseRequest(
-            database=database, )
-        self._inner_api_calls['drop_database'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = spanner_database_admin_pb2.DropDatabaseRequest(database=database)
+        self._inner_api_calls["drop_database"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_database_ddl(self,
-                         database,
-                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                         timeout=google.api_core.gapic_v1.method.DEFAULT,
-                         metadata=None):
+    def get_database_ddl(
+        self,
+        database,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns the schema of a Cloud Spanner database as a list of formatted
         DDL statements. This method does not show pending schema updates, those
@@ -615,27 +637,29 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_database_ddl' not in self._inner_api_calls:
+        if "get_database_ddl" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_database_ddl'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_database_ddl,
-                    default_retry=self._method_configs['GetDatabaseDdl'].retry,
-                    default_timeout=self._method_configs['GetDatabaseDdl'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_database_ddl"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_database_ddl,
+                default_retry=self._method_configs["GetDatabaseDdl"].retry,
+                default_timeout=self._method_configs["GetDatabaseDdl"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = spanner_database_admin_pb2.GetDatabaseDdlRequest(
-            database=database, )
-        return self._inner_api_calls['get_database_ddl'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = spanner_database_admin_pb2.GetDatabaseDdlRequest(database=database)
+        return self._inner_api_calls["get_database_ddl"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_iam_policy(self,
-                       resource,
-                       policy,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def set_iam_policy(
+        self,
+        resource,
+        policy,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Sets the access control policy on a database resource. Replaces any
         existing policy.
@@ -686,28 +710,28 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_iam_policy' not in self._inner_api_calls:
+        if "set_iam_policy" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_iam_policy,
-                    default_retry=self._method_configs['SetIamPolicy'].retry,
-                    default_timeout=self._method_configs['SetIamPolicy'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "set_iam_policy"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_iam_policy,
+                default_retry=self._method_configs["SetIamPolicy"].retry,
+                default_timeout=self._method_configs["SetIamPolicy"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = iam_policy_pb2.SetIamPolicyRequest(
-            resource=resource,
-            policy=policy,
+        request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        return self._inner_api_calls["set_iam_policy"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )
-        return self._inner_api_calls['set_iam_policy'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def get_iam_policy(self,
-                       resource,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def get_iam_policy(
+        self,
+        resource,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets the access control policy for a database resource. Returns an empty
         policy if a database exists but does not have a policy set.
@@ -748,26 +772,29 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_iam_policy' not in self._inner_api_calls:
+        if "get_iam_policy" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_iam_policy,
-                    default_retry=self._method_configs['GetIamPolicy'].retry,
-                    default_timeout=self._method_configs['GetIamPolicy'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_iam_policy"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_iam_policy,
+                default_retry=self._method_configs["GetIamPolicy"].retry,
+                default_timeout=self._method_configs["GetIamPolicy"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource, )
-        return self._inner_api_calls['get_iam_policy'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        return self._inner_api_calls["get_iam_policy"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def test_iam_permissions(self,
-                             resource,
-                             permissions,
-                             retry=google.api_core.gapic_v1.method.DEFAULT,
-                             timeout=google.api_core.gapic_v1.method.DEFAULT,
-                             metadata=None):
+    def test_iam_permissions(
+        self,
+        resource,
+        permissions,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns permissions that the caller has on the specified database
         resource.
@@ -817,20 +844,19 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'test_iam_permissions' not in self._inner_api_calls:
+        if "test_iam_permissions" not in self._inner_api_calls:
             self._inner_api_calls[
-                'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.test_iam_permissions,
-                    default_retry=self._method_configs['TestIamPermissions'].
-                    retry,
-                    default_timeout=self._method_configs['TestIamPermissions'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "test_iam_permissions"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.test_iam_permissions,
+                default_retry=self._method_configs["TestIamPermissions"].retry,
+                default_timeout=self._method_configs["TestIamPermissions"].timeout,
+                client_info=self._client_info,
+            )
 
         request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource,
-            permissions=permissions,
+            resource=resource, permissions=permissions
         )
-        return self._inner_api_calls['test_iam_permissions'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["test_iam_permissions"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )

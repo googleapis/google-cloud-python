@@ -20,8 +20,4 @@ from google.cloud.videointelligence_v1 import VideoIntelligenceServiceClient
 from google.cloud.videointelligence_v1 import enums
 from google.cloud.videointelligence_v1 import types
 
-__all__ = (
-    'enums',
-    'types',
-    'VideoIntelligenceServiceClient',
-)
+__all__ = ("enums", "types", "VideoIntelligenceServiceClient")

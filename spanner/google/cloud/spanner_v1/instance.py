@@ -17,7 +17,8 @@
 import re
 
 from google.cloud.spanner_admin_instance_v1.proto import (
-    spanner_instance_admin_pb2 as admin_v1_pb2)
+    spanner_instance_admin_pb2 as admin_v1_pb2,
+)
 from google.protobuf.field_mask_pb2 import FieldMask
 
 # pylint: disable=ungrouped-imports
@@ -25,12 +26,13 @@ from google.cloud.exceptions import NotFound
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.pool import BurstyPool
+
 # pylint: enable=ungrouped-imports
 
 
 _INSTANCE_NAME_RE = re.compile(
-    r'^projects/(?P<project>[^/]+)/'
-    r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
+    r"^projects/(?P<project>[^/]+)/" r"instances/(?P<instance_id>[a-z][-a-z0-9]*)$"
+)
 
 DEFAULT_NODE_COUNT = 1
 
@@ -67,12 +69,14 @@ class Instance(object):
                          constructor, will fall back to the instance ID.
     """
 
-    def __init__(self,
-                 instance_id,
-                 client,
-                 configuration_name=None,
-                 node_count=DEFAULT_NODE_COUNT,
-                 display_name=None):
+    def __init__(
+        self,
+        instance_id,
+        client,
+        configuration_name=None,
+        node_count=DEFAULT_NODE_COUNT,
+        display_name=None,
+    ):
         self.instance_id = instance_id
         self._client = client
         self.configuration_name = configuration_name
@@ -85,7 +89,7 @@ class Instance(object):
         Helper for :meth:`from_pb` and :meth:`reload`.
         """
         if not instance_pb.display_name:  # Simple field (string)
-            raise ValueError('Instance protobuf does not contain display_name')
+            raise ValueError("Instance protobuf does not contain display_name")
         self.display_name = instance_pb.display_name
         self.configuration_name = instance_pb.config
         self.node_count = instance_pb.node_count
@@ -110,12 +114,15 @@ class Instance(object):
         """
         match = _INSTANCE_NAME_RE.match(instance_pb.name)
         if match is None:
-            raise ValueError('Instance protobuf name was not in the '
-                             'expected format.', instance_pb.name)
-        if match.group('project') != client.project:
-            raise ValueError('Project ID on instance does not match the '
-                             'project ID on the client')
-        instance_id = match.group('instance_id')
+            raise ValueError(
+                "Instance protobuf name was not in the " "expected format.",
+                instance_pb.name,
+            )
+        if match.group("project") != client.project:
+            raise ValueError(
+                "Project ID on instance does not match the " "project ID on the client"
+            )
+        instance_id = match.group("instance_id")
         configuration_name = instance_pb.config
 
         result = cls(instance_id, client, configuration_name)
@@ -138,7 +145,7 @@ class Instance(object):
         :rtype: str
         :returns: The instance name.
         """
-        return self._client.project_name + '/instances/' + self.instance_id
+        return self._client.project_name + "/instances/" + self.instance_id
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -149,8 +156,7 @@ class Instance(object):
         #       intentional, since the same instance can be in different states
         #       if not synchronized. Instances with similar instance
         #       settings but different clients can't be used in the same way.
-        return (other.instance_id == self.instance_id and
-                other._client == self._client)
+        return other.instance_id == self.instance_id and other._client == self._client
 
     def __ne__(self, other):
         return not self == other
@@ -202,7 +208,7 @@ class Instance(object):
             config=self.configuration_name,
             display_name=self.display_name,
             node_count=self.node_count,
-            )
+        )
         metadata = _metadata_with_prefix(self.name)
 
         future = api.create_instance(
@@ -276,14 +282,12 @@ class Instance(object):
             config=self.configuration_name,
             display_name=self.display_name,
             node_count=self.node_count,
-            )
-        field_mask = FieldMask(paths=['config', 'display_name', 'node_count'])
+        )
+        field_mask = FieldMask(paths=["config", "display_name", "node_count"])
         metadata = _metadata_with_prefix(self.name)
 
         future = api.update_instance(
-            instance=instance_pb,
-            field_mask=field_mask,
-            metadata=metadata,
+            instance=instance_pb, field_mask=field_mask, metadata=metadata
         )
 
         return future
@@ -325,8 +329,7 @@ class Instance(object):
         :rtype: :class:`~google.cloud.spanner_v1.database.Database`
         :returns: a database owned by this instance.
         """
-        return Database(
-            database_id, self, ddl_statements=ddl_statements, pool=pool)
+        return Database(database_id, self, ddl_statements=ddl_statements, pool=pool)
 
     def list_databases(self, page_size=None, page_token=None):
         """List databases for the instance.
@@ -347,7 +350,8 @@ class Instance(object):
         """
         metadata = _metadata_with_prefix(self.name)
         page_iter = self._client.database_admin_api.list_databases(
-            self.name, page_size=page_size, metadata=metadata)
+            self.name, page_size=page_size, metadata=metadata
+        )
         page_iter.next_page_token = page_token
         page_iter.item_to_value = self._item_to_database
         return page_iter

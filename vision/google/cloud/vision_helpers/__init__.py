@@ -25,6 +25,7 @@ class VisionHelpers(object):
     in a multiple-inheritance construction alongside the applicable GAPIC.
     See the :class:`~google.cloud.vision_v1.ImageAnnotatorClient`.
     """
+
     def annotate_image(self, request, retry=None, timeout=None):
         """Run image detection and annotation for an image.
 
@@ -51,23 +52,23 @@ class VisionHelpers(object):
             :class:`~.vision_v1.types.AnnotateImageResponse` The API response.
         """
         # If the image is a file handler, set the content.
-        image = protobuf.get(request, 'image')
-        if hasattr(image, 'read'):
+        image = protobuf.get(request, "image")
+        if hasattr(image, "read"):
             img_bytes = image.read()
-            protobuf.set(request, 'image', {})
-            protobuf.set(request, 'image.content', img_bytes)
-            image = protobuf.get(request, 'image')
+            protobuf.set(request, "image", {})
+            protobuf.set(request, "image.content", img_bytes)
+            image = protobuf.get(request, "image")
 
         # If a filename is provided, read the file.
-        filename = protobuf.get(image, 'source.filename', default=None)
+        filename = protobuf.get(image, "source.filename", default=None)
         if filename:
-            with io.open(filename, 'rb') as img_file:
-                protobuf.set(request, 'image.content', img_file.read())
-                protobuf.set(request, 'image.source', None)
+            with io.open(filename, "rb") as img_file:
+                protobuf.set(request, "image.content", img_file.read())
+                protobuf.set(request, "image.source", None)
 
         # This method allows features not to be specified, and you get all
         # of them.
-        protobuf.setdefault(request, 'features', self._get_all_features())
+        protobuf.setdefault(request, "features", self._get_all_features())
         r = self.batch_annotate_images([request], retry=retry, timeout=timeout)
         return r.responses[0]
 
@@ -78,5 +79,5 @@ class VisionHelpers(object):
             list: A list of all available features.
         """
         return [
-            {'type': feature}
-            for feature in self.enums.Feature.Type if feature != 0]
+            {"type": feature} for feature in self.enums.Feature.Type if feature != 0
+        ]

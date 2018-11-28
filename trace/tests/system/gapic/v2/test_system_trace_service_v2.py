@@ -22,7 +22,7 @@ from google.cloud.trace_v2.proto import tracing_pb2
 
 class TestSystemTraceService(object):
     def test_batch_write_spans(self):
-        project_id = os.environ['PROJECT_ID']
+        project_id = os.environ["PROJECT_ID"]
 
         client = trace_v2.TraceServiceClient()
         name = client.project_path(project_id)

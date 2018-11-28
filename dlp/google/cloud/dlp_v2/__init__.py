@@ -26,8 +26,4 @@ class DlpServiceClient(dlp_service_client.DlpServiceClient):
     enums = enums
 
 
-__all__ = (
-    'enums',
-    'types',
-    'DlpServiceClient',
-)
+__all__ = ("enums", "types", "DlpServiceClient")

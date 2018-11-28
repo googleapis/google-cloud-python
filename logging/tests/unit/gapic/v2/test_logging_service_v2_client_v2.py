@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.api import monitored_resource_pb2
@@ -64,7 +67,10 @@ class CustomException(Exception):
 class TestLoggingServiceV2Client(object):
     def test_delete_log(self):
         channel = ChannelStub()
-        client = logging_v2.LoggingServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.LoggingServiceV2Client()
 
         # Setup Request
         log_name = client.log_path('[PROJECT]', '[LOG]')
@@ -79,7 +85,10 @@ class TestLoggingServiceV2Client(object):
     def test_delete_log_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.LoggingServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.LoggingServiceV2Client()
 
         # Setup request
         log_name = client.log_path('[PROJECT]', '[LOG]')
@@ -95,7 +104,10 @@ class TestLoggingServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.LoggingServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.LoggingServiceV2Client()
 
         # Setup Request
         entries = []
@@ -111,7 +123,10 @@ class TestLoggingServiceV2Client(object):
     def test_write_log_entries_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.LoggingServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.LoggingServiceV2Client()
 
         # Setup request
         entries = []
@@ -133,7 +148,10 @@ class TestLoggingServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.LoggingServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.LoggingServiceV2Client()
 
         # Setup Request
         resource_names = []
@@ -152,7 +170,10 @@ class TestLoggingServiceV2Client(object):
 
     def test_list_log_entries_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.LoggingServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.LoggingServiceV2Client()
 
         # Setup request
         resource_names = []
@@ -175,7 +196,10 @@ class TestLoggingServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.LoggingServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.LoggingServiceV2Client()
 
         paged_list_response = client.list_monitored_resource_descriptors()
         resources = list(paged_list_response)
@@ -191,7 +215,10 @@ class TestLoggingServiceV2Client(object):
 
     def test_list_monitored_resource_descriptors_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.LoggingServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.LoggingServiceV2Client()
 
         paged_list_response = client.list_monitored_resource_descriptors()
         with pytest.raises(CustomException):
@@ -210,7 +237,10 @@ class TestLoggingServiceV2Client(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = logging_v2.LoggingServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.LoggingServiceV2Client()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -228,7 +258,10 @@ class TestLoggingServiceV2Client(object):
 
     def test_list_logs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = logging_v2.LoggingServiceV2Client(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.LoggingServiceV2Client()
 
         # Setup request
         parent = client.project_path('[PROJECT]')

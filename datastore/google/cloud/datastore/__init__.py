@@ -56,7 +56,8 @@ The main concepts with this API are:
 
 
 from pkg_resources import get_distribution
-__version__ = get_distribution('google-cloud-datastore').version
+
+__version__ = get_distribution("google-cloud-datastore").version
 
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore.client import Client
@@ -65,5 +66,4 @@ from google.cloud.datastore.key import Key
 from google.cloud.datastore.query import Query
 from google.cloud.datastore.transaction import Transaction
 
-__all__ = ['__version__', 'Batch', 'Client', 'Entity', 'Key', 'Query',
-           'Transaction']
+__all__ = ["__version__", "Batch", "Client", "Entity", "Key", "Query", "Transaction"]

@@ -17,22 +17,30 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
+common = gcp.CommonTemplates()
 
-
-#----------------------------------------------------------------------------
-# Generate oslogin client
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Generate oslogin GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
-    'oslogin',
-    'v1',
-    config_path='/google/cloud/oslogin/artman_oslogin_v1.yaml',
-    artman_output_name='os-login-v1')
+    "oslogin",
+    "v1",
+    config_path="/google/cloud/oslogin/artman_oslogin_v1.yaml",
+    artman_output_name="os-login-v1",
+)
 
-s.move(library / 'google/cloud/oslogin_v1')
+s.move(library / "google/cloud/oslogin_v1")
+s.move(library / "tests/unit/gapic/v1")
 
 # Fix up imports
 s.replace(
-    'google/**/proto/*.py',
-    'from google.cloud.oslogin.common import common_pb2',
-    'from google.cloud.oslogin_v1.proto import common_pb2',
+    "google/**/proto/*.py",
+    "from google.cloud.oslogin.common import common_pb2",
+    "from google.cloud.oslogin_v1.proto import common_pb2",
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(unit_cov_level=97, cov_level=100)
+s.move(templated_files)

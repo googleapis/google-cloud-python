@@ -18,12 +18,14 @@ from __future__ import absolute_import
 
 from google.cloud.dataproc_v1 import ClusterControllerClient
 from google.cloud.dataproc_v1 import JobControllerClient
+from google.cloud.dataproc_v1 import WorkflowTemplateServiceClient
 from google.cloud.dataproc_v1 import enums
 from google.cloud.dataproc_v1 import types
 
 __all__ = (
-    'enums',
-    'types',
-    'ClusterControllerClient',
-    'JobControllerClient',
+    "enums",
+    "types",
+    "ClusterControllerClient",
+    "JobControllerClient",
+    "WorkflowTemplateServiceClient",
 )

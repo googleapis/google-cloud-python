@@ -28,14 +28,14 @@ class AutoMlGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='automl.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="automl.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -53,32 +53,28 @@ class AutoMlGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {
-            'auto_ml_stub': service_pb2_grpc.AutoMlStub(channel),
-        }
+        self._stubs = {"auto_ml_stub": service_pb2_grpc.AutoMlStub(channel)}
 
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
         # instantiate an LRO client.
         self._operations_client = google.api_core.operations_v1.OperationsClient(
-            channel)
+            channel
+        )
 
     @classmethod
-    def create_channel(cls,
-                       address='automl.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="automl.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -93,10 +89,17 @@ class AutoMlGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def create_dataset(self):
@@ -109,7 +112,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].CreateDataset
+        return self._stubs["auto_ml_stub"].CreateDataset
 
     @property
     def get_dataset(self):
@@ -122,7 +125,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].GetDataset
+        return self._stubs["auto_ml_stub"].GetDataset
 
     @property
     def list_datasets(self):
@@ -135,7 +138,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].ListDatasets
+        return self._stubs["auto_ml_stub"].ListDatasets
 
     @property
     def delete_dataset(self):
@@ -150,7 +153,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].DeleteDataset
+        return self._stubs["auto_ml_stub"].DeleteDataset
 
     @property
     def import_data(self):
@@ -164,7 +167,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].ImportData
+        return self._stubs["auto_ml_stub"].ImportData
 
     @property
     def export_data(self):
@@ -178,7 +181,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].ExportData
+        return self._stubs["auto_ml_stub"].ExportData
 
     @property
     def create_model(self):
@@ -194,7 +197,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].CreateModel
+        return self._stubs["auto_ml_stub"].CreateModel
 
     @property
     def get_model(self):
@@ -207,7 +210,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].GetModel
+        return self._stubs["auto_ml_stub"].GetModel
 
     @property
     def list_models(self):
@@ -220,7 +223,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].ListModels
+        return self._stubs["auto_ml_stub"].ListModels
 
     @property
     def delete_model(self):
@@ -237,7 +240,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].DeleteModel
+        return self._stubs["auto_ml_stub"].DeleteModel
 
     @property
     def deploy_model(self):
@@ -251,7 +254,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].DeployModel
+        return self._stubs["auto_ml_stub"].DeployModel
 
     @property
     def undeploy_model(self):
@@ -265,7 +268,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].UndeployModel
+        return self._stubs["auto_ml_stub"].UndeployModel
 
     @property
     def get_model_evaluation(self):
@@ -278,7 +281,7 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].GetModelEvaluation
+        return self._stubs["auto_ml_stub"].GetModelEvaluation
 
     @property
     def list_model_evaluations(self):
@@ -291,4 +294,4 @@ class AutoMlGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['auto_ml_stub'].ListModelEvaluations
+        return self._stubs["auto_ml_stub"].ListModelEvaluations

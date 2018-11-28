@@ -33,12 +33,14 @@ from google.cloud.firestore_v1beta1.order import Order
 from google.cloud.firestore_v1beta1.watch import Watch
 
 _EQ_OP = '=='
+_operator_enum = enums.StructuredQuery.FieldFilter.Operator
 _COMPARISON_OPERATORS = {
-    '<': enums.StructuredQuery.FieldFilter.Operator.LESS_THAN,
-    '<=': enums.StructuredQuery.FieldFilter.Operator.LESS_THAN_OR_EQUAL,
-    _EQ_OP: enums.StructuredQuery.FieldFilter.Operator.EQUAL,
-    '>=': enums.StructuredQuery.FieldFilter.Operator.GREATER_THAN_OR_EQUAL,
-    '>': enums.StructuredQuery.FieldFilter.Operator.GREATER_THAN,
+    '<': _operator_enum.LESS_THAN,
+    '<=': _operator_enum.LESS_THAN_OR_EQUAL,
+    _EQ_OP: _operator_enum.EQUAL,
+    '>=': _operator_enum.GREATER_THAN_OR_EQUAL,
+    '>': _operator_enum.GREATER_THAN,
+    'array_contains': _operator_enum.ARRAY_CONTAINS,
 }
 _BAD_OP_STRING = 'Operator string {!r} is invalid. Valid choices are: {}.'
 _BAD_OP_NAN_NULL = (

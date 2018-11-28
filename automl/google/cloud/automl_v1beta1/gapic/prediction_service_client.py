@@ -28,24 +28,25 @@ import grpc
 
 from google.cloud.automl_v1beta1.gapic import enums
 from google.cloud.automl_v1beta1.gapic import prediction_service_client_config
-from google.cloud.automl_v1beta1.gapic.transports import prediction_service_grpc_transport
+from google.cloud.automl_v1beta1.gapic.transports import (
+    prediction_service_grpc_transport,
+)
 from google.cloud.automl_v1beta1.proto import data_items_pb2
 from google.cloud.automl_v1beta1.proto import prediction_service_pb2
 from google.cloud.automl_v1beta1.proto import prediction_service_pb2_grpc
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-automl', ).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
 
 
 class PredictionServiceClient(object):
     """AutoML Prediction API."""
 
-    SERVICE_ADDRESS = 'automl.googleapis.com:443'
+    SERVICE_ADDRESS = "automl.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.automl.v1beta1.PredictionService'
+    _INTERFACE_NAME = "google.cloud.automl.v1beta1.PredictionService"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -61,9 +62,8 @@ class PredictionServiceClient(object):
         Returns:
             PredictionServiceClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -72,18 +72,20 @@ class PredictionServiceClient(object):
     def model_path(cls, project, location, model):
         """Return a fully-qualified model string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/locations/{location}/models/{model}',
+            "projects/{project}/locations/{location}/models/{model}",
             project=project,
             location=location,
             model=model,
         )
 
-    def __init__(self,
-                 transport=None,
-                 channel=None,
-                 credentials=None,
-                 client_config=prediction_service_client_config.config,
-                 client_info=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+    ):
         """Constructor.
 
         Args:
@@ -115,13 +117,21 @@ class PredictionServiceClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
-            warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+        if client_config is not None:
+            warnings.warn(
+                "The `client_config` argument is deprecated.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
+        else:
+            client_config = prediction_service_client_config.config
+
         if channel:
             warnings.warn(
-                'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                "The `channel` argument is deprecated; use " "`transport` instead.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -130,25 +140,24 @@ class PredictionServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=prediction_service_grpc_transport.
-                    PredictionServiceGrpcTransport,
+                    default_class=prediction_service_grpc_transport.PredictionServiceGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        'Received both a transport instance and '
-                        'credentials; these are mutually exclusive.')
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
+                    )
                 self.transport = transport
         else:
             self.transport = prediction_service_grpc_transport.PredictionServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS,
-                channel=channel,
-                credentials=credentials,
+                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION, )
+                gapic_version=_GAPIC_LIBRARY_VERSION
+            )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -158,7 +167,8 @@ class PredictionServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME], )
+            client_config["interfaces"][self._INTERFACE_NAME]
+        )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -167,13 +177,15 @@ class PredictionServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def predict(self,
-                name,
-                payload,
-                params=None,
-                retry=google.api_core.gapic_v1.method.DEFAULT,
-                timeout=google.api_core.gapic_v1.method.DEFAULT,
-                metadata=None):
+    def predict(
+        self,
+        name,
+        payload,
+        params=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Perform a prediction.
 
@@ -225,19 +237,19 @@ class PredictionServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'predict' not in self._inner_api_calls:
+        if "predict" not in self._inner_api_calls:
             self._inner_api_calls[
-                'predict'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.predict,
-                    default_retry=self._method_configs['Predict'].retry,
-                    default_timeout=self._method_configs['Predict'].timeout,
-                    client_info=self._client_info,
-                )
+                "predict"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.predict,
+                default_retry=self._method_configs["Predict"].retry,
+                default_timeout=self._method_configs["Predict"].timeout,
+                client_info=self._client_info,
+            )
 
         request = prediction_service_pb2.PredictRequest(
-            name=name,
-            payload=payload,
-            params=params,
+            name=name, payload=payload, params=params
         )
-        return self._inner_api_calls['predict'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["predict"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )

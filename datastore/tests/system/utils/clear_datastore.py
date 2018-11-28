@@ -26,20 +26,20 @@ from google.cloud import datastore
 
 FETCH_MAX = 20
 ALL_KINDS = (
-    'Character',
-    'Company',
-    'Kind',
-    'Person',
-    'Post',
-    'uuid_key',
-    'timestamp_key',
+    "Character",
+    "Company",
+    "Kind",
+    "Person",
+    "Post",
+    "uuid_key",
+    "timestamp_key",
 )
 TRANSACTION_MAX_GROUPS = 5
 MAX_DEL_ENTITIES = 500
 
 
 def print_func(message):
-    if os.getenv('GOOGLE_CLOUD_NO_PRINT') != 'true':
+    if os.getenv("GOOGLE_CLOUD_NO_PRINT") != "true":
         print(message)
 
 
@@ -67,7 +67,7 @@ def remove_kind(kind, client):
     delete_outside_transaction = False
     with client.transaction():
         # Now that we have all results, we seek to delete.
-        print_func('Deleting keys:')
+        print_func("Deleting keys:")
         print_func(results)
 
         ancestors = get_ancestors(results)
@@ -87,19 +87,18 @@ def main():
     if len(kinds) == 0:
         kinds = ALL_KINDS
 
-    print_func('This command will remove all entities for '
-               'the following kinds:')
-    print_func('\n'.join('- ' + val for val in kinds))
-    response = six.moves.input('Is this OK [y/n]? ')
+    print_func("This command will remove all entities for " "the following kinds:")
+    print_func("\n".join("- " + val for val in kinds))
+    response = six.moves.input("Is this OK [y/n]? ")
 
-    if response.lower() == 'y':
+    if response.lower() == "y":
 
         for kind in kinds:
             remove_kind(kind, client)
 
     else:
-        print_func('Doing nothing.')
+        print_func("Doing nothing.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

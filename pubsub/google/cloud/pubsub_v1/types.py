@@ -36,13 +36,12 @@ from google.cloud.pubsub_v1.proto import pubsub_pb2
 # these settings can be altered to tweak Pub/Sub behavior.
 # The defaults should be fine for most use cases.
 BatchSettings = collections.namedtuple(
-    'BatchSettings',
-    ['max_bytes', 'max_latency', 'max_messages'],
+    "BatchSettings", ["max_bytes", "max_latency", "max_messages"]
 )
 BatchSettings.__new__.__defaults__ = (
     1000 * 1000 * 10,  # max_bytes: documented "10 MB", enforced 10000000
-    0.05,              # max_latency: 0.05 seconds
-    1000,              # max_messages: 1,000
+    0.05,  # max_latency: 0.05 seconds
+    1000,  # max_messages: 1,000
 )
 
 # Define the type class and default values for flow control settings.
@@ -51,19 +50,25 @@ BatchSettings.__new__.__defaults__ = (
 # these settings can be altered to tweak Pub/Sub behavior.
 # The defaults should be fine for most use cases.
 FlowControl = collections.namedtuple(
-    'FlowControl',
-    ['max_bytes', 'max_messages', 'resume_threshold', 'max_requests',
-     'max_request_batch_size', 'max_request_batch_latency',
-     'max_lease_duration'],
+    "FlowControl",
+    [
+        "max_bytes",
+        "max_messages",
+        "resume_threshold",
+        "max_requests",
+        "max_request_batch_size",
+        "max_request_batch_latency",
+        "max_lease_duration",
+    ],
 )
 FlowControl.__new__.__defaults__ = (
-    100 * 1024 * 1024,    # max_bytes: 100mb
-    100,                  # max_messages: 100
-    0.8,                  # resume_threshold: 80%
-    100,                  # max_requests: 100
-    100,                  # max_request_batch_size: 100
-    0.01,                 # max_request_batch_latency: 0.01s
-    2 * 60 * 60,          # max_lease_duration: 2 hours.
+    100 * 1024 * 1024,  # max_bytes: 100mb
+    100,  # max_messages: 100
+    0.8,  # resume_threshold: 80%
+    100,  # max_requests: 100
+    100,  # max_request_batch_size: 100
+    0.01,  # max_request_batch_latency: 0.01s
+    2 * 60 * 60,  # max_lease_duration: 2 hours.
 )
 
 
@@ -79,12 +84,10 @@ _shared_modules = [
     timestamp_pb2,
 ]
 
-_local_modules = [
-    pubsub_pb2,
-]
+_local_modules = [pubsub_pb2]
 
 
-names = ['BatchSettings', 'FlowControl']
+names = ["BatchSettings", "FlowControl"]
 
 
 for module in _shared_modules:
@@ -94,7 +97,7 @@ for module in _shared_modules:
 
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = 'google.cloud.pubsub_v1.types'
+        message.__module__ = "google.cloud.pubsub_v1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 

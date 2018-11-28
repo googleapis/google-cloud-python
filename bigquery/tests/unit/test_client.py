@@ -1224,7 +1224,7 @@ class TestClient(unittest.TestCase):
         LOCATION = 'loc'
         LABELS = {'priority': 'high'}
         ACCESS = [
-                {'role': 'OWNER', 'userByEmail': 'phred@example.com'},
+            {'role': 'OWNER', 'userByEmail': 'phred@example.com'},
         ]
         EXP = 17
         RESOURCE = {
@@ -1465,20 +1465,20 @@ class TestClient(unittest.TestCase):
         location = 'EU'
         exp_time = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
         schema_resource = {
-                'fields': [
-                    {
-                        'name': 'full_name',
-                        'type': 'STRING',
-                        'mode': 'REQUIRED',
-                        'description': None
-                    },
-                    {
-                        'name': 'age',
-                        'type': 'INTEGER',
-                        'mode': 'REQUIRED',
-                        'description': None
-                    },
-                ],
+            'fields': [
+                {
+                    'name': 'full_name',
+                    'type': 'STRING',
+                    'mode': 'REQUIRED',
+                    'description': None
+                },
+                {
+                    'name': 'age',
+                    'type': 'INTEGER',
+                    'mode': 'REQUIRED',
+                    'description': None
+                },
+            ],
         }
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),
@@ -2415,9 +2415,9 @@ class TestClient(unittest.TestCase):
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
         upload_url = (
-            'https://www.googleapis.com/upload/bigquery/v2/projects/' +
-            self.PROJECT +
-            '/jobs?uploadType=resumable')
+            'https://www.googleapis.com/upload/bigquery/v2/projects/'
+            + self.PROJECT
+            + '/jobs?uploadType=resumable')
         self.assertEqual(upload.upload_url, upload_url)
         expected_headers = _get_upload_headers(conn.USER_AGENT)
         self.assertEqual(upload._headers, expected_headers)
@@ -2484,17 +2484,17 @@ class TestClient(unittest.TestCase):
         get_boundary.assert_called_once_with()
 
         upload_url = (
-            'https://www.googleapis.com/upload/bigquery/v2/projects/' +
-            self.PROJECT +
-            '/jobs?uploadType=multipart')
+            'https://www.googleapis.com/upload/bigquery/v2/projects/'
+            + self.PROJECT
+            + '/jobs?uploadType=multipart')
         payload = (
-            b'--==0==\r\n' +
-            b'content-type: application/json; charset=UTF-8\r\n\r\n' +
-            json.dumps(metadata).encode('utf-8') + b'\r\n' +
-            b'--==0==\r\n' +
-            b'content-type: */*\r\n\r\n' +
-            data + b'\r\n' +
-            b'--==0==--')
+            b'--==0==\r\n'
+            + b'content-type: application/json; charset=UTF-8\r\n\r\n'
+            + json.dumps(metadata).encode('utf-8') + b'\r\n'
+            + b'--==0==\r\n'
+            + b'content-type: */*\r\n\r\n'
+            + data + b'\r\n'
+            + b'--==0==--')
         headers = _get_upload_headers(conn.USER_AGENT)
         headers['content-type'] = b'multipart/related; boundary="==0=="'
         fake_transport.request.assert_called_once_with(
@@ -3954,7 +3954,7 @@ class TestClient(unittest.TestCase):
             ({'start_index': 1, 'max_results': 2},
              {'startIndex': 1, 'maxResults': 2}),
         ]
-        conn = client._connection = _make_connection(*len(tests)*[{}])
+        conn = client._connection = _make_connection(*len(tests) * [{}])
         for i, test in enumerate(tests):
             iterator = client.list_rows(table, **test[0])
             six.next(iterator.pages)
@@ -4636,5 +4636,5 @@ class TestClientUpload(object):
             client._do_multipart_upload(
                 file_obj,
                 {},
-                file_obj_len+1,
+                file_obj_len + 1,
                 None)

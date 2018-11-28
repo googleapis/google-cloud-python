@@ -22,12 +22,10 @@ from google.cloud.trace_v2.gapic import trace_service_client
 from google.cloud.trace_v2.proto import trace_pb2
 from google.protobuf.json_format import ParseDict
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
-from google.protobuf import wrappers_pb2 as \
-    google_dot_protobuf_dot_wrappers__pb2
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
 
-_CLIENT_INFO = client_info.ClientInfo(
-    client_library_version=__version__)
+_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 
 
 class _TraceAPI(object):
@@ -50,11 +48,9 @@ class _TraceAPI(object):
         self._gapic_api = gapic_api
         self.client = client
 
-    def batch_write_spans(self,
-                          name,
-                          spans,
-                          retry=method.DEFAULT,
-                          timeout=method.DEFAULT):
+    def batch_write_spans(
+        self, name, spans, retry=method.DEFAULT, timeout=method.DEFAULT
+    ):
         """
         Sends new spans to Stackdriver Trace or updates existing traces. If the
         name of a trace that you send matches that of an existing trace, new
@@ -85,32 +81,32 @@ class _TraceAPI(object):
         """
         spans_pb_list = []
 
-        for span_mapping in spans['spans']:
-            span_pb = _dict_mapping_to_pb(span_mapping, 'Span')
+        for span_mapping in spans["spans"]:
+            span_pb = _dict_mapping_to_pb(span_mapping, "Span")
             spans_pb_list.append(span_pb)
 
         self._gapic_api.batch_write_spans(
-            name=name,
-            spans=spans_pb_list,
-            retry=retry,
-            timeout=timeout)
+            name=name, spans=spans_pb_list, retry=retry, timeout=timeout
+        )
 
-    def create_span(self,
-                    name,
-                    span_id,
-                    display_name,
-                    start_time,
-                    end_time,
-                    parent_span_id=None,
-                    attributes=None,
-                    stack_trace=None,
-                    time_events=None,
-                    links=None,
-                    status=None,
-                    same_process_as_parent_span=None,
-                    child_span_count=None,
-                    retry=method.DEFAULT,
-                    timeout=method.DEFAULT):
+    def create_span(
+        self,
+        name,
+        span_id,
+        display_name,
+        start_time,
+        end_time,
+        parent_span_id=None,
+        attributes=None,
+        stack_trace=None,
+        time_events=None,
+        links=None,
+        status=None,
+        same_process_as_parent_span=None,
+        child_span_count=None,
+        retry=method.DEFAULT,
+        timeout=method.DEFAULT,
+    ):
         """
         Creates a new Span.
 
@@ -202,33 +198,32 @@ class _TraceAPI(object):
             ValueError: If the parameters are invalid.
         """
         # Convert the dict type parameters to protobuf
-        display_name = _dict_mapping_to_pb(
-            display_name, 'TruncatableString')
+        display_name = _dict_mapping_to_pb(display_name, "TruncatableString")
         start_time = _datetime_to_pb_timestamp(start_time)
         end_time = _datetime_to_pb_timestamp(end_time)
 
         if attributes is not None:
-            attributes = _span_attrs_to_pb(attributes, 'Attributes')
+            attributes = _span_attrs_to_pb(attributes, "Attributes")
 
         if stack_trace is not None:
-            stack_trace = _dict_mapping_to_pb(stack_trace, 'StackTrace')
+            stack_trace = _dict_mapping_to_pb(stack_trace, "StackTrace")
 
         if time_events is not None:
-            time_events = _span_attrs_to_pb(time_events, 'TimeEvents')
+            time_events = _span_attrs_to_pb(time_events, "TimeEvents")
 
         if links is not None:
-            links = _span_attrs_to_pb(links, 'Links')
+            links = _span_attrs_to_pb(links, "Links")
 
         if status is not None:
             status = _status_mapping_to_pb(status)
 
         if same_process_as_parent_span is not None:
             same_process_as_parent_span = _value_to_pb(
-                same_process_as_parent_span, 'BoolValue')
+                same_process_as_parent_span, "BoolValue"
+            )
 
         if child_span_count is not None:
-            child_span_count = _value_to_pb(
-                child_span_count, 'Int32Value')
+            child_span_count = _value_to_pb(child_span_count, "Int32Value")
 
         return self._gapic_api.create_span(
             name=name,
@@ -243,7 +238,8 @@ class _TraceAPI(object):
             links=links,
             status=status,
             same_process_as_parent_span=same_process_as_parent_span,
-            child_span_count=child_span_count)
+            child_span_count=child_span_count,
+        )
 
 
 def _dict_mapping_to_pb(mapping, proto_type):
@@ -323,5 +319,6 @@ def make_trace_api(client):
         proper configurations.
     """
     generated = trace_service_client.TraceServiceClient(
-        credentials=client._credentials, client_info=_CLIENT_INFO)
+        credentials=client._credentials, client_info=_CLIENT_INFO
+    )
     return _TraceAPI(generated, client)

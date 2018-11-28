@@ -244,8 +244,8 @@ class TestBigQuery(unittest.TestCase):
         all_datasets = list(iterator)
         self.assertIsNone(iterator.next_page_token)
         created = [dataset for dataset in all_datasets
-                   if dataset.dataset_id in datasets_to_create and
-                   dataset.project == Config.CLIENT.project]
+                   if dataset.dataset_id in datasets_to_create
+                   and dataset.project == Config.CLIENT.project]
         self.assertEqual(len(created), len(datasets_to_create))
 
     def test_list_datasets_w_project(self):
@@ -376,8 +376,8 @@ class TestBigQuery(unittest.TestCase):
         all_tables = list(iterator)
         self.assertIsNone(iterator.next_page_token)
         created = [table for table in all_tables
-                   if (table.table_id in tables_to_create and
-                       table.dataset_id == dataset_id)]
+                   if (table.table_id in tables_to_create
+                       and table.dataset_id == dataset_id)]
         self.assertEqual(len(created), len(tables_to_create))
 
         # List tables with a string ID.
@@ -468,7 +468,7 @@ class TestBigQuery(unittest.TestCase):
         table_ref = dataset.table(table_id)
         self.to_delete.insert(0, table_ref)
         colprojections = ','.join(
-                ['r * {} as col_{}'.format(n, n) for n in range(1, 10000)])
+            ['r * {} as col_{}'.format(n, n) for n in range(1, 10000)])
         sql = """
             CREATE TABLE {}.{}
             AS
@@ -739,9 +739,9 @@ class TestBigQuery(unittest.TestCase):
         # Cannot query from US.
         with self.assertRaises(BadRequest):
             list(client.query(
-                    query_string,
-                    location='US',
-                    job_config=query_config))
+                 query_string,
+                 location='US',
+                 job_config=query_config))
 
         # Cannot copy from US.
         with self.assertRaises(BadRequest):

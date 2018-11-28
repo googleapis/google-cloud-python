@@ -38,30 +38,35 @@ class Config(object):
     This is a mutable stand-in to allow test set-up to modify
     global state.
     """
+
     CLIENT = None
     TO_DELETE = []
 
 
 def clone_client(client):
-    return datastore.Client(project=client.project,
-                            namespace=client.namespace,
-                            credentials=client._credentials,
-                            _http=client._http)
+    return datastore.Client(
+        project=client.project,
+        namespace=client.namespace,
+        credentials=client._credentials,
+        _http=client._http,
+    )
 
 
 def setUpModule():
     emulator_dataset = os.getenv(GCD_DATASET)
     # Isolated namespace so concurrent test runs don't collide.
-    test_namespace = 'ns' + unique_resource_id()
+    test_namespace = "ns" + unique_resource_id()
     if emulator_dataset is None:
         Config.CLIENT = datastore.Client(namespace=test_namespace)
     else:
         credentials = EmulatorCreds()
         http = requests.Session()  # Un-authorized.
-        Config.CLIENT = datastore.Client(project=emulator_dataset,
-                                         namespace=test_namespace,
-                                         credentials=credentials,
-                                         _http=http)
+        Config.CLIENT = datastore.Client(
+            project=emulator_dataset,
+            namespace=test_namespace,
+            credentials=credentials,
+            _http=http,
+        )
 
 
 def tearDownModule():
@@ -71,7 +76,6 @@ def tearDownModule():
 
 
 class TestDatastore(unittest.TestCase):
-
     def setUp(self):
         self.case_entities_to_delete = []
 
@@ -82,11 +86,9 @@ class TestDatastore(unittest.TestCase):
 
 
 class TestDatastoreAllocateIDs(TestDatastore):
-
     def test_allocate_ids(self):
         num_ids = 10
-        allocated_keys = Config.CLIENT.allocate_ids(
-            Config.CLIENT.key('Kind'), num_ids)
+        allocated_keys = Config.CLIENT.allocate_ids(Config.CLIENT.key("Kind"), num_ids)
         self.assertEqual(len(allocated_keys), num_ids)
 
         unique_ids = set()
@@ -99,25 +101,24 @@ class TestDatastoreAllocateIDs(TestDatastore):
 
 
 class TestDatastoreSave(TestDatastore):
-
     @classmethod
     def setUpClass(cls):
-        cls.PARENT = Config.CLIENT.key('Blog', 'PizzaMan')
+        cls.PARENT = Config.CLIENT.key("Blog", "PizzaMan")
 
     def _get_post(self, id_or_name=None, post_content=None):
         post_content = post_content or {
-            'title': u'How to make the perfect pizza in your grill',
-            'tags': [u'pizza', u'grill'],
-            'publishedAt': datetime.datetime(2001, 1, 1, tzinfo=UTC),
-            'author': u'Silvano',
-            'isDraft': False,
-            'wordCount': 400,
-            'rating': 5.0,
+            "title": u"How to make the perfect pizza in your grill",
+            "tags": [u"pizza", u"grill"],
+            "publishedAt": datetime.datetime(2001, 1, 1, tzinfo=UTC),
+            "author": u"Silvano",
+            "isDraft": False,
+            "wordCount": 400,
+            "rating": 5.0,
         }
         # Create an entity with the given content.
         # NOTE: Using a parent to ensure consistency for query
         #       in `test_empty_kind`.
-        key = Config.CLIENT.key('Post', parent=self.PARENT)
+        key = Config.CLIENT.key("Post", parent=self.PARENT)
         entity = datastore.Entity(key=key)
         entity.update(post_content)
 
@@ -143,7 +144,7 @@ class TestDatastoreSave(TestDatastore):
         self.assertEqual(retrieved_entity, entity)
 
     def test_post_with_name(self):
-        self._generic_test_post(name='post1')
+        self._generic_test_post(name="post1")
 
     def test_post_with_id(self):
         self._generic_test_post(key_id=123456789)
@@ -159,13 +160,13 @@ class TestDatastoreSave(TestDatastore):
             self.case_entities_to_delete.append(entity1)
 
             second_post_content = {
-                'title': u'How to make the perfect homemade pasta',
-                'tags': [u'pasta', u'homemade'],
-                'publishedAt': datetime.datetime(2001, 1, 1),
-                'author': u'Silvano',
-                'isDraft': False,
-                'wordCount': 450,
-                'rating': 4.5,
+                "title": u"How to make the perfect homemade pasta",
+                "tags": [u"pasta", u"homemade"],
+                "publishedAt": datetime.datetime(2001, 1, 1),
+                "author": u"Silvano",
+                "isDraft": False,
+                "wordCount": 450,
+                "rating": 4.5,
             }
             entity2 = self._get_post(post_content=second_post_content)
             xact.put(entity2)
@@ -177,28 +178,28 @@ class TestDatastoreSave(TestDatastore):
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):
-        query = Config.CLIENT.query(kind='Post')
+        query = Config.CLIENT.query(kind="Post")
         query.ancestor = self.PARENT
         posts = list(query.fetch(limit=2))
         self.assertEqual(posts, [])
 
     def test_all_value_types(self):
-        key = Config.CLIENT.key('TestPanObject', 1234)
+        key = Config.CLIENT.key("TestPanObject", 1234)
         entity = datastore.Entity(key=key)
-        entity['timestamp'] = datetime.datetime(2014, 9, 9, tzinfo=UTC)
-        key_stored = Config.CLIENT.key('SavedKey', 'right-here')
-        entity['key'] = key_stored
-        entity['truthy'] = True
-        entity['float'] = 2.718281828
-        entity['int'] = 3735928559
-        entity['words'] = u'foo'
-        entity['blob'] = b'seekretz'
+        entity["timestamp"] = datetime.datetime(2014, 9, 9, tzinfo=UTC)
+        key_stored = Config.CLIENT.key("SavedKey", "right-here")
+        entity["key"] = key_stored
+        entity["truthy"] = True
+        entity["float"] = 2.718281828
+        entity["int"] = 3735928559
+        entity["words"] = u"foo"
+        entity["blob"] = b"seekretz"
         entity_stored = datastore.Entity(key=key_stored)
-        entity_stored['hi'] = 'bye'
-        entity['nested'] = entity_stored
-        entity['items'] = [1, 2, 3]
-        entity['geo'] = GeoPoint(1.0, 2.0)
-        entity['nothing_here'] = None
+        entity_stored["hi"] = "bye"
+        entity["nested"] = entity_stored
+        entity["items"] = [1, 2, 3]
+        entity["geo"] = GeoPoint(1.0, 2.0)
+        entity["nothing_here"] = None
 
         # Store the entity.
         self.case_entities_to_delete.append(entity)
@@ -210,28 +211,26 @@ class TestDatastoreSave(TestDatastore):
 
 
 class TestDatastoreSaveKeys(TestDatastore):
-
     def test_save_key_self_reference(self):
-        parent_key = Config.CLIENT.key('Residence', 'NewYork')
-        key = Config.CLIENT.key('Person', 'name', parent=parent_key)
+        parent_key = Config.CLIENT.key("Residence", "NewYork")
+        key = Config.CLIENT.key("Person", "name", parent=parent_key)
         entity = datastore.Entity(key=key)
-        entity['fullName'] = u'Full name'
-        entity['linkedTo'] = key  # Self reference.
+        entity["fullName"] = u"Full name"
+        entity["linkedTo"] = key  # Self reference.
 
         Config.CLIENT.put(entity)
         self.case_entities_to_delete.append(entity)
 
-        query = Config.CLIENT.query(kind='Person')
+        query = Config.CLIENT.query(kind="Person")
         # Adding ancestor to ensure consistency.
         query.ancestor = parent_key
-        query.add_filter('linkedTo', '=', key)
+        query.add_filter("linkedTo", "=", key)
 
         stored_persons = list(query.fetch(limit=2))
         self.assertEqual(stored_persons, [entity])
 
 
 class TestDatastoreQuery(TestDatastore):
-
     @classmethod
     def setUpClass(cls):
         cls.CLIENT = clone_client(Config.CLIENT)
@@ -258,8 +257,7 @@ class TestDatastoreQuery(TestDatastore):
 
     def _base_query(self):
         # Use the client for this test instead of the global.
-        return self.CLIENT.query(kind='Character',
-                                 ancestor=self.ANCESTOR_KEY)
+        return self.CLIENT.query(kind="Character", ancestor=self.ANCESTOR_KEY)
 
     def test_limit_queries(self):
         limit = 5
@@ -282,7 +280,7 @@ class TestDatastoreQuery(TestDatastore):
 
     def test_query_simple_filter(self):
         query = self._base_query()
-        query.add_filter('appearances', '>=', 20)
+        query.add_filter("appearances", ">=", 20)
         expected_matches = 6
         # We expect 6, but allow the query to get 1 extra.
         entities = list(query.fetch(limit=expected_matches + 1))
@@ -290,8 +288,8 @@ class TestDatastoreQuery(TestDatastore):
 
     def test_query_multiple_filters(self):
         query = self._base_query()
-        query.add_filter('appearances', '>=', 26)
-        query.add_filter('family', '=', 'Stark')
+        query.add_filter("appearances", ">=", 26)
+        query.add_filter("family", "=", "Stark")
         expected_matches = 4
         # We expect 4, but allow the query to get 1 extra.
         entities = list(query.fetch(limit=expected_matches + 1))
@@ -318,20 +316,20 @@ class TestDatastoreQuery(TestDatastore):
 
     def test_ordered_query(self):
         query = self._base_query()
-        query.order = 'appearances'
+        query.order = "appearances"
         expected_matches = 8
         # We expect 8, but allow the query to get 1 extra.
         entities = list(query.fetch(limit=expected_matches + 1))
         self.assertEqual(len(entities), expected_matches)
 
         # Actually check the ordered data returned.
-        self.assertEqual(entities[0]['name'], self.CHARACTERS[0]['name'])
-        self.assertEqual(entities[7]['name'], self.CHARACTERS[3]['name'])
+        self.assertEqual(entities[0]["name"], self.CHARACTERS[0]["name"])
+        self.assertEqual(entities[7]["name"], self.CHARACTERS[3]["name"])
 
     def test_projection_query(self):
         filtered_query = self._base_query()
-        filtered_query.projection = ['name', 'family']
-        filtered_query.order = ['name', 'family']
+        filtered_query.projection = ["name", "family"]
+        filtered_query.order = ["name", "family"]
 
         # NOTE: There are 9 responses because of Catelyn. She has both
         #       Stark and Tully as her families, hence occurs twice in
@@ -346,27 +344,25 @@ class TestDatastoreQuery(TestDatastore):
         sansa_entity = entities[8]
 
         arya_dict = dict(arya_entity)
-        self.assertEqual(arya_dict, {'name': 'Arya', 'family': 'Stark'})
+        self.assertEqual(arya_dict, {"name": "Arya", "family": "Stark"})
 
         catelyn_stark_entity = entities[2]
         catelyn_stark_dict = dict(catelyn_stark_entity)
-        self.assertEqual(catelyn_stark_dict,
-                         {'name': 'Catelyn', 'family': 'Stark'})
+        self.assertEqual(catelyn_stark_dict, {"name": "Catelyn", "family": "Stark"})
 
         catelyn_tully_dict = dict(catelyn_tully_entity)
-        self.assertEqual(catelyn_tully_dict,
-                         {'name': 'Catelyn', 'family': 'Tully'})
+        self.assertEqual(catelyn_tully_dict, {"name": "Catelyn", "family": "Tully"})
 
         # Check both Catelyn keys are the same.
         self.assertEqual(catelyn_stark_entity.key, catelyn_tully_entity.key)
 
         sansa_dict = dict(sansa_entity)
-        self.assertEqual(sansa_dict, {'name': 'Sansa', 'family': 'Stark'})
+        self.assertEqual(sansa_dict, {"name": "Sansa", "family": "Stark"})
 
     def test_query_paginate_simple_uuid_keys(self):
 
         # See issue #4264
-        page_query = self.CLIENT.query(kind='uuid_key')
+        page_query = self.CLIENT.query(kind="uuid_key")
         iterator = page_query.fetch()
 
         seen = set()
@@ -383,7 +379,7 @@ class TestDatastoreQuery(TestDatastore):
     def test_query_paginate_simple_timestamp_keys(self):
 
         # See issue #4264
-        page_query = self.CLIENT.query(kind='timestamp_key')
+        page_query = self.CLIENT.query(kind="timestamp_key")
         iterator = page_query.fetch()
 
         seen = set()
@@ -402,7 +398,7 @@ class TestDatastoreQuery(TestDatastore):
         max_all = 10000
         offset = 1
         max_offset = max_all - offset
-        query = self.CLIENT.query(kind='timestamp_key')
+        query = self.CLIENT.query(kind="timestamp_key")
         all_w_limit = list(query.fetch(limit=max_all))
         self.assertEqual(len(all_w_limit), max_all)
 
@@ -411,7 +407,7 @@ class TestDatastoreQuery(TestDatastore):
 
     def test_query_paginate_with_offset(self):
         page_query = self._base_query()
-        page_query.order = 'appearances'
+        page_query.order = "appearances"
         offset = 2
         limit = 3
         iterator = page_query.fetch(limit=limit, offset=offset)
@@ -421,22 +417,21 @@ class TestDatastoreQuery(TestDatastore):
         entities = list(page)
         cursor = iterator.next_page_token
         self.assertEqual(len(entities), limit)
-        self.assertEqual(entities[0]['name'], 'Robb')
-        self.assertEqual(entities[1]['name'], 'Bran')
-        self.assertEqual(entities[2]['name'], 'Catelyn')
+        self.assertEqual(entities[0]["name"], "Robb")
+        self.assertEqual(entities[1]["name"], "Bran")
+        self.assertEqual(entities[2]["name"], "Catelyn")
 
         # Fetch next set of characters.
-        new_iterator = page_query.fetch(limit=limit, offset=0,
-                                        start_cursor=cursor)
+        new_iterator = page_query.fetch(limit=limit, offset=0, start_cursor=cursor)
         entities = list(new_iterator)
         self.assertEqual(len(entities), limit)
-        self.assertEqual(entities[0]['name'], 'Sansa')
-        self.assertEqual(entities[1]['name'], 'Jon Snow')
-        self.assertEqual(entities[2]['name'], 'Arya')
+        self.assertEqual(entities[0]["name"], "Sansa")
+        self.assertEqual(entities[1]["name"], "Jon Snow")
+        self.assertEqual(entities[2]["name"], "Arya")
 
     def test_query_paginate_with_start_cursor(self):
         page_query = self._base_query()
-        page_query.order = 'appearances'
+        page_query.order = "appearances"
         limit = 3
         offset = 2
         iterator = page_query.fetch(limit=limit, offset=offset)
@@ -449,33 +444,31 @@ class TestDatastoreQuery(TestDatastore):
 
         # Use cursor to create a fresh query.
         fresh_query = self._base_query()
-        fresh_query.order = 'appearances'
+        fresh_query.order = "appearances"
 
-        new_entities = list(fresh_query.fetch(start_cursor=cursor,
-                                              limit=limit))
+        new_entities = list(fresh_query.fetch(start_cursor=cursor, limit=limit))
         characters_remaining = len(self.CHARACTERS) - limit - offset
         self.assertEqual(len(new_entities), characters_remaining)
-        self.assertEqual(new_entities[0]['name'], 'Sansa')
-        self.assertEqual(new_entities[2]['name'], 'Arya')
+        self.assertEqual(new_entities[0]["name"], "Sansa")
+        self.assertEqual(new_entities[2]["name"], "Arya")
 
     def test_query_distinct_on(self):
         query = self._base_query()
-        query.distinct_on = ['alive']
+        query.distinct_on = ["alive"]
 
         expected_matches = 2
         # We expect 2, but allow the query to get 1 extra.
         entities = list(query.fetch(limit=expected_matches + 1))
         self.assertEqual(len(entities), expected_matches)
 
-        self.assertEqual(entities[0]['name'], 'Catelyn')
-        self.assertEqual(entities[1]['name'], 'Arya')
+        self.assertEqual(entities[0]["name"], "Catelyn")
+        self.assertEqual(entities[1]["name"], "Arya")
 
 
 class TestDatastoreTransaction(TestDatastore):
-
     def test_transaction_via_with_statement(self):
-        entity = datastore.Entity(key=Config.CLIENT.key('Company', 'Google'))
-        entity['url'] = u'www.google.com'
+        entity = datastore.Entity(key=Config.CLIENT.key("Company", "Google"))
+        entity["url"] = u"www.google.com"
 
         with Config.CLIENT.transaction() as xact:
             result = Config.CLIENT.get(entity.key)
@@ -497,12 +490,12 @@ class TestDatastoreTransaction(TestDatastore):
         BEFORE_1 = 100
         BEFORE_2 = 0
         TRANSFER_AMOUNT = 40
-        key1 = Config.CLIENT.key('account', '123')
+        key1 = Config.CLIENT.key("account", "123")
         account1 = datastore.Entity(key=key1)
-        account1['balance'] = BEFORE_1
-        key2 = Config.CLIENT.key('account', '234')
+        account1["balance"] = BEFORE_1
+        key2 = Config.CLIENT.key("account", "234")
         account2 = datastore.Entity(key=key2)
-        account2['balance'] = BEFORE_2
+        account2["balance"] = BEFORE_2
         Config.CLIENT.put_multi([account1, account2])
         self.case_entities_to_delete.append(account1)
         self.case_entities_to_delete.append(account2)
@@ -511,8 +504,8 @@ class TestDatastoreTransaction(TestDatastore):
         xact.begin()
         from_account = Config.CLIENT.get(key1, transaction=xact)
         to_account = Config.CLIENT.get(key2, transaction=xact)
-        from_account['balance'] -= TRANSFER_AMOUNT
-        to_account['balance'] += TRANSFER_AMOUNT
+        from_account["balance"] -= TRANSFER_AMOUNT
+        to_account["balance"] += TRANSFER_AMOUNT
 
         xact.put(from_account)
         xact.put(to_account)
@@ -520,18 +513,18 @@ class TestDatastoreTransaction(TestDatastore):
 
         after1 = Config.CLIENT.get(key1)
         after2 = Config.CLIENT.get(key2)
-        self.assertEqual(after1['balance'], BEFORE_1 - TRANSFER_AMOUNT)
-        self.assertEqual(after2['balance'], BEFORE_2 + TRANSFER_AMOUNT)
+        self.assertEqual(after1["balance"], BEFORE_1 - TRANSFER_AMOUNT)
+        self.assertEqual(after2["balance"], BEFORE_2 + TRANSFER_AMOUNT)
 
     def test_failure_with_contention(self):
-        contention_prop_name = 'baz'
+        contention_prop_name = "baz"
         local_client = clone_client(Config.CLIENT)
 
         # Insert an entity which will be retrieved in a transaction
         # and updated outside it with a contentious value.
-        key = local_client.key('BreakTxn', 1234)
+        key = local_client.key("BreakTxn", 1234)
         orig_entity = datastore.Entity(key=key)
-        orig_entity['foo'] = u'bar'
+        orig_entity["foo"] = u"bar"
         local_client.put(orig_entity)
         self.case_entities_to_delete.append(orig_entity)
 
@@ -540,22 +533,22 @@ class TestDatastoreTransaction(TestDatastore):
                 entity_in_txn = local_client.get(key)
 
                 # Update the original entity outside the transaction.
-                orig_entity[contention_prop_name] = u'outside'
+                orig_entity[contention_prop_name] = u"outside"
                 Config.CLIENT.put(orig_entity)
 
                 # Try to update the entity which we already updated outside the
                 # transaction.
-                entity_in_txn[contention_prop_name] = u'inside'
+                entity_in_txn[contention_prop_name] = u"inside"
                 txn.put(entity_in_txn)
 
     def test_empty_array_put(self):
         local_client = clone_client(Config.CLIENT)
 
-        key = local_client.key('EmptyArray', 1234)
+        key = local_client.key("EmptyArray", 1234)
         local_client = datastore.Client()
         entity = datastore.Entity(key=key)
-        entity['children'] = []
+        entity["children"] = []
         local_client.put(entity)
         retrieved = local_client.get(entity.key)
 
-        self.assertEqual(entity['children'], retrieved['children'])
+        self.assertEqual(entity["children"], retrieved["children"])

@@ -16,30 +16,29 @@
 import unittest
 
 
-TABLE_NAME = 'citizens'
-COLUMNS = ['email', 'first_name', 'last_name', 'age']
+TABLE_NAME = "citizens"
+COLUMNS = ["email", "first_name", "last_name", "age"]
 VALUES = [
-    [u'phred@exammple.com', u'Phred', u'Phlyntstone', 32],
-    [u'bharney@example.com', u'Bharney', u'Rhubble', 31],
+    [u"phred@exammple.com", u"Phred", u"Phlyntstone", 32],
+    [u"bharney@example.com", u"Bharney", u"Rhubble", 31],
 ]
 
 
 class _BaseTest(unittest.TestCase):
 
-    PROJECT_ID = 'project-id'
-    INSTANCE_ID = 'instance-id'
-    INSTANCE_NAME = 'projects/' + PROJECT_ID + '/instances/' + INSTANCE_ID
-    DATABASE_ID = 'database-id'
-    DATABASE_NAME = INSTANCE_NAME + '/databases/' + DATABASE_ID
-    SESSION_ID = 'session-id'
-    SESSION_NAME = DATABASE_NAME + '/sessions/' + SESSION_ID
+    PROJECT_ID = "project-id"
+    INSTANCE_ID = "instance-id"
+    INSTANCE_NAME = "projects/" + PROJECT_ID + "/instances/" + INSTANCE_ID
+    DATABASE_ID = "database-id"
+    DATABASE_NAME = INSTANCE_NAME + "/databases/" + DATABASE_ID
+    SESSION_ID = "session-id"
+    SESSION_NAME = DATABASE_NAME + "/sessions/" + SESSION_ID
 
     def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
 
 class Test_BatchBase(_BaseTest):
-
     def _getTargetClass(self):
         from google.cloud.spanner_v1.batch import _BatchBase
 
@@ -55,8 +54,7 @@ class Test_BatchBase(_BaseTest):
             for found_cell, expected_cell in zip(found.values, expected):
                 self.assertIsInstance(found_cell, Value)
                 if isinstance(expected_cell, int):
-                    self.assertEqual(
-                        int(found_cell.string_value), expected_cell)
+                    self.assertEqual(int(found_cell.string_value), expected_cell)
                 else:
                     self.assertEqual(found_cell.string_value, expected_cell)
 
@@ -162,11 +160,11 @@ class Test_BatchBase(_BaseTest):
         self.assertEqual(len(key_set_pb.keys), len(keys))
         for found, expected in zip(key_set_pb.keys, keys):
             self.assertEqual(
-                [int(value.string_value) for value in found.values], expected)
+                [int(value.string_value) for value in found.values], expected
+            )
 
 
 class TestBatch(_BaseTest):
-
     def _getTargetClass(self):
         from google.cloud.spanner_v1.batch import Batch
 
@@ -209,8 +207,7 @@ class TestBatch(_BaseTest):
     def test_commit_ok(self):
         import datetime
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
-        from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            TransactionOptions)
+        from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
@@ -218,8 +215,7 @@ class TestBatch(_BaseTest):
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()
-        api = database.spanner_api = _FauxSpannerAPI(
-            _commit_response=response)
+        api = database.spanner_api = _FauxSpannerAPI(_commit_response=response)
         session = _Session(database)
         batch = self._make_one(session)
         batch.insert(TABLE_NAME, COLUMNS, VALUES)
@@ -233,9 +229,8 @@ class TestBatch(_BaseTest):
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
-        self.assertTrue(single_use_txn.HasField('read_write'))
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', database.name)])
+        self.assertTrue(single_use_txn.HasField("read_write"))
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
 
     def test_context_mgr_already_committed(self):
         import datetime
@@ -257,8 +252,7 @@ class TestBatch(_BaseTest):
     def test_context_mgr_success(self):
         import datetime
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
-        from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            TransactionOptions)
+        from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
@@ -266,8 +260,7 @@ class TestBatch(_BaseTest):
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()
-        api = database.spanner_api = _FauxSpannerAPI(
-            _commit_response=response)
+        api = database.spanner_api = _FauxSpannerAPI(_commit_response=response)
         session = _Session(database)
         batch = self._make_one(session)
 
@@ -280,9 +273,8 @@ class TestBatch(_BaseTest):
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
-        self.assertTrue(single_use_txn.HasField('read_write'))
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', database.name)])
+        self.assertTrue(single_use_txn.HasField("read_write"))
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
 
     def test_context_mgr_failure(self):
         import datetime
@@ -294,8 +286,7 @@ class TestBatch(_BaseTest):
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()
-        api = database.spanner_api = _FauxSpannerAPI(
-            _commit_response=response)
+        api = database.spanner_api = _FauxSpannerAPI(_commit_response=response)
         session = _Session(database)
         batch = self._make_one(session)
 
@@ -313,17 +304,16 @@ class TestBatch(_BaseTest):
 
 
 class _Session(object):
-
     def __init__(self, database=None, name=TestBatch.SESSION_NAME):
         self._database = database
         self.name = name
 
 
 class _Database(object):
-    name = 'testing'
+    name = "testing"
 
 
-class _FauxSpannerAPI():
+class _FauxSpannerAPI:
 
     _create_instance_conflict = False
     _instance_not_found = False
@@ -333,13 +323,18 @@ class _FauxSpannerAPI():
     def __init__(self, **kwargs):
         self.__dict__.update(**kwargs)
 
-    def commit(self, session, mutations,
-               transaction_id='', single_use_transaction=None, metadata=None):
+    def commit(
+        self,
+        session,
+        mutations,
+        transaction_id="",
+        single_use_transaction=None,
+        metadata=None,
+    ):
         from google.api_core.exceptions import Unknown
 
-        assert transaction_id == ''
-        self._committed = (
-            session, mutations, single_use_transaction, metadata)
+        assert transaction_id == ""
+        self._committed = (session, mutations, single_use_transaction, metadata)
         if self._rpc_error:
-            raise Unknown('error')
+            raise Unknown("error")
         return self._commit_response

@@ -683,7 +683,7 @@ Block = _reflection.GeneratedProtocolMessageType('Block', (_message.Message,), d
           when the text is horizontal it might look like:     ::
           0----1        |    |        3----2  -  when it's rotated 180
           degrees around the top-left corner it becomes:     ::
-          2----3        |    |        1----0  and the vertice order will
+          2----3        |    |        1----0  and the vertex order will
           still be (0, 1, 2, 3).
       paragraphs:
           List of paragraphs in this block (if this blocks is of type
@@ -715,7 +715,7 @@ Paragraph = _reflection.GeneratedProtocolMessageType('Paragraph', (_message.Mess
           text is read in the 'natural' orientation. For example: \*
           when the text is horizontal it might look like: 0----1 \| \| 3
           ----2 \* when it's rotated 180 degrees around the top-left
-          corner it becomes: 2----3 \| \| 1----0 and the vertice order
+          corner it becomes: 2----3 \| \| 1----0 and the vertex order
           will still be (0, 1, 2, 3).
       words:
           List of words in this paragraph.
@@ -744,7 +744,7 @@ Word = _reflection.GeneratedProtocolMessageType('Word', (_message.Message,), dic
           text is read in the 'natural' orientation. For example: \*
           when the text is horizontal it might look like: 0----1 \| \| 3
           ----2 \* when it's rotated 180 degrees around the top-left
-          corner it becomes: 2----3 \| \| 1----0 and the vertice order
+          corner it becomes: 2----3 \| \| 1----0 and the vertex order
           will still be (0, 1, 2, 3).
       symbols:
           List of symbols in the word. The order of the symbols follows

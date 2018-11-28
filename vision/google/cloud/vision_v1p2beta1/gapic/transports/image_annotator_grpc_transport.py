@@ -28,17 +28,17 @@ class ImageAnnotatorGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/cloud-vision',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-vision",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='vision.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="vision.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -56,33 +56,30 @@ class ImageAnnotatorGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'image_annotator_stub':
-            image_annotator_pb2_grpc.ImageAnnotatorStub(channel),
+            "image_annotator_stub": image_annotator_pb2_grpc.ImageAnnotatorStub(channel)
         }
 
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
         # instantiate an LRO client.
         self._operations_client = google.api_core.operations_v1.OperationsClient(
-            channel)
+            channel
+        )
 
     @classmethod
-    def create_channel(cls,
-                       address='vision.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="vision.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -97,10 +94,17 @@ class ImageAnnotatorGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def batch_annotate_images(self):
@@ -113,7 +117,7 @@ class ImageAnnotatorGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['image_annotator_stub'].BatchAnnotateImages
+        return self._stubs["image_annotator_stub"].BatchAnnotateImages
 
     @property
     def async_batch_annotate_files(self):
@@ -131,4 +135,4 @@ class ImageAnnotatorGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['image_annotator_stub'].AsyncBatchAnnotateFiles
+        return self._stubs["image_annotator_stub"].AsyncBatchAnnotateFiles

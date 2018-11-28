@@ -17,16 +17,12 @@
 This should handle both asynchronous ``ndb`` objects and arbitrary callbacks.
 """
 import collections
-import contextlib
-import threading
 import time
 
-from google.cloud.ndb import exceptions
+from google.cloud.ndb import _runstate
 
 __all__ = [
     "add_idle",
-    "async_context",
-    "contexts",
     "EventLoop",
     "get_event_loop",
     "queue_call",
@@ -265,105 +261,53 @@ class EventLoop:
                 break
 
 
-class _LocalContexts(threading.local):
-    """Maintain a thread local stack of event loops."""
-
-    def __init__(self):
-        self.stack = []
-
-    def push(self, loop):
-        self.stack.append(loop)
-
-    def pop(self):
-        return self.stack.pop(-1)
-
-    def current(self):
-        if self.stack:
-            return self.stack[-1]
-
-
-contexts = _LocalContexts()
-
-
-@contextlib.contextmanager
-def async_context():
-    """Establish an asynchronous context for a set of asynchronous API calls.
-
-    This function provides a context manager which establishes the event loop
-    that will be used for any asynchronous NDB calls that occur in the context.
-    For example:
-
-    .. code-block:: python
-
-        from google.cloud.ndb import async_context
-
-        with async_context():
-            # Make some asynchronous calls
-            pass
-
-    Within the context, any calls to a ``*_async`` function or to an
-    ``ndb.tasklet``, will be added to the event loop established by the
-    context. Upon exiting the context, execution will block until all
-    asynchronous calls loaded onto the event loop have finished execution.
-
-    Code within an asynchronous context should be single threaded. Internally,
-    a :class:`threading.local` instance is used to track the current event
-    loop.
-
-    In the context of a web application, it is recommended that a single
-    asynchronous context be used per HTTP request. This can typically be
-    accomplished in a middleware layer.
-    """
-    loop = EventLoop()
-    contexts.push(loop)
-    yield
-    loop.run()
-
-    # This will pop the same loop pushed above unless someone is severely
-    # abusing our private data structure.
-    contexts.pop()
-
-
 def get_event_loop():
     """Get the current event loop.
 
     This function should be called within a context established by
-    :func:`google.cloud.ndb.async_context`.
+    :func:`~google.cloud.ndb.ndb_context`.
 
     Returns:
-        EventLoop: The event loop for the current
-            context.
-
-    Raises:
-        exceptions.AsyncContextError: If called outside of a context
-            established by :func:`google.cloud.ndb.async_context`.
+        EventLoop: The event loop for the current context.
     """
-    loop = contexts.current()
-    if loop:
-        return loop
+    state = _runstate.current()
 
-    raise exceptions.AsyncContextError()
+    # Be lazy and avoid circular dependency with _runstate
+    if state.eventloop is None:
+        state.eventloop = EventLoop()
 
-
-def add_idle(*args, **kwargs):
-    raise NotImplementedError
+    return state.eventloop
 
 
-def queue_call(*args, **kwargs):
-    raise NotImplementedError
+def add_idle(callback, *args, **kwargs):
+    """Calls :method:`EventLoop.add_idle` on current event loop."""
+    loop = get_event_loop()
+    loop.add_idle(callback, *args, **kwargs)
+
+
+def queue_call(delay, callback, *args, **kwargs):
+    """Calls :method:`EventLoop.queue_call` on current event loop. """
+    loop = get_event_loop()
+    loop.queue_call(delay, callback, *args, **kwargs)
 
 
 def queue_rpc(*args, **kwargs):
     raise NotImplementedError
 
 
-def run(*args, **kwargs):
-    raise NotImplementedError
+def run():
+    """Calls :method:`EventLoop.run` on current event loop."""
+    loop = get_event_loop()
+    loop.run()
 
 
-def run0(*args, **kwargs):
-    raise NotImplementedError
+def run0():
+    """Calls :method:`EventLoop.run0` on current event loop."""
+    loop = get_event_loop()
+    loop.run0()
 
 
-def run1(*args, **kwargs):
-    raise NotImplementedError
+def run1():
+    """Calls :method:`EventLoop.run1` on current event loop."""
+    loop = get_event_loop()
+    loop.run1()

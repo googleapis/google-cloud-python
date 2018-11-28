@@ -98,9 +98,9 @@ class AccessEntry(object):
         if not isinstance(other, AccessEntry):
             return NotImplemented
         return (
-            self.role == other.role and
-            self.entity_type == other.entity_type and
-            self.entity_id == other.entity_id)
+            self.role == other.role
+            and self.entity_type == other.entity_type
+            and self.entity_id == other.entity_id)
 
     def __ne__(self, other):
         return not self == other
@@ -531,8 +531,8 @@ class Dataset(object):
             google.cloud.bigquery.dataset.Dataset:
                 Dataset parsed from ``resource``.
         """
-        if ('datasetReference' not in resource or
-                'datasetId' not in resource['datasetReference']):
+        if ('datasetReference' not in resource
+                or 'datasetId' not in resource['datasetReference']):
             raise KeyError('Resource lacks required identity information:'
                            '["datasetReference"]["datasetId"]')
         project_id = resource['datasetReference']['projectId']

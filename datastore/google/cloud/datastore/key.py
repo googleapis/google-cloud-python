@@ -25,16 +25,19 @@ from google.cloud.datastore import _app_engine_key_pb2
 
 
 _DATABASE_ID_TEMPLATE = (
-    'Received non-empty database ID: {!r}.\n'
-    'urlsafe strings are not expected to encode a Reference that '
-    'contains a database ID.')
+    "Received non-empty database ID: {!r}.\n"
+    "urlsafe strings are not expected to encode a Reference that "
+    "contains a database ID."
+)
 _BAD_ELEMENT_TEMPLATE = (
-    'At most one of ID and name can be set on an element. Received '
-    'id = {!r} and name = {!r}.')
+    "At most one of ID and name can be set on an element. Received "
+    "id = {!r} and name = {!r}."
+)
 _EMPTY_ELEMENT = (
-    'Exactly one of ID and name must be set on an element. '
-    'Encountered an element with neither set that was not the last '
-    'element of a path.')
+    "Exactly one of ID and name must be set on an element. "
+    "Encountered an element with neither set that was not the last "
+    "element of a path."
+)
 
 
 class Key(object):
@@ -103,9 +106,9 @@ class Key(object):
 
     def __init__(self, *path_args, **kwargs):
         self._flat_path = path_args
-        parent = self._parent = kwargs.get('parent')
-        self._namespace = kwargs.get('namespace')
-        project = kwargs.get('project')
+        parent = self._parent = kwargs.get("parent")
+        self._namespace = kwargs.get("namespace")
+        project = kwargs.get("project")
         self._project = _validate_project(project, parent)
         # _flat_path, _parent, _namespace and _project must be set before
         # _combine_args() is called.
@@ -128,9 +131,11 @@ class Key(object):
         if self.is_partial or other.is_partial:
             return False
 
-        return (self.flat_path == other.flat_path and
-                self.project == other.project and
-                self.namespace == other.namespace)
+        return (
+            self.flat_path == other.flat_path
+            and self.project == other.project
+            and self.namespace == other.namespace
+        )
 
     def __ne__(self, other):
         """Compare two keys for inequality.
@@ -151,9 +156,7 @@ class Key(object):
         :rtype: int
         :returns: a hash of the key's state.
         """
-        return (hash(self.flat_path) +
-                hash(self.project) +
-                hash(self.namespace))
+        return hash(self.flat_path) + hash(self.project) + hash(self.namespace)
 
     @staticmethod
     def _parse_path(path_args):
@@ -171,7 +174,7 @@ class Key(object):
                  a string or an integer.
         """
         if len(path_args) == 0:
-            raise ValueError('Key path must not be empty.')
+            raise ValueError("Key path must not be empty.")
 
         kind_list = path_args[::2]
         id_or_name_list = path_args[1::2]
@@ -184,17 +187,16 @@ class Key(object):
         for kind, id_or_name in zip(kind_list, id_or_name_list):
             curr_key_part = {}
             if isinstance(kind, six.string_types):
-                curr_key_part['kind'] = kind
+                curr_key_part["kind"] = kind
             else:
-                raise ValueError(kind, 'Kind was not a string.')
+                raise ValueError(kind, "Kind was not a string.")
 
             if isinstance(id_or_name, six.string_types):
-                curr_key_part['name'] = id_or_name
+                curr_key_part["name"] = id_or_name
             elif isinstance(id_or_name, six.integer_types):
-                curr_key_part['id'] = id_or_name
+                curr_key_part["id"] = id_or_name
             elif id_or_name is not partial_ending:
-                raise ValueError(id_or_name,
-                                 'ID/name was not a string or integer.')
+                raise ValueError(id_or_name, "ID/name was not a string or integer.")
 
             result.append(curr_key_part)
 
@@ -214,18 +216,19 @@ class Key(object):
 
         if self._parent is not None:
             if self._parent.is_partial:
-                raise ValueError('Parent key must be complete.')
+                raise ValueError("Parent key must be complete.")
 
             # We know that _parent.path() will return a copy.
             child_path = self._parent.path + child_path
             self._flat_path = self._parent.flat_path + self._flat_path
-            if (self._namespace is not None and
-                    self._namespace != self._parent.namespace):
-                raise ValueError('Child namespace must agree with parent\'s.')
+            if (
+                self._namespace is not None
+                and self._namespace != self._parent.namespace
+            ):
+                raise ValueError("Child namespace must agree with parent's.")
             self._namespace = self._parent.namespace
-            if (self._project is not None and
-                    self._project != self._parent.project):
-                raise ValueError('Child project must agree with parent\'s.')
+            if self._project is not None and self._project != self._parent.project:
+                raise ValueError("Child project must agree with parent's.")
             self._project = self._parent.project
 
         return child_path
@@ -239,9 +242,9 @@ class Key(object):
         :rtype: :class:`google.cloud.datastore.key.Key`
         :returns: A new ``Key`` instance with the same data as the current one.
         """
-        cloned_self = self.__class__(*self.flat_path,
-                                     project=self.project,
-                                     namespace=self.namespace)
+        cloned_self = self.__class__(
+            *self.flat_path, project=self.project, namespace=self.namespace
+        )
         # If the current parent has already been set, we re-use
         # the same instance
         cloned_self._parent = self._parent
@@ -260,15 +263,14 @@ class Key(object):
                  ``id_or_name`` is not a string or integer.
         """
         if not self.is_partial:
-            raise ValueError('Only a partial key can be completed.')
+            raise ValueError("Only a partial key can be completed.")
 
         if isinstance(id_or_name, six.string_types):
-            id_or_name_key = 'name'
+            id_or_name_key = "name"
         elif isinstance(id_or_name, six.integer_types):
-            id_or_name_key = 'id'
+            id_or_name_key = "id"
         else:
-            raise ValueError(id_or_name,
-                             'ID/name was not a string or integer.')
+            raise ValueError(id_or_name, "ID/name was not a string or integer.")
 
         new_key = self._clone()
         new_key._path[-1][id_or_name_key] = id_or_name
@@ -289,12 +291,12 @@ class Key(object):
 
         for item in self.path:
             element = key.path.add()
-            if 'kind' in item:
-                element.kind = item['kind']
-            if 'id' in item:
-                element.id = item['id']
-            if 'name' in item:
-                element.name = item['name']
+            if "kind" in item:
+                element.kind = item["kind"]
+            if "id" in item:
+                element.id = item["id"]
+            if "name" in item:
+                element.name = item["name"]
 
         return key
 
@@ -334,7 +336,7 @@ class Key(object):
             name_space=self.namespace,
         )
         raw_bytes = reference.SerializeToString()
-        return base64.urlsafe_b64encode(raw_bytes).strip(b'=')
+        return base64.urlsafe_b64encode(raw_bytes).strip(b"=")
 
     @classmethod
     def from_legacy_urlsafe(cls, urlsafe):
@@ -352,8 +354,8 @@ class Key(object):
         :rtype: :class:`~google.cloud.datastore.key.Key`.
         :returns: The key corresponding to ``urlsafe``.
         """
-        urlsafe = _to_bytes(urlsafe, encoding='ascii')
-        padding = b'=' * (-len(urlsafe) % 4)
+        urlsafe = _to_bytes(urlsafe, encoding="ascii")
+        padding = b"=" * (-len(urlsafe) % 4)
         urlsafe += padding
         raw_bytes = base64.urlsafe_b64decode(urlsafe)
 
@@ -361,7 +363,7 @@ class Key(object):
         reference.ParseFromString(raw_bytes)
 
         project = _clean_app(reference.app)
-        namespace = _get_empty(reference.name_space, u'')
+        namespace = _get_empty(reference.name_space, u"")
         _check_database_id(reference.database_id)
         flat_path = _get_flat_path(reference.path)
         return cls(*flat_path, project=project, namespace=namespace)
@@ -412,7 +414,7 @@ class Key(object):
         :rtype: str
         :returns: The kind of the current key.
         """
-        return self.path[-1]['kind']
+        return self.path[-1]["kind"]
 
     @property
     def id(self):
@@ -421,7 +423,7 @@ class Key(object):
         :rtype: int
         :returns: The (integer) ID of the key.
         """
-        return self.path[-1].get('id')
+        return self.path[-1].get("id")
 
     @property
     def name(self):
@@ -430,7 +432,7 @@ class Key(object):
         :rtype: str
         :returns: The (string) name of the key.
         """
-        return self.path[-1].get('name')
+        return self.path[-1].get("name")
 
     @property
     def id_or_name(self):
@@ -467,8 +469,9 @@ class Key(object):
         else:
             parent_args = self.flat_path[:-2]
         if parent_args:
-            return self.__class__(*parent_args, project=self.project,
-                                  namespace=self.namespace)
+            return self.__class__(
+                *parent_args, project=self.project, namespace=self.namespace
+            )
 
     @property
     def parent(self):
@@ -485,7 +488,7 @@ class Key(object):
         return self._parent
 
     def __repr__(self):
-        return '<Key%s, project=%s>' % (self._flat_path, self.project)
+        return "<Key%s, project=%s>" % (self._flat_path, self.project)
 
 
 def _validate_project(project, parent):
@@ -523,7 +526,7 @@ def _clean_app(app_str):
     :rtype: str
     :returns: The cleaned value.
     """
-    parts = app_str.split('~', 1)
+    parts = app_str.split("~", 1)
     return parts[-1]
 
 
@@ -551,7 +554,7 @@ def _check_database_id(database_id):
 
     :raises: :exc:`ValueError` if the ``database_id`` is not empty.
     """
-    if database_id != u'':
+    if database_id != u"":
         msg = _DATABASE_ID_TEMPLATE.format(database_id)
         raise ValueError(msg)
 
@@ -577,13 +580,13 @@ def _add_id_or_name(flat_path, element_pb, empty_allowed):
     # NOTE: Below 0 and the empty string are the "null" values for their
     #       respective types, indicating that the value is unset.
     if id_ == 0:
-        if name == u'':
+        if name == u"":
             if not empty_allowed:
                 raise ValueError(_EMPTY_ELEMENT)
         else:
             flat_path.append(name)
     else:
-        if name == u'':
+        if name == u"":
             flat_path.append(id_)
         else:
             msg = _BAD_ELEMENT_TEMPLATE.format(id_, name)
@@ -642,11 +645,11 @@ def _to_legacy_path(dict_path):
     """
     elements = []
     for part in dict_path:
-        element_kwargs = {'type': part['kind']}
-        if 'id' in part:
-            element_kwargs['id'] = part['id']
-        elif 'name' in part:
-            element_kwargs['name'] = part['name']
+        element_kwargs = {"type": part["kind"]}
+        if "id" in part:
+            element_kwargs["id"] = part["id"]
+        elif "name" in part:
+            element_kwargs["name"] = part["name"]
         element = _app_engine_key_pb2.Path.Element(**element_kwargs)
         elements.append(element)
 

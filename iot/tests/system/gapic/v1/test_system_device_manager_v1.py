@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +23,7 @@ from google.cloud.iot_v1.proto import device_manager_pb2
 
 class TestSystemDeviceManager(object):
     def test_list_device_registries(self):
-        project_id = os.environ['PROJECT_ID']
+        project_id = os.environ["PROJECT_ID"]
 
         client = iot_v1.DeviceManagerClient()
         parent = client.location_path(project_id, "us-central1")
