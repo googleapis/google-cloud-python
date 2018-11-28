@@ -1237,8 +1237,7 @@ class Test_Blob(unittest.TestCase):
         mock_get_boundary.assert_called_once_with()
 
         upload_url = (
-            'https://www.googleapis.com/upload/storage/v1' +
-            bucket.path + '/o')
+            'https://www.googleapis.com/upload/storage/v1' + bucket.path + '/o')
 
         qs_params = [('uploadType', 'multipart')]
 
@@ -1254,13 +1253,13 @@ class Test_Blob(unittest.TestCase):
         upload_url += '?' + urlencode(qs_params)
 
         payload = (
-            b'--==0==\r\n' +
-            b'content-type: application/json; charset=UTF-8\r\n\r\n' +
-            b'{"name": "blob-name"}\r\n' +
-            b'--==0==\r\n' +
-            b'content-type: application/xml\r\n\r\n' +
-            data_read +
-            b'\r\n--==0==--')
+            b'--==0==\r\n'
+            + b'content-type: application/json; charset=UTF-8\r\n\r\n'
+            + b'{"name": "blob-name"}\r\n'
+            + b'--==0==\r\n'
+            + b'content-type: application/xml\r\n\r\n'
+            + data_read
+            + b'\r\n--==0==--')
         headers = {'content-type': b'multipart/related; boundary="==0=="'}
         transport.request.assert_called_once_with(
             'POST', upload_url, data=payload, headers=headers)
@@ -1357,8 +1356,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsInstance(upload, ResumableUpload)
 
         upload_url = (
-            'https://www.googleapis.com/upload/storage/v1' +
-            bucket.path + '/o')
+            'https://www.googleapis.com/upload/storage/v1' + bucket.path + '/o')
         qs_params = [('uploadType', 'resumable')]
 
         if user_project is not None:
@@ -1481,9 +1479,9 @@ class Test_Blob(unittest.TestCase):
             blob, content_type, size=None, predefined_acl=None):
         # First mock transport.request() does initiates upload.
         upload_url = (
-            'https://www.googleapis.com/upload/storage/v1' +
-            blob.bucket.path +
-            '/o?uploadType=resumable')
+            'https://www.googleapis.com/upload/storage/v1'
+            + blob.bucket.path
+            + '/o?uploadType=resumable')
         if predefined_acl is not None:
             upload_url += '&predefinedAcl={}'.format(predefined_acl)
         expected_headers = {
@@ -1819,9 +1817,9 @@ class Test_Blob(unittest.TestCase):
 
         # Check the mocks.
         upload_url = (
-            'https://www.googleapis.com/upload/storage/v1' +
-            bucket.path +
-            '/o?uploadType=resumable')
+            'https://www.googleapis.com/upload/storage/v1'
+            + bucket.path
+            + '/o?uploadType=resumable')
         payload = b'{"name": "blob-name"}'
         expected_headers = {
             'content-type': 'application/json; charset=UTF-8',
