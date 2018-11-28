@@ -45,12 +45,13 @@ class Client(ClientWithProject):
                   change in the future.
     """
 
-    SCOPE = ('https://www.googleapis.com/auth/cloudruntimeconfig',)
+    SCOPE = ("https://www.googleapis.com/auth/cloudruntimeconfig",)
     """The scopes required for authenticating as a RuntimeConfig consumer."""
 
     def __init__(self, project=None, credentials=None, _http=None):
         super(Client, self).__init__(
-            project=project, credentials=credentials, _http=_http)
+            project=project, credentials=credentials, _http=_http
+        )
         self._connection = Connection(self)
 
     def config(self, config_name):
