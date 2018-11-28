@@ -1,4 +1,5 @@
 [flake8]
+ignore = E203, E266, E501, W503
 exclude =
   # Exclude generated code.
   **/proto/**
