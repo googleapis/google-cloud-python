@@ -15,7 +15,8 @@
 from __future__ import absolute_import
 
 import pkg_resources
-__version__ = pkg_resources.get_distribution('google-cloud-spanner').version
+
+__version__ = pkg_resources.get_distribution("google-cloud-spanner").version
 
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1 import types
@@ -28,7 +29,7 @@ from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import FixedSizePool
 
 
-COMMIT_TIMESTAMP = 'spanner.commit_timestamp()'
+COMMIT_TIMESTAMP = "spanner.commit_timestamp()"
 """Placeholder be used to store commit timestamp of a transaction in a column.
 
 This value can only be used for timestamp columns that have set the option
@@ -38,25 +39,20 @@ This value can only be used for timestamp columns that have set the option
 
 __all__ = (
     # google.cloud.spanner_v1
-    '__version__',
-    'param_types',
-    'types',
-
+    "__version__",
+    "param_types",
+    "types",
     # google.cloud.spanner_v1.client
-    'Client',
-
+    "Client",
     # google.cloud.spanner_v1.keyset
-    'KeyRange',
-    'KeySet',
-
+    "KeyRange",
+    "KeySet",
     # google.cloud.spanner_v1.pool
-    'AbstractSessionPool',
-    'BurstyPool',
-    'FixedSizePool',
-
+    "AbstractSessionPool",
+    "BurstyPool",
+    "FixedSizePool",
     # google.cloud.spanner_v1.gapic
-    'enums',
-
+    "enums",
     # local
-    'COMMIT_TIMESTAMP',
+    "COMMIT_TIMESTAMP",
 )

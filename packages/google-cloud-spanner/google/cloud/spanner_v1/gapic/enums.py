@@ -28,6 +28,7 @@ class NullValue(enum.IntEnum):
     Attributes:
       NULL_VALUE (int): Null value.
     """
+
     NULL_VALUE = 0
 
 
@@ -63,6 +64,7 @@ class TypeCode(enum.IntEnum):
       STRUCT (int): Encoded as ``list``, where list element ``i`` is represented according
       to [struct\_type.fields[i]][google.spanner.v1.StructType.fields].
     """
+
     TYPE_CODE_UNSPECIFIED = 0
     BOOL = 1
     INT64 = 2
@@ -91,6 +93,7 @@ class PlanNode(object):
           arithmetic operators appearing inside predicate expressions or references
           to column names.
         """
+
         KIND_UNSPECIFIED = 0
         RELATIONAL = 1
         SCALAR = 2
@@ -108,6 +111,7 @@ class ExecuteSqlRequest(object):
           PROFILE (int): This mode returns both the query plan and the execution statistics along
           with the results.
         """
+
         NORMAL = 0
         PLAN = 1
         PROFILE = 2

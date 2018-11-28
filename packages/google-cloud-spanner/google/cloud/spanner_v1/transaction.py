@@ -33,6 +33,7 @@ class Transaction(_SnapshotBase, _BatchBase):
 
     :raises ValueError: if session has an existing transaction
     """
+
     committed = None
     """Timestamp at which the transaction was successfully committed."""
     _rolled_back = False
@@ -90,10 +91,10 @@ class Transaction(_SnapshotBase, _BatchBase):
         database = self._session._database
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)
-        txn_options = TransactionOptions(
-            read_write=TransactionOptions.ReadWrite())
+        txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
         response = api.begin_transaction(
-            self._session.name, txn_options, metadata=metadata)
+            self._session.name, txn_options, metadata=metadata
+        )
         self._transaction_id = response.id
         return self._transaction_id
 
@@ -103,8 +104,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         database = self._session._database
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)
-        api.rollback(
-            self._session.name, self._transaction_id, metadata=metadata)
+        api.rollback(self._session.name, self._transaction_id, metadata=metadata)
         self._rolled_back = True
         del self._session._transaction
 
@@ -121,15 +121,16 @@ class Transaction(_SnapshotBase, _BatchBase):
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)
         response = api.commit(
-            self._session.name, self._mutations,
-            transaction_id=self._transaction_id, metadata=metadata)
-        self.committed = _pb_timestamp_to_datetime(
-            response.commit_timestamp)
+            self._session.name,
+            self._mutations,
+            transaction_id=self._transaction_id,
+            metadata=metadata,
+        )
+        self.committed = _pb_timestamp_to_datetime(response.commit_timestamp)
         del self._session._transaction
         return self.committed
 
-    def execute_update(self, dml, params=None, param_types=None,
-                       query_mode=None):
+    def execute_update(self, dml, params=None, param_types=None, query_mode=None):
         """Perform an ``ExecuteSql`` API request with DML.
 
         :type dml: str
@@ -154,10 +155,10 @@ class Transaction(_SnapshotBase, _BatchBase):
         """
         if params is not None:
             if param_types is None:
-                raise ValueError(
-                    "Specify 'param_types' when passing 'params'.")
-            params_pb = Struct(fields={
-                key: _make_value_pb(value) for key, value in params.items()})
+                raise ValueError("Specify 'param_types' when passing 'params'.")
+            params_pb = Struct(
+                fields={key: _make_value_pb(value) for key, value in params.items()}
+            )
         else:
             params_pb = None
 

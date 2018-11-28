@@ -40,9 +40,11 @@ def _try_to_coerce_bytes(bytestring):
         Value(string_value=bytestring)
         return bytestring
     except ValueError:
-        raise ValueError('Received a bytes that is not base64 encoded. '
-                         'Ensure that you either send a Unicode string or a '
-                         'base64-encoded bytes.')
+        raise ValueError(
+            "Received a bytes that is not base64 encoded. "
+            "Ensure that you either send a Unicode string or a "
+            "base64-encoded bytes."
+        )
 
 
 # pylint: disable=too-many-return-statements,too-many-branches
@@ -57,7 +59,7 @@ def _make_value_pb(value):
     :raises ValueError: if value is not of a known scalar type.
     """
     if value is None:
-        return Value(null_value='NULL_VALUE')
+        return Value(null_value="NULL_VALUE")
     if isinstance(value, (list, tuple)):
         return Value(list_value=_make_list_value_pb(value))
     if isinstance(value, bool):
@@ -66,12 +68,12 @@ def _make_value_pb(value):
         return Value(string_value=str(value))
     if isinstance(value, float):
         if math.isnan(value):
-            return Value(string_value='NaN')
+            return Value(string_value="NaN")
         if math.isinf(value):
             if value > 0:
-                return Value(string_value='Infinity')
+                return Value(string_value="Infinity")
             else:
-                return Value(string_value='-Infinity')
+                return Value(string_value="-Infinity")
         return Value(number_value=value)
     if isinstance(value, datetime_helpers.DatetimeWithNanoseconds):
         return Value(string_value=value.rfc3339())
@@ -87,6 +89,8 @@ def _make_value_pb(value):
     if isinstance(value, ListValue):
         return Value(list_value=value)
     raise ValueError("Unknown type: %s" % (value,))
+
+
 # pylint: enable=too-many-return-statements,too-many-branches
 
 
@@ -128,18 +132,18 @@ def _parse_value_pb(value_pb, field_type):
     :returns: value extracted from value_pb
     :raises ValueError: if unknown type is passed
     """
-    if value_pb.HasField('null_value'):
+    if value_pb.HasField("null_value"):
         return None
     if field_type.code == type_pb2.STRING:
         result = value_pb.string_value
     elif field_type.code == type_pb2.BYTES:
-        result = value_pb.string_value.encode('utf8')
+        result = value_pb.string_value.encode("utf8")
     elif field_type.code == type_pb2.BOOL:
         result = value_pb.bool_value
     elif field_type.code == type_pb2.INT64:
         result = int(value_pb.string_value)
     elif field_type.code == type_pb2.FLOAT64:
-        if value_pb.HasField('string_value'):
+        if value_pb.HasField("string_value"):
             result = float(value_pb.string_value)
         else:
             result = value_pb.number_value
@@ -151,14 +155,18 @@ def _parse_value_pb(value_pb, field_type):
     elif field_type.code == type_pb2.ARRAY:
         result = [
             _parse_value_pb(item_pb, field_type.array_element_type)
-            for item_pb in value_pb.list_value.values]
+            for item_pb in value_pb.list_value.values
+        ]
     elif field_type.code == type_pb2.STRUCT:
         result = [
             _parse_value_pb(item_pb, field_type.struct_type.fields[i].type)
-            for (i, item_pb) in enumerate(value_pb.list_value.values)]
+            for (i, item_pb) in enumerate(value_pb.list_value.values)
+        ]
     else:
         raise ValueError("Unknown type: %s" % (field_type,))
     return result
+
+
 # pylint: enable=too-many-branches
 
 
@@ -189,6 +197,7 @@ class _SessionWrapper(object):
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform the commit
     """
+
     def __init__(self, session):
         self._session = session
 
@@ -202,4 +211,4 @@ def _metadata_with_prefix(prefix, **kw):
     Returns:
         List[Tuple[str, str]]: RPC metadata with supplied prefix
     """
-    return [('google-cloud-resource-prefix', prefix)]
+    return [("google-cloud-resource-prefix", prefix)]

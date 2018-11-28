@@ -26,8 +26,4 @@ class InstanceAdminClient(instance_admin_client.InstanceAdminClient):
     enums = enums
 
 
-__all__ = (
-    'enums',
-    'types',
-    'InstanceAdminClient',
-)
+__all__ = ("enums", "types", "InstanceAdminClient")

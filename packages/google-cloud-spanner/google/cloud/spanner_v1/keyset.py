@@ -43,8 +43,10 @@ class KeyRange(object):
 
     :raises ValueError: if no keys are specified
     """
-    def __init__(self, start_open=None, start_closed=None,
-                 end_open=None, end_closed=None):
+
+    def __init__(
+        self, start_open=None, start_closed=None, end_open=None, end_closed=None
+    ):
         if not any([start_open, start_closed, end_open, end_closed]):
             raise ValueError("Must specify at least a start or end row.")
 
@@ -72,16 +74,16 @@ class KeyRange(object):
         kwargs = {}
 
         if self.start_open is not None:
-            kwargs['start_open'] = _make_list_value_pb(self.start_open)
+            kwargs["start_open"] = _make_list_value_pb(self.start_open)
 
         if self.start_closed is not None:
-            kwargs['start_closed'] = _make_list_value_pb(self.start_closed)
+            kwargs["start_closed"] = _make_list_value_pb(self.start_closed)
 
         if self.end_open is not None:
-            kwargs['end_open'] = _make_list_value_pb(self.end_open)
+            kwargs["end_open"] = _make_list_value_pb(self.end_open)
 
         if self.end_closed is not None:
-            kwargs['end_closed'] = _make_list_value_pb(self.end_closed)
+            kwargs["end_closed"] = _make_list_value_pb(self.end_closed)
 
         return KeyRangePB(**kwargs)
 
@@ -94,16 +96,16 @@ class KeyRange(object):
         mapping = {}
 
         if self.start_open:
-            mapping['start_open'] = self.start_open
+            mapping["start_open"] = self.start_open
 
         if self.start_closed:
-            mapping['start_closed'] = self.start_closed
+            mapping["start_closed"] = self.start_closed
 
         if self.end_open:
-            mapping['end_open'] = self.end_open
+            mapping["end_open"] = self.end_open
 
         if self.end_closed:
-            mapping['end_closed'] = self.end_closed
+            mapping["end_closed"] = self.end_closed
 
         return mapping
 
@@ -126,6 +128,7 @@ class KeySet(object):
     :type all_: boolean
     :param all_: if True, identify all rows within a table
     """
+
     def __init__(self, keys=(), ranges=(), all_=False):
         if all_ and (keys or ranges):
             raise ValueError("'all_' is exclusive of 'keys' / 'ranges'.")
@@ -144,10 +147,10 @@ class KeySet(object):
         kwargs = {}
 
         if self.keys:
-            kwargs['keys'] = _make_list_value_pbs(self.keys)
+            kwargs["keys"] = _make_list_value_pbs(self.keys)
 
         if self.ranges:
-            kwargs['ranges'] = [krange._to_pb() for krange in self.ranges]
+            kwargs["ranges"] = [krange._to_pb() for krange in self.ranges]
 
         return KeySetPB(**kwargs)
 
@@ -161,11 +164,11 @@ class KeySet(object):
         :returns: state of this instance.
         """
         if self.all_:
-            return {'all': True}
+            return {"all": True}
 
         return {
-            'keys': self.keys,
-            'ranges': [keyrange._to_dict() for keyrange in self.ranges],
+            "keys": self.keys,
+            "ranges": [keyrange._to_dict() for keyrange in self.ranges],
         }
 
     def __eq__(self, other):
@@ -181,10 +184,10 @@ class KeySet(object):
         :type mapping: dict
         :param mapping: the instance state.
         """
-        if mapping.get('all'):
+        if mapping.get("all"):
             return cls(all_=True)
 
-        r_mappings = mapping.get('ranges', ())
+        r_mappings = mapping.get("ranges", ())
         ranges = [KeyRange(**r_mapping) for r_mapping in r_mappings]
 
-        return cls(keys=mapping.get('keys', ()), ranges=ranges)
+        return cls(keys=mapping.get("keys", ()), ranges=ranges)

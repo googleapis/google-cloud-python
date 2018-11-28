@@ -32,6 +32,7 @@ class AbstractSessionPool(object):
     :param labels: (Optional) user-assigned labels for sessions created
                     by the pool.
     """
+
     _database = None
 
     def __init__(self, labels=None):
@@ -148,11 +149,11 @@ class FixedSizePool(AbstractSessionPool):
     :param labels: (Optional) user-assigned labels for sessions created
                     by the pool.
     """
+
     DEFAULT_SIZE = 10
     DEFAULT_TIMEOUT = 10
 
-    def __init__(self, size=DEFAULT_SIZE, default_timeout=DEFAULT_TIMEOUT,
-                 labels=None):
+    def __init__(self, size=DEFAULT_SIZE, default_timeout=DEFAULT_TIMEOUT, labels=None):
         super(FixedSizePool, self).__init__(labels=labels)
         self.size = size
         self.default_timeout = default_timeout
@@ -335,8 +336,7 @@ class PingingPool(AbstractSessionPool):
                     by the pool.
     """
 
-    def __init__(self, size=10, default_timeout=10, ping_interval=3000,
-                 labels=None):
+    def __init__(self, size=10, default_timeout=10, ping_interval=3000, labels=None):
         super(PingingPool, self).__init__(labels=labels)
         self.size = size
         self.default_timeout = default_timeout
@@ -451,12 +451,12 @@ class TransactionPingingPool(PingingPool):
                     by the pool.
     """
 
-    def __init__(self, size=10, default_timeout=10, ping_interval=3000,
-                 labels=None):
+    def __init__(self, size=10, default_timeout=10, ping_interval=3000, labels=None):
         self._pending_sessions = queue.Queue()
 
         super(TransactionPingingPool, self).__init__(
-            size, default_timeout, ping_interval, labels=labels)
+            size, default_timeout, ping_interval, labels=labels
+        )
 
         self.begin_pending_transactions()
 
@@ -508,6 +508,7 @@ class SessionCheckout(object):
     :type kwargs: dict
     :param kwargs: extra keyword arguments to be passed to :meth:`pool.get`.
     """
+
     _session = None  # Not checked out until '__enter__'.
 
     def __init__(self, pool, **kwargs):

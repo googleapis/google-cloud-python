@@ -51,17 +51,17 @@ from test_utils.system import unique_resource_id
 from tests._fixtures import DDL_STATEMENTS
 
 
-CREATE_INSTANCE = os.getenv(
-    'GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE') is not None
+CREATE_INSTANCE = os.getenv("GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE") is not None
 
 if CREATE_INSTANCE:
-    INSTANCE_ID = 'google-cloud' + unique_resource_id('-')
+    INSTANCE_ID = "google-cloud" + unique_resource_id("-")
 else:
-    INSTANCE_ID = os.environ.get('GOOGLE_CLOUD_TESTS_SPANNER_INSTANCE',
-                                 'google-cloud-python-systest')
+    INSTANCE_ID = os.environ.get(
+        "GOOGLE_CLOUD_TESTS_SPANNER_INSTANCE", "google-cloud-python-systest"
+    )
 EXISTING_INSTANCES = []
-COUNTERS_TABLE = 'counters'
-COUNTERS_COLUMNS = ('name', 'value')
+COUNTERS_TABLE = "counters"
+COUNTERS_COLUMNS = ("name", "value")
 
 
 class Config(object):
@@ -70,6 +70,7 @@ class Config(object):
     This is a mutable stand-in to allow test set-up to modify
     global state.
     """
+
     CLIENT = None
     INSTANCE_CONFIG = None
     INSTANCE = None
@@ -96,10 +97,10 @@ def setUpModule():
 
         # Defend against back-end returning configs for regions we aren't
         # actually allowed to use.
-        configs = [config for config in configs if '-us-' in config.name]
+        configs = [config for config in configs if "-us-" in config.name]
 
         if not configs:
-            raise ValueError('List instance configs failed in module set up.')
+            raise ValueError("List instance configs failed in module set up.")
 
         Config.INSTANCE_CONFIG = configs[0]
         config_name = configs[0].name
@@ -119,7 +120,6 @@ def tearDownModule():
 
 
 class TestInstanceAdminAPI(unittest.TestCase):
-
     def setUp(self):
         self.instances_to_delete = []
 
@@ -133,8 +133,9 @@ class TestInstanceAdminAPI(unittest.TestCase):
         if CREATE_INSTANCE:
             self.assertEqual(len(instances), len(EXISTING_INSTANCES) + 1)
         for instance in instances:
-            instance_existence = (instance in EXISTING_INSTANCES or
-                                  instance == Config.INSTANCE)
+            instance_existence = (
+                instance in EXISTING_INSTANCES or instance == Config.INSTANCE
+            )
             self.assertTrue(instance_existence)
 
     def test_reload_instance(self):
@@ -147,11 +148,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
         instance.reload()
         self.assertEqual(instance.display_name, Config.INSTANCE.display_name)
 
-    @unittest.skipUnless(CREATE_INSTANCE, 'Skipping instance creation')
+    @unittest.skipUnless(CREATE_INSTANCE, "Skipping instance creation")
     def test_create_instance(self):
-        ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
-        instance = Config.CLIENT.instance(
-            ALT_INSTANCE_ID, Config.INSTANCE_CONFIG.name)
+        ALT_INSTANCE_ID = "new" + unique_resource_id("-")
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID, Config.INSTANCE_CONFIG.name)
         operation = instance.create()
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
@@ -161,7 +161,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(
-            ALT_INSTANCE_ID, Config.INSTANCE_CONFIG.name)
+            ALT_INSTANCE_ID, Config.INSTANCE_CONFIG.name
+        )
         instance_alt.reload()
 
         self.assertEqual(instance, instance_alt)
@@ -169,7 +170,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
     def test_update_instance(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
-        NEW_DISPLAY_NAME = 'Foo Bar Baz'
+        NEW_DISPLAY_NAME = "Foo Bar Baz"
         Config.INSTANCE.display_name = NEW_DISPLAY_NAME
         operation = Config.INSTANCE.update()
 
@@ -189,15 +190,15 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
 
 class _TestData(object):
-    TABLE = 'contacts'
-    COLUMNS = ('contact_id', 'first_name', 'last_name', 'email')
+    TABLE = "contacts"
+    COLUMNS = ("contact_id", "first_name", "last_name", "email")
     ROW_DATA = (
-        (1, u'Phred', u'Phlyntstone', u'phred@example.com'),
-        (2, u'Bharney', u'Rhubble', u'bharney@example.com'),
-        (3, u'Wylma', u'Phlyntstone', u'wylma@example.com'),
+        (1, u"Phred", u"Phlyntstone", u"phred@example.com"),
+        (2, u"Bharney", u"Rhubble", u"bharney@example.com"),
+        (3, u"Wylma", u"Phlyntstone", u"wylma@example.com"),
     )
     ALL = KeySet(all_=True)
-    SQL = 'SELECT * FROM contacts ORDER BY contact_id'
+    SQL = "SELECT * FROM contacts ORDER BY contact_id"
 
     _recurse_into_lists = True
 
@@ -245,13 +246,14 @@ class _TestData(object):
 
 
 class TestDatabaseAPI(unittest.TestCase, _TestData):
-    DATABASE_NAME = 'test_database' + unique_resource_id('_')
+    DATABASE_NAME = "test_database" + unique_resource_id("_")
 
     @classmethod
     def setUpClass(cls):
-        pool = BurstyPool(labels={'testcase': 'database_api'})
+        pool = BurstyPool(labels={"testcase": "database_api"})
         cls._db = Config.INSTANCE.database(
-            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
+            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool
+        )
         operation = cls._db.create()
         operation.result(30)  # raises on failure / timeout.
 
@@ -270,12 +272,13 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         # Since `Config.INSTANCE` is newly created in `setUpModule`, the
         # database created in `setUpClass` here will be the only one.
         database_names = [
-            database.name for database in Config.INSTANCE.list_databases()]
+            database.name for database in Config.INSTANCE.list_databases()
+        ]
         self.assertTrue(self._db.name in database_names)
 
     def test_create_database(self):
-        pool = BurstyPool(labels={'testcase': 'create_database'})
-        temp_db_id = 'temp_db' + unique_resource_id('_')
+        pool = BurstyPool(labels={"testcase": "create_database"})
+        temp_db_id = "temp_db" + unique_resource_id("_")
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         operation = temp_db.create()
         self.to_delete.append(temp_db)
@@ -284,45 +287,45 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         operation.result(30)  # raises on failure / timeout.
 
         database_ids = [
-            database.database_id
-            for database in Config.INSTANCE.list_databases()]
+            database.database_id for database in Config.INSTANCE.list_databases()
+        ]
         self.assertIn(temp_db_id, database_ids)
 
     def test_table_not_found(self):
-        temp_db_id = 'temp_db' + unique_resource_id('_')
+        temp_db_id = "temp_db" + unique_resource_id("_")
 
-        correct_table = 'MyTable'
-        incorrect_table = 'NotMyTable'
+        correct_table = "MyTable"
+        incorrect_table = "NotMyTable"
         self.assertNotEqual(correct_table, incorrect_table)
 
         create_table = (
-            'CREATE TABLE {} (\n'
-            '    Id      STRING(36) NOT NULL,\n'
-            '    Field1  STRING(36) NOT NULL\n'
-            ') PRIMARY KEY (Id)').format(correct_table)
-        index = 'CREATE INDEX IDX ON {} (Field1)'.format(incorrect_table)
+            "CREATE TABLE {} (\n"
+            "    Id      STRING(36) NOT NULL,\n"
+            "    Field1  STRING(36) NOT NULL\n"
+            ") PRIMARY KEY (Id)"
+        ).format(correct_table)
+        index = "CREATE INDEX IDX ON {} (Field1)".format(incorrect_table)
 
         temp_db = Config.INSTANCE.database(
-            temp_db_id,
-            ddl_statements=[
-                create_table,
-                index,
-            ],
+            temp_db_id, ddl_statements=[create_table, index]
         )
         self.to_delete.append(temp_db)
         with self.assertRaises(exceptions.NotFound) as exc_info:
             temp_db.create()
 
-        expected = 'Table not found: {0}'.format(incorrect_table)
+        expected = "Table not found: {0}".format(incorrect_table)
         self.assertEqual(exc_info.exception.args, (expected,))
 
-    @pytest.mark.skip(reason=(
-        'update_dataset_ddl() has a flaky timeout'
-        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
-        '5629'))
+    @pytest.mark.skip(
+        reason=(
+            "update_dataset_ddl() has a flaky timeout"
+            "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/"
+            "5629"
+        )
+    )
     def test_update_database_ddl(self):
-        pool = BurstyPool(labels={'testcase': 'update_database_ddl'})
-        temp_db_id = 'temp_db' + unique_resource_id('_')
+        pool = BurstyPool(labels={"testcase": "update_database_ddl"})
+        temp_db_id = "temp_db" + unique_resource_id("_")
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         create_op = temp_db.create()
         self.to_delete.append(temp_db)
@@ -363,8 +366,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
             rows = list(transaction.read(test.TABLE, test.COLUMNS, self.ALL))
             test.assertEqual(rows, [])
 
-            transaction.insert_or_update(
-                test.TABLE, test.COLUMNS, test.ROW_DATA)
+            transaction.insert_or_update(test.TABLE, test.COLUMNS, test.ROW_DATA)
 
         self._db.run_in_transaction(_unit_of_work, test=self)
 
@@ -380,8 +382,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
             batch.delete(self.TABLE, self.ALL)
 
         def _unit_of_work(transaction, test):
-            transaction.insert_or_update(
-                test.TABLE, test.COLUMNS, test.ROW_DATA)
+            transaction.insert_or_update(test.TABLE, test.COLUMNS, test.ROW_DATA)
 
         self._db.run_in_transaction(_unit_of_work, test=self)
         self._db.run_in_transaction(_unit_of_work, test=self)
@@ -400,48 +401,46 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         def _unit_of_work(transaction, name):
             transaction.insert(COUNTERS_TABLE, COUNTERS_COLUMNS, [[name, 0]])
 
-        self._db.run_in_transaction(_unit_of_work, name='id_1')
+        self._db.run_in_transaction(_unit_of_work, name="id_1")
 
         with self.assertRaises(exceptions.AlreadyExists):
-            self._db.run_in_transaction(_unit_of_work, name='id_1')
+            self._db.run_in_transaction(_unit_of_work, name="id_1")
 
-        self._db.run_in_transaction(_unit_of_work, name='id_2')
+        self._db.run_in_transaction(_unit_of_work, name="id_2")
 
         with self._db.snapshot() as after:
-            rows = list(after.read(
-                COUNTERS_TABLE, COUNTERS_COLUMNS, self.ALL))
+            rows = list(after.read(COUNTERS_TABLE, COUNTERS_COLUMNS, self.ALL))
         self.assertEqual(len(rows), 2)
 
 
 SOME_DATE = datetime.date(2011, 1, 17)
 SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
 NANO_TIME = DatetimeWithNanoseconds(1995, 8, 31, nanosecond=987654321)
-POS_INF = float('+inf')
-NEG_INF = float('-inf')
-OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
-BYTES_1 = b'Ymlu'
-BYTES_2 = b'Ym9vdHM='
-ALL_TYPES_TABLE = 'all_types'
+POS_INF = float("+inf")
+NEG_INF = float("-inf")
+OTHER_NAN, = struct.unpack("<d", b"\x01\x00\x01\x00\x00\x00\xf8\xff")
+BYTES_1 = b"Ymlu"
+BYTES_2 = b"Ym9vdHM="
+ALL_TYPES_TABLE = "all_types"
 ALL_TYPES_COLUMNS = (
-    'pkey',
-    'int_value',
-    'int_array',
-    'bool_value',
-    'bool_array',
-    'bytes_value',
-    'bytes_array',
-    'date_value',
-    'date_array',
-    'float_value',
-    'float_array',
-    'string_value',
-    'string_array',
-    'timestamp_value',
-    'timestamp_array',
+    "pkey",
+    "int_value",
+    "int_array",
+    "bool_value",
+    "bool_array",
+    "bytes_value",
+    "bytes_array",
+    "date_value",
+    "date_array",
+    "float_value",
+    "float_array",
+    "string_value",
+    "string_array",
+    "timestamp_value",
+    "timestamp_array",
 )
-AllTypesRowData = collections.namedtuple('AllTypesRowData', ALL_TYPES_COLUMNS)
-AllTypesRowData.__new__.__defaults__ = tuple(
-    [None for colum in ALL_TYPES_COLUMNS])
+AllTypesRowData = collections.namedtuple("AllTypesRowData", ALL_TYPES_COLUMNS)
+AllTypesRowData.__new__.__defaults__ = tuple([None for colum in ALL_TYPES_COLUMNS])
 
 ALL_TYPES_ROWDATA = (
     # all nulls
@@ -452,7 +451,7 @@ ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=103, bytes_value=BYTES_1),
     AllTypesRowData(pkey=104, date_value=SOME_DATE),
     AllTypesRowData(pkey=105, float_value=1.4142136),
-    AllTypesRowData(pkey=106, string_value=u'VALUE'),
+    AllTypesRowData(pkey=106, string_value=u"VALUE"),
     AllTypesRowData(pkey=107, timestamp_value=SOME_TIME),
     AllTypesRowData(pkey=108, timestamp_value=NANO_TIME),
     # empty array values
@@ -469,19 +468,20 @@ ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=303, bytes_array=[BYTES_1, BYTES_2, None]),
     AllTypesRowData(pkey=304, date_array=[SOME_DATE, None]),
     AllTypesRowData(pkey=305, float_array=[3.1415926, 2.71828, None]),
-    AllTypesRowData(pkey=306, string_array=[u'One', u'Two', None]),
+    AllTypesRowData(pkey=306, string_array=[u"One", u"Two", None]),
     AllTypesRowData(pkey=307, timestamp_array=[SOME_TIME, NANO_TIME, None]),
 )
 
 
 class TestSessionAPI(unittest.TestCase, _TestData):
-    DATABASE_NAME = 'test_sessions' + unique_resource_id('_')
+    DATABASE_NAME = "test_sessions" + unique_resource_id("_")
 
     @classmethod
     def setUpClass(cls):
-        pool = BurstyPool(labels={'testcase': 'session_api'})
+        pool = BurstyPool(labels={"testcase": "session_api"})
         cls._db = Config.INSTANCE.database(
-            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
+            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool
+        )
         operation = cls._db.create()
         operation.result(30)  # raises on failure / timeout.
 
@@ -519,13 +519,13 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_rows_data(rows)
 
     def test_batch_insert_then_read_string_array_of_string(self):
-        TABLE = 'string_plus_array_of_string'
-        COLUMNS = ['id', 'name', 'tags']
+        TABLE = "string_plus_array_of_string"
+        COLUMNS = ["id", "name", "tags"]
         ROWDATA = [
             (0, None, None),
-            (1, 'phred', ['yabba', 'dabba', 'do']),
-            (2, 'bharney', []),
-            (3, 'wylma', ['oh', None, 'phred']),
+            (1, "phred", ["yabba", "dabba", "do"]),
+            (2, "bharney", []),
+            (3, "wylma", ["oh", None, "phred"]),
         ]
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -544,14 +544,10 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         with self._db.batch() as batch:
             batch.delete(ALL_TYPES_TABLE, self.ALL)
-            batch.insert(
-                ALL_TYPES_TABLE,
-                ALL_TYPES_COLUMNS,
-                ALL_TYPES_ROWDATA)
+            batch.insert(ALL_TYPES_TABLE, ALL_TYPES_COLUMNS, ALL_TYPES_ROWDATA)
 
         with self._db.snapshot(read_timestamp=batch.committed) as snapshot:
-            rows = list(snapshot.read(
-                ALL_TYPES_TABLE, ALL_TYPES_COLUMNS, self.ALL))
+            rows = list(snapshot.read(ALL_TYPES_TABLE, ALL_TYPES_COLUMNS, self.ALL))
         self._check_rows_data(rows, expected=ALL_TYPES_ROWDATA)
 
     def test_batch_insert_or_update_then_query(self):
@@ -569,14 +565,12 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
-        table = 'users_history'
-        columns = ['id', 'commit_ts', 'name', 'email', 'deleted']
+        table = "users_history"
+        columns = ["id", "commit_ts", "name", "email", "deleted"]
         user_id = 1234
-        name = 'phred'
-        email = 'phred@example.com'
-        row_data = [
-            [user_id, COMMIT_TIMESTAMP, name, email, False],
-        ]
+        name = "phred"
+        email = "phred@example.com"
+        row_data = [[user_id, COMMIT_TIMESTAMP, name, email, False]]
 
         with self._db.batch() as batch:
             batch.delete(table, self.ALL)
@@ -663,8 +657,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
-            transaction.insert_or_update(
-                self.TABLE, self.COLUMNS, self.ROW_DATA)
+            transaction.insert_or_update(self.TABLE, self.COLUMNS, self.ROW_DATA)
 
             # Inserted rows can't be read until after commit.
             rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
@@ -675,15 +668,12 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # [END spanner_test_dml_read_your_writes]
 
     def _generate_insert_statements(self):
-        insert_template = (
-            'INSERT INTO {table} ({column_list}) '
-            'VALUES ({row_data})'
-        )
+        insert_template = "INSERT INTO {table} ({column_list}) " "VALUES ({row_data})"
         for row in self.ROW_DATA:
             yield insert_template.format(
                 table=self.TABLE,
-                column_list=', '.join(self.COLUMNS),
-                row_data='{}, "{}", "{}", "{}"'.format(*row)
+                column_list=", ".join(self.COLUMNS),
+                row_data='{}, "{}", "{}", "{}"'.format(*row),
             )
 
     @RetryErrors(exception=exceptions.ServerError)
@@ -703,8 +693,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         transaction = session.transaction()
         transaction.begin()
 
-        rows = list(
-            transaction.read(self.TABLE, self.COLUMNS, self.ALL))
+        rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
 
         for insert_statement in self._generate_insert_statements():
@@ -713,8 +702,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             self.assertEqual(result.stats.row_count_exact, 1)
 
         # Rows inserted via DML *can* be read before commit.
-        during_rows = list(
-            transaction.read(self.TABLE, self.COLUMNS, self.ALL))
+        during_rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_rows_data(during_rows)
 
         transaction.rollback()
@@ -746,8 +734,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 self.assertEqual(row_count, 1)
 
             # Rows inserted via DML *can* be read before commit.
-            during_rows = list(
-                transaction.read(self.TABLE, self.COLUMNS, self.ALL))
+            during_rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self._check_rows_data(during_rows)
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
@@ -790,7 +777,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
-        delete_statement = 'DELETE FROM {} WHERE true'.format(self.TABLE)
+        delete_statement = "DELETE FROM {} WHERE true".format(self.TABLE)
 
         def _setup_table(txn):
             txn.execute_update(delete_statement)
@@ -800,28 +787,20 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         committed = self._db.run_in_transaction(_setup_table)
 
         with self._db.snapshot(read_timestamp=committed) as snapshot:
-            before_pdml = list(snapshot.read(
-                    self.TABLE, self.COLUMNS, self.ALL))
+            before_pdml = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
 
         self._check_rows_data(before_pdml)
 
-        nonesuch = 'nonesuch@example.com'
-        target = 'phred@example.com'
+        nonesuch = "nonesuch@example.com"
+        target = "phred@example.com"
         update_statement = (
-            'UPDATE {table} SET {table}.email = @email '
-            'WHERE {table}.email = @target').format(
-                table=self.TABLE)
+            "UPDATE {table} SET {table}.email = @email " "WHERE {table}.email = @target"
+        ).format(table=self.TABLE)
 
         row_count = self._db.execute_partitioned_dml(
             update_statement,
-            params={
-                'email': nonesuch,
-                'target': target,
-            },
-            param_types={
-                'email': Type(code=STRING),
-                'target': Type(code=STRING),
-            },
+            params={"email": nonesuch, "target": target},
+            param_types={"email": Type(code=STRING), "target": Type(code=STRING)},
         )
         self.assertEqual(row_count, 1)
 
@@ -829,30 +808,29 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         updated = [row[:3] + (nonesuch,)] + list(self.ROW_DATA[1:])
 
         with self._db.snapshot(read_timestamp=committed) as snapshot:
-            after_update = list(snapshot.read(
-                    self.TABLE, self.COLUMNS, self.ALL))
+            after_update = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_rows_data(after_update, updated)
 
         row_count = self._db.execute_partitioned_dml(delete_statement)
         self.assertEqual(row_count, len(self.ROW_DATA))
 
         with self._db.snapshot(read_timestamp=committed) as snapshot:
-            after_delete = list(snapshot.read(
-                    self.TABLE, self.COLUMNS, self.ALL))
+            after_delete = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
 
         self._check_rows_data(after_delete, [])
         # [END spanner_test_dml_partioned_dml_update]
 
     def _transaction_concurrency_helper(self, unit_of_work, pkey):
         INITIAL_VALUE = 123
-        NUM_THREADS = 3     # conforms to equivalent Java systest.
+        NUM_THREADS = 3  # conforms to equivalent Java systest.
 
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
         with self._db.batch() as batch:
             batch.insert_or_update(
-                COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, INITIAL_VALUE]])
+                COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, INITIAL_VALUE]]
+            )
 
         # We don't want to run the threads' transactions in the current
         # session, which would fail.
@@ -863,9 +841,10 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         threads = [
             threading.Thread(
-                target=txn_session.run_in_transaction,
-                args=(unit_of_work, pkey))
-            for txn_session in txn_sessions]
+                target=txn_session.run_in_transaction, args=(unit_of_work, pkey)
+            )
+            for txn_session in txn_sessions
+        ]
 
         for thread in threads:
             thread.start()
@@ -875,42 +854,36 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         with self._db.snapshot() as snapshot:
             keyset = KeySet(keys=[(pkey,)])
-            rows = list(snapshot.read(
-                COUNTERS_TABLE, COUNTERS_COLUMNS, keyset))
+            rows = list(snapshot.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset))
             self.assertEqual(len(rows), 1)
             _, value = rows[0]
             self.assertEqual(value, INITIAL_VALUE + len(threads))
 
     def _read_w_concurrent_update(self, transaction, pkey):
         keyset = KeySet(keys=[(pkey,)])
-        rows = list(transaction.read(
-            COUNTERS_TABLE, COUNTERS_COLUMNS, keyset))
+        rows = list(transaction.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset))
         self.assertEqual(len(rows), 1)
         pkey, value = rows[0]
-        transaction.update(
-            COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, value + 1]])
+        transaction.update(COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, value + 1]])
 
     def test_transaction_read_w_concurrent_updates(self):
-        PKEY = 'read_w_concurrent_updates'
-        self._transaction_concurrency_helper(
-            self._read_w_concurrent_update, PKEY)
+        PKEY = "read_w_concurrent_updates"
+        self._transaction_concurrency_helper(self._read_w_concurrent_update, PKEY)
 
     def _query_w_concurrent_update(self, transaction, pkey):
-        SQL = 'SELECT * FROM counters WHERE name = @name'
-        rows = list(transaction.execute_sql(
-            SQL,
-            params={'name': pkey},
-            param_types={'name': Type(code=STRING)},
-        ))
+        SQL = "SELECT * FROM counters WHERE name = @name"
+        rows = list(
+            transaction.execute_sql(
+                SQL, params={"name": pkey}, param_types={"name": Type(code=STRING)}
+            )
+        )
         self.assertEqual(len(rows), 1)
         pkey, value = rows[0]
-        transaction.update(
-            COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, value + 1]])
+        transaction.update(COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, value + 1]])
 
     def test_transaction_query_w_concurrent_updates(self):
-        PKEY = 'query_w_concurrent_updates'
-        self._transaction_concurrency_helper(
-            self._query_w_concurrent_update, PKEY)
+        PKEY = "query_w_concurrent_updates"
+        self._transaction_concurrency_helper(self._query_w_concurrent_update, PKEY)
 
     def test_transaction_read_w_abort(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -921,14 +894,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         with self._db.batch() as batch:
             batch.delete(COUNTERS_TABLE, self.ALL)
             batch.insert(
-                COUNTERS_TABLE,
-                COUNTERS_COLUMNS,
-                [[trigger.KEY1, 0], [trigger.KEY2, 0]])
+                COUNTERS_TABLE, COUNTERS_COLUMNS, [[trigger.KEY1, 0], [trigger.KEY2, 0]]
+            )
 
-        provoker = threading.Thread(
-            target=trigger.provoke_abort, args=(self._db,))
-        handler = threading.Thread(
-            target=trigger.handle_abort, args=(self._db,))
+        provoker = threading.Thread(target=trigger.provoke_abort, args=(self._db,))
+        handler = threading.Thread(target=trigger.handle_abort, args=(self._db,))
 
         provoker.start()
         trigger.provoker_started.wait()
@@ -939,22 +909,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         provoker.join()
         handler.join()
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                COUNTERS_TABLE,
-                COUNTERS_COLUMNS,
-                self.ALL)
-            )
-            self._check_row_data(
-                rows, expected=[[trigger.KEY1, 1], [trigger.KEY2, 1]])
+            rows = list(snapshot.read(COUNTERS_TABLE, COUNTERS_COLUMNS, self.ALL))
+            self._check_row_data(rows, expected=[[trigger.KEY1, 1], [trigger.KEY2, 1]])
 
     @staticmethod
     def _row_data(max_index):
         for index in range(max_index):
             yield [
                 index,
-                'First%09d' % (index,),
-                'Last%09d' % (max_index - index),
-                'test-%09d@example.com' % (index,),
+                "First%09d" % (index,),
+                "Last%09d" % (max_index - index),
+                "test-%09d@example.com" % (index,),
             ]
 
     def _set_up_table(self, row_count, database=None):
@@ -965,8 +930,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         def _unit_of_work(transaction, test):
             transaction.delete(test.TABLE, test.ALL)
-            transaction.insert(
-                test.TABLE, test.COLUMNS, test._row_data(row_count))
+            transaction.insert(test.TABLE, test.COLUMNS, test._row_data(row_count))
 
         committed = database.run_in_transaction(_unit_of_work, test=self)
 
@@ -983,10 +947,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         keyset = [[expected[row][0], expected[row][1]]]
         with self._db.snapshot() as snapshot:
             results_iter = snapshot.read(
-                self.TABLE,
-                columns,
-                KeySet(keys=keyset),
-                index='name'
+                self.TABLE, columns, KeySet(keys=keyset), index="name"
             )
             rows = list(results_iter)
             self.assertEqual(rows, [expected[row]])
@@ -999,10 +960,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         keyset = [["Non", "Existent"]]
         with self._db.snapshot() as snapshot:
             results_iter = snapshot.read(
-                self.TABLE,
-                columns,
-                KeySet(keys=keyset),
-                index='name'
+                self.TABLE, columns, KeySet(keys=keyset), index="name"
             )
             rows = list(results_iter)
             self.assertEqual(rows, [])
@@ -1013,17 +971,15 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._set_up_table(row_count)
         expected = [[row[1], row[2]] for row in self._row_data(row_count)]
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                KeySet(keys=expected),
-                index='name')
+            rows = list(
+                snapshot.read(self.TABLE, columns, KeySet(keys=expected), index="name")
             )
             self.assertEqual(rows, expected)
 
     def test_snapshot_read_w_various_staleness(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
+
         ROW_COUNT = 400
         committed = self._set_up_table(ROW_COUNT)
         all_data_rows = list(self._row_data(ROW_COUNT))
@@ -1049,11 +1005,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         # Test w/ exact staleness
         with self._db.snapshot(exact_staleness=staleness) as exact_staleness:
-            rows = list(exact_staleness.read(
-                self.TABLE,
-                self.COLUMNS,
-                self.ALL)
-            )
+            rows = list(exact_staleness.read(self.TABLE, self.COLUMNS, self.ALL))
             self._check_row_data(rows, all_data_rows)
 
         # Test w/ strong
@@ -1080,9 +1032,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         committed = self._set_up_table(ROW_COUNT)
         all_data_rows = list(self._row_data(ROW_COUNT))
 
-        with self._db.snapshot(
-                read_timestamp=committed,
-                multi_use=True) as read_ts:
+        with self._db.snapshot(read_timestamp=committed, multi_use=True) as read_ts:
 
             before = list(read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
             self._check_row_data(before, all_data_rows)
@@ -1117,14 +1067,13 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         ROW_COUNT = 2000
         # Indexed reads cannot return non-indexed columns
         MY_COLUMNS = self.COLUMNS[0], self.COLUMNS[2]
-        EXTRA_DDL = [
-            'CREATE INDEX contacts_by_last_name ON contacts(last_name)',
-        ]
-        pool = BurstyPool(labels={'testcase': 'read_w_index'})
+        EXTRA_DDL = ["CREATE INDEX contacts_by_last_name ON contacts(last_name)"]
+        pool = BurstyPool(labels={"testcase": "read_w_index"})
         temp_db = Config.INSTANCE.database(
-            'test_read' + unique_resource_id('_'),
+            "test_read" + unique_resource_id("_"),
             ddl_statements=DDL_STATEMENTS + EXTRA_DDL,
-            pool=pool)
+            pool=pool,
+        )
         operation = temp_db.create()
         self.to_delete.append(_DatabaseDropper(temp_db))
 
@@ -1133,15 +1082,15 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         committed = self._set_up_table(ROW_COUNT, database=temp_db)
 
         with temp_db.snapshot(read_timestamp=committed) as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                MY_COLUMNS,
-                self.ALL,
-                index='contacts_by_last_name')
+            rows = list(
+                snapshot.read(
+                    self.TABLE, MY_COLUMNS, self.ALL, index="contacts_by_last_name"
+                )
             )
 
-        expected = list(reversed(
-            [(row[0], row[2]) for row in self._row_data(ROW_COUNT)]))
+        expected = list(
+            reversed([(row[0], row[2]) for row in self._row_data(ROW_COUNT)])
+        )
         self._check_rows_data(rows, expected)
 
     def test_read_w_single_key(self):
@@ -1150,8 +1099,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         committed = self._set_up_table(ROW_COUNT)
 
         with self._db.snapshot(read_timestamp=committed) as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE, self.COLUMNS, KeySet(keys=[(0,)])))
+            rows = list(snapshot.read(self.TABLE, self.COLUMNS, KeySet(keys=[(0,)])))
 
         all_data_rows = list(self._row_data(ROW_COUNT))
         expected = [all_data_rows[0]]
@@ -1163,8 +1111,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         ROW_COUNT = 40
         self._set_up_table(ROW_COUNT)
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE, self.COLUMNS, KeySet(keys=[(40,)])))
+            rows = list(snapshot.read(self.TABLE, self.COLUMNS, KeySet(keys=[(40,)])))
         self._check_row_data(rows, [])
         # [END spanner_test_empty_read]
 
@@ -1174,9 +1121,13 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         committed = self._set_up_table(ROW_COUNT)
 
         with self._db.snapshot(read_timestamp=committed) as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE, self.COLUMNS,
-                KeySet(keys=[(index,) for index in indices])))
+            rows = list(
+                snapshot.read(
+                    self.TABLE,
+                    self.COLUMNS,
+                    KeySet(keys=[(index,) for index in indices]),
+                )
+            )
 
         all_data_rows = list(self._row_data(ROW_COUNT))
         expected = [row for row in all_data_rows if row[0] in indices]
@@ -1188,8 +1139,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         committed = self._set_up_table(ROW_COUNT)
 
         with self._db.snapshot(read_timestamp=committed) as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE, self.COLUMNS, self.ALL, limit=LIMIT))
+            rows = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL, limit=LIMIT))
 
         all_data_rows = list(self._row_data(ROW_COUNT))
         expected = all_data_rows[:LIMIT]
@@ -1200,71 +1150,58 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         START = 1000
         END = 2000
         committed = self._set_up_table(ROW_COUNT)
-        with self._db.snapshot(
-                read_timestamp=committed,
-                multi_use=True) as snapshot:
+        with self._db.snapshot(read_timestamp=committed, multi_use=True) as snapshot:
             all_data_rows = list(self._row_data(ROW_COUNT))
 
             single_key = KeyRange(start_closed=[START], end_open=[START + 1])
             keyset = KeySet(ranges=(single_key,))
             rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
-            expected = all_data_rows[START: START+1]
+            expected = all_data_rows[START : START + 1]
             self._check_rows_data(rows, expected)
 
             closed_closed = KeyRange(start_closed=[START], end_closed=[END])
             keyset = KeySet(ranges=(closed_closed,))
-            rows = list(snapshot.read(
-                self.TABLE, self.COLUMNS, keyset))
-            expected = all_data_rows[START:END+1]
+            rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
+            expected = all_data_rows[START : END + 1]
             self._check_row_data(rows, expected)
 
             closed_open = KeyRange(start_closed=[START], end_open=[END])
             keyset = KeySet(ranges=(closed_open,))
-            rows = list(snapshot.read(
-                self.TABLE, self.COLUMNS, keyset))
+            rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
             expected = all_data_rows[START:END]
             self._check_row_data(rows, expected)
 
             open_open = KeyRange(start_open=[START], end_open=[END])
             keyset = KeySet(ranges=(open_open,))
-            rows = list(snapshot.read(
-                self.TABLE, self.COLUMNS, keyset))
-            expected = all_data_rows[START+1:END]
+            rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
+            expected = all_data_rows[START + 1 : END]
             self._check_row_data(rows, expected)
 
             open_closed = KeyRange(start_open=[START], end_closed=[END])
             keyset = KeySet(ranges=(open_closed,))
-            rows = list(snapshot.read(
-                self.TABLE, self.COLUMNS, keyset))
-            expected = all_data_rows[START+1:END+1]
+            rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
+            expected = all_data_rows[START + 1 : END + 1]
             self._check_row_data(rows, expected)
 
     def test_read_partial_range_until_end(self):
         row_count = 3000
         start = 1000
         committed = self._set_up_table(row_count)
-        with self._db.snapshot(
-                read_timestamp=committed,
-                multi_use=True) as snapshot:
+        with self._db.snapshot(read_timestamp=committed, multi_use=True) as snapshot:
             all_data_rows = list(self._row_data(row_count))
 
             expected_map = {
-                ('start_closed', 'end_closed'): all_data_rows[start:],
-                ('start_closed', 'end_open'): [],
-                ('start_open', 'end_closed'): all_data_rows[start+1:],
-                ('start_open', 'end_open'): [],
+                ("start_closed", "end_closed"): all_data_rows[start:],
+                ("start_closed", "end_open"): [],
+                ("start_open", "end_closed"): all_data_rows[start + 1 :],
+                ("start_open", "end_open"): [],
             }
-            for start_arg in ('start_closed', 'start_open'):
-                for end_arg in ('end_closed', 'end_open'):
+            for start_arg in ("start_closed", "start_open"):
+                for end_arg in ("end_closed", "end_open"):
                     range_kwargs = {start_arg: [start], end_arg: []}
-                    keyset = KeySet(
-                        ranges=(
-                            KeyRange(**range_kwargs),
-                        ),
-                    )
+                    keyset = KeySet(ranges=(KeyRange(**range_kwargs),))
 
-                    rows = list(snapshot.read(
-                        self.TABLE, self.COLUMNS, keyset))
+                    rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
                     expected = expected_map[(start_arg, end_arg)]
                     self._check_row_data(rows, expected)
 
@@ -1276,24 +1213,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         all_data_rows = list(self._row_data(row_count))
 
         expected_map = {
-            ('start_closed', 'end_closed'): all_data_rows[:end+1],
-            ('start_closed', 'end_open'): all_data_rows[:end],
-            ('start_open', 'end_closed'): [],
-            ('start_open', 'end_open'): [],
+            ("start_closed", "end_closed"): all_data_rows[: end + 1],
+            ("start_closed", "end_open"): all_data_rows[:end],
+            ("start_open", "end_closed"): [],
+            ("start_open", "end_open"): [],
         }
-        for start_arg in ('start_closed', 'start_open'):
-            for end_arg in ('end_closed', 'end_open'):
+        for start_arg in ("start_closed", "start_open"):
+            for end_arg in ("end_closed", "end_open"):
                 range_kwargs = {start_arg: [], end_arg: [end]}
-                keyset = KeySet(
-                    ranges=(
-                        KeyRange(**range_kwargs),
-                    ),
-                )
-        with self._db.snapshot(
-                read_timestamp=committed,
-                multi_use=True) as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE, self.COLUMNS, keyset))
+                keyset = KeySet(ranges=(KeyRange(**range_kwargs),))
+        with self._db.snapshot(read_timestamp=committed, multi_use=True) as snapshot:
+            rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
             expected = expected_map[(start_arg, end_arg)]
             self._check_row_data(rows, expected)
 
@@ -1306,9 +1236,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         krange = KeyRange(start_closed=data[start], end_open=data[start + 1])
         keyset = KeySet(ranges=(krange,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE, columns, keyset, index='name'))
-            self.assertEqual(rows, data[start:start+1])
+            rows = list(snapshot.read(self.TABLE, columns, keyset, index="name"))
+            self.assertEqual(rows, data[start : start + 1])
 
     def test_read_with_range_keys_index_closed_closed(self):
         row_count = 10
@@ -1319,13 +1248,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         krange = KeyRange(start_closed=data[start], end_closed=data[end])
         keyset = KeySet(ranges=(krange,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                keyset,
-                index='name')
-            )
-            self.assertEqual(rows, data[start:end+1])
+            rows = list(snapshot.read(self.TABLE, columns, keyset, index="name"))
+            self.assertEqual(rows, data[start : end + 1])
 
     def test_read_with_range_keys_index_closed_open(self):
         row_count = 10
@@ -1336,12 +1260,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         krange = KeyRange(start_closed=data[start], end_open=data[end])
         keyset = KeySet(ranges=(krange,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                keyset,
-                index='name')
-            )
+            rows = list(snapshot.read(self.TABLE, columns, keyset, index="name"))
             self.assertEqual(rows, data[start:end])
 
     def test_read_with_range_keys_index_open_closed(self):
@@ -1353,9 +1272,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         krange = KeyRange(start_open=data[start], end_closed=data[end])
         keyset = KeySet(ranges=(krange,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(self.TABLE, columns,
-                                      keyset, index='name'))
-            self.assertEqual(rows, data[start+1:end+1])
+            rows = list(snapshot.read(self.TABLE, columns, keyset, index="name"))
+            self.assertEqual(rows, data[start + 1 : end + 1])
 
     def test_read_with_range_keys_index_open_open(self):
         row_count = 10
@@ -1366,9 +1284,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         krange = KeyRange(start_open=data[start], end_open=data[end])
         keyset = KeySet(ranges=(krange,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(self.TABLE, columns,
-                                      keyset, index='name'))
-            self.assertEqual(rows, data[start+1:end])
+            rows = list(snapshot.read(self.TABLE, columns, keyset, index="name"))
+            self.assertEqual(rows, data[start + 1 : end])
 
     def test_read_with_range_keys_index_limit_closed_closed(self):
         row_count = 10
@@ -1379,14 +1296,10 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         krange = KeyRange(start_closed=data[start], end_closed=data[end])
         keyset = KeySet(ranges=(krange,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                keyset,
-                index='name',
-                limit=limit)
+            rows = list(
+                snapshot.read(self.TABLE, columns, keyset, index="name", limit=limit)
             )
-            expected = data[start:end+1]
+            expected = data[start : end + 1]
             self.assertEqual(rows, expected[:limit])
 
     def test_read_with_range_keys_index_limit_closed_open(self):
@@ -1398,12 +1311,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         krange = KeyRange(start_closed=data[start], end_open=data[end])
         keyset = KeySet(ranges=(krange,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                keyset,
-                index='name',
-                limit=limit)
+            rows = list(
+                snapshot.read(self.TABLE, columns, keyset, index="name", limit=limit)
             )
             expected = data[start:end]
             self.assertEqual(rows, expected[:limit])
@@ -1417,14 +1326,10 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         krange = KeyRange(start_open=data[start], end_closed=data[end])
         keyset = KeySet(ranges=(krange,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                keyset,
-                index='name',
-                limit=limit)
+            rows = list(
+                snapshot.read(self.TABLE, columns, keyset, index="name", limit=limit)
             )
-            expected = data[start+1:end+1]
+            expected = data[start + 1 : end + 1]
             self.assertEqual(rows, expected[:limit])
 
     def test_read_with_range_keys_index_limit_open_open(self):
@@ -1436,13 +1341,10 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         krange = KeyRange(start_open=data[start], end_open=data[end])
         keyset = KeySet(ranges=(krange,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                keyset,
-                index='name',
-                limit=limit))
-            expected = data[start+1:end]
+            rows = list(
+                snapshot.read(self.TABLE, columns, keyset, index="name", limit=limit)
+            )
+            expected = data[start + 1 : end]
             self.assertEqual(rows, expected[:limit])
 
     def test_read_with_range_keys_and_index_closed_closed(self):
@@ -1452,18 +1354,12 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._set_up_table(row_count)
         data = [[row[1], row[2]] for row in self._row_data(row_count)]
         keyrow, start, end = 1, 3, 7
-        closed_closed = KeyRange(start_closed=data[start],
-                                 end_closed=data[end])
+        closed_closed = KeyRange(start_closed=data[start], end_closed=data[end])
         keys = [data[keyrow]]
         keyset = KeySet(keys=keys, ranges=(closed_closed,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                keyset,
-                index='name')
-            )
-            expected = ([data[keyrow]] + data[start:end+1])
+            rows = list(snapshot.read(self.TABLE, columns, keyset, index="name"))
+            expected = [data[keyrow]] + data[start : end + 1]
             self.assertEqual(rows, expected)
 
     def test_read_with_range_keys_and_index_closed_open(self):
@@ -1472,17 +1368,12 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._set_up_table(row_count)
         data = [[row[1], row[2]] for row in self._row_data(row_count)]
         keyrow, start, end = 1, 3, 7
-        closed_open = KeyRange(start_closed=data[start],
-                               end_open=data[end])
+        closed_open = KeyRange(start_closed=data[start], end_open=data[end])
         keys = [data[keyrow]]
         keyset = KeySet(keys=keys, ranges=(closed_open,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                keyset,
-                index='name'))
-            expected = ([data[keyrow]] + data[start:end])
+            rows = list(snapshot.read(self.TABLE, columns, keyset, index="name"))
+            expected = [data[keyrow]] + data[start:end]
             self.assertEqual(rows, expected)
 
     def test_read_with_range_keys_and_index_open_closed(self):
@@ -1491,18 +1382,12 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._set_up_table(row_count)
         data = [[row[1], row[2]] for row in self._row_data(row_count)]
         keyrow, start, end = 1, 3, 7
-        open_closed = KeyRange(start_open=data[start],
-                               end_closed=data[end])
+        open_closed = KeyRange(start_open=data[start], end_closed=data[end])
         keys = [data[keyrow]]
         keyset = KeySet(keys=keys, ranges=(open_closed,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                keyset,
-                index='name')
-            )
-            expected = ([data[keyrow]] + data[start+1:end+1])
+            rows = list(snapshot.read(self.TABLE, columns, keyset, index="name"))
+            expected = [data[keyrow]] + data[start + 1 : end + 1]
             self.assertEqual(rows, expected)
 
     def test_read_with_range_keys_and_index_open_open(self):
@@ -1511,18 +1396,12 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._set_up_table(row_count)
         data = [[row[1], row[2]] for row in self._row_data(row_count)]
         keyrow, start, end = 1, 3, 7
-        open_open = KeyRange(start_open=data[start],
-                             end_open=data[end])
+        open_open = KeyRange(start_open=data[start], end_open=data[end])
         keys = [data[keyrow]]
         keyset = KeySet(keys=keys, ranges=(open_open,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(
-                self.TABLE,
-                columns,
-                keyset,
-                index='name')
-            )
-            expected = ([data[keyrow]] + data[start+1:end])
+            rows = list(snapshot.read(self.TABLE, columns, keyset, index="name"))
+            expected = [data[keyrow]] + data[start + 1 : end]
             self.assertEqual(rows, expected)
 
     def test_partition_read_w_index(self):
@@ -1535,7 +1414,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         batch_txn = self._db.batch_snapshot(read_timestamp=committed)
         batches = batch_txn.generate_read_batches(
-            self.TABLE, columns, KeySet(all_=True), index='name')
+            self.TABLE, columns, KeySet(all_=True), index="name"
+        )
         for batch in batches:
             p_results_iter = batch_txn.process(batch)
             union.extend(list(p_results_iter))
@@ -1558,17 +1438,19 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self.assertEqual(streamed._pending_chunk, None)
 
     def _check_sql_results(
-            self, database, sql, params, param_types, expected, order=True):
-        if order and 'ORDER' not in sql:
-            sql += ' ORDER BY pkey'
+        self, database, sql, params, param_types, expected, order=True
+    ):
+        if order and "ORDER" not in sql:
+            sql += " ORDER BY pkey"
         with database.snapshot() as snapshot:
-            rows = list(snapshot.execute_sql(
-                sql, params=params, param_types=param_types))
+            rows = list(
+                snapshot.execute_sql(sql, params=params, param_types=param_types)
+            )
         self._check_rows_data(rows, expected=expected)
 
     def test_multiuse_snapshot_execute_sql_isolation_strong(self):
         ROW_COUNT = 40
-        SQL = 'SELECT * FROM {}'.format(self.TABLE)
+        SQL = "SELECT * FROM {}".format(self.TABLE)
         self._set_up_table(ROW_COUNT)
         all_data_rows = list(self._row_data(ROW_COUNT))
         with self._db.snapshot(multi_use=True) as strong:
@@ -1594,9 +1476,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             sql=SQL,
             params=None,
             param_types=None,
-            expected=[
-                [[['a', 1], ['b', 2]]],
-            ])
+            expected=[[[["a", 1], ["b", 2]]]],
+        )
 
     def test_execute_sql_returning_empty_array_of_struct(self):
         SQL = (
@@ -1609,32 +1490,27 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._db.snapshot(multi_use=True)
 
         self._check_sql_results(
-            self._db,
-            sql=SQL,
-            params=None,
-            param_types=None,
-            expected=[
-                [[]],
-            ])
+            self._db, sql=SQL, params=None, param_types=None, expected=[[[]]]
+        )
 
     def test_invalid_type(self):
-        table = 'counters'
-        columns = ('name', 'value')
+        table = "counters"
+        columns = ("name", "value")
 
-        valid_input = (('', 0),)
+        valid_input = (("", 0),)
         with self._db.batch() as batch:
             batch.delete(table, self.ALL)
             batch.insert(table, columns, valid_input)
 
-        invalid_input = ((0, ''),)
+        invalid_input = ((0, ""),)
         with self.assertRaises(exceptions.FailedPrecondition) as exc_info:
             with self._db.batch() as batch:
                 batch.delete(table, self.ALL)
                 batch.insert(table, columns, invalid_input)
 
         error_msg = (
-            'Invalid value for column value in table '
-            'counters: Expected INT64.')
+            "Invalid value for column value in table " "counters: Expected INT64."
+        )
         self.assertIn(error_msg, str(exc_info.exception))
 
     def test_execute_sql_select_1(self):
@@ -1644,7 +1520,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Hello, world query
         self._check_sql_results(
             self._db,
-            sql='SELECT 1',
+            sql="SELECT 1",
             params=None,
             param_types=None,
             expected=[(1,)],
@@ -1652,11 +1528,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         )
 
     def _bind_test_helper(
-        self,
-        type_name,
-        single_value,
-        array_value,
-        expected_array_value=None,
+        self, type_name, single_value, array_value, expected_array_value=None
     ):
 
         self._db.snapshot(multi_use=True)
@@ -1664,9 +1536,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Bind a non-null <type_name>
         self._check_sql_results(
             self._db,
-            sql='SELECT @v',
-            params={'v': single_value},
-            param_types={'v': Type(code=type_name)},
+            sql="SELECT @v",
+            params={"v": single_value},
+            param_types={"v": Type(code=type_name)},
             expected=[(single_value,)],
             order=False,
         )
@@ -1674,25 +1546,24 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Bind a null <type_name>
         self._check_sql_results(
             self._db,
-            sql='SELECT @v',
-            params={'v': None},
-            param_types={'v': Type(code=type_name)},
+            sql="SELECT @v",
+            params={"v": None},
+            param_types={"v": Type(code=type_name)},
             expected=[(None,)],
             order=False,
         )
 
         # Bind an array of <type_name>
-        array_type = Type(
-            code=ARRAY, array_element_type=Type(code=type_name))
+        array_type = Type(code=ARRAY, array_element_type=Type(code=type_name))
 
         if expected_array_value is None:
             expected_array_value = array_value
 
         self._check_sql_results(
             self._db,
-            sql='SELECT @v',
-            params={'v': array_value},
-            param_types={'v': array_type},
+            sql="SELECT @v",
+            params={"v": array_value},
+            param_types={"v": array_type},
             expected=[(expected_array_value,)],
             order=False,
         )
@@ -1700,9 +1571,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Bind an empty array of <type_name>
         self._check_sql_results(
             self._db,
-            sql='SELECT @v',
-            params={'v': []},
-            param_types={'v': array_type},
+            sql="SELECT @v",
+            params={"v": []},
+            param_types={"v": array_type},
             expected=[([],)],
             order=False,
         )
@@ -1710,15 +1581,15 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Bind a null array of <type_name>
         self._check_sql_results(
             self._db,
-            sql='SELECT @v',
-            params={'v': None},
-            param_types={'v': array_type},
+            sql="SELECT @v",
+            params={"v": None},
+            param_types={"v": array_type},
             expected=[(None,)],
             order=False,
         )
 
     def test_execute_sql_w_string_bindings(self):
-        self._bind_test_helper(STRING, 'Phred', ['Phred', 'Bharney'])
+        self._bind_test_helper(STRING, "Phred", ["Phred", "Bharney"])
 
     def test_execute_sql_w_bool_bindings(self):
         self._bind_test_helper(BOOL, True, [True, False, True])
@@ -1734,9 +1605,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Find -inf
         self._check_sql_results(
             self._db,
-            sql='SELECT @neg_inf',
-            params={'neg_inf': NEG_INF},
-            param_types={'neg_inf': Type(code=FLOAT64)},
+            sql="SELECT @neg_inf",
+            params={"neg_inf": NEG_INF},
+            param_types={"neg_inf": Type(code=FLOAT64)},
             expected=[(NEG_INF,)],
             order=False,
         )
@@ -1744,68 +1615,74 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Find +inf
         self._check_sql_results(
             self._db,
-            sql='SELECT @pos_inf',
-            params={'pos_inf': POS_INF},
-            param_types={'pos_inf': Type(code=FLOAT64)},
+            sql="SELECT @pos_inf",
+            params={"pos_inf": POS_INF},
+            param_types={"pos_inf": Type(code=FLOAT64)},
             expected=[(POS_INF,)],
             order=False,
         )
 
     def test_execute_sql_w_bytes_bindings(self):
-        self._bind_test_helper(BYTES, b'DEADBEEF', [b'FACEDACE', b'DEADBEEF'])
+        self._bind_test_helper(BYTES, b"DEADBEEF", [b"FACEDACE", b"DEADBEEF"])
 
     def test_execute_sql_w_timestamp_bindings(self):
         import pytz
         from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
         timestamp_1 = DatetimeWithNanoseconds(
-            1989, 1, 17, 17, 59, 12, nanosecond=345612789)
+            1989, 1, 17, 17, 59, 12, nanosecond=345612789
+        )
 
         timestamp_2 = DatetimeWithNanoseconds(
-            1989, 1, 17, 17, 59, 13, nanosecond=456127893)
+            1989, 1, 17, 17, 59, 13, nanosecond=456127893
+        )
 
         timestamps = [timestamp_1, timestamp_2]
 
         # In round-trip, timestamps acquire a timezone value.
         expected_timestamps = [
-            timestamp.replace(tzinfo=pytz.UTC) for timestamp in timestamps]
+            timestamp.replace(tzinfo=pytz.UTC) for timestamp in timestamps
+        ]
 
         self._recurse_into_lists = False
-        self._bind_test_helper(
-            TIMESTAMP, timestamp_1, timestamps, expected_timestamps)
+        self._bind_test_helper(TIMESTAMP, timestamp_1, timestamps, expected_timestamps)
 
     def test_execute_sql_w_date_bindings(self):
         import datetime
 
-        dates = [
-            SOME_DATE,
-            SOME_DATE + datetime.timedelta(days=1),
-        ]
+        dates = [SOME_DATE, SOME_DATE + datetime.timedelta(days=1)]
         self._bind_test_helper(DATE, SOME_DATE, dates)
 
     def test_execute_sql_w_query_param_struct(self):
-        NAME = 'Phred'
+        NAME = "Phred"
         COUNT = 123
         SIZE = 23.456
         HEIGHT = 188.0
         WEIGHT = 97.6
 
-        record_type = param_types.Struct([
-            param_types.StructField('name', param_types.STRING),
-            param_types.StructField('count', param_types.INT64),
-            param_types.StructField('size', param_types.FLOAT64),
-            param_types.StructField('nested', param_types.Struct([
-                param_types.StructField('height', param_types.FLOAT64),
-                param_types.StructField('weight', param_types.FLOAT64),
-            ])),
-        ])
+        record_type = param_types.Struct(
+            [
+                param_types.StructField("name", param_types.STRING),
+                param_types.StructField("count", param_types.INT64),
+                param_types.StructField("size", param_types.FLOAT64),
+                param_types.StructField(
+                    "nested",
+                    param_types.Struct(
+                        [
+                            param_types.StructField("height", param_types.FLOAT64),
+                            param_types.StructField("weight", param_types.FLOAT64),
+                        ]
+                    ),
+                ),
+            ]
+        )
 
         # Query with null struct, explicit type
         self._check_sql_results(
             self._db,
-            sql='SELECT @r.name, @r.count, @r.size, @r.nested.weight',
-            params={'r': None},
-            param_types={'r': record_type},
+            sql="SELECT @r.name, @r.count, @r.size, @r.nested.weight",
+            params={"r": None},
+            param_types={"r": record_type},
             expected=[(None, None, None, None)],
             order=False,
         )
@@ -1813,9 +1690,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Query with non-null struct, explicit type, NULL values
         self._check_sql_results(
             self._db,
-            sql='SELECT @r.name, @r.count, @r.size, @r.nested.weight',
-            params={'r': (None, None, None, None)},
-            param_types={'r': record_type},
+            sql="SELECT @r.name, @r.count, @r.size, @r.nested.weight",
+            params={"r": (None, None, None, None)},
+            param_types={"r": record_type},
             expected=[(None, None, None, None)],
             order=False,
         )
@@ -1823,9 +1700,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Query with non-null struct, explicit type, nested NULL values
         self._check_sql_results(
             self._db,
-            sql='SELECT @r.nested.weight',
-            params={'r': (None, None, None, (None, None))},
-            param_types={'r': record_type},
+            sql="SELECT @r.nested.weight",
+            params={"r": (None, None, None, (None, None))},
+            param_types={"r": record_type},
             expected=[(None,)],
             order=False,
         )
@@ -1833,9 +1710,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Query with non-null struct, explicit type
         self._check_sql_results(
             self._db,
-            sql='SELECT @r.name, @r.count, @r.size, @r.nested.weight',
-            params={'r': (NAME, COUNT, SIZE, (HEIGHT, WEIGHT))},
-            param_types={'r': record_type},
+            sql="SELECT @r.name, @r.count, @r.size, @r.nested.weight",
+            params={"r": (NAME, COUNT, SIZE, (HEIGHT, WEIGHT))},
+            param_types={"r": record_type},
             expected=[(NAME, COUNT, SIZE, WEIGHT)],
             order=False,
         )
@@ -1844,9 +1721,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         empty_type = param_types.Struct([])
         self._check_sql_results(
             self._db,
-            sql='SELECT @r IS NULL',
-            params={'r': ()},
-            param_types={'r': empty_type},
+            sql="SELECT @r IS NULL",
+            params={"r": ()},
+            param_types={"r": empty_type},
             expected=[(False,)],
             order=False,
         )
@@ -1854,27 +1731,28 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Query with null struct, explicitly empty type
         self._check_sql_results(
             self._db,
-            sql='SELECT @r IS NULL',
-            params={'r': None},
-            param_types={'r': empty_type},
+            sql="SELECT @r IS NULL",
+            params={"r": None},
+            param_types={"r": empty_type},
             expected=[(True,)],
             order=False,
         )
 
         # Query with equality check for struct value
         struct_equality_query = (
-            'SELECT '
-            '@struct_param=STRUCT<threadf INT64, userf STRING>(1,"bob")'
+            "SELECT " '@struct_param=STRUCT<threadf INT64, userf STRING>(1,"bob")'
         )
-        struct_type = param_types.Struct([
-            param_types.StructField('threadf', param_types.INT64),
-            param_types.StructField('userf', param_types.STRING),
-        ])
+        struct_type = param_types.Struct(
+            [
+                param_types.StructField("threadf", param_types.INT64),
+                param_types.StructField("userf", param_types.STRING),
+            ]
+        )
         self._check_sql_results(
             self._db,
             sql=struct_equality_query,
-            params={'struct_param': (1, 'bob')},
-            param_types={'struct_param': struct_type},
+            params={"struct_param": (1, "bob")},
+            param_types={"struct_param": struct_type},
             expected=[(True,)],
             order=False,
         )
@@ -1882,23 +1760,23 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Query with nullness test for struct
         self._check_sql_results(
             self._db,
-            sql='SELECT @struct_param IS NULL',
-            params={'struct_param': None},
-            param_types={'struct_param': struct_type},
+            sql="SELECT @struct_param IS NULL",
+            params={"struct_param": None},
+            param_types={"struct_param": struct_type},
             expected=[(True,)],
             order=False,
         )
 
         # Query with null array-of-struct
-        array_elem_type = param_types.Struct([
-            param_types.StructField('threadid', param_types.INT64),
-        ])
+        array_elem_type = param_types.Struct(
+            [param_types.StructField("threadid", param_types.INT64)]
+        )
         array_type = param_types.Array(array_elem_type)
         self._check_sql_results(
             self._db,
-            sql='SELECT a.threadid FROM UNNEST(@struct_arr_param) a',
-            params={'struct_arr_param': None},
-            param_types={'struct_arr_param': array_type},
+            sql="SELECT a.threadid FROM UNNEST(@struct_arr_param) a",
+            params={"struct_arr_param": None},
+            param_types={"struct_arr_param": array_type},
             expected=[],
             order=False,
         )
@@ -1906,23 +1784,25 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Query with non-null array-of-struct
         self._check_sql_results(
             self._db,
-            sql='SELECT a.threadid FROM UNNEST(@struct_arr_param) a',
-            params={'struct_arr_param': [(123,), (456,)]},
-            param_types={'struct_arr_param': array_type},
+            sql="SELECT a.threadid FROM UNNEST(@struct_arr_param) a",
+            params={"struct_arr_param": [(123,), (456,)]},
+            param_types={"struct_arr_param": array_type},
             expected=[(123,), (456,)],
             order=False,
         )
 
         # Query with null array-of-struct field
-        struct_type_with_array_field = param_types.Struct([
-            param_types.StructField('intf', param_types.INT64),
-            param_types.StructField('arraysf', array_type),
-        ])
+        struct_type_with_array_field = param_types.Struct(
+            [
+                param_types.StructField("intf", param_types.INT64),
+                param_types.StructField("arraysf", array_type),
+            ]
+        )
         self._check_sql_results(
             self._db,
-            sql='SELECT a.threadid FROM UNNEST(@struct_param.arraysf) a',
-            params={'struct_param': (123, None)},
-            param_types={'struct_param': struct_type_with_array_field},
+            sql="SELECT a.threadid FROM UNNEST(@struct_param.arraysf) a",
+            params={"struct_param": (123, None)},
+            param_types={"struct_param": struct_type_with_array_field},
             expected=[],
             order=False,
         )
@@ -1930,46 +1810,49 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Query with non-null array-of-struct field
         self._check_sql_results(
             self._db,
-            sql='SELECT a.threadid FROM UNNEST(@struct_param.arraysf) a',
-            params={'struct_param': (123, ((456,), (789,)))},
-            param_types={'struct_param': struct_type_with_array_field},
+            sql="SELECT a.threadid FROM UNNEST(@struct_param.arraysf) a",
+            params={"struct_param": (123, ((456,), (789,)))},
+            param_types={"struct_param": struct_type_with_array_field},
             expected=[(456,), (789,)],
             order=False,
         )
 
         # Query with anonymous / repeated-name fields
-        anon_repeated_array_elem_type = param_types.Struct([
-            param_types.StructField('', param_types.INT64),
-            param_types.StructField('', param_types.STRING),
-        ])
-        anon_repeated_array_type = param_types.Array(
-            anon_repeated_array_elem_type)
+        anon_repeated_array_elem_type = param_types.Struct(
+            [
+                param_types.StructField("", param_types.INT64),
+                param_types.StructField("", param_types.STRING),
+            ]
+        )
+        anon_repeated_array_type = param_types.Array(anon_repeated_array_elem_type)
         self._check_sql_results(
             self._db,
-            sql='SELECT CAST(t as STRUCT<threadid INT64, userid STRING>).* '
-                'FROM UNNEST(@struct_param) t',
-            params={'struct_param': [(123, 'abcdef')]},
-            param_types={'struct_param': anon_repeated_array_type},
-            expected=[(123, 'abcdef')],
+            sql="SELECT CAST(t as STRUCT<threadid INT64, userid STRING>).* "
+            "FROM UNNEST(@struct_param) t",
+            params={"struct_param": [(123, "abcdef")]},
+            param_types={"struct_param": anon_repeated_array_type},
+            expected=[(123, "abcdef")],
             order=False,
         )
 
         # Query and return a struct parameter
-        value_type = param_types.Struct([
-            param_types.StructField('message', param_types.STRING),
-            param_types.StructField('repeat', param_types.INT64),
-        ])
+        value_type = param_types.Struct(
+            [
+                param_types.StructField("message", param_types.STRING),
+                param_types.StructField("repeat", param_types.INT64),
+            ]
+        )
         value_query = (
-            'SELECT ARRAY(SELECT AS STRUCT message, repeat '
-            'FROM (SELECT @value.message AS message, '
-            '@value.repeat AS repeat)) AS value'
+            "SELECT ARRAY(SELECT AS STRUCT message, repeat "
+            "FROM (SELECT @value.message AS message, "
+            "@value.repeat AS repeat)) AS value"
         )
         self._check_sql_results(
             self._db,
             sql=value_query,
-            params={'value': ('hello', 1)},
-            param_types={'value': value_type},
-            expected=[([['hello', 1]],)],
+            params={"value": ("hello", 1)},
+            param_types={"value": value_type},
+            expected=[([["hello", 1]],)],
             order=False,
         )
 
@@ -1977,33 +1860,39 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         with self._db.snapshot(multi_use=True) as snapshot:
             # Query returning -inf, +inf, NaN as column values
-            rows = list(snapshot.execute_sql(
-                'SELECT '
-                'CAST("-inf" AS FLOAT64), '
-                'CAST("+inf" AS FLOAT64), '
-                'CAST("NaN" AS FLOAT64)'))
+            rows = list(
+                snapshot.execute_sql(
+                    "SELECT "
+                    'CAST("-inf" AS FLOAT64), '
+                    'CAST("+inf" AS FLOAT64), '
+                    'CAST("NaN" AS FLOAT64)'
+                )
+            )
             self.assertEqual(len(rows), 1)
-            self.assertEqual(rows[0][0], float('-inf'))
-            self.assertEqual(rows[0][1], float('+inf'))
+            self.assertEqual(rows[0][0], float("-inf"))
+            self.assertEqual(rows[0][1], float("+inf"))
             # NaNs cannot be compared by equality.
             self.assertTrue(math.isnan(rows[0][2]))
 
             # Query returning array of -inf, +inf, NaN as one column
-            rows = list(snapshot.execute_sql(
-                'SELECT'
-                ' [CAST("-inf" AS FLOAT64),'
-                ' CAST("+inf" AS FLOAT64),'
-                ' CAST("NaN" AS FLOAT64)]'))
+            rows = list(
+                snapshot.execute_sql(
+                    "SELECT"
+                    ' [CAST("-inf" AS FLOAT64),'
+                    ' CAST("+inf" AS FLOAT64),'
+                    ' CAST("NaN" AS FLOAT64)]'
+                )
+            )
             self.assertEqual(len(rows), 1)
             float_array, = rows[0]
-            self.assertEqual(float_array[0], float('-inf'))
-            self.assertEqual(float_array[1], float('+inf'))
+            self.assertEqual(float_array[0], float("-inf"))
+            self.assertEqual(float_array[1], float("+inf"))
             # NaNs cannot be searched for by equality.
             self.assertTrue(math.isnan(float_array[2]))
 
     def test_partition_query(self):
         row_count = 40
-        sql = 'SELECT * FROM {}'.format(self.TABLE)
+        sql = "SELECT * FROM {}".format(self.TABLE)
         committed = self._set_up_table(row_count)
         all_data_rows = list(self._row_data(row_count))
 
@@ -2018,7 +1907,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
 
 class TestStreamingChunking(unittest.TestCase, _TestData):
-
     @classmethod
     def setUpClass(cls):
         from tests.system.utils.streaming_utils import INSTANCE_NAME
@@ -2027,17 +1915,19 @@ class TestStreamingChunking(unittest.TestCase, _TestData):
         instance = Config.CLIENT.instance(INSTANCE_NAME)
         if not instance.exists():
             raise unittest.SkipTest(
-                "Run 'tests/system/utils/populate_streaming.py' to enable.")
+                "Run 'tests/system/utils/populate_streaming.py' to enable."
+            )
 
         database = instance.database(DATABASE_NAME)
         if not instance.exists():
             raise unittest.SkipTest(
-                "Run 'tests/system/utils/populate_streaming.py' to enable.")
+                "Run 'tests/system/utils/populate_streaming.py' to enable."
+            )
 
         cls._db = database
 
     def _verify_one_column(self, table_desc):
-        sql = 'SELECT chunk_me FROM {}'.format(table_desc.table)
+        sql = "SELECT chunk_me FROM {}".format(table_desc.table)
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.execute_sql(sql))
         self.assertEqual(len(rows), table_desc.row_count)
@@ -2046,7 +1936,7 @@ class TestStreamingChunking(unittest.TestCase, _TestData):
             self.assertEqual(row[0], expected)
 
     def _verify_two_columns(self, table_desc):
-        sql = 'SELECT chunk_me, chunk_me_2 FROM {}'.format(table_desc.table)
+        sql = "SELECT chunk_me, chunk_me_2 FROM {}".format(table_desc.table)
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.execute_sql(sql))
         self.assertEqual(len(rows), table_desc.row_count)
@@ -2057,18 +1947,22 @@ class TestStreamingChunking(unittest.TestCase, _TestData):
 
     def test_four_kay(self):
         from tests.system.utils.streaming_utils import FOUR_KAY
+
         self._verify_one_column(FOUR_KAY)
 
     def test_forty_kay(self):
         from tests.system.utils.streaming_utils import FORTY_KAY
+
         self._verify_one_column(FORTY_KAY)
 
     def test_four_hundred_kay(self):
         from tests.system.utils.streaming_utils import FOUR_HUNDRED_KAY
+
         self._verify_one_column(FOUR_HUNDRED_KAY)
 
     def test_four_meg(self):
         from tests.system.utils.streaming_utils import FOUR_MEG
+
         self._verify_two_columns(FOUR_MEG)
 
 
@@ -2089,8 +1983,8 @@ class _DatabaseDropper(object):
 class _ReadAbortTrigger(object):
     """Helper for tests provoking abort-during-read."""
 
-    KEY1 = 'key1'
-    KEY2 = 'key2'
+    KEY1 = "key1"
+    KEY2 = "key2"
 
     def __init__(self):
         self.provoker_started = threading.Event()
@@ -2100,8 +1994,7 @@ class _ReadAbortTrigger(object):
 
     def _provoke_abort_unit_of_work(self, transaction):
         keyset = KeySet(keys=[(self.KEY1,)])
-        rows = list(
-            transaction.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset))
+        rows = list(transaction.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset))
 
         assert len(rows) == 1
         row = rows[0]
@@ -2111,8 +2004,7 @@ class _ReadAbortTrigger(object):
 
         self.handler_running.wait()
 
-        transaction.update(
-            COUNTERS_TABLE, COUNTERS_COLUMNS, [[self.KEY1, value + 1]])
+        transaction.update(COUNTERS_TABLE, COUNTERS_COLUMNS, [[self.KEY1, value + 1]])
 
     def provoke_abort(self, database):
         database.run_in_transaction(self._provoke_abort_unit_of_work)
@@ -2120,8 +2012,7 @@ class _ReadAbortTrigger(object):
 
     def _handle_abort_unit_of_work(self, transaction):
         keyset_1 = KeySet(keys=[(self.KEY1,)])
-        rows_1 = list(
-            transaction.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset_1))
+        rows_1 = list(transaction.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset_1))
 
         assert len(rows_1) == 1
         row_1 = rows_1[0]
@@ -2132,15 +2023,15 @@ class _ReadAbortTrigger(object):
         self.provoker_done.wait()
 
         keyset_2 = KeySet(keys=[(self.KEY2,)])
-        rows_2 = list(
-            transaction.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset_2))
+        rows_2 = list(transaction.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset_2))
 
         assert len(rows_2) == 1
         row_2 = rows_2[0]
         value_2 = row_2[1]
 
         transaction.update(
-            COUNTERS_TABLE, COUNTERS_COLUMNS, [[self.KEY2, value_1 + value_2]])
+            COUNTERS_TABLE, COUNTERS_COLUMNS, [[self.KEY2, value_1 + value_2]]
+        )
 
     def handle_abort(self, database):
         database.run_in_transaction(self._handle_abort_unit_of_work)

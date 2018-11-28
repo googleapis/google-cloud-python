@@ -17,7 +17,6 @@ import unittest
 
 
 class Test_make_value_pb(unittest.TestCase):
-
     def _callFUT(self, *args, **kw):
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
@@ -25,26 +24,26 @@ class Test_make_value_pb(unittest.TestCase):
 
     def test_w_None(self):
         value_pb = self._callFUT(None)
-        self.assertTrue(value_pb.HasField('null_value'))
+        self.assertTrue(value_pb.HasField("null_value"))
 
     def test_w_bytes(self):
         from google.protobuf.struct_pb2 import Value
 
-        BYTES = b'BYTES'
+        BYTES = b"BYTES"
         expected = Value(string_value=BYTES)
         value_pb = self._callFUT(BYTES)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb, expected)
 
     def test_w_invalid_bytes(self):
-        BYTES = b'\xff\xfe\x03&'
+        BYTES = b"\xff\xfe\x03&"
         with self.assertRaises(ValueError):
             self._callFUT(BYTES)
 
     def test_w_explicit_unicode(self):
         from google.protobuf.struct_pb2 import Value
 
-        TEXT = u'TEXT'
+        TEXT = u"TEXT"
         value_pb = self._callFUT(TEXT)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, TEXT)
@@ -53,23 +52,21 @@ class Test_make_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
         from google.protobuf.struct_pb2 import ListValue
 
-        value_pb = self._callFUT([u'a', u'b', u'c'])
+        value_pb = self._callFUT([u"a", u"b", u"c"])
         self.assertIsInstance(value_pb, Value)
         self.assertIsInstance(value_pb.list_value, ListValue)
         values = value_pb.list_value.values
-        self.assertEqual([value.string_value for value in values],
-                         [u'a', u'b', u'c'])
+        self.assertEqual([value.string_value for value in values], [u"a", u"b", u"c"])
 
     def test_w_tuple(self):
         from google.protobuf.struct_pb2 import Value
         from google.protobuf.struct_pb2 import ListValue
 
-        value_pb = self._callFUT((u'a', u'b', u'c'))
+        value_pb = self._callFUT((u"a", u"b", u"c"))
         self.assertIsInstance(value_pb, Value)
         self.assertIsInstance(value_pb.list_value, ListValue)
         values = value_pb.list_value.values
-        self.assertEqual([value.string_value for value in values],
-                         [u'a', u'b', u'c'])
+        self.assertEqual([value.string_value for value in values], [u"a", u"b", u"c"])
 
     def test_w_bool(self):
         from google.protobuf.struct_pb2 import Value
@@ -85,7 +82,7 @@ class Test_make_value_pb(unittest.TestCase):
         for int_type in six.integer_types:  # include 'long' on Python 2
             value_pb = self._callFUT(int_type(42))
         self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.string_value, '42')
+        self.assertEqual(value_pb.string_value, "42")
 
     def test_w_float(self):
         from google.protobuf.struct_pb2 import Value
@@ -97,23 +94,23 @@ class Test_make_value_pb(unittest.TestCase):
     def test_w_float_nan(self):
         from google.protobuf.struct_pb2 import Value
 
-        value_pb = self._callFUT(float('nan'))
+        value_pb = self._callFUT(float("nan"))
         self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.string_value, 'NaN')
+        self.assertEqual(value_pb.string_value, "NaN")
 
     def test_w_float_neg_inf(self):
         from google.protobuf.struct_pb2 import Value
 
-        value_pb = self._callFUT(float('-inf'))
+        value_pb = self._callFUT(float("-inf"))
         self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.string_value, '-Infinity')
+        self.assertEqual(value_pb.string_value, "-Infinity")
 
     def test_w_float_pos_inf(self):
         from google.protobuf.struct_pb2 import Value
 
-        value_pb = self._callFUT(float('inf'))
+        value_pb = self._callFUT(float("inf"))
         self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.string_value, 'Infinity')
+        self.assertEqual(value_pb.string_value, "Infinity")
 
     def test_w_date(self):
         import datetime
@@ -130,7 +127,8 @@ class Test_make_value_pb(unittest.TestCase):
         from google.api_core import datetime_helpers
 
         when = datetime_helpers.DatetimeWithNanoseconds(
-            2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=pytz.UTC)
+            2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=pytz.UTC
+        )
         value_pb = self._callFUT(when)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, when.rfc3339())
@@ -153,9 +151,7 @@ class Test_make_value_pb(unittest.TestCase):
         now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         value_pb = self._callFUT(now)
         self.assertIsInstance(value_pb, Value)
-        self.assertEqual(
-            value_pb.string_value,
-            datetime_helpers.to_rfc3339(now))
+        self.assertEqual(value_pb.string_value, datetime_helpers.to_rfc3339(now))
 
     def test_w_unknown_type(self):
         with self.assertRaises(ValueError):
@@ -163,7 +159,6 @@ class Test_make_value_pb(unittest.TestCase):
 
 
 class Test_make_list_value_pb(unittest.TestCase):
-
     def _callFUT(self, *args, **kw):
         from google.cloud.spanner_v1._helpers import _make_list_value_pb
 
@@ -179,7 +174,7 @@ class Test_make_list_value_pb(unittest.TestCase):
     def test_w_single_value(self):
         from google.protobuf.struct_pb2 import ListValue
 
-        VALUE = u'value'
+        VALUE = u"value"
         result = self._callFUT(values=[VALUE])
         self.assertIsInstance(result, ListValue)
         self.assertEqual(len(result.values), 1)
@@ -188,7 +183,7 @@ class Test_make_list_value_pb(unittest.TestCase):
     def test_w_multiple_values(self):
         from google.protobuf.struct_pb2 import ListValue
 
-        VALUE_1 = u'value'
+        VALUE_1 = u"value"
         VALUE_2 = 42
         result = self._callFUT(values=[VALUE_1, VALUE_2])
         self.assertIsInstance(result, ListValue)
@@ -198,7 +193,6 @@ class Test_make_list_value_pb(unittest.TestCase):
 
 
 class Test_make_list_value_pbs(unittest.TestCase):
-
     def _callFUT(self, *args, **kw):
         from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 
@@ -222,7 +216,7 @@ class Test_make_list_value_pbs(unittest.TestCase):
     def test_w_multiple_values(self):
         from google.protobuf.struct_pb2 import ListValue
 
-        values = [[0, u'A'], [1, u'B']]
+        values = [[0, u"A"], [1, u"B"]]
         result = self._callFUT(values=values)
         self.assertEqual(len(result), len(values))
         for found, expected in zip(result, values):
@@ -233,7 +227,6 @@ class Test_make_list_value_pbs(unittest.TestCase):
 
 
 class Test_parse_value_pb(unittest.TestCase):
-
     def _callFUT(self, *args, **kw):
         from google.cloud.spanner_v1._helpers import _parse_value_pb
 
@@ -252,7 +245,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
         from google.cloud.spanner_v1.proto.type_pb2 import Type, STRING
 
-        VALUE = u'Value'
+        VALUE = u"Value"
         field_type = Type(code=STRING)
         value_pb = Value(string_value=VALUE)
 
@@ -262,7 +255,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
         from google.cloud.spanner_v1.proto.type_pb2 import Type, BYTES
 
-        VALUE = b'Value'
+        VALUE = b"Value"
         field_type = Type(code=BYTES)
         value_pb = Value(string_value=VALUE)
 
@@ -317,17 +310,13 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.cloud.spanner_v1.proto.type_pb2 import Type
 
         value = datetime_helpers.DatetimeWithNanoseconds(
-            2016, 12, 20, 21, 13, 47,
-            microsecond=123456,
-            tzinfo=pytz.UTC)
+            2016, 12, 20, 21, 13, 47, microsecond=123456, tzinfo=pytz.UTC
+        )
         field_type = Type(code=TIMESTAMP)
-        value_pb = Value(
-            string_value=datetime_helpers.to_rfc3339(value))
+        value_pb = Value(string_value=datetime_helpers.to_rfc3339(value))
 
         parsed = self._callFUT(value_pb, field_type)
-        self.assertIsInstance(
-            parsed,
-            datetime_helpers.DatetimeWithNanoseconds)
+        self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
         self.assertEqual(parsed, value)
 
     def test_w_timestamp_w_nanos(self):
@@ -338,17 +327,13 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.cloud.spanner_v1.proto.type_pb2 import Type
 
         value = datetime_helpers.DatetimeWithNanoseconds(
-            2016, 12, 20, 21, 13, 47,
-            nanosecond=123456789,
-            tzinfo=pytz.UTC)
+            2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=pytz.UTC
+        )
         field_type = Type(code=TIMESTAMP)
-        value_pb = Value(
-            string_value=datetime_helpers.to_rfc3339(value))
+        value_pb = Value(string_value=datetime_helpers.to_rfc3339(value))
 
         parsed = self._callFUT(value_pb, field_type)
-        self.assertIsInstance(
-            parsed,
-            datetime_helpers.DatetimeWithNanoseconds)
+        self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
         self.assertEqual(parsed, value)
 
     def test_w_array_empty(self):
@@ -367,7 +352,8 @@ class Test_parse_value_pb(unittest.TestCase):
         field_type = Type(code=ARRAY, array_element_type=Type(code=INT64))
         VALUES = [32, 19, 5]
         values_pb = ListValue(
-            values=[Value(string_value=str(value)) for value in VALUES])
+            values=[Value(string_value=str(value)) for value in VALUES]
+        )
         value_pb = Value(list_value=values_pb)
 
         self.assertEqual(self._callFUT(value_pb, field_type), VALUES)
@@ -375,15 +361,16 @@ class Test_parse_value_pb(unittest.TestCase):
     def test_w_struct(self):
         from google.protobuf.struct_pb2 import Value
         from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
-        from google.cloud.spanner_v1.proto.type_pb2 import (
-            STRUCT, STRING, INT64)
+        from google.cloud.spanner_v1.proto.type_pb2 import STRUCT, STRING, INT64
         from google.cloud.spanner_v1._helpers import _make_list_value_pb
 
-        VALUES = [u'phred', 32]
-        struct_type_pb = StructType(fields=[
-            StructType.Field(name='name', type=Type(code=STRING)),
-            StructType.Field(name='age', type=Type(code=INT64)),
-        ])
+        VALUES = [u"phred", 32]
+        struct_type_pb = StructType(
+            fields=[
+                StructType.Field(name="name", type=Type(code=STRING)),
+                StructType.Field(name="age", type=Type(code=INT64)),
+            ]
+        )
         field_type = Type(code=STRUCT, struct_type=struct_type_pb)
         value_pb = Value(list_value=_make_list_value_pb(VALUES))
 
@@ -392,18 +379,16 @@ class Test_parse_value_pb(unittest.TestCase):
     def test_w_unknown_type(self):
         from google.protobuf.struct_pb2 import Value
         from google.cloud.spanner_v1.proto.type_pb2 import Type
-        from google.cloud.spanner_v1.proto.type_pb2 import (
-            TYPE_CODE_UNSPECIFIED)
+        from google.cloud.spanner_v1.proto.type_pb2 import TYPE_CODE_UNSPECIFIED
 
         field_type = Type(code=TYPE_CODE_UNSPECIFIED)
-        value_pb = Value(string_value='Borked')
+        value_pb = Value(string_value="Borked")
 
         with self.assertRaises(ValueError):
             self._callFUT(value_pb, field_type)
 
 
 class Test_parse_list_value_pbs(unittest.TestCase):
-
     def _callFUT(self, *args, **kw):
         from google.cloud.spanner_v1._helpers import _parse_list_value_pbs
 
@@ -413,10 +398,12 @@ class Test_parse_list_value_pbs(unittest.TestCase):
         from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
         from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
 
-        struct_type_pb = StructType(fields=[
-            StructType.Field(name='name', type=Type(code=STRING)),
-            StructType.Field(name='age', type=Type(code=INT64)),
-        ])
+        struct_type_pb = StructType(
+            fields=[
+                StructType.Field(name="name", type=Type(code=STRING)),
+                StructType.Field(name="age", type=Type(code=INT64)),
+            ]
+        )
 
         self.assertEqual(self._callFUT(rows=[], row_type=struct_type_pb), [])
 
@@ -425,22 +412,21 @@ class Test_parse_list_value_pbs(unittest.TestCase):
         from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
         from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 
-        VALUES = [
-            [u'phred', 32],
-            [u'bharney', 31],
-        ]
-        struct_type_pb = StructType(fields=[
-            StructType.Field(name='name', type=Type(code=STRING)),
-            StructType.Field(name='age', type=Type(code=INT64)),
-        ])
+        VALUES = [[u"phred", 32], [u"bharney", 31]]
+        struct_type_pb = StructType(
+            fields=[
+                StructType.Field(name="name", type=Type(code=STRING)),
+                StructType.Field(name="age", type=Type(code=INT64)),
+            ]
+        )
         values_pbs = _make_list_value_pbs(VALUES)
 
         self.assertEqual(
-            self._callFUT(rows=values_pbs, row_type=struct_type_pb), VALUES)
+            self._callFUT(rows=values_pbs, row_type=struct_type_pb), VALUES
+        )
 
 
 class Test_SessionWrapper(unittest.TestCase):
-
     def _getTargetClass(self):
         from google.cloud.spanner_v1._helpers import _SessionWrapper
 
@@ -456,14 +442,12 @@ class Test_SessionWrapper(unittest.TestCase):
 
 
 class Test_metadata_with_prefix(unittest.TestCase):
-
     def _call_fut(self, *args, **kw):
         from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 
         return _metadata_with_prefix(*args, **kw)
 
     def test(self):
-        prefix = 'prefix'
+        prefix = "prefix"
         metadata = self._call_fut(prefix)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', prefix)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", prefix)])

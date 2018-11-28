@@ -65,4 +65,4 @@ CREATE TABLE users_history (
      PRIMARY KEY(id, commit_ts DESC);
 """
 
-DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(';') if stmt.strip()]
+DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(";") if stmt.strip()]
