@@ -31,11 +31,11 @@ def test_streaming_recognize():
     client = make_speech_client()
 
     config = types.StreamingRecognitionConfig()
-    requests = [types.StreamingRecognizeRequest(audio_content=b'...')]
+    requests = [types.StreamingRecognizeRequest(audio_content=b"...")]
     super_patch = mock.patch(
-        'google.cloud.speech_v1.speech_client.SpeechClient.'
-        'streaming_recognize',
-        autospec=True)
+        "google.cloud.speech_v1.speech_client.SpeechClient." "streaming_recognize",
+        autospec=True,
+    )
 
     with super_patch as streaming_recognize:
         client.streaming_recognize(config, requests)
@@ -49,5 +49,5 @@ def test_streaming_recognize():
         types.StreamingRecognizeRequest(streaming_config=config),
         requests[0],
     ]
-    assert 'retry' in kwargs
-    assert 'timeout' in kwargs
+    assert "retry" in kwargs
+    assert "timeout" in kwargs
