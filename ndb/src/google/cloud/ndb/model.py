@@ -3676,6 +3676,91 @@ class Model(metaclass=MetaModel):
         """
         return cls.__name__
 
+    def __hash__(self):
+        """Not implemented hash function.
+
+        Raises:
+            TypeError: Always, to emphasize that entities are mutable.
+        """
+        raise TypeError("Model is not immutable")
+
+    def __eq__(self, other):
+        """Compare two entities of the same class for equality."""
+        if type(other) is not type(self):
+            return NotImplemented
+
+        if self._key != other._key:
+            return False
+
+        return self._equivalent(other)
+
+    def _equivalent(self, other):
+        """Compare two entities of the same class, excluding keys.
+
+        Args:
+            other (Model): An entity of the same class. It is assumed that
+                the type and the key of ``other`` match the current entity's
+                type and key (and the caller is responsible for checking).
+
+        Returns:
+            bool: Indicating if the current entity and ``other`` are
+            equivalent.
+
+        Raises:
+            NotImplementedError: If the type's don't match.
+        """
+        if type(other) is not type(self):
+            raise NotImplementedError(
+                "Cannot compare different model classes. {} is "
+                "not {}".format(type(self).__name__, type(other).__name__)
+            )
+
+        if set(self._projection) != set(other._projection):
+            return False
+
+        # Short-circuit equality check, can only happen for ``Expando``.
+        if len(self._properties) != len(other._properties):
+            return False
+
+        prop_names = set(self._properties.keys())
+        other_prop_names = set(other._properties.keys())
+        if prop_names != other_prop_names:
+            return False  # Can only happen for ``Expando``.
+
+        # Restrict properties to the projection if set.
+        if self._projection:
+            prop_names = set(self._projection)
+
+        for name in prop_names:
+            if "." in name:
+                # Only use / compare on base name.
+                name, _ = name.split(".", 1)
+            value = self._properties[name]._get_value(self)
+            if value != other._properties[name]._get_value(other):
+                return False
+
+        return True
+
+    def __ne__(self, other):
+        """Inequality comparison operation."""
+        return not self == other
+
+    def __lt__(self, value):
+        """The ``<`` comparison is not well-defined."""
+        raise TypeError("Model instances are not orderable.")
+
+    def __le__(self, value):
+        """The ``<=`` comparison is not well-defined."""
+        raise TypeError("Model instances are not orderable.")
+
+    def __gt__(self, value):
+        """The ``>`` comparison is not well-defined."""
+        raise TypeError("Model instances are not orderable.")
+
+    def __ge__(self, value):
+        """The ``>=`` comparison is not well-defined."""
+        raise TypeError("Model instances are not orderable.")
+
     def _set_projection(self, projection):
         """Set the projected properties for this instance.
 
