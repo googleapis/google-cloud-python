@@ -785,8 +785,7 @@ class Table(object):
         """
         from google.cloud.bigquery import dataset
 
-        if ('tableReference' not in resource or
-                'tableId' not in resource['tableReference']):
+        if ('tableReference' not in resource or 'tableId' not in resource['tableReference']):
             raise KeyError('Resource lacks required identity information:'
                            '["tableReference"]["tableId"]')
         project_id = resource['tableReference']['projectId']
@@ -1121,8 +1120,8 @@ class Row(object):
         if not isinstance(other, Row):
             return NotImplemented
         return(
-            self._xxx_values == other._xxx_values and
-            self._xxx_field_to_index == other._xxx_field_to_index)
+            self._xxx_values == other._xxx_values
+            and self._xxx_field_to_index == other._xxx_field_to_index)
 
     def __ne__(self, other):
         return not self == other
