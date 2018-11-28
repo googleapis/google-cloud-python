@@ -38,17 +38,19 @@ from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id('-')
-CLUSTER_ID = "clus-1-" + unique_resource_id('-')
-LOCATION_ID = 'us-central1-f'
-ALT_LOCATION_ID = 'us-central1-a'
+INSTANCE_ID = "snippet-" + unique_resource_id("-")
+CLUSTER_ID = "clus-1-" + unique_resource_id("-")
+LOCATION_ID = "us-central1-f"
+ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
-LABEL_KEY = u'python-snippet'
-LABEL_STAMP = datetime.datetime.utcnow() \
-                               .replace(microsecond=0, tzinfo=UTC,) \
-                               .strftime("%Y-%m-%dt%H-%M-%S")
+LABEL_KEY = u"python-snippet"
+LABEL_STAMP = (
+    datetime.datetime.utcnow()
+    .replace(microsecond=0, tzinfo=UTC)
+    .strftime("%Y-%m-%dt%H-%M-%S")
+)
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 
 
@@ -58,19 +60,22 @@ class Config(object):
     This is a mutable stand-in to allow test set-up to modify
     global state.
     """
+
     CLIENT = None
     INSTANCE = None
 
 
 def setup_module():
     client = Config.CLIENT = Client(admin=True)
-    Config.INSTANCE = client.instance(INSTANCE_ID,
-                                      instance_type=PRODUCTION,
-                                      labels=LABELS)
-    cluster = Config.INSTANCE.cluster(CLUSTER_ID,
-                                      location_id=LOCATION_ID,
-                                      serve_nodes=SERVER_NODES,
-                                      default_storage_type=STORAGE_TYPE)
+    Config.INSTANCE = client.instance(
+        INSTANCE_ID, instance_type=PRODUCTION, labels=LABELS
+    )
+    cluster = Config.INSTANCE.cluster(
+        CLUSTER_ID,
+        location_id=LOCATION_ID,
+        serve_nodes=SERVER_NODES,
+        default_storage_type=STORAGE_TYPE,
+    )
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
@@ -85,20 +90,22 @@ def test_bigtable_create_instance():
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import enums
 
-    my_instance_id = "inst-my-" + unique_resource_id('-')
-    my_cluster_id = "clus-my-" + unique_resource_id('-')
-    location_id = 'us-central1-f'
+    my_instance_id = "inst-my-" + unique_resource_id("-")
+    my_cluster_id = "clus-my-" + unique_resource_id("-")
+    location_id = "us-central1-f"
     serve_nodes = 3
     storage_type = enums.StorageType.SSD
     production = enums.Instance.Type.PRODUCTION
-    labels = {'prod-label': 'prod-label'}
+    labels = {"prod-label": "prod-label"}
 
     client = Client(admin=True)
-    instance = client.instance(my_instance_id, instance_type=production,
-                               labels=labels)
-    cluster = instance.cluster(my_cluster_id, location_id=location_id,
-                               serve_nodes=serve_nodes,
-                               default_storage_type=storage_type)
+    instance = client.instance(my_instance_id, instance_type=production, labels=labels)
+    cluster = instance.cluster(
+        my_cluster_id,
+        location_id=location_id,
+        serve_nodes=serve_nodes,
+        default_storage_type=storage_type,
+    )
     operation = instance.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
@@ -120,14 +127,17 @@ def test_bigtable_create_additional_cluster():
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
 
-    cluster_id = "clus-my-" + unique_resource_id('-')
-    location_id = 'us-central1-a'
+    cluster_id = "clus-my-" + unique_resource_id("-")
+    location_id = "us-central1-a"
     serve_nodes = 3
     storage_type = enums.StorageType.SSD
 
-    cluster = instance.cluster(cluster_id, location_id=location_id,
-                               serve_nodes=serve_nodes,
-                               default_storage_type=storage_type)
+    cluster = instance.cluster(
+        cluster_id,
+        location_id=location_id,
+        serve_nodes=serve_nodes,
+        default_storage_type=storage_type,
+    )
     operation = cluster.create()
     # We want to make sure the operation completes.
     operation.result(timeout=100)
@@ -140,18 +150,20 @@ def test_bigtable_create_additional_cluster():
 def test_bigtable_create_app_profile():
     # [START bigtable_create_app_profile]
     from google.cloud.bigtable import Client
+
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
 
-    app_profile_id = "app-prof-" + unique_resource_id('-')
-    description = 'routing policy-multy'
+    app_profile_id = "app-prof-" + unique_resource_id("-")
+    description = "routing policy-multy"
     routing_policy_type = enums.RoutingPolicyType.ANY
 
     app_profile = instance.app_profile(
         app_profile_id=app_profile_id,
         routing_policy_type=routing_policy_type,
         description=description,
-        cluster_id=CLUSTER_ID)
+        cluster_id=CLUSTER_ID,
+    )
 
     app_profile = app_profile.create(ignore_warnings=True)
     # [END bigtable_create_app_profile]
@@ -200,8 +212,9 @@ def test_bigtable_list_app_profiles():
     # [END bigtable_list_app_profiles]
 
     app_profile = instance.app_profile(
-        app_profile_id="app-prof-" + unique_resource_id('-'),
-        routing_policy_type=enums.RoutingPolicyType.ANY)
+        app_profile_id="app-prof-" + unique_resource_id("-"),
+        routing_policy_type=enums.RoutingPolicyType.ANY,
+    )
     app_profile = app_profile.create(ignore_warnings=True)
 
     # [START bigtable_list_app_profiles]
@@ -292,7 +305,7 @@ def test_bigtable_create_table():
     table = instance.table("table_my")
     # Define the GC policy to retain only the most recent 2 versions.
     max_versions_rule = column_family.MaxVersionsGCRule(2)
-    table.create(column_families={'cf1': max_versions_rule})
+    table.create(column_families={"cf1": max_versions_rule})
     # [END bigtable_create_table]
     assert table.exists()
 
@@ -314,12 +327,15 @@ def test_bigtable_delete_cluster():
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
-    cluster_id = "clus-my-" + unique_resource_id('-')
+    cluster_id = "clus-my-" + unique_resource_id("-")
     # [END bigtable_delete_cluster]
 
-    cluster = instance.cluster(cluster_id, location_id=ALT_LOCATION_ID,
-                               serve_nodes=SERVER_NODES,
-                               default_storage_type=STORAGE_TYPE)
+    cluster = instance.cluster(
+        cluster_id,
+        location_id=ALT_LOCATION_ID,
+        serve_nodes=SERVER_NODES,
+        default_storage_type=STORAGE_TYPE,
+    )
     operation = cluster.create()
     # We want to make sure the operation completes.
     operation.result(timeout=1000)
@@ -336,18 +352,20 @@ def test_bigtable_delete_instance():
     from google.cloud.bigtable import Client
 
     client = Client(admin=True)
-    instance_id_to_delete = "inst-my-" + unique_resource_id('-')
+    instance_id_to_delete = "inst-my-" + unique_resource_id("-")
     # [END bigtable_delete_instance]
 
-    cluster_id = "clus-my-" + unique_resource_id('-')
+    cluster_id = "clus-my-" + unique_resource_id("-")
 
-    instance = client.instance(instance_id_to_delete,
-                               instance_type=PRODUCTION,
-                               labels=LABELS)
-    cluster = instance.cluster(cluster_id,
-                               location_id=ALT_LOCATION_ID,
-                               serve_nodes=SERVER_NODES,
-                               default_storage_type=STORAGE_TYPE)
+    instance = client.instance(
+        instance_id_to_delete, instance_type=PRODUCTION, labels=LABELS
+    )
+    cluster = instance.cluster(
+        cluster_id,
+        location_id=ALT_LOCATION_ID,
+        serve_nodes=SERVER_NODES,
+        default_storage_type=STORAGE_TYPE,
+    )
     operation = instance.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
@@ -389,9 +407,7 @@ def test_bigtable_set_iam_policy_then_get_iam_policy():
     instance = client.instance(INSTANCE_ID)
     instance.reload()
     new_policy = Policy()
-    new_policy[BIGTABLE_ADMIN_ROLE] = [
-        Policy.service_account(service_account_email),
-    ]
+    new_policy[BIGTABLE_ADMIN_ROLE] = [Policy.service_account(service_account_email)]
 
     policy_latest = instance.set_iam_policy(new_policy)
     # [END bigtable_set_iam_policy]
@@ -409,5 +425,5 @@ def test_bigtable_set_iam_policy_then_get_iam_policy():
     assert len(policy.bigtable_admins) > 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()
