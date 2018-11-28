@@ -27,12 +27,10 @@ from google.cloud.pubsub_v1.subscriber._protocol import requests
 
 
 _LOGGER = logging.getLogger(__name__)
-_LEASE_WORKER_NAME = 'Thread-LeaseMaintainer'
+_LEASE_WORKER_NAME = "Thread-LeaseMaintainer"
 
 
-_LeasedMessage = collections.namedtuple(
-    '_LeasedMessage',
-    ['added_time', 'size'])
+_LeasedMessage = collections.namedtuple("_LeasedMessage", ["added_time", "size"])
 
 
 class Leaser(object):
@@ -71,12 +69,11 @@ class Leaser(object):
             # the size counter.
             if item.ack_id not in self._leased_messages:
                 self._leased_messages[item.ack_id] = _LeasedMessage(
-                    added_time=time.time(),
-                    size=item.byte_size)
+                    added_time=time.time(), size=item.byte_size
+                )
                 self._bytes += item.byte_size
             else:
-                _LOGGER.debug(
-                    'Message %s is already lease managed', item.ack_id)
+                _LOGGER.debug("Message %s is already lease managed", item.ack_id)
 
     def remove(self, items):
         """Remove messages from lease management."""
@@ -86,11 +83,10 @@ class Leaser(object):
             if self._leased_messages.pop(item.ack_id, None) is not None:
                 self._bytes -= item.byte_size
             else:
-                _LOGGER.debug('Item %s was not managed.', item.ack_id)
+                _LOGGER.debug("Item %s was not managed.", item.ack_id)
 
         if self._bytes < 0:
-            _LOGGER.debug(
-                'Bytes was unexpectedly negative: %d', self._bytes)
+            _LOGGER.debug("Bytes was unexpectedly negative: %d", self._bytes)
             self._bytes = 0
 
     def maintain_leases(self):
@@ -105,7 +101,7 @@ class Leaser(object):
             # based off of how long previous messages have taken to ack, with
             # a sensible default and within the ranges allowed by Pub/Sub.
             p99 = self._manager.ack_histogram.percentile(99)
-            _LOGGER.debug('The current p99 value is %d seconds.', p99)
+            _LOGGER.debug("The current p99 value is %d seconds.", p99)
 
             # Make a copy of the leased messages. This is needed because it's
             # possible for another thread to modify the dictionary while
@@ -115,19 +111,17 @@ class Leaser(object):
             # Drop any leases that are well beyond max lease time. This
             # ensures that in the event of a badly behaving actor, we can
             # drop messages and allow Pub/Sub to resend them.
-            cutoff = (
-                time.time() -
-                self._manager.flow_control.max_lease_duration)
+            cutoff = time.time() - self._manager.flow_control.max_lease_duration
             to_drop = [
                 requests.DropRequest(ack_id, item.size)
-                for ack_id, item
-                in six.iteritems(leased_messages)
-                if item.added_time < cutoff]
+                for ack_id, item in six.iteritems(leased_messages)
+                if item.added_time < cutoff
+            ]
 
             if to_drop:
                 _LOGGER.warning(
-                    'Dropping %s items because they were leased too long.',
-                    len(to_drop))
+                    "Dropping %s items because they were leased too long.", len(to_drop)
+                )
                 self._manager.dispatcher.drop(to_drop)
 
             # Remove dropped items from our copy of the leased messages (they
@@ -141,15 +135,16 @@ class Leaser(object):
             # because it is more efficient to make a single request.
             ack_ids = leased_messages.keys()
             if ack_ids:
-                _LOGGER.debug('Renewing lease for %d ack IDs.', len(ack_ids))
+                _LOGGER.debug("Renewing lease for %d ack IDs.", len(ack_ids))
 
                 # NOTE: This may not work as expected if ``consumer.active``
                 #       has changed since we checked it. An implementation
                 #       without any sort of race condition would require a
                 #       way for ``send_request`` to fail when the consumer
                 #       is inactive.
-                self._manager.dispatcher.modify_ack_deadline([
-                    requests.ModAckRequest(ack_id, p99) for ack_id in ack_ids])
+                self._manager.dispatcher.modify_ack_deadline(
+                    [requests.ModAckRequest(ack_id, p99) for ack_id in ack_ids]
+                )
 
             # Now wait an appropriate period of time and do this again.
             #
@@ -158,24 +153,24 @@ class Leaser(object):
             # jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
             # where there are many clients.
             snooze = random.uniform(0.0, p99 * 0.9)
-            _LOGGER.debug('Snoozing lease management for %f seconds.', snooze)
+            _LOGGER.debug("Snoozing lease management for %f seconds.", snooze)
             self._stop_event.wait(timeout=snooze)
 
-        _LOGGER.info('%s exiting.', _LEASE_WORKER_NAME)
+        _LOGGER.info("%s exiting.", _LEASE_WORKER_NAME)
 
     def start(self):
         with self._operational_lock:
             if self._thread is not None:
-                raise ValueError('Leaser is already running.')
+                raise ValueError("Leaser is already running.")
 
             # Create and start the helper thread.
             self._stop_event.clear()
             thread = threading.Thread(
-                name=_LEASE_WORKER_NAME,
-                target=self.maintain_leases)
+                name=_LEASE_WORKER_NAME, target=self.maintain_leases
+            )
             thread.daemon = True
             thread.start()
-            _LOGGER.debug('Started helper thread %s', thread.name)
+            _LOGGER.debug("Started helper thread %s", thread.name)
             self._thread = thread
 
     def stop(self):

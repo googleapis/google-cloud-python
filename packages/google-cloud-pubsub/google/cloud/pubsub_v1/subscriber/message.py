@@ -30,7 +30,7 @@ Message {{
 }}"""
 
 
-def _indent(lines, prefix='  '):
+def _indent(lines, prefix="  "):
     """Indent some text.
 
     Note that this is present as ``textwrap.indent``, but not in Python 2.
@@ -44,9 +44,9 @@ def _indent(lines, prefix='  '):
         str: The newly indented content.
     """
     indented = []
-    for line in lines.split('\n'):
+    for line in lines.split("\n"):
         indented.append(prefix + line)
-    return '\n'.join(indented)
+    return "\n".join(indented)
 
 
 class Message(object):
@@ -104,13 +104,10 @@ class Message(object):
         # Get an abbreviated version of the data.
         abbv_data = self._message.data
         if len(abbv_data) > 50:
-            abbv_data = abbv_data[:50] + b'...'
+            abbv_data = abbv_data[:50] + b"..."
 
         pretty_attrs = json.dumps(
-            dict(self.attributes),
-            indent=2,
-            separators=(',', ': '),
-            sort_keys=True,
+            dict(self.attributes), indent=2, separators=(",", ": "), sort_keys=True
         )
         pretty_attrs = _indent(pretty_attrs)
         # We don't actually want the first line indented.
@@ -155,8 +152,8 @@ class Message(object):
         """
         timestamp = self._message.publish_time
         delta = datetime.timedelta(
-            seconds=timestamp.seconds,
-            microseconds=timestamp.nanos // 1000)
+            seconds=timestamp.seconds, microseconds=timestamp.nanos // 1000
+        )
         return datetime_helpers._UTC_EPOCH + delta
 
     @property
@@ -186,9 +183,7 @@ class Message(object):
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
             requests.AckRequest(
-                ack_id=self._ack_id,
-                byte_size=self.size,
-                time_to_ack=time_to_ack
+                ack_id=self._ack_id, byte_size=self.size, time_to_ack=time_to_ack
             )
         )
 
@@ -206,10 +201,7 @@ class Message(object):
             directly.
         """
         self._request_queue.put(
-            requests.DropRequest(
-                ack_id=self._ack_id,
-                byte_size=self.size
-            )
+            requests.DropRequest(ack_id=self._ack_id, byte_size=self.size)
         )
 
     def lease(self):
@@ -220,10 +212,7 @@ class Message(object):
             need to call it manually.
         """
         self._request_queue.put(
-            requests.LeaseRequest(
-                ack_id=self._ack_id,
-                byte_size=self.size
-            )
+            requests.LeaseRequest(ack_id=self._ack_id, byte_size=self.size)
         )
 
     def modify_ack_deadline(self, seconds):
@@ -242,10 +231,7 @@ class Message(object):
                 values below 10 are advised against.
         """
         self._request_queue.put(
-            requests.ModAckRequest(
-                ack_id=self._ack_id,
-                seconds=seconds
-            )
+            requests.ModAckRequest(ack_id=self._ack_id, seconds=seconds)
         )
 
     def nack(self):
@@ -254,8 +240,5 @@ class Message(object):
         This will cause the message to be re-delivered to the subscription.
         """
         self._request_queue.put(
-            requests.NackRequest(
-                ack_id=self._ack_id,
-                byte_size=self.size
-            )
+            requests.NackRequest(ack_id=self._ack_id, byte_size=self.size)
         )

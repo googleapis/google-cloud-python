@@ -28,17 +28,17 @@ class SubscriberGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/pubsub',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/pubsub",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='pubsub.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="pubsub.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -56,29 +56,24 @@ class SubscriberGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'iam_policy_stub': iam_policy_pb2.IAMPolicyStub(channel),
-            'subscriber_stub': pubsub_pb2_grpc.SubscriberStub(channel),
+            "iam_policy_stub": iam_policy_pb2.IAMPolicyStub(channel),
+            "subscriber_stub": pubsub_pb2_grpc.SubscriberStub(channel),
         }
 
     @classmethod
-    def create_channel(cls,
-                       address='pubsub.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="pubsub.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -93,9 +88,7 @@ class SubscriberGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -127,7 +120,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].CreateSubscription
+        return self._stubs["subscriber_stub"].CreateSubscription
 
     @property
     def get_subscription(self):
@@ -140,7 +133,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].GetSubscription
+        return self._stubs["subscriber_stub"].GetSubscription
 
     @property
     def update_subscription(self):
@@ -154,7 +147,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].UpdateSubscription
+        return self._stubs["subscriber_stub"].UpdateSubscription
 
     @property
     def list_subscriptions(self):
@@ -167,7 +160,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].ListSubscriptions
+        return self._stubs["subscriber_stub"].ListSubscriptions
 
     @property
     def delete_subscription(self):
@@ -185,7 +178,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].DeleteSubscription
+        return self._stubs["subscriber_stub"].DeleteSubscription
 
     @property
     def modify_ack_deadline(self):
@@ -202,7 +195,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].ModifyAckDeadline
+        return self._stubs["subscriber_stub"].ModifyAckDeadline
 
     @property
     def acknowledge(self):
@@ -221,7 +214,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].Acknowledge
+        return self._stubs["subscriber_stub"].Acknowledge
 
     @property
     def pull(self):
@@ -236,7 +229,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].Pull
+        return self._stubs["subscriber_stub"].Pull
 
     @property
     def streaming_pull(self):
@@ -255,7 +248,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].StreamingPull
+        return self._stubs["subscriber_stub"].StreamingPull
 
     @property
     def modify_push_config(self):
@@ -274,7 +267,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].ModifyPushConfig
+        return self._stubs["subscriber_stub"].ModifyPushConfig
 
     @property
     def list_snapshots(self):
@@ -290,7 +283,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].ListSnapshots
+        return self._stubs["subscriber_stub"].ListSnapshots
 
     @property
     def create_snapshot(self):
@@ -316,7 +309,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].CreateSnapshot
+        return self._stubs["subscriber_stub"].CreateSnapshot
 
     @property
     def update_snapshot(self):
@@ -333,7 +326,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].UpdateSnapshot
+        return self._stubs["subscriber_stub"].UpdateSnapshot
 
     @property
     def delete_snapshot(self):
@@ -353,7 +346,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].DeleteSnapshot
+        return self._stubs["subscriber_stub"].DeleteSnapshot
 
     @property
     def seek(self):
@@ -370,7 +363,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['subscriber_stub'].Seek
+        return self._stubs["subscriber_stub"].Seek
 
     @property
     def set_iam_policy(self):
@@ -384,7 +377,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['iam_policy_stub'].SetIamPolicy
+        return self._stubs["iam_policy_stub"].SetIamPolicy
 
     @property
     def get_iam_policy(self):
@@ -399,7 +392,7 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['iam_policy_stub'].GetIamPolicy
+        return self._stubs["iam_policy_stub"].GetIamPolicy
 
     @property
     def test_iam_permissions(self):
@@ -414,4 +407,4 @@ class SubscriberGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['iam_policy_stub'].TestIamPermissions
+        return self._stubs["iam_policy_stub"].TestIamPermissions

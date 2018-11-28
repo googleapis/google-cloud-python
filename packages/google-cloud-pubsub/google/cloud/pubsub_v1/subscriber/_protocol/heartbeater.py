@@ -19,7 +19,7 @@ import threading
 
 
 _LOGGER = logging.getLogger(__name__)
-_HEARTBEAT_WORKER_NAME = 'Thread-Heartbeater'
+_HEARTBEAT_WORKER_NAME = "Thread-Heartbeater"
 # How often to send heartbeats in seconds. Determined as half the period of
 # time where the Pub/Sub server will close the stream as inactive, which is
 # 60 seconds.
@@ -38,24 +38,24 @@ class Heartbeater(object):
         """Periodically send heartbeats."""
         while self._manager.is_active and not self._stop_event.is_set():
             self._manager.heartbeat()
-            _LOGGER.debug('Sent heartbeat.')
+            _LOGGER.debug("Sent heartbeat.")
             self._stop_event.wait(timeout=self._period)
 
-        _LOGGER.info('%s exiting.', _HEARTBEAT_WORKER_NAME)
+        _LOGGER.info("%s exiting.", _HEARTBEAT_WORKER_NAME)
 
     def start(self):
         with self._operational_lock:
             if self._thread is not None:
-                raise ValueError('Heartbeater is already running.')
+                raise ValueError("Heartbeater is already running.")
 
             # Create and start the helper thread.
             self._stop_event.clear()
             thread = threading.Thread(
-                name=_HEARTBEAT_WORKER_NAME,
-                target=self.heartbeat)
+                name=_HEARTBEAT_WORKER_NAME, target=self.heartbeat
+            )
             thread.daemon = True
             thread.start()
-            _LOGGER.debug('Started helper thread %s', thread.name)
+            _LOGGER.debug("Started helper thread %s", thread.name)
             self._thread = thread
 
     def stop(self):

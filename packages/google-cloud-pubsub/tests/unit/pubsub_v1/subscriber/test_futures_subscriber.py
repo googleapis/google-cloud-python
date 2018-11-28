@@ -24,7 +24,8 @@ from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 class TestStreamingPullFuture(object):
     def make_future(self):
         manager = mock.create_autospec(
-            streaming_pull_manager.StreamingPullManager, instance=True)
+            streaming_pull_manager.StreamingPullManager, instance=True
+        )
         future = futures.StreamingPullFuture(manager)
         return future
 
@@ -34,7 +35,8 @@ class TestStreamingPullFuture(object):
         assert future.running()
         assert not future.done()
         future._manager.add_close_callback.assert_called_once_with(
-            future._on_close_callback)
+            future._on_close_callback
+        )
 
     def test__on_close_callback_success(self):
         future = self.make_future()
@@ -47,7 +49,7 @@ class TestStreamingPullFuture(object):
     def test__on_close_callback_failure(self):
         future = self.make_future()
 
-        future._on_close_callback(mock.sentinel.manager, ValueError('meep'))
+        future._on_close_callback(mock.sentinel.manager, ValueError("meep"))
 
         with pytest.raises(ValueError):
             future.result()

@@ -69,12 +69,8 @@ def _make_default_thread_pool_executor():
     # for debugging.
     executor_kwargs = {}
     if sys.version_info[:2] == (2, 7) or sys.version_info >= (3, 6):
-        executor_kwargs['thread_name_prefix'] = (
-            'ThreadPoolExecutor-ThreadScheduler')
-    return concurrent.futures.ThreadPoolExecutor(
-        max_workers=10,
-        **executor_kwargs
-    )
+        executor_kwargs["thread_name_prefix"] = "ThreadPoolExecutor-ThreadScheduler"
+    return concurrent.futures.ThreadPoolExecutor(max_workers=10, **executor_kwargs)
 
 
 class ThreadScheduler(object):
@@ -86,6 +82,7 @@ class ThreadScheduler(object):
         executor(concurrent.futures.ThreadPoolExecutor): An optional executor
             to use. If not specified, a default one will be created.
     """
+
     def __init__(self, executor=None):
         self._queue = queue.Queue()
         if executor is None:

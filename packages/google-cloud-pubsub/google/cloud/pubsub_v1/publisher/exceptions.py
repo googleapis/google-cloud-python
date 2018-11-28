@@ -22,7 +22,4 @@ class PublishError(GoogleAPICallError):
     pass
 
 
-__all__ = (
-    'PublishError',
-    'TimeoutError',
-)
+__all__ = ("PublishError", "TimeoutError")

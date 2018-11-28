@@ -27,8 +27,4 @@ class SubscriberClient(subscriber.Client):
     __doc__ = subscriber.Client.__doc__
 
 
-__all__ = (
-    'types',
-    'PublisherClient',
-    'SubscriberClient',
-)
+__all__ = ("types", "PublisherClient", "SubscriberClient")

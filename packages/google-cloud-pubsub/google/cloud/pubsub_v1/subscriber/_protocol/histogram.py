@@ -30,6 +30,7 @@ class Histogram(object):
     values outside the range of ``10 <= x <= 600`` are stored as ``10`` or
     ``600``, since these are the boundaries of leases in the actual API.
     """
+
     def __init__(self, data=None):
         """Instantiate the histogram.
 
@@ -74,10 +75,8 @@ class Histogram(object):
         return needle in self._data
 
     def __repr__(self):
-        return '<Histogram: {len} values between {min} and {max}>'.format(
-            len=len(self),
-            max=self.max,
-            min=self.min,
+        return "<Histogram: {len} values between {min} and {max}>".format(
+            len=len(self), max=self.max, min=self.min
         )
 
     @property

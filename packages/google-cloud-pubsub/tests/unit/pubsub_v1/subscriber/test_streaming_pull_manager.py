@@ -32,14 +32,20 @@ from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 import grpc
 
 
-@pytest.mark.parametrize('exception,expected_cls', [
-    (ValueError('meep'), ValueError),
-    (mock.create_autospec(grpc.RpcError, instance=True),
-        exceptions.GoogleAPICallError),
-])
+@pytest.mark.parametrize(
+    "exception,expected_cls",
+    [
+        (ValueError("meep"), ValueError),
+        (
+            mock.create_autospec(grpc.RpcError, instance=True),
+            exceptions.GoogleAPICallError,
+        ),
+    ],
+)
 def test__maybe_wrap_exception(exception, expected_cls):
     assert isinstance(
-        streaming_pull_manager._maybe_wrap_exception(exception), expected_cls)
+        streaming_pull_manager._maybe_wrap_exception(exception), expected_cls
+    )
 
 
 def test__wrap_callback_errors_no_error():
@@ -54,7 +60,7 @@ def test__wrap_callback_errors_no_error():
 
 def test__wrap_callback_errors_error():
     msg = mock.create_autospec(message.Message, instance=True)
-    callback = mock.Mock(side_effect=ValueError('meep'))
+    callback = mock.Mock(side_effect=ValueError("meep"))
 
     streaming_pull_manager._wrap_callback_errors(callback, msg)
 
@@ -63,8 +69,8 @@ def test__wrap_callback_errors_error():
 
 def test_constructor_and_default_state():
     manager = streaming_pull_manager.StreamingPullManager(
-        mock.sentinel.client,
-        mock.sentinel.subscription)
+        mock.sentinel.client, mock.sentinel.subscription
+    )
 
     # Public state
     assert manager.is_active is False
@@ -86,7 +92,8 @@ def test_constructor_with_options():
         mock.sentinel.client,
         mock.sentinel.subscription,
         flow_control=mock.sentinel.flow_control,
-        scheduler=mock.sentinel.scheduler)
+        scheduler=mock.sentinel.scheduler,
+    )
 
     assert manager.flow_control == mock.sentinel.flow_control
     assert manager._scheduler == mock.sentinel.scheduler
@@ -96,10 +103,8 @@ def make_manager(**kwargs):
     client_ = mock.create_autospec(client.Client, instance=True)
     scheduler_ = mock.create_autospec(scheduler.Scheduler, instance=True)
     return streaming_pull_manager.StreamingPullManager(
-        client_,
-        'subscription-name',
-        scheduler=scheduler_,
-        **kwargs)
+        client_, "subscription-name", scheduler=scheduler_, **kwargs
+    )
 
 
 def test_ack_deadline():
@@ -113,7 +118,8 @@ def test_ack_deadline():
 
 def test_maybe_pause_consumer_wo_consumer_set():
     manager = make_manager(
-        flow_control=types.FlowControl(max_messages=10, max_bytes=1000))
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
+    )
     manager.maybe_pause_consumer()  # no raise
     # Ensure load > 1
     _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
@@ -124,27 +130,27 @@ def test_maybe_pause_consumer_wo_consumer_set():
 
 def test_lease_load_and_pause():
     manager = make_manager(
-        flow_control=types.FlowControl(max_messages=10, max_bytes=1000))
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
+    )
     manager._leaser = leaser.Leaser(manager)
-    manager._consumer = mock.create_autospec(
-        bidi.BackgroundConsumer, instance=True)
+    manager._consumer = mock.create_autospec(bidi.BackgroundConsumer, instance=True)
     manager._consumer.is_paused = False
 
     # This should mean that our messages count is at 10%, and our bytes
     # are at 15%; load should return the higher (0.15), and shouldn't cause
     # the consumer to pause.
-    manager.leaser.add([requests.LeaseRequest(ack_id='one', byte_size=150)])
+    manager.leaser.add([requests.LeaseRequest(ack_id="one", byte_size=150)])
     assert manager.load == 0.15
     manager.maybe_pause_consumer()
     manager._consumer.pause.assert_not_called()
 
     # After this message is added, the messages should be higher at 20%
     # (versus 16% for bytes).
-    manager.leaser.add([requests.LeaseRequest(ack_id='two', byte_size=10)])
+    manager.leaser.add([requests.LeaseRequest(ack_id="two", byte_size=10)])
     assert manager.load == 0.2
 
     # Returning a number above 100% is fine, and it should cause this to pause.
-    manager.leaser.add([requests.LeaseRequest(ack_id='three', byte_size=1000)])
+    manager.leaser.add([requests.LeaseRequest(ack_id="three", byte_size=1000)])
     assert manager.load == 1.16
     manager.maybe_pause_consumer()
     manager._consumer.pause.assert_called_once()
@@ -152,16 +158,19 @@ def test_lease_load_and_pause():
 
 def test_drop_and_resume():
     manager = make_manager(
-        flow_control=types.FlowControl(max_messages=10, max_bytes=1000))
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
+    )
     manager._leaser = leaser.Leaser(manager)
-    manager._consumer = mock.create_autospec(
-        bidi.BackgroundConsumer, instance=True)
+    manager._consumer = mock.create_autospec(bidi.BackgroundConsumer, instance=True)
     manager._consumer.is_paused = True
 
     # Add several messages until we're over the load threshold.
-    manager.leaser.add([
-        requests.LeaseRequest(ack_id='one', byte_size=750),
-        requests.LeaseRequest(ack_id='two', byte_size=250)])
+    manager.leaser.add(
+        [
+            requests.LeaseRequest(ack_id="one", byte_size=750),
+            requests.LeaseRequest(ack_id="two", byte_size=250),
+        ]
+    )
 
     assert manager.load == 1.0
 
@@ -171,16 +180,14 @@ def test_drop_and_resume():
 
     # Drop the 200 byte message, which should put us under the resume
     # threshold.
-    manager.leaser.remove([
-        requests.DropRequest(ack_id='two', byte_size=250)])
+    manager.leaser.remove([requests.DropRequest(ack_id="two", byte_size=250)])
     manager.maybe_resume_consumer()
     manager._consumer.resume.assert_called_once()
 
 
 def test_resume_not_paused():
     manager = make_manager()
-    manager._consumer = mock.create_autospec(
-        bidi.BackgroundConsumer, instance=True)
+    manager._consumer = mock.create_autospec(bidi.BackgroundConsumer, instance=True)
     manager._consumer.is_paused = False
 
     # Resuming should have no effect is the consumer is not actually paused.
@@ -190,7 +197,8 @@ def test_resume_not_paused():
 
 def test_maybe_resume_consumer_wo_consumer_set():
     manager = make_manager(
-        flow_control=types.FlowControl(max_messages=10, max_bytes=1000))
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
+    )
     manager.maybe_resume_consumer()  # no raise
 
 
@@ -198,22 +206,33 @@ def test_send_unary():
     manager = make_manager()
     manager._UNARY_REQUESTS = True
 
-    manager.send(types.StreamingPullRequest(
-        ack_ids=['ack_id1', 'ack_id2'],
-        modify_deadline_ack_ids=['ack_id3', 'ack_id4', 'ack_id5'],
-        modify_deadline_seconds=[10, 20, 20]))
+    manager.send(
+        types.StreamingPullRequest(
+            ack_ids=["ack_id1", "ack_id2"],
+            modify_deadline_ack_ids=["ack_id3", "ack_id4", "ack_id5"],
+            modify_deadline_seconds=[10, 20, 20],
+        )
+    )
 
     manager._client.acknowledge.assert_called_once_with(
-        subscription=manager._subscription, ack_ids=['ack_id1', 'ack_id2'])
+        subscription=manager._subscription, ack_ids=["ack_id1", "ack_id2"]
+    )
 
-    manager._client.modify_ack_deadline.assert_has_calls([
-        mock.call(
-            subscription=manager._subscription,
-            ack_ids=['ack_id3'], ack_deadline_seconds=10),
-        mock.call(
-            subscription=manager._subscription,
-            ack_ids=['ack_id4', 'ack_id5'], ack_deadline_seconds=20),
-        ], any_order=True)
+    manager._client.modify_ack_deadline.assert_has_calls(
+        [
+            mock.call(
+                subscription=manager._subscription,
+                ack_ids=["ack_id3"],
+                ack_deadline_seconds=10,
+            ),
+            mock.call(
+                subscription=manager._subscription,
+                ack_ids=["ack_id4", "ack_id5"],
+                ack_deadline_seconds=20,
+            ),
+        ],
+        any_order=True,
+    )
 
 
 def test_send_unary_empty():
@@ -232,13 +251,12 @@ def test_send_unary_error(caplog):
     manager = make_manager()
     manager._UNARY_REQUESTS = True
 
-    error = exceptions.GoogleAPICallError('The front fell off')
+    error = exceptions.GoogleAPICallError("The front fell off")
     manager._client.acknowledge.side_effect = error
 
-    manager.send(types.StreamingPullRequest(
-        ack_ids=['ack_id1', 'ack_id2']))
+    manager.send(types.StreamingPullRequest(ack_ids=["ack_id1", "ack_id2"]))
 
-    assert 'The front fell off' in caplog.text
+    assert "The front fell off" in caplog.text
 
 
 def test_send_streaming():
@@ -271,24 +289,16 @@ def test_heartbeat_inactive():
     manager._rpc.send.assert_not_called()
 
 
+@mock.patch("google.api_core.bidi.ResumableBidiRpc", autospec=True)
+@mock.patch("google.api_core.bidi.BackgroundConsumer", autospec=True)
+@mock.patch("google.cloud.pubsub_v1.subscriber._protocol.leaser.Leaser", autospec=True)
 @mock.patch(
-    'google.api_core.bidi.ResumableBidiRpc',
-    autospec=True)
+    "google.cloud.pubsub_v1.subscriber._protocol.dispatcher.Dispatcher", autospec=True
+)
 @mock.patch(
-    'google.api_core.bidi.BackgroundConsumer',
-    autospec=True)
-@mock.patch(
-    'google.cloud.pubsub_v1.subscriber._protocol.leaser.Leaser',
-    autospec=True)
-@mock.patch(
-    'google.cloud.pubsub_v1.subscriber._protocol.dispatcher.Dispatcher',
-    autospec=True)
-@mock.patch(
-    'google.cloud.pubsub_v1.subscriber._protocol.heartbeater.Heartbeater',
-    autospec=True)
-def test_open(
-        heartbeater, dispatcher, leaser, background_consumer,
-        resumable_bidi_rpc):
+    "google.cloud.pubsub_v1.subscriber._protocol.heartbeater.Heartbeater", autospec=True
+)
+def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bidi_rpc):
     manager = make_manager()
 
     manager.open(mock.sentinel.callback)
@@ -305,17 +315,18 @@ def test_open(
     leaser.return_value.start.assert_called_once()
     assert manager.leaser == leaser.return_value
 
-    background_consumer.assert_called_once_with(
-        manager._rpc, manager._on_response)
+    background_consumer.assert_called_once_with(manager._rpc, manager._on_response)
     background_consumer.return_value.start.assert_called_once()
     assert manager._consumer == background_consumer.return_value
 
     resumable_bidi_rpc.assert_called_once_with(
         start_rpc=manager._client.api.streaming_pull,
         initial_request=manager._get_initial_request,
-        should_recover=manager._should_recover)
+        should_recover=manager._should_recover,
+    )
     resumable_bidi_rpc.return_value.add_done_callback.assert_called_once_with(
-        manager._on_rpc_done)
+        manager._on_rpc_done
+    )
     assert manager._rpc == resumable_bidi_rpc.return_value
 
     manager._consumer.is_active = True
@@ -324,11 +335,10 @@ def test_open(
 
 def test_open_already_active():
     manager = make_manager()
-    manager._consumer = mock.create_autospec(
-        bidi.BackgroundConsumer, instance=True)
+    manager._consumer = mock.create_autospec(bidi.BackgroundConsumer, instance=True)
     manager._consumer.is_active = True
 
-    with pytest.raises(ValueError, match='already open'):
+    with pytest.raises(ValueError, match="already open"):
         manager.open(mock.sentinel.callback)
 
 
@@ -336,30 +346,32 @@ def test_open_has_been_closed():
     manager = make_manager()
     manager._closed = True
 
-    with pytest.raises(ValueError, match='closed'):
+    with pytest.raises(ValueError, match="closed"):
         manager.open(mock.sentinel.callback)
 
 
 def make_running_manager():
     manager = make_manager()
-    manager._consumer = mock.create_autospec(
-        bidi.BackgroundConsumer, instance=True)
+    manager._consumer = mock.create_autospec(bidi.BackgroundConsumer, instance=True)
     manager._consumer.is_active = True
-    manager._dispatcher = mock.create_autospec(
-        dispatcher.Dispatcher, instance=True)
-    manager._leaser = mock.create_autospec(
-        leaser.Leaser, instance=True)
-    manager._heartbeater = mock.create_autospec(
-        heartbeater.Heartbeater, instance=True)
+    manager._dispatcher = mock.create_autospec(dispatcher.Dispatcher, instance=True)
+    manager._leaser = mock.create_autospec(leaser.Leaser, instance=True)
+    manager._heartbeater = mock.create_autospec(heartbeater.Heartbeater, instance=True)
 
     return (
-        manager, manager._consumer, manager._dispatcher, manager._leaser,
-        manager._heartbeater, manager._scheduler)
+        manager,
+        manager._consumer,
+        manager._dispatcher,
+        manager._leaser,
+        manager._heartbeater,
+        manager._scheduler,
+    )
 
 
 def test_close():
     manager, consumer, dispatcher, leaser, heartbeater, scheduler = (
-        make_running_manager())
+        make_running_manager()
+    )
 
     manager.close()
 
@@ -374,7 +386,8 @@ def test_close():
 
 def test_close_inactive_consumer():
     manager, consumer, dispatcher, leaser, heartbeater, scheduler = (
-        make_running_manager())
+        make_running_manager()
+    )
     consumer.is_active = False
 
     manager.close()
@@ -401,23 +414,22 @@ def test_close_callbacks():
     callback = mock.Mock()
 
     manager.add_close_callback(callback)
-    manager.close(reason='meep')
+    manager.close(reason="meep")
 
-    callback.assert_called_once_with(manager, 'meep')
+    callback.assert_called_once_with(manager, "meep")
 
 
 def test__get_initial_request():
     manager = make_manager()
-    manager._leaser = mock.create_autospec(
-        leaser.Leaser, instance=True)
-    manager._leaser.ack_ids = ['1', '2']
+    manager._leaser = mock.create_autospec(leaser.Leaser, instance=True)
+    manager._leaser.ack_ids = ["1", "2"]
 
     initial_request = manager._get_initial_request()
 
     assert isinstance(initial_request, types.StreamingPullRequest)
-    assert initial_request.subscription == 'subscription-name'
+    assert initial_request.subscription == "subscription-name"
     assert initial_request.stream_ack_deadline_seconds == 10
-    assert initial_request.modify_deadline_ack_ids == ['1', '2']
+    assert initial_request.modify_deadline_ack_ids == ["1", "2"]
     assert initial_request.modify_deadline_seconds == [10, 10]
 
 
@@ -428,7 +440,7 @@ def test__get_initial_request_wo_leaser():
     initial_request = manager._get_initial_request()
 
     assert isinstance(initial_request, types.StreamingPullRequest)
-    assert initial_request.subscription == 'subscription-name'
+    assert initial_request.subscription == "subscription-name"
     assert initial_request.stream_ack_deadline_seconds == 10
     assert initial_request.modify_deadline_ack_ids == []
     assert initial_request.modify_deadline_seconds == []
@@ -442,14 +454,12 @@ def test_on_response():
     response = types.StreamingPullResponse(
         received_messages=[
             types.ReceivedMessage(
-                ack_id='fack',
-                message=types.PubsubMessage(data=b'foo', message_id='1')
+                ack_id="fack", message=types.PubsubMessage(data=b"foo", message_id="1")
             ),
             types.ReceivedMessage(
-                ack_id='back',
-                message=types.PubsubMessage(data=b'bar', message_id='2')
+                ack_id="back", message=types.PubsubMessage(data=b"bar", message_id="2")
             ),
-        ],
+        ]
     )
 
     # Actually run the method and prove that modack and schedule
@@ -457,8 +467,7 @@ def test_on_response():
     manager._on_response(response)
 
     dispatcher.modify_ack_deadline.assert_called_once_with(
-        [requests.ModAckRequest('fack', 10),
-         requests.ModAckRequest('back', 10)]
+        [requests.ModAckRequest("fack", 10), requests.ModAckRequest("back", 10)]
     )
 
     schedule_calls = scheduler.schedule.mock_calls
@@ -470,26 +479,22 @@ def test_on_response():
 
 def test_retryable_stream_errors():
     # Make sure the config matches our hard-coded tuple of exceptions.
-    interfaces = subscriber_client_config.config['interfaces']
-    retry_codes = interfaces['google.pubsub.v1.Subscriber']['retry_codes']
-    idempotent = retry_codes['idempotent']
+    interfaces = subscriber_client_config.config["interfaces"]
+    retry_codes = interfaces["google.pubsub.v1.Subscriber"]["retry_codes"]
+    idempotent = retry_codes["idempotent"]
 
-    status_codes = tuple(
-        getattr(grpc.StatusCode, name, None)
-        for name in idempotent
-    )
+    status_codes = tuple(getattr(grpc.StatusCode, name, None) for name in idempotent)
     expected = tuple(
         exceptions.exception_class_for_grpc_status(status_code)
         for status_code in status_codes
     )
-    assert set(expected).issubset(
-        set(streaming_pull_manager._RETRYABLE_STREAM_ERRORS))
+    assert set(expected).issubset(set(streaming_pull_manager._RETRYABLE_STREAM_ERRORS))
 
 
 def test__should_recover_true():
     manager = make_manager()
 
-    details = 'UNAVAILABLE. Service taking nap.'
+    details = "UNAVAILABLE. Service taking nap."
     exc = exceptions.ServiceUnavailable(details)
 
     assert manager._should_recover(exc) is True
@@ -498,17 +503,17 @@ def test__should_recover_true():
 def test__should_recover_false():
     manager = make_manager()
 
-    exc = TypeError('wahhhhhh')
+    exc = TypeError("wahhhhhh")
 
     assert manager._should_recover(exc) is False
 
 
-@mock.patch('threading.Thread', autospec=True)
+@mock.patch("threading.Thread", autospec=True)
 def test__on_rpc_done(thread):
     manager = make_manager()
 
     manager._on_rpc_done(mock.sentinel.error)
 
     thread.assert_called_once_with(
-        name=mock.ANY, target=manager.close,
-        kwargs={'reason': mock.sentinel.error})
+        name=mock.ANY, target=manager.close, kwargs={"reason": mock.sentinel.error}
+    )

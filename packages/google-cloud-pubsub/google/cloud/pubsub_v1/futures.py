@@ -84,8 +84,7 @@ class Future(google.api_core.future.Future):
         This still returns True in failure cases; checking :meth:`result` or
         :meth:`exception` is the canonical way to assess success or failure.
         """
-        return (self._exception != self._SENTINEL or
-                self._result != self._SENTINEL)
+        return self._exception != self._SENTINEL or self._result != self._SENTINEL
 
     def result(self, timeout=None):
         """Return the message ID, or raise an exception.
@@ -131,7 +130,7 @@ class Future(google.api_core.future.Future):
         """
         # Wait until the future is done.
         if not self._completed.wait(timeout=timeout):
-            raise exceptions.TimeoutError('Timed out waiting for result.')
+            raise exceptions.TimeoutError("Timed out waiting for result.")
 
         # If the batch completed successfully, this should return None.
         if self._result != self._SENTINEL:
@@ -158,7 +157,7 @@ class Future(google.api_core.future.Future):
         """
         # Sanity check: A future can only complete once.
         if self.done():
-            raise RuntimeError('set_result can only be called once.')
+            raise RuntimeError("set_result can only be called once.")
 
         # Set the result and trigger the future.
         self._result = result
@@ -172,7 +171,7 @@ class Future(google.api_core.future.Future):
         """
         # Sanity check: A future can only complete once.
         if self.done():
-            raise RuntimeError('set_exception can only be called once.')
+            raise RuntimeError("set_exception can only be called once.")
 
         # Set the exception and trigger the future.
         self._exception = exception

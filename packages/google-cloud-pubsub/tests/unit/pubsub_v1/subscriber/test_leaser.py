@@ -29,20 +29,17 @@ import pytest
 def test_add_and_remove():
     leaser_ = leaser.Leaser(mock.sentinel.manager)
 
-    leaser_.add([
-        requests.LeaseRequest(ack_id='ack1', byte_size=50)])
-    leaser_.add([
-        requests.LeaseRequest(ack_id='ack2', byte_size=25)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack2", byte_size=25)])
 
     assert leaser_.message_count == 2
-    assert set(leaser_.ack_ids) == set(['ack1', 'ack2'])
+    assert set(leaser_.ack_ids) == set(["ack1", "ack2"])
     assert leaser_.bytes == 75
 
-    leaser_.remove([
-        requests.DropRequest(ack_id='ack1', byte_size=50)])
+    leaser_.remove([requests.DropRequest(ack_id="ack1", byte_size=50)])
 
     assert leaser_.message_count == 1
-    assert set(leaser_.ack_ids) == set(['ack2'])
+    assert set(leaser_.ack_ids) == set(["ack2"])
     assert leaser_.bytes == 25
 
 
@@ -51,12 +48,10 @@ def test_add_already_managed(caplog):
 
     leaser_ = leaser.Leaser(mock.sentinel.manager)
 
-    leaser_.add([
-        requests.LeaseRequest(ack_id='ack1', byte_size=50)])
-    leaser_.add([
-        requests.LeaseRequest(ack_id='ack1', byte_size=50)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50)])
 
-    assert 'already lease managed' in caplog.text
+    assert "already lease managed" in caplog.text
 
 
 def test_remove_not_managed(caplog):
@@ -64,10 +59,9 @@ def test_remove_not_managed(caplog):
 
     leaser_ = leaser.Leaser(mock.sentinel.manager)
 
-    leaser_.remove([
-        requests.DropRequest(ack_id='ack1', byte_size=50)])
+    leaser_.remove([requests.DropRequest(ack_id="ack1", byte_size=50)])
 
-    assert 'not managed' in caplog.text
+    assert "not managed" in caplog.text
 
 
 def test_remove_negative_bytes(caplog):
@@ -75,20 +69,18 @@ def test_remove_negative_bytes(caplog):
 
     leaser_ = leaser.Leaser(mock.sentinel.manager)
 
-    leaser_.add([
-        requests.LeaseRequest(ack_id='ack1', byte_size=50)])
-    leaser_.remove([
-        requests.DropRequest(ack_id='ack1', byte_size=75)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50)])
+    leaser_.remove([requests.DropRequest(ack_id="ack1", byte_size=75)])
 
     assert leaser_.bytes == 0
-    assert 'unexpectedly negative' in caplog.text
+    assert "unexpectedly negative" in caplog.text
 
 
 def create_manager(flow_control=types.FlowControl()):
     manager = mock.create_autospec(
-        streaming_pull_manager.StreamingPullManager, instance=True)
-    manager.dispatcher = mock.create_autospec(
-        dispatcher.Dispatcher, instance=True)
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    manager.dispatcher = mock.create_autospec(dispatcher.Dispatcher, instance=True)
     manager.is_active = True
     manager.flow_control = flow_control
     manager.ack_histogram = histogram.Histogram()
@@ -104,7 +96,7 @@ def test_maintain_leases_inactive(caplog):
 
     leaser_.maintain_leases()
 
-    assert 'exiting' in caplog.text
+    assert "exiting" in caplog.text
 
 
 def test_maintain_leases_stopped(caplog):
@@ -116,7 +108,7 @@ def test_maintain_leases_stopped(caplog):
 
     leaser_.maintain_leases()
 
-    assert 'exiting' in caplog.text
+    assert "exiting" in caplog.text
 
 
 def make_sleep_mark_manager_as_inactive(leaser):
@@ -133,16 +125,13 @@ def test_maintain_leases_ack_ids():
     manager = create_manager()
     leaser_ = leaser.Leaser(manager)
     make_sleep_mark_manager_as_inactive(leaser_)
-    leaser_.add([requests.LeaseRequest(ack_id='my ack id', byte_size=50)])
+    leaser_.add([requests.LeaseRequest(ack_id="my ack id", byte_size=50)])
 
     leaser_.maintain_leases()
 
-    manager.dispatcher.modify_ack_deadline.assert_called_once_with([
-        requests.ModAckRequest(
-            ack_id='my ack id',
-            seconds=10,
-        )
-    ])
+    manager.dispatcher.modify_ack_deadline.assert_called_once_with(
+        [requests.ModAckRequest(ack_id="my ack id", seconds=10)]
+    )
 
 
 def test_maintain_leases_no_ack_ids():
@@ -155,7 +144,7 @@ def test_maintain_leases_no_ack_ids():
     manager.dispatcher.modify_ack_deadline.assert_not_called()
 
 
-@mock.patch('time.time', autospec=True)
+@mock.patch("time.time", autospec=True)
 def test_maintain_leases_outdated_items(time):
     manager = create_manager()
     leaser_ = leaser.Leaser(manager)
@@ -163,13 +152,11 @@ def test_maintain_leases_outdated_items(time):
 
     # Add these items at the beginning of the timeline
     time.return_value = 0
-    leaser_.add([
-        requests.LeaseRequest(ack_id='ack1', byte_size=50)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50)])
 
     # Add another item at towards end of the timeline
     time.return_value = manager.flow_control.max_lease_duration - 1
-    leaser_.add([
-        requests.LeaseRequest(ack_id='ack2', byte_size=50)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack2", byte_size=50)])
 
     # Now make sure time reports that we are at the end of our timeline.
     time.return_value = manager.flow_control.max_lease_duration + 1
@@ -177,37 +164,37 @@ def test_maintain_leases_outdated_items(time):
     leaser_.maintain_leases()
 
     # Only ack2 should be renewed. ack1 should've been dropped
-    manager.dispatcher.modify_ack_deadline.assert_called_once_with([
-        requests.ModAckRequest(
-            ack_id='ack2',
-            seconds=10,
-        )
-    ])
-    manager.dispatcher.drop.assert_called_once_with([
-        requests.DropRequest(ack_id='ack1', byte_size=50)
-    ])
+    manager.dispatcher.modify_ack_deadline.assert_called_once_with(
+        [requests.ModAckRequest(ack_id="ack2", seconds=10)]
+    )
+    manager.dispatcher.drop.assert_called_once_with(
+        [requests.DropRequest(ack_id="ack1", byte_size=50)]
+    )
 
 
-@mock.patch('threading.Thread', autospec=True)
+@mock.patch("threading.Thread", autospec=True)
 def test_start(thread):
     manager = mock.create_autospec(
-        streaming_pull_manager.StreamingPullManager, instance=True)
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
     leaser_ = leaser.Leaser(manager)
 
     leaser_.start()
 
     thread.assert_called_once_with(
-        name=leaser._LEASE_WORKER_NAME, target=leaser_.maintain_leases)
+        name=leaser._LEASE_WORKER_NAME, target=leaser_.maintain_leases
+    )
 
     thread.return_value.start.assert_called_once()
 
     assert leaser_._thread is not None
 
 
-@mock.patch('threading.Thread', autospec=True)
+@mock.patch("threading.Thread", autospec=True)
 def test_start_already_started(thread):
     manager = mock.create_autospec(
-        streaming_pull_manager.StreamingPullManager, instance=True)
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
     leaser_ = leaser.Leaser(manager)
     leaser_._thread = mock.sentinel.thread
 
@@ -219,7 +206,8 @@ def test_start_already_started(thread):
 
 def test_stop():
     manager = mock.create_autospec(
-        streaming_pull_manager.StreamingPullManager, instance=True)
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
     leaser_ = leaser.Leaser(manager)
     thread = mock.create_autospec(threading.Thread, instance=True)
     leaser_._thread = thread
