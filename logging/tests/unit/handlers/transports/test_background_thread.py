@@ -20,26 +20,25 @@ from six.moves import queue
 
 
 class TestBackgroundThreadHandler(unittest.TestCase):
-    PROJECT = 'PROJECT'
+    PROJECT = "PROJECT"
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.handlers.transports import (
-            BackgroundThreadTransport)
+        from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 
         return BackgroundThreadTransport
 
     def _make_one(self, *args, **kw):
         worker_patch = mock.patch(
-            'google.cloud.logging.handlers.transports.'
-            'background_thread._Worker',
-            autospec=True)
+            "google.cloud.logging.handlers.transports." "background_thread._Worker",
+            autospec=True,
+        )
         with worker_patch as worker_mock:
             return self._get_target_class()(*args, **kw), worker_mock
 
     def test_constructor(self):
         client = _Client(self.PROJECT)
-        name = 'python_logger'
+        name = "python_logger"
 
         transport, worker = self._make_one(client, name)
 
@@ -50,70 +49,70 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         client = _Client(self.PROJECT)
-        name = 'python_logger'
+        name = "python_logger"
 
         transport, _ = self._make_one(client, name)
 
-        python_logger_name = 'mylogger'
-        message = 'hello world'
+        python_logger_name = "mylogger"
+        message = "hello world"
 
         record = logging.LogRecord(
-            python_logger_name, logging.INFO,
-            None, None, message, None, None)
+            python_logger_name, logging.INFO, None, None, message, None, None
+        )
 
         transport.send(record, message, _GLOBAL_RESOURCE)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, _GLOBAL_RESOURCE, None,
-            trace=None, span_id=None)
+            record, message, _GLOBAL_RESOURCE, None, trace=None, span_id=None
+        )
 
     def test_trace_send(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         client = _Client(self.PROJECT)
-        name = 'python_logger'
+        name = "python_logger"
 
         transport, _ = self._make_one(client, name)
 
-        python_logger_name = 'mylogger'
-        message = 'hello world'
-        trace = 'the-project/trace/longlogTraceid'
+        python_logger_name = "mylogger"
+        message = "hello world"
+        trace = "the-project/trace/longlogTraceid"
 
         record = logging.LogRecord(
-            python_logger_name, logging.INFO,
-            None, None, message, None, None)
+            python_logger_name, logging.INFO, None, None, message, None, None
+        )
 
         transport.send(record, message, _GLOBAL_RESOURCE, trace=trace)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, _GLOBAL_RESOURCE, None,
-            trace=trace, span_id=None)
+            record, message, _GLOBAL_RESOURCE, None, trace=trace, span_id=None
+        )
 
     def test_span_send(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         client = _Client(self.PROJECT)
-        name = 'python_logger'
+        name = "python_logger"
 
         transport, _ = self._make_one(client, name)
 
-        python_logger_name = 'mylogger'
-        message = 'hello world'
-        span_id = 'the-project/trace/longlogTraceid/span/123456789012abbacdac'
+        python_logger_name = "mylogger"
+        message = "hello world"
+        span_id = "the-project/trace/longlogTraceid/span/123456789012abbacdac"
 
         record = logging.LogRecord(
-            python_logger_name, logging.INFO,
-            None, None, message, None, None)
+            python_logger_name, logging.INFO, None, None, message, None, None
+        )
 
         transport.send(record, message, _GLOBAL_RESOURCE, span_id=span_id)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, _GLOBAL_RESOURCE, None,
-            trace=None, span_id=span_id)
+            record, message, _GLOBAL_RESOURCE, None, trace=None, span_id=span_id
+        )
 
     def test_flush(self):
         client = _Client(self.PROJECT)
-        name = 'python_logger'
+        name = "python_logger"
 
         transport, _ = self._make_one(client, name)
 
@@ -123,28 +122,27 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
     def test_worker(self):
         client = _Client(self.PROJECT)
-        name = 'python_logger'
+        name = "python_logger"
         batch_size = 30
-        grace_period = 20.
+        grace_period = 20.0
         max_latency = 0.1
-        transport, worker = self._make_one(client,
-                                           name,
-                                           grace_period=grace_period,
-                                           batch_size=batch_size,
-                                           max_latency=max_latency)
-        worker_grace_period = worker.call_args[1]['grace_period']  # **kwargs.
-        worker_batch_size = worker.call_args[1]['max_batch_size']
-        worker_max_latency = worker.call_args[1]['max_latency']
-        self.assertEqual(worker_grace_period,
-                         grace_period)
-        self.assertEqual(worker_batch_size,
-                         batch_size)
-        self.assertEqual(worker_max_latency,
-                         max_latency)
+        transport, worker = self._make_one(
+            client,
+            name,
+            grace_period=grace_period,
+            batch_size=batch_size,
+            max_latency=max_latency,
+        )
+        worker_grace_period = worker.call_args[1]["grace_period"]  # **kwargs.
+        worker_batch_size = worker.call_args[1]["max_batch_size"]
+        worker_max_latency = worker.call_args[1]["max_latency"]
+        self.assertEqual(worker_grace_period, grace_period)
+        self.assertEqual(worker_batch_size, batch_size)
+        self.assertEqual(worker_max_latency, max_latency)
 
 
 class Test_Worker(unittest.TestCase):
-    NAME = 'python_logger'
+    NAME = "python_logger"
 
     @staticmethod
     def _get_target_class():
@@ -156,8 +154,8 @@ class Test_Worker(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def _start_with_thread_patch(self, worker):
-        with mock.patch('threading.Thread', new=_Thread) as thread_mock:
-            with mock.patch('atexit.register') as atexit_mock:
+        with mock.patch("threading.Thread", new=_Thread) as thread_mock:
+            with mock.patch("atexit.register") as atexit_mock:
                 worker.start()
                 return thread_mock, atexit_mock
 
@@ -168,8 +166,11 @@ class Test_Worker(unittest.TestCase):
         max_latency = 0.1
 
         worker = self._make_one(
-            logger, grace_period=grace_period, max_batch_size=max_batch_size,
-            max_latency=max_latency)
+            logger,
+            grace_period=grace_period,
+            max_batch_size=max_batch_size,
+            max_latency=max_latency,
+        )
 
         self.assertEqual(worker._cloud_logger, logger)
         self.assertEqual(worker._grace_period, grace_period)
@@ -189,8 +190,7 @@ class Test_Worker(unittest.TestCase):
         self.assertIsNotNone(worker._thread)
         self.assertTrue(worker._thread.daemon)
         self.assertEqual(worker._thread._target, worker._thread_main)
-        self.assertEqual(
-            worker._thread._name, background_thread._WORKER_THREAD_NAME)
+        self.assertEqual(worker._thread._name, background_thread._WORKER_THREAD_NAME)
         atexit_mock.assert_called_once_with(worker._main_thread_terminated)
 
         # Calling start again should not start a new thread.
@@ -210,8 +210,7 @@ class Test_Worker(unittest.TestCase):
         worker.stop(grace_period)
 
         self.assertEqual(worker._queue.qsize(), 1)
-        self.assertEqual(
-            worker._queue.get(), background_thread._WORKER_TERMINATOR)
+        self.assertEqual(worker._queue.get(), background_thread._WORKER_TERMINATOR)
         self.assertFalse(worker.is_alive)
         self.assertIsNone(worker._thread)
         self.assertEqual(thread._timeout, grace_period)
@@ -244,7 +243,7 @@ class Test_Worker(unittest.TestCase):
         worker = self._make_one(_Logger(self.NAME))
 
         self._start_with_thread_patch(worker)
-        worker.enqueue(mock.Mock(), '')
+        worker.enqueue(mock.Mock(), "")
         worker._main_thread_terminated()
 
         self.assertFalse(worker.is_alive)
@@ -254,7 +253,7 @@ class Test_Worker(unittest.TestCase):
 
         self._start_with_thread_patch(worker)
         worker._thread._terminate_on_join = False
-        worker.enqueue(mock.Mock(), '')
+        worker.enqueue(mock.Mock(), "")
         worker._main_thread_terminated()
 
         self.assertFalse(worker.is_alive)
@@ -262,8 +261,8 @@ class Test_Worker(unittest.TestCase):
     @staticmethod
     def _enqueue_record(worker, message):
         record = logging.LogRecord(
-            'python_logger', logging.INFO,
-            None, None, message, None, None)
+            "python_logger", logging.INFO, None, None, message, None, None
+        )
         worker.enqueue(record, message)
 
     def test__thread_main(self):
@@ -272,8 +271,8 @@ class Test_Worker(unittest.TestCase):
         worker = self._make_one(_Logger(self.NAME))
 
         # Enqueue two records and the termination signal.
-        self._enqueue_record(worker, '1')
-        self._enqueue_record(worker, '2')
+        self._enqueue_record(worker, "1")
+        self._enqueue_record(worker, "2")
         worker._queue.put_nowait(background_thread._WORKER_TERMINATOR)
 
         worker._thread_main()
@@ -289,7 +288,7 @@ class Test_Worker(unittest.TestCase):
         worker._cloud_logger._batch_cls = _RaisingBatch
 
         # Enqueue one record and the termination signal.
-        self._enqueue_record(worker, '1')
+        self._enqueue_record(worker, "1")
         worker._queue.put_nowait(background_thread._WORKER_TERMINATOR)
 
         worker._thread_main()
@@ -305,10 +304,10 @@ class Test_Worker(unittest.TestCase):
         # Enqueue three records and the termination signal. This should be
         # enough to perform two separate batches and a third loop with just
         # the exit.
-        self._enqueue_record(worker, '1')
-        self._enqueue_record(worker, '2')
-        self._enqueue_record(worker, '3')
-        self._enqueue_record(worker, '4')
+        self._enqueue_record(worker, "1")
+        self._enqueue_record(worker, "2")
+        self._enqueue_record(worker, "3")
+        self._enqueue_record(worker, "4")
         worker._queue.put_nowait(background_thread._WORKER_TERMINATOR)
 
         worker._thread_main()
@@ -317,7 +316,7 @@ class Test_Worker(unittest.TestCase):
         self.assertFalse(worker._cloud_logger._batch.commit_called)
         self.assertEqual(worker._queue.qsize(), 0)
 
-    @mock.patch('time.time', autospec=True, return_value=1)
+    @mock.patch("time.time", autospec=True, return_value=1)
     def test__thread_main_max_latency(self, time):
         # Note: this test is a bit brittle as it assumes the operation of
         # _get_many invokes queue.get() followed by queue._get(). It fails
@@ -329,14 +328,13 @@ class Test_Worker(unittest.TestCase):
         # Use monotonically increasing time.
         time.side_effect = range(1, 6)
 
-        worker = self._make_one(
-            _Logger(self.NAME), max_latency=2, max_batch_size=10)
+        worker = self._make_one(_Logger(self.NAME), max_latency=2, max_batch_size=10)
         worker._queue = mock.create_autospec(queue.Queue, instance=True)
 
         worker._queue.get.side_effect = [
-            {'info': {'message': '1'}},  # Single record.
+            {"info": {"message": "1"}},  # Single record.
             queue.Empty(),  # Emulate a queue.get() timeout.
-            {'info': {'message': '1'}},  # Second record.
+            {"info": {"message": "1"}},  # Second record.
             background_thread._WORKER_TERMINATOR,  # Stop the thread.
             queue.Empty(),  # Emulate a queue.get() timeout.
         ]
@@ -377,13 +375,15 @@ class Test_Worker(unittest.TestCase):
         #   3 and now will be 4, and finally with timeout=0 as start will be 3
         #   and now will be 5.
         #
-        worker._queue.get.assert_has_calls([
-            mock.call(),
-            mock.call(timeout=1),
-            mock.call(),
-            mock.call(timeout=1),
-            mock.call(timeout=0)
-        ])
+        worker._queue.get.assert_has_calls(
+            [
+                mock.call(),
+                mock.call(timeout=1),
+                mock.call(),
+                mock.call(timeout=1),
+                mock.call(timeout=0),
+            ]
+        )
 
     def test_flush(self):
         worker = self._make_one(_Logger(self.NAME))
@@ -395,7 +395,6 @@ class Test_Worker(unittest.TestCase):
 
 
 class _Thread(object):
-
     def __init__(self, target, name):
         self._target = target
         self._name = name
@@ -419,22 +418,26 @@ class _Thread(object):
 
 
 class _Batch(object):
-
     def __init__(self):
         self.entries = []
         self.commit_called = False
         self.commit_count = None
 
     def log_struct(
-            self, info, severity=logging.INFO, resource=None, labels=None,
-            trace=None, span_id=None):
+        self,
+        info,
+        severity=logging.INFO,
+        resource=None,
+        labels=None,
+        trace=None,
+        span_id=None,
+    ):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         assert resource is None
         resource = _GLOBAL_RESOURCE
 
-        self.log_struct_called_with = (info, severity, resource, labels,
-                                       trace, span_id)
+        self.log_struct_called_with = (info, severity, resource, labels, trace, span_id)
         self.entries.append(info)
 
     def commit(self):
@@ -446,11 +449,10 @@ class _Batch(object):
 class _RaisingBatch(_Batch):
     def commit(self):
         self.commit_called = True
-        raise ValueError('This batch raises on commit.')
+        raise ValueError("This batch raises on commit.")
 
 
 class _Logger(object):
-
     def __init__(self, name):
         self.name = name
         self._batch_cls = _Batch
@@ -464,15 +466,13 @@ class _Logger(object):
 
 
 class _Client(object):
-
     def __init__(self, project, _http=None, credentials=None):
         import mock
 
         self.project = project
         self._http = _http
         self._credentials = credentials
-        self._connection = mock.Mock(
-            credentials=credentials, spec=['credentials'])
+        self._connection = mock.Mock(credentials=credentials, spec=["credentials"])
 
     def logger(self, name):  # pylint: disable=unused-argument
         self._logger = _Logger(name)

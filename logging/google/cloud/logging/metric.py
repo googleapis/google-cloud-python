@@ -38,7 +38,8 @@ class Metric(object):
     :type description: str
     :param description: an optional description of the metric.
     """
-    def __init__(self, name, filter_=None, client=None, description=''):
+
+    def __init__(self, name, filter_=None, client=None, description=""):
         self.name = name
         self._client = client
         self.filter_ = filter_
@@ -57,12 +58,12 @@ class Metric(object):
     @property
     def full_name(self):
         """Fully-qualified name used in metric APIs"""
-        return 'projects/%s/metrics/%s' % (self.project, self.name)
+        return "projects/%s/metrics/%s" % (self.project, self.name)
 
     @property
     def path(self):
         """URL path for the metric's APIs"""
-        return '/%s' % (self.full_name,)
+        return "/%s" % (self.full_name,)
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -78,11 +79,10 @@ class Metric(object):
         :rtype: :class:`google.cloud.logging.metric.Metric`
         :returns: Metric parsed from ``resource``.
         """
-        metric_name = resource['name']
-        filter_ = resource['filter']
-        description = resource.get('description', '')
-        return cls(metric_name, filter_, client=client,
-                   description=description)
+        metric_name = resource["name"]
+        filter_ = resource["filter"]
+        description = resource.get("description", "")
+        return cls(metric_name, filter_, client=client, description=description)
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -112,7 +112,8 @@ class Metric(object):
         """
         client = self._require_client(client)
         client.metrics_api.metric_create(
-            self.project, self.name, self.filter_, self.description)
+            self.project, self.name, self.filter_, self.description
+        )
 
     def exists(self, client=None):
         """API call:  test for the existence of the metric via a GET request
@@ -150,8 +151,8 @@ class Metric(object):
         """
         client = self._require_client(client)
         data = client.metrics_api.metric_get(self.project, self.name)
-        self.description = data.get('description', '')
-        self.filter_ = data['filter']
+        self.description = data.get("description", "")
+        self.filter_ = data["filter"]
 
     def update(self, client=None):
         """API call:  update metric configuration via a PUT request
@@ -166,7 +167,8 @@ class Metric(object):
         """
         client = self._require_client(client)
         client.metrics_api.metric_update(
-            self.project, self.name, self.filter_, self.description)
+            self.project, self.name, self.filter_, self.description
+        )
 
     def delete(self, client=None):
         """API call:  delete a metric via a DELETE request

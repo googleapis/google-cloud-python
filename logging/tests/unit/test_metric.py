@@ -17,10 +17,10 @@ import unittest
 
 class TestMetric(unittest.TestCase):
 
-    PROJECT = 'test-project'
-    METRIC_NAME = 'metric-name'
-    FILTER = 'logName:syslog AND severity>=ERROR'
-    DESCRIPTION = 'DESCRIPTION'
+    PROJECT = "test-project"
+    METRIC_NAME = "metric-name"
+    FILTER = "logName:syslog AND severity>=ERROR"
+    DESCRIPTION = "DESCRIPTION"
 
     @staticmethod
     def _get_target_class():
@@ -32,54 +32,52 @@ class TestMetric(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
+        FULL = "projects/%s/metrics/%s" % (self.PROJECT, self.METRIC_NAME)
         client = _Client(self.PROJECT)
         metric = self._make_one(self.METRIC_NAME, client=client)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertIsNone(metric.filter_)
-        self.assertEqual(metric.description, '')
+        self.assertEqual(metric.description, "")
         self.assertIs(metric.client, client)
         self.assertEqual(metric.project, self.PROJECT)
         self.assertEqual(metric.full_name, FULL)
-        self.assertEqual(metric.path, '/%s' % (FULL,))
+        self.assertEqual(metric.path, "/%s" % (FULL,))
 
     def test_ctor_explicit(self):
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
+        FULL = "projects/%s/metrics/%s" % (self.PROJECT, self.METRIC_NAME)
         client = _Client(self.PROJECT)
-        metric = self._make_one(self.METRIC_NAME, self.FILTER,
-                                client=client, description=self.DESCRIPTION)
+        metric = self._make_one(
+            self.METRIC_NAME, self.FILTER, client=client, description=self.DESCRIPTION
+        )
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
         self.assertIs(metric.client, client)
         self.assertEqual(metric.project, self.PROJECT)
         self.assertEqual(metric.full_name, FULL)
-        self.assertEqual(metric.path, '/%s' % (FULL,))
+        self.assertEqual(metric.path, "/%s" % (FULL,))
 
     def test_from_api_repr_minimal(self):
         client = _Client(project=self.PROJECT)
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        RESOURCE = {
-            'name': self.METRIC_NAME,
-            'filter': self.FILTER,
-        }
+        FULL = "projects/%s/metrics/%s" % (self.PROJECT, self.METRIC_NAME)
+        RESOURCE = {"name": self.METRIC_NAME, "filter": self.FILTER}
         klass = self._get_target_class()
         metric = klass.from_api_repr(RESOURCE, client=client)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
-        self.assertEqual(metric.description, '')
+        self.assertEqual(metric.description, "")
         self.assertIs(metric._client, client)
         self.assertEqual(metric.project, self.PROJECT)
         self.assertEqual(metric.full_name, FULL)
 
     def test_from_api_repr_w_description(self):
         client = _Client(project=self.PROJECT)
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        DESCRIPTION = 'DESCRIPTION'
+        FULL = "projects/%s/metrics/%s" % (self.PROJECT, self.METRIC_NAME)
+        DESCRIPTION = "DESCRIPTION"
         RESOURCE = {
-            'name': self.METRIC_NAME,
-            'filter': self.FILTER,
-            'description': DESCRIPTION,
+            "name": self.METRIC_NAME,
+            "filter": self.FILTER,
+            "description": DESCRIPTION,
         }
         klass = self._get_target_class()
         metric = klass.from_api_repr(RESOURCE, client=client)
@@ -99,20 +97,23 @@ class TestMetric(unittest.TestCase):
 
         self.assertEqual(
             api._metric_create_called_with,
-            (self.PROJECT, self.METRIC_NAME, self.FILTER, ''))
+            (self.PROJECT, self.METRIC_NAME, self.FILTER, ""),
+        )
 
     def test_create_w_alternate_client(self):
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         api = client2.metrics_api = _DummyMetricsAPI()
-        metric = self._make_one(self.METRIC_NAME, self.FILTER, client=client1,
-                                description=self.DESCRIPTION)
+        metric = self._make_one(
+            self.METRIC_NAME, self.FILTER, client=client1, description=self.DESCRIPTION
+        )
 
         metric.create(client=client2)
 
         self.assertEqual(
             api._metric_create_called_with,
-            (self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION))
+            (self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION),
+        )
 
     def test_exists_miss_w_bound_client(self):
         client = _Client(project=self.PROJECT)
@@ -121,14 +122,10 @@ class TestMetric(unittest.TestCase):
 
         self.assertFalse(metric.exists())
 
-        self.assertEqual(api._metric_get_called_with,
-                         (self.PROJECT, self.METRIC_NAME))
+        self.assertEqual(api._metric_get_called_with, (self.PROJECT, self.METRIC_NAME))
 
     def test_exists_hit_w_alternate_client(self):
-        RESOURCE = {
-            'name': self.METRIC_NAME,
-            'filter': self.FILTER,
-        }
+        RESOURCE = {"name": self.METRIC_NAME, "filter": self.FILTER}
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         api = client2.metrics_api = _DummyMetricsAPI()
@@ -137,34 +134,30 @@ class TestMetric(unittest.TestCase):
 
         self.assertTrue(metric.exists(client=client2))
 
-        self.assertEqual(api._metric_get_called_with,
-                         (self.PROJECT, self.METRIC_NAME))
+        self.assertEqual(api._metric_get_called_with, (self.PROJECT, self.METRIC_NAME))
 
     def test_reload_w_bound_client(self):
-        NEW_FILTER = 'logName:syslog AND severity>=INFO'
-        RESOURCE = {
-            'name': self.METRIC_NAME,
-            'filter': NEW_FILTER,
-        }
+        NEW_FILTER = "logName:syslog AND severity>=INFO"
+        RESOURCE = {"name": self.METRIC_NAME, "filter": NEW_FILTER}
         client = _Client(project=self.PROJECT)
         api = client.metrics_api = _DummyMetricsAPI()
         api._metric_get_response = RESOURCE
-        metric = self._make_one(self.METRIC_NAME, self.FILTER, client=client,
-                                description=self.DESCRIPTION)
+        metric = self._make_one(
+            self.METRIC_NAME, self.FILTER, client=client, description=self.DESCRIPTION
+        )
 
         metric.reload()
 
         self.assertEqual(metric.filter_, NEW_FILTER)
-        self.assertEqual(metric.description, '')
-        self.assertEqual(api._metric_get_called_with,
-                         (self.PROJECT, self.METRIC_NAME))
+        self.assertEqual(metric.description, "")
+        self.assertEqual(api._metric_get_called_with, (self.PROJECT, self.METRIC_NAME))
 
     def test_reload_w_alternate_client(self):
-        NEW_FILTER = 'logName:syslog AND severity>=INFO'
+        NEW_FILTER = "logName:syslog AND severity>=INFO"
         RESOURCE = {
-            'name': self.METRIC_NAME,
-            'description': self.DESCRIPTION,
-            'filter': NEW_FILTER,
+            "name": self.METRIC_NAME,
+            "description": self.DESCRIPTION,
+            "filter": NEW_FILTER,
         }
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
@@ -176,8 +169,7 @@ class TestMetric(unittest.TestCase):
 
         self.assertEqual(metric.filter_, NEW_FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
-        self.assertEqual(api._metric_get_called_with,
-                         (self.PROJECT, self.METRIC_NAME))
+        self.assertEqual(api._metric_get_called_with, (self.PROJECT, self.METRIC_NAME))
 
     def test_update_w_bound_client(self):
         client = _Client(project=self.PROJECT)
@@ -188,20 +180,23 @@ class TestMetric(unittest.TestCase):
 
         self.assertEqual(
             api._metric_update_called_with,
-            (self.PROJECT, self.METRIC_NAME, self.FILTER, ''))
+            (self.PROJECT, self.METRIC_NAME, self.FILTER, ""),
+        )
 
     def test_update_w_alternate_client(self):
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         api = client2.metrics_api = _DummyMetricsAPI()
-        metric = self._make_one(self.METRIC_NAME, self.FILTER, client=client1,
-                                description=self.DESCRIPTION)
+        metric = self._make_one(
+            self.METRIC_NAME, self.FILTER, client=client1, description=self.DESCRIPTION
+        )
 
         metric.update(client=client2)
 
         self.assertEqual(
             api._metric_update_called_with,
-            (self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION))
+            (self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION),
+        )
 
     def test_delete_w_bound_client(self):
         client = _Client(project=self.PROJECT)
@@ -210,8 +205,9 @@ class TestMetric(unittest.TestCase):
 
         metric.delete()
 
-        self.assertEqual(api._metric_delete_called_with,
-                         (self.PROJECT, self.METRIC_NAME))
+        self.assertEqual(
+            api._metric_delete_called_with, (self.PROJECT, self.METRIC_NAME)
+        )
 
     def test_delete_w_alternate_client(self):
         client1 = _Client(project=self.PROJECT)
@@ -221,21 +217,19 @@ class TestMetric(unittest.TestCase):
 
         metric.delete(client=client2)
 
-        self.assertEqual(api._metric_delete_called_with,
-                         (self.PROJECT, self.METRIC_NAME))
+        self.assertEqual(
+            api._metric_delete_called_with, (self.PROJECT, self.METRIC_NAME)
+        )
 
 
 class _Client(object):
-
     def __init__(self, project):
         self.project = project
 
 
 class _DummyMetricsAPI(object):
-
     def metric_create(self, project, metric_name, filter_, description):
-        self._metric_create_called_with = (
-            project, metric_name, filter_, description)
+        self._metric_create_called_with = (project, metric_name, filter_, description)
 
     def metric_get(self, project, metric_name):
         from google.cloud.exceptions import NotFound
@@ -244,11 +238,10 @@ class _DummyMetricsAPI(object):
         try:
             return self._metric_get_response
         except AttributeError:
-            raise NotFound('miss')
+            raise NotFound("miss")
 
     def metric_update(self, project, metric_name, filter_, description):
-        self._metric_update_called_with = (
-            project, metric_name, filter_, description)
+        self._metric_update_called_with = (project, metric_name, filter_, description)
 
     def metric_delete(self, project, metric_name):
         self._metric_delete_called_with = (project, metric_name)

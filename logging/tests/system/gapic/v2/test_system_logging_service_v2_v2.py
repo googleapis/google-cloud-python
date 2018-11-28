@@ -27,9 +27,10 @@ class TestSystemLoggingServiceV2(object):
         _, project_id = google.auth.default()
 
         client = logging_v2.LoggingServiceV2Client()
-        log_name = client.log_path(project_id, 'test-{0}'.format(time.time()))
+        log_name = client.log_path(project_id, "test-{0}".format(time.time()))
         resource = {}
         labels = {}
         entries = []
         response = client.write_log_entries(
-            entries, log_name=log_name, resource=resource, labels=labels)
+            entries, log_name=log_name, resource=resource, labels=labels
+        )
