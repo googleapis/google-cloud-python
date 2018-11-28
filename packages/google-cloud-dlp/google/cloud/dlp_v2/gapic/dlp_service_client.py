@@ -37,8 +37,7 @@ from google.cloud.dlp_v2.proto import dlp_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-dlp', ).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dlp").version
 
 
 class DlpServiceClient(object):
@@ -54,12 +53,12 @@ class DlpServiceClient(object):
     https://cloud.google.com/dlp/docs/.
     """
 
-    SERVICE_ADDRESS = 'dlp.googleapis.com:443'
+    SERVICE_ADDRESS = "dlp.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.privacy.dlp.v2.DlpService'
+    _INTERFACE_NAME = "google.privacy.dlp.v2.DlpService"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -75,9 +74,8 @@ class DlpServiceClient(object):
         Returns:
             DlpServiceClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -86,16 +84,14 @@ class DlpServiceClient(object):
     def organization_path(cls, organization):
         """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
-            'organizations/{organization}',
-            organization=organization,
+            "organizations/{organization}", organization=organization
         )
 
     @classmethod
-    def organization_deidentify_template_path(cls, organization,
-                                              deidentify_template):
+    def organization_deidentify_template_path(cls, organization, deidentify_template):
         """Return a fully-qualified organization_deidentify_template string."""
         return google.api_core.path_template.expand(
-            'organizations/{organization}/deidentifyTemplates/{deidentify_template}',
+            "organizations/{organization}/deidentifyTemplates/{deidentify_template}",
             organization=organization,
             deidentify_template=deidentify_template,
         )
@@ -104,17 +100,16 @@ class DlpServiceClient(object):
     def project_deidentify_template_path(cls, project, deidentify_template):
         """Return a fully-qualified project_deidentify_template string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/deidentifyTemplates/{deidentify_template}',
+            "projects/{project}/deidentifyTemplates/{deidentify_template}",
             project=project,
             deidentify_template=deidentify_template,
         )
 
     @classmethod
-    def organization_inspect_template_path(cls, organization,
-                                           inspect_template):
+    def organization_inspect_template_path(cls, organization, inspect_template):
         """Return a fully-qualified organization_inspect_template string."""
         return google.api_core.path_template.expand(
-            'organizations/{organization}/inspectTemplates/{inspect_template}',
+            "organizations/{organization}/inspectTemplates/{inspect_template}",
             organization=organization,
             inspect_template=inspect_template,
         )
@@ -123,7 +118,7 @@ class DlpServiceClient(object):
     def project_inspect_template_path(cls, project, inspect_template):
         """Return a fully-qualified project_inspect_template string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/inspectTemplates/{inspect_template}',
+            "projects/{project}/inspectTemplates/{inspect_template}",
             project=project,
             inspect_template=inspect_template,
         )
@@ -132,7 +127,7 @@ class DlpServiceClient(object):
     def project_job_trigger_path(cls, project, job_trigger):
         """Return a fully-qualified project_job_trigger string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/jobTriggers/{job_trigger}',
+            "projects/{project}/jobTriggers/{job_trigger}",
             project=project,
             job_trigger=job_trigger,
         )
@@ -141,25 +136,21 @@ class DlpServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            'projects/{project}',
-            project=project,
+            "projects/{project}", project=project
         )
 
     @classmethod
     def dlp_job_path(cls, project, dlp_job):
         """Return a fully-qualified dlp_job string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/dlpJobs/{dlp_job}',
-            project=project,
-            dlp_job=dlp_job,
+            "projects/{project}/dlpJobs/{dlp_job}", project=project, dlp_job=dlp_job
         )
 
     @classmethod
-    def organization_stored_info_type_path(cls, organization,
-                                           stored_info_type):
+    def organization_stored_info_type_path(cls, organization, stored_info_type):
         """Return a fully-qualified organization_stored_info_type string."""
         return google.api_core.path_template.expand(
-            'organizations/{organization}/storedInfoTypes/{stored_info_type}',
+            "organizations/{organization}/storedInfoTypes/{stored_info_type}",
             organization=organization,
             stored_info_type=stored_info_type,
         )
@@ -168,17 +159,19 @@ class DlpServiceClient(object):
     def project_stored_info_type_path(cls, project, stored_info_type):
         """Return a fully-qualified project_stored_info_type string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/storedInfoTypes/{stored_info_type}',
+            "projects/{project}/storedInfoTypes/{stored_info_type}",
             project=project,
             stored_info_type=stored_info_type,
         )
 
-    def __init__(self,
-                 transport=None,
-                 channel=None,
-                 credentials=None,
-                 client_config=None,
-                 client_info=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+    ):
         """Constructor.
 
         Args:
@@ -212,18 +205,19 @@ class DlpServiceClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                'The `client_config` argument is deprecated.',
+                "The `client_config` argument is deprecated.",
                 PendingDeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
         else:
             client_config = dlp_service_client_config.config
 
         if channel:
             warnings.warn(
-                'The `channel` argument is deprecated; use '
-                '`transport` instead.',
+                "The `channel` argument is deprecated; use " "`transport` instead.",
                 PendingDeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -232,25 +226,24 @@ class DlpServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=dlp_service_grpc_transport.
-                    DlpServiceGrpcTransport,
+                    default_class=dlp_service_grpc_transport.DlpServiceGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        'Received both a transport instance and '
-                        'credentials; these are mutually exclusive.')
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
+                    )
                 self.transport = transport
         else:
             self.transport = dlp_service_grpc_transport.DlpServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS,
-                channel=channel,
-                credentials=credentials,
+                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION, )
+                gapic_version=_GAPIC_LIBRARY_VERSION
+            )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -260,7 +253,8 @@ class DlpServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME], )
+            client_config["interfaces"][self._INTERFACE_NAME]
+        )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -269,14 +263,16 @@ class DlpServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def inspect_content(self,
-                        parent,
-                        inspect_config=None,
-                        item=None,
-                        inspect_template_name=None,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def inspect_content(
+        self,
+        parent,
+        inspect_config=None,
+        item=None,
+        inspect_template_name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Finds potentially sensitive info in content.
         This method has limits on input size, processing time, and output size.
@@ -333,15 +329,15 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'inspect_content' not in self._inner_api_calls:
+        if "inspect_content" not in self._inner_api_calls:
             self._inner_api_calls[
-                'inspect_content'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.inspect_content,
-                    default_retry=self._method_configs['InspectContent'].retry,
-                    default_timeout=self._method_configs['InspectContent'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "inspect_content"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.inspect_content,
+                default_retry=self._method_configs["InspectContent"].retry,
+                default_timeout=self._method_configs["InspectContent"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.InspectContentRequest(
             parent=parent,
@@ -349,18 +345,21 @@ class DlpServiceClient(object):
             item=item,
             inspect_template_name=inspect_template_name,
         )
-        return self._inner_api_calls['inspect_content'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["inspect_content"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def redact_image(self,
-                     parent,
-                     inspect_config=None,
-                     image_redaction_configs=None,
-                     include_findings=None,
-                     byte_item=None,
-                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT,
-                     metadata=None):
+    def redact_image(
+        self,
+        parent,
+        inspect_config=None,
+        image_redaction_configs=None,
+        include_findings=None,
+        byte_item=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Redacts potentially sensitive info from an image.
         This method has limits on input size, processing time, and output size.
@@ -416,15 +415,15 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'redact_image' not in self._inner_api_calls:
+        if "redact_image" not in self._inner_api_calls:
             self._inner_api_calls[
-                'redact_image'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.redact_image,
-                    default_retry=self._method_configs['RedactImage'].retry,
-                    default_timeout=self._method_configs['RedactImage'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "redact_image"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.redact_image,
+                default_retry=self._method_configs["RedactImage"].retry,
+                default_timeout=self._method_configs["RedactImage"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.RedactImageRequest(
             parent=parent,
@@ -433,19 +432,22 @@ class DlpServiceClient(object):
             include_findings=include_findings,
             byte_item=byte_item,
         )
-        return self._inner_api_calls['redact_image'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["redact_image"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def deidentify_content(self,
-                           parent,
-                           deidentify_config=None,
-                           inspect_config=None,
-                           item=None,
-                           inspect_template_name=None,
-                           deidentify_template_name=None,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def deidentify_content(
+        self,
+        parent,
+        deidentify_config=None,
+        inspect_config=None,
+        item=None,
+        inspect_template_name=None,
+        deidentify_template_name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         De-identifies potentially sensitive info from a ContentItem.
         This method has limits on input size and output size.
@@ -512,16 +514,15 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'deidentify_content' not in self._inner_api_calls:
+        if "deidentify_content" not in self._inner_api_calls:
             self._inner_api_calls[
-                'deidentify_content'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.deidentify_content,
-                    default_retry=self._method_configs['DeidentifyContent'].
-                    retry,
-                    default_timeout=self._method_configs['DeidentifyContent'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "deidentify_content"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.deidentify_content,
+                default_retry=self._method_configs["DeidentifyContent"].retry,
+                default_timeout=self._method_configs["DeidentifyContent"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.DeidentifyContentRequest(
             parent=parent,
@@ -531,19 +532,22 @@ class DlpServiceClient(object):
             inspect_template_name=inspect_template_name,
             deidentify_template_name=deidentify_template_name,
         )
-        return self._inner_api_calls['deidentify_content'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["deidentify_content"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def reidentify_content(self,
-                           parent,
-                           reidentify_config=None,
-                           inspect_config=None,
-                           item=None,
-                           inspect_template_name=None,
-                           reidentify_template_name=None,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def reidentify_content(
+        self,
+        parent,
+        reidentify_config=None,
+        inspect_config=None,
+        item=None,
+        inspect_template_name=None,
+        reidentify_template_name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Re-identifies content that has been de-identified. See
         https://cloud.google.com/dlp/docs/pseudonymization#re-identification\_in\_free\_text\_code\_example
@@ -611,16 +615,15 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'reidentify_content' not in self._inner_api_calls:
+        if "reidentify_content" not in self._inner_api_calls:
             self._inner_api_calls[
-                'reidentify_content'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.reidentify_content,
-                    default_retry=self._method_configs['ReidentifyContent'].
-                    retry,
-                    default_timeout=self._method_configs['ReidentifyContent'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "reidentify_content"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.reidentify_content,
+                default_retry=self._method_configs["ReidentifyContent"].retry,
+                default_timeout=self._method_configs["ReidentifyContent"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.ReidentifyContentRequest(
             parent=parent,
@@ -630,15 +633,18 @@ class DlpServiceClient(object):
             inspect_template_name=inspect_template_name,
             reidentify_template_name=reidentify_template_name,
         )
-        return self._inner_api_calls['reidentify_content'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["reidentify_content"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_info_types(self,
-                        language_code=None,
-                        filter_=None,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def list_info_types(
+        self,
+        language_code=None,
+        filter_=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns a list of the sensitive information types that the DLP API
         supports. See https://cloud.google.com/dlp/docs/infotypes-reference to
@@ -677,31 +683,32 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_info_types' not in self._inner_api_calls:
+        if "list_info_types" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_info_types'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_info_types,
-                    default_retry=self._method_configs['ListInfoTypes'].retry,
-                    default_timeout=self._method_configs['ListInfoTypes'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_info_types"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_info_types,
+                default_retry=self._method_configs["ListInfoTypes"].retry,
+                default_timeout=self._method_configs["ListInfoTypes"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.ListInfoTypesRequest(
-            language_code=language_code,
-            filter=filter_,
+            language_code=language_code, filter=filter_
         )
-        return self._inner_api_calls['list_info_types'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["list_info_types"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def create_inspect_template(
-            self,
-            parent,
-            inspect_template=None,
-            template_id=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        parent,
+        inspect_template=None,
+        template_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates an InspectTemplate for re-using frequently used configuration
         for inspecting content, images, and storage.
@@ -747,33 +754,32 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_inspect_template' not in self._inner_api_calls:
+        if "create_inspect_template" not in self._inner_api_calls:
             self._inner_api_calls[
-                'create_inspect_template'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.create_inspect_template,
-                    default_retry=self.
-                    _method_configs['CreateInspectTemplate'].retry,
-                    default_timeout=self.
-                    _method_configs['CreateInspectTemplate'].timeout,
-                    client_info=self._client_info,
-                )
+                "create_inspect_template"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_inspect_template,
+                default_retry=self._method_configs["CreateInspectTemplate"].retry,
+                default_timeout=self._method_configs["CreateInspectTemplate"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.CreateInspectTemplateRequest(
-            parent=parent,
-            inspect_template=inspect_template,
-            template_id=template_id,
+            parent=parent, inspect_template=inspect_template, template_id=template_id
         )
-        return self._inner_api_calls['create_inspect_template'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_inspect_template"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def update_inspect_template(
-            self,
-            name,
-            inspect_template=None,
-            update_mask=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        name,
+        inspect_template=None,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates the InspectTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates to learn more.
@@ -819,30 +825,30 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_inspect_template' not in self._inner_api_calls:
+        if "update_inspect_template" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_inspect_template'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_inspect_template,
-                    default_retry=self.
-                    _method_configs['UpdateInspectTemplate'].retry,
-                    default_timeout=self.
-                    _method_configs['UpdateInspectTemplate'].timeout,
-                    client_info=self._client_info,
-                )
+                "update_inspect_template"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_inspect_template,
+                default_retry=self._method_configs["UpdateInspectTemplate"].retry,
+                default_timeout=self._method_configs["UpdateInspectTemplate"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.UpdateInspectTemplateRequest(
-            name=name,
-            inspect_template=inspect_template,
-            update_mask=update_mask,
+            name=name, inspect_template=inspect_template, update_mask=update_mask
         )
-        return self._inner_api_calls['update_inspect_template'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_inspect_template"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_inspect_template(self,
-                             name=None,
-                             retry=google.api_core.gapic_v1.method.DEFAULT,
-                             timeout=google.api_core.gapic_v1.method.DEFAULT,
-                             metadata=None):
+    def get_inspect_template(
+        self,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets an InspectTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates to learn more.
@@ -878,28 +884,30 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_inspect_template' not in self._inner_api_calls:
+        if "get_inspect_template" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_inspect_template'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_inspect_template,
-                    default_retry=self._method_configs['GetInspectTemplate'].
-                    retry,
-                    default_timeout=self._method_configs['GetInspectTemplate'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_inspect_template"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_inspect_template,
+                default_retry=self._method_configs["GetInspectTemplate"].retry,
+                default_timeout=self._method_configs["GetInspectTemplate"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.GetInspectTemplateRequest(name=name, )
-        return self._inner_api_calls['get_inspect_template'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.GetInspectTemplateRequest(name=name)
+        return self._inner_api_calls["get_inspect_template"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_inspect_templates(self,
-                               parent,
-                               page_size=None,
-                               order_by=None,
-                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                               timeout=google.api_core.gapic_v1.method.DEFAULT,
-                               metadata=None):
+    def list_inspect_templates(
+        self,
+        parent,
+        page_size=None,
+        order_by=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists InspectTemplates.
         See https://cloud.google.com/dlp/docs/creating-templates to learn more.
@@ -968,42 +976,41 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_inspect_templates' not in self._inner_api_calls:
+        if "list_inspect_templates" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_inspect_templates'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_inspect_templates,
-                    default_retry=self._method_configs['ListInspectTemplates'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['ListInspectTemplates'].timeout,
-                    client_info=self._client_info,
-                )
+                "list_inspect_templates"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_inspect_templates,
+                default_retry=self._method_configs["ListInspectTemplates"].retry,
+                default_timeout=self._method_configs["ListInspectTemplates"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.ListInspectTemplatesRequest(
-            parent=parent,
-            page_size=page_size,
-            order_by=order_by,
+            parent=parent, page_size=page_size, order_by=order_by
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_inspect_templates'],
+                self._inner_api_calls["list_inspect_templates"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='inspect_templates',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="inspect_templates",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
     def delete_inspect_template(
-            self,
-            name,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes an InspectTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates to learn more.
@@ -1038,29 +1045,30 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_inspect_template' not in self._inner_api_calls:
+        if "delete_inspect_template" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_inspect_template'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_inspect_template,
-                    default_retry=self.
-                    _method_configs['DeleteInspectTemplate'].retry,
-                    default_timeout=self.
-                    _method_configs['DeleteInspectTemplate'].timeout,
-                    client_info=self._client_info,
-                )
+                "delete_inspect_template"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_inspect_template,
+                default_retry=self._method_configs["DeleteInspectTemplate"].retry,
+                default_timeout=self._method_configs["DeleteInspectTemplate"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.DeleteInspectTemplateRequest(name=name, )
-        self._inner_api_calls['delete_inspect_template'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.DeleteInspectTemplateRequest(name=name)
+        self._inner_api_calls["delete_inspect_template"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def create_deidentify_template(
-            self,
-            parent,
-            deidentify_template=None,
-            template_id=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        parent,
+        deidentify_template=None,
+        template_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a DeidentifyTemplate for re-using frequently used configuration
         for de-identifying content, images, and storage.
@@ -1107,33 +1115,36 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_deidentify_template' not in self._inner_api_calls:
+        if "create_deidentify_template" not in self._inner_api_calls:
             self._inner_api_calls[
-                'create_deidentify_template'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.create_deidentify_template,
-                    default_retry=self.
-                    _method_configs['CreateDeidentifyTemplate'].retry,
-                    default_timeout=self.
-                    _method_configs['CreateDeidentifyTemplate'].timeout,
-                    client_info=self._client_info,
-                )
+                "create_deidentify_template"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_deidentify_template,
+                default_retry=self._method_configs["CreateDeidentifyTemplate"].retry,
+                default_timeout=self._method_configs[
+                    "CreateDeidentifyTemplate"
+                ].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.CreateDeidentifyTemplateRequest(
             parent=parent,
             deidentify_template=deidentify_template,
             template_id=template_id,
         )
-        return self._inner_api_calls['create_deidentify_template'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_deidentify_template"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def update_deidentify_template(
-            self,
-            name,
-            deidentify_template=None,
-            update_mask=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        name,
+        deidentify_template=None,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates the DeidentifyTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -1180,31 +1191,32 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_deidentify_template' not in self._inner_api_calls:
+        if "update_deidentify_template" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_deidentify_template'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_deidentify_template,
-                    default_retry=self.
-                    _method_configs['UpdateDeidentifyTemplate'].retry,
-                    default_timeout=self.
-                    _method_configs['UpdateDeidentifyTemplate'].timeout,
-                    client_info=self._client_info,
-                )
+                "update_deidentify_template"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_deidentify_template,
+                default_retry=self._method_configs["UpdateDeidentifyTemplate"].retry,
+                default_timeout=self._method_configs[
+                    "UpdateDeidentifyTemplate"
+                ].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.UpdateDeidentifyTemplateRequest(
-            name=name,
-            deidentify_template=deidentify_template,
-            update_mask=update_mask,
+            name=name, deidentify_template=deidentify_template, update_mask=update_mask
         )
-        return self._inner_api_calls['update_deidentify_template'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_deidentify_template"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def get_deidentify_template(
-            self,
-            name,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets a DeidentifyTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -1243,29 +1255,30 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_deidentify_template' not in self._inner_api_calls:
+        if "get_deidentify_template" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_deidentify_template'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_deidentify_template,
-                    default_retry=self.
-                    _method_configs['GetDeidentifyTemplate'].retry,
-                    default_timeout=self.
-                    _method_configs['GetDeidentifyTemplate'].timeout,
-                    client_info=self._client_info,
-                )
+                "get_deidentify_template"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_deidentify_template,
+                default_retry=self._method_configs["GetDeidentifyTemplate"].retry,
+                default_timeout=self._method_configs["GetDeidentifyTemplate"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.GetDeidentifyTemplateRequest(name=name, )
-        return self._inner_api_calls['get_deidentify_template'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.GetDeidentifyTemplateRequest(name=name)
+        return self._inner_api_calls["get_deidentify_template"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def list_deidentify_templates(
-            self,
-            parent,
-            page_size=None,
-            order_by=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        parent,
+        page_size=None,
+        order_by=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists DeidentifyTemplates.
         See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -1335,42 +1348,41 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_deidentify_templates' not in self._inner_api_calls:
+        if "list_deidentify_templates" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_deidentify_templates'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_deidentify_templates,
-                    default_retry=self.
-                    _method_configs['ListDeidentifyTemplates'].retry,
-                    default_timeout=self.
-                    _method_configs['ListDeidentifyTemplates'].timeout,
-                    client_info=self._client_info,
-                )
+                "list_deidentify_templates"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_deidentify_templates,
+                default_retry=self._method_configs["ListDeidentifyTemplates"].retry,
+                default_timeout=self._method_configs["ListDeidentifyTemplates"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.ListDeidentifyTemplatesRequest(
-            parent=parent,
-            page_size=page_size,
-            order_by=order_by,
+            parent=parent, page_size=page_size, order_by=order_by
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_deidentify_templates'],
+                self._inner_api_calls["list_deidentify_templates"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='deidentify_templates',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="deidentify_templates",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
     def delete_deidentify_template(
-            self,
-            name,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes a DeidentifyTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -1406,29 +1418,33 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_deidentify_template' not in self._inner_api_calls:
+        if "delete_deidentify_template" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_deidentify_template'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_deidentify_template,
-                    default_retry=self.
-                    _method_configs['DeleteDeidentifyTemplate'].retry,
-                    default_timeout=self.
-                    _method_configs['DeleteDeidentifyTemplate'].timeout,
-                    client_info=self._client_info,
-                )
+                "delete_deidentify_template"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_deidentify_template,
+                default_retry=self._method_configs["DeleteDeidentifyTemplate"].retry,
+                default_timeout=self._method_configs[
+                    "DeleteDeidentifyTemplate"
+                ].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.DeleteDeidentifyTemplateRequest(name=name, )
-        self._inner_api_calls['delete_deidentify_template'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.DeleteDeidentifyTemplateRequest(name=name)
+        self._inner_api_calls["delete_deidentify_template"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def create_dlp_job(self,
-                       parent,
-                       inspect_job=None,
-                       risk_job=None,
-                       job_id=None,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def create_dlp_job(
+        self,
+        parent,
+        inspect_job=None,
+        risk_job=None,
+        job_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a new job to inspect storage or calculate risk metrics.
         See https://cloud.google.com/dlp/docs/inspecting-storage and
@@ -1479,41 +1495,40 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_dlp_job' not in self._inner_api_calls:
+        if "create_dlp_job" not in self._inner_api_calls:
             self._inner_api_calls[
-                'create_dlp_job'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.create_dlp_job,
-                    default_retry=self._method_configs['CreateDlpJob'].retry,
-                    default_timeout=self._method_configs['CreateDlpJob'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "create_dlp_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_dlp_job,
+                default_retry=self._method_configs["CreateDlpJob"].retry,
+                default_timeout=self._method_configs["CreateDlpJob"].timeout,
+                client_info=self._client_info,
+            )
 
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
         google.api_core.protobuf_helpers.check_oneof(
-            inspect_job=inspect_job,
-            risk_job=risk_job,
+            inspect_job=inspect_job, risk_job=risk_job
         )
 
         request = dlp_pb2.CreateDlpJobRequest(
-            parent=parent,
-            inspect_job=inspect_job,
-            risk_job=risk_job,
-            job_id=job_id,
+            parent=parent, inspect_job=inspect_job, risk_job=risk_job, job_id=job_id
         )
-        return self._inner_api_calls['create_dlp_job'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_dlp_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_dlp_jobs(self,
-                      parent,
-                      filter_=None,
-                      page_size=None,
-                      type_=None,
-                      order_by=None,
-                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT,
-                      metadata=None):
+    def list_dlp_jobs(
+        self,
+        parent,
+        filter_=None,
+        page_size=None,
+        type_=None,
+        order_by=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists DlpJobs that match the specified filter in the request.
         See https://cloud.google.com/dlp/docs/inspecting-storage and
@@ -1612,15 +1627,15 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_dlp_jobs' not in self._inner_api_calls:
+        if "list_dlp_jobs" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_dlp_jobs'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_dlp_jobs,
-                    default_retry=self._method_configs['ListDlpJobs'].retry,
-                    default_timeout=self._method_configs['ListDlpJobs'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_dlp_jobs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_dlp_jobs,
+                default_retry=self._method_configs["ListDlpJobs"].retry,
+                default_timeout=self._method_configs["ListDlpJobs"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.ListDlpJobsRequest(
             parent=parent,
@@ -1632,22 +1647,25 @@ class DlpServiceClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_dlp_jobs'],
+                self._inner_api_calls["list_dlp_jobs"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='jobs',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="jobs",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
-    def get_dlp_job(self,
-                    name,
-                    retry=google.api_core.gapic_v1.method.DEFAULT,
-                    timeout=google.api_core.gapic_v1.method.DEFAULT,
-                    metadata=None):
+    def get_dlp_job(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets the latest state of a long-running DlpJob.
         See https://cloud.google.com/dlp/docs/inspecting-storage and
@@ -1684,24 +1702,28 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_dlp_job' not in self._inner_api_calls:
+        if "get_dlp_job" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_dlp_job'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_dlp_job,
-                    default_retry=self._method_configs['GetDlpJob'].retry,
-                    default_timeout=self._method_configs['GetDlpJob'].timeout,
-                    client_info=self._client_info,
-                )
+                "get_dlp_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_dlp_job,
+                default_retry=self._method_configs["GetDlpJob"].retry,
+                default_timeout=self._method_configs["GetDlpJob"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.GetDlpJobRequest(name=name, )
-        return self._inner_api_calls['get_dlp_job'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.GetDlpJobRequest(name=name)
+        return self._inner_api_calls["get_dlp_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def delete_dlp_job(self,
-                       name,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def delete_dlp_job(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes a long-running DlpJob. This method indicates that the client is
         no longer interested in the DlpJob result. The job will be cancelled if
@@ -1737,25 +1759,28 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_dlp_job' not in self._inner_api_calls:
+        if "delete_dlp_job" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_dlp_job'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_dlp_job,
-                    default_retry=self._method_configs['DeleteDlpJob'].retry,
-                    default_timeout=self._method_configs['DeleteDlpJob'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "delete_dlp_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_dlp_job,
+                default_retry=self._method_configs["DeleteDlpJob"].retry,
+                default_timeout=self._method_configs["DeleteDlpJob"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.DeleteDlpJobRequest(name=name, )
-        self._inner_api_calls['delete_dlp_job'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.DeleteDlpJobRequest(name=name)
+        self._inner_api_calls["delete_dlp_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def cancel_dlp_job(self,
-                       name,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def cancel_dlp_job(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Starts asynchronous cancellation on a long-running DlpJob. The server
         makes a best effort to cancel the DlpJob, but success is not
@@ -1791,27 +1816,30 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'cancel_dlp_job' not in self._inner_api_calls:
+        if "cancel_dlp_job" not in self._inner_api_calls:
             self._inner_api_calls[
-                'cancel_dlp_job'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.cancel_dlp_job,
-                    default_retry=self._method_configs['CancelDlpJob'].retry,
-                    default_timeout=self._method_configs['CancelDlpJob'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "cancel_dlp_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.cancel_dlp_job,
+                default_retry=self._method_configs["CancelDlpJob"].retry,
+                default_timeout=self._method_configs["CancelDlpJob"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.CancelDlpJobRequest(name=name, )
-        self._inner_api_calls['cancel_dlp_job'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.CancelDlpJobRequest(name=name)
+        self._inner_api_calls["cancel_dlp_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_job_triggers(self,
-                          parent,
-                          page_size=None,
-                          order_by=None,
-                          retry=google.api_core.gapic_v1.method.DEFAULT,
-                          timeout=google.api_core.gapic_v1.method.DEFAULT,
-                          metadata=None):
+    def list_job_triggers(
+        self,
+        parent,
+        page_size=None,
+        order_by=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists job triggers.
         See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
@@ -1881,41 +1909,41 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_job_triggers' not in self._inner_api_calls:
+        if "list_job_triggers" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_job_triggers'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_job_triggers,
-                    default_retry=self._method_configs['ListJobTriggers'].
-                    retry,
-                    default_timeout=self._method_configs['ListJobTriggers'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_job_triggers"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_job_triggers,
+                default_retry=self._method_configs["ListJobTriggers"].retry,
+                default_timeout=self._method_configs["ListJobTriggers"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.ListJobTriggersRequest(
-            parent=parent,
-            page_size=page_size,
-            order_by=order_by,
+            parent=parent, page_size=page_size, order_by=order_by
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_job_triggers'],
+                self._inner_api_calls["list_job_triggers"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='job_triggers',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="job_triggers",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
-    def get_job_trigger(self,
-                        name,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def get_job_trigger(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets a job trigger.
         See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
@@ -1952,25 +1980,28 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_job_trigger' not in self._inner_api_calls:
+        if "get_job_trigger" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_job_trigger'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_job_trigger,
-                    default_retry=self._method_configs['GetJobTrigger'].retry,
-                    default_timeout=self._method_configs['GetJobTrigger'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_job_trigger"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_job_trigger,
+                default_retry=self._method_configs["GetJobTrigger"].retry,
+                default_timeout=self._method_configs["GetJobTrigger"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.GetJobTriggerRequest(name=name, )
-        return self._inner_api_calls['get_job_trigger'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.GetJobTriggerRequest(name=name)
+        return self._inner_api_calls["get_job_trigger"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def delete_job_trigger(self,
-                           name,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def delete_job_trigger(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes a job trigger.
         See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
@@ -2005,28 +2036,30 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_job_trigger' not in self._inner_api_calls:
+        if "delete_job_trigger" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_job_trigger'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_job_trigger,
-                    default_retry=self._method_configs['DeleteJobTrigger'].
-                    retry,
-                    default_timeout=self._method_configs['DeleteJobTrigger'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "delete_job_trigger"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_job_trigger,
+                default_retry=self._method_configs["DeleteJobTrigger"].retry,
+                default_timeout=self._method_configs["DeleteJobTrigger"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.DeleteJobTriggerRequest(name=name, )
-        self._inner_api_calls['delete_job_trigger'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.DeleteJobTriggerRequest(name=name)
+        self._inner_api_calls["delete_job_trigger"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def update_job_trigger(self,
-                           name,
-                           job_trigger=None,
-                           update_mask=None,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def update_job_trigger(
+        self,
+        name,
+        job_trigger=None,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates a job trigger.
         See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
@@ -2071,32 +2104,32 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_job_trigger' not in self._inner_api_calls:
+        if "update_job_trigger" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_job_trigger'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_job_trigger,
-                    default_retry=self._method_configs['UpdateJobTrigger'].
-                    retry,
-                    default_timeout=self._method_configs['UpdateJobTrigger'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "update_job_trigger"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_job_trigger,
+                default_retry=self._method_configs["UpdateJobTrigger"].retry,
+                default_timeout=self._method_configs["UpdateJobTrigger"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.UpdateJobTriggerRequest(
-            name=name,
-            job_trigger=job_trigger,
-            update_mask=update_mask,
+            name=name, job_trigger=job_trigger, update_mask=update_mask
         )
-        return self._inner_api_calls['update_job_trigger'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_job_trigger"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def create_job_trigger(self,
-                           parent,
-                           job_trigger=None,
-                           trigger_id=None,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def create_job_trigger(
+        self,
+        parent,
+        job_trigger=None,
+        trigger_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a job trigger to run DLP actions such as scanning storage for
         sensitive information on a set schedule.
@@ -2141,33 +2174,32 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_job_trigger' not in self._inner_api_calls:
+        if "create_job_trigger" not in self._inner_api_calls:
             self._inner_api_calls[
-                'create_job_trigger'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.create_job_trigger,
-                    default_retry=self._method_configs['CreateJobTrigger'].
-                    retry,
-                    default_timeout=self._method_configs['CreateJobTrigger'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "create_job_trigger"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_job_trigger,
+                default_retry=self._method_configs["CreateJobTrigger"].retry,
+                default_timeout=self._method_configs["CreateJobTrigger"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.CreateJobTriggerRequest(
-            parent=parent,
-            job_trigger=job_trigger,
-            trigger_id=trigger_id,
+            parent=parent, job_trigger=job_trigger, trigger_id=trigger_id
         )
-        return self._inner_api_calls['create_job_trigger'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_job_trigger"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def create_stored_info_type(
-            self,
-            parent,
-            config=None,
-            stored_info_type_id=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        parent,
+        config=None,
+        stored_info_type_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a pre-built stored infoType to be used for inspection.
         See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -2213,33 +2245,32 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_stored_info_type' not in self._inner_api_calls:
+        if "create_stored_info_type" not in self._inner_api_calls:
             self._inner_api_calls[
-                'create_stored_info_type'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.create_stored_info_type,
-                    default_retry=self._method_configs['CreateStoredInfoType'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['CreateStoredInfoType'].timeout,
-                    client_info=self._client_info,
-                )
+                "create_stored_info_type"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_stored_info_type,
+                default_retry=self._method_configs["CreateStoredInfoType"].retry,
+                default_timeout=self._method_configs["CreateStoredInfoType"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.CreateStoredInfoTypeRequest(
-            parent=parent,
-            config=config,
-            stored_info_type_id=stored_info_type_id,
+            parent=parent, config=config, stored_info_type_id=stored_info_type_id
         )
-        return self._inner_api_calls['create_stored_info_type'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_stored_info_type"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def update_stored_info_type(
-            self,
-            name,
-            config=None,
-            update_mask=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        name,
+        config=None,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates the stored infoType by creating a new version. The existing version
         will continue to be used until the new version is ready.
@@ -2289,30 +2320,30 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_stored_info_type' not in self._inner_api_calls:
+        if "update_stored_info_type" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_stored_info_type'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_stored_info_type,
-                    default_retry=self._method_configs['UpdateStoredInfoType'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['UpdateStoredInfoType'].timeout,
-                    client_info=self._client_info,
-                )
+                "update_stored_info_type"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_stored_info_type,
+                default_retry=self._method_configs["UpdateStoredInfoType"].retry,
+                default_timeout=self._method_configs["UpdateStoredInfoType"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.UpdateStoredInfoTypeRequest(
-            name=name,
-            config=config,
-            update_mask=update_mask,
+            name=name, config=config, update_mask=update_mask
         )
-        return self._inner_api_calls['update_stored_info_type'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_stored_info_type"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_stored_info_type(self,
-                             name,
-                             retry=google.api_core.gapic_v1.method.DEFAULT,
-                             timeout=google.api_core.gapic_v1.method.DEFAULT,
-                             metadata=None):
+    def get_stored_info_type(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets a stored infoType.
         See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -2351,28 +2382,30 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_stored_info_type' not in self._inner_api_calls:
+        if "get_stored_info_type" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_stored_info_type'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_stored_info_type,
-                    default_retry=self._method_configs['GetStoredInfoType'].
-                    retry,
-                    default_timeout=self._method_configs['GetStoredInfoType'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_stored_info_type"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_stored_info_type,
+                default_retry=self._method_configs["GetStoredInfoType"].retry,
+                default_timeout=self._method_configs["GetStoredInfoType"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.GetStoredInfoTypeRequest(name=name, )
-        return self._inner_api_calls['get_stored_info_type'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.GetStoredInfoTypeRequest(name=name)
+        return self._inner_api_calls["get_stored_info_type"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_stored_info_types(self,
-                               parent,
-                               page_size=None,
-                               order_by=None,
-                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                               timeout=google.api_core.gapic_v1.method.DEFAULT,
-                               metadata=None):
+    def list_stored_info_types(
+        self,
+        parent,
+        page_size=None,
+        order_by=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists stored infoTypes.
         See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -2443,42 +2476,41 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_stored_info_types' not in self._inner_api_calls:
+        if "list_stored_info_types" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_stored_info_types'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_stored_info_types,
-                    default_retry=self._method_configs['ListStoredInfoTypes'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['ListStoredInfoTypes'].timeout,
-                    client_info=self._client_info,
-                )
+                "list_stored_info_types"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_stored_info_types,
+                default_retry=self._method_configs["ListStoredInfoTypes"].retry,
+                default_timeout=self._method_configs["ListStoredInfoTypes"].timeout,
+                client_info=self._client_info,
+            )
 
         request = dlp_pb2.ListStoredInfoTypesRequest(
-            parent=parent,
-            page_size=page_size,
-            order_by=order_by,
+            parent=parent, page_size=page_size, order_by=order_by
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_stored_info_types'],
+                self._inner_api_calls["list_stored_info_types"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='stored_info_types',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="stored_info_types",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
     def delete_stored_info_type(
-            self,
-            name,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes a stored infoType.
         See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -2514,17 +2546,17 @@ class DlpServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_stored_info_type' not in self._inner_api_calls:
+        if "delete_stored_info_type" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_stored_info_type'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_stored_info_type,
-                    default_retry=self._method_configs['DeleteStoredInfoType'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['DeleteStoredInfoType'].timeout,
-                    client_info=self._client_info,
-                )
+                "delete_stored_info_type"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_stored_info_type,
+                default_retry=self._method_configs["DeleteStoredInfoType"].retry,
+                default_timeout=self._method_configs["DeleteStoredInfoType"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = dlp_pb2.DeleteStoredInfoTypeRequest(name=name, )
-        self._inner_api_calls['delete_stored_info_type'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = dlp_pb2.DeleteStoredInfoTypeRequest(name=name)
+        self._inner_api_calls["delete_stored_info_type"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
