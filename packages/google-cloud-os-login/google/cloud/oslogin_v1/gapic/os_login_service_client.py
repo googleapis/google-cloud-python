@@ -34,8 +34,7 @@ from google.cloud.oslogin_v1.proto import oslogin_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-os-login', ).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-os-login").version
 
 
 class OsLoginServiceClient(object):
@@ -46,12 +45,12 @@ class OsLoginServiceClient(object):
     public keys for logging into virtual machines on Google Cloud Platform.
     """
 
-    SERVICE_ADDRESS = 'oslogin.googleapis.com:443'
+    SERVICE_ADDRESS = "oslogin.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.oslogin.v1.OsLoginService'
+    _INTERFACE_NAME = "google.cloud.oslogin.v1.OsLoginService"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -67,9 +66,8 @@ class OsLoginServiceClient(object):
         Returns:
             OsLoginServiceClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -77,35 +75,32 @@ class OsLoginServiceClient(object):
     @classmethod
     def user_path(cls, user):
         """Return a fully-qualified user string."""
-        return google.api_core.path_template.expand(
-            'users/{user}',
-            user=user,
-        )
+        return google.api_core.path_template.expand("users/{user}", user=user)
 
     @classmethod
     def project_path(cls, user, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            'users/{user}/projects/{project}',
-            user=user,
-            project=project,
+            "users/{user}/projects/{project}", user=user, project=project
         )
 
     @classmethod
     def fingerprint_path(cls, user, fingerprint):
         """Return a fully-qualified fingerprint string."""
         return google.api_core.path_template.expand(
-            'users/{user}/sshPublicKeys/{fingerprint}',
+            "users/{user}/sshPublicKeys/{fingerprint}",
             user=user,
             fingerprint=fingerprint,
         )
 
-    def __init__(self,
-                 transport=None,
-                 channel=None,
-                 credentials=None,
-                 client_config=None,
-                 client_info=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+    ):
         """Constructor.
 
         Args:
@@ -139,18 +134,19 @@ class OsLoginServiceClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                'The `client_config` argument is deprecated.',
+                "The `client_config` argument is deprecated.",
                 PendingDeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
         else:
             client_config = os_login_service_client_config.config
 
         if channel:
             warnings.warn(
-                'The `channel` argument is deprecated; use '
-                '`transport` instead.',
+                "The `channel` argument is deprecated; use " "`transport` instead.",
                 PendingDeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -159,25 +155,24 @@ class OsLoginServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=os_login_service_grpc_transport.
-                    OsLoginServiceGrpcTransport,
+                    default_class=os_login_service_grpc_transport.OsLoginServiceGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        'Received both a transport instance and '
-                        'credentials; these are mutually exclusive.')
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
+                    )
                 self.transport = transport
         else:
             self.transport = os_login_service_grpc_transport.OsLoginServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS,
-                channel=channel,
-                credentials=credentials,
+                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION, )
+                gapic_version=_GAPIC_LIBRARY_VERSION
+            )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -187,7 +182,8 @@ class OsLoginServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME], )
+            client_config["interfaces"][self._INTERFACE_NAME]
+        )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -196,11 +192,13 @@ class OsLoginServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def delete_posix_account(self,
-                             name,
-                             retry=google.api_core.gapic_v1.method.DEFAULT,
-                             timeout=google.api_core.gapic_v1.method.DEFAULT,
-                             metadata=None):
+    def delete_posix_account(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes a POSIX account.
 
@@ -234,26 +232,28 @@ class OsLoginServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_posix_account' not in self._inner_api_calls:
+        if "delete_posix_account" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_posix_account'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_posix_account,
-                    default_retry=self._method_configs['DeletePosixAccount'].
-                    retry,
-                    default_timeout=self._method_configs['DeletePosixAccount'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "delete_posix_account"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_posix_account,
+                default_retry=self._method_configs["DeletePosixAccount"].retry,
+                default_timeout=self._method_configs["DeletePosixAccount"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = oslogin_pb2.DeletePosixAccountRequest(name=name, )
-        self._inner_api_calls['delete_posix_account'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = oslogin_pb2.DeletePosixAccountRequest(name=name)
+        self._inner_api_calls["delete_posix_account"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def delete_ssh_public_key(self,
-                              name,
-                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT,
-                              metadata=None):
+    def delete_ssh_public_key(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes an SSH public key.
 
@@ -287,26 +287,28 @@ class OsLoginServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_ssh_public_key' not in self._inner_api_calls:
+        if "delete_ssh_public_key" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_ssh_public_key'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_ssh_public_key,
-                    default_retry=self._method_configs['DeleteSshPublicKey'].
-                    retry,
-                    default_timeout=self._method_configs['DeleteSshPublicKey'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "delete_ssh_public_key"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_ssh_public_key,
+                default_retry=self._method_configs["DeleteSshPublicKey"].retry,
+                default_timeout=self._method_configs["DeleteSshPublicKey"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = oslogin_pb2.DeleteSshPublicKeyRequest(name=name, )
-        self._inner_api_calls['delete_ssh_public_key'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = oslogin_pb2.DeleteSshPublicKeyRequest(name=name)
+        self._inner_api_calls["delete_ssh_public_key"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_login_profile(self,
-                          name,
-                          retry=google.api_core.gapic_v1.method.DEFAULT,
-                          timeout=google.api_core.gapic_v1.method.DEFAULT,
-                          metadata=None):
+    def get_login_profile(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Retrieves the profile information used for logging in to a virtual machine
         on Google Compute Engine.
@@ -342,26 +344,28 @@ class OsLoginServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_login_profile' not in self._inner_api_calls:
+        if "get_login_profile" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_login_profile'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_login_profile,
-                    default_retry=self._method_configs['GetLoginProfile'].
-                    retry,
-                    default_timeout=self._method_configs['GetLoginProfile'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_login_profile"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_login_profile,
+                default_retry=self._method_configs["GetLoginProfile"].retry,
+                default_timeout=self._method_configs["GetLoginProfile"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = oslogin_pb2.GetLoginProfileRequest(name=name, )
-        return self._inner_api_calls['get_login_profile'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = oslogin_pb2.GetLoginProfileRequest(name=name)
+        return self._inner_api_calls["get_login_profile"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_ssh_public_key(self,
-                           name,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def get_ssh_public_key(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Retrieves an SSH public key.
 
@@ -398,28 +402,30 @@ class OsLoginServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_ssh_public_key' not in self._inner_api_calls:
+        if "get_ssh_public_key" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_ssh_public_key'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_ssh_public_key,
-                    default_retry=self._method_configs['GetSshPublicKey'].
-                    retry,
-                    default_timeout=self._method_configs['GetSshPublicKey'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_ssh_public_key"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_ssh_public_key,
+                default_retry=self._method_configs["GetSshPublicKey"].retry,
+                default_timeout=self._method_configs["GetSshPublicKey"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = oslogin_pb2.GetSshPublicKeyRequest(name=name, )
-        return self._inner_api_calls['get_ssh_public_key'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = oslogin_pb2.GetSshPublicKeyRequest(name=name)
+        return self._inner_api_calls["get_ssh_public_key"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def import_ssh_public_key(self,
-                              parent,
-                              ssh_public_key,
-                              project_id=None,
-                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT,
-                              metadata=None):
+    def import_ssh_public_key(
+        self,
+        parent,
+        ssh_public_key,
+        project_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Adds an SSH public key and returns the profile information. Default POSIX
         account information is set when no username and UID exist as part of the
@@ -464,32 +470,32 @@ class OsLoginServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'import_ssh_public_key' not in self._inner_api_calls:
+        if "import_ssh_public_key" not in self._inner_api_calls:
             self._inner_api_calls[
-                'import_ssh_public_key'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.import_ssh_public_key,
-                    default_retry=self._method_configs['ImportSshPublicKey'].
-                    retry,
-                    default_timeout=self._method_configs['ImportSshPublicKey'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "import_ssh_public_key"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.import_ssh_public_key,
+                default_retry=self._method_configs["ImportSshPublicKey"].retry,
+                default_timeout=self._method_configs["ImportSshPublicKey"].timeout,
+                client_info=self._client_info,
+            )
 
         request = oslogin_pb2.ImportSshPublicKeyRequest(
-            parent=parent,
-            ssh_public_key=ssh_public_key,
-            project_id=project_id,
+            parent=parent, ssh_public_key=ssh_public_key, project_id=project_id
         )
-        return self._inner_api_calls['import_ssh_public_key'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["import_ssh_public_key"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def update_ssh_public_key(self,
-                              name,
-                              ssh_public_key,
-                              update_mask=None,
-                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT,
-                              metadata=None):
+    def update_ssh_public_key(
+        self,
+        name,
+        ssh_public_key,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates an SSH public key and returns the profile information. This method
         supports patch semantics.
@@ -538,21 +544,19 @@ class OsLoginServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_ssh_public_key' not in self._inner_api_calls:
+        if "update_ssh_public_key" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_ssh_public_key'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_ssh_public_key,
-                    default_retry=self._method_configs['UpdateSshPublicKey'].
-                    retry,
-                    default_timeout=self._method_configs['UpdateSshPublicKey'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "update_ssh_public_key"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_ssh_public_key,
+                default_retry=self._method_configs["UpdateSshPublicKey"].retry,
+                default_timeout=self._method_configs["UpdateSshPublicKey"].timeout,
+                client_info=self._client_info,
+            )
 
         request = oslogin_pb2.UpdateSshPublicKeyRequest(
-            name=name,
-            ssh_public_key=ssh_public_key,
-            update_mask=update_mask,
+            name=name, ssh_public_key=ssh_public_key, update_mask=update_mask
         )
-        return self._inner_api_calls['update_ssh_public_key'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_ssh_public_key"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
