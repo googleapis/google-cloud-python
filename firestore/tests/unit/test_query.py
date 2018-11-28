@@ -248,9 +248,54 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query3._offset, offset3)
         self._compare_queries(query2, query3, '_offset')
 
-    def test_start_at(self):
+    @staticmethod
+    def _make_snapshot(values):
         from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 
+        return DocumentSnapshot(None, values, True, None, None, None)
+
+    def test__cursor_helper_w_dict_w_start(self):
+        values = {'a': 7, 'b': 'foo'}
+        query1 = self._make_one(mock.sentinel.parent)
+
+        query2 = query1._cursor_helper(values, True, True)
+
+        self.assertIs(query2._parent, mock.sentinel.parent)
+        self.assertIsNone(query2._projection)
+        self.assertEqual(query2._field_filters, ())
+        self.assertEqual(query2._orders, ())
+        self.assertIsNone(query2._limit)
+        self.assertIsNone(query2._offset)
+        self.assertIsNone(query2._end_at)
+
+        cursor, before = query2._start_at
+
+        self.assertEqual(cursor, values)
+        self.assertIsNot(cursor, values)
+        self.assertTrue(before)
+
+    def test__cursor_helper_w_snapshot_wo_start(self):
+
+        values = {'a': 7, 'b': 'foo'}
+        snapshot = self._make_snapshot(values)
+        query1 = self._make_one(mock.sentinel.parent)
+
+        query2 = query1._cursor_helper(snapshot, False, False)
+
+        self.assertIs(query2._parent, mock.sentinel.parent)
+        self.assertIsNone(query2._projection)
+        self.assertEqual(query2._field_filters, ())
+        self.assertEqual(query2._orders, ())
+        self.assertIsNone(query2._limit)
+        self.assertIsNone(query2._offset)
+        self.assertIsNone(query2._start_at)
+
+        cursor, before = query2._end_at
+
+        self.assertEqual(cursor, values)
+        self.assertFalse(before)
+
+    def test_start_at(self):
         query1 = self._make_one_all_fields(skip_fields=('orders',))
         query2 = query1.order_by('hi')
 
@@ -264,8 +309,7 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by('bye')
         values5 = {'hi': 'zap', 'bye': 88}
-        document_fields5 = DocumentSnapshot(
-            None, values5, True, None, None, None)
+        document_fields5 = self._make_snapshot(values5)
         query5 = query4.start_at(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
@@ -273,8 +317,6 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query4, query5, '_start_at')
 
     def test_start_after(self):
-        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
-
         query1 = self._make_one_all_fields(skip_fields=('orders',))
         query2 = query1.order_by('down')
 
@@ -288,8 +330,7 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by('out')
         values5 = {'down': 100.25, 'out': b'\x00\x01'}
-        document_fields5 = DocumentSnapshot(
-            None, values5, True, None, None, None)
+        document_fields5 = self._make_snapshot(values5)
         query5 = query4.start_after(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
@@ -297,8 +338,6 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query4, query5, '_start_at')
 
     def test_end_before(self):
-        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
-
         query1 = self._make_one_all_fields(skip_fields=('orders',))
         query2 = query1.order_by('down')
 
@@ -312,8 +351,7 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by('out')
         values5 = {'down': 100.25, 'out': b'\x00\x01'}
-        document_fields5 = DocumentSnapshot(
-            None, values5, True, None, None, None)
+        document_fields5 = self._make_snapshot(values5)
         query5 = query4.end_before(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
@@ -321,8 +359,6 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query4, query5, '_end_at')
 
     def test_end_at(self):
-        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
-
         query1 = self._make_one_all_fields(skip_fields=('orders',))
         query2 = query1.order_by('hi')
 
@@ -336,8 +372,7 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by('bye')
         values5 = {'hi': 'zap', 'bye': 88}
-        document_fields5 = DocumentSnapshot(
-            None, values5, True, None, None, None)
+        document_fields5 = self._make_snapshot(values5)
         query5 = query4.end_at(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
