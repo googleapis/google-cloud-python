@@ -54,16 +54,12 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
-    def stream_stream(self,
-                      method,
-                      request_serializer=None,
-                      response_deserializer=None):
+    def stream_stream(
+        self, method, request_serializer=None, response_deserializer=None
+    ):
         return MultiCallableStub(method, self)
 
 
@@ -75,12 +71,11 @@ class TestSpeechClient(object):
     def test_recognize(self):
         # Setup Expected Response
         expected_response = {}
-        expected_response = cloud_speech_pb2.RecognizeResponse(
-            **expected_response)
+        expected_response = cloud_speech_pb2.RecognizeResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = speech_v1.SpeechClient()
@@ -88,28 +83,27 @@ class TestSpeechClient(object):
         # Setup Request
         encoding = enums.RecognitionConfig.AudioEncoding.FLAC
         sample_rate_hertz = 44100
-        language_code = 'en-US'
+        language_code = "en-US"
         config = {
-            'encoding': encoding,
-            'sample_rate_hertz': sample_rate_hertz,
-            'language_code': language_code
+            "encoding": encoding,
+            "sample_rate_hertz": sample_rate_hertz,
+            "language_code": language_code,
         }
-        uri = 'gs://bucket_name/file_name.flac'
-        audio = {'uri': uri}
+        uri = "gs://bucket_name/file_name.flac"
+        audio = {"uri": uri}
 
         response = client.recognize(config, audio)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cloud_speech_pb2.RecognizeRequest(
-            config=config, audio=audio)
+        expected_request = cloud_speech_pb2.RecognizeRequest(config=config, audio=audio)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_recognize_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = speech_v1.SpeechClient()
@@ -117,14 +111,14 @@ class TestSpeechClient(object):
         # Setup request
         encoding = enums.RecognitionConfig.AudioEncoding.FLAC
         sample_rate_hertz = 44100
-        language_code = 'en-US'
+        language_code = "en-US"
         config = {
-            'encoding': encoding,
-            'sample_rate_hertz': sample_rate_hertz,
-            'language_code': language_code
+            "encoding": encoding,
+            "sample_rate_hertz": sample_rate_hertz,
+            "language_code": language_code,
         }
-        uri = 'gs://bucket_name/file_name.flac'
-        audio = {'uri': uri}
+        uri = "gs://bucket_name/file_name.flac"
+        audio = {"uri": uri}
 
         with pytest.raises(CustomException):
             client.recognize(config, audio)
@@ -133,14 +127,16 @@ class TestSpeechClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = cloud_speech_pb2.LongRunningRecognizeResponse(
-            **expected_response)
+            **expected_response
+        )
         operation = operations_pb2.Operation(
-            name='operations/test_long_running_recognize', done=True)
+            name="operations/test_long_running_recognize", done=True
+        )
         operation.response.Pack(expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = speech_v1.SpeechClient()
@@ -148,14 +144,14 @@ class TestSpeechClient(object):
         # Setup Request
         encoding = enums.RecognitionConfig.AudioEncoding.FLAC
         sample_rate_hertz = 44100
-        language_code = 'en-US'
+        language_code = "en-US"
         config = {
-            'encoding': encoding,
-            'sample_rate_hertz': sample_rate_hertz,
-            'language_code': language_code
+            "encoding": encoding,
+            "sample_rate_hertz": sample_rate_hertz,
+            "language_code": language_code,
         }
-        uri = 'gs://bucket_name/file_name.flac'
-        audio = {'uri': uri}
+        uri = "gs://bucket_name/file_name.flac"
+        audio = {"uri": uri}
 
         response = client.long_running_recognize(config, audio)
         result = response.result()
@@ -163,7 +159,8 @@ class TestSpeechClient(object):
 
         assert len(channel.requests) == 1
         expected_request = cloud_speech_pb2.LongRunningRecognizeRequest(
-            config=config, audio=audio)
+            config=config, audio=audio
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -171,12 +168,13 @@ class TestSpeechClient(object):
         # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
-            name='operations/test_long_running_recognize_exception', done=True)
+            name="operations/test_long_running_recognize_exception", done=True
+        )
         operation.error.CopyFrom(error)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = speech_v1.SpeechClient()
@@ -184,14 +182,14 @@ class TestSpeechClient(object):
         # Setup Request
         encoding = enums.RecognitionConfig.AudioEncoding.FLAC
         sample_rate_hertz = 44100
-        language_code = 'en-US'
+        language_code = "en-US"
         config = {
-            'encoding': encoding,
-            'sample_rate_hertz': sample_rate_hertz,
-            'language_code': language_code
+            "encoding": encoding,
+            "sample_rate_hertz": sample_rate_hertz,
+            "language_code": language_code,
         }
-        uri = 'gs://bucket_name/file_name.flac'
-        audio = {'uri': uri}
+        uri = "gs://bucket_name/file_name.flac"
+        audio = {"uri": uri}
 
         response = client.long_running_recognize(config, audio)
         exception = response.exception()
@@ -201,11 +199,12 @@ class TestSpeechClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = cloud_speech_pb2.StreamingRecognizeResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = speech_v1.SpeechClient()
@@ -229,7 +228,7 @@ class TestSpeechClient(object):
     def test_streaming_recognize_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = speech_v1.SpeechClient()
