@@ -34,19 +34,16 @@ def make_datastore_api(client):
     :rtype: :class:`.datastore.v1.datastore_client.DatastoreClient`
     :returns: A datastore API instance with the proper credentials.
     """
-    parse_result = six.moves.urllib_parse.urlparse(
-        client._base_url)
+    parse_result = six.moves.urllib_parse.urlparse(client._base_url)
     host = parse_result.netloc
-    if parse_result.scheme == 'https':
-        channel = make_secure_channel(
-            client._credentials, DEFAULT_USER_AGENT, host)
+    if parse_result.scheme == "https":
+        channel = make_secure_channel(client._credentials, DEFAULT_USER_AGENT, host)
     else:
         channel = insecure_channel(host)
 
     return datastore_client.DatastoreClient(
         channel=channel,
         client_info=client_info.ClientInfo(
-            client_library_version=__version__,
-            gapic_version=__version__,
+            client_library_version=__version__, gapic_version=__version__
         ),
     )

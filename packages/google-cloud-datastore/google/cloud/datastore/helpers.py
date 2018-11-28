@@ -58,8 +58,9 @@ def _get_meaning(value_pb, is_list=False):
 
         # We check among all the meanings, some of which may be None,
         # the rest which may be enum/int values.
-        all_meanings = [_get_meaning(sub_value_pb)
-                        for sub_value_pb in value_pb.array_value.values]
+        all_meanings = [
+            _get_meaning(sub_value_pb) for sub_value_pb in value_pb.array_value.values
+        ]
         unique_meanings = set(all_meanings)
         if len(unique_meanings) == 1:
             # If there is a unique meaning, we preserve it.
@@ -114,7 +115,7 @@ def entity_from_protobuf(pb):
     :returns: The entity derived from the protobuf.
     """
     key = None
-    if pb.HasField('key'):  # Message field (Key)
+    if pb.HasField("key"):  # Message field (Key)
         key = key_from_protobuf(pb.key)
 
     entity_props = {}
@@ -135,12 +136,16 @@ def entity_from_protobuf(pb):
         # special-cased and we require all ``exclude_from_indexes`` values
         # in a list agree.
         if is_list and len(value) > 0:
-            exclude_values = set(value_pb.exclude_from_indexes
-                                 for value_pb in value_pb.array_value.values)
+            exclude_values = set(
+                value_pb.exclude_from_indexes
+                for value_pb in value_pb.array_value.values
+            )
             if len(exclude_values) != 1:
-                raise ValueError('For an array_value, subvalues must either '
-                                 'all be indexed or all excluded from '
-                                 'indexes.')
+                raise ValueError(
+                    "For an array_value, subvalues must either "
+                    "all be indexed or all excluded from "
+                    "indexes."
+                )
 
             if exclude_values.pop():
                 exclude_from_indexes.append(prop_name)
@@ -154,8 +159,7 @@ def entity_from_protobuf(pb):
     return entity
 
 
-def _set_pb_meaning_from_entity(entity, name, value, value_pb,
-                                is_list=False):
+def _set_pb_meaning_from_entity(entity, name, value, value_pb, is_list=False):
     """Add meaning information (from an entity) to a protobuf.
 
     :type entity: :class:`google.cloud.datastore.entity.Entity`
@@ -187,8 +191,7 @@ def _set_pb_meaning_from_entity(entity, name, value, value_pb,
     if is_list:
         if not isinstance(meaning, list):
             meaning = itertools.repeat(meaning)
-        val_iter = six.moves.zip(value_pb.array_value.values,
-                                 meaning)
+        val_iter = six.moves.zip(value_pb.array_value.values, meaning)
         for sub_value_pb, sub_meaning in val_iter:
             if sub_meaning is not None:
                 sub_value_pb.meaning = sub_meaning
@@ -226,8 +229,9 @@ def entity_to_protobuf(entity):
                 sub_value.exclude_from_indexes = True
 
         # Add meaning information to protobuf.
-        _set_pb_meaning_from_entity(entity, name, value, value_pb,
-                                    is_list=value_is_list)
+        _set_pb_meaning_from_entity(
+            entity, name, value, value_pb, is_list=value_is_list
+        )
 
     return entity_pb
 
@@ -252,15 +256,15 @@ def get_read_options(eventual, transaction_id):
     if transaction_id is None:
         if eventual:
             return datastore_pb2.ReadOptions(
-                read_consistency=datastore_pb2.ReadOptions.EVENTUAL)
+                read_consistency=datastore_pb2.ReadOptions.EVENTUAL
+            )
         else:
             return datastore_pb2.ReadOptions()
     else:
         if eventual:
-            raise ValueError('eventual must be False when in a transaction')
+            raise ValueError("eventual must be False when in a transaction")
         else:
-            return datastore_pb2.ReadOptions(
-                transaction=transaction_id)
+            return datastore_pb2.ReadOptions(transaction=transaction_id)
 
 
 def key_from_protobuf(pb):
@@ -332,36 +336,36 @@ def _pb_attr_value(val):
     """
 
     if isinstance(val, datetime.datetime):
-        name = 'timestamp'
+        name = "timestamp"
         value = _datetime_to_pb_timestamp(val)
     elif isinstance(val, Key):
-        name, value = 'key', val.to_protobuf()
+        name, value = "key", val.to_protobuf()
     elif isinstance(val, bool):
-        name, value = 'boolean', val
+        name, value = "boolean", val
     elif isinstance(val, float):
-        name, value = 'double', val
+        name, value = "double", val
     elif isinstance(val, six.integer_types):
-        name, value = 'integer', val
+        name, value = "integer", val
     elif isinstance(val, six.text_type):
-        name, value = 'string', val
+        name, value = "string", val
     elif isinstance(val, six.binary_type):
-        name, value = 'blob', val
+        name, value = "blob", val
     elif isinstance(val, Entity):
-        name, value = 'entity', val
+        name, value = "entity", val
     elif isinstance(val, dict):
         entity_val = Entity(key=None)
         entity_val.update(val)
-        name, value = 'entity', entity_val
+        name, value = "entity", entity_val
     elif isinstance(val, list):
-        name, value = 'array', val
+        name, value = "array", val
     elif isinstance(val, GeoPoint):
-        name, value = 'geo_point', val.to_protobuf()
+        name, value = "geo_point", val.to_protobuf()
     elif val is None:
-        name, value = 'null', struct_pb2.NULL_VALUE
+        name, value = "null", struct_pb2.NULL_VALUE
     else:
-        raise ValueError('Unknown protobuf attr type', type(val))
+        raise ValueError("Unknown protobuf attr type", type(val))
 
-    return name + '_value', value
+    return name + "_value", value
 
 
 def _get_value_from_value_pb(value_pb):
@@ -382,45 +386,47 @@ def _get_value_from_value_pb(value_pb):
     :raises: :class:`ValueError <exceptions.ValueError>` if no value type
              has been set.
     """
-    value_type = value_pb.WhichOneof('value_type')
+    value_type = value_pb.WhichOneof("value_type")
 
-    if value_type == 'timestamp_value':
+    if value_type == "timestamp_value":
         result = _pb_timestamp_to_datetime(value_pb.timestamp_value)
 
-    elif value_type == 'key_value':
+    elif value_type == "key_value":
         result = key_from_protobuf(value_pb.key_value)
 
-    elif value_type == 'boolean_value':
+    elif value_type == "boolean_value":
         result = value_pb.boolean_value
 
-    elif value_type == 'double_value':
+    elif value_type == "double_value":
         result = value_pb.double_value
 
-    elif value_type == 'integer_value':
+    elif value_type == "integer_value":
         result = value_pb.integer_value
 
-    elif value_type == 'string_value':
+    elif value_type == "string_value":
         result = value_pb.string_value
 
-    elif value_type == 'blob_value':
+    elif value_type == "blob_value":
         result = value_pb.blob_value
 
-    elif value_type == 'entity_value':
+    elif value_type == "entity_value":
         result = entity_from_protobuf(value_pb.entity_value)
 
-    elif value_type == 'array_value':
-        result = [_get_value_from_value_pb(value)
-                  for value in value_pb.array_value.values]
+    elif value_type == "array_value":
+        result = [
+            _get_value_from_value_pb(value) for value in value_pb.array_value.values
+        ]
 
-    elif value_type == 'geo_point_value':
-        result = GeoPoint(value_pb.geo_point_value.latitude,
-                          value_pb.geo_point_value.longitude)
+    elif value_type == "geo_point_value":
+        result = GeoPoint(
+            value_pb.geo_point_value.latitude, value_pb.geo_point_value.longitude
+        )
 
-    elif value_type == 'null_value':
+    elif value_type == "null_value":
         result = None
 
     else:
-        raise ValueError('Value protobuf did not have any value set')
+        raise ValueError("Value protobuf did not have any value set")
 
     return result
 
@@ -443,14 +449,14 @@ def _set_protobuf_value(value_pb, val):
     :param val: The value to be assigned.
     """
     attr, val = _pb_attr_value(val)
-    if attr == 'key_value':
+    if attr == "key_value":
         value_pb.key_value.CopyFrom(val)
-    elif attr == 'timestamp_value':
+    elif attr == "timestamp_value":
         value_pb.timestamp_value.CopyFrom(val)
-    elif attr == 'entity_value':
+    elif attr == "entity_value":
         entity_pb = entity_to_protobuf(val)
         value_pb.entity_value.CopyFrom(entity_pb)
-    elif attr == 'array_value':
+    elif attr == "array_value":
         if len(val) == 0:
             array_value = entity_pb2.ArrayValue(values=[])
             value_pb.array_value.CopyFrom(array_value)
@@ -459,7 +465,7 @@ def _set_protobuf_value(value_pb, val):
             for item in val:
                 i_pb = l_pb.add()
                 _set_protobuf_value(i_pb, item)
-    elif attr == 'geo_point_value':
+    elif attr == "geo_point_value":
         value_pb.geo_point_value.CopyFrom(val)
     else:  # scalar, just assign
         setattr(value_pb, attr, val)
@@ -485,8 +491,7 @@ class GeoPoint(object):
         :rtype: :class:`google.type.latlng_pb2.LatLng`.
         :returns: The current point as a protobuf.
         """
-        return latlng_pb2.LatLng(latitude=self.latitude,
-                                 longitude=self.longitude)
+        return latlng_pb2.LatLng(latitude=self.latitude, longitude=self.longitude)
 
     def __eq__(self, other):
         """Compare two geo points for equality.
@@ -497,8 +502,7 @@ class GeoPoint(object):
         if not isinstance(other, GeoPoint):
             return NotImplemented
 
-        return (self.latitude == other.latitude and
-                self.longitude == other.longitude)
+        return self.latitude == other.latitude and self.longitude == other.longitude
 
     def __ne__(self, other):
         """Compare two geo points for inequality.
