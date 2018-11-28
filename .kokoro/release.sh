@@ -9,14 +9,11 @@ python3 -m releasetool publish-reporter-script > /tmp/publisher-script; source /
 # Ensure that we have the latest versions of Twine, Wheel, and Setuptools.
 python3 -m pip install --upgrade twine wheel setuptools
 
-# Move into the package, build the distribution and upload.
-cd github/google-cloud-python/$PACKAGE
-
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
-python3 setup.py sdist bdist_wheel
-
+# Move into the package, build the distribution and upload.
 TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google_cloud_pypi_password")
-
-twine upload --username gcloudpypi --password "${TWINE_PASSWORD}" dist/*
+cd github/google-cloud-python/${PACKAGE}
+python3 setup.py sdist bdist_wheel
+twine upload --repository-url https://test.pypi.org/legacy/ --username gcloudpypi --password "${TWINE_PASSWORD}" dist/*
