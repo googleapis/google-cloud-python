@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.client &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.spanner_v1.client &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -63,9 +63,12 @@
 
 <span class="c1"># pylint: disable=line-too-long</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_admin_database_v1.gapic.database_admin_client</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
-    <span class="n">DatabaseAdminClient</span><span class="p">)</span>
+    <span class="n">DatabaseAdminClient</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
-    <span class="n">InstanceAdminClient</span><span class="p">)</span>
+    <span class="n">InstanceAdminClient</span><span class="p">,</span>
+<span class="p">)</span>
+
 <span class="c1"># pylint: enable=line-too-long</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._http</span> <span class="k">import</span> <span class="n">DEFAULT_USER_AGENT</span>
@@ -75,9 +78,8 @@
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.instance</span> <span class="k">import</span> <span class="n">DEFAULT_NODE_COUNT</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.instance</span> <span class="k">import</span> <span class="n">Instance</span>
 
-<span class="n">_CLIENT_INFO</span> <span class="o">=</span> <span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
-    <span class="n">client_library_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">)</span>
-<span class="n">SPANNER_ADMIN_SCOPE</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/auth/spanner.admin&#39;</span>
+<span class="n">_CLIENT_INFO</span> <span class="o">=</span> <span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span><span class="n">client_library_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">)</span>
+<span class="n">SPANNER_ADMIN_SCOPE</span> <span class="o">=</span> <span class="s2">&quot;https://www.googleapis.com/auth/spanner.admin&quot;</span>
 
 
 <div class="viewcode-block" id="InstanceConfig"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner_v1.client.InstanceConfig">[docs]</a><span class="k">class</span> <span class="nc">InstanceConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -89,6 +91,7 @@
 <span class="sd">    :type display_name: str</span>
 <span class="sd">    :param display_name: Name of the instance configuration</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">display_name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">display_name</span>
@@ -134,6 +137,7 @@
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if both ``read_only``</span>
 <span class="sd">             and ``admin`` are :data:`True`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_instance_admin_api</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_database_admin_api</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_SET_PROJECT</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Used by from_service_account_json()</span>
@@ -141,13 +145,13 @@
     <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="n">SPANNER_ADMIN_SCOPE</span><span class="p">,)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for Google Cloud Spanner.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">user_agent</span><span class="o">=</span><span class="n">DEFAULT_USER_AGENT</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_agent</span><span class="o">=</span><span class="n">DEFAULT_USER_AGENT</span><span class="p">):</span>
         <span class="c1"># NOTE: This API has no use for the _http argument, but sending it</span>
         <span class="c1">#       will have no impact since the _http() @property only lazily</span>
         <span class="c1">#       creates a working HTTP object.</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
 
     <span class="nd">@property</span>
@@ -177,15 +181,14 @@
 <span class="sd">        :returns: The project name to be used with the Cloud Spanner Admin</span>
 <span class="sd">                  API RPC service.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;projects/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+        <span class="k">return</span> <span class="s2">&quot;projects/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">instance_admin_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for session-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="o">=</span> <span class="n">InstanceAdminClient</span><span class="p">(</span>
-                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
-                <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span><span class="p">,</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span>
 
@@ -194,8 +197,7 @@
         <span class="sd">&quot;&quot;&quot;Helper for session-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="o">=</span> <span class="n">DatabaseAdminClient</span><span class="p">(</span>
-                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
-                <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span><span class="p">,</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span>
 
@@ -236,17 +238,21 @@
 <span class="sd">            resources within the client&#39;s project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;projects/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;projects/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
         <span class="n">page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_api</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">(</span>
-            <span class="n">path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+        <span class="p">)</span>
         <span class="n">page_iter</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
         <span class="n">page_iter</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="n">_item_to_instance_config</span>
         <span class="k">return</span> <span class="n">page_iter</span></div>
 
-<div class="viewcode-block" id="Client.instance"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client.instance">[docs]</a>    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span>
-                 <span class="n">configuration_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">display_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">node_count</span><span class="o">=</span><span class="n">DEFAULT_NODE_COUNT</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.instance"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client.instance">[docs]</a>    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance_id</span><span class="p">,</span>
+        <span class="n">configuration_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">display_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_count</span><span class="o">=</span><span class="n">DEFAULT_NODE_COUNT</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create a instance associated with this client.</span>
 
 <span class="sd">        :type instance_id: str</span>
@@ -272,10 +278,9 @@
 <span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`</span>
 <span class="sd">        :returns: an instance owned by this client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Instance</span><span class="p">(</span>
-            <span class="n">instance_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">configuration_name</span><span class="p">,</span> <span class="n">node_count</span><span class="p">,</span> <span class="n">display_name</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">configuration_name</span><span class="p">,</span> <span class="n">node_count</span><span class="p">,</span> <span class="n">display_name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_instances"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client.list_instances">[docs]</a>    <span class="k">def</span> <span class="nf">list_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_instances"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client.list_instances">[docs]</a>    <span class="k">def</span> <span class="nf">list_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List instances for the client&#39;s project.</span>
 
 <span class="sd">        See</span>
@@ -297,9 +302,10 @@
 <span class="sd">            resources within the client&#39;s project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;projects/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;projects/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
         <span class="n">page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_api</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span>
-            <span class="n">path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+        <span class="p">)</span>
         <span class="n">page_iter</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_instance</span>
         <span class="n">page_iter</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
         <span class="k">return</span> <span class="n">page_iter</span></div>
@@ -319,8 +325,7 @@
         <span class="k">return</span> <span class="n">Instance</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_item_to_instance_config</span><span class="p">(</span>
-        <span class="n">iterator</span><span class="p">,</span> <span class="n">config_pb</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+<span class="k">def</span> <span class="nf">_item_to_instance_config</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">config_pb</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
     <span class="sd">&quot;&quot;&quot;Convert an instance config protobuf to the native object.</span>
 
 <span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>

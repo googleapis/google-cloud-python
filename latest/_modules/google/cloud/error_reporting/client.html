@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.error_reporting.client &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.error_reporting.client &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -54,6 +54,7 @@
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">google.cloud.error_reporting._gapic</span> <span class="k">import</span> <span class="n">make_report_error_api</span>
+
     <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
     <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">False</span>
@@ -96,9 +97,15 @@
 <span class="sd">                      provided in the error report.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">user_agent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">referrer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">response_status_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remote_ip</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_agent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">referrer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">response_status_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">remote_ip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
         <span class="c1"># intentionally camel case for mapping to JSON API expects</span>
@@ -160,17 +167,21 @@
 <span class="sd">             set in the environment.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,)</span>
+    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;https://www.googleapis.com/auth/cloud-platform&quot;</span><span class="p">,)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as an API consumer.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">_use_grpc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-                                     <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">_use_grpc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="o">=</span> <span class="n">service</span> <span class="k">if</span> <span class="n">service</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_SERVICE</span>
@@ -180,7 +191,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span> <span class="o">=</span> <span class="n">_use_grpc</span>
 
-    <span class="n">DEFAULT_SERVICE</span> <span class="o">=</span> <span class="s1">&#39;python&#39;</span>
+    <span class="n">DEFAULT_SERVICE</span> <span class="o">=</span> <span class="s2">&quot;python&quot;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">report_errors_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -201,14 +212,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="n">make_report_error_api</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="n">_ErrorReportingLoggingAPI</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http</span>
+                <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span>
 
-    <span class="k">def</span> <span class="nf">_build_error_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                            <span class="n">message</span><span class="p">,</span>
-                            <span class="n">report_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                            <span class="n">http_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                            <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_build_error_report</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">report_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Builds the Error Reporting object to report.</span>
 
 <span class="sd">        This builds the object according to</span>
@@ -246,37 +256,34 @@
 <span class="sd">                  the API.</span>
 <span class="sd">         &quot;&quot;&quot;</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;serviceContext&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;service&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="s2">&quot;serviceContext&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;service&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="p">},</span>
+            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;serviceContext&#39;</span><span class="p">][</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;serviceContext&quot;</span><span class="p">][</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
 
         <span class="k">if</span> <span class="n">report_location</span> <span class="ow">or</span> <span class="n">http_context</span> <span class="ow">or</span> <span class="n">user</span><span class="p">:</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="n">report_location</span><span class="p">:</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;context&#39;</span><span class="p">][</span><span class="s1">&#39;reportLocation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">report_location</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">][</span><span class="s2">&quot;reportLocation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">report_location</span>
 
         <span class="k">if</span> <span class="n">http_context</span><span class="p">:</span>
             <span class="n">http_context_dict</span> <span class="o">=</span> <span class="n">http_context</span><span class="o">.</span><span class="vm">__dict__</span>
             <span class="c1"># strip out None values</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;context&#39;</span><span class="p">][</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">http_context_dict</span><span class="p">)</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">][</span><span class="s2">&quot;httpRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">http_context_dict</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="p">}</span>
         <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;context&#39;</span><span class="p">][</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">][</span><span class="s2">&quot;user&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span>
         <span class="k">return</span> <span class="n">payload</span>
 
-    <span class="k">def</span> <span class="nf">_send_error_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                           <span class="n">message</span><span class="p">,</span>
-                           <span class="n">report_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                           <span class="n">http_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                           <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_send_error_report</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">report_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Makes the call to the Error Reporting API.</span>
 
 <span class="sd">        This is the lower-level interface to build and send the payload,</span>
@@ -310,8 +317,9 @@
 <span class="sd">                     use other data, such as remote IP address,</span>
 <span class="sd">                     to distinguish affected users.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">error_report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_error_report</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">report_location</span><span class="p">,</span>
-                                                <span class="n">http_context</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="n">error_report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_error_report</span><span class="p">(</span>
+            <span class="n">message</span><span class="p">,</span> <span class="n">report_location</span><span class="p">,</span> <span class="n">http_context</span><span class="p">,</span> <span class="n">user</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">report_errors_api</span><span class="o">.</span><span class="n">report_error_event</span><span class="p">(</span><span class="n">error_report</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Client.report"><a class="viewcode-back" href="../../../../error-reporting/client.html#google.cloud.error_reporting.client.Client.report">[docs]</a>    <span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">http_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -347,15 +355,17 @@
         <span class="n">line_number</span> <span class="o">=</span> <span class="n">last_call</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">function_name</span> <span class="o">=</span> <span class="n">last_call</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">report_location</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;filePath&#39;</span><span class="p">:</span> <span class="n">file_path</span><span class="p">,</span>
-            <span class="s1">&#39;lineNumber&#39;</span><span class="p">:</span> <span class="n">line_number</span><span class="p">,</span>
-            <span class="s1">&#39;functionName&#39;</span><span class="p">:</span> <span class="n">function_name</span>
+            <span class="s2">&quot;filePath&quot;</span><span class="p">:</span> <span class="n">file_path</span><span class="p">,</span>
+            <span class="s2">&quot;lineNumber&quot;</span><span class="p">:</span> <span class="n">line_number</span><span class="p">,</span>
+            <span class="s2">&quot;functionName&quot;</span><span class="p">:</span> <span class="n">function_name</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_send_error_report</span><span class="p">(</span><span class="n">message</span><span class="p">,</span>
-                                <span class="n">http_context</span><span class="o">=</span><span class="n">http_context</span><span class="p">,</span>
-                                <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
-                                <span class="n">report_location</span><span class="o">=</span><span class="n">report_location</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_error_report</span><span class="p">(</span>
+            <span class="n">message</span><span class="p">,</span>
+            <span class="n">http_context</span><span class="o">=</span><span class="n">http_context</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">report_location</span><span class="o">=</span><span class="n">report_location</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.report_exception"><a class="viewcode-back" href="../../../../error-reporting/client.html#google.cloud.error_reporting.client.Client.report_exception">[docs]</a>    <span class="k">def</span> <span class="nf">report_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">http_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reports the details of the latest exceptions to Stackdriver Error</span>
@@ -381,9 +391,9 @@
 <span class="sd">                &gt;&gt;&gt;     except Exception:</span>
 <span class="sd">                &gt;&gt;&gt;         client.report_exception()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_send_error_report</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">(),</span>
-                                <span class="n">http_context</span><span class="o">=</span><span class="n">http_context</span><span class="p">,</span>
-                                <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_error_report</span><span class="p">(</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">(),</span> <span class="n">http_context</span><span class="o">=</span><span class="n">http_context</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
           </div>

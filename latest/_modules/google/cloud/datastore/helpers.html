@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.helpers &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.datastore.helpers &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -93,8 +93,9 @@
 
         <span class="c1"># We check among all the meanings, some of which may be None,</span>
         <span class="c1"># the rest which may be enum/int values.</span>
-        <span class="n">all_meanings</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_meaning</span><span class="p">(</span><span class="n">sub_value_pb</span><span class="p">)</span>
-                        <span class="k">for</span> <span class="n">sub_value_pb</span> <span class="ow">in</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+        <span class="n">all_meanings</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">_get_meaning</span><span class="p">(</span><span class="n">sub_value_pb</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub_value_pb</span> <span class="ow">in</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span>
+        <span class="p">]</span>
         <span class="n">unique_meanings</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">all_meanings</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_meanings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="c1"># If there is a unique meaning, we preserve it.</span>
@@ -149,7 +150,7 @@
 <span class="sd">    :returns: The entity derived from the protobuf.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="n">pb</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">):</span>  <span class="c1"># Message field (Key)</span>
+    <span class="k">if</span> <span class="n">pb</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">):</span>  <span class="c1"># Message field (Key)</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
 
     <span class="n">entity_props</span> <span class="o">=</span> <span class="p">{}</span>
@@ -170,12 +171,16 @@
         <span class="c1"># special-cased and we require all ``exclude_from_indexes`` values</span>
         <span class="c1"># in a list agree.</span>
         <span class="k">if</span> <span class="n">is_list</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">exclude_values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">exclude_from_indexes</span>
-                                 <span class="k">for</span> <span class="n">value_pb</span> <span class="ow">in</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+            <span class="n">exclude_values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
+                <span class="n">value_pb</span><span class="o">.</span><span class="n">exclude_from_indexes</span>
+                <span class="k">for</span> <span class="n">value_pb</span> <span class="ow">in</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exclude_values</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;For an array_value, subvalues must either &#39;</span>
-                                 <span class="s1">&#39;all be indexed or all excluded from &#39;</span>
-                                 <span class="s1">&#39;indexes.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;For an array_value, subvalues must either &quot;</span>
+                    <span class="s2">&quot;all be indexed or all excluded from &quot;</span>
+                    <span class="s2">&quot;indexes.&quot;</span>
+                <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">exclude_values</span><span class="o">.</span><span class="n">pop</span><span class="p">():</span>
                 <span class="n">exclude_from_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
@@ -189,8 +194,7 @@
     <span class="k">return</span> <span class="n">entity</span></div>
 
 
-<span class="k">def</span> <span class="nf">_set_pb_meaning_from_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_pb</span><span class="p">,</span>
-                                <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_set_pb_meaning_from_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_pb</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Add meaning information (from an entity) to a protobuf.</span>
 
 <span class="sd">    :type entity: :class:`google.cloud.datastore.entity.Entity`</span>
@@ -222,8 +226,7 @@
     <span class="k">if</span> <span class="n">is_list</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">meaning</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">meaning</span><span class="p">)</span>
-        <span class="n">val_iter</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-                                 <span class="n">meaning</span><span class="p">)</span>
+        <span class="n">val_iter</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">meaning</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">sub_value_pb</span><span class="p">,</span> <span class="n">sub_meaning</span> <span class="ow">in</span> <span class="n">val_iter</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">sub_meaning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">sub_value_pb</span><span class="o">.</span><span class="n">meaning</span> <span class="o">=</span> <span class="n">sub_meaning</span>
@@ -261,8 +264,9 @@
                 <span class="n">sub_value</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># Add meaning information to protobuf.</span>
-        <span class="n">_set_pb_meaning_from_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_pb</span><span class="p">,</span>
-                                    <span class="n">is_list</span><span class="o">=</span><span class="n">value_is_list</span><span class="p">)</span>
+        <span class="n">_set_pb_meaning_from_entity</span><span class="p">(</span>
+            <span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_pb</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="n">value_is_list</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">entity_pb</span></div>
 
@@ -287,15 +291,15 @@
     <span class="k">if</span> <span class="n">transaction_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">eventual</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="p">(</span>
-                <span class="n">read_consistency</span><span class="o">=</span><span class="n">datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="o">.</span><span class="n">EVENTUAL</span><span class="p">)</span>
+                <span class="n">read_consistency</span><span class="o">=</span><span class="n">datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="o">.</span><span class="n">EVENTUAL</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">eventual</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;eventual must be False when in a transaction&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;eventual must be False when in a transaction&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="p">(</span>
-                <span class="n">transaction</span><span class="o">=</span><span class="n">transaction_id</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="n">datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="key_from_protobuf"><a class="viewcode-back" href="../../../../datastore/helpers.html#google.cloud.datastore.helpers.key_from_protobuf">[docs]</a><span class="k">def</span> <span class="nf">key_from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="p">):</span>
@@ -367,36 +371,36 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;timestamp&#39;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;timestamp&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">_datetime_to_pb_timestamp</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Key</span><span class="p">):</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;boolean&#39;</span><span class="p">,</span> <span class="n">val</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;double&#39;</span><span class="p">,</span> <span class="n">val</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;integer&#39;</span><span class="p">,</span> <span class="n">val</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">):</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="n">val</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">):</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;blob&#39;</span><span class="p">,</span> <span class="n">val</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;blob&quot;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Entity</span><span class="p">):</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="n">val</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;entity&quot;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">entity_val</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">entity_val</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="n">entity_val</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;entity&quot;</span><span class="p">,</span> <span class="n">entity_val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;array&#39;</span><span class="p">,</span> <span class="n">val</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">GeoPoint</span><span class="p">):</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;geo_point&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;geo_point&quot;</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
     <span class="k">elif</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;null&#39;</span><span class="p">,</span> <span class="n">struct_pb2</span><span class="o">.</span><span class="n">NULL_VALUE</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">struct_pb2</span><span class="o">.</span><span class="n">NULL_VALUE</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown protobuf attr type&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown protobuf attr type&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_value&#39;</span><span class="p">,</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_value&quot;</span><span class="p">,</span> <span class="n">value</span>
 
 
 <span class="k">def</span> <span class="nf">_get_value_from_value_pb</span><span class="p">(</span><span class="n">value_pb</span><span class="p">):</span>
@@ -417,45 +421,47 @@
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if no value type</span>
 <span class="sd">             has been set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">value_type</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">WhichOneof</span><span class="p">(</span><span class="s1">&#39;value_type&#39;</span><span class="p">)</span>
+    <span class="n">value_type</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">WhichOneof</span><span class="p">(</span><span class="s2">&quot;value_type&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;timestamp_value&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;timestamp_value&quot;</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">_pb_timestamp_to_datetime</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">timestamp_value</span><span class="p">)</span>
 
-    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;key_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;key_value&quot;</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">key_value</span><span class="p">)</span>
 
-    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;boolean_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;boolean_value&quot;</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">boolean_value</span>
 
-    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;double_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;double_value&quot;</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">double_value</span>
 
-    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;integer_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;integer_value&quot;</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">integer_value</span>
 
-    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;string_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;string_value&quot;</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">string_value</span>
 
-    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;blob_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;blob_value&quot;</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">blob_value</span>
 
-    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;entity_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;entity_value&quot;</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">entity_value</span><span class="p">)</span>
 
-    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;array_value&#39;</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_value_from_value_pb</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                  <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;array_value&quot;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">_get_value_from_value_pb</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span>
+        <span class="p">]</span>
 
-    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;geo_point_value&#39;</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">geo_point_value</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-                          <span class="n">value_pb</span><span class="o">.</span><span class="n">geo_point_value</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;geo_point_value&quot;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span>
+            <span class="n">value_pb</span><span class="o">.</span><span class="n">geo_point_value</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">geo_point_value</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="p">)</span>
 
-    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;null_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s2">&quot;null_value&quot;</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Value protobuf did not have any value set&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Value protobuf did not have any value set&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">result</span>
 
@@ -478,14 +484,14 @@
 <span class="sd">    :param val: The value to be assigned.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">_pb_attr_value</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;key_value&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;key_value&quot;</span><span class="p">:</span>
         <span class="n">value_pb</span><span class="o">.</span><span class="n">key_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;timestamp_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;timestamp_value&quot;</span><span class="p">:</span>
         <span class="n">value_pb</span><span class="o">.</span><span class="n">timestamp_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;entity_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;entity_value&quot;</span><span class="p">:</span>
         <span class="n">entity_pb</span> <span class="o">=</span> <span class="n">entity_to_protobuf</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="n">value_pb</span><span class="o">.</span><span class="n">entity_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;array_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;array_value&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">array_value</span> <span class="o">=</span> <span class="n">entity_pb2</span><span class="o">.</span><span class="n">ArrayValue</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="p">[])</span>
             <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">array_value</span><span class="p">)</span>
@@ -494,7 +500,7 @@
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
                 <span class="n">i_pb</span> <span class="o">=</span> <span class="n">l_pb</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
                 <span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">i_pb</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;geo_point_value&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;geo_point_value&quot;</span><span class="p">:</span>
         <span class="n">value_pb</span><span class="o">.</span><span class="n">geo_point_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># scalar, just assign</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
@@ -520,8 +526,7 @@
 <span class="sd">        :rtype: :class:`google.type.latlng_pb2.LatLng`.</span>
 <span class="sd">        :returns: The current point as a protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">latlng_pb2</span><span class="o">.</span><span class="n">LatLng</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-                                 <span class="n">longitude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">latlng_pb2</span><span class="o">.</span><span class="n">LatLng</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compare two geo points for equality.</span>
@@ -532,8 +537,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">GeoPoint</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">latitude</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">latitude</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">longitude</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compare two geo points for inequality.</span>

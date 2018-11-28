@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.instance &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.spanner_v1.instance &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -52,7 +52,8 @@
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_admin_instance_v1.proto</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">spanner_instance_admin_pb2</span> <span class="k">as</span> <span class="n">admin_v1_pb2</span><span class="p">)</span>
+    <span class="n">spanner_instance_admin_pb2</span> <span class="k">as</span> <span class="n">admin_v1_pb2</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">google.protobuf.field_mask_pb2</span> <span class="k">import</span> <span class="n">FieldMask</span>
 
 <span class="c1"># pylint: disable=ungrouped-imports</span>
@@ -60,12 +61,13 @@
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_metadata_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.database</span> <span class="k">import</span> <span class="n">Database</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.pool</span> <span class="k">import</span> <span class="n">BurstyPool</span>
+
 <span class="c1"># pylint: enable=ungrouped-imports</span>
 
 
 <span class="n">_INSTANCE_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s1">&#39;^projects/(?P&lt;project&gt;[^/]+)/&#39;</span>
-    <span class="sa">r</span><span class="s1">&#39;instances/(?P&lt;instance_id&gt;[a-z][-a-z0-9]*)$&#39;</span><span class="p">)</span>
+    <span class="sa">r</span><span class="s2">&quot;^projects/(?P&lt;project&gt;[^/]+)/&quot;</span> <span class="sa">r</span><span class="s2">&quot;instances/(?P&lt;instance_id&gt;[a-z][-a-z0-9]*)$&quot;</span>
+<span class="p">)</span>
 
 <span class="n">DEFAULT_NODE_COUNT</span> <span class="o">=</span> <span class="mi">1</span>
 
@@ -102,12 +104,14 @@
 <span class="sd">                         constructor, will fall back to the instance ID.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">instance_id</span><span class="p">,</span>
-                 <span class="n">client</span><span class="p">,</span>
-                 <span class="n">configuration_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">node_count</span><span class="o">=</span><span class="n">DEFAULT_NODE_COUNT</span><span class="p">,</span>
-                 <span class="n">display_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance_id</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">,</span>
+        <span class="n">configuration_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_count</span><span class="o">=</span><span class="n">DEFAULT_NODE_COUNT</span><span class="p">,</span>
+        <span class="n">display_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">=</span> <span class="n">instance_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">configuration_name</span> <span class="o">=</span> <span class="n">configuration_name</span>
@@ -120,7 +124,7 @@
 <span class="sd">        Helper for :meth:`from_pb` and :meth:`reload`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">display_name</span><span class="p">:</span>  <span class="c1"># Simple field (string)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Instance protobuf does not contain display_name&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Instance protobuf does not contain display_name&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">display_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">configuration_name</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node_count</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">node_count</span>
@@ -145,12 +149,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">match</span> <span class="o">=</span> <span class="n">_INSTANCE_NAME_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">instance_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Instance protobuf name was not in the &#39;</span>
-                             <span class="s1">&#39;expected format.&#39;</span><span class="p">,</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Project ID on instance does not match the &#39;</span>
-                             <span class="s1">&#39;project ID on the client&#39;</span><span class="p">)</span>
-        <span class="n">instance_id</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;instance_id&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Instance protobuf name was not in the &quot;</span> <span class="s2">&quot;expected format.&quot;</span><span class="p">,</span>
+                <span class="n">instance_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Project ID on instance does not match the &quot;</span> <span class="s2">&quot;project ID on the client&quot;</span>
+            <span class="p">)</span>
+        <span class="n">instance_id</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;instance_id&quot;</span><span class="p">)</span>
         <span class="n">configuration_name</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">config</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">configuration_name</span><span class="p">)</span>
@@ -173,7 +180,7 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The instance name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project_name</span> <span class="o">+</span> <span class="s1">&#39;/instances/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project_name</span> <span class="o">+</span> <span class="s2">&quot;/instances/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
@@ -184,8 +191,7 @@
         <span class="c1">#       intentional, since the same instance can be in different states</span>
         <span class="c1">#       if not synchronized. Instances with similar instance</span>
         <span class="c1">#       settings but different clients can&#39;t be used in the same way.</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">_client</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">_client</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
@@ -237,7 +243,7 @@
             <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration_name</span><span class="p">,</span>
             <span class="n">display_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span>
             <span class="n">node_count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_count</span><span class="p">,</span>
-            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">future</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">create_instance</span><span class="p">(</span>
@@ -311,14 +317,12 @@
             <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration_name</span><span class="p">,</span>
             <span class="n">display_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span>
             <span class="n">node_count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_count</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="n">field_mask</span> <span class="o">=</span> <span class="n">FieldMask</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;display_name&#39;</span><span class="p">,</span> <span class="s1">&#39;node_count&#39;</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">field_mask</span> <span class="o">=</span> <span class="n">FieldMask</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;display_name&quot;</span><span class="p">,</span> <span class="s2">&quot;node_count&quot;</span><span class="p">])</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">future</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">update_instance</span><span class="p">(</span>
-            <span class="n">instance</span><span class="o">=</span><span class="n">instance_pb</span><span class="p">,</span>
-            <span class="n">field_mask</span><span class="o">=</span><span class="n">field_mask</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="n">instance</span><span class="o">=</span><span class="n">instance_pb</span><span class="p">,</span> <span class="n">field_mask</span><span class="o">=</span><span class="n">field_mask</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">future</span></div>
@@ -360,8 +364,7 @@
 <span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">        :returns: a database owned by this instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Database</span><span class="p">(</span>
-            <span class="n">database_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="o">=</span><span class="n">ddl_statements</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Database</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="o">=</span><span class="n">ddl_statements</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Instance.list_databases"><a class="viewcode-back" href="../../../../spanner/instance-api.html#google.cloud.spanner_v1.instance.Instance.list_databases">[docs]</a>    <span class="k">def</span> <span class="nf">list_databases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List databases for the instance.</span>
@@ -382,7 +385,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">database_admin_api</span><span class="o">.</span><span class="n">list_databases</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+        <span class="p">)</span>
         <span class="n">page_iter</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
         <span class="n">page_iter</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_database</span>
         <span class="k">return</span> <span class="n">page_iter</span></div>

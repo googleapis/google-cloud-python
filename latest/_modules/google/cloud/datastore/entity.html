@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.entity &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.datastore.entity &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -170,8 +170,9 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="p">()):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">_ensure_tuple_or_list</span><span class="p">(</span>
-            <span class="s1">&#39;exclude_from_indexes&#39;</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
+            <span class="n">_ensure_tuple_or_list</span><span class="p">(</span><span class="s2">&quot;exclude_from_indexes&quot;</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="sd">&quot;&quot;&quot;Names of fields which are *not* to be indexed for this entity.&quot;&quot;&quot;</span>
         <span class="c1"># NOTE: This will be populated when parsing a protobuf in</span>
         <span class="c1">#       google.cloud.datastore.helpers.entity_from_protobuf.</span>
@@ -189,10 +190,12 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Entity</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">key</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_meanings</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_meanings</span> <span class="ow">and</span>
-                <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">key</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">exclude_from_indexes</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meanings</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_meanings</span>
+            <span class="ow">and</span> <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compare two entities for inequality.</span>
@@ -237,10 +240,12 @@
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&lt;Entity</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">_flat_path</span><span class="p">,</span>
-                                      <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span>
+            <span class="k">return</span> <span class="s2">&quot;&lt;Entity</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">_flat_path</span><span class="p">,</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&lt;Entity </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),)</span></div>
+            <span class="k">return</span> <span class="s2">&quot;&lt;Entity </span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),)</span></div>
 </pre></div>
 
           </div>

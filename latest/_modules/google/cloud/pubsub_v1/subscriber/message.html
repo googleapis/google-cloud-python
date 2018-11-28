@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -65,7 +65,7 @@
 <span class="s2">}}&quot;&quot;&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">_indent</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;  &#39;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_indent</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;  &quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Indent some text.</span>
 
 <span class="sd">    Note that this is present as ``textwrap.indent``, but not in Python 2.</span>
@@ -79,9 +79,9 @@
 <span class="sd">        str: The newly indented content.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">indented</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
         <span class="n">indented</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">line</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">indented</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">indented</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message">[docs]</a><span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -139,13 +139,10 @@
         <span class="c1"># Get an abbreviated version of the data.</span>
         <span class="n">abbv_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">data</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">abbv_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
-            <span class="n">abbv_data</span> <span class="o">=</span> <span class="n">abbv_data</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;...&#39;</span>
+            <span class="n">abbv_data</span> <span class="o">=</span> <span class="n">abbv_data</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;...&quot;</span>
 
         <span class="n">pretty_attrs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
-            <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">),</span>
-            <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-            <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;: &#39;</span><span class="p">),</span>
-            <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;: &quot;</span><span class="p">),</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
         <span class="n">pretty_attrs</span> <span class="o">=</span> <span class="n">_indent</span><span class="p">(</span><span class="n">pretty_attrs</span><span class="p">)</span>
         <span class="c1"># We don&#39;t actually want the first line indented.</span>
@@ -190,8 +187,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">publish_time</span>
         <span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
-            <span class="n">seconds</span><span class="o">=</span><span class="n">timestamp</span><span class="o">.</span><span class="n">seconds</span><span class="p">,</span>
-            <span class="n">microseconds</span><span class="o">=</span><span class="n">timestamp</span><span class="o">.</span><span class="n">nanos</span> <span class="o">//</span> <span class="mi">1000</span><span class="p">)</span>
+            <span class="n">seconds</span><span class="o">=</span><span class="n">timestamp</span><span class="o">.</span><span class="n">seconds</span><span class="p">,</span> <span class="n">microseconds</span><span class="o">=</span><span class="n">timestamp</span><span class="o">.</span><span class="n">nanos</span> <span class="o">//</span> <span class="mi">1000</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">datetime_helpers</span><span class="o">.</span><span class="n">_UTC_EPOCH</span> <span class="o">+</span> <span class="n">delta</span>
 
     <span class="nd">@property</span>
@@ -221,9 +218,7 @@
         <span class="n">time_to_ack</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_received_timestamp</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
             <span class="n">requests</span><span class="o">.</span><span class="n">AckRequest</span><span class="p">(</span>
-                <span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
-                <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
-                <span class="n">time_to_ack</span><span class="o">=</span><span class="n">time_to_ack</span>
+                <span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span> <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">time_to_ack</span><span class="o">=</span><span class="n">time_to_ack</span>
             <span class="p">)</span>
         <span class="p">)</span></div>
 
@@ -241,10 +236,7 @@
 <span class="sd">            directly.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
-            <span class="n">requests</span><span class="o">.</span><span class="n">DropRequest</span><span class="p">(</span>
-                <span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
-                <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span>
-            <span class="p">)</span>
+            <span class="n">requests</span><span class="o">.</span><span class="n">DropRequest</span><span class="p">(</span><span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span> <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Message.lease"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.lease">[docs]</a>    <span class="k">def</span> <span class="nf">lease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -255,10 +247,7 @@
 <span class="sd">            need to call it manually.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
-            <span class="n">requests</span><span class="o">.</span><span class="n">LeaseRequest</span><span class="p">(</span>
-                <span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
-                <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span>
-            <span class="p">)</span>
+            <span class="n">requests</span><span class="o">.</span><span class="n">LeaseRequest</span><span class="p">(</span><span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span> <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Message.modify_ack_deadline"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.modify_ack_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
@@ -277,10 +266,7 @@
 <span class="sd">                values below 10 are advised against.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
-            <span class="n">requests</span><span class="o">.</span><span class="n">ModAckRequest</span><span class="p">(</span>
-                <span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
-                <span class="n">seconds</span><span class="o">=</span><span class="n">seconds</span>
-            <span class="p">)</span>
+            <span class="n">requests</span><span class="o">.</span><span class="n">ModAckRequest</span><span class="p">(</span><span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="n">seconds</span><span class="p">)</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Message.nack"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.nack">[docs]</a>    <span class="k">def</span> <span class="nf">nack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -289,10 +275,7 @@
 <span class="sd">        This will cause the message to be re-delivered to the subscription.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
-            <span class="n">requests</span><span class="o">.</span><span class="n">NackRequest</span><span class="p">(</span>
-                <span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
-                <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span>
-            <span class="p">)</span>
+            <span class="n">requests</span><span class="o">.</span><span class="n">NackRequest</span><span class="p">(</span><span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span> <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
         <span class="p">)</span></div></div>
 </pre></div>
 

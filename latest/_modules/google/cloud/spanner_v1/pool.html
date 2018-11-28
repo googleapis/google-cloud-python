@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.pool &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.spanner_v1.pool &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -67,6 +67,7 @@
 <span class="sd">    :param labels: (Optional) user-assigned labels for sessions created</span>
 <span class="sd">                    by the pool.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_database</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -183,11 +184,11 @@
 <span class="sd">    :param labels: (Optional) user-assigned labels for sessions created</span>
 <span class="sd">                    by the pool.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">DEFAULT_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
     <span class="n">DEFAULT_TIMEOUT</span> <span class="o">=</span> <span class="mi">10</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">DEFAULT_SIZE</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="n">DEFAULT_TIMEOUT</span><span class="p">,</span>
-                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">DEFAULT_SIZE</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="n">DEFAULT_TIMEOUT</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FixedSizePool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_timeout</span> <span class="o">=</span> <span class="n">default_timeout</span>
@@ -370,8 +371,7 @@
 <span class="sd">                    by the pool.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ping_interval</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
-                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ping_interval</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PingingPool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_timeout</span> <span class="o">=</span> <span class="n">default_timeout</span>
@@ -486,12 +486,12 @@
 <span class="sd">                    by the pool.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ping_interval</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
-                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ping_interval</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pending_sessions</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">TransactionPingingPool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">size</span><span class="p">,</span> <span class="n">default_timeout</span><span class="p">,</span> <span class="n">ping_interval</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+            <span class="n">size</span><span class="p">,</span> <span class="n">default_timeout</span><span class="p">,</span> <span class="n">ping_interval</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">begin_pending_transactions</span><span class="p">()</span>
 
@@ -543,6 +543,7 @@
 <span class="sd">    :type kwargs: dict</span>
 <span class="sd">    :param kwargs: extra keyword arguments to be passed to :meth:`pool.get`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_session</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Not checked out until &#39;__enter__&#39;.</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pool</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

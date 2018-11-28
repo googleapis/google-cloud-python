@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.futures &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.pubsub_v1.futures &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -119,8 +119,7 @@
 <span class="sd">        This still returns True in failure cases; checking :meth:`result` or</span>
 <span class="sd">        :meth:`exception` is the canonical way to assess success or failure.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_exception</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SENTINEL</span> <span class="ow">or</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_result</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SENTINEL</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SENTINEL</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SENTINEL</span>
 
     <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the message ID, or raise an exception.</span>
@@ -166,7 +165,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Wait until the future is done.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_completed</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span><span class="s1">&#39;Timed out waiting for result.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span><span class="s2">&quot;Timed out waiting for result.&quot;</span><span class="p">)</span>
 
         <span class="c1"># If the batch completed successfully, this should return None.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SENTINEL</span><span class="p">:</span>
@@ -193,7 +192,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Sanity check: A future can only complete once.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;set_result can only be called once.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;set_result can only be called once.&quot;</span><span class="p">)</span>
 
         <span class="c1"># Set the result and trigger the future.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_result</span> <span class="o">=</span> <span class="n">result</span>
@@ -207,7 +206,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Sanity check: A future can only complete once.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;set_exception can only be called once.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;set_exception can only be called once.&quot;</span><span class="p">)</span>
 
         <span class="c1"># Set the exception and trigger the future.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span> <span class="o">=</span> <span class="n">exception</span>

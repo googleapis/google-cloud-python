@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_helpers.decorators &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.vision_helpers.decorators &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -58,13 +58,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Sanity check: This only makes sense if we are building the GAPIC</span>
     <span class="c1"># subclass and have enums already attached.</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;enums&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;enums&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span>
 
     <span class="c1"># Add each single-feature method to the class.</span>
     <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">Feature</span><span class="o">.</span><span class="n">Type</span><span class="p">:</span>
         <span class="c1"># Sanity check: Do not make a method for the falsy feature.</span>
-        <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;TYPE_UNSPECIFIED&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;TYPE_UNSPECIFIED&quot;</span><span class="p">:</span>
             <span class="k">continue</span>
 
         <span class="c1"># Assign the appropriate metadata to the function.</span>
@@ -72,13 +72,10 @@
 
         <span class="c1"># Assign a qualified name to the function, and perform module</span>
         <span class="c1"># replacement on the docstring.</span>
-        <span class="n">detect</span><span class="o">.</span><span class="vm">__qualname__</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{cls}</span><span class="s1">.</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">cls</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">detect</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+        <span class="n">detect</span><span class="o">.</span><span class="vm">__qualname__</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{cls}</span><span class="s2">.</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">detect</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="p">)</span>
-        <span class="n">detect</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">detect</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">module</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__module__</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="n">detect</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">detect</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
 
         <span class="c1"># Place the function on the class being created.</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">detect</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">detect</span><span class="p">)</span>
@@ -99,12 +96,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Define the function properties.</span>
     <span class="n">fx_name</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">if</span> <span class="s1">&#39;detection&#39;</span> <span class="ow">in</span> <span class="n">fx_name</span><span class="p">:</span>
-        <span class="n">fx_doc</span> <span class="o">=</span> <span class="s1">&#39;Perform </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fx_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="s2">&quot;detection&quot;</span> <span class="ow">in</span> <span class="n">fx_name</span><span class="p">:</span>
+        <span class="n">fx_doc</span> <span class="o">=</span> <span class="s2">&quot;Perform </span><span class="si">{0}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fx_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">fx_doc</span> <span class="o">=</span> <span class="s1">&#39;Return </span><span class="si">{desc}</span><span class="s1"> information.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">desc</span><span class="o">=</span><span class="n">fx_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span>
-        <span class="p">)</span>
+        <span class="n">fx_doc</span> <span class="o">=</span> <span class="s2">&quot;Return </span><span class="si">{desc}</span><span class="s2"> information.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">desc</span><span class="o">=</span><span class="n">fx_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
 
     <span class="c1"># Provide a complete docstring with argument and return value</span>
     <span class="c1"># information.</span>
@@ -125,11 +120,10 @@
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Get the actual feature value to send.</span>
-    <span class="n">feature_value</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">feature</span><span class="p">}</span>
+    <span class="n">feature_value</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">feature</span><span class="p">}</span>
 
     <span class="c1"># Define the function to be returned.</span>
-    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">retry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a single feature annotation for the given image.</span>
 
 <span class="sd">        Intended for use with functools.partial, to create the particular</span>
@@ -137,12 +131,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">copied_features</span> <span class="o">=</span> <span class="n">feature_value</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">copied_features</span><span class="p">[</span><span class="s1">&#39;max_results&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
-            <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="n">copied_features</span><span class="p">],</span>
-            <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span>
+            <span class="n">copied_features</span><span class="p">[</span><span class="s2">&quot;max_results&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="n">copied_features</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotate_image</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span>
 

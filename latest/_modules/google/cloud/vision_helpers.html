@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_helpers &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.vision_helpers &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -60,6 +60,7 @@
 <span class="sd">    in a multiple-inheritance construction alongside the applicable GAPIC.</span>
 <span class="sd">    See the :class:`~google.cloud.vision_v1.ImageAnnotatorClient`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">annotate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run image detection and annotation for an image.</span>
 
@@ -86,23 +87,23 @@
 <span class="sd">            :class:`~.vision_v1.types.AnnotateImageResponse` The API response.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># If the image is a file handler, set the content.</span>
-        <span class="n">image</span> <span class="o">=</span> <span class="n">protobuf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;image&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">protobuf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">):</span>
             <span class="n">img_bytes</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-            <span class="n">protobuf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="n">protobuf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;image.content&#39;</span><span class="p">,</span> <span class="n">img_bytes</span><span class="p">)</span>
-            <span class="n">image</span> <span class="o">=</span> <span class="n">protobuf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;image&#39;</span><span class="p">)</span>
+            <span class="n">protobuf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">protobuf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;image.content&quot;</span><span class="p">,</span> <span class="n">img_bytes</span><span class="p">)</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">protobuf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">)</span>
 
         <span class="c1"># If a filename is provided, read the file.</span>
-        <span class="n">filename</span> <span class="o">=</span> <span class="n">protobuf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;source.filename&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">protobuf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s2">&quot;source.filename&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">img_file</span><span class="p">:</span>
-                <span class="n">protobuf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;image.content&#39;</span><span class="p">,</span> <span class="n">img_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-                <span class="n">protobuf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;image.source&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">img_file</span><span class="p">:</span>
+                <span class="n">protobuf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;image.content&quot;</span><span class="p">,</span> <span class="n">img_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+                <span class="n">protobuf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;image.source&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="c1"># This method allows features not to be specified, and you get all</span>
         <span class="c1"># of them.</span>
-        <span class="n">protobuf</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_all_features</span><span class="p">())</span>
+        <span class="n">protobuf</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;features&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_all_features</span><span class="p">())</span>
         <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_annotate_images</span><span class="p">([</span><span class="n">request</span><span class="p">],</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">responses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -113,8 +114,8 @@
 <span class="sd">            list: A list of all available features.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span>
-            <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">feature</span><span class="p">}</span>
-            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">Feature</span><span class="o">.</span><span class="n">Type</span> <span class="k">if</span> <span class="n">feature</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">feature</span><span class="p">}</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">Feature</span><span class="o">.</span><span class="n">Type</span> <span class="k">if</span> <span class="n">feature</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="p">]</span>
 </pre></div>
 
           </div>

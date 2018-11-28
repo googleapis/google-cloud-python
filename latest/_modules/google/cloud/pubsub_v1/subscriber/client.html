@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.client &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.client &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -64,17 +64,16 @@
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber._protocol</span> <span class="k">import</span> <span class="n">streaming_pull_manager</span>
 
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s1">&#39;google-cloud-pubsub&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s2">&quot;google-cloud-pubsub&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span>
 
 <span class="n">_BLACKLISTED_METHODS</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;publish&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;from_service_account_file&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;from_service_account_json&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;publish&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_service_account_file&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_service_account_json&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client">[docs]</a><span class="nd">@_gapic</span><span class="o">.</span><span class="n">add_methods</span><span class="p">(</span>
-    <span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">,</span> <span class="n">blacklist</span><span class="o">=</span><span class="n">_BLACKLISTED_METHODS</span><span class="p">)</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client">[docs]</a><span class="nd">@_gapic</span><span class="o">.</span><span class="n">add_methods</span><span class="p">(</span><span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">,</span> <span class="n">blacklist</span><span class="o">=</span><span class="n">_BLACKLISTED_METHODS</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A subscriber client for Google Cloud Pub/Sub.</span>
 
@@ -89,27 +88,28 @@
 <span class="sd">            Generally, you should not need to set additional keyword</span>
 <span class="sd">            arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># Sanity check: Is our goal to use the emulator?</span>
         <span class="c1"># If so, create a grpc insecure channel with the emulator host</span>
         <span class="c1"># as the target.</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PUBSUB_EMULATOR_HOST&#39;</span><span class="p">):</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">insecure_channel</span><span class="p">(</span>
-                <span class="n">target</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PUBSUB_EMULATOR_HOST&#39;</span><span class="p">),</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PUBSUB_EMULATOR_HOST&quot;</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">insecure_channel</span><span class="p">(</span>
+                <span class="n">target</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PUBSUB_EMULATOR_HOST&quot;</span><span class="p">)</span>
             <span class="p">)</span>
 
         <span class="c1"># Use a custom channel.</span>
         <span class="c1"># We need this in order to set appropriate default message size and</span>
         <span class="c1"># keepalive options.</span>
-        <span class="k">if</span> <span class="s1">&#39;channel&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
-                <span class="n">credentials</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;credentials&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="k">if</span> <span class="s2">&quot;channel&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;credentials&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                 <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
                 <span class="n">scopes</span><span class="o">=</span><span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">,</span>
                 <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-                    <span class="s1">&#39;grpc.max_send_message_length&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-                    <span class="s1">&#39;grpc.max_receive_message_length&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-                    <span class="s1">&#39;grpc.keepalive_time_ms&#39;</span><span class="p">:</span> <span class="mi">30000</span><span class="p">,</span>
+                    <span class="s2">&quot;grpc.max_send_message_length&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="s2">&quot;grpc.max_receive_message_length&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="s2">&quot;grpc.keepalive_time_ms&quot;</span><span class="p">:</span> <span class="mi">30000</span><span class="p">,</span>
                 <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
             <span class="p">)</span>
 
@@ -130,9 +130,8 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            PublisherClient: The constructed client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span>
-            <span class="n">filename</span><span class="p">)</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;credentials&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
     <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
@@ -151,9 +150,7 @@
         <span class="sd">&quot;&quot;&quot;The underlying gapic API client.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span>
 
-<div class="viewcode-block" id="Client.subscribe"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.subscribe">[docs]</a>    <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">flow_control</span><span class="o">=</span><span class="p">(),</span>
-            <span class="n">scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.subscribe"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.subscribe">[docs]</a>    <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">flow_control</span><span class="o">=</span><span class="p">(),</span> <span class="n">scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Asynchronously start receiving messages on a given subscription.</span>
 
 <span class="sd">        This method starts a background thread to begin pulling messages from</span>
@@ -233,7 +230,8 @@
         <span class="n">flow_control</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FlowControl</span><span class="p">(</span><span class="o">*</span><span class="n">flow_control</span><span class="p">)</span>
 
         <span class="n">manager</span> <span class="o">=</span> <span class="n">streaming_pull_manager</span><span class="o">.</span><span class="n">StreamingPullManager</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">flow_control</span><span class="o">=</span><span class="n">flow_control</span><span class="p">,</span> <span class="n">scheduler</span><span class="o">=</span><span class="n">scheduler</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">flow_control</span><span class="o">=</span><span class="n">flow_control</span><span class="p">,</span> <span class="n">scheduler</span><span class="o">=</span><span class="n">scheduler</span>
+        <span class="p">)</span>
 
         <span class="n">future</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">StreamingPullFuture</span><span class="p">(</span><span class="n">manager</span><span class="p">)</span>
 

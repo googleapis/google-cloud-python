@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.client &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.datastore.client &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -51,8 +51,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_LocalStack</span>
-<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="p">(</span><span class="n">_determine_default_project</span> <span class="k">as</span>
-                                   <span class="n">_base_default_project</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_determine_default_project</span> <span class="k">as</span> <span class="n">_base_default_project</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore</span> <span class="k">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore._http</span> <span class="k">import</span> <span class="n">HTTPDatastoreAPI</span>
@@ -67,6 +66,7 @@
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">google.cloud.datastore._gapic</span> <span class="k">import</span> <span class="n">make_datastore_api</span>
+
     <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
     <span class="n">make_datastore_api</span> <span class="o">=</span> <span class="kc">None</span>
@@ -75,7 +75,7 @@
 
 <span class="n">_MAX_LOOPS</span> <span class="o">=</span> <span class="mi">128</span>
 <span class="sd">&quot;&quot;&quot;Maximum number of iterations to wait for deferred keys.&quot;&quot;&quot;</span>
-<span class="n">_DATASTORE_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://datastore.googleapis.com&#39;</span>
+<span class="n">_DATASTORE_BASE_URL</span> <span class="o">=</span> <span class="s2">&quot;https://datastore.googleapis.com&quot;</span>
 <span class="sd">&quot;&quot;&quot;Datastore API request URL base.&quot;&quot;&quot;</span>
 
 <span class="n">_USE_GRPC</span> <span class="o">=</span> <span class="n">_HAVE_GRPC</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -112,9 +112,15 @@
     <span class="k">return</span> <span class="n">project</span>
 
 
-<span class="k">def</span> <span class="nf">_extended_lookup</span><span class="p">(</span><span class="n">datastore_api</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span>
-                     <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_extended_lookup</span><span class="p">(</span>
+    <span class="n">datastore_api</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">,</span>
+    <span class="n">key_pbs</span><span class="p">,</span>
+    <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">deferred</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">transaction_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Repeat lookup until all keys found (unless stop requested).</span>
 
 <span class="sd">    Helper function for :meth:`Client.get_multi`.</span>
@@ -156,10 +162,10 @@
 <span class="sd">             empty list.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">missing</span> <span class="o">!=</span> <span class="p">[]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;missing must be None or an empty list&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;missing must be None or an empty list&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">deferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">deferred</span> <span class="o">!=</span> <span class="p">[]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;deferred must be None or an empty list&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;deferred must be None or an empty list&quot;</span><span class="p">)</span>
 
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -168,9 +174,7 @@
     <span class="k">while</span> <span class="n">loop_num</span> <span class="o">&lt;</span> <span class="n">_MAX_LOOPS</span><span class="p">:</span>  <span class="c1"># loop against possible deferred.</span>
         <span class="n">loop_num</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">lookup_response</span> <span class="o">=</span> <span class="n">datastore_api</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span>
-            <span class="n">project</span><span class="p">,</span>
-            <span class="n">key_pbs</span><span class="p">,</span>
-            <span class="n">read_options</span><span class="o">=</span><span class="n">read_options</span><span class="p">,</span>
+            <span class="n">project</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span> <span class="n">read_options</span><span class="o">=</span><span class="n">read_options</span>
         <span class="p">)</span>
 
         <span class="c1"># Accumulate the new results.</span>
@@ -231,13 +235,15 @@
 <span class="sd">                      change in the future.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/datastore&#39;</span><span class="p">,)</span>
+    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;https://www.googleapis.com/auth/datastore&quot;</span><span class="p">,)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Datastore consumer.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_use_grpc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_use_grpc</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_batch_stack</span> <span class="o">=</span> <span class="n">_LocalStack</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_api_internal</span> <span class="o">=</span> <span class="kc">None</span>
@@ -247,7 +253,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span> <span class="o">=</span> <span class="n">_use_grpc</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">host</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">GCD_HOST</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_base_url</span> <span class="o">=</span> <span class="s1">&#39;http://&#39;</span> <span class="o">+</span> <span class="n">host</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_base_url</span> <span class="o">=</span> <span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="n">host</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_base_url</span> <span class="o">=</span> <span class="n">_DATASTORE_BASE_URL</span>
 
@@ -322,8 +328,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">Transaction</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">transaction</span>
 
-<div class="viewcode-block" id="Client.get"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.get"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve an entity from a single key (if it exists).</span>
 
 <span class="sd">        .. note::</span>
@@ -359,16 +364,19 @@
 
 <span class="sd">        :raises: :class:`ValueError` if eventual is True and in a transaction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">entities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_multi</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
-                                  <span class="n">missing</span><span class="o">=</span><span class="n">missing</span><span class="p">,</span>
-                                  <span class="n">deferred</span><span class="o">=</span><span class="n">deferred</span><span class="p">,</span>
-                                  <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">,</span>
-                                  <span class="n">eventual</span><span class="o">=</span><span class="n">eventual</span><span class="p">)</span>
+        <span class="n">entities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_multi</span><span class="p">(</span>
+            <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">missing</span><span class="p">,</span>
+            <span class="n">deferred</span><span class="o">=</span><span class="n">deferred</span><span class="p">,</span>
+            <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">,</span>
+            <span class="n">eventual</span><span class="o">=</span><span class="n">eventual</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">entities</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Client.get_multi"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.get_multi">[docs]</a>    <span class="k">def</span> <span class="nf">get_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.get_multi"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.get_multi">[docs]</a>    <span class="k">def</span> <span class="nf">get_multi</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve entities, along with their attributes.</span>
 
 <span class="sd">        :type keys: list of :class:`google.cloud.datastore.key.Key`</span>
@@ -406,7 +414,7 @@
         <span class="n">ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">project</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">current_id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">current_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Keys do not match project&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Keys do not match project&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">transaction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transaction</span>
@@ -423,16 +431,15 @@
 
         <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">missing</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">missed_pb</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">missed_pb</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">]</span>
+                <span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">missed_pb</span><span class="p">)</span> <span class="k">for</span> <span class="n">missed_pb</span> <span class="ow">in</span> <span class="n">missing</span>
+            <span class="p">]</span>
 
         <span class="k">if</span> <span class="n">deferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">deferred</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">helpers</span><span class="o">.</span><span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">deferred_pb</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">deferred_pb</span> <span class="ow">in</span> <span class="n">deferred</span><span class="p">]</span>
+                <span class="n">helpers</span><span class="o">.</span><span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">deferred_pb</span><span class="p">)</span> <span class="k">for</span> <span class="n">deferred_pb</span> <span class="ow">in</span> <span class="n">deferred</span>
+            <span class="p">]</span>
 
-        <span class="k">return</span> <span class="p">[</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">entity_pb</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">)</span> <span class="k">for</span> <span class="n">entity_pb</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Client.put"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save an entity in the Cloud Datastore.</span>
@@ -528,28 +535,31 @@
 <span class="sd">                 partial key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s1">&#39;Key is not partial.&#39;</span><span class="p">,</span> <span class="n">incomplete_key</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s2">&quot;Key is not partial.&quot;</span><span class="p">,</span> <span class="n">incomplete_key</span><span class="p">))</span>
 
         <span class="n">incomplete_key_pb</span> <span class="o">=</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
         <span class="n">incomplete_key_pbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">incomplete_key_pb</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_ids</span>
 
         <span class="n">response_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_api</span><span class="o">.</span><span class="n">allocate_ids</span><span class="p">(</span>
-            <span class="n">incomplete_key</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">incomplete_key_pbs</span><span class="p">)</span>
-        <span class="n">allocated_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">allocated_key_pb</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
-                         <span class="k">for</span> <span class="n">allocated_key_pb</span> <span class="ow">in</span> <span class="n">response_pb</span><span class="o">.</span><span class="n">keys</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">allocated_id</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">allocated_id</span> <span class="ow">in</span> <span class="n">allocated_ids</span><span class="p">]</span></div>
+            <span class="n">incomplete_key</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">incomplete_key_pbs</span>
+        <span class="p">)</span>
+        <span class="n">allocated_ids</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">allocated_key_pb</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocated_key_pb</span> <span class="ow">in</span> <span class="n">response_pb</span><span class="o">.</span><span class="n">keys</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">incomplete_key</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">allocated_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">allocated_id</span> <span class="ow">in</span> <span class="n">allocated_ids</span>
+        <span class="p">]</span></div>
 
 <div class="viewcode-block" id="Client.key"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :class:`google.cloud.datastore.key.Key`.</span>
 
 <span class="sd">        Passes our ``project``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s1">&#39;project&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Cannot pass project&#39;</span><span class="p">)</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;project&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
-        <span class="k">if</span> <span class="s1">&#39;namespace&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;namespace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span>
+        <span class="k">if</span> <span class="s2">&quot;project&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot pass project&quot;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+        <span class="k">if</span> <span class="s2">&quot;namespace&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;namespace&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span>
         <span class="k">return</span> <span class="n">Key</span><span class="p">(</span><span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../../datastore/client.html#google.cloud.datastore.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -639,13 +649,13 @@
 <span class="sd">        :rtype: :class:`~google.cloud.datastore.query.Query`</span>
 <span class="sd">        :returns: A query object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s1">&#39;client&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Cannot pass client&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;project&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Cannot pass project&#39;</span><span class="p">)</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;project&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
-        <span class="k">if</span> <span class="s1">&#39;namespace&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;namespace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span>
+        <span class="k">if</span> <span class="s2">&quot;client&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot pass client&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;project&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot pass project&quot;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+        <span class="k">if</span> <span class="s2">&quot;namespace&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;namespace&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span>
         <span class="k">return</span> <span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 </pre></div>
 

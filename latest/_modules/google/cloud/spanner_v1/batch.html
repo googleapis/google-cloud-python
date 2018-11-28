@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.batch &#8212; google-cloud 8a2b64d documentation</title>
+    <title>google.cloud.spanner_v1.batch &#8212; google-cloud 92465cb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -57,6 +57,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_SessionWrapper</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_make_list_value_pbs</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_metadata_with_prefix</span>
+
 <span class="c1"># pylint: enable=ungrouped-imports</span>
 
 
@@ -66,6 +67,7 @@
 <span class="sd">    :type session: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">    :param session: the session used to perform the commit</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">_BatchBase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span> <span class="o">=</span> <span class="p">[]</span>
@@ -92,8 +94,7 @@
 <span class="sd">        :type values: list of lists</span>
 <span class="sd">        :param values: Values to be modified.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Mutation</span><span class="p">(</span>
-            <span class="n">insert</span><span class="o">=</span><span class="n">_make_write_pb</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Mutation</span><span class="p">(</span><span class="n">insert</span><span class="o">=</span><span class="n">_make_write_pb</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update one or more existing table rows.</span>
@@ -107,8 +108,7 @@
 <span class="sd">        :type values: list of lists</span>
 <span class="sd">        :param values: Values to be modified.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Mutation</span><span class="p">(</span>
-            <span class="n">update</span><span class="o">=</span><span class="n">_make_write_pb</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Mutation</span><span class="p">(</span><span class="n">update</span><span class="o">=</span><span class="n">_make_write_pb</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">insert_or_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Insert/update one or more table rows.</span>
@@ -122,8 +122,9 @@
 <span class="sd">        :type values: list of lists</span>
 <span class="sd">        :param values: Values to be modified.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Mutation</span><span class="p">(</span>
-            <span class="n">insert_or_update</span><span class="o">=</span><span class="n">_make_write_pb</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">Mutation</span><span class="p">(</span><span class="n">insert_or_update</span><span class="o">=</span><span class="n">_make_write_pb</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replace one or more table rows.</span>
@@ -137,8 +138,7 @@
 <span class="sd">        :type values: list of lists</span>
 <span class="sd">        :param values: Values to be modified.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Mutation</span><span class="p">(</span>
-            <span class="n">replace</span><span class="o">=</span><span class="n">_make_write_pb</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Mutation</span><span class="p">(</span><span class="n">replace</span><span class="o">=</span><span class="n">_make_write_pb</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">keyset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete one or more table rows.</span>
@@ -149,17 +149,14 @@
 <span class="sd">        :type keyset: :class:`~google.cloud.spanner_v1.keyset.Keyset`</span>
 <span class="sd">        :param keyset: Keys/ranges identifying rows to delete.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">delete</span> <span class="o">=</span> <span class="n">Mutation</span><span class="o">.</span><span class="n">Delete</span><span class="p">(</span>
-            <span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
-            <span class="n">key_set</span><span class="o">=</span><span class="n">keyset</span><span class="o">.</span><span class="n">_to_pb</span><span class="p">(),</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Mutation</span><span class="p">(</span>
-            <span class="n">delete</span><span class="o">=</span><span class="n">delete</span><span class="p">))</span>
+        <span class="n">delete</span> <span class="o">=</span> <span class="n">Mutation</span><span class="o">.</span><span class="n">Delete</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">key_set</span><span class="o">=</span><span class="n">keyset</span><span class="o">.</span><span class="n">_to_pb</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Mutation</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="n">delete</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../../../spanner/batch-api.html#google.cloud.spanner_v1.batch.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">(</span><span class="n">_BatchBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Accumulate mutations for transmission during :meth:`commit`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">committed</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="sd">&quot;&quot;&quot;Timestamp at which the batch was successfully committed.&quot;&quot;&quot;</span>
 
@@ -184,13 +181,14 @@
         <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">spanner_api</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">txn_options</span> <span class="o">=</span> <span class="n">TransactionOptions</span><span class="p">(</span>
-            <span class="n">read_write</span><span class="o">=</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadWrite</span><span class="p">())</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="p">,</span>
-                              <span class="n">single_use_transaction</span><span class="o">=</span><span class="n">txn_options</span><span class="p">,</span>
-                              <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">committed</span> <span class="o">=</span> <span class="n">_pb_timestamp_to_datetime</span><span class="p">(</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">commit_timestamp</span><span class="p">)</span>
+        <span class="n">txn_options</span> <span class="o">=</span> <span class="n">TransactionOptions</span><span class="p">(</span><span class="n">read_write</span><span class="o">=</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadWrite</span><span class="p">())</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="p">,</span>
+            <span class="n">single_use_transaction</span><span class="o">=</span><span class="n">txn_options</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">committed</span> <span class="o">=</span> <span class="n">_pb_timestamp_to_datetime</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">commit_timestamp</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">committed</span></div>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -221,9 +219,7 @@
 <span class="sd">    :returns: Write protobuf</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">Mutation</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span>
-        <span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
-        <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
-        <span class="n">values</span><span class="o">=</span><span class="n">_make_list_value_pbs</span><span class="p">(</span><span class="n">values</span><span class="p">),</span>
+        <span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">_make_list_value_pbs</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="p">)</span>
 </pre></div>
 
