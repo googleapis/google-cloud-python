@@ -18,17 +18,14 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 versions = ["v1beta1"]
 
-excludes = [
-    'setup.py',
-    'nox*.py',
-    'README.rst',
-    'docs/conf.py',
-    'docs/index.rst',
-]
+excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
 
+# ----------------------------------------------------------------------------
+# Generate asset GAPIC layer
+# ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library(
         "asset",
@@ -38,10 +35,6 @@ for version in versions:
     )
 
     s.move(library, excludes=excludes)
-
-templated_files = gcp.CommonTemplates().py_library(
-    unit_cov_level=86, cov_level=85)
-s.move(templated_files)
 
 s.replace(
     "google/cloud/asset_v1beta1/proto/assets_pb2.py",
@@ -85,3 +78,9 @@ s.replace(
     _BORKED_ASSET_DOCSTRING,
     _FIXED_ASSET_DOCSTRING,
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = gcp.CommonTemplates().py_library(unit_cov_level=79, cov_level=80)
+s.move(templated_files)
