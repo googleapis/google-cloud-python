@@ -28,24 +28,27 @@ import grpc
 
 from google.cloud.errorreporting_v1beta1.gapic import enums
 from google.cloud.errorreporting_v1beta1.gapic import error_group_service_client_config
-from google.cloud.errorreporting_v1beta1.gapic.transports import error_group_service_grpc_transport
+from google.cloud.errorreporting_v1beta1.gapic.transports import (
+    error_group_service_grpc_transport,
+)
 from google.cloud.errorreporting_v1beta1.proto import common_pb2
 from google.cloud.errorreporting_v1beta1.proto import error_group_service_pb2
 from google.cloud.errorreporting_v1beta1.proto import error_group_service_pb2_grpc
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-error-reporting', ).version
+    "google-cloud-error-reporting"
+).version
 
 
 class ErrorGroupServiceClient(object):
     """Service for retrieving and updating individual error groups."""
 
-    SERVICE_ADDRESS = 'clouderrorreporting.googleapis.com:443'
+    SERVICE_ADDRESS = "clouderrorreporting.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.devtools.clouderrorreporting.v1beta1.ErrorGroupService'
+    _INTERFACE_NAME = "google.devtools.clouderrorreporting.v1beta1.ErrorGroupService"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -61,9 +64,8 @@ class ErrorGroupServiceClient(object):
         Returns:
             ErrorGroupServiceClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -72,17 +74,17 @@ class ErrorGroupServiceClient(object):
     def group_path(cls, project, group):
         """Return a fully-qualified group string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/groups/{group}',
-            project=project,
-            group=group,
+            "projects/{project}/groups/{group}", project=project, group=group
         )
 
-    def __init__(self,
-                 transport=None,
-                 channel=None,
-                 credentials=None,
-                 client_config=None,
-                 client_info=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+    ):
         """Constructor.
 
         Args:
@@ -116,18 +118,19 @@ class ErrorGroupServiceClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                'The `client_config` argument is deprecated.',
+                "The `client_config` argument is deprecated.",
                 PendingDeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
         else:
             client_config = error_group_service_client_config.config
 
         if channel:
             warnings.warn(
-                'The `channel` argument is deprecated; use '
-                '`transport` instead.',
+                "The `channel` argument is deprecated; use " "`transport` instead.",
                 PendingDeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -136,25 +139,24 @@ class ErrorGroupServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=error_group_service_grpc_transport.
-                    ErrorGroupServiceGrpcTransport,
+                    default_class=error_group_service_grpc_transport.ErrorGroupServiceGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        'Received both a transport instance and '
-                        'credentials; these are mutually exclusive.')
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
+                    )
                 self.transport = transport
         else:
             self.transport = error_group_service_grpc_transport.ErrorGroupServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS,
-                channel=channel,
-                credentials=credentials,
+                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION, )
+                gapic_version=_GAPIC_LIBRARY_VERSION
+            )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -164,7 +166,8 @@ class ErrorGroupServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME], )
+            client_config["interfaces"][self._INTERFACE_NAME]
+        )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -173,11 +176,13 @@ class ErrorGroupServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def get_group(self,
-                  group_name,
-                  retry=google.api_core.gapic_v1.method.DEFAULT,
-                  timeout=google.api_core.gapic_v1.method.DEFAULT,
-                  metadata=None):
+    def get_group(
+        self,
+        group_name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Get the specified group.
 
@@ -216,25 +221,28 @@ class ErrorGroupServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_group' not in self._inner_api_calls:
+        if "get_group" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_group'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_group,
-                    default_retry=self._method_configs['GetGroup'].retry,
-                    default_timeout=self._method_configs['GetGroup'].timeout,
-                    client_info=self._client_info,
-                )
+                "get_group"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_group,
+                default_retry=self._method_configs["GetGroup"].retry,
+                default_timeout=self._method_configs["GetGroup"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = error_group_service_pb2.GetGroupRequest(
-            group_name=group_name, )
-        return self._inner_api_calls['get_group'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = error_group_service_pb2.GetGroupRequest(group_name=group_name)
+        return self._inner_api_calls["get_group"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def update_group(self,
-                     group,
-                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT,
-                     metadata=None):
+    def update_group(
+        self,
+        group,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Replace the data for the specified group.
         Fails if the group does not exist.
@@ -274,16 +282,17 @@ class ErrorGroupServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_group' not in self._inner_api_calls:
+        if "update_group" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_group'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_group,
-                    default_retry=self._method_configs['UpdateGroup'].retry,
-                    default_timeout=self._method_configs['UpdateGroup'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "update_group"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_group,
+                default_retry=self._method_configs["UpdateGroup"].retry,
+                default_timeout=self._method_configs["UpdateGroup"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = error_group_service_pb2.UpdateGroupRequest(group=group, )
-        return self._inner_api_calls['update_group'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        request = error_group_service_pb2.UpdateGroupRequest(group=group)
+        return self._inner_api_calls["update_group"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )

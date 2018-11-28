@@ -26,9 +26,9 @@ def _make_credentials():
 
 class TestClient(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
-    SERVICE = 'SERVICE'
-    VERSION = 'myversion'
+    PROJECT = "PROJECT"
+    SERVICE = "SERVICE"
+    VERSION = "myversion"
 
     @staticmethod
     def _get_target_class():
@@ -52,10 +52,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(positional), 1)
         return positional[0]
 
-    @mock.patch('google.cloud.client._determine_default_project')
+    @mock.patch("google.cloud.client._determine_default_project")
     def test_ctor_default(self, default_mock):
         credentials = _make_credentials()
-        default_mock.return_value = 'foo'
+        default_mock.return_value = "foo"
         client = self._make_one(credentials=credentials)
         self.assertEqual(client.service, client.DEFAULT_SERVICE)
         self.assertEqual(client.version, None)
@@ -63,20 +63,20 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_params(self):
         credentials = _make_credentials()
-        client = self._make_one(project=self.PROJECT,
-                                credentials=credentials,
-                                service=self.SERVICE,
-                                version=self.VERSION)
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            service=self.SERVICE,
+            version=self.VERSION,
+        )
         self.assertEqual(client.service, self.SERVICE)
         self.assertEqual(client.version, self.VERSION)
 
     def test_report_exception_with_gax(self):
         credentials = _make_credentials()
-        client = self._make_one(project=self.PROJECT,
-                                credentials=credentials)
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
 
-        patch = mock.patch(
-            'google.cloud.error_reporting.client.make_report_error_api')
+        patch = mock.patch("google.cloud.error_reporting.client.make_report_error_api")
         with patch as make_api:
             try:
                 raise NameError
@@ -85,19 +85,17 @@ class TestClient(unittest.TestCase):
             payload = make_api.return_value.report_error_event.call_args[0][0]
             make_api.assert_called_once_with(client)
 
-        self.assertEqual(payload['serviceContext'], {
-            'service': client.DEFAULT_SERVICE,
-        })
-        self.assertIn('test_report', payload['message'])
-        self.assertIn('test_client.py', payload['message'])
+        self.assertEqual(payload["serviceContext"], {"service": client.DEFAULT_SERVICE})
+        self.assertIn("test_report", payload["message"])
+        self.assertIn("test_client.py", payload["message"])
 
     def test_report_exception_wo_gax(self):
         credentials = _make_credentials()
-        client = self._make_one(project=self.PROJECT,
-                                credentials=credentials,
-                                _use_grpc=False)
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
         patch = mock.patch(
-            'google.cloud.error_reporting.client._ErrorReportingLoggingAPI'
+            "google.cloud.error_reporting.client._ErrorReportingLoggingAPI"
         )
         with patch as _error_api:
             try:
@@ -107,29 +105,27 @@ class TestClient(unittest.TestCase):
             mock_report = _error_api.return_value.report_error_event
             payload = mock_report.call_args[0][0]
 
-        self.assertEqual(payload['serviceContext'], {
-            'service': client.DEFAULT_SERVICE,
-        })
-        self.assertIn('test_report', payload['message'])
-        self.assertIn('test_client.py', payload['message'])
+        self.assertEqual(payload["serviceContext"], {"service": client.DEFAULT_SERVICE})
+        self.assertIn("test_report", payload["message"])
+        self.assertIn("test_client.py", payload["message"])
         self.assertIsNotNone(client.report_errors_api)
 
-    @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
-    def test_report_exception_with_service_version_in_constructor(
-            self, make_api):
+    @mock.patch("google.cloud.error_reporting.client.make_report_error_api")
+    def test_report_exception_with_service_version_in_constructor(self, make_api):
         credentials = _make_credentials()
-        service = 'notdefault'
-        version = 'notdefaultversion'
-        client = self._make_one(project=self.PROJECT,
-                                credentials=credentials,
-                                service=service,
-                                version=version)
+        service = "notdefault"
+        version = "notdefaultversion"
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            service=service,
+            version=version,
+        )
 
-        http_context = self._make_http(
-            method='GET', response_status_code=500)
-        user = 'user@gmail.com'
+        http_context = self._make_http(method="GET", response_status_code=500)
+        user = "user@gmail.com"
 
-        error_api = mock.Mock(spec=['report_error_event'])
+        error_api = mock.Mock(spec=["report_error_event"])
         make_api.return_value = error_api
 
         try:
@@ -140,37 +136,34 @@ class TestClient(unittest.TestCase):
         make_api.assert_called_once_with(client)
 
         payload = self._get_report_payload(error_api)
-        self.assertEqual(payload['serviceContext'], {
-            'service': service,
-            'version': version
-        })
+        self.assertEqual(
+            payload["serviceContext"], {"service": service, "version": version}
+        )
         self.assertIn(
-            'test_report_exception_with_service_version_in_constructor',
-            payload['message'])
-        self.assertIn('test_client.py', payload['message'])
-        self.assertEqual(
-            payload['context']['httpRequest']['responseStatusCode'], 500)
-        self.assertEqual(
-            payload['context']['httpRequest']['method'], 'GET')
-        self.assertEqual(payload['context']['user'], user)
+            "test_report_exception_with_service_version_in_constructor",
+            payload["message"],
+        )
+        self.assertIn("test_client.py", payload["message"])
+        self.assertEqual(payload["context"]["httpRequest"]["responseStatusCode"], 500)
+        self.assertEqual(payload["context"]["httpRequest"]["method"], "GET")
+        self.assertEqual(payload["context"]["user"], user)
 
-    @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
+    @mock.patch("google.cloud.error_reporting.client.make_report_error_api")
     def test_report(self, make_api):
         credentials = _make_credentials()
-        client = self._make_one(project=self.PROJECT,
-                                credentials=credentials)
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
 
-        error_api = mock.Mock(spec=['report_error_event'])
+        error_api = mock.Mock(spec=["report_error_event"])
         make_api.return_value = error_api
 
-        message = 'this is an error'
+        message = "this is an error"
         client.report(message)
 
         payload = self._get_report_payload(error_api)
 
-        self.assertEqual(payload['message'], message)
-        report_location = payload['context']['reportLocation']
-        self.assertIn('test_client.py', report_location['filePath'])
-        self.assertEqual(report_location['functionName'], 'test_report')
-        self.assertGreater(report_location['lineNumber'], 100)
-        self.assertLess(report_location['lineNumber'], 250)
+        self.assertEqual(payload["message"], message)
+        report_location = payload["context"]["reportLocation"]
+        self.assertIn("test_client.py", report_location["filePath"])
+        self.assertEqual(report_location["functionName"], "test_report")
+        self.assertGreater(report_location["lineNumber"], 100)
+        self.assertLess(report_location["lineNumber"], 250)

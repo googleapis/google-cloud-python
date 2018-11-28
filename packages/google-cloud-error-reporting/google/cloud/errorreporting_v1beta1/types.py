@@ -39,11 +39,7 @@ _shared_modules = [
     timestamp_pb2,
 ]
 
-_local_modules = [
-    common_pb2,
-    error_group_service_pb2,
-    error_stats_service_pb2,
-]
+_local_modules = [common_pb2, error_group_service_pb2, error_stats_service_pb2]
 
 names = []
 
@@ -54,7 +50,7 @@ for module in _shared_modules:
 
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = 'google.cloud.errorreporting_v1beta1.types'
+        message.__module__ = "google.cloud.errorreporting_v1beta1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 
