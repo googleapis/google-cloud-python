@@ -16,4 +16,4 @@ export PYTHONUNBUFFERED=1
 TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google_cloud_pypi_password")
 cd github/google-cloud-python/${PACKAGE}
 python3 setup.py sdist bdist_wheel
-twine upload --repository-url https://test.pypi.org/legacy/ --username gcloudpypi --password "${TWINE_PASSWORD}" dist/*
+twine upload --username gcloudpypi --password "${TWINE_PASSWORD}" dist/*
