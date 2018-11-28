@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.dataset &#8212; google-cloud 4c8184a documentation</title>
+    <title>google.cloud.bigquery.dataset &#8212; google-cloud 8a2b64d documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -133,9 +133,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">AccessEntry</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">role</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">entity_type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">entity_type</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">entity_id</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">entity_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">role</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity_type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">entity_type</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity_id</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">entity_id</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
@@ -566,8 +566,8 @@
 <span class="sd">            google.cloud.bigquery.dataset.Dataset:</span>
 <span class="sd">                Dataset parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;datasetReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
-                <span class="s1">&#39;datasetId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;datasetReference&#39;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;datasetReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span>
+                <span class="ow">or</span> <span class="s1">&#39;datasetId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;datasetReference&#39;</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required identity information:&#39;</span>
                            <span class="s1">&#39;[&quot;datasetReference&quot;][&quot;datasetId&quot;]&#39;</span><span class="p">)</span>
         <span class="n">project_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;datasetReference&#39;</span><span class="p">][</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>

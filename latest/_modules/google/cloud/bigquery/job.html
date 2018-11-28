@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 4c8184a documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 8a2b64d documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -116,9 +116,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">reason</span> <span class="o">=</span> <span class="n">error_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;reason&#39;</span><span class="p">)</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="n">_ERROR_REASON_TO_EXCEPTION</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="n">reason</span><span class="p">,</span> <span class="n">http_client</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">)</span>
+        <span class="n">reason</span><span class="p">,</span> <span class="n">http_client</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_http_status</span><span class="p">(</span>
-        <span class="n">status_code</span><span class="p">,</span> <span class="n">error_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="n">errors</span><span class="o">=</span><span class="p">[</span><span class="n">error_result</span><span class="p">])</span>
+        <span class="n">status_code</span><span class="p">,</span> <span class="n">error_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="n">errors</span><span class="o">=</span><span class="p">[</span><span class="n">error_result</span><span class="p">]</span>
+    <span class="p">)</span>
 
 
 <div class="viewcode-block" id="Compression"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.Compression.html#google.cloud.bigquery.job.Compression">[docs]</a><span class="k">class</span> <span class="nc">Compression</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -270,10 +272,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;jobId&#39;</span><span class="p">:</span> <span class="n">job_id</span><span class="p">,</span>
-            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jobId&#39;</span><span class="p">:</span> <span class="n">job_id</span><span class="p">,</span> <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
         <span class="c1"># The location field must not be populated if it is None.</span>
         <span class="k">if</span> <span class="n">location</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
@@ -317,6 +316,7 @@
 <span class="sd">        client (google.cloud.bigquery.client.Client):</span>
 <span class="sd">            Client which holds credentials and project configuration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -326,9 +326,7 @@
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">job_id</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">_JobReference</span><span class="p">):</span>
             <span class="n">job_ref</span> <span class="o">=</span> <span class="n">_JobReference</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;jobReference&#39;</span><span class="p">:</span> <span class="n">job_ref</span><span class="o">.</span><span class="n">_to_api_repr</span><span class="p">(),</span>
-        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jobReference&#39;</span><span class="p">:</span> <span class="n">job_ref</span><span class="o">.</span><span class="n">_to_api_repr</span><span class="p">()}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span> <span class="o">=</span> <span class="kc">False</span>
@@ -337,8 +335,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">job_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: ID of the job.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="s1">&#39;jobId&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="s1">&#39;jobId&#39;</span><span class="p">])</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -347,14 +344,12 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the project (derived from the client).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="s1">&#39;projectId&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="s1">&#39;projectId&#39;</span><span class="p">])</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: Location where the job runs.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="s1">&#39;location&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="s1">&#39;location&#39;</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
@@ -543,15 +538,20 @@
 <span class="sd">        :raises: :class:`KeyError` if the resource has no identifier, or</span>
 <span class="sd">                 is missing the appropriate configuration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;jobReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
-                <span class="s1">&#39;jobId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">]):</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required identity information: &#39;</span>
-                           <span class="s1">&#39;[&quot;jobReference&quot;][&quot;jobId&quot;]&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;jobReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span> <span class="s1">&#39;jobId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="s1">&#39;Resource lacks required identity information: &#39;</span>
+                <span class="s1">&#39;[&quot;jobReference&quot;][&quot;jobId&quot;]&#39;</span>
+            <span class="p">)</span>
         <span class="n">job_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">][</span><span class="s1">&#39;jobId&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;configuration&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
-                <span class="bp">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">]):</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required configuration: &#39;</span>
-                           <span class="s1">&#39;[&quot;configuration&quot;][&quot;</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s1">&#39;configuration&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span>
+            <span class="ow">or</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="s1">&#39;Resource lacks required configuration: &#39;</span>
+                <span class="s1">&#39;[&quot;configuration&quot;][&quot;</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -585,8 +585,8 @@
         <span class="c1"># jobs.insert is idempotent because we ensure that every new</span>
         <span class="c1"># job has an ID.</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
-            <span class="n">retry</span><span class="p">,</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">())</span>
+            <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
@@ -613,9 +613,9 @@
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span>
-                             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                             <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
+                <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span>
+            <span class="p">)</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
@@ -642,7 +642,8 @@
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
 
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
-            <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+            <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -666,8 +667,8 @@
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
 
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/cancel&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/cancel&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span> <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;job&#39;</span><span class="p">])</span>
         <span class="c1"># The Future interface requires that we return True if the *attempt*</span>
         <span class="c1"># to cancel was successful.</span>
@@ -743,8 +744,10 @@
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;reason&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">_STOPPED_REASON</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;reason&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">_STOPPED_REASON</span>
+        <span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">_JobConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -805,7 +808,8 @@
 <span class="sd">            object: The value if present or the default.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">,</span> <span class="n">key</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">,</span> <span class="n">key</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set a value in the ``self._properties[self._job_type]`` dictionary.</span>
@@ -875,8 +879,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span> <span class="o">!=</span> <span class="n">default_job_config</span><span class="o">.</span><span class="n">_job_type</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="s2">&quot;attempted to merge two incompatible job types: &quot;</span>
-                <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
-                <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">default_job_config</span><span class="o">.</span><span class="n">_job_type</span><span class="p">))</span>
+                <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+                <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">default_job_config</span><span class="o">.</span><span class="n">_job_type</span><span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="n">new_job_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">()</span>
 
@@ -885,8 +891,7 @@
             <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">:</span>
                 <span class="n">default_job_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-        <span class="n">default_job_properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">]</span> \
-            <span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">])</span>
+        <span class="n">default_job_properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">])</span>
         <span class="n">new_job_config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">default_job_properties</span>
 
         <span class="k">return</span> <span class="n">new_job_config</span>
@@ -1150,8 +1155,7 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.schema</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">schema</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="s1">&#39;fields&#39;</span><span class="p">])</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="s1">&#39;fields&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">SchemaField</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">]</span>
@@ -1163,7 +1167,8 @@
         <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span>
             <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="s1">&#39;fields&#39;</span><span class="p">],</span>
-            <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span>
+            <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">],</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema_update_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1261,8 +1266,7 @@
 
     <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;load&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span>
-                 <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LoadJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">job_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1412,9 +1416,11 @@
 <span class="sd">        :returns: the count (None until set from the server).</span>
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span>
+            <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;inputFileBytes&#39;</span><span class="p">]</span>
-            <span class="p">))</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">input_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1423,9 +1429,11 @@
 <span class="sd">        :rtype: int, or ``NoneType``</span>
 <span class="sd">        :returns: the count (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span>
+            <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;inputFiles&#39;</span><span class="p">]</span>
-            <span class="p">))</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">output_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1434,9 +1442,11 @@
 <span class="sd">        :rtype: int, or ``NoneType``</span>
 <span class="sd">        :returns: the count (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span>
+            <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;outputBytes&#39;</span><span class="p">]</span>
-            <span class="p">))</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">output_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1445,20 +1455,22 @@
 <span class="sd">        :rtype: int, or ``NoneType``</span>
 <span class="sd">        :returns: the count (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span>
+            <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;outputRows&#39;</span><span class="p">]</span>
-            <span class="p">))</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="LoadJob.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`_begin`.&quot;&quot;&quot;</span>
         <span class="n">configuration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_uris</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
-                <span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceUris&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_uris</span><span class="p">)</span>
+                <span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceUris&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_uris</span>
+            <span class="p">)</span>
         <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
-            <span class="n">configuration</span><span class="p">,</span>
-            <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationTable&#39;</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">())</span>
+            <span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationTable&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
             <span class="s1">&#39;jobReference&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">],</span>
@@ -1492,12 +1504,10 @@
         <span class="n">config</span> <span class="o">=</span> <span class="n">LoadJobConfig</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">config_resource</span><span class="p">)</span>
         <span class="c1"># A load job requires a destination table.</span>
         <span class="n">dest_config</span> <span class="o">=</span> <span class="n">config_resource</span><span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">][</span><span class="s1">&#39;destinationTable&#39;</span><span class="p">]</span>
-        <span class="n">ds_ref</span> <span class="o">=</span> <span class="n">DatasetReference</span><span class="p">(</span>
-            <span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;projectId&#39;</span><span class="p">],</span> <span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">])</span>
+        <span class="n">ds_ref</span> <span class="o">=</span> <span class="n">DatasetReference</span><span class="p">(</span><span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;projectId&#39;</span><span class="p">],</span> <span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">])</span>
         <span class="n">destination</span> <span class="o">=</span> <span class="n">TableReference</span><span class="p">(</span><span class="n">ds_ref</span><span class="p">,</span> <span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">])</span>
         <span class="c1"># sourceUris will be absent if this is a file upload.</span>
-        <span class="n">source_uris</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
-            <span class="n">config_resource</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceUris&#39;</span><span class="p">])</span>
+        <span class="n">source_uris</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="n">config_resource</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceUris&#39;</span><span class="p">])</span>
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">_JobReference</span><span class="o">.</span><span class="n">_from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">])</span>
         <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">job_ref</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
@@ -1587,6 +1597,7 @@
 <span class="sd">    :param job_config:</span>
 <span class="sd">        (Optional) Extra configuration options for the copy job.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;copy&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1629,15 +1640,17 @@
 <div class="viewcode-block" id="CopyJob.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.CopyJob.html#google.cloud.bigquery.job.CopyJob.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`_begin`.&quot;&quot;&quot;</span>
 
-        <span class="n">source_refs</span> <span class="o">=</span> <span class="p">[{</span>
-            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-            <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
-            <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span><span class="p">,</span>
-        <span class="p">}</span> <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">]</span>
+        <span class="n">source_refs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+                <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span>
+        <span class="p">]</span>
 
         <span class="n">configuration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
-            <span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;copy&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceTables&#39;</span><span class="p">],</span> <span class="n">source_refs</span><span class="p">)</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;copy&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceTables&#39;</span><span class="p">],</span> <span class="n">source_refs</span><span class="p">)</span>
         <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
             <span class="n">configuration</span><span class="p">,</span>
             <span class="p">[</span><span class="s1">&#39;copy&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationTable&#39;</span><span class="p">],</span>
@@ -1645,7 +1658,8 @@
                 <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
                 <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
                 <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">table_id</span><span class="p">,</span>
-            <span class="p">})</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
             <span class="s1">&#39;jobReference&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">],</span>
@@ -1679,21 +1693,18 @@
         <span class="n">config</span> <span class="o">=</span> <span class="n">CopyJobConfig</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">config_resource</span><span class="p">)</span>
         <span class="c1"># Copy required fields to the job.</span>
         <span class="n">copy_resource</span> <span class="o">=</span> <span class="n">config_resource</span><span class="p">[</span><span class="s1">&#39;copy&#39;</span><span class="p">]</span>
-        <span class="n">destination</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span>
-            <span class="n">copy_resource</span><span class="p">[</span><span class="s1">&#39;destinationTable&#39;</span><span class="p">])</span>
+        <span class="n">destination</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">copy_resource</span><span class="p">[</span><span class="s1">&#39;destinationTable&#39;</span><span class="p">])</span>
         <span class="n">sources</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">source_configs</span> <span class="o">=</span> <span class="n">copy_resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sourceTables&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">source_configs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">single</span> <span class="o">=</span> <span class="n">copy_resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sourceTable&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">single</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                    <span class="s2">&quot;Resource missing &#39;sourceTables&#39; / &#39;sourceTable&#39;&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Resource missing &#39;sourceTables&#39; / &#39;sourceTable&#39;&quot;</span><span class="p">)</span>
             <span class="n">source_configs</span> <span class="o">=</span> <span class="p">[</span><span class="n">single</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">source_config</span> <span class="ow">in</span> <span class="n">source_configs</span><span class="p">:</span>
             <span class="n">table_ref</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">source_config</span><span class="p">)</span>
             <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
-        <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">job_id</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">job</span></div></div>
 
@@ -1785,10 +1796,10 @@
 <span class="sd">    :param job_config:</span>
 <span class="sd">        (Optional) Extra configuration options for the extract job.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;extract&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ExtractJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">job_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1855,12 +1866,10 @@
         <span class="p">}</span>
 
         <span class="n">configuration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceTable&#39;</span><span class="p">],</span> <span class="n">source_ref</span><span class="p">)</span>
         <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
-            <span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceTable&#39;</span><span class="p">],</span> <span class="n">source_ref</span><span class="p">)</span>
-        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
-            <span class="n">configuration</span><span class="p">,</span>
-            <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationUris&#39;</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">destination_uris</span><span class="p">)</span>
+            <span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationUris&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination_uris</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
             <span class="s1">&#39;jobReference&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">],</span>
@@ -1893,31 +1902,27 @@
         <span class="n">job_id</span><span class="p">,</span> <span class="n">config_resource</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">ExtractJobConfig</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">config_resource</span><span class="p">)</span>
         <span class="n">source_config</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
-            <span class="n">config_resource</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceTable&#39;</span><span class="p">])</span>
+            <span class="n">config_resource</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceTable&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">DatasetReference</span><span class="p">(</span>
-            <span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;projectId&#39;</span><span class="p">],</span> <span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">])</span>
+            <span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;projectId&#39;</span><span class="p">],</span> <span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">source</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">])</span>
         <span class="n">destination_uris</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
-            <span class="n">config_resource</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationUris&#39;</span><span class="p">])</span>
+            <span class="n">config_resource</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationUris&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
 
-        <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">job_id</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">job</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_from_api_repr_query_parameters</span><span class="p">(</span><span class="n">resource</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span>
-        <span class="n">_query_param_from_api_repr</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">mapping</span> <span class="ow">in</span> <span class="n">resource</span>
-    <span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">_query_param_from_api_repr</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span> <span class="k">for</span> <span class="n">mapping</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_to_api_repr_query_parameters</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span>
-        <span class="n">query_parameter</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">query_parameter</span> <span class="ow">in</span> <span class="n">value</span>
-    <span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">query_parameter</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">query_parameter</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_from_api_repr_udf_resources</span><span class="p">(</span><span class="n">resource</span><span class="p">):</span>
@@ -1929,10 +1934,7 @@
 
 
 <span class="k">def</span> <span class="nf">_to_api_repr_udf_resources</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span>
-        <span class="p">{</span><span class="n">udf_resource</span><span class="o">.</span><span class="n">udf_type</span><span class="p">:</span> <span class="n">udf_resource</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
-        <span class="k">for</span> <span class="n">udf_resource</span> <span class="ow">in</span> <span class="n">value</span>
-    <span class="p">]</span>
+    <span class="k">return</span> <span class="p">[{</span><span class="n">udf_resource</span><span class="o">.</span><span class="n">udf_type</span><span class="p">:</span> <span class="n">udf_resource</span><span class="o">.</span><span class="n">value</span><span class="p">}</span> <span class="k">for</span> <span class="n">udf_resource</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_from_api_repr_table_defs</span><span class="p">(</span><span class="n">resource</span><span class="p">):</span>
@@ -2127,8 +2129,7 @@
 
     <span class="nd">@query_parameters</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">query_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
-            <span class="s1">&#39;queryParameters&#39;</span><span class="p">,</span> <span class="n">_to_api_repr_query_parameters</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="s1">&#39;queryParameters&#39;</span><span class="p">,</span> <span class="n">_to_api_repr_query_parameters</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">udf_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2144,8 +2145,8 @@
     <span class="nd">@udf_resources</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">udf_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
-            <span class="s1">&#39;userDefinedFunctionResources&#39;</span><span class="p">,</span>
-            <span class="n">_to_api_repr_udf_resources</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+            <span class="s1">&#39;userDefinedFunctionResources&#39;</span><span class="p">,</span> <span class="n">_to_api_repr_udf_resources</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">use_legacy_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2202,8 +2203,7 @@
 
     <span class="nd">@table_definitions</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">table_definitions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
-            <span class="s1">&#39;tableDefinitions&#39;</span><span class="p">,</span>  <span class="n">_to_api_repr_table_defs</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="s1">&#39;tableDefinitions&#39;</span><span class="p">,</span> <span class="n">_to_api_repr_table_defs</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time_partitioning</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2299,6 +2299,7 @@
 <span class="sd">    :param job_config:</span>
 <span class="sd">        (Optional) Extra configuration options for the query job.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;query&#39;</span>
     <span class="n">_UDF_KEY</span> <span class="o">=</span> <span class="s1">&#39;userDefinedFunctionResources&#39;</span>
 
@@ -2673,8 +2674,7 @@
 <span class="sd">                  not yet completed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">undeclared</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_statistics</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s1">&#39;undeclaredQueryParameters&#39;</span><span class="p">,</span> <span class="p">())</span>
+        <span class="n">undeclared</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_statistics</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;undeclaredQueryParameters&#39;</span><span class="p">,</span> <span class="p">())</span>
 
         <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">undeclared</span><span class="p">:</span>
             <span class="n">p_type</span> <span class="o">=</span> <span class="n">parameter</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">]</span>
@@ -2729,9 +2729,12 @@
         <span class="c1"># change once complete.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">_DONE_STATE</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_query_results</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">retry</span><span class="p">,</span>
-                <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="o">=</span><span class="n">timeout_ms</span><span class="p">,</span>
-                <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span>
+                <span class="n">retry</span><span class="p">,</span>
+                <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                <span class="n">timeout_ms</span><span class="o">=</span><span class="n">timeout_ms</span><span class="p">,</span>
+                <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+            <span class="p">)</span>
 
             <span class="c1"># Only reload the job once we know the query is complete.</span>
             <span class="c1"># This will ensure that fields such as the destination table are</span>
@@ -2773,8 +2776,8 @@
         <span class="c1"># Return an iterator instead of returning the job.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_query_results</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">retry</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-                <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">retry</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+            <span class="p">)</span>
 
         <span class="c1"># If the query job is complete but there are no query results, this was</span>
         <span class="c1"># special job, such as a DDL query. Return an empty result set to</span>
@@ -2814,6 +2817,7 @@
 <span class="sd">    :type substeps:</span>
 <span class="sd">    :param substeps: names of substeps</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">substeps</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">kind</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">substeps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">substeps</span><span class="p">)</span>
@@ -2828,10 +2832,7 @@
 <span class="sd">        :rtype: :class:`QueryPlanEntryStep`</span>
 <span class="sd">        :return: new instance built from the resource</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">kind</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kind&#39;</span><span class="p">),</span>
-            <span class="n">substeps</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;substeps&#39;</span><span class="p">,</span> <span class="p">()),</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kind&#39;</span><span class="p">),</span> <span class="n">substeps</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;substeps&#39;</span><span class="p">,</span> <span class="p">()))</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
@@ -2883,7 +2884,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startMs&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
-                <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startMs&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
+            <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startMs&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1000.0</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2891,15 +2893,18 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endMs&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
-                <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endMs&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
+            <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endMs&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1000.0</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">input_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List(int): Entry IDs for stages that were inputs for this stage.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inputStages&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inputStages&#39;</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inputStages&#39;</span><span class="p">)</span>
+        <span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">parallel_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2911,8 +2916,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">completed_parallel_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Number of parallel input segments completed.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;completedParallelInputs&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;completedParallelInputs&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">wait_ms_avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -3054,24 +3058,24 @@
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Number of bytes written by this stage to</span>
 <span class="sd">        intermediate shuffle.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shuffleOutputBytes&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shuffleOutputBytes&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">shuffle_output_bytes_spilled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Number of bytes written by this stage to</span>
 <span class="sd">        intermediate shuffle and spilled to disk.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shuffleOutputBytesSpilled&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shuffleOutputBytesSpilled&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List(QueryPlanEntryStep): List of step operations performed by</span>
 <span class="sd">        each worker in the stage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">QueryPlanEntryStep</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;steps&#39;</span><span class="p">,</span> <span class="p">[])]</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">QueryPlanEntryStep</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;steps&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="p">]</span>
 
 
 <span class="k">class</span> <span class="nc">TimelineEntry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -3149,8 +3153,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            UnknownJob: Job corresponding to the resource.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">job_ref_properties</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">})</span>
+        <span class="n">job_ref_properties</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">})</span>
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">_JobReference</span><span class="o">.</span><span class="n">_from_api_repr</span><span class="p">(</span><span class="n">job_ref_properties</span><span class="p">)</span>
         <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">job_ref</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="c1"># Populate the job reference with the project, even if it has been</span>

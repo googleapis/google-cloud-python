@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 4c8184a documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 8a2b64d documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -820,8 +820,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">dataset</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;tableReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
-                <span class="s1">&#39;tableId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;tableReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span> <span class="s1">&#39;tableId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required identity information:&#39;</span>
                            <span class="s1">&#39;[&quot;tableReference&quot;][&quot;tableId&quot;]&#39;</span><span class="p">)</span>
         <span class="n">project_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>
@@ -1156,8 +1155,8 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Row</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_values</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
