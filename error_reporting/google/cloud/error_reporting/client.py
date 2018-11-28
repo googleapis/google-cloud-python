@@ -19,6 +19,7 @@ import traceback
 
 try:
     from google.cloud.error_reporting._gapic import make_report_error_api
+
     _HAVE_GRPC = True
 except ImportError:  # pragma: NO COVER
     _HAVE_GRPC = False
@@ -61,9 +62,15 @@ class HTTPContext(object):
                       provided in the error report.
     """
 
-    def __init__(self, method=None, url=None,
-                 user_agent=None, referrer=None,
-                 response_status_code=None, remote_ip=None):
+    def __init__(
+        self,
+        method=None,
+        url=None,
+        user_agent=None,
+        referrer=None,
+        response_status_code=None,
+        remote_ip=None,
+    ):
         self.method = method
         self.url = url
         # intentionally camel case for mapping to JSON API expects
@@ -125,17 +132,21 @@ class Client(ClientWithProject):
              set in the environment.
     """
 
-    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    SCOPE = ("https://www.googleapis.com/auth/cloud-platform",)
     """The scopes required for authenticating as an API consumer."""
 
-    def __init__(self, project=None,
-                 credentials=None,
-                 _http=None,
-                 service=None,
-                 version=None,
-                 _use_grpc=None):
-        super(Client, self).__init__(project=project, credentials=credentials,
-                                     _http=_http)
+    def __init__(
+        self,
+        project=None,
+        credentials=None,
+        _http=None,
+        service=None,
+        version=None,
+        _use_grpc=None,
+    ):
+        super(Client, self).__init__(
+            project=project, credentials=credentials, _http=_http
+        )
         self._report_errors_api = None
 
         self.service = service if service else self.DEFAULT_SERVICE
@@ -145,7 +156,7 @@ class Client(ClientWithProject):
         else:
             self._use_grpc = _use_grpc
 
-    DEFAULT_SERVICE = 'python'
+    DEFAULT_SERVICE = "python"
 
     @property
     def report_errors_api(self):
@@ -166,14 +177,13 @@ class Client(ClientWithProject):
                 self._report_errors_api = make_report_error_api(self)
             else:
                 self._report_errors_api = _ErrorReportingLoggingAPI(
-                    self.project, self._credentials, self._http)
+                    self.project, self._credentials, self._http
+                )
         return self._report_errors_api
 
-    def _build_error_report(self,
-                            message,
-                            report_location=None,
-                            http_context=None,
-                            user=None):
+    def _build_error_report(
+        self, message, report_location=None, http_context=None, user=None
+    ):
         """Builds the Error Reporting object to report.
 
         This builds the object according to
@@ -211,37 +221,34 @@ class Client(ClientWithProject):
                   the API.
          """
         payload = {
-            'serviceContext': {
-                'service': self.service,
-            },
-            'message': '{0}'.format(message)
+            "serviceContext": {"service": self.service},
+            "message": "{0}".format(message),
         }
 
         if self.version:
-            payload['serviceContext']['version'] = self.version
+            payload["serviceContext"]["version"] = self.version
 
         if report_location or http_context or user:
-            payload['context'] = {}
+            payload["context"] = {}
 
         if report_location:
-            payload['context']['reportLocation'] = report_location
+            payload["context"]["reportLocation"] = report_location
 
         if http_context:
             http_context_dict = http_context.__dict__
             # strip out None values
-            payload['context']['httpRequest'] = {
-                key: value for key, value in six.iteritems(http_context_dict)
+            payload["context"]["httpRequest"] = {
+                key: value
+                for key, value in six.iteritems(http_context_dict)
                 if value is not None
             }
         if user:
-            payload['context']['user'] = user
+            payload["context"]["user"] = user
         return payload
 
-    def _send_error_report(self,
-                           message,
-                           report_location=None,
-                           http_context=None,
-                           user=None):
+    def _send_error_report(
+        self, message, report_location=None, http_context=None, user=None
+    ):
         """Makes the call to the Error Reporting API.
 
         This is the lower-level interface to build and send the payload,
@@ -275,8 +282,9 @@ class Client(ClientWithProject):
                      use other data, such as remote IP address,
                      to distinguish affected users.
         """
-        error_report = self._build_error_report(message, report_location,
-                                                http_context, user)
+        error_report = self._build_error_report(
+            message, report_location, http_context, user
+        )
         self.report_errors_api.report_error_event(error_report)
 
     def report(self, message, http_context=None, user=None):
@@ -312,15 +320,17 @@ class Client(ClientWithProject):
         line_number = last_call[1]
         function_name = last_call[2]
         report_location = {
-            'filePath': file_path,
-            'lineNumber': line_number,
-            'functionName': function_name
+            "filePath": file_path,
+            "lineNumber": line_number,
+            "functionName": function_name,
         }
 
-        self._send_error_report(message,
-                                http_context=http_context,
-                                user=user,
-                                report_location=report_location)
+        self._send_error_report(
+            message,
+            http_context=http_context,
+            user=user,
+            report_location=report_location,
+        )
 
     def report_exception(self, http_context=None, user=None):
         """ Reports the details of the latest exceptions to Stackdriver Error
@@ -346,6 +356,6 @@ class Client(ClientWithProject):
                 >>>     except Exception:
                 >>>         client.report_exception()
         """
-        self._send_error_report(traceback.format_exc(),
-                                http_context=http_context,
-                                user=user)
+        self._send_error_report(
+            traceback.format_exc(), http_context=http_context, user=user
+        )

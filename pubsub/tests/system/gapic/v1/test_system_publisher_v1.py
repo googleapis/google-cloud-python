@@ -23,7 +23,7 @@ from google.cloud.pubsub_v1.proto import pubsub_pb2
 
 class TestSystemPublisher(object):
     def test_list_topics(self):
-        project_id = os.environ['PROJECT_ID']
+        project_id = os.environ["PROJECT_ID"]
 
         client = pubsub_v1.PublisherClient()
         project = client.project_path(project_id)

@@ -27,14 +27,17 @@ class CloudSchedulerGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='cloudscheduler.googleapis.com:443'):
+    def __init__(
+        self,
+        channel=None,
+        credentials=None,
+        address="cloudscheduler.googleapis.com:443",
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -52,29 +55,25 @@ class CloudSchedulerGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'cloud_scheduler_stub':
-            cloudscheduler_pb2_grpc.CloudSchedulerStub(channel),
+            "cloud_scheduler_stub": cloudscheduler_pb2_grpc.CloudSchedulerStub(channel)
         }
 
     @classmethod
-    def create_channel(cls,
-                       address='cloudscheduler.googleapis.com:443',
-                       credentials=None):
+    def create_channel(
+        cls, address="cloudscheduler.googleapis.com:443", credentials=None
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -89,9 +88,7 @@ class CloudSchedulerGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -114,7 +111,7 @@ class CloudSchedulerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_scheduler_stub'].ListJobs
+        return self._stubs["cloud_scheduler_stub"].ListJobs
 
     @property
     def get_job(self):
@@ -127,7 +124,7 @@ class CloudSchedulerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_scheduler_stub'].GetJob
+        return self._stubs["cloud_scheduler_stub"].GetJob
 
     @property
     def create_job(self):
@@ -140,7 +137,7 @@ class CloudSchedulerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_scheduler_stub'].CreateJob
+        return self._stubs["cloud_scheduler_stub"].CreateJob
 
     @property
     def update_job(self):
@@ -161,7 +158,7 @@ class CloudSchedulerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_scheduler_stub'].UpdateJob
+        return self._stubs["cloud_scheduler_stub"].UpdateJob
 
     @property
     def delete_job(self):
@@ -174,7 +171,7 @@ class CloudSchedulerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_scheduler_stub'].DeleteJob
+        return self._stubs["cloud_scheduler_stub"].DeleteJob
 
     @property
     def pause_job(self):
@@ -192,7 +189,7 @@ class CloudSchedulerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_scheduler_stub'].PauseJob
+        return self._stubs["cloud_scheduler_stub"].PauseJob
 
     @property
     def resume_job(self):
@@ -210,7 +207,7 @@ class CloudSchedulerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_scheduler_stub'].ResumeJob
+        return self._stubs["cloud_scheduler_stub"].ResumeJob
 
     @property
     def run_job(self):
@@ -226,4 +223,4 @@ class CloudSchedulerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_scheduler_stub'].RunJob
+        return self._stubs["cloud_scheduler_stub"].RunJob

@@ -17,14 +17,12 @@ import unittest
 
 
 class Test_ArrayParamType(unittest.TestCase):
-
     def test_it(self):
         from google.cloud.spanner_v1.proto import type_pb2
         from google.cloud.spanner_v1 import param_types
 
         expected = type_pb2.Type(
-            code=type_pb2.ARRAY,
-            array_element_type=type_pb2.Type(code=type_pb2.INT64),
+            code=type_pb2.ARRAY, array_element_type=type_pb2.Type(code=type_pb2.INT64)
         )
 
         found = param_types.Array(param_types.INT64)
@@ -33,29 +31,27 @@ class Test_ArrayParamType(unittest.TestCase):
 
 
 class Test_Struct(unittest.TestCase):
-
     def test_it(self):
         from google.cloud.spanner_v1.proto import type_pb2
         from google.cloud.spanner_v1 import param_types
 
-        struct_type = type_pb2.StructType(fields=[
-            type_pb2.StructType.Field(
-                name='name',
-                type=type_pb2.Type(code=type_pb2.STRING),
-            ),
-            type_pb2.StructType.Field(
-                name='count',
-                type=type_pb2.Type(code=type_pb2.INT64),
-            ),
-        ])
-        expected = type_pb2.Type(
-            code=type_pb2.STRUCT,
-            struct_type=struct_type,
+        struct_type = type_pb2.StructType(
+            fields=[
+                type_pb2.StructType.Field(
+                    name="name", type=type_pb2.Type(code=type_pb2.STRING)
+                ),
+                type_pb2.StructType.Field(
+                    name="count", type=type_pb2.Type(code=type_pb2.INT64)
+                ),
+            ]
         )
+        expected = type_pb2.Type(code=type_pb2.STRUCT, struct_type=struct_type)
 
-        found = param_types.Struct([
-            param_types.StructField('name', param_types.STRING),
-            param_types.StructField('count', param_types.INT64),
-        ])
+        found = param_types.Struct(
+            [
+                param_types.StructField("name", param_types.STRING),
+                param_types.StructField("count", param_types.INT64),
+            ]
+        )
 
         self.assertEqual(found, expected)

@@ -27,8 +27,4 @@ class SpeechClient(SpeechHelpers, speech_client.SpeechClient):
     types = types
 
 
-__all__ = (
-    'enums',
-    'types',
-    'SpeechClient',
-)
+__all__ = ("enums", "types", "SpeechClient")

@@ -34,13 +34,13 @@ import google.cloud.pubsub_v1.subscriber.message
 import google.cloud.pubsub_v1.subscriber.scheduler
 
 _LOGGER = logging.getLogger(__name__)
-_RPC_ERROR_THREAD_NAME = 'Thread-OnRpcTerminated'
+_RPC_ERROR_THREAD_NAME = "Thread-OnRpcTerminated"
 _RETRYABLE_STREAM_ERRORS = (
     exceptions.DeadlineExceeded,
     exceptions.ServiceUnavailable,
     exceptions.InternalServerError,
     exceptions.Unknown,
-    exceptions.GatewayTimeout
+    exceptions.GatewayTimeout,
 )
 
 
@@ -66,8 +66,8 @@ def _wrap_callback_errors(callback, message):
         # a message to a queue, so if this doesn't work the world is in an
         # unrecoverable state and this thread should just bail.
         _LOGGER.exception(
-            'Top-level exception occurred in callback while processing a '
-            'message')
+            "Top-level exception occurred in callback while processing a " "message"
+        )
         message.nack()
 
 
@@ -92,8 +92,9 @@ class StreamingPullManager(object):
     """If set to True, this class will make requests over a separate unary
     RPC instead of over the streaming RPC."""
 
-    def __init__(self, client, subscription, flow_control=types.FlowControl(),
-                 scheduler=None):
+    def __init__(
+        self, client, subscription, flow_control=types.FlowControl(), scheduler=None
+    ):
         self._client = client
         self._subscription = subscription
         self._flow_control = flow_control
@@ -108,7 +109,8 @@ class StreamingPullManager(object):
 
         if scheduler is None:
             self._scheduler = (
-                google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler())
+                google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler()
+            )
         else:
             self._scheduler = scheduler
 
@@ -165,10 +167,7 @@ class StreamingPullManager(object):
         Returns:
             int: The ack deadline.
         """
-        target = min([
-            self._last_histogram_size * 2,
-            self._last_histogram_size + 100,
-        ])
+        target = min([self._last_histogram_size * 2, self._last_histogram_size + 100])
         if len(self.ack_histogram) > target:
             self._ack_deadline = self.ack_histogram.percentile(percent=99)
         return self._ack_deadline
@@ -193,10 +192,12 @@ class StreamingPullManager(object):
         if self._leaser is None:
             return 0
 
-        return max([
-            self._leaser.message_count / self._flow_control.max_messages,
-            self._leaser.bytes / self._flow_control.max_bytes,
-        ])
+        return max(
+            [
+                self._leaser.message_count / self._flow_control.max_messages,
+                self._leaser.bytes / self._flow_control.max_bytes,
+            ]
+        )
 
     def add_close_callback(self, callback):
         """Schedules a callable when the manager closes.
@@ -210,8 +211,7 @@ class StreamingPullManager(object):
         """Check the current load and pause the consumer if needed."""
         if self.load >= 1.0:
             if self._consumer is not None and not self._consumer.is_paused:
-                _LOGGER.debug(
-                    'Message backlog over load at %.2f, pausing.', self.load)
+                _LOGGER.debug("Message backlog over load at %.2f, pausing.", self.load)
                 self._consumer.pause()
 
     def maybe_resume_consumer(self):
@@ -228,7 +228,7 @@ class StreamingPullManager(object):
         if self.load < self.flow_control.resume_threshold:
             self._consumer.resume()
         else:
-            _LOGGER.debug('Did not resume, current load is %s', self.load)
+            _LOGGER.debug("Did not resume, current load is %s", self.load)
 
     def _send_unary_request(self, request):
         """Send a request using a separate unary request instead of over the
@@ -240,8 +240,8 @@ class StreamingPullManager(object):
         """
         if request.ack_ids:
             self._client.acknowledge(
-                subscription=self._subscription,
-                ack_ids=list(request.ack_ids))
+                subscription=self._subscription, ack_ids=list(request.ack_ids)
+            )
 
         if request.modify_deadline_ack_ids:
             # Send ack_ids with the same deadline seconds together.
@@ -255,9 +255,10 @@ class StreamingPullManager(object):
                 self._client.modify_ack_deadline(
                     subscription=self._subscription,
                     ack_ids=ack_ids,
-                    ack_deadline_seconds=deadline)
+                    ack_deadline_seconds=deadline,
+                )
 
-        _LOGGER.debug('Sent request(s) over unary RPC.')
+        _LOGGER.debug("Sent request(s) over unary RPC.")
 
     def send(self, request):
         """Queue a request to be sent to the RPC."""
@@ -266,9 +267,10 @@ class StreamingPullManager(object):
                 self._send_unary_request(request)
             except exceptions.GoogleAPICallError:
                 _LOGGER.debug(
-                    'Exception while sending unary RPC. This is typically '
-                    'non-fatal as stream requests are best-effort.',
-                    exc_info=True)
+                    "Exception while sending unary RPC. This is typically "
+                    "non-fatal as stream requests are best-effort.",
+                    exc_info=True,
+                )
         else:
             self._rpc.send(request)
 
@@ -290,11 +292,10 @@ class StreamingPullManager(object):
                 stream.
         """
         if self.is_active:
-            raise ValueError('This manager is already open.')
+            raise ValueError("This manager is already open.")
 
         if self._closed:
-            raise ValueError(
-                'This manager has been closed and can not be re-used.')
+            raise ValueError("This manager has been closed and can not be re-used.")
 
         self._callback = functools.partial(_wrap_callback_errors, callback)
 
@@ -302,13 +303,13 @@ class StreamingPullManager(object):
         self._rpc = bidi.ResumableBidiRpc(
             start_rpc=self._client.api.streaming_pull,
             initial_request=self._get_initial_request,
-            should_recover=self._should_recover)
+            should_recover=self._should_recover,
+        )
         self._rpc.add_done_callback(self._on_rpc_done)
 
         # Create references to threads
         self._dispatcher = dispatcher.Dispatcher(self, self._scheduler.queue)
-        self._consumer = bidi.BackgroundConsumer(
-            self._rpc, self._on_response)
+        self._consumer = bidi.BackgroundConsumer(self._rpc, self._on_response)
         self._leaser = leaser.Leaser(self)
         self._heartbeater = heartbeater.Heartbeater(self)
 
@@ -340,27 +341,27 @@ class StreamingPullManager(object):
 
             # Stop consuming messages.
             if self.is_active:
-                _LOGGER.debug('Stopping consumer.')
+                _LOGGER.debug("Stopping consumer.")
                 self._consumer.stop()
             self._consumer = None
 
             # Shutdown all helper threads
-            _LOGGER.debug('Stopping scheduler.')
+            _LOGGER.debug("Stopping scheduler.")
             self._scheduler.shutdown()
             self._scheduler = None
-            _LOGGER.debug('Stopping leaser.')
+            _LOGGER.debug("Stopping leaser.")
             self._leaser.stop()
             self._leaser = None
-            _LOGGER.debug('Stopping dispatcher.')
+            _LOGGER.debug("Stopping dispatcher.")
             self._dispatcher.stop()
             self._dispatcher = None
-            _LOGGER.debug('Stopping heartbeater.')
+            _LOGGER.debug("Stopping heartbeater.")
             self._heartbeater.stop()
             self._heartbeater = None
 
             self._rpc = None
             self._closed = True
-            _LOGGER.debug('Finished stopping manager.')
+            _LOGGER.debug("Finished stopping manager.")
 
             for callback in self._close_callbacks:
                 callback(self, reason)
@@ -410,22 +411,20 @@ class StreamingPullManager(object):
         """
 
         _LOGGER.debug(
-            'Scheduling callbacks for %s messages.',
-            len(response.received_messages))
+            "Scheduling callbacks for %s messages.", len(response.received_messages)
+        )
 
         # Immediately modack the messages we received, as this tells the server
         # that we've received them.
         items = [
-            requests.ModAckRequest(
-                message.ack_id, self._ack_histogram.percentile(99))
+            requests.ModAckRequest(message.ack_id, self._ack_histogram.percentile(99))
             for message in response.received_messages
         ]
         self._dispatcher.modify_ack_deadline(items)
         for received_message in response.received_messages:
             message = google.cloud.pubsub_v1.subscriber.message.Message(
-                received_message.message,
-                received_message.ack_id,
-                self._scheduler.queue)
+                received_message.message, received_message.ack_id, self._scheduler.queue
+            )
             # TODO: Immediately lease instead of using the callback queue.
             self._scheduler.schedule(self._callback, message)
 
@@ -446,9 +445,9 @@ class StreamingPullManager(object):
         # If this is in the list of idempotent exceptions, then we want to
         # recover.
         if isinstance(exception, _RETRYABLE_STREAM_ERRORS):
-            _LOGGER.info('Observed recoverable stream error %s', exception)
+            _LOGGER.info("Observed recoverable stream error %s", exception)
             return True
-        _LOGGER.info('Observed non-recoverable stream error %s', exception)
+        _LOGGER.info("Observed non-recoverable stream error %s", exception)
         return False
 
     def _on_rpc_done(self, future):
@@ -462,12 +461,10 @@ class StreamingPullManager(object):
         with shutting everything down. This is to prevent blocking in the
         background consumer and preventing it from being ``joined()``.
         """
-        _LOGGER.info(
-            'RPC termination has signaled streaming pull manager shutdown.')
+        _LOGGER.info("RPC termination has signaled streaming pull manager shutdown.")
         future = _maybe_wrap_exception(future)
         thread = threading.Thread(
-            name=_RPC_ERROR_THREAD_NAME,
-            target=self.close,
-            kwargs={'reason': future})
+            name=_RPC_ERROR_THREAD_NAME, target=self.close, kwargs={"reason": future}
+        )
         thread.daemon = True
         thread.start()

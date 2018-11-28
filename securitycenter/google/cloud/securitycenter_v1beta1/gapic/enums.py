@@ -28,6 +28,7 @@ class NullValue(enum.IntEnum):
     Attributes:
       NULL_VALUE (int): Null value.
     """
+
     NULL_VALUE = 0
 
 
@@ -42,6 +43,7 @@ class Finding(object):
           INACTIVE (int): The finding has been fixed, triaged as a non-issue or otherwise addressed
           and is no longer active.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -67,6 +69,7 @@ class OrganizationSettings(object):
               EXCLUDE (int): Asset Discovery will ignore all resources under the projects specified.
               All other resources will be retrieved.
             """
+
             INCLUSION_MODE_UNSPECIFIED = 0
             INCLUDE_ONLY = 1
             EXCLUDE = 2
@@ -89,6 +92,7 @@ class ListAssetsResponse(object):
               REMOVED (int): Asset was removed between the points in time.
               ACTIVE (int): Asset was active at both point(s) in time.
             """
+
             STATE_UNSPECIFIED = 0
             UNUSED = 1
             ADDED = 2

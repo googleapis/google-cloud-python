@@ -81,24 +81,26 @@ class Query(object):
     """
 
     OPERATORS = {
-        '<=': query_pb2.PropertyFilter.LESS_THAN_OR_EQUAL,
-        '>=': query_pb2.PropertyFilter.GREATER_THAN_OR_EQUAL,
-        '<': query_pb2.PropertyFilter.LESS_THAN,
-        '>': query_pb2.PropertyFilter.GREATER_THAN,
-        '=': query_pb2.PropertyFilter.EQUAL,
+        "<=": query_pb2.PropertyFilter.LESS_THAN_OR_EQUAL,
+        ">=": query_pb2.PropertyFilter.GREATER_THAN_OR_EQUAL,
+        "<": query_pb2.PropertyFilter.LESS_THAN,
+        ">": query_pb2.PropertyFilter.GREATER_THAN,
+        "=": query_pb2.PropertyFilter.EQUAL,
     }
     """Mapping of operator strings and their protobuf equivalents."""
 
-    def __init__(self,
-                 client,
-                 kind=None,
-                 project=None,
-                 namespace=None,
-                 ancestor=None,
-                 filters=(),
-                 projection=(),
-                 order=(),
-                 distinct_on=()):
+    def __init__(
+        self,
+        client,
+        kind=None,
+        project=None,
+        namespace=None,
+        ancestor=None,
+        filters=(),
+        projection=(),
+        order=(),
+        distinct_on=(),
+    ):
 
         self._client = client
         self._kind = kind
@@ -109,9 +111,9 @@ class Query(object):
         # Verify filters passed in.
         for property_name, operator, value in filters:
             self.add_filter(property_name, operator, value)
-        self._projection = _ensure_tuple_or_list('projection', projection)
-        self._order = _ensure_tuple_or_list('order', order)
-        self._distinct_on = _ensure_tuple_or_list('distinct_on', distinct_on)
+        self._projection = _ensure_tuple_or_list("projection", projection)
+        self._order = _ensure_tuple_or_list("order", order)
+        self._distinct_on = _ensure_tuple_or_list("distinct_on", distinct_on)
 
     @property
     def project(self):
@@ -239,10 +241,10 @@ class Query(object):
         """
         if self.OPERATORS.get(operator) is None:
             error_message = 'Invalid expression: "%s"' % (operator,)
-            choices_message = 'Please use one of: =, <, <=, >, >=.'
+            choices_message = "Please use one of: =, <, <=, >, >=."
             raise ValueError(error_message, choices_message)
 
-        if property_name == '__key__' and not isinstance(value, Key):
+        if property_name == "__key__" and not isinstance(value, Key):
             raise ValueError('Invalid key: "%s"' % value)
 
         self._filters.append((property_name, operator, value))
@@ -270,9 +272,9 @@ class Query(object):
 
     def keys_only(self):
         """Set the projection to include only keys."""
-        self._projection[:] = ['__key__']
+        self._projection[:] = ["__key__"]
 
-    def key_filter(self, key, operator='='):
+    def key_filter(self, key, operator="="):
         """Filter on a key.
 
         :type key: :class:`google.cloud.datastore.key.Key`
@@ -282,7 +284,7 @@ class Query(object):
         :param operator: (Optional) One of ``=``, ``<``, ``<=``, ``>``, ``>=``.
                          Defaults to ``=``.
         """
-        self.add_filter('__key__', operator, key)
+        self.add_filter("__key__", operator, key)
 
     @property
     def order(self):
@@ -330,8 +332,15 @@ class Query(object):
             value = [value]
         self._distinct_on[:] = value
 
-    def fetch(self, limit=None, offset=0, start_cursor=None, end_cursor=None,
-              client=None, eventual=False):
+    def fetch(
+        self,
+        limit=None,
+        offset=0,
+        start_cursor=None,
+        end_cursor=None,
+        client=None,
+        eventual=False,
+    ):
         """Execute the Query; return an iterator for the matching entities.
 
         For example::
@@ -373,13 +382,15 @@ class Query(object):
         if client is None:
             client = self._client
 
-        return Iterator(self,
-                        client,
-                        limit=limit,
-                        offset=offset,
-                        start_cursor=start_cursor,
-                        end_cursor=end_cursor,
-                        eventual=eventual)
+        return Iterator(
+            self,
+            client,
+            limit=limit,
+            offset=offset,
+            start_cursor=start_cursor,
+            end_cursor=end_cursor,
+            eventual=eventual,
+        )
 
 
 class Iterator(page_iterator.Iterator):
@@ -416,11 +427,22 @@ class Iterator(page_iterator.Iterator):
 
     next_page_token = None
 
-    def __init__(self, query, client, limit=None, offset=None,
-                 start_cursor=None, end_cursor=None, eventual=False):
+    def __init__(
+        self,
+        query,
+        client,
+        limit=None,
+        offset=None,
+        start_cursor=None,
+        end_cursor=None,
+        eventual=False,
+    ):
         super(Iterator, self).__init__(
-            client=client, item_to_value=_item_to_entity,
-            page_token=start_cursor, max_results=limit)
+            client=client,
+            item_to_value=_item_to_entity,
+            page_token=start_cursor,
+            max_results=limit,
+        )
         self._query = query
         self._offset = offset
         self._end_cursor = end_cursor
@@ -477,7 +499,8 @@ class Iterator(page_iterator.Iterator):
             self.next_page_token = None
         else:
             self.next_page_token = base64.urlsafe_b64encode(
-                response_pb.batch.end_cursor)
+                response_pb.batch.end_cursor
+            )
         self._end_cursor = None
 
         if response_pb.batch.more_results == _NOT_FINISHED:
@@ -485,7 +508,7 @@ class Iterator(page_iterator.Iterator):
         elif response_pb.batch.more_results in _FINISHED:
             self._more_results = False
         else:
-            raise ValueError('Unexpected value returned for `more_results`.')
+            raise ValueError("Unexpected value returned for `more_results`.")
 
         return [result.entity for result in response_pb.batch.entity_results]
 
@@ -508,13 +531,10 @@ class Iterator(page_iterator.Iterator):
         read_options = helpers.get_read_options(self._eventual, transaction_id)
 
         partition_id = entity_pb2.PartitionId(
-            project_id=self._query.project,
-            namespace_id=self._query.namespace)
+            project_id=self._query.project, namespace_id=self._query.namespace
+        )
         response_pb = self.client._datastore_api.run_query(
-            self._query.project,
-            partition_id,
-            read_options,
-            query=query_pb,
+            self._query.project, partition_id, read_options, query=query_pb
         )
         entity_pbs = self._process_query_results(response_pb)
         return page_iterator.Page(self, entity_pbs, self.item_to_value)
@@ -547,7 +567,7 @@ def _pb_from_query(query):
 
         # Filter on __key__ HAS_ANCESTOR == ancestor.
         ancestor_filter = composite_filter.filters.add().property_filter
-        ancestor_filter.property.name = '__key__'
+        ancestor_filter.property.name = "__key__"
         ancestor_filter.op = query_pb2.PropertyFilter.HAS_ANCESTOR
         ancestor_filter.value.key_value.CopyFrom(ancestor_pb)
 
@@ -560,19 +580,19 @@ def _pb_from_query(query):
         property_filter.op = pb_op_enum
 
         # Set the value to filter on based on the type.
-        if property_name == '__key__':
+        if property_name == "__key__":
             key_pb = value.to_protobuf()
             property_filter.value.key_value.CopyFrom(key_pb)
         else:
             helpers._set_protobuf_value(property_filter.value, value)
 
     if not composite_filter.filters:
-        pb.ClearField('filter')
+        pb.ClearField("filter")
 
     for prop in query.order:
         property_order = pb.order.add()
 
-        if prop.startswith('-'):
+        if prop.startswith("-"):
             property_order.property.name = prop[1:]
             property_order.direction = property_order.DESCENDING
         else:
@@ -600,4 +620,6 @@ def _item_to_entity(iterator, entity_pb):
     :returns: The next entity in the page.
     """
     return helpers.entity_from_protobuf(entity_pb)
+
+
 # pylint: enable=unused-argument

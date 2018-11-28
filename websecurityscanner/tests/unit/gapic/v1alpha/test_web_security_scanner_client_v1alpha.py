@@ -56,10 +56,7 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -70,25 +67,25 @@ class CustomException(Exception):
 class TestWebSecurityScannerClient(object):
     def test_create_scan_config(self):
         # Setup Expected Response
-        name = 'name3373707'
-        display_name = 'displayName1615086568'
+        name = "name3373707"
+        display_name = "displayName1615086568"
         max_qps = 844445913
         expected_response = {
-            'name': name,
-            'display_name': display_name,
-            'max_qps': max_qps
+            "name": name,
+            "display_name": display_name,
+            "max_qps": max_qps,
         }
         expected_response = scan_config_pb2.ScanConfig(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        parent = client.project_path('[PROJECT]')
+        parent = client.project_path("[PROJECT]")
         scan_config = {}
 
         response = client.create_scan_config(parent, scan_config)
@@ -96,20 +93,21 @@ class TestWebSecurityScannerClient(object):
 
         assert len(channel.requests) == 1
         expected_request = web_security_scanner_pb2.CreateScanConfigRequest(
-            parent=parent, scan_config=scan_config)
+            parent=parent, scan_config=scan_config
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_create_scan_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        parent = client.project_path('[PROJECT]')
+        parent = client.project_path("[PROJECT]")
         scan_config = {}
 
         with pytest.raises(CustomException):
@@ -117,102 +115,101 @@ class TestWebSecurityScannerClient(object):
 
     def test_delete_scan_config(self):
         channel = ChannelStub()
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        name = client.scan_config_path('[PROJECT]', '[SCAN_CONFIG]')
+        name = client.scan_config_path("[PROJECT]", "[SCAN_CONFIG]")
 
         client.delete_scan_config(name)
 
         assert len(channel.requests) == 1
-        expected_request = web_security_scanner_pb2.DeleteScanConfigRequest(
-            name=name)
+        expected_request = web_security_scanner_pb2.DeleteScanConfigRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_delete_scan_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        name = client.scan_config_path('[PROJECT]', '[SCAN_CONFIG]')
+        name = client.scan_config_path("[PROJECT]", "[SCAN_CONFIG]")
 
         with pytest.raises(CustomException):
             client.delete_scan_config(name)
 
     def test_get_scan_config(self):
         # Setup Expected Response
-        name_2 = 'name2-1052831874'
-        display_name = 'displayName1615086568'
+        name_2 = "name2-1052831874"
+        display_name = "displayName1615086568"
         max_qps = 844445913
         expected_response = {
-            'name': name_2,
-            'display_name': display_name,
-            'max_qps': max_qps
+            "name": name_2,
+            "display_name": display_name,
+            "max_qps": max_qps,
         }
         expected_response = scan_config_pb2.ScanConfig(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        name = client.scan_config_path('[PROJECT]', '[SCAN_CONFIG]')
+        name = client.scan_config_path("[PROJECT]", "[SCAN_CONFIG]")
 
         response = client.get_scan_config(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = web_security_scanner_pb2.GetScanConfigRequest(
-            name=name)
+        expected_request = web_security_scanner_pb2.GetScanConfigRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_get_scan_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        name = client.scan_config_path('[PROJECT]', '[SCAN_CONFIG]')
+        name = client.scan_config_path("[PROJECT]", "[SCAN_CONFIG]")
 
         with pytest.raises(CustomException):
             client.get_scan_config(name)
 
     def test_list_scan_configs(self):
         # Setup Expected Response
-        next_page_token = ''
+        next_page_token = ""
         scan_configs_element = {}
         scan_configs = [scan_configs_element]
         expected_response = {
-            'next_page_token': next_page_token,
-            'scan_configs': scan_configs
+            "next_page_token": next_page_token,
+            "scan_configs": scan_configs,
         }
         expected_response = web_security_scanner_pb2.ListScanConfigsResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        parent = client.project_path('[PROJECT]')
+        parent = client.project_path("[PROJECT]")
 
         paged_list_response = client.list_scan_configs(parent)
         resources = list(paged_list_response)
@@ -222,19 +219,20 @@ class TestWebSecurityScannerClient(object):
 
         assert len(channel.requests) == 1
         expected_request = web_security_scanner_pb2.ListScanConfigsRequest(
-            parent=parent)
+            parent=parent
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_scan_configs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        parent = client.project_path('[PROJECT]')
+        parent = client.project_path("[PROJECT]")
 
         paged_list_response = client.list_scan_configs(parent)
         with pytest.raises(CustomException):
@@ -242,19 +240,19 @@ class TestWebSecurityScannerClient(object):
 
     def test_update_scan_config(self):
         # Setup Expected Response
-        name = 'name3373707'
-        display_name = 'displayName1615086568'
+        name = "name3373707"
+        display_name = "displayName1615086568"
         max_qps = 844445913
         expected_response = {
-            'name': name,
-            'display_name': display_name,
-            'max_qps': max_qps
+            "name": name,
+            "display_name": display_name,
+            "max_qps": max_qps,
         }
         expected_response = scan_config_pb2.ScanConfig(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
@@ -268,14 +266,15 @@ class TestWebSecurityScannerClient(object):
 
         assert len(channel.requests) == 1
         expected_request = web_security_scanner_pb2.UpdateScanConfigRequest(
-            scan_config=scan_config, update_mask=update_mask)
+            scan_config=scan_config, update_mask=update_mask
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_update_scan_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
@@ -289,123 +288,119 @@ class TestWebSecurityScannerClient(object):
 
     def test_start_scan_run(self):
         # Setup Expected Response
-        name_2 = 'name2-1052831874'
+        name_2 = "name2-1052831874"
         urls_crawled_count = 1749797253
         urls_tested_count = 1498664068
         has_vulnerabilities = False
         progress_percent = 2137894861
         expected_response = {
-            'name': name_2,
-            'urls_crawled_count': urls_crawled_count,
-            'urls_tested_count': urls_tested_count,
-            'has_vulnerabilities': has_vulnerabilities,
-            'progress_percent': progress_percent
+            "name": name_2,
+            "urls_crawled_count": urls_crawled_count,
+            "urls_tested_count": urls_tested_count,
+            "has_vulnerabilities": has_vulnerabilities,
+            "progress_percent": progress_percent,
         }
         expected_response = scan_run_pb2.ScanRun(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        name = client.scan_config_path('[PROJECT]', '[SCAN_CONFIG]')
+        name = client.scan_config_path("[PROJECT]", "[SCAN_CONFIG]")
 
         response = client.start_scan_run(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = web_security_scanner_pb2.StartScanRunRequest(
-            name=name)
+        expected_request = web_security_scanner_pb2.StartScanRunRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_start_scan_run_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        name = client.scan_config_path('[PROJECT]', '[SCAN_CONFIG]')
+        name = client.scan_config_path("[PROJECT]", "[SCAN_CONFIG]")
 
         with pytest.raises(CustomException):
             client.start_scan_run(name)
 
     def test_get_scan_run(self):
         # Setup Expected Response
-        name_2 = 'name2-1052831874'
+        name_2 = "name2-1052831874"
         urls_crawled_count = 1749797253
         urls_tested_count = 1498664068
         has_vulnerabilities = False
         progress_percent = 2137894861
         expected_response = {
-            'name': name_2,
-            'urls_crawled_count': urls_crawled_count,
-            'urls_tested_count': urls_tested_count,
-            'has_vulnerabilities': has_vulnerabilities,
-            'progress_percent': progress_percent
+            "name": name_2,
+            "urls_crawled_count": urls_crawled_count,
+            "urls_tested_count": urls_tested_count,
+            "has_vulnerabilities": has_vulnerabilities,
+            "progress_percent": progress_percent,
         }
         expected_response = scan_run_pb2.ScanRun(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        name = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]', '[SCAN_RUN]')
+        name = client.scan_run_path("[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]")
 
         response = client.get_scan_run(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = web_security_scanner_pb2.GetScanRunRequest(
-            name=name)
+        expected_request = web_security_scanner_pb2.GetScanRunRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_get_scan_run_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        name = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]', '[SCAN_RUN]')
+        name = client.scan_run_path("[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]")
 
         with pytest.raises(CustomException):
             client.get_scan_run(name)
 
     def test_list_scan_runs(self):
         # Setup Expected Response
-        next_page_token = ''
+        next_page_token = ""
         scan_runs_element = {}
         scan_runs = [scan_runs_element]
-        expected_response = {
-            'next_page_token': next_page_token,
-            'scan_runs': scan_runs
-        }
+        expected_response = {"next_page_token": next_page_token, "scan_runs": scan_runs}
         expected_response = web_security_scanner_pb2.ListScanRunsResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        parent = client.scan_config_path('[PROJECT]', '[SCAN_CONFIG]')
+        parent = client.scan_config_path("[PROJECT]", "[SCAN_CONFIG]")
 
         paged_list_response = client.list_scan_runs(parent)
         resources = list(paged_list_response)
@@ -414,20 +409,19 @@ class TestWebSecurityScannerClient(object):
         assert expected_response.scan_runs[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = web_security_scanner_pb2.ListScanRunsRequest(
-            parent=parent)
+        expected_request = web_security_scanner_pb2.ListScanRunsRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_scan_runs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        parent = client.scan_config_path('[PROJECT]', '[SCAN_CONFIG]')
+        parent = client.scan_config_path("[PROJECT]", "[SCAN_CONFIG]")
 
         paged_list_response = client.list_scan_runs(parent)
         with pytest.raises(CustomException):
@@ -435,75 +429,74 @@ class TestWebSecurityScannerClient(object):
 
     def test_stop_scan_run(self):
         # Setup Expected Response
-        name_2 = 'name2-1052831874'
+        name_2 = "name2-1052831874"
         urls_crawled_count = 1749797253
         urls_tested_count = 1498664068
         has_vulnerabilities = False
         progress_percent = 2137894861
         expected_response = {
-            'name': name_2,
-            'urls_crawled_count': urls_crawled_count,
-            'urls_tested_count': urls_tested_count,
-            'has_vulnerabilities': has_vulnerabilities,
-            'progress_percent': progress_percent
+            "name": name_2,
+            "urls_crawled_count": urls_crawled_count,
+            "urls_tested_count": urls_tested_count,
+            "has_vulnerabilities": has_vulnerabilities,
+            "progress_percent": progress_percent,
         }
         expected_response = scan_run_pb2.ScanRun(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        name = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]', '[SCAN_RUN]')
+        name = client.scan_run_path("[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]")
 
         response = client.stop_scan_run(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = web_security_scanner_pb2.StopScanRunRequest(
-            name=name)
+        expected_request = web_security_scanner_pb2.StopScanRunRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_stop_scan_run_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        name = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]', '[SCAN_RUN]')
+        name = client.scan_run_path("[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]")
 
         with pytest.raises(CustomException):
             client.stop_scan_run(name)
 
     def test_list_crawled_urls(self):
         # Setup Expected Response
-        next_page_token = ''
+        next_page_token = ""
         crawled_urls_element = {}
         crawled_urls = [crawled_urls_element]
         expected_response = {
-            'next_page_token': next_page_token,
-            'crawled_urls': crawled_urls
+            "next_page_token": next_page_token,
+            "crawled_urls": crawled_urls,
         }
         expected_response = web_security_scanner_pb2.ListCrawledUrlsResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        parent = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]',
-                                      '[SCAN_RUN]')
+        parent = client.scan_run_path("[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]")
 
         paged_list_response = client.list_crawled_urls(parent)
         resources = list(paged_list_response)
@@ -513,20 +506,20 @@ class TestWebSecurityScannerClient(object):
 
         assert len(channel.requests) == 1
         expected_request = web_security_scanner_pb2.ListCrawledUrlsRequest(
-            parent=parent)
+            parent=parent
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_crawled_urls_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        parent = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]',
-                                      '[SCAN_RUN]')
+        parent = client.scan_run_path("[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]")
 
         paged_list_response = client.list_crawled_urls(parent)
         with pytest.raises(CustomException):
@@ -534,86 +527,84 @@ class TestWebSecurityScannerClient(object):
 
     def test_get_finding(self):
         # Setup Expected Response
-        name_2 = 'name2-1052831874'
-        http_method = 'httpMethod820747384'
-        fuzzed_url = 'fuzzedUrl-2120677666'
-        body = 'body3029410'
-        description = 'description-1724546052'
-        reproduction_url = 'reproductionUrl-244934180'
-        frame_url = 'frameUrl545464221'
-        final_url = 'finalUrl355601190'
-        tracking_id = 'trackingId1878901667'
+        name_2 = "name2-1052831874"
+        http_method = "httpMethod820747384"
+        fuzzed_url = "fuzzedUrl-2120677666"
+        body = "body3029410"
+        description = "description-1724546052"
+        reproduction_url = "reproductionUrl-244934180"
+        frame_url = "frameUrl545464221"
+        final_url = "finalUrl355601190"
+        tracking_id = "trackingId1878901667"
         expected_response = {
-            'name': name_2,
-            'http_method': http_method,
-            'fuzzed_url': fuzzed_url,
-            'body': body,
-            'description': description,
-            'reproduction_url': reproduction_url,
-            'frame_url': frame_url,
-            'final_url': final_url,
-            'tracking_id': tracking_id
+            "name": name_2,
+            "http_method": http_method,
+            "fuzzed_url": fuzzed_url,
+            "body": body,
+            "description": description,
+            "reproduction_url": reproduction_url,
+            "frame_url": frame_url,
+            "final_url": final_url,
+            "tracking_id": tracking_id,
         }
         expected_response = finding_pb2.Finding(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        name = client.finding_path('[PROJECT]', '[SCAN_CONFIG]', '[SCAN_RUN]',
-                                   '[FINDING]')
+        name = client.finding_path(
+            "[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]", "[FINDING]"
+        )
 
         response = client.get_finding(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = web_security_scanner_pb2.GetFindingRequest(
-            name=name)
+        expected_request = web_security_scanner_pb2.GetFindingRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_get_finding_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        name = client.finding_path('[PROJECT]', '[SCAN_CONFIG]', '[SCAN_RUN]',
-                                   '[FINDING]')
+        name = client.finding_path(
+            "[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]", "[FINDING]"
+        )
 
         with pytest.raises(CustomException):
             client.get_finding(name)
 
     def test_list_findings(self):
         # Setup Expected Response
-        next_page_token = ''
+        next_page_token = ""
         findings_element = {}
         findings = [findings_element]
-        expected_response = {
-            'next_page_token': next_page_token,
-            'findings': findings
-        }
+        expected_response = {"next_page_token": next_page_token, "findings": findings}
         expected_response = web_security_scanner_pb2.ListFindingsResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        parent = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]',
-                                      '[SCAN_RUN]')
-        filter_ = 'filter-1274492040'
+        parent = client.scan_run_path("[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]")
+        filter_ = "filter-1274492040"
 
         paged_list_response = client.list_findings(parent, filter_)
         resources = list(paged_list_response)
@@ -623,21 +614,21 @@ class TestWebSecurityScannerClient(object):
 
         assert len(channel.requests) == 1
         expected_request = web_security_scanner_pb2.ListFindingsRequest(
-            parent=parent, filter=filter_)
+            parent=parent, filter=filter_
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_findings_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        parent = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]',
-                                      '[SCAN_RUN]')
-        filter_ = 'filter-1274492040'
+        parent = client.scan_run_path("[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]")
+        filter_ = "filter-1274492040"
 
         paged_list_response = client.list_findings(parent, filter_)
         with pytest.raises(CustomException):
@@ -647,39 +638,39 @@ class TestWebSecurityScannerClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = web_security_scanner_pb2.ListFindingTypeStatsResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup Request
-        parent = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]',
-                                      '[SCAN_RUN]')
+        parent = client.scan_run_path("[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]")
 
         response = client.list_finding_type_stats(parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = web_security_scanner_pb2.ListFindingTypeStatsRequest(
-            parent=parent)
+            parent=parent
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_finding_type_stats_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = websecurityscanner_v1alpha.WebSecurityScannerClient()
 
         # Setup request
-        parent = client.scan_run_path('[PROJECT]', '[SCAN_CONFIG]',
-                                      '[SCAN_RUN]')
+        parent = client.scan_run_path("[PROJECT]", "[SCAN_CONFIG]", "[SCAN_RUN]")
 
         with pytest.raises(CustomException):
             client.list_finding_type_stats(parent)

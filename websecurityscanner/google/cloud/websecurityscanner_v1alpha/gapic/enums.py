@@ -54,6 +54,7 @@ class Finding(object):
           CLEAR_TEXT_PASSWORD (int): An application appears to be transmitting a password field in clear text.
           An attacker can eavesdrop network traffic and sniff the password field.
         """
+
         FINDING_TYPE_UNSPECIFIED = 0
         MIXED_CONTENT = 1
         OUTDATED_LIBRARY = 2
@@ -74,6 +75,7 @@ class ScanConfig(object):
           CHROME_ANDROID (int): Chrome on Android.
           SAFARI_IPHONE (int): Safari on IPhone.
         """
+
         USER_AGENT_UNSPECIFIED = 0
         CHROME_LINUX = 1
         CHROME_ANDROID = 2
@@ -89,6 +91,7 @@ class ScanConfig(object):
           APP_ENGINE (int): Google App Engine service.
           COMPUTE (int): Google Compute Engine service.
         """
+
         TARGET_PLATFORM_UNSPECIFIED = 0
         APP_ENGINE = 1
         COMPUTE = 2
@@ -106,6 +109,7 @@ class ScanRun(object):
           SCANNING (int): The scan is in progress.
           FINISHED (int): The scan is either finished or stopped by user.
         """
+
         EXECUTION_STATE_UNSPECIFIED = 0
         QUEUED = 1
         SCANNING = 2
@@ -122,6 +126,7 @@ class ScanRun(object):
           ERROR (int): The scan finished with errors.
           KILLED (int): The scan was terminated by user.
         """
+
         RESULT_STATE_UNSPECIFIED = 0
         SUCCESS = 1
         ERROR = 2

@@ -41,6 +41,6 @@ def remove_database(client):
     database.drop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     client = Client()
     remove_database(client)

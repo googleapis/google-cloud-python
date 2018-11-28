@@ -33,15 +33,17 @@ class Client(ClientWithProject):
             passed, falls back to the default inferred from the
             environment.
     """
-    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',
-             'https://www.googleapis.com/auth/trace.append',)
+
+    SCOPE = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/trace.append",
+    )
     """The scopes required for authenticating as a Trace consumer."""
 
     _trace_api = None
 
     def __init__(self, project=None, credentials=None):
-        super(Client, self).__init__(
-            project=project, credentials=credentials)
+        super(Client, self).__init__(project=project, credentials=credentials)
 
     @property
     def trace_api(self):
@@ -66,9 +68,7 @@ class Client(ClientWithProject):
         if project_id is None:
             project_id = self.project
 
-        self.trace_api.patch_traces(
-            project_id=project_id,
-            traces=traces)
+        self.trace_api.patch_traces(project_id=project_id, traces=traces)
 
     def get_trace(self, trace_id, project_id=None):
         """
@@ -86,20 +86,19 @@ class Client(ClientWithProject):
         if project_id is None:
             project_id = self.project
 
-        return self.trace_api.get_trace(
-            project_id=project_id,
-            trace_id=trace_id)
+        return self.trace_api.get_trace(project_id=project_id, trace_id=trace_id)
 
     def list_traces(
-            self,
-            project_id=None,
-            view=None,
-            page_size=None,
-            start_time=None,
-            end_time=None,
-            filter_=None,
-            order_by=None,
-            page_token=None):
+        self,
+        project_id=None,
+        view=None,
+        page_size=None,
+        start_time=None,
+        end_time=None,
+        filter_=None,
+        order_by=None,
+        page_token=None,
+    ):
         """
         Returns of a list of traces that match the filter conditions.
 
@@ -153,4 +152,5 @@ class Client(ClientWithProject):
             end_time=end_time,
             filter_=filter_,
             order_by=order_by,
-            page_token=page_token)
+            page_token=page_token,
+        )

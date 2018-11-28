@@ -24,6 +24,7 @@ def add_methods(source_class, blacklist=()):
     Additionally, any methods explicitly defined on the wrapped class are
     not added.
     """
+
     def wrap(wrapped_fx):
         """Wrap a GAPIC method; preserve its name and docstring."""
         # If this is a static or class method, then we need to *not*
@@ -34,7 +35,7 @@ def add_methods(source_class, blacklist=()):
         instance_method = True
 
         # If this is a bound method it's a classmethod.
-        self = getattr(wrapped_fx, '__self__', None)
+        self = getattr(wrapped_fx, "__self__", None)
         if issubclass(type(self), type):
             instance_method = False
 
@@ -52,7 +53,7 @@ def add_methods(source_class, blacklist=()):
         # (the GAPIC) and make wrapped versions available on this client.
         for name in dir(source_class):
             # Ignore all private and magic methods.
-            if name.startswith('_'):
+            if name.startswith("_"):
                 continue
 
             # Ignore anything on our blacklist.

@@ -15,7 +15,7 @@
 from google.cloud.trace.v1.client import Client
 
 
-__all__ = ['Client', 'SCOPE']
+__all__ = ["Client", "SCOPE"]
 
 
 SCOPE = Client.SCOPE

@@ -30,15 +30,17 @@ class Client(ClientWithProject):
             The OAuth2 Credentials to use for this client. If not passed,
             falls back to the default inferred from the environment.
     """
-    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',
-             'https://www.googleapis.com/auth/trace.append',)
+
+    SCOPE = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/trace.append",
+    )
     """The scopes required for authenticating as a Trace consumer."""
 
     _trace_api = None
 
     def __init__(self, project=None, credentials=None):
-        super(Client, self).__init__(
-            project=project, credentials=credentials)
+        super(Client, self).__init__(project=project, credentials=credentials)
 
     @property
     def trace_api(self):
@@ -52,11 +54,7 @@ class Client(ClientWithProject):
         self._trace_api = make_trace_api(self)
         return self._trace_api
 
-    def batch_write_spans(self,
-                          name,
-                          spans,
-                          retry=None,
-                          timeout=None):
+    def batch_write_spans(self, name, spans, retry=None, timeout=None):
         """
         Sends new spans to Stackdriver Trace or updates existing traces. If the
         name of a trace that you send matches that of an existing trace, new
@@ -98,27 +96,27 @@ class Client(ClientWithProject):
             ValueError: If the parameters are invalid.
         """
         self.trace_api.batch_write_spans(
-            name=name,
-            spans=spans,
-            retry=retry,
-            timeout=timeout)
+            name=name, spans=spans, retry=retry, timeout=timeout
+        )
 
-    def create_span(self,
-                    name,
-                    span_id,
-                    display_name,
-                    start_time,
-                    end_time,
-                    parent_span_id=None,
-                    attributes=None,
-                    stack_trace=None,
-                    time_events=None,
-                    links=None,
-                    status=None,
-                    same_process_as_parent_span=None,
-                    child_span_count=None,
-                    retry=None,
-                    timeout=None):
+    def create_span(
+        self,
+        name,
+        span_id,
+        display_name,
+        start_time,
+        end_time,
+        parent_span_id=None,
+        attributes=None,
+        stack_trace=None,
+        time_events=None,
+        links=None,
+        status=None,
+        same_process_as_parent_span=None,
+        child_span_count=None,
+        retry=None,
+        timeout=None,
+    ):
         """
         Creates a new Span.
 
@@ -223,4 +221,5 @@ class Client(ClientWithProject):
             links=links,
             status=status,
             same_process_as_parent_span=same_process_as_parent_span,
-            child_span_count=child_span_count)
+            child_span_count=child_span_count,
+        )

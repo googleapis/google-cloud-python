@@ -23,13 +23,13 @@ def add_single_feature_methods(cls):
     """
     # Sanity check: This only makes sense if we are building the GAPIC
     # subclass and have enums already attached.
-    if not hasattr(cls, 'enums'):
+    if not hasattr(cls, "enums"):
         return cls
 
     # Add each single-feature method to the class.
     for feature in cls.enums.Feature.Type:
         # Sanity check: Do not make a method for the falsy feature.
-        if feature.name == 'TYPE_UNSPECIFIED':
+        if feature.name == "TYPE_UNSPECIFIED":
             continue
 
         # Assign the appropriate metadata to the function.
@@ -37,13 +37,10 @@ def add_single_feature_methods(cls):
 
         # Assign a qualified name to the function, and perform module
         # replacement on the docstring.
-        detect.__qualname__ = '{cls}.{name}'.format(
-            cls=cls.__name__,
-            name=detect.__name__,
+        detect.__qualname__ = "{cls}.{name}".format(
+            cls=cls.__name__, name=detect.__name__
         )
-        detect.__doc__ = detect.__doc__.format(
-            module=cls.__module__,
-        )
+        detect.__doc__ = detect.__doc__.format(module=cls.__module__)
 
         # Place the function on the class being created.
         setattr(cls, detect.__name__, detect)
@@ -64,12 +61,10 @@ def _create_single_feature_method(feature):
     """
     # Define the function properties.
     fx_name = feature.name.lower()
-    if 'detection' in fx_name:
-        fx_doc = 'Perform {0}.'.format(fx_name.replace('_', ' '))
+    if "detection" in fx_name:
+        fx_doc = "Perform {0}.".format(fx_name.replace("_", " "))
     else:
-        fx_doc = 'Return {desc} information.'.format(
-            desc=fx_name.replace('_', ' '),
-        )
+        fx_doc = "Return {desc} information.".format(desc=fx_name.replace("_", " "))
 
     # Provide a complete docstring with argument and return value
     # information.
@@ -90,11 +85,10 @@ def _create_single_feature_method(feature):
     """
 
     # Get the actual feature value to send.
-    feature_value = {'type': feature}
+    feature_value = {"type": feature}
 
     # Define the function to be returned.
-    def inner(self, image, max_results=None,
-              retry=None, timeout=None, **kwargs):
+    def inner(self, image, max_results=None, retry=None, timeout=None, **kwargs):
         """Return a single feature annotation for the given image.
 
         Intended for use with functools.partial, to create the particular
@@ -102,12 +96,8 @@ def _create_single_feature_method(feature):
         """
         copied_features = feature_value.copy()
         if max_results is not None:
-            copied_features['max_results'] = max_results
-        request = dict(
-            image=image,
-            features=[copied_features],
-            **kwargs
-        )
+            copied_features["max_results"] = max_results
+        request = dict(image=image, features=[copied_features], **kwargs)
         response = self.annotate_image(request, retry=retry, timeout=timeout)
         return response
 

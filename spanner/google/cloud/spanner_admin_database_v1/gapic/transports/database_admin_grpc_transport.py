@@ -28,17 +28,17 @@ class DatabaseAdminGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/spanner.admin',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/spanner.admin",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='spanner.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="spanner.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -56,35 +56,32 @@ class DatabaseAdminGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'database_admin_stub':
-            spanner_database_admin_pb2_grpc.DatabaseAdminStub(channel),
+            "database_admin_stub": spanner_database_admin_pb2_grpc.DatabaseAdminStub(
+                channel
+            )
         }
 
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
         # instantiate an LRO client.
         self._operations_client = google.api_core.operations_v1.OperationsClient(
-            channel)
+            channel
+        )
 
     @classmethod
-    def create_channel(cls,
-                       address='spanner.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="spanner.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -99,9 +96,7 @@ class DatabaseAdminGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -124,7 +119,7 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['database_admin_stub'].ListDatabases
+        return self._stubs["database_admin_stub"].ListDatabases
 
     @property
     def create_database(self):
@@ -142,7 +137,7 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['database_admin_stub'].CreateDatabase
+        return self._stubs["database_admin_stub"].CreateDatabase
 
     @property
     def get_database(self):
@@ -155,7 +150,7 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['database_admin_stub'].GetDatabase
+        return self._stubs["database_admin_stub"].GetDatabase
 
     @property
     def update_database_ddl(self):
@@ -173,7 +168,7 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['database_admin_stub'].UpdateDatabaseDdl
+        return self._stubs["database_admin_stub"].UpdateDatabaseDdl
 
     @property
     def drop_database(self):
@@ -186,7 +181,7 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['database_admin_stub'].DropDatabase
+        return self._stubs["database_admin_stub"].DropDatabase
 
     @property
     def get_database_ddl(self):
@@ -201,7 +196,7 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['database_admin_stub'].GetDatabaseDdl
+        return self._stubs["database_admin_stub"].GetDatabaseDdl
 
     @property
     def set_iam_policy(self):
@@ -218,7 +213,7 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['database_admin_stub'].SetIamPolicy
+        return self._stubs["database_admin_stub"].SetIamPolicy
 
     @property
     def get_iam_policy(self):
@@ -235,7 +230,7 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['database_admin_stub'].GetIamPolicy
+        return self._stubs["database_admin_stub"].GetIamPolicy
 
     @property
     def test_iam_permissions(self):
@@ -254,4 +249,4 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['database_admin_stub'].TestIamPermissions
+        return self._stubs["database_admin_stub"].TestIamPermissions

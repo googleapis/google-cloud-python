@@ -16,36 +16,30 @@ from __future__ import absolute_import
 
 from google.cloud.errorreporting_v1beta1 import types
 from google.cloud.errorreporting_v1beta1.gapic import enums
-from google.cloud.errorreporting_v1beta1.gapic import (
-    error_group_service_client)
-from google.cloud.errorreporting_v1beta1.gapic import (
-    error_stats_service_client)
-from google.cloud.errorreporting_v1beta1.gapic import (
-    report_errors_service_client)
+from google.cloud.errorreporting_v1beta1.gapic import error_group_service_client
+from google.cloud.errorreporting_v1beta1.gapic import error_stats_service_client
+from google.cloud.errorreporting_v1beta1.gapic import report_errors_service_client
 
 
-class ErrorGroupServiceClient(
-        error_group_service_client.ErrorGroupServiceClient):
+class ErrorGroupServiceClient(error_group_service_client.ErrorGroupServiceClient):
     __doc__ = error_group_service_client.ErrorGroupServiceClient.__doc__
     enums = enums
 
 
-class ErrorStatsServiceClient(
-        error_stats_service_client.ErrorStatsServiceClient):
+class ErrorStatsServiceClient(error_stats_service_client.ErrorStatsServiceClient):
     __doc__ = error_stats_service_client.ErrorStatsServiceClient.__doc__
     enums = enums
 
 
-class ReportErrorsServiceClient(
-        report_errors_service_client.ReportErrorsServiceClient):
+class ReportErrorsServiceClient(report_errors_service_client.ReportErrorsServiceClient):
     __doc__ = report_errors_service_client.ReportErrorsServiceClient.__doc__
     enums = enums
 
 
 __all__ = (
-    'enums',
-    'types',
-    'ErrorGroupServiceClient',
-    'ErrorStatsServiceClient',
-    'ReportErrorsServiceClient',
+    "enums",
+    "types",
+    "ErrorGroupServiceClient",
+    "ErrorStatsServiceClient",
+    "ReportErrorsServiceClient",
 )

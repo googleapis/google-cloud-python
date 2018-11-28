@@ -135,8 +135,9 @@ class Entity(dict):
     def __init__(self, key=None, exclude_from_indexes=()):
         super(Entity, self).__init__()
         self.key = key
-        self.exclude_from_indexes = set(_ensure_tuple_or_list(
-            'exclude_from_indexes', exclude_from_indexes))
+        self.exclude_from_indexes = set(
+            _ensure_tuple_or_list("exclude_from_indexes", exclude_from_indexes)
+        )
         """Names of fields which are *not* to be indexed for this entity."""
         # NOTE: This will be populated when parsing a protobuf in
         #       google.cloud.datastore.helpers.entity_from_protobuf.
@@ -154,10 +155,12 @@ class Entity(dict):
         if not isinstance(other, Entity):
             return NotImplemented
 
-        return (self.key == other.key and
-                self.exclude_from_indexes == other.exclude_from_indexes and
-                self._meanings == other._meanings and
-                super(Entity, self).__eq__(other))
+        return (
+            self.key == other.key
+            and self.exclude_from_indexes == other.exclude_from_indexes
+            and self._meanings == other._meanings
+            and super(Entity, self).__eq__(other)
+        )
 
     def __ne__(self, other):
         """Compare two entities for inequality.
@@ -202,7 +205,9 @@ class Entity(dict):
 
     def __repr__(self):
         if self.key:
-            return '<Entity%s %s>' % (self.key._flat_path,
-                                      super(Entity, self).__repr__())
+            return "<Entity%s %s>" % (
+                self.key._flat_path,
+                super(Entity, self).__repr__(),
+            )
         else:
-            return '<Entity %s>' % (super(Entity, self).__repr__(),)
+            return "<Entity %s>" % (super(Entity, self).__repr__(),)

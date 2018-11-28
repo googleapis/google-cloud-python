@@ -80,20 +80,27 @@ class Query(object):
     .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
     """
 
-    DEFAULT_METRIC_TYPE = 'compute.googleapis.com/instance/cpu/utilization'
+    DEFAULT_METRIC_TYPE = "compute.googleapis.com/instance/cpu/utilization"
 
-    def __init__(self, client, project,
-                 metric_type=DEFAULT_METRIC_TYPE,
-                 end_time=None, days=0, hours=0, minutes=0):
+    def __init__(
+        self,
+        client,
+        project,
+        metric_type=DEFAULT_METRIC_TYPE,
+        end_time=None,
+        days=0,
+        hours=0,
+        minutes=0,
+    ):
         start_time = None
         if days or hours or minutes:
             if end_time is None:
                 end_time = _UTCNOW().replace(second=0, microsecond=0)
-            start_time = end_time - datetime.timedelta(days=days,
-                                                       hours=hours,
-                                                       minutes=minutes)
+            start_time = end_time - datetime.timedelta(
+                days=days, hours=hours, minutes=minutes
+            )
         elif end_time is not None:
-            raise ValueError('Non-zero duration required for time interval.')
+            raise ValueError("Non-zero duration required for time interval.")
 
         self._client = client
         self._project_path = self._client.project_path(project)
@@ -355,8 +362,7 @@ class Query(object):
         """
         new_query = copy.deepcopy(self)
         new_query._per_series_aligner = per_series_aligner
-        new_query._alignment_period_seconds = seconds + 60 * (minutes +
-                                                              60 * hours)
+        new_query._alignment_period_seconds = seconds + 60 * (minutes + 60 * hours)
         return new_query
 
     def reduce(self, cross_series_reducer, *group_by_fields):
@@ -428,7 +434,7 @@ class Query(object):
             specified.
         """
         if self._end_time is None:
-            raise ValueError('Query time interval not specified.')
+            raise ValueError("Query time interval not specified.")
 
         params = self._build_query_params(headers_only, page_size)
         for ts in self._client.list_time_series(**params):
@@ -446,29 +452,33 @@ class Query(object):
         :param page_size:
             (Optional) A limit on the number of points to return per page.
         """
-        params = {'name': self._project_path, 'filter_': self.filter}
+        params = {"name": self._project_path, "filter_": self.filter}
 
-        params['interval'] = types.TimeInterval()
-        params['interval'].end_time.FromDatetime(self._end_time)
+        params["interval"] = types.TimeInterval()
+        params["interval"].end_time.FromDatetime(self._end_time)
         if self._start_time:
-            params['interval'].start_time.FromDatetime(self._start_time)
+            params["interval"].start_time.FromDatetime(self._start_time)
 
-        if (self._per_series_aligner or self._alignment_period_seconds or
-                self._cross_series_reducer or self._group_by_fields):
-            params['aggregation'] = types.Aggregation(
+        if (
+            self._per_series_aligner
+            or self._alignment_period_seconds
+            or self._cross_series_reducer
+            or self._group_by_fields
+        ):
+            params["aggregation"] = types.Aggregation(
                 per_series_aligner=self._per_series_aligner,
                 cross_series_reducer=self._cross_series_reducer,
                 group_by_fields=self._group_by_fields,
-                alignment_period={'seconds': self._alignment_period_seconds},
+                alignment_period={"seconds": self._alignment_period_seconds},
             )
 
         if headers_only:
-            params['view'] = enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS
+            params["view"] = enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS
         else:
-            params['view'] = enums.ListTimeSeriesRequest.TimeSeriesView.FULL
+            params["view"] = enums.ListTimeSeriesRequest.TimeSeriesView.FULL
 
         if page_size is not None:
-            params['page_size'] = page_size
+            params["page_size"] = page_size
 
         return params
 
@@ -513,8 +523,7 @@ class Query(object):
         :rtype: :class:`pandas.DataFrame`
         :returns: A dataframe where each column represents one time series.
         """
-        return _dataframe._build_dataframe(
-            self, label, labels)
+        return _dataframe._build_dataframe(self, label, labels)
 
     def __deepcopy__(self, memo):
         """Create a deepcopy of the query object.
@@ -548,16 +557,14 @@ class _Filter(object):
 
         See :meth:`Query.select_resources`.
         """
-        self.resource_label_filter = _build_label_filter('resource',
-                                                         *args, **kwargs)
+        self.resource_label_filter = _build_label_filter("resource", *args, **kwargs)
 
     def select_metrics(self, *args, **kwargs):
         """Select by metric labels.
 
         See :meth:`Query.select_metrics`.
         """
-        self.metric_label_filter = _build_label_filter('metric',
-                                                       *args, **kwargs)
+        self.metric_label_filter = _build_label_filter("metric", *args, **kwargs)
 
     def __str__(self):
         filters = ['metric.type = "{type}"'.format(type=self.metric_type)]
@@ -565,8 +572,11 @@ class _Filter(object):
             filters.append('group.id = "{id}"'.format(id=self.group_id))
         if self.projects:
             filters.append(
-                ' OR '.join('project = "{project}"'.format(project=project)
-                            for project in self.projects))
+                " OR ".join(
+                    'project = "{project}"'.format(project=project)
+                    for project in self.projects
+                )
+            )
         if self.resource_label_filter:
             filters.append(self.resource_label_filter)
         if self.metric_label_filter:
@@ -574,7 +584,7 @@ class _Filter(object):
 
         # Parentheses are never actually required, because OR binds more
         # tightly than AND in the Monitoring API's filter syntax.
-        return ' AND '.join(filters)
+        return " AND ".join(filters)
 
 
 def _build_label_filter(category, *args, **kwargs):
@@ -585,30 +595,31 @@ def _build_label_filter(category, *args, **kwargs):
             continue
 
         suffix = None
-        if key.endswith(('_prefix', '_suffix', '_greater', '_greaterequal',
-                         '_less', '_lessequal')):
-            key, suffix = key.rsplit('_', 1)
+        if key.endswith(
+            ("_prefix", "_suffix", "_greater", "_greaterequal", "_less", "_lessequal")
+        ):
+            key, suffix = key.rsplit("_", 1)
 
-        if category == 'resource' and key == 'resource_type':
-            key = 'resource.type'
+        if category == "resource" and key == "resource_type":
+            key = "resource.type"
         else:
-            key = '.'.join((category, 'label', key))
+            key = ".".join((category, "label", key))
 
-        if suffix == 'prefix':
+        if suffix == "prefix":
             term = '{key} = starts_with("{value}")'
-        elif suffix == 'suffix':
+        elif suffix == "suffix":
             term = '{key} = ends_with("{value}")'
-        elif suffix == 'greater':
-            term = '{key} > {value}'
-        elif suffix == 'greaterequal':
-            term = '{key} >= {value}'
-        elif suffix == 'less':
-            term = '{key} < {value}'
-        elif suffix == 'lessequal':
-            term = '{key} <= {value}'
+        elif suffix == "greater":
+            term = "{key} > {value}"
+        elif suffix == "greaterequal":
+            term = "{key} >= {value}"
+        elif suffix == "less":
+            term = "{key} < {value}"
+        elif suffix == "lessequal":
+            term = "{key} <= {value}"
         else:
             term = '{key} = "{value}"'
 
         terms.append(term.format(key=key, value=value))
 
-    return ' AND '.join(sorted(terms))
+    return " AND ".join(sorted(terms))
