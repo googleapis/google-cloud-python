@@ -17,16 +17,23 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
+common = gcp.CommonTemplates()
 
-
-#----------------------------------------------------------------------------
-# Generate datastore client
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Generate datastore GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
-    'datastore',
-    'v1',
-    config_path='/google/datastore/artman_datastore.yaml',
-    artman_output_name='datastore-v1')
+    "datastore",
+    "v1",
+    config_path="/google/datastore/artman_datastore.yaml",
+    artman_output_name="datastore-v1",
+)
 
-s.move(library / 'google/cloud/datastore_v1/proto')
-s.move(library / 'google/cloud/datastore_v1/gapic')
+s.move(library / "google/cloud/datastore_v1/proto")
+s.move(library / "google/cloud/datastore_v1/gapic")
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(unit_cov_level=97, cov_level=100)
+s.move(templated_files)
