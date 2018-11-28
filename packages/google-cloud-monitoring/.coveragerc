@@ -2,11 +2,8 @@
 branch = True
 
 [report]
-omit =
-  */gapic/*
-  */proto/*
+fail_under = 100
 show_missing = True
-
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
@@ -14,3 +11,8 @@ exclude_lines =
     def __repr__
     # Ignore abstract methods
     raise NotImplementedError
+omit =
+  */gapic/*.py
+  */proto/*.py
+  */google-cloud-python/core/*.py
+  */site-packages/*.py
