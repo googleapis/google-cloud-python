@@ -23,24 +23,28 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
+
+# ----------------------------------------------------------------------------
+# Generate scheduler GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
     "scheduler",
     "v1beta1",
     config_path="artman_cloudscheduler_v1beta1.yaml",
-    artman_output_name="cloudscheduler-v1beta1"
+    artman_output_name="cloudscheduler-v1beta1",
 )
 
-excludes = [
-    "README.rst",
-    "nox.py",
-    "setup.py",
-    "docs/conf.py",
-    "docs/index.rst",
-]
-s.copy(library, excludes=excludes)
+excludes = ["README.rst", "nox.py", "setup.py", "docs/conf.py", "docs/index.rst"]
+s.move(library, excludes=excludes)
 
 s.replace(
     "google/cloud/scheduler_v1beta1/gapic/cloud_scheduler_client.py",
     "google-cloud-cloudscheduler",
-    "google-cloud-scheduler"
+    "google-cloud-scheduler",
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(unit_cov_level=79, cov_level=80)
+s.move(templated_files)

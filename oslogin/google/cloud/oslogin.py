@@ -17,7 +17,4 @@ from __future__ import absolute_import
 from google.cloud.oslogin_v1 import OsLoginServiceClient
 from google.cloud.oslogin_v1 import types
 
-__all__ = (
-    'types',
-    'OsLoginServiceClient',
-)
+__all__ = ("types", "OsLoginServiceClient")

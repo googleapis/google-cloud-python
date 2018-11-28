@@ -11,3 +11,6 @@ exclude_lines =
     def __repr__
     # Ignore abstract methods
     raise NotImplementedError
+omit =
+  */gapic/*.py
+  */proto/*.py

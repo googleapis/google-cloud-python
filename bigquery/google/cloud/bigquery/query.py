@@ -43,8 +43,8 @@ class UDFResource(object):
         if not isinstance(other, UDFResource):
             return NotImplemented
         return(
-            self.udf_type == other.udf_type and
-            self.value == other.value)
+            self.udf_type == other.udf_type
+            and self.value == other.value)
 
     def __ne__(self, other):
         return not self == other
