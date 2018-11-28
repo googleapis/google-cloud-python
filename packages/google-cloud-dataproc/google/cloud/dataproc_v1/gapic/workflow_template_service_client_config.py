@@ -2,8 +2,8 @@ config = {
     "interfaces": {
         "google.cloud.dataproc.v1.WorkflowTemplateService": {
             "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": []
+                "idempotent": ["DEADLINE_EXCEEDED", "INTERNAL", "UNAVAILABLE"],
+                "non_idempotent": ["UNAVAILABLE"]
             },
             "retry_params": {
                 "default": {
@@ -18,7 +18,7 @@ config = {
             },
             "methods": {
                 "CreateWorkflowTemplate": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
@@ -39,7 +39,7 @@ config = {
                 },
                 "UpdateWorkflowTemplate": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "ListWorkflowTemplates": {
@@ -49,7 +49,7 @@ config = {
                 },
                 "DeleteWorkflowTemplate": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 }
             }

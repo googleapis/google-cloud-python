@@ -2,8 +2,8 @@ config = {
     "interfaces": {
         "google.cloud.dataproc.v1beta2.ClusterController": {
             "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": []
+                "idempotent": ["DEADLINE_EXCEEDED", "INTERNAL", "UNAVAILABLE"],
+                "non_idempotent": ["UNAVAILABLE"]
             },
             "retry_params": {
                 "default": {
@@ -28,8 +28,8 @@ config = {
                     "retry_params_name": "default"
                 },
                 "DeleteCluster": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "GetCluster": {
