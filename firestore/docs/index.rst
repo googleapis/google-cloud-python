@@ -13,7 +13,7 @@ API Reference
   query
   batch
   transaction
-  constants
+  transforms
   types
 
 

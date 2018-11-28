@@ -413,7 +413,6 @@ def test_document_get(client, cleanup):
     write_result = document.create(data)
     snapshot = document.get()
     check_snapshot(snapshot, document, data, write_result)
-    assert_timestamp_less(snapshot.create_time, snapshot.read_time)
 
 
 def test_document_delete(client, cleanup):

@@ -30,7 +30,7 @@ import six
 from google.cloud import exceptions
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud.firestore_v1beta1 import constants
+from google.cloud.firestore_v1beta1 import transforms
 from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import common_pb2
@@ -654,7 +654,7 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-_EmptyDict = constants.Sentinel("Marker for an empty dict value")
+_EmptyDict = transforms.Sentinel("Marker for an empty dict value")
 
 
 def extract_fields(document_data, prefix_path, expand_dots=False):
@@ -713,6 +713,8 @@ class DocumentExtractor(object):
         self.field_paths = []
         self.deleted_fields = []
         self.server_timestamps = []
+        self.array_removes = {}
+        self.array_unions = {}
         self.set_fields = {}
         self.empty_document = False
 
@@ -724,11 +726,17 @@ class DocumentExtractor(object):
             if field_path == prefix_path and value is _EmptyDict:
                 self.empty_document = True
 
-            elif value is constants.DELETE_FIELD:
+            elif value is transforms.DELETE_FIELD:
                 self.deleted_fields.append(field_path)
 
-            elif value is constants.SERVER_TIMESTAMP:
+            elif value is transforms.SERVER_TIMESTAMP:
                 self.server_timestamps.append(field_path)
+
+            elif isinstance(value, transforms.ArrayRemove):
+                self.array_removes[field_path] = value.values
+
+            elif isinstance(value, transforms.ArrayUnion):
+                self.array_unions[field_path] = value.values
 
             else:
                 self.field_paths.append(field_path)
@@ -739,11 +747,18 @@ class DocumentExtractor(object):
 
     @property
     def has_transforms(self):
-        return bool(self.server_timestamps)
+        return bool(
+            self.server_timestamps
+            or self.array_removes
+            or self.array_unions
+        )
 
     @property
     def transform_paths(self):
-        return sorted(self.server_timestamps)
+        return sorted(
+            self.server_timestamps
+            + list(self.array_removes)
+            + list(self.array_unions))
 
     def _get_update_mask(self, allow_empty_mask=False):
         return None
@@ -768,16 +783,34 @@ class DocumentExtractor(object):
         return update_pb
 
     def get_transform_pb(self, document_path, exists=None):
+
+        def make_array_value(values):
+            value_list = [encode_value(element) for element in values]
+            return document_pb2.ArrayValue(values=value_list)
+
+        path_field_transforms = [
+            (path, write_pb2.DocumentTransform.FieldTransform(
+                field_path=path.to_api_repr(),
+                set_to_server_value=REQUEST_TIME_ENUM,
+            )) for path in self.server_timestamps
+        ] + [
+            (path, write_pb2.DocumentTransform.FieldTransform(
+                field_path=path.to_api_repr(),
+                remove_all_from_array=make_array_value(values),
+            )) for path, values in self.array_removes.items()
+        ] + [
+            (path, write_pb2.DocumentTransform.FieldTransform(
+                field_path=path.to_api_repr(),
+                append_missing_elements=make_array_value(values),
+            )) for path, values in self.array_unions.items()
+        ]
+        field_transforms = [
+            transform for path, transform in sorted(path_field_transforms)
+        ]
         transform_pb = write_pb2.Write(
             transform=write_pb2.DocumentTransform(
                 document=document_path,
-                field_transforms=[
-                    write_pb2.DocumentTransform.FieldTransform(
-                        field_path=path.to_api_repr(),
-                        set_to_server_value=REQUEST_TIME_ENUM,
-                    )
-                    for path in self.server_timestamps
-                ],
+                field_transforms=field_transforms,
             ),
         )
         if exists is not None:
@@ -953,11 +986,20 @@ class DocumentExtractorForMerge(DocumentExtractor):
             ]
             merged_transform_paths.update(tranform_merge_paths)
 
-        # TODO:  other transforms
         self.server_timestamps = [
             path for path in self.server_timestamps
             if path in merged_transform_paths
         ]
+
+        self.array_removes = {
+            path: values for path, values in self.array_removes.items()
+            if path in merged_transform_paths
+        }
+
+        self.array_unions = {
+            path: values for path, values in self.array_unions.items()
+            if path in merged_transform_paths
+        }
 
     def apply_merge(self, merge):
         if merge is True:  # merge all fields
