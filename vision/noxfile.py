@@ -114,7 +114,7 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest")
+    session.install("mock", "pytest", "../storage")
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", "../test_utils/")
