@@ -1,9 +1,9 @@
 [flake8]
+ignore = E203, E266, E501, W503
 exclude =
   # Exclude generated code.
   **/proto/**
   **/gapic/**
-  **/types.py
   *_pb2.py
 
   # Standard linting exemptions.
