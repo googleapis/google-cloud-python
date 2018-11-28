@@ -17,14 +17,11 @@
 from google.api_core.gapic_v1 import client_info
 
 from google.cloud.error_reporting import __version__
-from google.cloud.errorreporting_v1beta1.gapic import (
-    report_errors_service_client)
-from google.cloud.errorreporting_v1beta1.proto import (
-    report_errors_service_pb2)
+from google.cloud.errorreporting_v1beta1.gapic import report_errors_service_client
+from google.cloud.errorreporting_v1beta1.proto import report_errors_service_pb2
 from google.protobuf.json_format import ParseDict
 
-_CLIENT_INFO = client_info.ClientInfo(
-    client_library_version=__version__)
+_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 
 
 def make_report_error_api(client):
@@ -37,7 +34,8 @@ def make_report_error_api(client):
     :returns: An Error Reporting API instance.
     """
     gax_client = report_errors_service_client.ReportErrorsServiceClient(
-        credentials=client._credentials, client_info=_CLIENT_INFO)
+        credentials=client._credentials, client_info=_CLIENT_INFO
+    )
     return _ErrorReportingGapicApi(gax_client, client.project)
 
 

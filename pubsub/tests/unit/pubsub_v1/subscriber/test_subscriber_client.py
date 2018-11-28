@@ -27,7 +27,7 @@ def test_init():
 
 
 def test_init_emulator(monkeypatch):
-    monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/baz/bacon/')
+    monkeypatch.setenv("PUBSUB_EMULATOR_HOST", "/baz/bacon/")
     # NOTE: When the emulator host is set, a custom channel will be used, so
     #       no credentials (mock ot otherwise) can be passed in.
     client = subscriber.Client()
@@ -37,38 +37,41 @@ def test_init_emulator(monkeypatch):
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
     channel = client.api.transport.pull._channel
-    assert channel.target().decode('utf8') == '/baz/bacon/'
+    assert channel.target().decode("utf8") == "/baz/bacon/"
 
 
 def test_class_method_factory():
     patch = mock.patch(
-        'google.oauth2.service_account.Credentials.from_service_account_file')
+        "google.oauth2.service_account.Credentials.from_service_account_file"
+    )
 
     with patch:
-        client = subscriber.Client.from_service_account_file('filename.json')
+        client = subscriber.Client.from_service_account_file("filename.json")
 
     assert isinstance(client, subscriber.Client)
 
 
 @mock.patch(
-    'google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager.'
-    'StreamingPullManager.open', autospec=True)
+    "google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager."
+    "StreamingPullManager.open",
+    autospec=True,
+)
 def test_subscribe(manager_open):
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
 
-    future = client.subscribe(
-        'sub_name_a', callback=mock.sentinel.callback)
+    future = client.subscribe("sub_name_a", callback=mock.sentinel.callback)
     assert isinstance(future, futures.StreamingPullFuture)
 
-    assert future._manager._subscription == 'sub_name_a'
-    manager_open.assert_called_once_with(
-        mock.ANY, mock.sentinel.callback)
+    assert future._manager._subscription == "sub_name_a"
+    manager_open.assert_called_once_with(mock.ANY, mock.sentinel.callback)
 
 
 @mock.patch(
-    'google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager.'
-    'StreamingPullManager.open', autospec=True)
+    "google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager."
+    "StreamingPullManager.open",
+    autospec=True,
+)
 def test_subscribe_options(manager_open):
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
@@ -76,14 +79,14 @@ def test_subscribe_options(manager_open):
     scheduler = mock.sentinel.scheduler
 
     future = client.subscribe(
-        'sub_name_a',
+        "sub_name_a",
         callback=mock.sentinel.callback,
         flow_control=flow_control,
-        scheduler=scheduler)
+        scheduler=scheduler,
+    )
     assert isinstance(future, futures.StreamingPullFuture)
 
-    assert future._manager._subscription == 'sub_name_a'
+    assert future._manager._subscription == "sub_name_a"
     assert future._manager.flow_control == flow_control
     assert future._manager._scheduler == scheduler
-    manager_open.assert_called_once_with(
-        mock.ANY, mock.sentinel.callback)
+    manager_open.assert_called_once_with(mock.ANY, mock.sentinel.callback)

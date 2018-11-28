@@ -28,9 +28,12 @@ from google.api_core.gapic_v1 import client_info
 
 # pylint: disable=line-too-long
 from google.cloud.spanner_admin_database_v1.gapic.database_admin_client import (  # noqa
-    DatabaseAdminClient)
+    DatabaseAdminClient,
+)
 from google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client import (  # noqa
-    InstanceAdminClient)
+    InstanceAdminClient,
+)
+
 # pylint: enable=line-too-long
 
 from google.cloud._http import DEFAULT_USER_AGENT
@@ -40,9 +43,8 @@ from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 from google.cloud.spanner_v1.instance import Instance
 
-_CLIENT_INFO = client_info.ClientInfo(
-    client_library_version=__version__)
-SPANNER_ADMIN_SCOPE = 'https://www.googleapis.com/auth/spanner.admin'
+_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
+SPANNER_ADMIN_SCOPE = "https://www.googleapis.com/auth/spanner.admin"
 
 
 class InstanceConfig(object):
@@ -54,6 +56,7 @@ class InstanceConfig(object):
     :type display_name: str
     :param display_name: Name of the instance configuration
     """
+
     def __init__(self, name, display_name):
         self.name = name
         self.display_name = display_name
@@ -99,6 +102,7 @@ class Client(ClientWithProject):
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
     """
+
     _instance_admin_api = None
     _database_admin_api = None
     _SET_PROJECT = True  # Used by from_service_account_json()
@@ -106,13 +110,13 @@ class Client(ClientWithProject):
     SCOPE = (SPANNER_ADMIN_SCOPE,)
     """The scopes required for Google Cloud Spanner."""
 
-    def __init__(self, project=None, credentials=None,
-                 user_agent=DEFAULT_USER_AGENT):
+    def __init__(self, project=None, credentials=None, user_agent=DEFAULT_USER_AGENT):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.
         super(Client, self).__init__(
-            project=project, credentials=credentials, _http=None)
+            project=project, credentials=credentials, _http=None
+        )
         self.user_agent = user_agent
 
     @property
@@ -142,15 +146,14 @@ class Client(ClientWithProject):
         :returns: The project name to be used with the Cloud Spanner Admin
                   API RPC service.
         """
-        return 'projects/' + self.project
+        return "projects/" + self.project
 
     @property
     def instance_admin_api(self):
         """Helper for session-related API calls."""
         if self._instance_admin_api is None:
             self._instance_admin_api = InstanceAdminClient(
-                credentials=self.credentials,
-                client_info=_CLIENT_INFO,
+                credentials=self.credentials, client_info=_CLIENT_INFO
             )
         return self._instance_admin_api
 
@@ -159,8 +162,7 @@ class Client(ClientWithProject):
         """Helper for session-related API calls."""
         if self._database_admin_api is None:
             self._database_admin_api = DatabaseAdminClient(
-                credentials=self.credentials,
-                client_info=_CLIENT_INFO,
+                credentials=self.credentials, client_info=_CLIENT_INFO
             )
         return self._database_admin_api
 
@@ -201,17 +203,21 @@ class Client(ClientWithProject):
             resources within the client's project.
         """
         metadata = _metadata_with_prefix(self.project_name)
-        path = 'projects/%s' % (self.project,)
+        path = "projects/%s" % (self.project,)
         page_iter = self.instance_admin_api.list_instance_configs(
-            path, page_size=page_size, metadata=metadata)
+            path, page_size=page_size, metadata=metadata
+        )
         page_iter.next_page_token = page_token
         page_iter.item_to_value = _item_to_instance_config
         return page_iter
 
-    def instance(self, instance_id,
-                 configuration_name=None,
-                 display_name=None,
-                 node_count=DEFAULT_NODE_COUNT):
+    def instance(
+        self,
+        instance_id,
+        configuration_name=None,
+        display_name=None,
+        node_count=DEFAULT_NODE_COUNT,
+    ):
         """Factory to create a instance associated with this client.
 
         :type instance_id: str
@@ -237,10 +243,9 @@ class Client(ClientWithProject):
         :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
         :returns: an instance owned by this client.
         """
-        return Instance(
-            instance_id, self, configuration_name, node_count, display_name)
+        return Instance(instance_id, self, configuration_name, node_count, display_name)
 
-    def list_instances(self, filter_='', page_size=None, page_token=None):
+    def list_instances(self, filter_="", page_size=None, page_token=None):
         """List instances for the client's project.
 
         See
@@ -262,9 +267,10 @@ class Client(ClientWithProject):
             resources within the client's project.
         """
         metadata = _metadata_with_prefix(self.project_name)
-        path = 'projects/%s' % (self.project,)
+        path = "projects/%s" % (self.project,)
         page_iter = self.instance_admin_api.list_instances(
-            path, page_size=page_size, metadata=metadata)
+            path, page_size=page_size, metadata=metadata
+        )
         page_iter.item_to_value = self._item_to_instance
         page_iter.next_page_token = page_token
         return page_iter
@@ -284,8 +290,7 @@ class Client(ClientWithProject):
         return Instance.from_pb(instance_pb, self)
 
 
-def _item_to_instance_config(
-        iterator, config_pb):  # pylint: disable=unused-argument
+def _item_to_instance_config(iterator, config_pb):  # pylint: disable=unused-argument
     """Convert an instance config protobuf to the native object.
 
     :type iterator: :class:`~google.api_core.page_iterator.Iterator`

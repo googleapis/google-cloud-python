@@ -25,7 +25,7 @@ def _make_credentials():
 
 class TestClient(unittest.TestCase):
 
-    project = 'PROJECT'
+    project = "PROJECT"
 
     @staticmethod
     def _get_target_class():
@@ -52,9 +52,7 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
 
-        patch = mock.patch(
-            'google.cloud.trace.client.make_trace_api',
-            new=make_api)
+        patch = mock.patch("google.cloud.trace.client.make_trace_api", new=make_api)
 
         with patch:
             api = client.trace_api
@@ -67,48 +65,46 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
-        name = 'projects/{}'.format(self.project)
-        spans = 'fake_spans_for_test'
+        name = "projects/{}".format(self.project)
+        spans = "fake_spans_for_test"
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.patch_traces = mock.Mock()
         patch = mock.patch(
-            'google.cloud.trace.client.make_trace_api',
-            return_value=mock_trace_api)
+            "google.cloud.trace.client.make_trace_api", return_value=mock_trace_api
+        )
 
         with patch:
             client.batch_write_spans(name=name, spans=spans)
 
         mock_trace_api.batch_write_spans.assert_called_with(
-            name=name,
-            spans=spans,
-            retry=None,
-            timeout=None)
+            name=name, spans=spans, retry=None, timeout=None
+        )
 
     def test_create_span(self):
         from google.cloud.trace._gapic import _TraceAPI
 
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
-        name = 'projects/{}'.format(self.project)
-        span_id = '1111'
-        display_name = 'test display name'
-        start_time = 'test start time'
-        end_time = 'test end time'
-        parent_span_id = 'test parent span id'
-        attributes = 'test attributes'
-        stack_trace = 'test stack trace'
-        time_events = 'test time events'
-        links = 'test links'
-        status = 'test status'
-        same_process_as_parent_span = 'test same process as parent span'
-        child_span_count = 'test child span count'
+        name = "projects/{}".format(self.project)
+        span_id = "1111"
+        display_name = "test display name"
+        start_time = "test start time"
+        end_time = "test end time"
+        parent_span_id = "test parent span id"
+        attributes = "test attributes"
+        stack_trace = "test stack trace"
+        time_events = "test time events"
+        links = "test links"
+        status = "test status"
+        same_process_as_parent_span = "test same process as parent span"
+        child_span_count = "test child span count"
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.patch_traces = mock.Mock()
         patch = mock.patch(
-            'google.cloud.trace.client.make_trace_api',
-            return_value=mock_trace_api)
+            "google.cloud.trace.client.make_trace_api", return_value=mock_trace_api
+        )
 
         with patch:
             client.create_span(
@@ -124,7 +120,8 @@ class TestClient(unittest.TestCase):
                 links=links,
                 status=status,
                 same_process_as_parent_span=same_process_as_parent_span,
-                child_span_count=child_span_count)
+                child_span_count=child_span_count,
+            )
 
         mock_trace_api.create_span.assert_called_with(
             name=name,
@@ -139,4 +136,5 @@ class TestClient(unittest.TestCase):
             links=links,
             status=status,
             same_process_as_parent_span=same_process_as_parent_span,
-            child_span_count=child_span_count)
+            child_span_count=child_span_count,
+        )

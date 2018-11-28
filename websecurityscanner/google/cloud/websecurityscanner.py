@@ -18,8 +18,4 @@ from google.cloud.websecurityscanner_v1alpha import WebSecurityScannerClient
 from google.cloud.websecurityscanner_v1alpha import enums
 from google.cloud.websecurityscanner_v1alpha import types
 
-__all__ = (
-    'enums',
-    'types',
-    'WebSecurityScannerClient',
-)
+__all__ = ("enums", "types", "WebSecurityScannerClient")

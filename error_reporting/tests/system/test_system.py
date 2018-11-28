@@ -17,17 +17,15 @@ import operator
 import unittest
 
 from google.cloud import error_reporting
-from google.cloud.errorreporting_v1beta1.gapic import (
-    error_stats_service_client)
-from google.cloud.errorreporting_v1beta1.proto import (
-    error_stats_service_pb2)
+from google.cloud.errorreporting_v1beta1.gapic import error_stats_service_client
+from google.cloud.errorreporting_v1beta1.proto import error_stats_service_pb2
 from google.protobuf.duration_pb2 import Duration
 
 from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
 
 
-ERROR_MSG = 'Stackdriver Error Reporting System Test'
+ERROR_MSG = "Stackdriver Error Reporting System Test"
 
 
 def setUpModule():
@@ -40,6 +38,7 @@ class Config(object):
     This is a mutable stand-in to allow test set-up to modify
     global state.
     """
+
     CLIENT = None
 
 
@@ -57,7 +56,8 @@ def _list_groups(client):
     :returns: Iterable of :class:`~.error_stats_service_pb2.ErrorGroupStats`.
     """
     gax_api = error_stats_service_client.ErrorStatsServiceClient(
-        credentials=client._credentials)
+        credentials=client._credentials
+    )
     project_name = gax_api.project_path(client.project)
 
     time_range = error_stats_service_pb2.QueryTimeRange()
@@ -66,7 +66,8 @@ def _list_groups(client):
     duration = Duration(seconds=60 * 60)
 
     return gax_api.list_group_stats(
-        project_name, time_range, timed_count_duration=duration)
+        project_name, time_range, timed_count_duration=duration
+    )
 
 
 def _simulate_exception(class_name, client):
@@ -106,17 +107,16 @@ def _get_error_count(class_name, client):
 
 
 class TestErrorReporting(unittest.TestCase):
-
     def test_report_exception(self):
         # Get a class name unique to this test case.
-        class_name = 'RuntimeError' + unique_resource_id('_')
+        class_name = "RuntimeError" + unique_resource_id("_")
 
         # Simulate an error: group won't exist until we report
         # first exception.
         _simulate_exception(class_name, Config.CLIENT)
 
         is_one = functools.partial(operator.eq, 1)
-        is_one.__name__ = 'is_one'  # partial() has no name.
+        is_one.__name__ = "is_one"  # partial() has no name.
         retry = RetryResult(is_one, max_tries=6)
         wrapped_get_count = retry(_get_error_count)
 

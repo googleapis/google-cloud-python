@@ -25,11 +25,8 @@ def test_queue_callback_worker():
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
-    with mock.patch.object(queue.Queue, 'get') as get:
-        get.side_effect = (
-            mock.sentinel.A,
-            helper_threads.STOP,
-            queue.Empty())
+    with mock.patch.object(queue.Queue, "get") as get:
+        get.side_effect = (mock.sentinel.A, helper_threads.STOP, queue.Empty())
         qct()
 
         # Assert that we got the expected calls.
@@ -44,12 +41,13 @@ def test_queue_callback_worker_stop_with_extra_items():
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
-    with mock.patch.object(queue.Queue, 'get') as get:
+    with mock.patch.object(queue.Queue, "get") as get:
         get.side_effect = (
             mock.sentinel.A,
             helper_threads.STOP,
             mock.sentinel.B,
-            queue.Empty())
+            queue.Empty(),
+        )
         qct()
 
         # Assert that we got the expected calls.
@@ -64,20 +62,21 @@ def test_queue_callback_worker_get_many():
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
-    with mock.patch.object(queue.Queue, 'get') as get:
+    with mock.patch.object(queue.Queue, "get") as get:
         get.side_effect = (
             mock.sentinel.A,
             queue.Empty(),
             mock.sentinel.B,
             helper_threads.STOP,
-            queue.Empty())
+            queue.Empty(),
+        )
         qct()
 
         # Assert that we got the expected calls.
         assert get.call_count == 5
-        callback.assert_has_calls([
-            mock.call([(mock.sentinel.A)]),
-            mock.call([(mock.sentinel.B)])])
+        callback.assert_has_calls(
+            [mock.call([(mock.sentinel.A)]), mock.call([(mock.sentinel.B)])]
+        )
 
 
 def test_queue_callback_worker_max_items():
@@ -87,19 +86,20 @@ def test_queue_callback_worker_max_items():
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
-    with mock.patch.object(queue.Queue, 'get') as get:
+    with mock.patch.object(queue.Queue, "get") as get:
         get.side_effect = (
             mock.sentinel.A,
             mock.sentinel.B,
             helper_threads.STOP,
-            queue.Empty())
+            queue.Empty(),
+        )
         qct()
 
         # Assert that we got the expected calls.
         assert get.call_count == 3
-        callback.assert_has_calls([
-            mock.call([(mock.sentinel.A)]),
-            mock.call([(mock.sentinel.B)])])
+        callback.assert_has_calls(
+            [mock.call([(mock.sentinel.A)]), mock.call([(mock.sentinel.B)])]
+        )
 
 
 def test_queue_callback_worker_exception():
@@ -109,11 +109,8 @@ def test_queue_callback_worker_exception():
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
-    with mock.patch.object(queue.Queue, 'get') as get:
-        get.side_effect = (
-            mock.sentinel.A,
-            helper_threads.STOP,
-            queue.Empty())
+    with mock.patch.object(queue.Queue, "get") as get:
+        get.side_effect = (mock.sentinel.A, helper_threads.STOP, queue.Empty())
         qct()
 
         # Assert that we got the expected calls.

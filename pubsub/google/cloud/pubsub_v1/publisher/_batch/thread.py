@@ -28,10 +28,7 @@ from google.cloud.pubsub_v1.publisher._batch import base
 
 
 _LOGGER = logging.getLogger(__name__)
-_CAN_COMMIT = (
-    base.BatchStatus.ACCEPTING_MESSAGES,
-    base.BatchStatus.STARTING,
-)
+_CAN_COMMIT = (base.BatchStatus.ACCEPTING_MESSAGES, base.BatchStatus.STARTING)
 
 
 class Batch(base.Batch):
@@ -68,6 +65,7 @@ class Batch(base.Batch):
             has elapsed. Defaults to True unless ``settings.max_latency`` is
             inf.
     """
+
     def __init__(self, client, topic, settings, autocommit=True):
         self._client = client
         self._topic = topic
@@ -84,10 +82,9 @@ class Batch(base.Batch):
         # If max latency is specified, start a thread to monitor the batch and
         # commit when the max latency is reached.
         self._thread = None
-        if autocommit and self._settings.max_latency < float('inf'):
+        if autocommit and self._settings.max_latency < float("inf"):
             self._thread = threading.Thread(
-                name='Thread-MonitorBatchPublisher',
-                target=self.monitor,
+                name="Thread-MonitorBatchPublisher", target=self.monitor
             )
             self._thread.start()
 
@@ -164,8 +161,7 @@ class Batch(base.Batch):
 
         # Start a new thread to actually handle the commit.
         commit_thread = threading.Thread(
-            name='Thread-CommitBatchPublisher',
-            target=self._commit,
+            name="Thread-CommitBatchPublisher", target=self._commit
         )
         commit_thread.start()
 
@@ -188,12 +184,12 @@ class Batch(base.Batch):
                 # If, in the intervening period between when this method was
                 # called and now, the batch started to be committed, or
                 # completed a commit, then no-op at this point.
-                _LOGGER.debug('Batch is already in progress, exiting commit')
+                _LOGGER.debug("Batch is already in progress, exiting commit")
                 return
 
             # Sanity check: If there are no messages, no-op.
             if not self._messages:
-                _LOGGER.debug('No messages to publish, exiting commit')
+                _LOGGER.debug("No messages to publish, exiting commit")
                 self._status = base.BatchStatus.SUCCESS
                 return
 
@@ -202,10 +198,7 @@ class Batch(base.Batch):
             start = time.time()
 
             try:
-                response = self._client.api.publish(
-                    self._topic,
-                    self._messages,
-                )
+                response = self._client.api.publish(self._topic, self._messages)
             except google.api_core.exceptions.GoogleAPICallError as exc:
                 # We failed to publish, set the exception on all futures and
                 # exit.
@@ -214,12 +207,11 @@ class Batch(base.Batch):
                 for future in self._futures:
                     future.set_exception(exc)
 
-                _LOGGER.exception(
-                    'Failed to publish %s messages.', len(self._futures))
+                _LOGGER.exception("Failed to publish %s messages.", len(self._futures))
                 return
 
             end = time.time()
-            _LOGGER.debug('gRPC Publish took %s seconds.', end - start)
+            _LOGGER.debug("gRPC Publish took %s seconds.", end - start)
 
             if len(response.message_ids) == len(self._futures):
                 # Iterate over the futures on the queue and return the response
@@ -234,14 +226,17 @@ class Batch(base.Batch):
                 # the number of futures I have, then something went wrong.
                 self._status = base.BatchStatus.ERROR
                 exception = exceptions.PublishError(
-                    'Some messages were not successfully published.')
+                    "Some messages were not successfully published."
+                )
 
                 for future in self._futures:
                     future.set_exception(exception)
 
                 _LOGGER.error(
-                    'Only %s of %s messages were published.',
-                    len(response.message_ids), len(self._futures))
+                    "Only %s of %s messages were published.",
+                    len(response.message_ids),
+                    len(self._futures),
+                )
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -255,7 +250,7 @@ class Batch(base.Batch):
         # Sleep for however long we should be waiting.
         time.sleep(self._settings.max_latency)
 
-        _LOGGER.debug('Monitor is waking up')
+        _LOGGER.debug("Monitor is waking up")
         return self._commit()
 
     def publish(self, message):
@@ -289,8 +284,8 @@ class Batch(base.Batch):
             new_size = self._size + message.ByteSize()
             new_count = len(self._messages) + 1
             overflow = (
-                new_size > self.settings.max_bytes or
-                new_count >= self._settings.max_messages
+                new_size > self.settings.max_bytes
+                or new_count >= self._settings.max_messages
             )
 
             if not self._messages or not overflow:

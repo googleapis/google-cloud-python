@@ -54,10 +54,7 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -70,31 +67,33 @@ class TestVideoIntelligenceServiceClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = video_intelligence_pb2.AnnotateVideoResponse(
-            **expected_response)
+            **expected_response
+        )
         operation = operations_pb2.Operation(
-            name='operations/test_annotate_video', done=True)
+            name="operations/test_annotate_video", done=True
+        )
         operation.response.Pack(expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = videointelligence_v1.VideoIntelligenceServiceClient()
 
         # Setup Request
-        input_uri = 'gs://demomaker/cat.mp4'
+        input_uri = "gs://demomaker/cat.mp4"
         features_element = enums.Feature.LABEL_DETECTION
         features = [features_element]
 
-        response = client.annotate_video(
-            input_uri=input_uri, features=features)
+        response = client.annotate_video(input_uri=input_uri, features=features)
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
         expected_request = video_intelligence_pb2.AnnotateVideoRequest(
-            input_uri=input_uri, features=features)
+            input_uri=input_uri, features=features
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -102,22 +101,22 @@ class TestVideoIntelligenceServiceClient(object):
         # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
-            name='operations/test_annotate_video_exception', done=True)
+            name="operations/test_annotate_video_exception", done=True
+        )
         operation.error.CopyFrom(error)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = videointelligence_v1.VideoIntelligenceServiceClient()
 
         # Setup Request
-        input_uri = 'gs://demomaker/cat.mp4'
+        input_uri = "gs://demomaker/cat.mp4"
         features_element = enums.Feature.LABEL_DETECTION
         features = [features_element]
 
-        response = client.annotate_video(
-            input_uri=input_uri, features=features)
+        response = client.annotate_video(input_uri=input_uri, features=features)
         exception = response.exception()
         assert exception.errors[0] == error

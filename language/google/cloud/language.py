@@ -18,8 +18,4 @@ from google.cloud.language_v1 import LanguageServiceClient
 from google.cloud.language_v1 import enums
 from google.cloud.language_v1 import types
 
-__all__ = (
-    'enums',
-    'types',
-    'LanguageServiceClient',
-)
+__all__ = ("enums", "types", "LanguageServiceClient")
