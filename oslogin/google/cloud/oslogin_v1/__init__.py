@@ -24,7 +24,4 @@ class OsLoginServiceClient(os_login_service_client.OsLoginServiceClient):
     __doc__ = os_login_service_client.OsLoginServiceClient.__doc__
 
 
-__all__ = (
-    'types',
-    'OsLoginServiceClient',
-)
+__all__ = ("types", "OsLoginServiceClient")
