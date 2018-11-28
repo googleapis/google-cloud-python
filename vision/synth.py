@@ -76,10 +76,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=36, cov_level=36)
-s.move(templated_files)
-s.replace(
-    "noxfile.py",
-    "session.install\(\"-e\", \"../test_utils/\"",
-    "\g<0>, \"../storage\""
+templated_files = common.py_library(
+    unit_cov_level=36, cov_level=36, system_test_dependencies=["../storage"]
 )
+s.move(templated_files)
