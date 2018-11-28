@@ -23,7 +23,7 @@ from google.protobuf import timestamp_pb2
 
 class TestSystemTraceService(object):
     def test_list_traces(self):
-        project_id = os.environ['PROJECT_ID']
+        project_id = os.environ["PROJECT_ID"]
 
         client = trace_v1.TraceServiceClient()
         project_id_2 = project_id

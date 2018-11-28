@@ -19,10 +19,7 @@ import mock
 
 
 def _str_to_truncatablestr(str_to_convert):
-    result = {
-        'value': str_to_convert,
-        'truncated_byte_count': 0,
-    }
+    result = {"value": str_to_convert, "truncated_byte_count": 0}
     return result
 
 
@@ -30,109 +27,86 @@ class _Base(object):
     from google.cloud.trace_v2.gapic import enums
 
     # Set the constants used for tests
-    project = 'PROJECT'
-    trace_id = 'c801e4119a064c659fe052d88f1d461b'
-    span_id = '1234123412341234'
-    parent_span_id = '1111000011110000'
-    span_name = 'projects/{}/traces/{}/spans/{}'.format(
-        project, trace_id, span_id)
+    project = "PROJECT"
+    trace_id = "c801e4119a064c659fe052d88f1d461b"
+    span_id = "1234123412341234"
+    parent_span_id = "1111000011110000"
+    span_name = "projects/{}/traces/{}/spans/{}".format(project, trace_id, span_id)
     start_time = datetime.datetime.utcnow()
     end_time = datetime.datetime.utcnow()
     type = enums.Span.TimeEvent.MessageEvent.Type.SENT
-    display_name = 'test display name'
+    display_name = "test display name"
 
     attributes = {
-        'attributeMap': {
-            'test_int_key': {
-                'int_value': 123,
-            },
-            'test_str_key': {
-                'string_value': _str_to_truncatablestr('str_value')
-            },
-            'test_bool_key': {
-                'bool_value': True,
-            }
+        "attributeMap": {
+            "test_int_key": {"int_value": 123},
+            "test_str_key": {"string_value": _str_to_truncatablestr("str_value")},
+            "test_bool_key": {"bool_value": True},
         }
     }
 
-    st_function_name = 'test function name'
-    st_origin_name = 'test original name'
-    st_file_name = 'test file name'
+    st_function_name = "test function name"
+    st_origin_name = "test original name"
+    st_file_name = "test file name"
     st_line_number = 12
     st_column_number = 2
-    st_test_module = 'test module'
-    st_build_id = 'test build id'
-    st_source_version = 'test source version'
+    st_test_module = "test module"
+    st_build_id = "test build id"
+    st_source_version = "test source version"
     stack_trace = {
-        'stack_frames': {
-            'frame': [
+        "stack_frames": {
+            "frame": [
                 {
-                    'function_name':
-                        _str_to_truncatablestr(
-                            st_function_name),
-                    'original_function_name':
-                        _str_to_truncatablestr(st_origin_name),
-                    'file_name':
-                        _str_to_truncatablestr(st_file_name),
-                    'line_number': st_line_number,
-                    'column_number': st_column_number,
-                    'load_module': {
-                        'module':
-                            _str_to_truncatablestr(
-                                st_test_module),
-                        'build_id':
-                            _str_to_truncatablestr(
-                                st_build_id),
-                        },
-                    'source_version':
-                        _str_to_truncatablestr(
-                            st_source_version),
-                },
+                    "function_name": _str_to_truncatablestr(st_function_name),
+                    "original_function_name": _str_to_truncatablestr(st_origin_name),
+                    "file_name": _str_to_truncatablestr(st_file_name),
+                    "line_number": st_line_number,
+                    "column_number": st_column_number,
+                    "load_module": {
+                        "module": _str_to_truncatablestr(st_test_module),
+                        "build_id": _str_to_truncatablestr(st_build_id),
+                    },
+                    "source_version": _str_to_truncatablestr(st_source_version),
+                }
             ],
-            'dropped_frames_count': 0,
+            "dropped_frames_count": 0,
         },
-        'stack_trace_hash_id': 1234,
+        "stack_trace_hash_id": 1234,
     }
 
-    te_time = datetime.datetime.utcnow().isoformat() + 'Z'
-    te_description = 'test description'
+    te_time = datetime.datetime.utcnow().isoformat() + "Z"
+    te_description = "test description"
     time_events = {
-        'time_event': [
+        "time_event": [
             {
-                'time': te_time,
-                'annotation': {
-                    'description':
-                        _str_to_truncatablestr(te_description),
-                    'attributes': attributes,
+                "time": te_time,
+                "annotation": {
+                    "description": _str_to_truncatablestr(te_description),
+                    "attributes": attributes,
                 },  # TimeEvent can contain either annotation
                 # or message_event
             }
-
         ],
-        'dropped_annotations_count': 0,
-        'dropped_message_events_count': 0
+        "dropped_annotations_count": 0,
+        "dropped_message_events_count": 0,
     }
 
-    link_span_id = '1111222211112222'
+    link_span_id = "1111222211112222"
     links = {
-        'link': [
+        "link": [
             {
-                'trace_id': trace_id,
-                'span_id': link_span_id,
-                'type': type,
-                'attributes': attributes,
-            },
+                "trace_id": trace_id,
+                "span_id": link_span_id,
+                "type": type,
+                "attributes": attributes,
+            }
         ],
-        'dropped_links_count': 0,
+        "dropped_links_count": 0,
     }
 
     status_code = 888
-    status_message = 'test status message'
-    status = {
-        'code': status_code,
-        'message': status_message,
-        'details': [],
-    }
+    status_message = "test status message"
+    status = {"code": status_code, "message": status_message, "details": []}
 
     same_process_as_parent_span = True
     child_span_count = 0
@@ -142,7 +116,6 @@ class _Base(object):
 
 
 class Test__TraceAPI(_Base, unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.trace._gapic import _TraceAPI
@@ -161,28 +134,27 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         from google.cloud.trace._gapic import _dict_mapping_to_pb
 
         spans = {
-            'spans': [
+            "spans": [
                 {
-                    'name': self.span_name,
-                    'span_id': self.span_id,
-                    'parent_span_id': self.parent_span_id,
-                    'display_name': _str_to_truncatablestr(self.display_name),
-                    'start_time': self.start_time.isoformat() + 'Z',
-                    'end_time': self.end_time.isoformat() + 'Z',
-                    'attributes': self.attributes,
-                    'stack_trace': self.stack_trace,
-                    'time_events': self.time_events,
-                    'links': self.links,
-                    'status': self.status,
-                    'same_process_as_parent_span':
-                        self.same_process_as_parent_span,
-                    'child_span_count': self.child_span_count,
-                },
-            ],
+                    "name": self.span_name,
+                    "span_id": self.span_id,
+                    "parent_span_id": self.parent_span_id,
+                    "display_name": _str_to_truncatablestr(self.display_name),
+                    "start_time": self.start_time.isoformat() + "Z",
+                    "end_time": self.end_time.isoformat() + "Z",
+                    "attributes": self.attributes,
+                    "stack_trace": self.stack_trace,
+                    "time_events": self.time_events,
+                    "links": self.links,
+                    "status": self.status,
+                    "same_process_as_parent_span": self.same_process_as_parent_span,
+                    "child_span_count": self.child_span_count,
+                }
+            ]
         }
 
-        spans_pb_list = [_dict_mapping_to_pb(spans['spans'][0], 'Span')]
-        project_name = 'projects/{}'.format(self.project)
+        spans_pb_list = [_dict_mapping_to_pb(spans["spans"][0], "Span")]
+        project_name = "projects/{}".format(self.project)
 
         gapic_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
         api = self._make_one(gapic_api, None)
@@ -191,10 +163,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         api.batch_write_spans(project_name, spans, retry, timeout)
 
         gapic_api.batch_write_spans.assert_called_with(
-            name=project_name,
-            spans=spans_pb_list,
-            retry=retry,
-            timeout=timeout)
+            name=project_name, spans=spans_pb_list, retry=retry, timeout=timeout
+        )
 
     def test_create_span_default(self):
         from google.cloud.trace_v2.gapic import trace_service_client
@@ -208,10 +178,12 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             span_id=self.span_id,
             display_name=_str_to_truncatablestr(self.display_name),
             start_time=self.start_time,
-            end_time=self.end_time)
+            end_time=self.end_time,
+        )
 
         display_name_pb = _dict_mapping_to_pb(
-            _str_to_truncatablestr(self.display_name), 'TruncatableString')
+            _str_to_truncatablestr(self.display_name), "TruncatableString"
+        )
         start_time_pb = _datetime_to_pb_timestamp(self.start_time)
         end_time_pb = _datetime_to_pb_timestamp(self.end_time)
 
@@ -228,7 +200,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             links=None,
             status=None,
             same_process_as_parent_span=None,
-            child_span_count=None)
+            child_span_count=None,
+        )
 
     def test_create_span_explicit(self):
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -236,7 +209,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             _dict_mapping_to_pb,
             _span_attrs_to_pb,
             _status_mapping_to_pb,
-            _value_to_pb)
+            _value_to_pb,
+        )
         from google.cloud.trace_v2.gapic import trace_service_client
 
         gapic_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
@@ -254,21 +228,23 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             links=self.links,
             status=self.status,
             same_process_as_parent_span=self.same_process_as_parent_span,
-            child_span_count=self.child_span_count)
+            child_span_count=self.child_span_count,
+        )
 
         display_name_pb = _dict_mapping_to_pb(
-            _str_to_truncatablestr(self.display_name), 'TruncatableString')
+            _str_to_truncatablestr(self.display_name), "TruncatableString"
+        )
         start_time_pb = _datetime_to_pb_timestamp(self.start_time)
         end_time_pb = _datetime_to_pb_timestamp(self.end_time)
-        attributes_pb = _span_attrs_to_pb(self.attributes, 'Attributes')
-        stack_trace_pb = _dict_mapping_to_pb(self.stack_trace, 'StackTrace')
-        time_events_pb = _span_attrs_to_pb(self.time_events, 'TimeEvents')
-        links_pb = _span_attrs_to_pb(self.links, 'Links')
+        attributes_pb = _span_attrs_to_pb(self.attributes, "Attributes")
+        stack_trace_pb = _dict_mapping_to_pb(self.stack_trace, "StackTrace")
+        time_events_pb = _span_attrs_to_pb(self.time_events, "TimeEvents")
+        links_pb = _span_attrs_to_pb(self.links, "Links")
         status_pb = _status_mapping_to_pb(self.status)
         same_process_as_parent_span_pb = _value_to_pb(
-            self.same_process_as_parent_span, 'BoolValue')
-        child_span_count_pb = _value_to_pb(
-            self.child_span_count, 'Int32Value')
+            self.same_process_as_parent_span, "BoolValue"
+        )
+        child_span_count_pb = _value_to_pb(self.child_span_count, "Int32Value")
 
         gapic_api.create_span.assert_called_with(
             name=self.span_name,
@@ -283,11 +259,11 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             links=links_pb,
             status=status_pb,
             same_process_as_parent_span=same_process_as_parent_span_pb,
-            child_span_count=child_span_count_pb)
+            child_span_count=child_span_count_pb,
+        )
 
 
 class Test_make_trace_api(unittest.TestCase):
-
     def _call_fut(self, client):
         from google.cloud.trace._gapic import make_trace_api
 
@@ -297,7 +273,7 @@ class Test_make_trace_api(unittest.TestCase):
         from google.cloud.trace._gapic import _TraceAPI
 
         credentials = object()
-        client = mock.Mock(_credentials=credentials, spec=['_credentials'])
+        client = mock.Mock(_credentials=credentials, spec=["_credentials"])
         generated_api_kwargs = []
         generated = object()
 
@@ -305,13 +281,13 @@ class Test_make_trace_api(unittest.TestCase):
             generated_api_kwargs.append(kwargs)
             return generated
 
-        host = 'foo.apis.invalid'
+        host = "foo.apis.invalid"
         generated_api.SERVICE_ADDRESS = host
 
         patch_api = mock.patch(
-            'google.cloud.trace._gapic.trace_service_client.'
-            'TraceServiceClient',
-            new=generated_api)
+            "google.cloud.trace._gapic.trace_service_client." "TraceServiceClient",
+            new=generated_api,
+        )
 
         with patch_api:
             trace_api = self._call_fut(client)
