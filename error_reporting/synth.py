@@ -61,5 +61,5 @@ s.replace(targets, DISCARD_AUTH_BOILERPLATE, r"")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=42, cov_level=43)
+templated_files = common.py_library(unit_cov_level=97, cov_level=100)
 s.move(templated_files)

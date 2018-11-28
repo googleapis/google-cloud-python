@@ -38,5 +38,5 @@ s.move(library, excludes=["README.rst", "setup.py", "nox*.py", "docs/**/*"])
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=85, cov_level=85)
+templated_files = common.py_library(unit_cov_level=97, cov_level=100)
 s.move(templated_files)
