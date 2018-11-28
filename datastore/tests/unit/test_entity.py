@@ -14,13 +14,12 @@
 
 import unittest
 
-_PROJECT = 'PROJECT'
-_KIND = 'KIND'
+_PROJECT = "PROJECT"
+_KIND = "KIND"
 _ID = 1234
 
 
 class TestEntity(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.entity import Entity
@@ -39,18 +38,22 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(sorted(entity.exclude_from_indexes), [])
 
     def test_ctor_explicit(self):
-        _EXCLUDE_FROM_INDEXES = ['foo', 'bar']
+        _EXCLUDE_FROM_INDEXES = ["foo", "bar"]
         key = _Key()
-        entity = self._make_one(
-            key=key, exclude_from_indexes=_EXCLUDE_FROM_INDEXES)
-        self.assertEqual(sorted(entity.exclude_from_indexes),
-                         sorted(_EXCLUDE_FROM_INDEXES))
+        entity = self._make_one(key=key, exclude_from_indexes=_EXCLUDE_FROM_INDEXES)
+        self.assertEqual(
+            sorted(entity.exclude_from_indexes), sorted(_EXCLUDE_FROM_INDEXES)
+        )
 
     def test_ctor_bad_exclude_from_indexes(self):
         BAD_EXCLUDE_FROM_INDEXES = object()
         key = _Key()
-        self.assertRaises(TypeError, self._make_one, key=key,
-                          exclude_from_indexes=BAD_EXCLUDE_FROM_INDEXES)
+        self.assertRaises(
+            TypeError,
+            self._make_one,
+            key=key,
+            exclude_from_indexes=BAD_EXCLUDE_FROM_INDEXES,
+        )
 
     def test___eq_____ne___w_non_entity(self):
         from google.cloud.datastore.key import Key
@@ -75,7 +78,7 @@ class TestEntity(unittest.TestCase):
     def test___eq_____ne___w_same_keys(self):
         from google.cloud.datastore.key import Key
 
-        name = 'foo'
+        name = "foo"
         value = 42
         meaning = 9
 
@@ -97,10 +100,10 @@ class TestEntity(unittest.TestCase):
 
         key1 = Key(_KIND, _ID, project=_PROJECT)
         entity1 = self._make_one(key=key1)
-        entity1['foo'] = 'Foo'
+        entity1["foo"] = "Foo"
         key2 = Key(_KIND, _ID, project=_PROJECT)
         entity2 = self._make_one(key=key2)
-        entity1['bar'] = 'Bar'
+        entity1["bar"] = "Bar"
         self.assertFalse(entity1 == entity2)
         self.assertTrue(entity1 != entity2)
 
@@ -110,9 +113,9 @@ class TestEntity(unittest.TestCase):
         key1 = Key(_KIND, _ID, project=_PROJECT)
         key2 = Key(_KIND, _ID, project=_PROJECT)
         entity1 = self._make_one(key=key1)
-        entity1['some_key'] = key1
+        entity1["some_key"] = key1
         entity2 = self._make_one(key=key1)
-        entity2['some_key'] = key2
+        entity2["some_key"] = key2
         self.assertTrue(entity1 == entity2)
         self.assertFalse(entity1 != entity2)
 
@@ -124,9 +127,9 @@ class TestEntity(unittest.TestCase):
         key1 = Key(_KIND, _ID1, project=_PROJECT)
         key2 = Key(_KIND, _ID2, project=_PROJECT)
         entity1 = self._make_one(key=key1)
-        entity1['some_key'] = key1
+        entity1["some_key"] = key1
         entity2 = self._make_one(key=key1)
-        entity2['some_key'] = key2
+        entity2["some_key"] = key2
         self.assertFalse(entity1 == entity2)
         self.assertTrue(entity1 != entity2)
 
@@ -136,12 +139,12 @@ class TestEntity(unittest.TestCase):
         key = Key(_KIND, _ID, project=_PROJECT)
         entity1 = self._make_one(key=key)
         sub1 = self._make_one()
-        sub1.update({'foo': 'Foo'})
-        entity1['some_entity'] = sub1
+        sub1.update({"foo": "Foo"})
+        entity1["some_entity"] = sub1
         entity2 = self._make_one(key=key)
         sub2 = self._make_one()
-        sub2.update({'foo': 'Foo'})
-        entity2['some_entity'] = sub2
+        sub2.update({"foo": "Foo"})
+        entity2["some_entity"] = sub2
         self.assertTrue(entity1 == entity2)
         self.assertFalse(entity1 != entity2)
 
@@ -151,19 +154,19 @@ class TestEntity(unittest.TestCase):
         key = Key(_KIND, _ID, project=_PROJECT)
         entity1 = self._make_one(key=key)
         sub1 = self._make_one()
-        sub1.update({'foo': 'Foo'})
-        entity1['some_entity'] = sub1
+        sub1.update({"foo": "Foo"})
+        entity1["some_entity"] = sub1
         entity2 = self._make_one(key=key)
         sub2 = self._make_one()
-        sub2.update({'foo': 'Bar'})
-        entity2['some_entity'] = sub2
+        sub2.update({"foo": "Bar"})
+        entity2["some_entity"] = sub2
         self.assertFalse(entity1 == entity2)
         self.assertTrue(entity1 != entity2)
 
     def test__eq__same_value_different_exclude(self):
         from google.cloud.datastore.key import Key
 
-        name = 'foo'
+        name = "foo"
         value = 42
         key = Key(_KIND, _ID, project=_PROJECT)
 
@@ -178,7 +181,7 @@ class TestEntity(unittest.TestCase):
     def test__eq__same_value_different_meanings(self):
         from google.cloud.datastore.key import Key
 
-        name = 'foo'
+        name = "foo"
         value = 42
         meaning = 9
         key = Key(_KIND, _ID, project=_PROJECT)
@@ -197,31 +200,31 @@ class TestEntity(unittest.TestCase):
 
         key = Key(_KIND, _ID, project=_PROJECT)
         entity = self._make_one(key=key)
-        self.assertEqual(entity.id,  _ID)
+        self.assertEqual(entity.id, _ID)
 
     def test_id_none(self):
 
         entity = self._make_one(key=None)
-        self.assertEqual(entity.id,  None)
+        self.assertEqual(entity.id, None)
 
     def test___repr___no_key_empty(self):
         entity = self._make_one()
-        self.assertEqual(repr(entity), '<Entity {}>')
+        self.assertEqual(repr(entity), "<Entity {}>")
 
     def test___repr___w_key_non_empty(self):
         key = _Key()
-        flat_path = ('bar', 12, 'baz', 'himom')
+        flat_path = ("bar", 12, "baz", "himom")
         key._flat_path = flat_path
         entity = self._make_one(key=key)
-        entity_vals = {'foo': 'Foo'}
+        entity_vals = {"foo": "Foo"}
         entity.update(entity_vals)
-        expected = '<Entity%s %s>' % (flat_path, entity_vals)
+        expected = "<Entity%s %s>" % (flat_path, entity_vals)
         self.assertEqual(repr(entity), expected)
 
 
 class _Key(object):
     _MARKER = object()
-    _key = 'KEY'
+    _key = "KEY"
     _partial = False
     _path = None
     _id = None

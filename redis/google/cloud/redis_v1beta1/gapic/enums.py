@@ -35,6 +35,7 @@ class Instance(object):
           found in the ``status_message`` field.
           MAINTENANCE (int): Maintenance is being performed on this Redis instance.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -52,6 +53,7 @@ class Instance(object):
           BASIC (int): BASIC tier: standalone instance
           STANDARD_HA (int): STANDARD\_HA tier: highly available primary/replica instances
         """
+
         TIER_UNSPECIFIED = 0
         BASIC = 1
         STANDARD_HA = 3

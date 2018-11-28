@@ -71,6 +71,7 @@ class RecognitionConfig(object):
           RTP header is replaced with a single byte containing the block length.
           Only Speex wideband is supported. ``sample_rate_hertz`` must be 16000.
         """
+
         ENCODING_UNSPECIFIED = 0
         LINEAR16 = 1
         FLAC = 2
@@ -105,6 +106,7 @@ class RecognitionMetadata(object):
           DICTATION (int): Transcribe speech to text to create a written document, such as a
           text-message, email or report.
         """
+
         INTERACTION_TYPE_UNSPECIFIED = 0
         DISCUSSION = 1
         PRESENTATION = 2
@@ -127,6 +129,7 @@ class RecognitionMetadata(object):
           MIDFIELD (int): The speaker if within 3 meters of the microphone.
           FARFIELD (int): The speaker is more than 3 meters away from the microphone.
         """
+
         MICROPHONE_DISTANCE_UNSPECIFIED = 0
         NEARFIELD = 1
         MIDFIELD = 2
@@ -141,6 +144,7 @@ class RecognitionMetadata(object):
           AUDIO (int): The speech data is an audio recording.
           VIDEO (int): The speech data originally recorded on a video.
         """
+
         ORIGINAL_MEDIA_TYPE_UNSPECIFIED = 0
         AUDIO = 1
         VIDEO = 2
@@ -158,6 +162,7 @@ class RecognitionMetadata(object):
           OTHER_OUTDOOR_DEVICE (int): Speech was recorded outdoors.
           OTHER_INDOOR_DEVICE (int): Speech was recorded indoors.
         """
+
         RECORDING_DEVICE_TYPE_UNSPECIFIED = 0
         SMARTPHONE = 1
         PC = 2
@@ -183,5 +188,6 @@ class StreamingRecognizeResponse(object):
           sent if ``single_utterance`` was set to ``true``, and is not used
           otherwise.
         """
+
         SPEECH_EVENT_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1

@@ -22,14 +22,9 @@ from google.api_core.protobuf_helpers import get_messages
 from google.cloud.language_v1.proto import language_service_pb2
 
 
-_shared_modules = [
-    http_pb2,
-    descriptor_pb2,
-]
+_shared_modules = [http_pb2, descriptor_pb2]
 
-_local_modules = [
-    language_service_pb2,
-]
+_local_modules = [language_service_pb2]
 
 names = []
 
@@ -40,7 +35,7 @@ for module in _shared_modules:
 
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = 'google.cloud.language_v1.types'
+        message.__module__ = "google.cloud.language_v1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 

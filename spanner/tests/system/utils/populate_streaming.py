@@ -46,10 +46,12 @@ CREATE TABLE {3.table} (
     chunk_me STRING({3.value_size}),
     chunk_me_2 STRING({3.value_size}) )
     PRIMARY KEY (pkey);
-""".format(FOUR_KAY, FORTY_KAY, FOUR_HUNDRED_KAY, FOUR_MEG)
+""".format(
+    FOUR_KAY, FORTY_KAY, FOUR_HUNDRED_KAY, FOUR_MEG
+)
 
 
-DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(';') if stmt.strip()]
+DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(";") if stmt.strip()]
 
 
 def ensure_database(client):
@@ -68,7 +70,8 @@ def ensure_database(client):
 
     pool = BurstyPool()
     database = instance.database(
-        DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
+        DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool
+    )
 
     if not database.exists():
         print_func("Creating database: {}".format(DATABASE_NAME))
@@ -83,10 +86,11 @@ def ensure_database(client):
 
 def populate_table(database, table_desc):
     all_ = KeySet(all_=True)
-    columns = ('pkey', 'chunk_me')
+    columns = ("pkey", "chunk_me")
     with database.snapshot() as snapshot:
-        rows = list(snapshot.execute_sql(
-            'SELECT COUNT(*) FROM {}'.format(table_desc.table)))
+        rows = list(
+            snapshot.execute_sql("SELECT COUNT(*) FROM {}".format(table_desc.table))
+        )
     assert len(rows) == 1
     count = rows[0][0]
     if count != table_desc.row_count:
@@ -102,18 +106,19 @@ def populate_table(database, table_desc):
 
 def populate_table_2_columns(database, table_desc):
     all_ = KeySet(all_=True)
-    columns = ('pkey', 'chunk_me', 'chunk_me_2')
+    columns = ("pkey", "chunk_me", "chunk_me_2")
     with database.snapshot() as snapshot:
-        rows = list(snapshot.execute_sql(
-            'SELECT COUNT(*) FROM {}'.format(table_desc.table)))
+        rows = list(
+            snapshot.execute_sql("SELECT COUNT(*) FROM {}".format(table_desc.table))
+        )
     assert len(rows) == 1
     count = rows[0][0]
     if count != table_desc.row_count:
         print_func("Repopulating table: {}".format(table_desc.table))
         chunk_me = table_desc.value()
         row_data = [
-            (index, chunk_me, chunk_me)
-            for index in range(table_desc.row_count)]
+            (index, chunk_me, chunk_me) for index in range(table_desc.row_count)
+        ]
         with database.batch() as batch:
             batch.delete(table_desc.table, all_)
             batch.insert(table_desc.table, columns, row_data)
@@ -130,6 +135,6 @@ def populate_streaming(client):
     populate_table_2_columns(database, FOUR_MEG)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     client = Client()
     populate_streaming(client)

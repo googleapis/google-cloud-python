@@ -25,27 +25,29 @@ import pytest
 def test_heartbeat_inactive(caplog):
     caplog.set_level(logging.INFO)
     manager = mock.create_autospec(
-        streaming_pull_manager.StreamingPullManager, instance=True)
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
     manager.is_active = False
 
     heartbeater_ = heartbeater.Heartbeater(manager)
 
     heartbeater_.heartbeat()
 
-    assert 'exiting' in caplog.text
+    assert "exiting" in caplog.text
 
 
 def test_heartbeat_stopped(caplog):
     caplog.set_level(logging.INFO)
     manager = mock.create_autospec(
-        streaming_pull_manager.StreamingPullManager, instance=True)
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
 
     heartbeater_ = heartbeater.Heartbeater(manager)
     heartbeater_.stop()
 
     heartbeater_.heartbeat()
 
-    assert 'exiting' in caplog.text
+    assert "exiting" in caplog.text
 
 
 def make_sleep_mark_manager_as_inactive(heartbeater):
@@ -60,7 +62,8 @@ def make_sleep_mark_manager_as_inactive(heartbeater):
 
 def test_heartbeat_once():
     manager = mock.create_autospec(
-        streaming_pull_manager.StreamingPullManager, instance=True)
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
     heartbeater_ = heartbeater.Heartbeater(manager)
     make_sleep_mark_manager_as_inactive(heartbeater_)
 
@@ -69,27 +72,29 @@ def test_heartbeat_once():
     manager.heartbeat.assert_called_once()
 
 
-@mock.patch('threading.Thread', autospec=True)
+@mock.patch("threading.Thread", autospec=True)
 def test_start(thread):
     manager = mock.create_autospec(
-        streaming_pull_manager.StreamingPullManager, instance=True)
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
     heartbeater_ = heartbeater.Heartbeater(manager)
 
     heartbeater_.start()
 
     thread.assert_called_once_with(
-        name=heartbeater._HEARTBEAT_WORKER_NAME,
-        target=heartbeater_.heartbeat)
+        name=heartbeater._HEARTBEAT_WORKER_NAME, target=heartbeater_.heartbeat
+    )
 
     thread.return_value.start.assert_called_once()
 
     assert heartbeater_._thread is not None
 
 
-@mock.patch('threading.Thread', autospec=True)
+@mock.patch("threading.Thread", autospec=True)
 def test_start_already_started(thread):
     manager = mock.create_autospec(
-        streaming_pull_manager.StreamingPullManager, instance=True)
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
     heartbeater_ = heartbeater.Heartbeater(manager)
     heartbeater_._thread = mock.sentinel.thread
 
@@ -101,7 +106,8 @@ def test_start_already_started(thread):
 
 def test_stop():
     manager = mock.create_autospec(
-        streaming_pull_manager.StreamingPullManager, instance=True)
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
     heartbeater_ = heartbeater.Heartbeater(manager)
     thread = mock.create_autospec(threading.Thread, instance=True)
     heartbeater_._thread = thread

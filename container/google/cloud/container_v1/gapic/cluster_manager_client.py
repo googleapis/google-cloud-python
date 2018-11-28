@@ -33,18 +33,19 @@ from google.cloud.container_v1.proto import cluster_service_pb2_grpc
 from google.protobuf import empty_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-container', ).version
+    "google-cloud-container"
+).version
 
 
 class ClusterManagerClient(object):
     """Google Kubernetes Engine Cluster Manager v1"""
 
-    SERVICE_ADDRESS = 'container.googleapis.com:443'
+    SERVICE_ADDRESS = "container.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.container.v1.ClusterManager'
+    _INTERFACE_NAME = "google.container.v1.ClusterManager"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -60,19 +61,20 @@ class ClusterManagerClient(object):
         Returns:
             ClusterManagerClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
-    def __init__(self,
-                 transport=None,
-                 channel=None,
-                 credentials=None,
-                 client_config=None,
-                 client_info=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+    ):
         """Constructor.
 
         Args:
@@ -106,18 +108,19 @@ class ClusterManagerClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                'The `client_config` argument is deprecated.',
+                "The `client_config` argument is deprecated.",
                 PendingDeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
         else:
             client_config = cluster_manager_client_config.config
 
         if channel:
             warnings.warn(
-                'The `channel` argument is deprecated; use '
-                '`transport` instead.',
+                "The `channel` argument is deprecated; use " "`transport` instead.",
                 PendingDeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -126,25 +129,24 @@ class ClusterManagerClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=cluster_manager_grpc_transport.
-                    ClusterManagerGrpcTransport,
+                    default_class=cluster_manager_grpc_transport.ClusterManagerGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        'Received both a transport instance and '
-                        'credentials; these are mutually exclusive.')
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
+                    )
                 self.transport = transport
         else:
             self.transport = cluster_manager_grpc_transport.ClusterManagerGrpcTransport(
-                address=self.SERVICE_ADDRESS,
-                channel=channel,
-                credentials=credentials,
+                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION, )
+                gapic_version=_GAPIC_LIBRARY_VERSION
+            )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -154,7 +156,8 @@ class ClusterManagerClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME], )
+            client_config["interfaces"][self._INTERFACE_NAME]
+        )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -163,13 +166,15 @@ class ClusterManagerClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def list_clusters(self,
-                      project_id,
-                      zone,
-                      parent=None,
-                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT,
-                      metadata=None):
+    def list_clusters(
+        self,
+        project_id,
+        zone,
+        parent=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists all clusters owned by a project in either the specified zone or all
         zones.
@@ -218,32 +223,33 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_clusters' not in self._inner_api_calls:
+        if "list_clusters" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_clusters'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_clusters,
-                    default_retry=self._method_configs['ListClusters'].retry,
-                    default_timeout=self._method_configs['ListClusters'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_clusters"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_clusters,
+                default_retry=self._method_configs["ListClusters"].retry,
+                default_timeout=self._method_configs["ListClusters"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.ListClustersRequest(
-            project_id=project_id,
-            zone=zone,
-            parent=parent,
+            project_id=project_id, zone=zone, parent=parent
         )
-        return self._inner_api_calls['list_clusters'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["list_clusters"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_cluster(self,
-                    project_id,
-                    zone,
-                    cluster_id,
-                    name=None,
-                    retry=google.api_core.gapic_v1.method.DEFAULT,
-                    timeout=google.api_core.gapic_v1.method.DEFAULT,
-                    metadata=None):
+    def get_cluster(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets the details of a specific cluster.
 
@@ -295,32 +301,33 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_cluster' not in self._inner_api_calls:
+        if "get_cluster" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_cluster'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_cluster,
-                    default_retry=self._method_configs['GetCluster'].retry,
-                    default_timeout=self._method_configs['GetCluster'].timeout,
-                    client_info=self._client_info,
-                )
+                "get_cluster"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_cluster,
+                default_retry=self._method_configs["GetCluster"].retry,
+                default_timeout=self._method_configs["GetCluster"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.GetClusterRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            name=name,
+            project_id=project_id, zone=zone, cluster_id=cluster_id, name=name
         )
-        return self._inner_api_calls['get_cluster'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["get_cluster"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def create_cluster(self,
-                       project_id,
-                       zone,
-                       cluster,
-                       parent=None,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def create_cluster(
+        self,
+        project_id,
+        zone,
+        cluster,
+        parent=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a cluster, consisting of the specified number and type of Google
         Compute Engine instances.
@@ -386,34 +393,34 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_cluster' not in self._inner_api_calls:
+        if "create_cluster" not in self._inner_api_calls:
             self._inner_api_calls[
-                'create_cluster'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.create_cluster,
-                    default_retry=self._method_configs['CreateCluster'].retry,
-                    default_timeout=self._method_configs['CreateCluster'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "create_cluster"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_cluster,
+                default_retry=self._method_configs["CreateCluster"].retry,
+                default_timeout=self._method_configs["CreateCluster"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.CreateClusterRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster=cluster,
-            parent=parent,
+            project_id=project_id, zone=zone, cluster=cluster, parent=parent
         )
-        return self._inner_api_calls['create_cluster'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_cluster"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def update_cluster(self,
-                       project_id,
-                       zone,
-                       cluster_id,
-                       update,
-                       name=None,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def update_cluster(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        update,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates the settings of a specific cluster.
 
@@ -472,15 +479,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_cluster' not in self._inner_api_calls:
+        if "update_cluster" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_cluster'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_cluster,
-                    default_retry=self._method_configs['UpdateCluster'].retry,
-                    default_timeout=self._method_configs['UpdateCluster'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "update_cluster"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_cluster,
+                default_retry=self._method_configs["UpdateCluster"].retry,
+                default_timeout=self._method_configs["UpdateCluster"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.UpdateClusterRequest(
             project_id=project_id,
@@ -489,20 +496,23 @@ class ClusterManagerClient(object):
             update=update,
             name=name,
         )
-        return self._inner_api_calls['update_cluster'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_cluster"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def update_node_pool(self,
-                         project_id,
-                         zone,
-                         cluster_id,
-                         node_pool_id,
-                         node_version,
-                         image_type,
-                         name=None,
-                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                         timeout=google.api_core.gapic_v1.method.DEFAULT,
-                         metadata=None):
+    def update_node_pool(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        node_pool_id,
+        node_version,
+        image_type,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates the version and/or image type for a specific node pool.
 
@@ -578,15 +588,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_node_pool' not in self._inner_api_calls:
+        if "update_node_pool" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_node_pool'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_node_pool,
-                    default_retry=self._method_configs['UpdateNodePool'].retry,
-                    default_timeout=self._method_configs['UpdateNodePool'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "update_node_pool"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_node_pool,
+                default_retry=self._method_configs["UpdateNodePool"].retry,
+                default_timeout=self._method_configs["UpdateNodePool"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.UpdateNodePoolRequest(
             project_id=project_id,
@@ -597,20 +607,22 @@ class ClusterManagerClient(object):
             image_type=image_type,
             name=name,
         )
-        return self._inner_api_calls['update_node_pool'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_node_pool"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def set_node_pool_autoscaling(
-            self,
-            project_id,
-            zone,
-            cluster_id,
-            node_pool_id,
-            autoscaling,
-            name=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        node_pool_id,
+        autoscaling,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Sets the autoscaling settings for a specific node pool.
 
@@ -675,16 +687,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_node_pool_autoscaling' not in self._inner_api_calls:
+        if "set_node_pool_autoscaling" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_node_pool_autoscaling'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_node_pool_autoscaling,
-                    default_retry=self.
-                    _method_configs['SetNodePoolAutoscaling'].retry,
-                    default_timeout=self.
-                    _method_configs['SetNodePoolAutoscaling'].timeout,
-                    client_info=self._client_info,
-                )
+                "set_node_pool_autoscaling"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_node_pool_autoscaling,
+                default_retry=self._method_configs["SetNodePoolAutoscaling"].retry,
+                default_timeout=self._method_configs["SetNodePoolAutoscaling"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetNodePoolAutoscalingRequest(
             project_id=project_id,
@@ -694,18 +705,21 @@ class ClusterManagerClient(object):
             autoscaling=autoscaling,
             name=name,
         )
-        return self._inner_api_calls['set_node_pool_autoscaling'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_node_pool_autoscaling"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_logging_service(self,
-                            project_id,
-                            zone,
-                            cluster_id,
-                            logging_service,
-                            name=None,
-                            retry=google.api_core.gapic_v1.method.DEFAULT,
-                            timeout=google.api_core.gapic_v1.method.DEFAULT,
-                            metadata=None):
+    def set_logging_service(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        logging_service,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Sets the logging service for a specific cluster.
 
@@ -765,16 +779,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_logging_service' not in self._inner_api_calls:
+        if "set_logging_service" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_logging_service'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_logging_service,
-                    default_retry=self._method_configs['SetLoggingService'].
-                    retry,
-                    default_timeout=self._method_configs['SetLoggingService'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "set_logging_service"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_logging_service,
+                default_retry=self._method_configs["SetLoggingService"].retry,
+                default_timeout=self._method_configs["SetLoggingService"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetLoggingServiceRequest(
             project_id=project_id,
@@ -783,18 +796,21 @@ class ClusterManagerClient(object):
             logging_service=logging_service,
             name=name,
         )
-        return self._inner_api_calls['set_logging_service'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_logging_service"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_monitoring_service(self,
-                               project_id,
-                               zone,
-                               cluster_id,
-                               monitoring_service,
-                               name=None,
-                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                               timeout=google.api_core.gapic_v1.method.DEFAULT,
-                               metadata=None):
+    def set_monitoring_service(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        monitoring_service,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Sets the monitoring service for a specific cluster.
 
@@ -854,16 +870,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_monitoring_service' not in self._inner_api_calls:
+        if "set_monitoring_service" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_monitoring_service'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_monitoring_service,
-                    default_retry=self._method_configs['SetMonitoringService'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['SetMonitoringService'].timeout,
-                    client_info=self._client_info,
-                )
+                "set_monitoring_service"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_monitoring_service,
+                default_retry=self._method_configs["SetMonitoringService"].retry,
+                default_timeout=self._method_configs["SetMonitoringService"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetMonitoringServiceRequest(
             project_id=project_id,
@@ -872,18 +887,21 @@ class ClusterManagerClient(object):
             monitoring_service=monitoring_service,
             name=name,
         )
-        return self._inner_api_calls['set_monitoring_service'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_monitoring_service"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_addons_config(self,
-                          project_id,
-                          zone,
-                          cluster_id,
-                          addons_config,
-                          name=None,
-                          retry=google.api_core.gapic_v1.method.DEFAULT,
-                          timeout=google.api_core.gapic_v1.method.DEFAULT,
-                          metadata=None):
+    def set_addons_config(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        addons_config,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Sets the addons for a specific cluster.
 
@@ -943,16 +961,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_addons_config' not in self._inner_api_calls:
+        if "set_addons_config" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_addons_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_addons_config,
-                    default_retry=self._method_configs['SetAddonsConfig'].
-                    retry,
-                    default_timeout=self._method_configs['SetAddonsConfig'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "set_addons_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_addons_config,
+                default_retry=self._method_configs["SetAddonsConfig"].retry,
+                default_timeout=self._method_configs["SetAddonsConfig"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetAddonsConfigRequest(
             project_id=project_id,
@@ -961,18 +978,21 @@ class ClusterManagerClient(object):
             addons_config=addons_config,
             name=name,
         )
-        return self._inner_api_calls['set_addons_config'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_addons_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_locations(self,
-                      project_id,
-                      zone,
-                      cluster_id,
-                      locations,
-                      name=None,
-                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT,
-                      metadata=None):
+    def set_locations(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        locations,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Sets the locations for a specific cluster.
 
@@ -1034,15 +1054,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_locations' not in self._inner_api_calls:
+        if "set_locations" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_locations'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_locations,
-                    default_retry=self._method_configs['SetLocations'].retry,
-                    default_timeout=self._method_configs['SetLocations'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "set_locations"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_locations,
+                default_retry=self._method_configs["SetLocations"].retry,
+                default_timeout=self._method_configs["SetLocations"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetLocationsRequest(
             project_id=project_id,
@@ -1051,18 +1071,21 @@ class ClusterManagerClient(object):
             locations=locations,
             name=name,
         )
-        return self._inner_api_calls['set_locations'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_locations"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def update_master(self,
-                      project_id,
-                      zone,
-                      cluster_id,
-                      master_version,
-                      name=None,
-                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT,
-                      metadata=None):
+    def update_master(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        master_version,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates the master for a specific cluster.
 
@@ -1127,15 +1150,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_master' not in self._inner_api_calls:
+        if "update_master" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_master'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_master,
-                    default_retry=self._method_configs['UpdateMaster'].retry,
-                    default_timeout=self._method_configs['UpdateMaster'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "update_master"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_master,
+                default_retry=self._method_configs["UpdateMaster"].retry,
+                default_timeout=self._method_configs["UpdateMaster"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.UpdateMasterRequest(
             project_id=project_id,
@@ -1144,19 +1167,22 @@ class ClusterManagerClient(object):
             master_version=master_version,
             name=name,
         )
-        return self._inner_api_calls['update_master'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_master"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_master_auth(self,
-                        project_id,
-                        zone,
-                        cluster_id,
-                        action,
-                        update,
-                        name=None,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def set_master_auth(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        action,
+        update,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Used to set master auth materials. Currently supports :-
         Changing the admin password for a specific cluster.
@@ -1222,15 +1248,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_master_auth' not in self._inner_api_calls:
+        if "set_master_auth" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_master_auth'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_master_auth,
-                    default_retry=self._method_configs['SetMasterAuth'].retry,
-                    default_timeout=self._method_configs['SetMasterAuth'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "set_master_auth"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_master_auth,
+                default_retry=self._method_configs["SetMasterAuth"].retry,
+                default_timeout=self._method_configs["SetMasterAuth"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetMasterAuthRequest(
             project_id=project_id,
@@ -1240,17 +1266,20 @@ class ClusterManagerClient(object):
             update=update,
             name=name,
         )
-        return self._inner_api_calls['set_master_auth'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_master_auth"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def delete_cluster(self,
-                       project_id,
-                       zone,
-                       cluster_id,
-                       name=None,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                       metadata=None):
+    def delete_cluster(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes the cluster, including the Kubernetes endpoint and all worker
         nodes.
@@ -1310,32 +1339,32 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_cluster' not in self._inner_api_calls:
+        if "delete_cluster" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_cluster'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_cluster,
-                    default_retry=self._method_configs['DeleteCluster'].retry,
-                    default_timeout=self._method_configs['DeleteCluster'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "delete_cluster"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_cluster,
+                default_retry=self._method_configs["DeleteCluster"].retry,
+                default_timeout=self._method_configs["DeleteCluster"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.DeleteClusterRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            name=name,
+            project_id=project_id, zone=zone, cluster_id=cluster_id, name=name
         )
-        return self._inner_api_calls['delete_cluster'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["delete_cluster"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_operations(self,
-                        project_id,
-                        zone,
-                        parent=None,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def list_operations(
+        self,
+        project_id,
+        zone,
+        parent=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists all operations in a project in a specific zone or all zones.
 
@@ -1383,32 +1412,33 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_operations' not in self._inner_api_calls:
+        if "list_operations" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_operations'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_operations,
-                    default_retry=self._method_configs['ListOperations'].retry,
-                    default_timeout=self._method_configs['ListOperations'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_operations"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_operations,
+                default_retry=self._method_configs["ListOperations"].retry,
+                default_timeout=self._method_configs["ListOperations"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.ListOperationsRequest(
-            project_id=project_id,
-            zone=zone,
-            parent=parent,
+            project_id=project_id, zone=zone, parent=parent
         )
-        return self._inner_api_calls['list_operations'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["list_operations"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_operation(self,
-                      project_id,
-                      zone,
-                      operation_id,
-                      name=None,
-                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT,
-                      metadata=None):
+    def get_operation(
+        self,
+        project_id,
+        zone,
+        operation_id,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Gets the specified operation.
 
@@ -1460,33 +1490,33 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_operation' not in self._inner_api_calls:
+        if "get_operation" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_operation'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_operation,
-                    default_retry=self._method_configs['GetOperation'].retry,
-                    default_timeout=self._method_configs['GetOperation'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_operation"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_operation,
+                default_retry=self._method_configs["GetOperation"].retry,
+                default_timeout=self._method_configs["GetOperation"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.GetOperationRequest(
-            project_id=project_id,
-            zone=zone,
-            operation_id=operation_id,
-            name=name,
+            project_id=project_id, zone=zone, operation_id=operation_id, name=name
         )
-        return self._inner_api_calls['get_operation'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["get_operation"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def cancel_operation(self,
-                         project_id,
-                         zone,
-                         operation_id,
-                         name=None,
-                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                         timeout=google.api_core.gapic_v1.method.DEFAULT,
-                         metadata=None):
+    def cancel_operation(
+        self,
+        project_id,
+        zone,
+        operation_id,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Cancels the specified operation.
 
@@ -1535,33 +1565,32 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'cancel_operation' not in self._inner_api_calls:
+        if "cancel_operation" not in self._inner_api_calls:
             self._inner_api_calls[
-                'cancel_operation'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.cancel_operation,
-                    default_retry=self._method_configs['CancelOperation'].
-                    retry,
-                    default_timeout=self._method_configs['CancelOperation'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "cancel_operation"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.cancel_operation,
+                default_retry=self._method_configs["CancelOperation"].retry,
+                default_timeout=self._method_configs["CancelOperation"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.CancelOperationRequest(
-            project_id=project_id,
-            zone=zone,
-            operation_id=operation_id,
-            name=name,
+            project_id=project_id, zone=zone, operation_id=operation_id, name=name
         )
-        self._inner_api_calls['cancel_operation'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        self._inner_api_calls["cancel_operation"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_server_config(self,
-                          project_id,
-                          zone,
-                          name=None,
-                          retry=google.api_core.gapic_v1.method.DEFAULT,
-                          timeout=google.api_core.gapic_v1.method.DEFAULT,
-                          metadata=None):
+    def get_server_config(
+        self,
+        project_id,
+        zone,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns configuration info about the Kubernetes Engine service.
 
@@ -1608,33 +1637,33 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_server_config' not in self._inner_api_calls:
+        if "get_server_config" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_server_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_server_config,
-                    default_retry=self._method_configs['GetServerConfig'].
-                    retry,
-                    default_timeout=self._method_configs['GetServerConfig'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_server_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_server_config,
+                default_retry=self._method_configs["GetServerConfig"].retry,
+                default_timeout=self._method_configs["GetServerConfig"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.GetServerConfigRequest(
-            project_id=project_id,
-            zone=zone,
-            name=name,
+            project_id=project_id, zone=zone, name=name
         )
-        return self._inner_api_calls['get_server_config'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["get_server_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_node_pools(self,
-                        project_id,
-                        zone,
-                        cluster_id,
-                        parent=None,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def list_node_pools(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        parent=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists the node pools for a cluster.
 
@@ -1686,34 +1715,34 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_node_pools' not in self._inner_api_calls:
+        if "list_node_pools" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_node_pools'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_node_pools,
-                    default_retry=self._method_configs['ListNodePools'].retry,
-                    default_timeout=self._method_configs['ListNodePools'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_node_pools"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_node_pools,
+                default_retry=self._method_configs["ListNodePools"].retry,
+                default_timeout=self._method_configs["ListNodePools"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.ListNodePoolsRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            parent=parent,
+            project_id=project_id, zone=zone, cluster_id=cluster_id, parent=parent
         )
-        return self._inner_api_calls['list_node_pools'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["list_node_pools"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_node_pool(self,
-                      project_id,
-                      zone,
-                      cluster_id,
-                      node_pool_id,
-                      name=None,
-                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT,
-                      metadata=None):
+    def get_node_pool(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        node_pool_id,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Retrieves the node pool requested.
 
@@ -1771,15 +1800,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_node_pool' not in self._inner_api_calls:
+        if "get_node_pool" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_node_pool'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_node_pool,
-                    default_retry=self._method_configs['GetNodePool'].retry,
-                    default_timeout=self._method_configs['GetNodePool'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_node_pool"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_node_pool,
+                default_retry=self._method_configs["GetNodePool"].retry,
+                default_timeout=self._method_configs["GetNodePool"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.GetNodePoolRequest(
             project_id=project_id,
@@ -1788,18 +1817,21 @@ class ClusterManagerClient(object):
             node_pool_id=node_pool_id,
             name=name,
         )
-        return self._inner_api_calls['get_node_pool'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["get_node_pool"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def create_node_pool(self,
-                         project_id,
-                         zone,
-                         cluster_id,
-                         node_pool,
-                         parent=None,
-                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                         timeout=google.api_core.gapic_v1.method.DEFAULT,
-                         metadata=None):
+    def create_node_pool(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        node_pool,
+        parent=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a node pool for a cluster.
 
@@ -1858,15 +1890,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_node_pool' not in self._inner_api_calls:
+        if "create_node_pool" not in self._inner_api_calls:
             self._inner_api_calls[
-                'create_node_pool'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.create_node_pool,
-                    default_retry=self._method_configs['CreateNodePool'].retry,
-                    default_timeout=self._method_configs['CreateNodePool'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "create_node_pool"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_node_pool,
+                default_retry=self._method_configs["CreateNodePool"].retry,
+                default_timeout=self._method_configs["CreateNodePool"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.CreateNodePoolRequest(
             project_id=project_id,
@@ -1875,18 +1907,21 @@ class ClusterManagerClient(object):
             node_pool=node_pool,
             parent=parent,
         )
-        return self._inner_api_calls['create_node_pool'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_node_pool"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def delete_node_pool(self,
-                         project_id,
-                         zone,
-                         cluster_id,
-                         node_pool_id,
-                         name=None,
-                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                         timeout=google.api_core.gapic_v1.method.DEFAULT,
-                         metadata=None):
+    def delete_node_pool(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        node_pool_id,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes a node pool from a cluster.
 
@@ -1944,15 +1979,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_node_pool' not in self._inner_api_calls:
+        if "delete_node_pool" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_node_pool'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_node_pool,
-                    default_retry=self._method_configs['DeleteNodePool'].retry,
-                    default_timeout=self._method_configs['DeleteNodePool'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "delete_node_pool"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_node_pool,
+                default_retry=self._method_configs["DeleteNodePool"].retry,
+                default_timeout=self._method_configs["DeleteNodePool"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.DeleteNodePoolRequest(
             project_id=project_id,
@@ -1961,19 +1996,21 @@ class ClusterManagerClient(object):
             node_pool_id=node_pool_id,
             name=name,
         )
-        return self._inner_api_calls['delete_node_pool'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["delete_node_pool"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def rollback_node_pool_upgrade(
-            self,
-            project_id,
-            zone,
-            cluster_id,
-            node_pool_id,
-            name=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        node_pool_id,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Roll back the previously Aborted or Failed NodePool upgrade.
         This will be an no-op if the last upgrade successfully completed.
@@ -2032,16 +2069,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'rollback_node_pool_upgrade' not in self._inner_api_calls:
+        if "rollback_node_pool_upgrade" not in self._inner_api_calls:
             self._inner_api_calls[
-                'rollback_node_pool_upgrade'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.rollback_node_pool_upgrade,
-                    default_retry=self.
-                    _method_configs['RollbackNodePoolUpgrade'].retry,
-                    default_timeout=self.
-                    _method_configs['RollbackNodePoolUpgrade'].timeout,
-                    client_info=self._client_info,
-                )
+                "rollback_node_pool_upgrade"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.rollback_node_pool_upgrade,
+                default_retry=self._method_configs["RollbackNodePoolUpgrade"].retry,
+                default_timeout=self._method_configs["RollbackNodePoolUpgrade"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.RollbackNodePoolUpgradeRequest(
             project_id=project_id,
@@ -2050,20 +2086,22 @@ class ClusterManagerClient(object):
             node_pool_id=node_pool_id,
             name=name,
         )
-        return self._inner_api_calls['rollback_node_pool_upgrade'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["rollback_node_pool_upgrade"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def set_node_pool_management(
-            self,
-            project_id,
-            zone,
-            cluster_id,
-            node_pool_id,
-            management,
-            name=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        node_pool_id,
+        management,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Sets the NodeManagement options for a node pool.
 
@@ -2128,16 +2166,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_node_pool_management' not in self._inner_api_calls:
+        if "set_node_pool_management" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_node_pool_management'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_node_pool_management,
-                    default_retry=self.
-                    _method_configs['SetNodePoolManagement'].retry,
-                    default_timeout=self.
-                    _method_configs['SetNodePoolManagement'].timeout,
-                    client_info=self._client_info,
-                )
+                "set_node_pool_management"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_node_pool_management,
+                default_retry=self._method_configs["SetNodePoolManagement"].retry,
+                default_timeout=self._method_configs["SetNodePoolManagement"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetNodePoolManagementRequest(
             project_id=project_id,
@@ -2147,19 +2184,22 @@ class ClusterManagerClient(object):
             management=management,
             name=name,
         )
-        return self._inner_api_calls['set_node_pool_management'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_node_pool_management"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_labels(self,
-                   project_id,
-                   zone,
-                   cluster_id,
-                   resource_labels,
-                   label_fingerprint,
-                   name=None,
-                   retry=google.api_core.gapic_v1.method.DEFAULT,
-                   timeout=google.api_core.gapic_v1.method.DEFAULT,
-                   metadata=None):
+    def set_labels(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        resource_labels,
+        label_fingerprint,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Sets labels on a cluster.
 
@@ -2224,14 +2264,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_labels' not in self._inner_api_calls:
+        if "set_labels" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_labels'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_labels,
-                    default_retry=self._method_configs['SetLabels'].retry,
-                    default_timeout=self._method_configs['SetLabels'].timeout,
-                    client_info=self._client_info,
-                )
+                "set_labels"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_labels,
+                default_retry=self._method_configs["SetLabels"].retry,
+                default_timeout=self._method_configs["SetLabels"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetLabelsRequest(
             project_id=project_id,
@@ -2241,18 +2282,21 @@ class ClusterManagerClient(object):
             label_fingerprint=label_fingerprint,
             name=name,
         )
-        return self._inner_api_calls['set_labels'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_labels"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_legacy_abac(self,
-                        project_id,
-                        zone,
-                        cluster_id,
-                        enabled,
-                        name=None,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def set_legacy_abac(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        enabled,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Enables or disables the ABAC authorization mechanism on a cluster.
 
@@ -2308,15 +2352,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_legacy_abac' not in self._inner_api_calls:
+        if "set_legacy_abac" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_legacy_abac'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_legacy_abac,
-                    default_retry=self._method_configs['SetLegacyAbac'].retry,
-                    default_timeout=self._method_configs['SetLegacyAbac'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "set_legacy_abac"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_legacy_abac,
+                default_retry=self._method_configs["SetLegacyAbac"].retry,
+                default_timeout=self._method_configs["SetLegacyAbac"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetLegacyAbacRequest(
             project_id=project_id,
@@ -2325,18 +2369,21 @@ class ClusterManagerClient(object):
             enabled=enabled,
             name=name,
         )
-        return self._inner_api_calls['set_legacy_abac'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_legacy_abac"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def start_i_p_rotation(self,
-                           project_id,
-                           zone,
-                           cluster_id,
-                           name=None,
-                           rotate_credentials=None,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def start_i_p_rotation(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        name=None,
+        rotate_credentials=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Start master IP rotation.
 
@@ -2389,16 +2436,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'start_i_p_rotation' not in self._inner_api_calls:
+        if "start_i_p_rotation" not in self._inner_api_calls:
             self._inner_api_calls[
-                'start_i_p_rotation'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.start_i_p_rotation,
-                    default_retry=self._method_configs['StartIPRotation'].
-                    retry,
-                    default_timeout=self._method_configs['StartIPRotation'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "start_i_p_rotation"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.start_i_p_rotation,
+                default_retry=self._method_configs["StartIPRotation"].retry,
+                default_timeout=self._method_configs["StartIPRotation"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.StartIPRotationRequest(
             project_id=project_id,
@@ -2407,17 +2453,20 @@ class ClusterManagerClient(object):
             name=name,
             rotate_credentials=rotate_credentials,
         )
-        return self._inner_api_calls['start_i_p_rotation'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["start_i_p_rotation"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def complete_i_p_rotation(self,
-                              project_id,
-                              zone,
-                              cluster_id,
-                              name=None,
-                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT,
-                              metadata=None):
+    def complete_i_p_rotation(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Completes master IP rotation.
 
@@ -2469,36 +2518,35 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'complete_i_p_rotation' not in self._inner_api_calls:
+        if "complete_i_p_rotation" not in self._inner_api_calls:
             self._inner_api_calls[
-                'complete_i_p_rotation'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.complete_i_p_rotation,
-                    default_retry=self._method_configs['CompleteIPRotation'].
-                    retry,
-                    default_timeout=self._method_configs['CompleteIPRotation'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "complete_i_p_rotation"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.complete_i_p_rotation,
+                default_retry=self._method_configs["CompleteIPRotation"].retry,
+                default_timeout=self._method_configs["CompleteIPRotation"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.CompleteIPRotationRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            name=name,
+            project_id=project_id, zone=zone, cluster_id=cluster_id, name=name
         )
-        return self._inner_api_calls['complete_i_p_rotation'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["complete_i_p_rotation"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_node_pool_size(self,
-                           project_id,
-                           zone,
-                           cluster_id,
-                           node_pool_id,
-                           node_count,
-                           name=None,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def set_node_pool_size(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        node_pool_id,
+        node_count,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Sets the size for a specific node pool.
 
@@ -2560,16 +2608,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_node_pool_size' not in self._inner_api_calls:
+        if "set_node_pool_size" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_node_pool_size'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_node_pool_size,
-                    default_retry=self._method_configs['SetNodePoolSize'].
-                    retry,
-                    default_timeout=self._method_configs['SetNodePoolSize'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "set_node_pool_size"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_node_pool_size,
+                default_retry=self._method_configs["SetNodePoolSize"].retry,
+                default_timeout=self._method_configs["SetNodePoolSize"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetNodePoolSizeRequest(
             project_id=project_id,
@@ -2579,18 +2626,21 @@ class ClusterManagerClient(object):
             node_count=node_count,
             name=name,
         )
-        return self._inner_api_calls['set_node_pool_size'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_node_pool_size"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_network_policy(self,
-                           project_id,
-                           zone,
-                           cluster_id,
-                           network_policy,
-                           name=None,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def set_network_policy(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        network_policy,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Enables/Disables Network Policy for a cluster.
 
@@ -2650,16 +2700,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_network_policy' not in self._inner_api_calls:
+        if "set_network_policy" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_network_policy'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_network_policy,
-                    default_retry=self._method_configs['SetNetworkPolicy'].
-                    retry,
-                    default_timeout=self._method_configs['SetNetworkPolicy'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "set_network_policy"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_network_policy,
+                default_retry=self._method_configs["SetNetworkPolicy"].retry,
+                default_timeout=self._method_configs["SetNetworkPolicy"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetNetworkPolicyRequest(
             project_id=project_id,
@@ -2668,18 +2717,21 @@ class ClusterManagerClient(object):
             network_policy=network_policy,
             name=name,
         )
-        return self._inner_api_calls['set_network_policy'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_network_policy"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def set_maintenance_policy(self,
-                               project_id,
-                               zone,
-                               cluster_id,
-                               maintenance_policy,
-                               name=None,
-                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                               timeout=google.api_core.gapic_v1.method.DEFAULT,
-                               metadata=None):
+    def set_maintenance_policy(
+        self,
+        project_id,
+        zone,
+        cluster_id,
+        maintenance_policy,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Sets the maintenance policy for a cluster.
 
@@ -2737,16 +2789,15 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'set_maintenance_policy' not in self._inner_api_calls:
+        if "set_maintenance_policy" not in self._inner_api_calls:
             self._inner_api_calls[
-                'set_maintenance_policy'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.set_maintenance_policy,
-                    default_retry=self._method_configs['SetMaintenancePolicy'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['SetMaintenancePolicy'].timeout,
-                    client_info=self._client_info,
-                )
+                "set_maintenance_policy"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_maintenance_policy,
+                default_retry=self._method_configs["SetMaintenancePolicy"].retry,
+                default_timeout=self._method_configs["SetMaintenancePolicy"].timeout,
+                client_info=self._client_info,
+            )
 
         request = cluster_service_pb2.SetMaintenancePolicyRequest(
             project_id=project_id,
@@ -2755,5 +2806,6 @@ class ClusterManagerClient(object):
             maintenance_policy=maintenance_policy,
             name=name,
         )
-        return self._inner_api_calls['set_maintenance_policy'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["set_maintenance_policy"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )

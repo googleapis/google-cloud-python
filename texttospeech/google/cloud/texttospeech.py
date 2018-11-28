@@ -20,8 +20,4 @@ from google.cloud.texttospeech_v1 import TextToSpeechClient
 from google.cloud.texttospeech_v1 import enums
 from google.cloud.texttospeech_v1 import types
 
-__all__ = (
-    'enums',
-    'types',
-    'TextToSpeechClient',
-)
+__all__ = ("enums", "types", "TextToSpeechClient")

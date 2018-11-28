@@ -28,14 +28,14 @@ class KeyManagementServiceGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='cloudkms.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="cloudkms.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -53,31 +53,26 @@ class KeyManagementServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'key_management_service_stub':
-            service_pb2_grpc.KeyManagementServiceStub(channel),
-            'iam_policy_stub':
-            iam_policy_pb2.IAMPolicyStub(channel),
+            "key_management_service_stub": service_pb2_grpc.KeyManagementServiceStub(
+                channel
+            ),
+            "iam_policy_stub": iam_policy_pb2.IAMPolicyStub(channel),
         }
 
     @classmethod
-    def create_channel(cls,
-                       address='cloudkms.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="cloudkms.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -92,9 +87,7 @@ class KeyManagementServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -117,7 +110,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].ListKeyRings
+        return self._stubs["key_management_service_stub"].ListKeyRings
 
     @property
     def list_crypto_keys(self):
@@ -130,7 +123,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].ListCryptoKeys
+        return self._stubs["key_management_service_stub"].ListCryptoKeys
 
     @property
     def list_crypto_key_versions(self):
@@ -143,7 +136,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].ListCryptoKeyVersions
+        return self._stubs["key_management_service_stub"].ListCryptoKeyVersions
 
     @property
     def get_key_ring(self):
@@ -156,7 +149,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].GetKeyRing
+        return self._stubs["key_management_service_stub"].GetKeyRing
 
     @property
     def get_crypto_key(self):
@@ -170,7 +163,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].GetCryptoKey
+        return self._stubs["key_management_service_stub"].GetCryptoKey
 
     @property
     def get_crypto_key_version(self):
@@ -183,7 +176,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].GetCryptoKeyVersion
+        return self._stubs["key_management_service_stub"].GetCryptoKeyVersion
 
     @property
     def create_key_ring(self):
@@ -196,7 +189,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].CreateKeyRing
+        return self._stubs["key_management_service_stub"].CreateKeyRing
 
     @property
     def create_crypto_key(self):
@@ -212,7 +205,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].CreateCryptoKey
+        return self._stubs["key_management_service_stub"].CreateCryptoKey
 
     @property
     def create_crypto_key_version(self):
@@ -228,8 +221,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs[
-            'key_management_service_stub'].CreateCryptoKeyVersion
+        return self._stubs["key_management_service_stub"].CreateCryptoKeyVersion
 
     @property
     def update_crypto_key(self):
@@ -242,7 +234,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].UpdateCryptoKey
+        return self._stubs["key_management_service_stub"].UpdateCryptoKey
 
     @property
     def update_crypto_key_version(self):
@@ -259,8 +251,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs[
-            'key_management_service_stub'].UpdateCryptoKeyVersion
+        return self._stubs["key_management_service_stub"].UpdateCryptoKeyVersion
 
     @property
     def encrypt(self):
@@ -274,7 +265,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].Encrypt
+        return self._stubs["key_management_service_stub"].Encrypt
 
     @property
     def decrypt(self):
@@ -288,7 +279,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].Decrypt
+        return self._stubs["key_management_service_stub"].Decrypt
 
     @property
     def update_crypto_key_primary_version(self):
@@ -303,8 +294,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs[
-            'key_management_service_stub'].UpdateCryptoKeyPrimaryVersion
+        return self._stubs["key_management_service_stub"].UpdateCryptoKeyPrimaryVersion
 
     @property
     def destroy_crypto_key_version(self):
@@ -325,8 +315,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs[
-            'key_management_service_stub'].DestroyCryptoKeyVersion
+        return self._stubs["key_management_service_stub"].DestroyCryptoKeyVersion
 
     @property
     def restore_crypto_key_version(self):
@@ -342,8 +331,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs[
-            'key_management_service_stub'].RestoreCryptoKeyVersion
+        return self._stubs["key_management_service_stub"].RestoreCryptoKeyVersion
 
     @property
     def get_public_key(self):
@@ -358,7 +346,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].GetPublicKey
+        return self._stubs["key_management_service_stub"].GetPublicKey
 
     @property
     def asymmetric_decrypt(self):
@@ -373,7 +361,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].AsymmetricDecrypt
+        return self._stubs["key_management_service_stub"].AsymmetricDecrypt
 
     @property
     def asymmetric_sign(self):
@@ -388,7 +376,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['key_management_service_stub'].AsymmetricSign
+        return self._stubs["key_management_service_stub"].AsymmetricSign
 
     @property
     def set_iam_policy(self):
@@ -402,7 +390,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['iam_policy_stub'].SetIamPolicy
+        return self._stubs["iam_policy_stub"].SetIamPolicy
 
     @property
     def get_iam_policy(self):
@@ -417,7 +405,7 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['iam_policy_stub'].GetIamPolicy
+        return self._stubs["iam_policy_stub"].GetIamPolicy
 
     @property
     def test_iam_permissions(self):
@@ -432,4 +420,4 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['iam_policy_stub'].TestIamPermissions
+        return self._stubs["iam_policy_stub"].TestIamPermissions

@@ -19,10 +19,7 @@ import uuid
 from six.moves import queue
 
 
-__all__ = (
-    'QueueCallbackWorker',
-    'STOP',
-)
+__all__ = ("QueueCallbackWorker", "STOP")
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -94,14 +91,13 @@ class QueueCallbackWorker(object):
         continue_ = True
         while continue_:
             items = _get_many(
-                self.queue,
-                max_items=self.max_items,
-                max_latency=self.max_latency)
+                self.queue, max_items=self.max_items, max_latency=self.max_latency
+            )
 
             # If stop is in the items, process all items up to STOP and then
             # exit.
             try:
-                items = items[:items.index(STOP)]
+                items = items[: items.index(STOP)]
                 continue_ = False
             except ValueError:
                 pass
@@ -111,6 +107,6 @@ class QueueCallbackWorker(object):
             try:
                 self._callback(items)
             except Exception as exc:
-                _LOGGER.exception('Error in queue callback worker: %s', exc)
+                _LOGGER.exception("Error in queue callback worker: %s", exc)
 
-        _LOGGER.debug('Exiting the QueueCallbackWorker.')
+        _LOGGER.debug("Exiting the QueueCallbackWorker.")

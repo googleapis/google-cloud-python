@@ -26,8 +26,4 @@ class CloudSchedulerClient(cloud_scheduler_client.CloudSchedulerClient):
     enums = enums
 
 
-__all__ = (
-    'enums',
-    'types',
-    'CloudSchedulerClient',
-)
+__all__ = ("enums", "types", "CloudSchedulerClient")

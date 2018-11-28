@@ -23,7 +23,7 @@ from google.cloud.monitoring_v3.proto import metric_service_pb2
 
 class TestSystemMetricService(object):
     def test_list_monitored_resource_descriptors(self):
-        project_id = os.environ['PROJECT_ID']
+        project_id = os.environ["PROJECT_ID"]
 
         client = monitoring_v3.MetricServiceClient()
         name = client.project_path(project_id)

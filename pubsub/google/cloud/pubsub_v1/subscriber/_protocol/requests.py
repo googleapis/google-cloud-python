@@ -21,26 +21,13 @@ import collections
 # Namedtuples for management requests. Used by the Message class to communicate
 # items of work back to the policy.
 AckRequest = collections.namedtuple(
-    'AckRequest',
-    ['ack_id', 'byte_size', 'time_to_ack'],
+    "AckRequest", ["ack_id", "byte_size", "time_to_ack"]
 )
 
-DropRequest = collections.namedtuple(
-    'DropRequest',
-    ['ack_id', 'byte_size'],
-)
+DropRequest = collections.namedtuple("DropRequest", ["ack_id", "byte_size"])
 
-LeaseRequest = collections.namedtuple(
-    'LeaseRequest',
-    ['ack_id', 'byte_size'],
-)
+LeaseRequest = collections.namedtuple("LeaseRequest", ["ack_id", "byte_size"])
 
-ModAckRequest = collections.namedtuple(
-    'ModAckRequest',
-    ['ack_id', 'seconds'],
-)
+ModAckRequest = collections.namedtuple("ModAckRequest", ["ack_id", "seconds"])
 
-NackRequest = collections.namedtuple(
-    'NackRequest',
-    ['ack_id', 'byte_size'],
-)
+NackRequest = collections.namedtuple("NackRequest", ["ack_id", "byte_size"])

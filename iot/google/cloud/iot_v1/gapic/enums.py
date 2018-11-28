@@ -28,6 +28,7 @@ class MqttState(enum.IntEnum):
       MQTT_ENABLED (int): Enables a MQTT connection.
       MQTT_DISABLED (int): Disables a MQTT connection.
     """
+
     MQTT_STATE_UNSPECIFIED = 0
     MQTT_ENABLED = 1
     MQTT_DISABLED = 2
@@ -44,6 +45,7 @@ class HttpState(enum.IntEnum):
       HTTP_ENABLED (int): Enables DeviceService (HTTP) service for the registry.
       HTTP_DISABLED (int): Disables DeviceService (HTTP) service for the registry.
     """
+
     HTTP_STATE_UNSPECIFIED = 0
     HTTP_ENABLED = 1
     HTTP_DISABLED = 2
@@ -66,6 +68,7 @@ class LogLevel(enum.IntEnum):
       disconnections.
       DEBUG (int): All events will be logged.
     """
+
     LOG_LEVEL_UNSPECIFIED = 0
     NONE = 10
     ERROR = 20
@@ -82,6 +85,7 @@ class GatewayType(enum.IntEnum):
       GATEWAY (int): The device is a gateway.
       NON_GATEWAY (int): The device is not a gateway.
     """
+
     GATEWAY_TYPE_UNSPECIFIED = 0
     GATEWAY = 1
     NON_GATEWAY = 2
@@ -103,6 +107,7 @@ class GatewayAuthMethod(enum.IntEnum):
       association. The device must be bound to the gateway and must provide its
       own credentials.
     """
+
     GATEWAY_AUTH_METHOD_UNSPECIFIED = 0
     ASSOCIATION_ONLY = 1
     DEVICE_AUTH_TOKEN_ONLY = 2
@@ -121,6 +126,7 @@ class PublicKeyCertificateFormat(enum.IntEnum):
       and wrapped by ``-----BEGIN CERTIFICATE-----`` and
       ``-----END CERTIFICATE-----``.
     """
+
     UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT = 0
     X509_CERTIFICATE_PEM = 1
 
@@ -152,6 +158,7 @@ class PublicKeyFormat(enum.IntEnum):
       and wrapped by ``-----BEGIN CERTIFICATE-----`` and
       ``-----END CERTIFICATE-----``.
     """
+
     UNSPECIFIED_PUBLIC_KEY_FORMAT = 0
     RSA_PEM = 3
     RSA_X509_PEM = 1

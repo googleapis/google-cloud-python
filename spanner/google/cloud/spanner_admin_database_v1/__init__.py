@@ -26,8 +26,4 @@ class DatabaseAdminClient(database_admin_client.DatabaseAdminClient):
     enums = enums
 
 
-__all__ = (
-    'enums',
-    'types',
-    'DatabaseAdminClient',
-)
+__all__ = ("enums", "types", "DatabaseAdminClient")

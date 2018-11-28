@@ -20,8 +20,4 @@ from google.cloud.tasks_v2beta3 import CloudTasksClient
 from google.cloud.tasks_v2beta3 import enums
 from google.cloud.tasks_v2beta3 import types
 
-__all__ = (
-    'enums',
-    'types',
-    'CloudTasksClient',
-)
+__all__ = ("enums", "types", "CloudTasksClient")

@@ -29,6 +29,7 @@ class Feature(enum.IntEnum):
       SHOT_CHANGE_DETECTION (int): Shot change detection.
       SAFE_SEARCH_DETECTION (int): Safe search detection.
     """
+
     FEATURE_UNSPECIFIED = 0
     LABEL_DETECTION = 1
     FACE_DETECTION = 2
@@ -48,6 +49,7 @@ class LabelLevel(enum.IntEnum):
       without a major camera position or background change).
       FRAME_LEVEL (int): Frame-level. Corresponds to a single video frame.
     """
+
     LABEL_LEVEL_UNSPECIFIED = 0
     VIDEO_LEVEL = 1
     SEGMENT_LEVEL = 2
@@ -65,6 +67,7 @@ class LabelDetectionMode(enum.IntEnum):
       FRAME_MODE (int): Detect frame-level labels.
       SHOT_AND_FRAME_MODE (int): Detect both shot-level and frame-level labels.
     """
+
     LABEL_DETECTION_MODE_UNSPECIFIED = 0
     SHOT_MODE = 1
     FRAME_MODE = 2
@@ -83,6 +86,7 @@ class Likelihood(enum.IntEnum):
       LIKELY (int): Likely.
       VERY_LIKELY (int): Very likely.
     """
+
     UNKNOWN = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2

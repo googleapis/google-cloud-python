@@ -15,6 +15,7 @@
 """Time series as :mod:`pandas` dataframes."""
 
 import itertools
+
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
@@ -22,13 +23,7 @@ except ImportError:  # pragma: NO COVER
 
 from google.cloud.monitoring_v3.types import TimeSeries
 
-TOP_RESOURCE_LABELS = (
-    'project_id',
-    'aws_account',
-    'location',
-    'region',
-    'zone',
-)
+TOP_RESOURCE_LABELS = ("project_id", "aws_account", "location", "region", "zone")
 
 
 def _extract_header(time_series):
@@ -37,13 +32,13 @@ def _extract_header(time_series):
         metric=time_series.metric,
         resource=time_series.resource,
         metric_kind=time_series.metric_kind,
-        value_type=time_series.value_type
+        value_type=time_series.value_type,
     )
 
 
 def _extract_labels(time_series):
     """Build the combined resource and metric labels, with resource_type."""
-    labels = {'resource_type': time_series.resource.type}
+    labels = {"resource_type": time_series.resource.type}
     labels.update(time_series.resource.labels)
     labels.update(time_series.metric.labels)
     return labels
@@ -51,12 +46,11 @@ def _extract_labels(time_series):
 
 def _extract_value(typed_value):
     """Extract the value from a TypedValue."""
-    value_type = typed_value.WhichOneof('value')
+    value_type = typed_value.WhichOneof("value")
     return typed_value.__getattribute__(value_type)
 
 
-def _build_dataframe(time_series_iterable,
-                     label=None, labels=None):  # pragma: NO COVER
+def _build_dataframe(time_series_iterable, label=None, labels=None):  # pragma: NO COVER
     """Build a :mod:`pandas` dataframe out of time series.
 
     :type time_series_iterable:
@@ -88,11 +82,11 @@ def _build_dataframe(time_series_iterable,
     :raises: :exc:`RuntimeError` if `pandas` is not installed.
     """
     if pandas is None:
-        raise RuntimeError('This method requires `pandas` to be installed.')
+        raise RuntimeError("This method requires `pandas` to be installed.")
 
     if label is not None:
         if labels:
-            raise ValueError('Cannot specify both `label` and `labels`.')
+            raise ValueError("Cannot specify both `label` and `labels`.")
         labels = (label,)
 
     columns = []
@@ -100,21 +94,26 @@ def _build_dataframe(time_series_iterable,
     for time_series in time_series_iterable:
         pandas_series = pandas.Series(
             data=[_extract_value(point.value) for point in time_series.points],
-            index=[point.interval.end_time.ToNanoseconds()
-                   for point in time_series.points],
+            index=[
+                point.interval.end_time.ToNanoseconds() for point in time_series.points
+            ],
         )
         columns.append(pandas_series)
         headers.append(_extract_header(time_series))
 
     # Implement a smart default of using all available labels.
     if labels is None:
-        resource_labels = set(itertools.chain.from_iterable(
-            header.resource.labels for header in headers))
-        metric_labels = set(itertools.chain.from_iterable(
-            header.metric.labels for header in headers))
-        labels = (['resource_type'] +
-                  _sorted_resource_labels(resource_labels) +
-                  sorted(metric_labels))
+        resource_labels = set(
+            itertools.chain.from_iterable(header.resource.labels for header in headers)
+        )
+        metric_labels = set(
+            itertools.chain.from_iterable(header.metric.labels for header in headers)
+        )
+        labels = (
+            ["resource_type"]
+            + _sorted_resource_labels(resource_labels)
+            + sorted(metric_labels)
+        )
 
     # Assemble the columns into a DataFrame.
     dataframe = pandas.DataFrame.from_records(columns).T
@@ -126,15 +125,15 @@ def _build_dataframe(time_series_iterable,
     # be undefined for some time series.
     levels = []
     for key in labels:
-        level = [_extract_labels(header).get(key, '') for header in headers]
+        level = [_extract_labels(header).get(key, "") for header in headers]
         levels.append(level)
 
     # Build a column Index or MultiIndex. Do not include level names
     # in the column header if the user requested a single-level header
     # by specifying "label".
     dataframe.columns = pandas.MultiIndex.from_arrays(
-        levels,
-        names=labels if not label else None)
+        levels, names=labels if not label else None
+    )
 
     # Sort the rows just in case (since the API doesn't guarantee the
     # ordering), and sort the columns lexicographically.
@@ -144,6 +143,5 @@ def _build_dataframe(time_series_iterable,
 def _sorted_resource_labels(labels):
     """Sort label names, putting well-known resource labels first."""
     head = [label for label in TOP_RESOURCE_LABELS if label in labels]
-    tail = sorted(label for label in labels
-                  if label not in TOP_RESOURCE_LABELS)
+    tail = sorted(label for label in labels if label not in TOP_RESOURCE_LABELS)
     return head + tail

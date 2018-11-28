@@ -51,10 +51,7 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -65,54 +62,55 @@ class CustomException(Exception):
 class TestErrorGroupServiceClient(object):
     def test_get_group(self):
         # Setup Expected Response
-        name = 'name3373707'
-        group_id = 'groupId506361563'
-        expected_response = {'name': name, 'group_id': group_id}
+        name = "name3373707"
+        group_id = "groupId506361563"
+        expected_response = {"name": name, "group_id": group_id}
         expected_response = common_pb2.ErrorGroup(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = errorreporting_v1beta1.ErrorGroupServiceClient()
 
         # Setup Request
-        group_name = client.group_path('[PROJECT]', '[GROUP]')
+        group_name = client.group_path("[PROJECT]", "[GROUP]")
 
         response = client.get_group(group_name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = error_group_service_pb2.GetGroupRequest(
-            group_name=group_name)
+            group_name=group_name
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_get_group_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = errorreporting_v1beta1.ErrorGroupServiceClient()
 
         # Setup request
-        group_name = client.group_path('[PROJECT]', '[GROUP]')
+        group_name = client.group_path("[PROJECT]", "[GROUP]")
 
         with pytest.raises(CustomException):
             client.get_group(group_name)
 
     def test_update_group(self):
         # Setup Expected Response
-        name = 'name3373707'
-        group_id = 'groupId506361563'
-        expected_response = {'name': name, 'group_id': group_id}
+        name = "name3373707"
+        group_id = "groupId506361563"
+        expected_response = {"name": name, "group_id": group_id}
         expected_response = common_pb2.ErrorGroup(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = errorreporting_v1beta1.ErrorGroupServiceClient()
@@ -124,15 +122,14 @@ class TestErrorGroupServiceClient(object):
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = error_group_service_pb2.UpdateGroupRequest(
-            group=group)
+        expected_request = error_group_service_pb2.UpdateGroupRequest(group=group)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_update_group_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = errorreporting_v1beta1.ErrorGroupServiceClient()

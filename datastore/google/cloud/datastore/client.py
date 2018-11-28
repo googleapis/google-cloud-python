@@ -16,8 +16,7 @@
 import os
 
 from google.cloud._helpers import _LocalStack
-from google.cloud._helpers import (_determine_default_project as
-                                   _base_default_project)
+from google.cloud._helpers import _determine_default_project as _base_default_project
 from google.cloud.client import ClientWithProject
 from google.cloud.datastore import helpers
 from google.cloud.datastore._http import HTTPDatastoreAPI
@@ -32,6 +31,7 @@ from google.cloud.environment_vars import GCD_HOST
 
 try:
     from google.cloud.datastore._gapic import make_datastore_api
+
     _HAVE_GRPC = True
 except ImportError:  # pragma: NO COVER
     make_datastore_api = None
@@ -40,7 +40,7 @@ except ImportError:  # pragma: NO COVER
 
 _MAX_LOOPS = 128
 """Maximum number of iterations to wait for deferred keys."""
-_DATASTORE_BASE_URL = 'https://datastore.googleapis.com'
+_DATASTORE_BASE_URL = "https://datastore.googleapis.com"
 """Datastore API request URL base."""
 
 _USE_GRPC = _HAVE_GRPC and not os.getenv(DISABLE_GRPC, False)
@@ -77,9 +77,15 @@ def _determine_default_project(project=None):
     return project
 
 
-def _extended_lookup(datastore_api, project, key_pbs,
-                     missing=None, deferred=None,
-                     eventual=False, transaction_id=None):
+def _extended_lookup(
+    datastore_api,
+    project,
+    key_pbs,
+    missing=None,
+    deferred=None,
+    eventual=False,
+    transaction_id=None,
+):
     """Repeat lookup until all keys found (unless stop requested).
 
     Helper function for :meth:`Client.get_multi`.
@@ -121,10 +127,10 @@ def _extended_lookup(datastore_api, project, key_pbs,
              empty list.
     """
     if missing is not None and missing != []:
-        raise ValueError('missing must be None or an empty list')
+        raise ValueError("missing must be None or an empty list")
 
     if deferred is not None and deferred != []:
-        raise ValueError('deferred must be None or an empty list')
+        raise ValueError("deferred must be None or an empty list")
 
     results = []
 
@@ -133,9 +139,7 @@ def _extended_lookup(datastore_api, project, key_pbs,
     while loop_num < _MAX_LOOPS:  # loop against possible deferred.
         loop_num += 1
         lookup_response = datastore_api.lookup(
-            project,
-            key_pbs,
-            read_options=read_options,
+            project, key_pbs, read_options=read_options
         )
 
         # Accumulate the new results.
@@ -196,13 +200,15 @@ class Client(ClientWithProject):
                       change in the future.
     """
 
-    SCOPE = ('https://www.googleapis.com/auth/datastore',)
+    SCOPE = ("https://www.googleapis.com/auth/datastore",)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
-    def __init__(self, project=None, namespace=None,
-                 credentials=None, _http=None, _use_grpc=None):
+    def __init__(
+        self, project=None, namespace=None, credentials=None, _http=None, _use_grpc=None
+    ):
         super(Client, self).__init__(
-            project=project, credentials=credentials, _http=_http)
+            project=project, credentials=credentials, _http=_http
+        )
         self.namespace = namespace
         self._batch_stack = _LocalStack()
         self._datastore_api_internal = None
@@ -212,7 +218,7 @@ class Client(ClientWithProject):
             self._use_grpc = _use_grpc
         try:
             host = os.environ[GCD_HOST]
-            self._base_url = 'http://' + host
+            self._base_url = "http://" + host
         except KeyError:
             self._base_url = _DATASTORE_BASE_URL
 
@@ -287,8 +293,7 @@ class Client(ClientWithProject):
         if isinstance(transaction, Transaction):
             return transaction
 
-    def get(self, key, missing=None, deferred=None,
-            transaction=None, eventual=False):
+    def get(self, key, missing=None, deferred=None, transaction=None, eventual=False):
         """Retrieve an entity from a single key (if it exists).
 
         .. note::
@@ -324,16 +329,19 @@ class Client(ClientWithProject):
 
         :raises: :class:`ValueError` if eventual is True and in a transaction.
         """
-        entities = self.get_multi(keys=[key],
-                                  missing=missing,
-                                  deferred=deferred,
-                                  transaction=transaction,
-                                  eventual=eventual)
+        entities = self.get_multi(
+            keys=[key],
+            missing=missing,
+            deferred=deferred,
+            transaction=transaction,
+            eventual=eventual,
+        )
         if entities:
             return entities[0]
 
-    def get_multi(self, keys, missing=None, deferred=None,
-                  transaction=None, eventual=False):
+    def get_multi(
+        self, keys, missing=None, deferred=None, transaction=None, eventual=False
+    ):
         """Retrieve entities, along with their attributes.
 
         :type keys: list of :class:`google.cloud.datastore.key.Key`
@@ -371,7 +379,7 @@ class Client(ClientWithProject):
         ids = set(key.project for key in keys)
         for current_id in ids:
             if current_id != self.project:
-                raise ValueError('Keys do not match project')
+                raise ValueError("Keys do not match project")
 
         if transaction is None:
             transaction = self.current_transaction
@@ -388,16 +396,15 @@ class Client(ClientWithProject):
 
         if missing is not None:
             missing[:] = [
-                helpers.entity_from_protobuf(missed_pb)
-                for missed_pb in missing]
+                helpers.entity_from_protobuf(missed_pb) for missed_pb in missing
+            ]
 
         if deferred is not None:
             deferred[:] = [
-                helpers.key_from_protobuf(deferred_pb)
-                for deferred_pb in deferred]
+                helpers.key_from_protobuf(deferred_pb) for deferred_pb in deferred
+            ]
 
-        return [helpers.entity_from_protobuf(entity_pb)
-                for entity_pb in entity_pbs]
+        return [helpers.entity_from_protobuf(entity_pb) for entity_pb in entity_pbs]
 
     def put(self, entity):
         """Save an entity in the Cloud Datastore.
@@ -493,28 +500,31 @@ class Client(ClientWithProject):
                  partial key.
         """
         if not incomplete_key.is_partial:
-            raise ValueError(('Key is not partial.', incomplete_key))
+            raise ValueError(("Key is not partial.", incomplete_key))
 
         incomplete_key_pb = incomplete_key.to_protobuf()
         incomplete_key_pbs = [incomplete_key_pb] * num_ids
 
         response_pb = self._datastore_api.allocate_ids(
-            incomplete_key.project, incomplete_key_pbs)
-        allocated_ids = [allocated_key_pb.path[-1].id
-                         for allocated_key_pb in response_pb.keys]
-        return [incomplete_key.completed_key(allocated_id)
-                for allocated_id in allocated_ids]
+            incomplete_key.project, incomplete_key_pbs
+        )
+        allocated_ids = [
+            allocated_key_pb.path[-1].id for allocated_key_pb in response_pb.keys
+        ]
+        return [
+            incomplete_key.completed_key(allocated_id) for allocated_id in allocated_ids
+        ]
 
     def key(self, *path_args, **kwargs):
         """Proxy to :class:`google.cloud.datastore.key.Key`.
 
         Passes our ``project``.
         """
-        if 'project' in kwargs:
-            raise TypeError('Cannot pass project')
-        kwargs['project'] = self.project
-        if 'namespace' not in kwargs:
-            kwargs['namespace'] = self.namespace
+        if "project" in kwargs:
+            raise TypeError("Cannot pass project")
+        kwargs["project"] = self.project
+        if "namespace" not in kwargs:
+            kwargs["namespace"] = self.namespace
         return Key(*path_args, **kwargs)
 
     def batch(self):
@@ -604,11 +614,11 @@ class Client(ClientWithProject):
         :rtype: :class:`~google.cloud.datastore.query.Query`
         :returns: A query object.
         """
-        if 'client' in kwargs:
-            raise TypeError('Cannot pass client')
-        if 'project' in kwargs:
-            raise TypeError('Cannot pass project')
-        kwargs['project'] = self.project
-        if 'namespace' not in kwargs:
-            kwargs['namespace'] = self.namespace
+        if "client" in kwargs:
+            raise TypeError("Cannot pass client")
+        if "project" in kwargs:
+            raise TypeError("Cannot pass project")
+        kwargs["project"] = self.project
+        if "namespace" not in kwargs:
+            kwargs["namespace"] = self.namespace
         return Query(self, **kwargs)

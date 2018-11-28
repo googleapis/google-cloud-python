@@ -45,6 +45,7 @@ class Batch(object):
     regardless of how much is in it. However, if either the message count or
     size thresholds are encountered first, then the batch will commit early.
     """
+
     def __len__(self):
         """Return the number of messages currently in the batch."""
         return len(self.messages)
@@ -157,8 +158,9 @@ class BatchStatus(object):
     class; this represents the list of statuses where the existing
     library hooks in functionality.
     """
-    ACCEPTING_MESSAGES = 'accepting messages'
-    STARTING = 'starting'
-    IN_PROGRESS = 'in progress'
-    ERROR = 'error'
-    SUCCESS = 'success'
+
+    ACCEPTING_MESSAGES = "accepting messages"
+    STARTING = "starting"
+    IN_PROGRESS = "in progress"
+    ERROR = "error"
+    SUCCESS = "success"

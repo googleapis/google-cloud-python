@@ -46,9 +46,11 @@ class _ErrorReportingLoggingAPI(object):
                   This parameter should be considered private, and could
                   change in the future.
     """
+
     def __init__(self, project, credentials=None, _http=None):
         self.logging_client = google.cloud.logging.client.Client(
-            project, credentials, _http=_http)
+            project, credentials, _http=_http
+        )
 
     def report_error_event(self, error_report):
         """Report error payload.
@@ -60,5 +62,5 @@ class _ErrorReportingLoggingAPI(object):
             This object should be built using
             :meth:~`google.cloud.error_reporting.client._build_error_report`
         """
-        logger = self.logging_client.logger('errors')
+        logger = self.logging_client.logger("errors")
         logger.log_struct(error_report)

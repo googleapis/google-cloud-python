@@ -28,31 +28,31 @@ from google.cloud import pubsub_v1
 from test_utils.system import unique_resource_id
 
 
-@pytest.fixture(scope=u'module')
+@pytest.fixture(scope=u"module")
 def project():
     _, default_project = google.auth.default()
     yield default_project
 
 
-@pytest.fixture(scope=u'module')
+@pytest.fixture(scope=u"module")
 def publisher():
     yield pubsub_v1.PublisherClient()
 
 
-@pytest.fixture(scope=u'module')
+@pytest.fixture(scope=u"module")
 def subscriber():
     yield pubsub_v1.SubscriberClient()
 
 
 @pytest.fixture
 def topic_path(project, publisher):
-    topic_name = 't' + unique_resource_id('-')
+    topic_name = "t" + unique_resource_id("-")
     yield publisher.topic_path(project, topic_name)
 
 
 @pytest.fixture
 def subscription_path(project, subscriber):
-    sub_name = 's' + unique_resource_id('-')
+    sub_name = "s" + unique_resource_id("-")
     yield subscriber.subscription_path(project, sub_name)
 
 
@@ -76,9 +76,9 @@ def test_publish_messages(publisher, topic_path, cleanup):
         futures.append(
             publisher.publish(
                 topic_path,
-                b'The hail in Wales falls mainly on the snails.',
+                b"The hail in Wales falls mainly on the snails.",
                 num=str(index),
-            ),
+            )
         )
     for future in futures:
         result = future.result()
@@ -86,7 +86,8 @@ def test_publish_messages(publisher, topic_path, cleanup):
 
 
 def test_subscribe_to_messages(
-        publisher, topic_path, subscriber, subscription_path, cleanup):
+    publisher, topic_path, subscriber, subscription_path, cleanup
+):
     # Make sure the topic and subscription get deleted.
     cleanup.append((publisher.delete_topic, topic_path))
     cleanup.append((subscriber.delete_subscription, subscription_path))
@@ -100,11 +101,7 @@ def test_subscribe_to_messages(
 
     # Publish some messages.
     futures = [
-        publisher.publish(
-            topic_path,
-            b'Wooooo! The claaaaaw!',
-            num=str(index),
-        )
+        publisher.publish(topic_path, b"Wooooo! The claaaaaw!", num=str(index))
         for index in six.moves.range(50)
     ]
 
@@ -132,7 +129,8 @@ def test_subscribe_to_messages(
 
 
 def test_subscribe_to_messages_async_callbacks(
-        publisher, topic_path, subscriber, subscription_path, cleanup):
+    publisher, topic_path, subscriber, subscription_path, cleanup
+):
     # Make sure the topic and subscription get deleted.
     cleanup.append((publisher.delete_topic, topic_path))
     cleanup.append((subscriber.delete_subscription, subscription_path))
@@ -146,11 +144,7 @@ def test_subscribe_to_messages_async_callbacks(
 
     # Publish some messages.
     futures = [
-        publisher.publish(
-            topic_path,
-            b'Wooooo! The claaaaaw!',
-            num=str(index),
-        )
+        publisher.publish(topic_path, b"Wooooo! The claaaaaw!", num=str(index))
         for index in six.moves.range(2)
     ]
 
@@ -185,7 +179,6 @@ def test_subscribe_to_messages_async_callbacks(
 
 
 class AckCallback(object):
-
     def __init__(self):
         self.calls = 0
         self.lock = threading.Lock()
@@ -198,7 +191,6 @@ class AckCallback(object):
 
 
 class TimesCallback(object):
-
     def __init__(self, sleep_time):
         self.sleep_time = sleep_time
         self.calls = 0

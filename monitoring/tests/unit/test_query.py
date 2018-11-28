@@ -18,26 +18,26 @@ import datetime
 import unittest
 import mock
 
-PROJECT = 'my-project'
+PROJECT = "my-project"
 
-METRIC_TYPE = 'compute.googleapis.com/instance/uptime'
-METRIC_LABELS = {'instance_name': 'instance-1'}
-METRIC_LABELS2 = {'instance_name': 'instance-2'}
+METRIC_TYPE = "compute.googleapis.com/instance/uptime"
+METRIC_LABELS = {"instance_name": "instance-1"}
+METRIC_LABELS2 = {"instance_name": "instance-2"}
 
-RESOURCE_TYPE = 'gce_instance'
+RESOURCE_TYPE = "gce_instance"
 RESOURCE_LABELS = {
-    'project_id': 'my-project',
-    'zone': 'us-east1-a',
-    'instance_id': '1234567890123456789',
+    "project_id": "my-project",
+    "zone": "us-east1-a",
+    "instance_id": "1234567890123456789",
 }
 RESOURCE_LABELS2 = {
-    'project_id': 'my-project',
-    'zone': 'us-east1-b',
-    'instance_id': '9876543210987654321',
+    "project_id": "my-project",
+    "zone": "us-east1-b",
+    "instance_id": "9876543210987654321",
 }
 
-METRIC_KIND = 'DELTA'
-VALUE_TYPE = 'DOUBLE'
+METRIC_KIND = "DELTA"
+VALUE_TYPE = "DOUBLE"
 
 TS0 = datetime.datetime(2016, 4, 6, 22, 5, 0, 42)
 TS1 = datetime.datetime(2016, 4, 6, 22, 5, 1, 42)
@@ -78,15 +78,11 @@ class ChannelStub(object):
         ]
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
 class TestQuery(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring_v3.query import Query
@@ -116,8 +112,9 @@ class TestQuery(unittest.TestCase):
         query = self._make_one(client, PROJECT)
 
         self.assertEqual(query._client, client)
-        self.assertEqual(query._filter.metric_type,
-                         self._get_target_class().DEFAULT_METRIC_TYPE)
+        self.assertEqual(
+            query._filter.metric_type, self._get_target_class().DEFAULT_METRIC_TYPE
+        )
 
         self.assertIsNone(query._start_time)
         self.assertIsNone(query._end_time)
@@ -136,9 +133,15 @@ class TestQuery(unittest.TestCase):
 
         channel = ChannelStub()
         client = MetricServiceClient(channel=channel)
-        query = self._make_one(client, PROJECT, METRIC_TYPE,
-                               end_time=T1,
-                               days=DAYS, hours=HOURS, minutes=MINUTES)
+        query = self._make_one(
+            client,
+            PROJECT,
+            METRIC_TYPE,
+            end_time=T1,
+            days=DAYS,
+            hours=HOURS,
+            minutes=MINUTES,
+        )
 
         self.assertEqual(query._client, client)
         self.assertEqual(query._filter.metric_type, METRIC_TYPE)
@@ -161,10 +164,8 @@ class TestQuery(unittest.TestCase):
 
         channel = ChannelStub()
         client = MetricServiceClient(channel=channel)
-        with mock.patch('google.cloud.monitoring_v3.query._UTCNOW',
-                        new=lambda: NOW):
-            query = self._make_one(
-                client, PROJECT, METRIC_TYPE, minutes=MINUTES)
+        with mock.patch("google.cloud.monitoring_v3.query._UTCNOW", new=lambda: NOW):
+            query = self._make_one(client, PROJECT, METRIC_TYPE, minutes=MINUTES)
 
         self.assertEqual(query._start_time, T0)
         self.assertEqual(query._end_time, T1)
@@ -207,21 +208,20 @@ class TestQuery(unittest.TestCase):
     def test_filter_by_group(self):
         from google.cloud.monitoring_v3 import MetricServiceClient
 
-        GROUP = '1234567'
+        GROUP = "1234567"
         channel = ChannelStub()
         client = MetricServiceClient(channel=channel)
         query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_group(GROUP)
-        expected = (
-            'metric.type = "{type}"'
-            ' AND group.id = "{group}"'
-        ).format(type=METRIC_TYPE, group=GROUP)
+        expected = ('metric.type = "{type}"' ' AND group.id = "{group}"').format(
+            type=METRIC_TYPE, group=GROUP
+        )
         self.assertEqual(query.filter, expected)
 
     def test_filter_by_projects(self):
         from google.cloud.monitoring_v3 import MetricServiceClient
 
-        PROJECT1, PROJECT2 = 'project-1', 'project-2'
+        PROJECT1, PROJECT2 = "project-1", "project-2"
         channel = ChannelStub()
         client = MetricServiceClient(channel=channel)
         query = self._make_one(client, PROJECT, METRIC_TYPE)
@@ -235,7 +235,7 @@ class TestQuery(unittest.TestCase):
     def test_filter_by_resources(self):
         from google.cloud.monitoring_v3 import MetricServiceClient
 
-        ZONE_PREFIX = 'europe-'
+        ZONE_PREFIX = "europe-"
         channel = ChannelStub()
         client = MetricServiceClient(channel=channel)
         query = self._make_one(client, PROJECT, METRIC_TYPE)
@@ -249,14 +249,13 @@ class TestQuery(unittest.TestCase):
     def test_filter_by_metrics(self):
         from google.cloud.monitoring_v3 import MetricServiceClient
 
-        INSTANCE = 'my-instance'
+        INSTANCE = "my-instance"
         channel = ChannelStub()
         client = MetricServiceClient(channel=channel)
         query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_metrics(instance_name=INSTANCE)
         expected = (
-            'metric.type = "{type}"'
-            ' AND metric.label.instance_name = "{instance}"'
+            'metric.type = "{type}"' ' AND metric.label.instance_name = "{instance}"'
         ).format(type=METRIC_TYPE, instance=INSTANCE)
         self.assertEqual(query.filter, expected)
 
@@ -272,10 +271,10 @@ class TestQuery(unittest.TestCase):
         query = query.select_interval(end_time=T1)
         actual = query._build_query_params()
         expected = {
-            'name': u'projects/{}'.format(PROJECT),
-            'filter_': 'metric.type = "{type}"'.format(type=METRIC_TYPE),
-            'interval': self._make_interval(T1),
-            'view': enums.ListTimeSeriesRequest.TimeSeriesView.FULL,
+            "name": u"projects/{}".format(PROJECT),
+            "filter_": 'metric.type = "{type}"'.format(type=METRIC_TYPE),
+            "interval": self._make_interval(T1),
+            "view": enums.ListTimeSeriesRequest.TimeSeriesView.FULL,
         }
         self.assertEqual(actual, expected)
 
@@ -287,11 +286,11 @@ class TestQuery(unittest.TestCase):
         T0 = datetime.datetime(2016, 4, 7, 2, 0, 0)
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 0)
 
-        ALIGNER = 'ALIGN_DELTA'
+        ALIGNER = "ALIGN_DELTA"
         MINUTES, SECONDS, PERIOD_IN_SECONDS = 1, 30, 90
 
-        REDUCER = 'REDUCE_MEAN'
-        FIELD1, FIELD2 = 'resource.zone', 'metric.instance_name'
+        REDUCER = "REDUCE_MEAN"
+        FIELD1, FIELD2 = "resource.zone", "metric.instance_name"
 
         PAGE_SIZE = 100
 
@@ -301,20 +300,19 @@ class TestQuery(unittest.TestCase):
         query = query.select_interval(start_time=T0, end_time=T1)
         query = query.align(ALIGNER, minutes=MINUTES, seconds=SECONDS)
         query = query.reduce(REDUCER, FIELD1, FIELD2)
-        actual = query._build_query_params(headers_only=True,
-                                           page_size=PAGE_SIZE)
+        actual = query._build_query_params(headers_only=True, page_size=PAGE_SIZE)
         expected = {
-            'name': 'projects/%s' % PROJECT,
-            'filter_': 'metric.type = "{type}"'.format(type=METRIC_TYPE),
-            'interval': self._make_interval(T1, T0),
-            'aggregation': types.Aggregation(
+            "name": "projects/%s" % PROJECT,
+            "filter_": 'metric.type = "{type}"'.format(type=METRIC_TYPE),
+            "interval": self._make_interval(T1, T0),
+            "aggregation": types.Aggregation(
                 per_series_aligner=ALIGNER,
-                alignment_period={'seconds': PERIOD_IN_SECONDS},
+                alignment_period={"seconds": PERIOD_IN_SECONDS},
                 cross_series_reducer=REDUCER,
                 group_by_fields=[FIELD1, FIELD2],
             ),
-            'view': enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS,
-            'page_size': PAGE_SIZE,
+            "view": enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS,
+            "page_size": PAGE_SIZE,
         }
         self.assertEqual(actual, expected)
 
@@ -333,27 +331,27 @@ class TestQuery(unittest.TestCase):
         VALUE2 = 60.001  # seconds
 
         SERIES1 = {
-            'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS},
-            'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS},
-            'metric_kind': METRIC_KIND,
-            'value_type': VALUE_TYPE,
-            'points': [
-                {'interval': INTERVAL2, 'value': {'double_value': VALUE1}},
-                {'interval': INTERVAL1, 'value': {'double_value': VALUE1}},
+            "metric": {"type": METRIC_TYPE, "labels": METRIC_LABELS},
+            "resource": {"type": RESOURCE_TYPE, "labels": RESOURCE_LABELS},
+            "metric_kind": METRIC_KIND,
+            "value_type": VALUE_TYPE,
+            "points": [
+                {"interval": INTERVAL2, "value": {"double_value": VALUE1}},
+                {"interval": INTERVAL1, "value": {"double_value": VALUE1}},
             ],
         }
         SERIES2 = {
-            'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS2},
-            'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS2},
-            'metric_kind': METRIC_KIND,
-            'value_type': VALUE_TYPE,
-            'points': [
-                {'interval': INTERVAL2, 'value': {'double_value': VALUE2}},
-                {'interval': INTERVAL1, 'value': {'double_value': VALUE2}},
+            "metric": {"type": METRIC_TYPE, "labels": METRIC_LABELS2},
+            "resource": {"type": RESOURCE_TYPE, "labels": RESOURCE_LABELS2},
+            "metric_kind": METRIC_KIND,
+            "value_type": VALUE_TYPE,
+            "points": [
+                {"interval": INTERVAL2, "value": {"double_value": VALUE2}},
+                {"interval": INTERVAL1, "value": {"double_value": VALUE2}},
             ],
         }
 
-        RESPONSE = {'time_series': [SERIES1, SERIES2], 'next_page_token': ''}
+        RESPONSE = {"time_series": [SERIES1, SERIES2], "next_page_token": ""}
 
         channel = ChannelStub(responses=[RESPONSE])
         client = MetricServiceClient(channel=channel)
@@ -369,20 +367,20 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(series1.resource.labels, RESOURCE_LABELS)
         self.assertEqual(series2.resource.labels, RESOURCE_LABELS2)
 
-        self.assertEqual([p.value.double_value for p in series1.points],
-                         [VALUE1, VALUE1])
-        self.assertEqual([p.value.double_value for p in series2.points],
-                         [VALUE2, VALUE2])
-        self.assertEqual([p.interval for p in series1.points],
-                         [INTERVAL2, INTERVAL1])
-        self.assertEqual([p.interval for p in series2.points],
-                         [INTERVAL2, INTERVAL1])
+        self.assertEqual(
+            [p.value.double_value for p in series1.points], [VALUE1, VALUE1]
+        )
+        self.assertEqual(
+            [p.value.double_value for p in series2.points], [VALUE2, VALUE2]
+        )
+        self.assertEqual([p.interval for p in series1.points], [INTERVAL2, INTERVAL1])
+        self.assertEqual([p.interval for p in series2.points], [INTERVAL2, INTERVAL1])
 
         expected_request = metric_service_pb2.ListTimeSeriesRequest(
-            name='projects/' + PROJECT,
+            name="projects/" + PROJECT,
             filter='metric.type = "{type}"'.format(type=METRIC_TYPE),
             interval=self._make_interval(T1, T0),
-            view=enums.ListTimeSeriesRequest.TimeSeriesView.FULL
+            view=enums.ListTimeSeriesRequest.TimeSeriesView.FULL,
         )
         request = channel.requests[0][1]
         self.assertEqual(request, expected_request)
@@ -395,7 +393,7 @@ class TestQuery(unittest.TestCase):
         T0 = datetime.datetime(2016, 4, 6, 22, 5, 0)
         T1 = datetime.datetime(2016, 4, 6, 22, 10, 0)
 
-        channel = ChannelStub(responses=[{'next_page_token': ''}])
+        channel = ChannelStub(responses=[{"next_page_token": ""}])
         client = MetricServiceClient(channel=channel)
         query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
@@ -404,10 +402,10 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(len(response), 0)
 
         expected_request = metric_service_pb2.ListTimeSeriesRequest(
-            name='projects/' + PROJECT,
+            name="projects/" + PROJECT,
             filter='metric.type = "{type}"'.format(type=METRIC_TYPE),
             interval=self._make_interval(T1, T0),
-            view=enums.ListTimeSeriesRequest.TimeSeriesView.FULL
+            view=enums.ListTimeSeriesRequest.TimeSeriesView.FULL,
         )
         request = channel.requests[0][1]
         self.assertEqual(request, expected_request)
@@ -421,19 +419,19 @@ class TestQuery(unittest.TestCase):
         T1 = datetime.datetime(2016, 4, 6, 22, 10, 0)
 
         SERIES1 = {
-            'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS},
-            'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS},
-            'metric_kind': METRIC_KIND,
-            'value_type': VALUE_TYPE,
+            "metric": {"type": METRIC_TYPE, "labels": METRIC_LABELS},
+            "resource": {"type": RESOURCE_TYPE, "labels": RESOURCE_LABELS},
+            "metric_kind": METRIC_KIND,
+            "value_type": VALUE_TYPE,
         }
         SERIES2 = {
-            'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS2},
-            'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS2},
-            'metric_kind': METRIC_KIND,
-            'value_type': VALUE_TYPE,
+            "metric": {"type": METRIC_TYPE, "labels": METRIC_LABELS2},
+            "resource": {"type": RESOURCE_TYPE, "labels": RESOURCE_LABELS2},
+            "metric_kind": METRIC_KIND,
+            "value_type": VALUE_TYPE,
         }
 
-        RESPONSE = {'time_series': [SERIES1, SERIES2], 'next_page_token': ''}
+        RESPONSE = {"time_series": [SERIES1, SERIES2], "next_page_token": ""}
 
         channel = ChannelStub(responses=[RESPONSE])
         client = MetricServiceClient(channel=channel)
@@ -453,17 +451,16 @@ class TestQuery(unittest.TestCase):
         self.assertFalse(len(series2.points))
 
         expected_request = metric_service_pb2.ListTimeSeriesRequest(
-            name='projects/' + PROJECT,
+            name="projects/" + PROJECT,
             filter='metric.type = "{type}"'.format(type=METRIC_TYPE),
             interval=self._make_interval(T1, T0),
-            view=enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS
+            view=enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS,
         )
         request = channel.requests[0][1]
         self.assertEqual(request, expected_request)
 
 
 class Test_Filter(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring_v3.query import _Filter
@@ -480,11 +477,10 @@ class Test_Filter(unittest.TestCase):
 
     def test_maximal(self):
         obj = self._make_one(METRIC_TYPE)
-        obj.group_id = '1234567'
-        obj.projects = 'project-1', 'project-2'
-        obj.select_resources(resource_type='some-resource',
-                             resource_label='foo')
-        obj.select_metrics(metric_label_prefix='bar-')
+        obj.group_id = "1234567"
+        obj.projects = "project-1", "project-2"
+        obj.select_resources(resource_type="some-resource", resource_label="foo")
+        obj.select_metrics(metric_label_prefix="bar-")
 
         expected = (
             'metric.type = "{type}"'
@@ -499,24 +495,20 @@ class Test_Filter(unittest.TestCase):
 
 
 class Test__build_label_filter(unittest.TestCase):
-
     def _call_fut(self, *args, **kwargs):
         from google.cloud.monitoring_v3.query import _build_label_filter
 
         return _build_label_filter(*args, **kwargs)
 
     def test_no_labels(self):
-        self.assertEqual(self._call_fut('resource'), '')
+        self.assertEqual(self._call_fut("resource"), "")
 
     def test_label_is_none(self):
-        self.assertEqual(self._call_fut('resource', foo=None), '')
+        self.assertEqual(self._call_fut("resource", foo=None), "")
 
     def test_metric_labels(self):
         actual = self._call_fut(
-            'metric',
-            alpha_prefix='a-',
-            beta_gamma_suffix='-b',
-            delta_epsilon='xyz',
+            "metric", alpha_prefix="a-", beta_gamma_suffix="-b", delta_epsilon="xyz"
         )
         expected = (
             'metric.label.alpha = starts_with("a-")'
@@ -527,32 +519,25 @@ class Test__build_label_filter(unittest.TestCase):
 
     def test_metric_label_response_code_greater_less(self):
         actual = self._call_fut(
-            'metric',
-            response_code_greater=500,
-            response_code_less=600)
+            "metric", response_code_greater=500, response_code_less=600
+        )
         expected = (
-            'metric.label.response_code < 600'
-            ' AND metric.label.response_code > 500'
+            "metric.label.response_code < 600" " AND metric.label.response_code > 500"
         )
         self.assertEqual(actual, expected)
 
     def test_metric_label_response_code_greater_less_equal(self):
         actual = self._call_fut(
-            'metric',
-            response_code_greaterequal=500,
-            response_code_lessequal=600)
+            "metric", response_code_greaterequal=500, response_code_lessequal=600
+        )
         expected = (
-            'metric.label.response_code <= 600'
-            ' AND metric.label.response_code >= 500'
+            "metric.label.response_code <= 600" " AND metric.label.response_code >= 500"
         )
         self.assertEqual(actual, expected)
 
     def test_resource_labels(self):
         actual = self._call_fut(
-            'resource',
-            alpha_prefix='a-',
-            beta_gamma_suffix='-b',
-            delta_epsilon='xyz',
+            "resource", alpha_prefix="a-", beta_gamma_suffix="-b", delta_epsilon="xyz"
         )
         expected = (
             'resource.label.alpha = starts_with("a-")'
@@ -563,7 +548,7 @@ class Test__build_label_filter(unittest.TestCase):
 
     def test_raw_label_filters(self):
         actual = self._call_fut(
-            'resource',
+            "resource",
             'resource.label.alpha = starts_with("a-")',
             'resource.label.beta_gamma = ends_with("-b")',
             'resource.label.delta_epsilon = "xyz"',
@@ -576,16 +561,16 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_resource_type(self):
-        actual = self._call_fut('resource', resource_type='foo')
+        actual = self._call_fut("resource", resource_type="foo")
         expected = 'resource.type = "foo"'
         self.assertEqual(actual, expected)
 
     def test_resource_type_prefix(self):
-        actual = self._call_fut('resource', resource_type_prefix='foo-')
+        actual = self._call_fut("resource", resource_type_prefix="foo-")
         expected = 'resource.type = starts_with("foo-")'
         self.assertEqual(actual, expected)
 
     def test_resource_type_suffix(self):
-        actual = self._call_fut('resource', resource_type_suffix='-foo')
+        actual = self._call_fut("resource", resource_type_suffix="-foo")
         expected = 'resource.type = ends_with("-foo")'
         self.assertEqual(actual, expected)

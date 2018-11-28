@@ -22,7 +22,7 @@ import google.api_core.grpc_helpers
 from google.cloud.spanner_v1.proto import spanner_pb2_grpc
 
 
-_SPANNER_GRPC_CONFIG = 'spanner.grpc.config'
+_SPANNER_GRPC_CONFIG = "spanner.grpc.config"
 
 
 class SpannerGrpcTransport(object):
@@ -33,17 +33,17 @@ class SpannerGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/spanner.data',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/spanner.data",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='spanner.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="spanner.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -61,28 +61,21 @@ class SpannerGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {
-            'spanner_stub': spanner_pb2_grpc.SpannerStub(channel),
-        }
+        self._stubs = {"spanner_stub": spanner_pb2_grpc.SpannerStub(channel)}
 
     @classmethod
-    def create_channel(cls,
-                       address='spanner.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="spanner.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -97,12 +90,11 @@ class SpannerGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         grpc_gcp_config = grpc_gcp.api_config_from_text_pb(
-            pkg_resources.resource_string(__name__, _SPANNER_GRPC_CONFIG))
+            pkg_resources.resource_string(__name__, _SPANNER_GRPC_CONFIG)
+        )
         options = [(grpc_gcp.API_CONFIG_CHANNEL_ARG, grpc_gcp_config)]
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -141,7 +133,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].CreateSession
+        return self._stubs["spanner_stub"].CreateSession
 
     @property
     def get_session(self):
@@ -155,7 +147,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].GetSession
+        return self._stubs["spanner_stub"].GetSession
 
     @property
     def list_sessions(self):
@@ -168,7 +160,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].ListSessions
+        return self._stubs["spanner_stub"].ListSessions
 
     @property
     def delete_session(self):
@@ -181,7 +173,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].DeleteSession
+        return self._stubs["spanner_stub"].DeleteSession
 
     @property
     def execute_sql(self):
@@ -204,7 +196,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].ExecuteSql
+        return self._stubs["spanner_stub"].ExecuteSql
 
     @property
     def execute_streaming_sql(self):
@@ -220,7 +212,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].ExecuteStreamingSql
+        return self._stubs["spanner_stub"].ExecuteStreamingSql
 
     @property
     def read(self):
@@ -243,7 +235,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].Read
+        return self._stubs["spanner_stub"].Read
 
     @property
     def streaming_read(self):
@@ -259,7 +251,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].StreamingRead
+        return self._stubs["spanner_stub"].StreamingRead
 
     @property
     def begin_transaction(self):
@@ -274,7 +266,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].BeginTransaction
+        return self._stubs["spanner_stub"].BeginTransaction
 
     @property
     def commit(self):
@@ -294,7 +286,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].Commit
+        return self._stubs["spanner_stub"].Commit
 
     @property
     def rollback(self):
@@ -313,7 +305,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].Rollback
+        return self._stubs["spanner_stub"].Rollback
 
     @property
     def partition_query(self):
@@ -336,7 +328,7 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].PartitionQuery
+        return self._stubs["spanner_stub"].PartitionQuery
 
     @property
     def partition_read(self):
@@ -362,4 +354,4 @@ class SpannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['spanner_stub'].PartitionRead
+        return self._stubs["spanner_stub"].PartitionRead

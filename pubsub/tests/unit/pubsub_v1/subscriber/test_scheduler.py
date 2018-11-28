@@ -29,8 +29,7 @@ def test_constructor_defaults():
 
 
 def test_constructor_options():
-    scheduler_ = scheduler.ThreadScheduler(
-        executor=mock.sentinel.executor)
+    scheduler_ = scheduler.ThreadScheduler(executor=mock.sentinel.executor)
 
     assert scheduler_._executor == mock.sentinel.executor
 
@@ -45,9 +44,9 @@ def test_schedule():
 
     scheduler_ = scheduler.ThreadScheduler()
 
-    scheduler_.schedule(callback, 'arg1', kwarg1='meep')
+    scheduler_.schedule(callback, "arg1", kwarg1="meep")
 
     called.wait()
     scheduler_.shutdown()
 
-    assert called_with == [(('arg1',), {'kwarg1': 'meep'})]
+    assert called_with == [(("arg1",), {"kwarg1": "meep"})]

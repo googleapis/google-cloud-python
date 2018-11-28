@@ -26,6 +26,7 @@ from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.transaction import Transaction
+
 # pylint: enable=ungrouped-imports
 
 
@@ -94,8 +95,8 @@ class Session(object):
         :raises ValueError: if session is not yet created
         """
         if self._session_id is None:
-            raise ValueError('No session ID set by back-end')
-        return self._database.name + '/sessions/' + self._session_id
+            raise ValueError("No session ID set by back-end")
+        return self._database.name + "/sessions/" + self._session_id
 
     def create(self):
         """Create this session, bound to its database.
@@ -106,18 +107,14 @@ class Session(object):
         :raises: :exc:`ValueError` if :attr:`session_id` is already set.
         """
         if self._session_id is not None:
-            raise ValueError('Session ID already set by back-end')
+            raise ValueError("Session ID already set by back-end")
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
         kw = {}
         if self._labels:
-            kw = {'session': {'labels': self._labels}}
-        session_pb = api.create_session(
-            self._database.name,
-            metadata=metadata,
-            **kw
-        )
-        self._session_id = session_pb.name.split('/')[-1]
+            kw = {"session": {"labels": self._labels}}
+        session_pb = api.create_session(self._database.name, metadata=metadata, **kw)
+        self._session_id = session_pb.name.split("/")[-1]
 
     def exists(self):
         """Test for the existence of this session.
@@ -149,7 +146,7 @@ class Session(object):
         :raises NotFound: if the session does not exist
         """
         if self._session_id is None:
-            raise ValueError('Session ID not set by back-end')
+            raise ValueError("Session ID not set by back-end")
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
 
@@ -174,7 +171,7 @@ class Session(object):
 
         return Snapshot(self, **kw)
 
-    def read(self, table, columns, keyset, index='', limit=0):
+    def read(self, table, columns, keyset, index="", limit=0):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
         :type table: str
@@ -198,9 +195,15 @@ class Session(object):
         """
         return self.snapshot().read(table, columns, keyset, index, limit)
 
-    def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
-                    retry=google.api_core.gapic_v1.method.DEFAULT,
-                    timeout=google.api_core.gapic_v1.method.DEFAULT):
+    def execute_sql(
+        self,
+        sql,
+        params=None,
+        param_types=None,
+        query_mode=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+    ):
         """Perform an ``ExecuteStreamingSql`` API request.
 
         :type sql: str
@@ -225,7 +228,8 @@ class Session(object):
         :returns: a result set instance which can be used to consume rows.
         """
         return self.snapshot().execute_sql(
-            sql, params, param_types, query_mode, retry=retry, timeout=timeout)
+            sql, params, param_types, query_mode, retry=retry, timeout=timeout
+        )
 
     def batch(self):
         """Factory to create a batch for this session.
@@ -278,8 +282,7 @@ class Session(object):
         :raises Exception:
             reraises any non-ABORT execptions raised by ``func``.
         """
-        deadline = time.time() + kw.pop(
-            'timeout_secs', DEFAULT_RETRY_TIMEOUT_SECS)
+        deadline = time.time() + kw.pop("timeout_secs", DEFAULT_RETRY_TIMEOUT_SECS)
 
         while True:
             if self._transaction is None:
@@ -342,6 +345,8 @@ def _delay_until_retry(exc, deadline):
             raise
 
         time.sleep(delay)
+
+
 # pylint: enable=misplaced-bare-raise
 
 
@@ -355,7 +360,7 @@ def _get_retry_delay(cause):
     :returns: seconds to wait before retrying the transaction.
     """
     metadata = dict(cause.trailing_metadata())
-    retry_info_pb = metadata.get('google.rpc.retryinfo-bin')
+    retry_info_pb = metadata.get("google.rpc.retryinfo-bin")
     if retry_info_pb is not None:
         retry_info = RetryInfo()
         retry_info.ParseFromString(retry_info_pb)
