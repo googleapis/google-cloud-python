@@ -29,15 +29,13 @@ class Connection(_http.JSONConnection):
     :param client: The client that owns the current connection.
     """
 
-    API_BASE_URL = 'https://www.googleapis.com'
+    API_BASE_URL = "https://www.googleapis.com"
     """The base of the API call URL."""
 
-    API_VERSION = 'v1'
+    API_VERSION = "v1"
     """The version of the API, used in building the API call's URL."""
 
-    API_URL_TEMPLATE = '{api_base_url}/dns/{api_version}{path}'
+    API_URL_TEMPLATE = "{api_base_url}/dns/{api_version}{path}"
     """A template for the URL of a particular API call."""
 
-    _EXTRA_HEADERS = {
-        _http.CLIENT_INFO_HEADER: _CLIENT_INFO,
-    }
+    _EXTRA_HEADERS = {_http.CLIENT_INFO_HEADER: _CLIENT_INFO}
