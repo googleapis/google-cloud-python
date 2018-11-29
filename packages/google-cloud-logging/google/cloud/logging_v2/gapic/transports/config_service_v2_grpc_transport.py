@@ -27,20 +27,20 @@ class ConfigServiceV2GrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/cloud-platform.read-only',
-        'https://www.googleapis.com/auth/logging.admin',
-        'https://www.googleapis.com/auth/logging.read',
-        'https://www.googleapis.com/auth/logging.write',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
+        "https://www.googleapis.com/auth/logging.admin",
+        "https://www.googleapis.com/auth/logging.read",
+        "https://www.googleapis.com/auth/logging.write",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='logging.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="logging.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -58,29 +58,25 @@ class ConfigServiceV2GrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'config_service_v2_stub':
-            logging_config_pb2_grpc.ConfigServiceV2Stub(channel),
+            "config_service_v2_stub": logging_config_pb2_grpc.ConfigServiceV2Stub(
+                channel
+            )
         }
 
     @classmethod
-    def create_channel(cls,
-                       address='logging.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="logging.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -95,9 +91,7 @@ class ConfigServiceV2GrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -120,7 +114,7 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['config_service_v2_stub'].ListSinks
+        return self._stubs["config_service_v2_stub"].ListSinks
 
     @property
     def get_sink(self):
@@ -133,7 +127,7 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['config_service_v2_stub'].GetSink
+        return self._stubs["config_service_v2_stub"].GetSink
 
     @property
     def create_sink(self):
@@ -149,7 +143,7 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['config_service_v2_stub'].CreateSink
+        return self._stubs["config_service_v2_stub"].CreateSink
 
     @property
     def update_sink(self):
@@ -165,7 +159,7 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['config_service_v2_stub'].UpdateSink
+        return self._stubs["config_service_v2_stub"].UpdateSink
 
     @property
     def delete_sink(self):
@@ -179,7 +173,7 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['config_service_v2_stub'].DeleteSink
+        return self._stubs["config_service_v2_stub"].DeleteSink
 
     @property
     def list_exclusions(self):
@@ -192,7 +186,7 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['config_service_v2_stub'].ListExclusions
+        return self._stubs["config_service_v2_stub"].ListExclusions
 
     @property
     def get_exclusion(self):
@@ -205,7 +199,7 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['config_service_v2_stub'].GetExclusion
+        return self._stubs["config_service_v2_stub"].GetExclusion
 
     @property
     def create_exclusion(self):
@@ -220,7 +214,7 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['config_service_v2_stub'].CreateExclusion
+        return self._stubs["config_service_v2_stub"].CreateExclusion
 
     @property
     def update_exclusion(self):
@@ -233,7 +227,7 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['config_service_v2_stub'].UpdateExclusion
+        return self._stubs["config_service_v2_stub"].UpdateExclusion
 
     @property
     def delete_exclusion(self):
@@ -246,4 +240,4 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['config_service_v2_stub'].DeleteExclusion
+        return self._stubs["config_service_v2_stub"].DeleteExclusion

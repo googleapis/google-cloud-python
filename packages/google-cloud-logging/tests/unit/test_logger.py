@@ -25,8 +25,8 @@ def _make_credentials():
 
 class TestLogger(unittest.TestCase):
 
-    PROJECT = 'test-project'
-    LOGGER_NAME = 'logger-name'
+    PROJECT = "test-project"
+    LOGGER_NAME = "logger-name"
 
     @staticmethod
     def _get_target_class():
@@ -44,24 +44,28 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
-        self.assertEqual(logger.full_name, 'projects/%s/logs/%s'
-                         % (self.PROJECT, self.LOGGER_NAME))
-        self.assertEqual(logger.path, '/projects/%s/logs/%s'
-                         % (self.PROJECT, self.LOGGER_NAME))
+        self.assertEqual(
+            logger.full_name, "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        )
+        self.assertEqual(
+            logger.path, "/projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        )
         self.assertIsNone(logger.labels)
 
     def test_ctor_explicit(self):
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        LABELS = {"foo": "bar", "baz": "qux"}
         conn = object()
         client = _Client(self.PROJECT, conn)
         logger = self._make_one(self.LOGGER_NAME, client=client, labels=LABELS)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
-        self.assertEqual(logger.full_name, 'projects/%s/logs/%s'
-                         % (self.PROJECT, self.LOGGER_NAME))
-        self.assertEqual(logger.path, '/projects/%s/logs/%s'
-                         % (self.PROJECT, self.LOGGER_NAME))
+        self.assertEqual(
+            logger.full_name, "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        )
+        self.assertEqual(
+            logger.path, "/projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        )
         self.assertEqual(logger.labels, LABELS)
 
     def test_batch_w_bound_client(self):
@@ -89,70 +93,59 @@ class TestLogger(unittest.TestCase):
         self.assertIs(batch.client, client2)
 
     def test_log_empty_defaults_w_default_labels(self):
-        DEFAULT_LABELS = {'foo': 'spam'}
-        ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-            'resource': {
-                'type': 'global',
-                'labels': {},
-            },
-            'labels': DEFAULT_LABELS,
-        }]
+        DEFAULT_LABELS = {"foo": "spam"}
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "resource": {"type": "global", "labels": {}},
+                "labels": DEFAULT_LABELS,
+            }
+        ]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(self.LOGGER_NAME, client=client,
-                                labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client, labels=DEFAULT_LABELS)
 
         logger.log_empty()
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_log_empty_w_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
 
-        ALT_LOG_NAME = 'projects/foo/logs/alt.log.name'
-        DEFAULT_LABELS = {'foo': 'spam'}
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        ALT_LOG_NAME = "projects/foo/logs/alt.log.name"
+        DEFAULT_LABELS = {"foo": "spam"}
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
-        ENTRIES = [{
-            'logName': ALT_LOG_NAME,
-            'labels': LABELS,
-            'insertId': IID,
-            'severity': SEVERITY,
-            'httpRequest': REQUEST,
-            'timestamp': '2016-12-31T00:01:02.999999Z',
-            'resource': RESOURCE._to_dict(),
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-        }]
+        ENTRIES = [
+            {
+                "logName": ALT_LOG_NAME,
+                "labels": LABELS,
+                "insertId": IID,
+                "severity": SEVERITY,
+                "httpRequest": REQUEST,
+                "timestamp": "2016-12-31T00:01:02.999999Z",
+                "resource": RESOURCE._to_dict(),
+                "trace": TRACE,
+                "spanId": SPANID,
+                "traceSampled": True,
+            }
+        ]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(self.LOGGER_NAME, client=client1,
-                                labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client1, labels=DEFAULT_LABELS)
 
         logger.log_empty(
             log_name=ALT_LOG_NAME,
@@ -168,98 +161,83 @@ class TestLogger(unittest.TestCase):
             trace_sampled=True,
         )
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_log_text_defaults(self):
-        TEXT = 'TEXT'
-        ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-            'textPayload': TEXT,
-            'resource': {
-                'type': 'global',
-                'labels': {},
-            },
-        }]
+        TEXT = "TEXT"
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "textPayload": TEXT,
+                "resource": {"type": "global", "labels": {}},
+            }
+        ]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.log_text(TEXT)
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_log_text_w_unicode_and_default_labels(self):
-        TEXT = u'TEXT'
-        DEFAULT_LABELS = {'foo': 'spam'}
-        ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-            'textPayload': TEXT,
-            'resource': {
-                'type': 'global',
-                'labels': {},
-            },
-            'labels': DEFAULT_LABELS,
-        }]
+        TEXT = u"TEXT"
+        DEFAULT_LABELS = {"foo": "spam"}
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "textPayload": TEXT,
+                "resource": {"type": "global", "labels": {}},
+                "labels": DEFAULT_LABELS,
+            }
+        ]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(self.LOGGER_NAME, client=client,
-                                labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client, labels=DEFAULT_LABELS)
 
         logger.log_text(TEXT)
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_log_text_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
 
-        ALT_LOG_NAME = 'projects/foo/logs/alt.log.name'
-        TEXT = 'TEXT'
-        DEFAULT_LABELS = {'foo': 'spam'}
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        ALT_LOG_NAME = "projects/foo/logs/alt.log.name"
+        TEXT = "TEXT"
+        DEFAULT_LABELS = {"foo": "spam"}
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
-        ENTRIES = [{
-            'logName': ALT_LOG_NAME,
-            'textPayload': TEXT,
-            'labels': LABELS,
-            'insertId': IID,
-            'severity': SEVERITY,
-            'httpRequest': REQUEST,
-            'timestamp': '2016-12-31T00:01:02.999999Z',
-            'resource': RESOURCE._to_dict(),
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-        }]
+        ENTRIES = [
+            {
+                "logName": ALT_LOG_NAME,
+                "textPayload": TEXT,
+                "labels": LABELS,
+                "insertId": IID,
+                "severity": SEVERITY,
+                "httpRequest": REQUEST,
+                "timestamp": "2016-12-31T00:01:02.999999Z",
+                "resource": RESOURCE._to_dict(),
+                "trace": TRACE,
+                "spanId": SPANID,
+                "traceSampled": True,
+            }
+        ]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(
-            self.LOGGER_NAME, client=client1, labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client1, labels=DEFAULT_LABELS)
 
         logger.log_text(
             TEXT,
@@ -276,98 +254,83 @@ class TestLogger(unittest.TestCase):
             trace_sampled=True,
         )
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_log_struct_defaults(self):
-        STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
-        ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-            'jsonPayload': STRUCT,
-            'resource': {
-                'type': 'global',
-                'labels': {},
-            },
-        }]
+        STRUCT = {"message": "MESSAGE", "weather": "cloudy"}
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "jsonPayload": STRUCT,
+                "resource": {"type": "global", "labels": {}},
+            }
+        ]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.log_struct(STRUCT)
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_log_struct_w_default_labels(self):
-        STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
-        DEFAULT_LABELS = {'foo': 'spam'}
-        ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-            'jsonPayload': STRUCT,
-            'resource': {
-                'type': 'global',
-                'labels': {},
-            },
-            'labels': DEFAULT_LABELS,
-        }]
+        STRUCT = {"message": "MESSAGE", "weather": "cloudy"}
+        DEFAULT_LABELS = {"foo": "spam"}
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "jsonPayload": STRUCT,
+                "resource": {"type": "global", "labels": {}},
+                "labels": DEFAULT_LABELS,
+            }
+        ]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(self.LOGGER_NAME, client=client,
-                                labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client, labels=DEFAULT_LABELS)
 
         logger.log_struct(STRUCT)
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_log_struct_w_explicit(self):
         import datetime
         from google.cloud.logging.resource import Resource
 
-        ALT_LOG_NAME = 'projects/foo/logs/alt.log.name'
-        STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
-        DEFAULT_LABELS = {'foo': 'spam'}
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        ALT_LOG_NAME = "projects/foo/logs/alt.log.name"
+        STRUCT = {"message": "MESSAGE", "weather": "cloudy"}
+        DEFAULT_LABELS = {"foo": "spam"}
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
-        ENTRIES = [{
-            'logName': ALT_LOG_NAME,
-            'jsonPayload': STRUCT,
-            'labels': LABELS,
-            'insertId': IID,
-            'severity': SEVERITY,
-            'httpRequest': REQUEST,
-            'timestamp': '2016-12-31T00:01:02.999999Z',
-            'resource': RESOURCE._to_dict(),
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-        }]
+        ENTRIES = [
+            {
+                "logName": ALT_LOG_NAME,
+                "jsonPayload": STRUCT,
+                "labels": LABELS,
+                "insertId": IID,
+                "severity": SEVERITY,
+                "httpRequest": REQUEST,
+                "timestamp": "2016-12-31T00:01:02.999999Z",
+                "resource": RESOURCE._to_dict(),
+                "trace": TRACE,
+                "spanId": SPANID,
+                "traceSampled": True,
+            }
+        ]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(self.LOGGER_NAME, client=client1,
-                                labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client1, labels=DEFAULT_LABELS)
 
         logger.log_struct(
             STRUCT,
@@ -384,59 +347,51 @@ class TestLogger(unittest.TestCase):
             trace_sampled=True,
         )
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_log_proto_defaults(self):
         import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
 
-        message = Struct(fields={'foo': Value(bool_value=True)})
-        ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-            'protoPayload': json.loads(MessageToJson(message)),
-            'resource': {
-                'type': 'global',
-                'labels': {},
-            },
-        }]
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "protoPayload": json.loads(MessageToJson(message)),
+                "resource": {"type": "global", "labels": {}},
+            }
+        ]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.log_proto(message)
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_log_proto_w_default_labels(self):
         import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
 
-        message = Struct(fields={'foo': Value(bool_value=True)})
-        DEFAULT_LABELS = {'foo': 'spam'}
-        ENTRIES = [{
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-            'protoPayload': json.loads(MessageToJson(message)),
-            'resource': {
-                'type': 'global',
-                'labels': {},
-            },
-            'labels': DEFAULT_LABELS,
-        }]
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        DEFAULT_LABELS = {"foo": "spam"}
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "protoPayload": json.loads(MessageToJson(message)),
+                "resource": {"type": "global", "labels": {}},
+                "labels": DEFAULT_LABELS,
+            }
+        ]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(self.LOGGER_NAME, client=client,
-                                labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client, labels=DEFAULT_LABELS)
 
         logger.log_proto(message)
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_log_proto_w_explicit(self):
         import json
@@ -446,48 +401,41 @@ class TestLogger(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
         from google.cloud.logging.resource import Resource
 
-        message = Struct(fields={'foo': Value(bool_value=True)})
-        ALT_LOG_NAME = 'projects/foo/logs/alt.log.name'
-        DEFAULT_LABELS = {'foo': 'spam'}
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        ALT_LOG_NAME = "projects/foo/logs/alt.log.name"
+        DEFAULT_LABELS = {"foo": "spam"}
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
-        ENTRIES = [{
-            'logName': ALT_LOG_NAME,
-            'protoPayload': json.loads(MessageToJson(message)),
-            'labels': LABELS,
-            'insertId': IID,
-            'severity': SEVERITY,
-            'httpRequest': REQUEST,
-            'timestamp': '2016-12-31T00:01:02.999999Z',
-            'resource': RESOURCE._to_dict(),
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-        }]
+        ENTRIES = [
+            {
+                "logName": ALT_LOG_NAME,
+                "protoPayload": json.loads(MessageToJson(message)),
+                "labels": LABELS,
+                "insertId": IID,
+                "severity": SEVERITY,
+                "httpRequest": REQUEST,
+                "timestamp": "2016-12-31T00:01:02.999999Z",
+                "resource": RESOURCE._to_dict(),
+                "trace": TRACE,
+                "spanId": SPANID,
+                "traceSampled": True,
+            }
+        ]
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
-        logger = self._make_one(self.LOGGER_NAME, client=client1,
-                                labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client1, labels=DEFAULT_LABELS)
 
         logger.log_proto(
             message,
@@ -504,8 +452,7 @@ class TestLogger(unittest.TestCase):
             trace_sampled=True,
         )
 
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, None, None, None))
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
     def test_delete_w_bound_client(self):
         client = _Client(project=self.PROJECT)
@@ -514,8 +461,9 @@ class TestLogger(unittest.TestCase):
 
         logger.delete()
 
-        self.assertEqual(api._logger_delete_called_with,
-                         (self.PROJECT, self.LOGGER_NAME))
+        self.assertEqual(
+            api._logger_delete_called_with, (self.PROJECT, self.LOGGER_NAME)
+        )
 
     def test_delete_w_alternate_client(self):
         client1 = _Client(project=self.PROJECT)
@@ -525,21 +473,20 @@ class TestLogger(unittest.TestCase):
 
         logger.delete(client=client2)
 
-        self.assertEqual(api._logger_delete_called_with,
-                         (self.PROJECT, self.LOGGER_NAME))
+        self.assertEqual(
+            api._logger_delete_called_with, (self.PROJECT, self.LOGGER_NAME)
+        )
 
     def test_list_entries_defaults(self):
         import six
         from google.cloud.logging.client import Client
 
-        TOKEN = 'TOKEN'
+        TOKEN = "TOKEN"
 
-        client = Client(project=self.PROJECT,
-                        credentials=_make_credentials(),
-                        _use_grpc=False)
-        returned = {
-            'nextPageToken': TOKEN,
-        }
+        client = Client(
+            project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
+        returned = {"nextPageToken": TOKEN}
         client._connection = _Connection(returned)
 
         logger = self._make_one(self.LOGGER_NAME, client=client)
@@ -552,34 +499,37 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(len(entries), 0)
         self.assertEqual(token, TOKEN)
         called_with = client._connection._called_with
-        FILTER = 'logName=projects/%s/logs/%s' % (
-            self.PROJECT, self.LOGGER_NAME)
-        self.assertEqual(called_with, {
-            'method': 'POST',
-            'path': '/entries:list',
-            'data': {
-                'filter': FILTER,
-                'projectIds': [self.PROJECT],
+        FILTER = "logName=projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        self.assertEqual(
+            called_with,
+            {
+                "method": "POST",
+                "path": "/entries:list",
+                "data": {"filter": FILTER, "projectIds": [self.PROJECT]},
             },
-        })
+        )
 
     def test_list_entries_explicit(self):
         from google.cloud.logging import DESCENDING
         from google.cloud.logging.client import Client
 
-        PROJECT1 = 'PROJECT1'
-        PROJECT2 = 'PROJECT2'
-        FILTER = 'resource.type:global'
-        TOKEN = 'TOKEN'
+        PROJECT1 = "PROJECT1"
+        PROJECT2 = "PROJECT2"
+        FILTER = "resource.type:global"
+        TOKEN = "TOKEN"
         PAGE_SIZE = 42
-        client = Client(project=self.PROJECT,
-                        credentials=_make_credentials(),
-                        _use_grpc=False)
+        client = Client(
+            project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
         client._connection = _Connection({})
         logger = self._make_one(self.LOGGER_NAME, client=client)
         iterator = logger.list_entries(
-            projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
-            page_size=PAGE_SIZE, page_token=TOKEN)
+            projects=[PROJECT1, PROJECT2],
+            filter_=FILTER,
+            order_by=DESCENDING,
+            page_size=PAGE_SIZE,
+            page_token=TOKEN,
+        )
         entries = list(iterator)
         token = iterator.next_page_token
 
@@ -587,24 +537,30 @@ class TestLogger(unittest.TestCase):
         self.assertIsNone(token)
         # self.assertEqual(client._listed, LISTED)
         called_with = client._connection._called_with
-        combined_filter = '%s AND logName=projects/%s/logs/%s' % (
-            FILTER, self.PROJECT, self.LOGGER_NAME)
-        self.assertEqual(called_with, {
-            'method': 'POST',
-            'path': '/entries:list',
-            'data': {
-                'filter': combined_filter,
-                'orderBy': DESCENDING,
-                'pageSize': PAGE_SIZE,
-                'pageToken': TOKEN,
-                'projectIds': [PROJECT1, PROJECT2],
+        combined_filter = "%s AND logName=projects/%s/logs/%s" % (
+            FILTER,
+            self.PROJECT,
+            self.LOGGER_NAME,
+        )
+        self.assertEqual(
+            called_with,
+            {
+                "method": "POST",
+                "path": "/entries:list",
+                "data": {
+                    "filter": combined_filter,
+                    "orderBy": DESCENDING,
+                    "pageSize": PAGE_SIZE,
+                    "pageToken": TOKEN,
+                    "projectIds": [PROJECT1, PROJECT2],
+                },
             },
-        })
+        )
 
 
 class TestBatch(unittest.TestCase):
 
-    PROJECT = 'test-project'
+    PROJECT = "test-project"
 
     @staticmethod
     def _get_target_class():
@@ -638,27 +594,19 @@ class TestBatch(unittest.TestCase):
         from google.cloud.logging.resource import Resource
         from google.cloud.logging.entries import LogEntry
 
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
         ENTRY = LogEntry(
             labels=LABELS,
             insert_id=IID,
@@ -691,7 +639,7 @@ class TestBatch(unittest.TestCase):
         from google.cloud.logging.entries import _GLOBAL_RESOURCE
         from google.cloud.logging.entries import TextEntry
 
-        TEXT = 'This is the entry text'
+        TEXT = "This is the entry text"
         ENTRY = TextEntry(payload=TEXT, resource=_GLOBAL_RESOURCE)
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -704,28 +652,20 @@ class TestBatch(unittest.TestCase):
         from google.cloud.logging.resource import Resource
         from google.cloud.logging.entries import TextEntry
 
-        TEXT = 'This is the entry text'
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        TEXT = "This is the entry text"
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
         ENTRY = TextEntry(
             payload=TEXT,
             labels=LABELS,
@@ -760,7 +700,7 @@ class TestBatch(unittest.TestCase):
         from google.cloud.logging.entries import _GLOBAL_RESOURCE
         from google.cloud.logging.entries import StructEntry
 
-        STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
+        STRUCT = {"message": "Message text", "weather": "partly cloudy"}
         ENTRY = StructEntry(payload=STRUCT, resource=_GLOBAL_RESOURCE)
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -773,27 +713,19 @@ class TestBatch(unittest.TestCase):
         from google.cloud.logging.resource import Resource
         from google.cloud.logging.entries import StructEntry
 
-        STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        STRUCT = {"message": "Message text", "weather": "partly cloudy"}
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test',
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
         ENTRY = StructEntry(
             payload=STRUCT,
@@ -831,7 +763,7 @@ class TestBatch(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
-        message = Struct(fields={'foo': Value(bool_value=True)})
+        message = Struct(fields={"foo": Value(bool_value=True)})
         ENTRY = ProtobufEntry(payload=message, resource=_GLOBAL_RESOURCE)
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -846,27 +778,19 @@ class TestBatch(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
-        message = Struct(fields={'foo': Value(bool_value=True)})
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test',
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
         ENTRY = ProtobufEntry(
             payload=message,
@@ -905,17 +829,15 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         api = client.logging_api = _DummyLoggingAPI()
         batch = self._make_one(logger, client)
-        batch.entries.append(LogEntry(severity='blah'))
-        ENTRY = {
-            'severity': 'blah',
-            'resource': _GLOBAL_RESOURCE._to_dict(),
-        }
+        batch.entries.append(LogEntry(severity="blah"))
+        ENTRY = {"severity": "blah", "resource": _GLOBAL_RESOURCE._to_dict()}
 
         batch.commit()
 
         self.assertEqual(list(batch.entries), [])
-        self.assertEqual(api._write_entries_called_with,
-                         ([ENTRY], logger.full_name, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, ([ENTRY], logger.full_name, None, None)
+        )
 
     def test_commit_w_resource_specified(self):
         from google.cloud.logging.entries import _GLOBAL_RESOURCE
@@ -925,25 +847,22 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         api = client.logging_api = _DummyLoggingAPI()
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test',
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
 
         batch = self._make_one(logger, client, resource=RESOURCE)
-        MESSAGE = 'This is the entry text'
+        MESSAGE = "This is the entry text"
         ENTRIES = [
-            {'textPayload': MESSAGE},
-            {'textPayload': MESSAGE, 'resource': _GLOBAL_RESOURCE._to_dict()},
+            {"textPayload": MESSAGE},
+            {"textPayload": MESSAGE, "resource": _GLOBAL_RESOURCE._to_dict()},
         ]
         batch.log_text(MESSAGE, resource=None)
         batch.log_text(MESSAGE)
         batch.commit()
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, logger.full_name,
-                          RESOURCE._to_dict(), None))
+        self.assertEqual(
+            api._write_entries_called_with,
+            (ENTRIES, logger.full_name, RESOURCE._to_dict(), None),
+        )
 
     def test_commit_w_bound_client(self):
         import json
@@ -954,46 +873,50 @@ class TestBatch(unittest.TestCase):
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud.logging.entries import _GLOBAL_RESOURCE
 
-        TEXT = 'This is the entry text'
-        STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
-        message = Struct(fields={'foo': Value(bool_value=True)})
-        IID1 = 'IID1'
-        IID2 = 'IID2'
-        IID3 = 'IID3'
+        TEXT = "This is the entry text"
+        STRUCT = {"message": TEXT, "weather": "partly cloudy"}
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        IID1 = "IID1"
+        IID2 = "IID2"
+        IID3 = "IID3"
         TIMESTAMP1 = datetime.datetime(2016, 12, 31, 0, 0, 1, 999999)
         TIMESTAMP2 = datetime.datetime(2016, 12, 31, 0, 0, 2, 999999)
         TIMESTAMP3 = datetime.datetime(2016, 12, 31, 0, 0, 3, 999999)
-        TRACE1 = '12345678-1234-5678-1234-567812345678'
-        TRACE2 = '12345678-1234-5678-1234-567812345679'
-        TRACE3 = '12345678-1234-5678-1234-567812345670'
-        SPANID1 = '000000000000004a'
-        SPANID2 = '000000000000004b'
-        SPANID3 = '000000000000004c'
-        ENTRIES = [{
-            'textPayload': TEXT,
-            'insertId': IID1,
-            'timestamp': _datetime_to_rfc3339(TIMESTAMP1),
-            'resource': _GLOBAL_RESOURCE._to_dict(),
-            'trace': TRACE1,
-            'spanId': SPANID1,
-            'traceSampled': True,
-        }, {
-            'jsonPayload': STRUCT,
-            'insertId': IID2,
-            'timestamp': _datetime_to_rfc3339(TIMESTAMP2),
-            'resource': _GLOBAL_RESOURCE._to_dict(),
-            'trace': TRACE2,
-            'spanId': SPANID2,
-            'traceSampled': False,
-        }, {
-            'protoPayload': json.loads(MessageToJson(message)),
-            'insertId': IID3,
-            'timestamp': _datetime_to_rfc3339(TIMESTAMP3),
-            'resource': _GLOBAL_RESOURCE._to_dict(),
-            'trace': TRACE3,
-            'spanId': SPANID3,
-            'traceSampled': True,
-        }]
+        TRACE1 = "12345678-1234-5678-1234-567812345678"
+        TRACE2 = "12345678-1234-5678-1234-567812345679"
+        TRACE3 = "12345678-1234-5678-1234-567812345670"
+        SPANID1 = "000000000000004a"
+        SPANID2 = "000000000000004b"
+        SPANID3 = "000000000000004c"
+        ENTRIES = [
+            {
+                "textPayload": TEXT,
+                "insertId": IID1,
+                "timestamp": _datetime_to_rfc3339(TIMESTAMP1),
+                "resource": _GLOBAL_RESOURCE._to_dict(),
+                "trace": TRACE1,
+                "spanId": SPANID1,
+                "traceSampled": True,
+            },
+            {
+                "jsonPayload": STRUCT,
+                "insertId": IID2,
+                "timestamp": _datetime_to_rfc3339(TIMESTAMP2),
+                "resource": _GLOBAL_RESOURCE._to_dict(),
+                "trace": TRACE2,
+                "spanId": SPANID2,
+                "traceSampled": False,
+            },
+            {
+                "protoPayload": json.loads(MessageToJson(message)),
+                "insertId": IID3,
+                "timestamp": _datetime_to_rfc3339(TIMESTAMP3),
+                "resource": _GLOBAL_RESOURCE._to_dict(),
+                "trace": TRACE3,
+                "spanId": SPANID3,
+                "traceSampled": True,
+            },
+        ]
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = _Logger()
@@ -1026,8 +949,9 @@ class TestBatch(unittest.TestCase):
         batch.commit()
 
         self.assertEqual(list(batch.entries), [])
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, logger.full_name, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, logger.full_name, None, None)
+        )
 
     def test_commit_w_alternate_client(self):
         import json
@@ -1037,35 +961,36 @@ class TestBatch(unittest.TestCase):
         from google.cloud.logging.logger import Logger
         from google.cloud.logging.entries import _GLOBAL_RESOURCE
 
-        TEXT = 'This is the entry text'
-        STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
-        message = Struct(fields={'foo': Value(bool_value=True)})
-        DEFAULT_LABELS = {'foo': 'spam'}
-        LABELS = {
-            'foo': 'bar',
-            'baz': 'qux',
-        }
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        TEXT = "This is the entry text"
+        STRUCT = {"message": TEXT, "weather": "partly cloudy"}
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        DEFAULT_LABELS = {"foo": "spam"}
+        LABELS = {"foo": "bar", "baz": "qux"}
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
-        logger = Logger('logger_name', client1, labels=DEFAULT_LABELS)
+        logger = Logger("logger_name", client1, labels=DEFAULT_LABELS)
         ENTRIES = [
-            {'textPayload': TEXT, 'labels': LABELS, 'resource':
-                _GLOBAL_RESOURCE._to_dict()},
-            {'jsonPayload': STRUCT, 'severity': SEVERITY,
-             'resource': _GLOBAL_RESOURCE._to_dict()},
-            {'protoPayload': json.loads(MessageToJson(message)),
-             'httpRequest': REQUEST,
-             'resource': _GLOBAL_RESOURCE._to_dict()},
+            {
+                "textPayload": TEXT,
+                "labels": LABELS,
+                "resource": _GLOBAL_RESOURCE._to_dict(),
+            },
+            {
+                "jsonPayload": STRUCT,
+                "severity": SEVERITY,
+                "resource": _GLOBAL_RESOURCE._to_dict(),
+            },
+            {
+                "protoPayload": json.loads(MessageToJson(message)),
+                "httpRequest": REQUEST,
+                "resource": _GLOBAL_RESOURCE._to_dict(),
+            },
         ]
         batch = self._make_one(logger, client=client1)
 
@@ -1075,8 +1000,10 @@ class TestBatch(unittest.TestCase):
         batch.commit(client=client2)
 
         self.assertEqual(list(batch.entries), [])
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, logger.full_name, None, DEFAULT_LABELS))
+        self.assertEqual(
+            api._write_entries_called_with,
+            (ENTRIES, logger.full_name, None, DEFAULT_LABELS),
+        )
 
     def test_context_mgr_success(self):
         import json
@@ -1086,31 +1013,35 @@ class TestBatch(unittest.TestCase):
         from google.cloud.logging.logger import Logger
         from google.cloud.logging.entries import _GLOBAL_RESOURCE
 
-        TEXT = 'This is the entry text'
-        STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
-        message = Struct(fields={'foo': Value(bool_value=True)})
-        DEFAULT_LABELS = {'foo': 'spam'}
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        TEXT = "This is the entry text"
+        STRUCT = {"message": TEXT, "weather": "partly cloudy"}
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        DEFAULT_LABELS = {"foo": "spam"}
+        LABELS = {"foo": "bar", "baz": "qux"}
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = Logger('logger_name', client, labels=DEFAULT_LABELS)
+        logger = Logger("logger_name", client, labels=DEFAULT_LABELS)
         ENTRIES = [
-            {'textPayload': TEXT, 'httpRequest': REQUEST,
-             'resource': _GLOBAL_RESOURCE._to_dict()},
-            {'jsonPayload': STRUCT, 'labels': LABELS,
-             'resource': _GLOBAL_RESOURCE._to_dict()},
-            {'protoPayload': json.loads(MessageToJson(message)),
-             'resource': _GLOBAL_RESOURCE._to_dict(),
-             'severity': SEVERITY},
+            {
+                "textPayload": TEXT,
+                "httpRequest": REQUEST,
+                "resource": _GLOBAL_RESOURCE._to_dict(),
+            },
+            {
+                "jsonPayload": STRUCT,
+                "labels": LABELS,
+                "resource": _GLOBAL_RESOURCE._to_dict(),
+            },
+            {
+                "protoPayload": json.loads(MessageToJson(message)),
+                "resource": _GLOBAL_RESOURCE._to_dict(),
+                "severity": SEVERITY,
+            },
         ]
         batch = self._make_one(logger, client=client)
 
@@ -1120,8 +1051,10 @@ class TestBatch(unittest.TestCase):
             other.log_proto(message, severity=SEVERITY)
 
         self.assertEqual(list(batch.entries), [])
-        self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, logger.full_name, None, DEFAULT_LABELS))
+        self.assertEqual(
+            api._write_entries_called_with,
+            (ENTRIES, logger.full_name, None, DEFAULT_LABELS),
+        )
 
     def test_context_mgr_failure(self):
         import datetime
@@ -1131,29 +1064,24 @@ class TestBatch(unittest.TestCase):
         from google.cloud.logging.entries import StructEntry
         from google.cloud.logging.entries import ProtobufEntry
 
-        TEXT = 'This is the entry text'
-        STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        TEXT = "This is the entry text"
+        STRUCT = {"message": TEXT, "weather": "partly cloudy"}
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
-        message = Struct(fields={'foo': Value(bool_value=True)})
+        message = Struct(fields={"foo": Value(bool_value=True)})
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = _Logger()
         UNSENT = [
             TextEntry(payload=TEXT, insert_id=IID, timestamp=TIMESTAMP),
             StructEntry(payload=STRUCT, severity=SEVERITY),
-            ProtobufEntry(
-                payload=message, labels=LABELS, http_request=REQUEST),
+            ProtobufEntry(payload=message, labels=LABELS, http_request=REQUEST),
         ]
         batch = self._make_one(logger, client=client)
 
@@ -1174,25 +1102,22 @@ class _Logger(object):
 
     labels = None
 
-    def __init__(self, name='NAME', project='PROJECT'):
-        self.full_name = 'projects/%s/logs/%s' % (project, name)
+    def __init__(self, name="NAME", project="PROJECT"):
+        self.full_name = "projects/%s/logs/%s" % (project, name)
 
 
 class _DummyLoggingAPI(object):
 
     _write_entries_called_with = None
 
-    def write_entries(self, entries, logger_name=None, resource=None,
-                      labels=None):
-        self._write_entries_called_with = (
-            entries, logger_name, resource, labels)
+    def write_entries(self, entries, logger_name=None, resource=None, labels=None):
+        self._write_entries_called_with = (entries, logger_name, resource, labels)
 
     def logger_delete(self, project, logger_name):
         self._logger_delete_called_with = (project, logger_name)
 
 
 class _Client(object):
-
     def __init__(self, project, connection=None):
         self.project = project
         self._connection = connection

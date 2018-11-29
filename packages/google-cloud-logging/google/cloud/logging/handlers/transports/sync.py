@@ -29,8 +29,9 @@ class SyncTransport(Transport):
     def __init__(self, client, name):
         self.logger = client.logger(name)
 
-    def send(self, record, message, resource=None, labels=None,
-             trace=None, span_id=None):
+    def send(
+        self, record, message, resource=None, labels=None, trace=None, span_id=None
+    ):
         """Overrides transport.send().
 
         :type record: :class:`logging.LogRecord`
@@ -46,10 +47,12 @@ class SyncTransport(Transport):
         :type labels: dict
         :param labels: (Optional) Mapping of labels for the entry.
         """
-        info = {'message': message, 'python_logger': record.name}
-        self.logger.log_struct(info,
-                               severity=record.levelname,
-                               resource=resource,
-                               labels=labels,
-                               trace=trace,
-                               span_id=span_id)
+        info = {"message": message, "python_logger": record.name}
+        self.logger.log_struct(
+            info,
+            severity=record.levelname,
+            resource=resource,
+            labels=labels,
+            trace=trace,
+            span_id=span_id,
+        )

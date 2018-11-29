@@ -14,4 +14,4 @@
 
 from google.cloud.logging.handlers.middleware.request import RequestMiddleware
 
-__all__ = ['RequestMiddleware']
+__all__ = ["RequestMiddleware"]

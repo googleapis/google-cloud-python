@@ -17,7 +17,7 @@
 import collections
 
 
-class Resource(collections.namedtuple('Resource', 'type labels')):
+class Resource(collections.namedtuple("Resource", "type labels")):
     """A monitored resource identified by specifying values for all labels.
 
     :type type: str
@@ -27,6 +27,7 @@ class Resource(collections.namedtuple('Resource', 'type labels')):
     :param labels: A mapping from label names to values for all labels
                    enumerated in the associated :class:`ResourceDescriptor`.
     """
+
     __slots__ = ()
 
     @classmethod
@@ -40,10 +41,7 @@ class Resource(collections.namedtuple('Resource', 'type labels')):
         :rtype: :class:`Resource`
         :returns: A resource object.
         """
-        return cls(
-            type=info['type'],
-            labels=info.get('labels', {}),
-        )
+        return cls(type=info["type"], labels=info.get("labels", {}))
 
     def _to_dict(self):
         """Build a dictionary ready to be serialized to the JSON format.
@@ -52,7 +50,4 @@ class Resource(collections.namedtuple('Resource', 'type labels')):
         :returns: A dict representation of the object that can be written to
                   the API.
         """
-        return {
-            'type': self.type,
-            'labels': self.labels,
-        }
+        return {"type": self.type, "labels": self.labels}

@@ -39,6 +39,7 @@ class Sink(object):
     :param client: A client which holds credentials and project configuration
                    for the sink (which requires a project).
     """
+
     def __init__(self, name, filter_=None, destination=None, client=None):
         self.name = name
         self.filter_ = filter_
@@ -59,12 +60,12 @@ class Sink(object):
     @property
     def full_name(self):
         """Fully-qualified name used in sink APIs"""
-        return 'projects/%s/sinks/%s' % (self.project, self.name)
+        return "projects/%s/sinks/%s" % (self.project, self.name)
 
     @property
     def path(self):
         """URL path for the sink's APIs"""
-        return '/%s' % (self.full_name)
+        return "/%s" % (self.full_name)
 
     @property
     def writer_identity(self):
@@ -73,9 +74,9 @@ class Sink(object):
 
     def _update_from_api_repr(self, resource):
         """Helper for API methods returning sink resources."""
-        self.destination = resource['destination']
-        self.filter_ = resource.get('filter')
-        self._writer_identity = resource.get('writerIdentity')
+        self.destination = resource["destination"]
+        self.filter_ = resource.get("filter")
+        self._writer_identity = resource.get("writerIdentity")
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -94,7 +95,7 @@ class Sink(object):
                  project from the resource does not agree with the project
                  from the client.
         """
-        sink_name = resource['name']
+        sink_name = resource["name"]
         instance = cls(sink_name, client=client)
         instance._update_from_api_repr(resource)
         return instance
@@ -132,7 +133,10 @@ class Sink(object):
         """
         client = self._require_client(client)
         resource = client.sinks_api.sink_create(
-            self.project, self.name, self.filter_, self.destination,
+            self.project,
+            self.name,
+            self.filter_,
+            self.destination,
             unique_writer_identity=unique_writer_identity,
         )
         self._update_from_api_repr(resource)
@@ -193,7 +197,10 @@ class Sink(object):
         """
         client = self._require_client(client)
         resource = client.sinks_api.sink_update(
-            self.project, self.name, self.filter_, self.destination,
+            self.project,
+            self.name,
+            self.filter_,
+            self.destination,
             unique_writer_identity=unique_writer_identity,
         )
         self._update_from_api_repr(resource)

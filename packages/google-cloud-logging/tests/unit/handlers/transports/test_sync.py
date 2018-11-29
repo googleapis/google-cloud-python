@@ -18,7 +18,7 @@ import unittest
 
 class TestSyncHandler(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
+    PROJECT = "PROJECT"
 
     @staticmethod
     def _get_target_class():
@@ -31,31 +31,27 @@ class TestSyncHandler(unittest.TestCase):
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        NAME = 'python_logger'
+        NAME = "python_logger"
         transport = self._make_one(client, NAME)
-        self.assertEqual(transport.logger.name, 'python_logger')
+        self.assertEqual(transport.logger.name, "python_logger")
 
     def test_send(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         client = _Client(self.PROJECT)
 
-        stackdriver_logger_name = 'python'
-        python_logger_name = 'mylogger'
+        stackdriver_logger_name = "python"
+        python_logger_name = "mylogger"
         transport = self._make_one(client, stackdriver_logger_name)
-        message = 'hello world'
-        record = logging.LogRecord(python_logger_name, logging.INFO,
-                                   None, None, message, None, None)
+        message = "hello world"
+        record = logging.LogRecord(
+            python_logger_name, logging.INFO, None, None, message, None, None
+        )
 
         transport.send(record, message, _GLOBAL_RESOURCE)
-        EXPECTED_STRUCT = {
-            'message': message,
-            'python_logger': python_logger_name,
-        }
-        EXPECTED_SENT = (EXPECTED_STRUCT, 'INFO', _GLOBAL_RESOURCE, None,
-                         None, None)
-        self.assertEqual(
-            transport.logger.log_struct_called_with, EXPECTED_SENT)
+        EXPECTED_STRUCT = {"message": message, "python_logger": python_logger_name}
+        EXPECTED_SENT = (EXPECTED_STRUCT, "INFO", _GLOBAL_RESOURCE, None, None, None)
+        self.assertEqual(transport.logger.log_struct_called_with, EXPECTED_SENT)
 
 
 class _Logger(object):
@@ -64,15 +60,26 @@ class _Logger(object):
     def __init__(self, name):
         self.name = name
 
-    def log_struct(self, message, severity=None,
-                   resource=_GLOBAL_RESOURCE, labels=None,
-                   trace=None, span_id=None):
-        self.log_struct_called_with = (message, severity, resource, labels,
-                                       trace, span_id)
+    def log_struct(
+        self,
+        message,
+        severity=None,
+        resource=_GLOBAL_RESOURCE,
+        labels=None,
+        trace=None,
+        span_id=None,
+    ):
+        self.log_struct_called_with = (
+            message,
+            severity,
+            resource,
+            labels,
+            trace,
+            span_id,
+        )
 
 
 class _Client(object):
-
     def __init__(self, project):
         self.project = project
 
@@ -82,7 +89,6 @@ class _Client(object):
 
 
 class _Handler(object):
-
     def __init__(self, level):
         self.level = level  # pragma: NO COVER
 
