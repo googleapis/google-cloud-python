@@ -187,6 +187,30 @@ class TestQuery(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._where_unary_helper(float('nan'), 0, op_string='<=')
 
+    def test_where_w_delete(self):
+        from google.cloud.firestore_v1beta1 import DELETE_FIELD
+
+        with self.assertRaises(ValueError):
+            self._where_unary_helper(DELETE_FIELD, 0)
+
+    def test_where_w_server_timestamp(self):
+        from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
+
+        with self.assertRaises(ValueError):
+            self._where_unary_helper(SERVER_TIMESTAMP, 0)
+
+    def test_where_w_array_remove(self):
+        from google.cloud.firestore_v1beta1 import ArrayRemove
+
+        with self.assertRaises(ValueError):
+            self._where_unary_helper(ArrayRemove([1, 3, 5]), 0)
+
+    def test_where_w_array_union(self):
+        from google.cloud.firestore_v1beta1 import ArrayUnion
+
+        with self.assertRaises(ValueError):
+            self._where_unary_helper(ArrayUnion([2, 4, 8]), 0)
+
     def test_order_by(self):
         from google.cloud.firestore_v1beta1.gapic import enums
 
