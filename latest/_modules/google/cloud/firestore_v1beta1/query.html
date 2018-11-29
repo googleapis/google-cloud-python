@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud a355ea1 documentation</title>
+    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud 8a4b07a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -62,6 +62,7 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">document</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">transforms</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.proto</span> <span class="k">import</span> <span class="n">query_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.order</span> <span class="k">import</span> <span class="n">Order</span>
@@ -81,6 +82,7 @@
 <span class="n">_BAD_OP_NAN_NULL</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s1">&#39;Only an equality filter (&quot;==&quot;) can be used with None or NaN values&#39;</span><span class="p">)</span>
 <span class="n">_BAD_DIR_STRING</span> <span class="o">=</span> <span class="s1">&#39;Invalid direction </span><span class="si">{!r}</span><span class="s1">. Must be one of </span><span class="si">{!r}</span><span class="s1"> or </span><span class="si">{!r}</span><span class="s1">.&#39;</span>
+<span class="n">_INVALID_CURSOR_TRANSFORM</span> <span class="o">=</span> <span class="s1">&#39;Transforms cannot be used as cursor values.&#39;</span>
 <span class="n">_MISSING_ORDER_BY</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s1">&#39;The &quot;order by&quot; field path </span><span class="si">{!r}</span><span class="s1"> is not present in the cursor data </span><span class="si">{!r}</span><span class="s1">. &#39;</span>
     <span class="s1">&#39;All fields sent to ``order_by()`` must be present in the fields &#39;</span>
@@ -597,6 +599,12 @@
             <span class="n">msg</span> <span class="o">=</span> <span class="n">_MISMATCH_CURSOR_W_ORDER_BY</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">document_fields</span><span class="p">,</span> <span class="n">order_keys</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">_transform_bases</span> <span class="o">=</span> <span class="p">(</span><span class="n">transforms</span><span class="o">.</span><span class="n">Sentinel</span><span class="p">,</span> <span class="n">transforms</span><span class="o">.</span><span class="n">_ValueList</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">document_fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">_transform_bases</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">_INVALID_CURSOR_TRANSFORM</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span>
 
