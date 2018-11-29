@@ -2,7 +2,7 @@
 
 [PyPI History][1]
 
-[1]: https://pypi.org/project/DISTRIBUTION NAME/#history
+[1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
 ## 0.1.0
 
