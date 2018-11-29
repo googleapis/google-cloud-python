@@ -352,7 +352,7 @@ class Query(object):
         Args:
             document_fields (Union[~.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple offields representing a
+                snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
             before (bool): Flag indicating if the document in
@@ -369,7 +369,7 @@ class Query(object):
         if isinstance(document_fields, tuple):
             document_fields = list(document_fields)
         elif isinstance(document_fields, document.DocumentSnapshot):
-            document_fields = document_fields.to_dict()  # TODO: __name__
+            document_fields = document_fields.to_dict()
         else:
             # NOTE: We copy so that the caller can't modify after calling.
             document_fields = copy.deepcopy(document_fields)
@@ -409,7 +409,7 @@ class Query(object):
         Args:
             document_fields (Union[~.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple offields representing a
+                snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
@@ -438,7 +438,7 @@ class Query(object):
         Args:
             document_fields (Union[~.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple offields representing a
+                snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
@@ -467,7 +467,7 @@ class Query(object):
         Args:
             document_fields (Union[~.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple offields representing a
+                snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
@@ -496,7 +496,7 @@ class Query(object):
         Args:
             document_fields (Union[~.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple offields representing a
+                snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 

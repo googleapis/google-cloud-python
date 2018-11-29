@@ -280,7 +280,7 @@ class CollectionReference(object):
         Args:
             document_fields (Union[~.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple offields representing a
+                snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
@@ -300,7 +300,7 @@ class CollectionReference(object):
         Args:
             document_fields (Union[~.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple offields representing a
+                snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
@@ -320,7 +320,7 @@ class CollectionReference(object):
         Args:
             document_fields (Union[~.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple offields representing a
+                snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
@@ -340,7 +340,7 @@ class CollectionReference(object):
         Args:
             document_fields (Union[~.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple offields representing a
+                snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
