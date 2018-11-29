@@ -16,7 +16,6 @@
 set -e -x
 
 MAIN_PYTHON_BIN="/opt/python/cp37-cp37m/bin"
-PKG_NAME="python-crc32c"
 
 # Upgrade `pip` before using it.
 ${MAIN_PYTHON_BIN}/python -m pip install --upgrade pip
@@ -69,7 +68,7 @@ for PYTHON_BIN in ${VERSION_WHITELIST}; do
 done
 
 # Bundle external shared libraries into the wheels
-for whl in dist_wheels/${PKG_NAME}*.whl; do
+for whl in dist_wheels/python_crc32c*.whl; do
     ${MAIN_PYTHON_BIN}/auditwheel repair "${whl}" --wheel-dir wheels/
 done
 
