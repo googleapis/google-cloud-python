@@ -52,27 +52,12 @@ class LaunchStage(enum.IntEnum):
       Platform Subject to the Deprecation
       Policy <https://cloud.google.com/terms/deprecation>`__ documentation.
     """
-
     LAUNCH_STAGE_UNSPECIFIED = 0
     EARLY_ACCESS = 1
     ALPHA = 2
     BETA = 3
     GA = 4
     DEPRECATED = 5
-
-
-class NullValue(enum.IntEnum):
-    """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
-
-    The JSON representation for ``NullValue`` is JSON ``null``.
-
-    Attributes:
-      NULL_VALUE (int): Null value.
-    """
-
-    NULL_VALUE = 0
 
 
 class LogSeverity(enum.IntEnum):
@@ -108,7 +93,6 @@ class LogSeverity(enum.IntEnum):
       ALERT (int): (700) A person must take an action immediately.
       EMERGENCY (int): (800) One or more systems are unusable.
     """
-
     DEFAULT = 0
     DEBUG = 100
     INFO = 200
@@ -118,6 +102,19 @@ class LogSeverity(enum.IntEnum):
     CRITICAL = 600
     ALERT = 700
     EMERGENCY = 800
+
+
+class NullValue(enum.IntEnum):
+    """
+    ``NullValue`` is a singleton enumeration to represent the null value for
+    the ``Value`` type union.
+
+    The JSON representation for ``NullValue`` is JSON ``null``.
+
+    Attributes:
+      NULL_VALUE (int): Null value.
+    """
+    NULL_VALUE = 0
 
 
 class LabelDescriptor(object):
@@ -130,10 +127,39 @@ class LabelDescriptor(object):
           BOOL (int): Boolean; true or false.
           INT64 (int): A 64-bit signed integer.
         """
-
         STRING = 0
         BOOL = 1
         INT64 = 2
+
+
+class LogMetric(object):
+    class ApiVersion(enum.IntEnum):
+        """
+        Logging API version.
+
+        Attributes:
+          V2 (int): Logging API v2.
+          V1 (int): Logging API v1.
+        """
+        V2 = 0
+        V1 = 1
+
+
+class LogSink(object):
+    class VersionFormat(enum.IntEnum):
+        """
+        Available log entry formats. Log entries can be written to
+        Logging in either format and can be exported in either format.
+        Version 2 is the preferred format.
+
+        Attributes:
+          VERSION_FORMAT_UNSPECIFIED (int): An unspecified format version that will default to V2.
+          V2 (int): ``LogEntry`` version 2 format.
+          V1 (int): ``LogEntry`` version 1 format.
+        """
+        VERSION_FORMAT_UNSPECIFIED = 0
+        V2 = 1
+        V1 = 2
 
 
 class MetricDescriptor(object):
@@ -151,7 +177,6 @@ class MetricDescriptor(object):
           value to zero and sets a new start time for the following
           points.
         """
-
         METRIC_KIND_UNSPECIFIED = 0
         GAUGE = 1
         DELTA = 2
@@ -172,7 +197,6 @@ class MetricDescriptor(object):
           DISTRIBUTION (int): The value is a ``Distribution``.
           MONEY (int): The value is money.
         """
-
         VALUE_TYPE_UNSPECIFIED = 0
         BOOL = 1
         INT64 = 2
@@ -180,35 +204,3 @@ class MetricDescriptor(object):
         STRING = 4
         DISTRIBUTION = 5
         MONEY = 6
-
-
-class LogMetric(object):
-    class ApiVersion(enum.IntEnum):
-        """
-        Logging API version.
-
-        Attributes:
-          V2 (int): Logging API v2.
-          V1 (int): Logging API v1.
-        """
-
-        V2 = 0
-        V1 = 1
-
-
-class LogSink(object):
-    class VersionFormat(enum.IntEnum):
-        """
-        Available log entry formats. Log entries can be written to
-        Logging in either format and can be exported in either format.
-        Version 2 is the preferred format.
-
-        Attributes:
-          VERSION_FORMAT_UNSPECIFIED (int): An unspecified format version that will default to V2.
-          V2 (int): ``LogEntry`` version 2 format.
-          V1 (int): ``LogEntry`` version 1 format.
-        """
-
-        VERSION_FORMAT_UNSPECIFIED = 0
-        V2 = 1
-        V1 = 2
