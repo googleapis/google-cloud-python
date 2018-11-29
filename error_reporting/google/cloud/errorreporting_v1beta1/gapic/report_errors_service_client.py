@@ -27,12 +27,8 @@ import google.api_core.path_template
 import grpc
 
 from google.cloud.errorreporting_v1beta1.gapic import enums
-from google.cloud.errorreporting_v1beta1.gapic import (
-    report_errors_service_client_config,
-)
-from google.cloud.errorreporting_v1beta1.gapic.transports import (
-    report_errors_service_grpc_transport,
-)
+from google.cloud.errorreporting_v1beta1.gapic import report_errors_service_client_config
+from google.cloud.errorreporting_v1beta1.gapic.transports import report_errors_service_grpc_transport
 from google.cloud.errorreporting_v1beta1.proto import common_pb2
 from google.cloud.errorreporting_v1beta1.proto import error_group_service_pb2
 from google.cloud.errorreporting_v1beta1.proto import error_group_service_pb2_grpc
@@ -44,19 +40,18 @@ from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-error-reporting"
-).version
+    'google-cloud-error-reporting', ).version
 
 
 class ReportErrorsServiceClient(object):
     """An API for reporting error events."""
 
-    SERVICE_ADDRESS = "clouderrorreporting.googleapis.com:443"
+    SERVICE_ADDRESS = 'clouderrorreporting.googleapis.com:443'
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.devtools.clouderrorreporting.v1beta1.ReportErrorsService"
+    _INTERFACE_NAME = 'google.devtools.clouderrorreporting.v1beta1.ReportErrorsService'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -72,8 +67,9 @@ class ReportErrorsServiceClient(object):
         Returns:
             ReportErrorsServiceClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -82,17 +78,16 @@ class ReportErrorsServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            'projects/{project}',
+            project=project,
         )
 
-    def __init__(
-        self,
-        transport=None,
-        channel=None,
-        credentials=None,
-        client_config=None,
-        client_info=None,
-    ):
+    def __init__(self,
+                 transport=None,
+                 channel=None,
+                 credentials=None,
+                 client_config=None,
+                 client_info=None):
         """Constructor.
 
         Args:
@@ -126,19 +121,18 @@ class ReportErrorsServiceClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                "The `client_config` argument is deprecated.",
+                'The `client_config` argument is deprecated.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
         else:
             client_config = report_errors_service_client_config.config
 
         if channel:
             warnings.warn(
-                "The `channel` argument is deprecated; use " "`transport` instead.",
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -147,24 +141,25 @@ class ReportErrorsServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=report_errors_service_grpc_transport.ReportErrorsServiceGrpcTransport,
+                    default_class=report_errors_service_grpc_transport.
+                    ReportErrorsServiceGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        "Received both a transport instance and "
-                        "credentials; these are mutually exclusive."
-                    )
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
                 self.transport = transport
         else:
             self.transport = report_errors_service_grpc_transport.ReportErrorsServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
-            )
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -174,8 +169,7 @@ class ReportErrorsServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
-        )
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -184,14 +178,12 @@ class ReportErrorsServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def report_error_event(
-        self,
-        project_name,
-        event,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def report_error_event(self,
+                           project_name,
+                           event,
+                           retry=google.api_core.gapic_v1.method.DEFAULT,
+                           timeout=google.api_core.gapic_v1.method.DEFAULT,
+                           metadata=None):
         """
         Report an individual error event.
 
@@ -236,19 +228,20 @@ class ReportErrorsServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "report_error_event" not in self._inner_api_calls:
+        if 'report_error_event' not in self._inner_api_calls:
             self._inner_api_calls[
-                "report_error_event"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.report_error_event,
-                default_retry=self._method_configs["ReportErrorEvent"].retry,
-                default_timeout=self._method_configs["ReportErrorEvent"].timeout,
-                client_info=self._client_info,
-            )
+                'report_error_event'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.report_error_event,
+                    default_retry=self._method_configs['ReportErrorEvent'].
+                    retry,
+                    default_timeout=self._method_configs['ReportErrorEvent'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = report_errors_service_pb2.ReportErrorEventRequest(
-            project_name=project_name, event=event
+            project_name=project_name,
+            event=event,
         )
-        return self._inner_api_calls["report_error_event"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['report_error_event'](
+            request, retry=retry, timeout=timeout, metadata=metadata)

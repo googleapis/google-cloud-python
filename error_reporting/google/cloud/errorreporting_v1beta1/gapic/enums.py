@@ -35,7 +35,6 @@ class TimedCountAlignment(enum.IntEnum):
       period. This can result in a different size of the
       first time period.
     """
-
     ERROR_COUNT_ALIGNMENT_UNSPECIFIED = 0
     ALIGNMENT_EQUAL_ROUNDED = 1
     ALIGNMENT_EQUAL_AT_END = 2
@@ -53,7 +52,6 @@ class ErrorGroupOrder(enum.IntEnum):
       CREATED_DESC (int): Timestamp when the group was created in descending order.
       AFFECTED_USERS_DESC (int): Number of affected users in the given time window in descending order.
     """
-
     GROUP_ORDER_UNSPECIFIED = 0
     COUNT_DESC = 1
     LAST_SEEN_DESC = 2
@@ -79,7 +77,6 @@ class QueryTimeRange(object):
           PERIOD_30_DAYS (int): Retrieve data for the last 30 days.
           Recommended minimum timed count duration: 1 day.
         """
-
         PERIOD_UNSPECIFIED = 0
         PERIOD_1_HOUR = 1
         PERIOD_6_HOURS = 2
