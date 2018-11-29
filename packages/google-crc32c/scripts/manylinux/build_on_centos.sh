@@ -16,7 +16,7 @@
 set -e -x
 
 MAIN_PYTHON_BIN="/opt/python/cp37-cp37m/bin"
-PKG_NAME="py_crc32c"
+PKG_NAME="python-crc32c"
 
 # Upgrade `pip` before using it.
 ${MAIN_PYTHON_BIN}/python -m pip install --upgrade pip

@@ -19,7 +19,7 @@
 
 set -e -x
 
-PKG_NAME="py_crc32c"
+PKG_NAME="python-crc32c"
 
 # Check that the REPO_ROOT, PY_BIN and PY_TAG environment variables are set.
 if [[ -z "${REPO_ROOT}" ]]; then
