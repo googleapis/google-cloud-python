@@ -22,10 +22,13 @@ from google.cloud.videointelligence_v1.gapic import video_intelligence_service_c
 
 
 class VideoIntelligenceServiceClient(
-    video_intelligence_service_client.VideoIntelligenceServiceClient
-):
+        video_intelligence_service_client.VideoIntelligenceServiceClient):
     __doc__ = video_intelligence_service_client.VideoIntelligenceServiceClient.__doc__
     enums = enums
 
 
-__all__ = ("enums", "types", "VideoIntelligenceServiceClient")
+__all__ = (
+    'enums',
+    'types',
+    'VideoIntelligenceServiceClient',
+)

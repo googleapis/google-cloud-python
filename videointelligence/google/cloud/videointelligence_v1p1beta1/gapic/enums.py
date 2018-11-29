@@ -29,7 +29,6 @@ class Feature(enum.IntEnum):
       EXPLICIT_CONTENT_DETECTION (int): Explicit content detection.
       SPEECH_TRANSCRIPTION (int): Speech transcription.
     """
-
     FEATURE_UNSPECIFIED = 0
     LABEL_DETECTION = 1
     SHOT_CHANGE_DETECTION = 2
@@ -47,7 +46,6 @@ class LabelDetectionMode(enum.IntEnum):
       FRAME_MODE (int): Detect frame-level labels.
       SHOT_AND_FRAME_MODE (int): Detect both shot-level and frame-level labels.
     """
-
     LABEL_DETECTION_MODE_UNSPECIFIED = 0
     SHOT_MODE = 1
     FRAME_MODE = 2
@@ -66,7 +64,6 @@ class Likelihood(enum.IntEnum):
       LIKELY (int): Likely.
       VERY_LIKELY (int): Very likely.
     """
-
     LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
