@@ -32,7 +32,6 @@ class HttpMethod(enum.IntEnum):
       PATCH (int): HTTP PATCH
       OPTIONS (int): HTTP OPTIONS
     """
-
     HTTP_METHOD_UNSPECIFIED = 0
     POST = 1
     GET = 2
@@ -59,7 +58,6 @@ class Job(object):
           operation. To recover a job from this state, retry
           ``CloudScheduler.UpdateJob`` until a successful response is received.
         """
-
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         PAUSED = 2
