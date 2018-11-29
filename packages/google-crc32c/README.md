@@ -7,7 +7,7 @@
 Be sure to check out all submodules:
 
 ```
-$ git clone --recursive https://github.com/dhermes/py-crc32c
+$ git clone --recursive https://github.com/googleapis/python-crc32c
 ```
 
 ## Prerequisites
