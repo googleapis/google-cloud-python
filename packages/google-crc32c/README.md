@@ -1,4 +1,4 @@
-# `py-crc32c`
+# `google-crc32c`
 
 > Python / CFFI wrapper for `google/crc32c`
 
