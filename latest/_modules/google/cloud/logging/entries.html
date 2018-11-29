@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.logging.entries &#8212; google-cloud f20a5b8 documentation</title>
+    <title>google.cloud.logging.entries &#8212; google-cloud 2745b34 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -63,15 +63,18 @@
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
 
 
-<span class="n">_GLOBAL_RESOURCE</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">{})</span>
+<span class="n">_GLOBAL_RESOURCE</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;global&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">{})</span>
 
 
-<span class="n">_LOGGER_TEMPLATE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    projects/            # static prefix</span>
-<span class="s2">    (?P&lt;project&gt;[^/]+)   # initial letter, wordchars + hyphen</span>
-<span class="s2">    /logs/               # static midfix</span>
-<span class="s2">    (?P&lt;name&gt;[^/]+)      # initial letter, wordchars + allowed punc</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+<span class="n">_LOGGER_TEMPLATE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    projects/            # static prefix</span>
+<span class="sd">    (?P&lt;project&gt;[^/]+)   # initial letter, wordchars + hyphen</span>
+<span class="sd">    /logs/               # static midfix</span>
+<span class="sd">    (?P&lt;name&gt;[^/]+)      # initial letter, wordchars + allowed punc</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="logger_name_from_path"><a class="viewcode-back" href="../../../../logging/entries.html#google.cloud.logging.entries.logger_name_from_path">[docs]</a><span class="k">def</span> <span class="nf">logger_name_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -97,28 +100,28 @@
 
 
 <span class="n">_LOG_ENTRY_FIELDS</span> <span class="o">=</span> <span class="p">(</span>  <span class="c1"># (name, default)</span>
-    <span class="p">(</span><span class="s1">&#39;log_name&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;insert_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;severity&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;http_request&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;resource&#39;</span><span class="p">,</span> <span class="n">_GLOBAL_RESOURCE</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;trace&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;span_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;trace_sampled&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;source_location&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;operation&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;logger&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;payload&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;log_name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;insert_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;severity&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;http_request&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;resource&quot;</span><span class="p">,</span> <span class="n">_GLOBAL_RESOURCE</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;trace&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;span_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;trace_sampled&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;source_location&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;operation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;logger&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;payload&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
 <span class="p">)</span>
 
 
 <span class="n">_LogEntryTuple</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
-        <span class="s1">&#39;LogEntry&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">_LOG_ENTRY_FIELDS</span><span class="p">))</span>
+    <span class="s2">&quot;LogEntry&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">_LOG_ENTRY_FIELDS</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="n">_LogEntryTuple</span><span class="o">.</span><span class="fm">__new__</span><span class="o">.</span><span class="vm">__defaults__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-    <span class="n">default</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">default</span> <span class="ow">in</span> <span class="n">_LOG_ENTRY_FIELDS</span><span class="p">)</span>
+<span class="n">_LogEntryTuple</span><span class="o">.</span><span class="fm">__new__</span><span class="o">.</span><span class="vm">__defaults__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">default</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">default</span> <span class="ow">in</span> <span class="n">_LOG_ENTRY_FIELDS</span><span class="p">)</span>
 
 
 <span class="n">_LOG_ENTRY_PARAM_DOCSTRING</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
@@ -177,10 +180,14 @@
 
 
 <div class="viewcode-block" id="LogEntry"><a class="viewcode-back" href="../../../../logging/entries.html#google.cloud.logging.entries.LogEntry">[docs]</a><span class="k">class</span> <span class="nc">LogEntry</span><span class="p">(</span><span class="n">_LogEntryTuple</span><span class="p">):</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Log entry.</span>
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Log entry.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">_LOG_ENTRY_PARAM_DOCSTRING</span> <span class="o">+</span> <span class="n">_LOG_ENTRY_SEE_ALSO_DOCSTRING</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">_LOG_ENTRY_PARAM_DOCSTRING</span>
+        <span class="o">+</span> <span class="n">_LOG_ENTRY_SEE_ALSO_DOCSTRING</span>
+    <span class="p">)</span>
 
     <span class="n">received_timestamp</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -211,29 +218,29 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">loggers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">loggers</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">logger_fullname</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;logName&#39;</span><span class="p">]</span>
+        <span class="n">logger_fullname</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;logName&quot;</span><span class="p">]</span>
         <span class="n">logger</span> <span class="o">=</span> <span class="n">loggers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">logger_fullname</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">logger</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">logger_name</span> <span class="o">=</span> <span class="n">logger_name_from_path</span><span class="p">(</span><span class="n">logger_fullname</span><span class="p">)</span>
             <span class="n">logger</span> <span class="o">=</span> <span class="n">loggers</span><span class="p">[</span><span class="n">logger_fullname</span><span class="p">]</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">logger</span><span class="p">(</span><span class="n">logger_name</span><span class="p">)</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_extract_payload</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-        <span class="n">insert_id</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;insertId&#39;</span><span class="p">)</span>
-        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">)</span>
+        <span class="n">insert_id</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;insertId&quot;</span><span class="p">)</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">timestamp</span> <span class="o">=</span> <span class="n">_rfc3339_nanos_to_datetime</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span>
-        <span class="n">severity</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;severity&#39;</span><span class="p">)</span>
-        <span class="n">http_request</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">)</span>
-        <span class="n">trace</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;trace&#39;</span><span class="p">)</span>
-        <span class="n">span_id</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;spanId&#39;</span><span class="p">)</span>
-        <span class="n">trace_sampled</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;traceSampled&#39;</span><span class="p">)</span>
-        <span class="n">source_location</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sourceLocation&#39;</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">)</span>
+        <span class="n">severity</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;severity&quot;</span><span class="p">)</span>
+        <span class="n">http_request</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;httpRequest&quot;</span><span class="p">)</span>
+        <span class="n">trace</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trace&quot;</span><span class="p">)</span>
+        <span class="n">span_id</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;spanId&quot;</span><span class="p">)</span>
+        <span class="n">trace_sampled</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;traceSampled&quot;</span><span class="p">)</span>
+        <span class="n">source_location</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sourceLocation&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">source_location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">source_location</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="n">source_location</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-        <span class="n">operation</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;operation&#39;</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">source_location</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">source_location</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;operation&quot;</span><span class="p">)</span>
 
-        <span class="n">monitored_resource_dict</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resource&#39;</span><span class="p">)</span>
+        <span class="n">monitored_resource_dict</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resource&quot;</span><span class="p">)</span>
         <span class="n">monitored_resource</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">monitored_resource_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">monitored_resource</span> <span class="o">=</span> <span class="n">Resource</span><span class="o">.</span><span class="n">_from_dict</span><span class="p">(</span><span class="n">monitored_resource_dict</span><span class="p">)</span>
@@ -254,7 +261,7 @@
             <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span>
             <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">received</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;receiveTimestamp&#39;</span><span class="p">)</span>
+        <span class="n">received</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;receiveTimestamp&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">received</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">inst</span><span class="o">.</span><span class="n">received_timestamp</span> <span class="o">=</span> <span class="n">_rfc3339_nanos_to_datetime</span><span class="p">(</span><span class="n">received</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">inst</span></div>
@@ -264,94 +271,109 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;logName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;logName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">()</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;resource&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;insertId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_id</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;insertId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_id</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">severity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;severity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">severity</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;severity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">severity</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_request</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_request</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;httpRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_request</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;trace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;spanId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">span_id</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;spanId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">span_id</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace_sampled</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;traceSampled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace_sampled</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;traceSampled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace_sampled</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">source_location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_location</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">source_location</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">source_location</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;sourceLocation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_location</span>
+            <span class="n">source_location</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">source_location</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;sourceLocation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_location</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;operation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span>
         <span class="k">return</span> <span class="n">info</span></div></div>
 
 
 <div class="viewcode-block" id="TextEntry"><a class="viewcode-back" href="../../../../logging/entries.html#google.cloud.logging.entries.TextEntry">[docs]</a><span class="k">class</span> <span class="nc">TextEntry</span><span class="p">(</span><span class="n">LogEntry</span><span class="p">):</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Log entry with text payload.</span>
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Log entry with text payload.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">_LOG_ENTRY_PARAM_DOCSTRING</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">_LOG_ENTRY_PARAM_DOCSTRING</span>
+        <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span>
 
 <span class="s2">    :type payload: str | unicode</span>
 <span class="s2">    :param payload: payload for the log entry.</span>
-<span class="s2">    &quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">_LOG_ENTRY_SEE_ALSO_DOCSTRING</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">_LOG_ENTRY_SEE_ALSO_DOCSTRING</span>
+    <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_extract_payload</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`from_api_repr`&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;textPayload&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;textPayload&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="TextEntry.to_api_repr"><a class="viewcode-back" href="../../../../logging/entries.html#google.cloud.logging.entries.TextEntry.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API repr (JSON format) for entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">TextEntry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="n">info</span><span class="p">[</span><span class="s1">&#39;textPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;textPayload&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span>
         <span class="k">return</span> <span class="n">info</span></div></div>
 
 
 <div class="viewcode-block" id="StructEntry"><a class="viewcode-back" href="../../../../logging/entries.html#google.cloud.logging.entries.StructEntry">[docs]</a><span class="k">class</span> <span class="nc">StructEntry</span><span class="p">(</span><span class="n">LogEntry</span><span class="p">):</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Log entry with JSON payload.</span>
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Log entry with JSON payload.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">_LOG_ENTRY_PARAM_DOCSTRING</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">_LOG_ENTRY_PARAM_DOCSTRING</span>
+        <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span>
 
 <span class="s2">    :type payload: dict</span>
 <span class="s2">    :param payload: payload for the log entry.</span>
-<span class="s2">    &quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">_LOG_ENTRY_SEE_ALSO_DOCSTRING</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">_LOG_ENTRY_SEE_ALSO_DOCSTRING</span>
+    <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_extract_payload</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`from_api_repr`&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jsonPayload&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;jsonPayload&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="StructEntry.to_api_repr"><a class="viewcode-back" href="../../../../logging/entries.html#google.cloud.logging.entries.StructEntry.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API repr (JSON format) for entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">StructEntry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="n">info</span><span class="p">[</span><span class="s1">&#39;jsonPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;jsonPayload&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span>
         <span class="k">return</span> <span class="n">info</span></div></div>
 
 
 <div class="viewcode-block" id="ProtobufEntry"><a class="viewcode-back" href="../../../../logging/entries.html#google.cloud.logging.entries.ProtobufEntry">[docs]</a><span class="k">class</span> <span class="nc">ProtobufEntry</span><span class="p">(</span><span class="n">LogEntry</span><span class="p">):</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Log entry with protobuf message payload.</span>
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Log entry with protobuf message payload.</span>
 
-<span class="s2">    &quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">_LOG_ENTRY_PARAM_DOCSTRING</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">_LOG_ENTRY_PARAM_DOCSTRING</span>
+        <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span>
 
 <span class="s2">    :type payload: protobuf message</span>
 <span class="s2">    :param payload: payload for the log entry.</span>
-<span class="s2">    &quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">_LOG_ENTRY_SEE_ALSO_DOCSTRING</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">_LOG_ENTRY_SEE_ALSO_DOCSTRING</span>
+    <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_extract_payload</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`from_api_repr`&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;protoPayload&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">payload_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -367,7 +389,7 @@
         <span class="sd">&quot;&quot;&quot;API repr (JSON format) for entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ProtobufEntry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="n">info</span><span class="p">[</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MessageToDict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;protoPayload&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MessageToDict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">info</span></div>
 
 <div class="viewcode-block" id="ProtobufEntry.parse_message"><a class="viewcode-back" href="../../../../logging/entries.html#google.cloud.logging.entries.ProtobufEntry.parse_message">[docs]</a>    <span class="k">def</span> <span class="nf">parse_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.table &#8212; google-cloud f20a5b8 documentation</title>
+    <title>google.cloud.bigtable.table &#8212; google-cloud 2745b34 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -61,7 +61,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.column_family</span> <span class="k">import</span> <span class="n">_gc_rule_from_pb</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.column_family</span> <span class="k">import</span> <span class="n">ColumnFamily</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.batcher</span> <span class="k">import</span> <span class="n">MutationsBatcher</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigtable.batcher</span> <span class="k">import</span> <span class="p">(</span><span class="n">FLUSH_COUNT</span><span class="p">,</span> <span class="n">MAX_ROW_BYTES</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigtable.batcher</span> <span class="k">import</span> <span class="n">FLUSH_COUNT</span><span class="p">,</span> <span class="n">MAX_ROW_BYTES</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.row</span> <span class="k">import</span> <span class="n">AppendRow</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.row</span> <span class="k">import</span> <span class="n">ConditionalRow</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.row</span> <span class="k">import</span> <span class="n">DirectRow</span>
@@ -70,12 +70,11 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.row_set</span> <span class="k">import</span> <span class="n">RowSet</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.row_set</span> <span class="k">import</span> <span class="n">RowRange</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">enums</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigtable_v2.proto</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">bigtable_pb2</span> <span class="k">as</span> <span class="n">data_messages_v2_pb2</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigtable_v2.proto</span> <span class="k">import</span> <span class="n">bigtable_pb2</span> <span class="k">as</span> <span class="n">data_messages_v2_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigtable_admin_v2.proto</span> <span class="k">import</span> <span class="n">table_pb2</span> <span class="k">as</span> <span class="n">admin_messages_v2_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable_admin_v2.proto</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">table_pb2</span> <span class="k">as</span> <span class="n">admin_messages_v2_pb2</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigtable_admin_v2.proto</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">bigtable_table_admin_pb2</span> <span class="k">as</span> <span class="n">table_admin_messages_v2_pb2</span><span class="p">)</span>
+    <span class="n">bigtable_table_admin_pb2</span> <span class="k">as</span> <span class="n">table_admin_messages_v2_pb2</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="c1"># Maximum number of mutations in bulk (MutateRowsRequest message):</span>
@@ -161,7 +160,8 @@
         <span class="n">instance_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">instance_id</span>
         <span class="n">table_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">table_data_client</span>
         <span class="k">return</span> <span class="n">table_client</span><span class="o">.</span><span class="n">table_path</span><span class="p">(</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="p">)</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">table_id</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="Table.column_family"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.column_family">[docs]</a>    <span class="k">def</span> <span class="nf">column_family</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">gc_rule</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create a column family associated with this table.</span>
@@ -204,7 +204,7 @@
 <span class="sd">                 ``filter_`` and ``append`` are used.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">append</span> <span class="ow">and</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;At most one of filter_ and append can be set&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;At most one of filter_ and append can be set&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">AppendRow</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -215,8 +215,7 @@
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_id</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">_instance</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_id</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">_instance</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
@@ -243,15 +242,21 @@
         <span class="n">table_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">table_admin_client</span>
         <span class="n">instance_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">name</span>
 
-        <span class="n">families</span> <span class="o">=</span> <span class="p">{</span><span class="nb">id</span><span class="p">:</span> <span class="n">ColumnFamily</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="p">)</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
-                    <span class="k">for</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">rule</span><span class="p">)</span> <span class="ow">in</span> <span class="n">column_families</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">families</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nb">id</span><span class="p">:</span> <span class="n">ColumnFamily</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="p">)</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">rule</span><span class="p">)</span> <span class="ow">in</span> <span class="n">column_families</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
         <span class="n">table</span> <span class="o">=</span> <span class="n">admin_messages_v2_pb2</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">column_families</span><span class="o">=</span><span class="n">families</span><span class="p">)</span>
 
         <span class="n">split</span> <span class="o">=</span> <span class="n">table_admin_messages_v2_pb2</span><span class="o">.</span><span class="n">CreateTableRequest</span><span class="o">.</span><span class="n">Split</span>
         <span class="n">splits</span> <span class="o">=</span> <span class="p">[</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">initial_split_keys</span><span class="p">]</span>
 
-        <span class="n">table_client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">instance_name</span><span class="p">,</span> <span class="n">table_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="p">,</span>
-                                  <span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">initial_splits</span><span class="o">=</span><span class="n">splits</span><span class="p">)</span></div>
+        <span class="n">table_client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">instance_name</span><span class="p">,</span>
+            <span class="n">table_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="p">,</span>
+            <span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+            <span class="n">initial_splits</span><span class="o">=</span><span class="n">splits</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.exists"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check whether the table exists.</span>
@@ -288,8 +293,7 @@
         <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">value_pb</span> <span class="ow">in</span> <span class="n">table_pb</span><span class="o">.</span><span class="n">column_families</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">gc_rule</span> <span class="o">=</span> <span class="n">_gc_rule_from_pb</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">gc_rule</span><span class="p">)</span>
-            <span class="n">column_family</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span>
-                                               <span class="n">gc_rule</span><span class="o">=</span><span class="n">gc_rule</span><span class="p">)</span>
+            <span class="n">column_family</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">gc_rule</span><span class="o">=</span><span class="n">gc_rule</span><span class="p">)</span>
             <span class="n">result</span><span class="p">[</span><span class="n">column_family_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">column_family</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
@@ -306,8 +310,10 @@
         <span class="n">table_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">table_admin_client</span>
         <span class="n">table_pb</span> <span class="o">=</span> <span class="n">table_client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="n">REPLICATION_VIEW</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">{</span><span class="n">cluster_id</span><span class="p">:</span> <span class="n">ClusterState</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">replication_state</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">value_pb</span> <span class="ow">in</span> <span class="n">table_pb</span><span class="o">.</span><span class="n">cluster_states</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">cluster_id</span><span class="p">:</span> <span class="n">ClusterState</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">replication_state</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">value_pb</span> <span class="ow">in</span> <span class="n">table_pb</span><span class="o">.</span><span class="n">cluster_states</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span></div>
 
 <div class="viewcode-block" id="Table.read_row"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.read_row">[docs]</a>    <span class="k">def</span> <span class="nf">read_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read a single row from this table.</span>
@@ -330,12 +336,19 @@
         <span class="n">result_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read_rows</span><span class="p">(</span><span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">row_set</span><span class="o">=</span><span class="n">row_set</span><span class="p">))</span>
         <span class="n">row</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">result_iter</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">next</span><span class="p">(</span><span class="n">result_iter</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;More than one row was returned.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;More than one row was returned.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">row</span></div>
 
-<div class="viewcode-block" id="Table.read_rows"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.read_rows">[docs]</a>    <span class="k">def</span> <span class="nf">read_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_inclusive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">row_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY_READ_ROWS</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.read_rows"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.read_rows">[docs]</a>    <span class="k">def</span> <span class="nf">read_rows</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">start_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">end_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">end_inclusive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">row_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY_READ_ROWS</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read rows from this table.</span>
 
 <span class="sd">        :type start_key: bytes</span>
@@ -379,13 +392,17 @@
 <span class="sd">                  the streamed results.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span> <span class="o">=</span> <span class="n">_create_row_request</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">start_key</span><span class="o">=</span><span class="n">start_key</span><span class="p">,</span> <span class="n">end_key</span><span class="o">=</span><span class="n">end_key</span><span class="p">,</span>
-            <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">end_inclusive</span><span class="o">=</span><span class="n">end_inclusive</span><span class="p">,</span>
-            <span class="n">app_profile_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_app_profile_id</span><span class="p">,</span> <span class="n">row_set</span><span class="o">=</span><span class="n">row_set</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">start_key</span><span class="o">=</span><span class="n">start_key</span><span class="p">,</span>
+            <span class="n">end_key</span><span class="o">=</span><span class="n">end_key</span><span class="p">,</span>
+            <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span>
+            <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
+            <span class="n">end_inclusive</span><span class="o">=</span><span class="n">end_inclusive</span><span class="p">,</span>
+            <span class="n">app_profile_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_app_profile_id</span><span class="p">,</span>
+            <span class="n">row_set</span><span class="o">=</span><span class="n">row_set</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">data_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">table_data_client</span>
-        <span class="k">return</span> <span class="n">PartialRowsData</span><span class="p">(</span>
-            <span class="n">data_client</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">read_rows</span><span class="p">,</span>
-            <span class="n">request_pb</span><span class="p">,</span> <span class="n">retry</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">PartialRowsData</span><span class="p">(</span><span class="n">data_client</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">read_rows</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">,</span> <span class="n">retry</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.yield_rows"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.yield_rows">[docs]</a>    <span class="k">def</span> <span class="nf">yield_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read rows from this table.</span>
@@ -453,8 +470,8 @@
 <span class="sd">                  sent. These will be in the same order as the `rows`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">retryable_mutate_rows</span> <span class="o">=</span> <span class="n">_RetryableMutateRowsWorker</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span>
-            <span class="n">app_profile_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_app_profile_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_app_profile_id</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">retryable_mutate_rows</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.sample_row_keys"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.sample_row_keys">[docs]</a>    <span class="k">def</span> <span class="nf">sample_row_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -490,7 +507,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">table_data_client</span>
         <span class="n">response_iterator</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">sample_row_keys</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_app_profile_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_app_profile_id</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response_iterator</span></div>
 
@@ -511,10 +529,12 @@
         <span class="n">table_admin_client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">table_admin_client</span>
         <span class="k">if</span> <span class="n">timeout</span><span class="p">:</span>
             <span class="n">table_admin_client</span><span class="o">.</span><span class="n">drop_row_range</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">delete_all_data_from_table</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">delete_all_data_from_table</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">table_admin_client</span><span class="o">.</span><span class="n">drop_row_range</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">delete_all_data_from_table</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">delete_all_data_from_table</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.drop_by_prefix"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.drop_by_prefix">[docs]</a>    <span class="k">def</span> <span class="nf">drop_by_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key_prefix</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -536,14 +556,14 @@
         <span class="n">table_admin_client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">table_admin_client</span>
         <span class="k">if</span> <span class="n">timeout</span><span class="p">:</span>
             <span class="n">table_admin_client</span><span class="o">.</span><span class="n">drop_row_range</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">row_key_prefix</span><span class="o">=</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">row_key_prefix</span><span class="p">),</span>
-                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">row_key_prefix</span><span class="o">=</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">row_key_prefix</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">table_admin_client</span><span class="o">.</span><span class="n">drop_row_range</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">row_key_prefix</span><span class="o">=</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">row_key_prefix</span><span class="p">))</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">row_key_prefix</span><span class="o">=</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">row_key_prefix</span><span class="p">)</span>
+            <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Table.mutations_batcher"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.mutations_batcher">[docs]</a>    <span class="k">def</span> <span class="nf">mutations_batcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flush_count</span><span class="o">=</span><span class="n">FLUSH_COUNT</span><span class="p">,</span>
-                          <span class="n">max_row_bytes</span><span class="o">=</span><span class="n">MAX_ROW_BYTES</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.mutations_batcher"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.mutations_batcher">[docs]</a>    <span class="k">def</span> <span class="nf">mutations_batcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flush_count</span><span class="o">=</span><span class="n">FLUSH_COUNT</span><span class="p">,</span> <span class="n">max_row_bytes</span><span class="o">=</span><span class="n">MAX_ROW_BYTES</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create a mutation batcher associated with this instance.</span>
 
 <span class="sd">        :type table: class</span>
@@ -615,8 +635,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_is_retryable</span><span class="p">(</span><span class="n">status</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">status</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
-                <span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="ow">in</span> <span class="n">_RetryableMutateRowsWorker</span><span class="o">.</span><span class="n">RETRY_CODES</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">status</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="ow">in</span> <span class="n">_RetryableMutateRowsWorker</span><span class="o">.</span><span class="n">RETRY_CODES</span>
 
     <span class="k">def</span> <span class="nf">_do_mutate_retryable_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Mutate all the rows that are eligible for retry.</span>
@@ -646,23 +665,23 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">responses_statuses</span>
 
         <span class="n">mutate_rows_request</span> <span class="o">=</span> <span class="n">_mutate_rows_request</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="n">retryable_rows</span><span class="p">,</span>
-            <span class="n">app_profile_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">app_profile_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="n">retryable_rows</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">app_profile_id</span>
+        <span class="p">)</span>
         <span class="n">data_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">table_data_client</span>
         <span class="n">inner_api_calls</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">_inner_api_calls</span>
-        <span class="k">if</span> <span class="s1">&#39;mutate_rows&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inner_api_calls</span><span class="p">:</span>
-            <span class="n">default_retry</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;MutateRows&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;MutateRows&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span>
-            <span class="n">data_client</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
-                <span class="s1">&#39;mutate_rows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wrap_method</span><span class="p">(</span>
-                    <span class="n">data_client</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">mutate_rows</span><span class="p">,</span>
-                    <span class="n">default_retry</span><span class="o">=</span><span class="n">default_retry</span><span class="p">,</span>
-                    <span class="n">default_timeout</span><span class="o">=</span><span class="n">default_timeout</span><span class="p">,</span>
-                    <span class="n">client_info</span><span class="o">=</span><span class="n">data_client</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
-                <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;mutate_rows&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inner_api_calls</span><span class="p">:</span>
+            <span class="n">default_retry</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_client</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;MutateRows&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,)</span>
+            <span class="n">default_timeout</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;MutateRows&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span>
+            <span class="n">data_client</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;mutate_rows&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wrap_method</span><span class="p">(</span>
+                <span class="n">data_client</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">mutate_rows</span><span class="p">,</span>
+                <span class="n">default_retry</span><span class="o">=</span><span class="n">default_retry</span><span class="p">,</span>
+                <span class="n">default_timeout</span><span class="o">=</span><span class="n">default_timeout</span><span class="p">,</span>
+                <span class="n">client_info</span><span class="o">=</span><span class="n">data_client</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+            <span class="p">)</span>
 
-        <span class="n">responses</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;mutate_rows&#39;</span><span class="p">](</span>
-            <span class="n">mutate_rows_request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">responses</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;mutate_rows&quot;</span><span class="p">](</span>
+            <span class="n">mutate_rows_request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)</span>
 
         <span class="n">num_responses</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">num_retryable_responses</span> <span class="o">=</span> <span class="mi">0</span>
@@ -678,8 +697,11 @@
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">retryable_rows</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_responses</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s1">&#39;Unexpected number of responses&#39;</span><span class="p">,</span> <span class="n">num_responses</span><span class="p">,</span>
-                <span class="s1">&#39;Expected&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">retryable_rows</span><span class="p">))</span>
+                <span class="s2">&quot;Unexpected number of responses&quot;</span><span class="p">,</span>
+                <span class="n">num_responses</span><span class="p">,</span>
+                <span class="s2">&quot;Expected&quot;</span><span class="p">,</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">retryable_rows</span><span class="p">),</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">num_retryable_responses</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">_BigtableRetryableError</span>
@@ -728,11 +750,9 @@
         <span class="n">replication_dict</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">enums</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">ReplicationState</span><span class="o">.</span><span class="n">STATE_NOT_KNOWN</span><span class="p">:</span> <span class="s2">&quot;STATE_NOT_KNOWN&quot;</span><span class="p">,</span>
             <span class="n">enums</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">ReplicationState</span><span class="o">.</span><span class="n">INITIALIZING</span><span class="p">:</span> <span class="s2">&quot;INITIALIZING&quot;</span><span class="p">,</span>
-            <span class="n">enums</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">ReplicationState</span><span class="o">.</span><span class="n">PLANNED_MAINTENANCE</span><span class="p">:</span>
-                <span class="s2">&quot;PLANNED_MAINTENANCE&quot;</span><span class="p">,</span>
-            <span class="n">enums</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">ReplicationState</span><span class="o">.</span><span class="n">UNPLANNED_MAINTENANCE</span><span class="p">:</span>
-                <span class="s2">&quot;UNPLANNED_MAINTENANCE&quot;</span><span class="p">,</span>
-            <span class="n">enums</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">ReplicationState</span><span class="o">.</span><span class="n">READY</span><span class="p">:</span> <span class="s2">&quot;READY&quot;</span>
+            <span class="n">enums</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">ReplicationState</span><span class="o">.</span><span class="n">PLANNED_MAINTENANCE</span><span class="p">:</span> <span class="s2">&quot;PLANNED_MAINTENANCE&quot;</span><span class="p">,</span>
+            <span class="n">enums</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">ReplicationState</span><span class="o">.</span><span class="n">UNPLANNED_MAINTENANCE</span><span class="p">:</span> <span class="s2">&quot;UNPLANNED_MAINTENANCE&quot;</span><span class="p">,</span>
+            <span class="n">enums</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">ReplicationState</span><span class="o">.</span><span class="n">READY</span><span class="p">:</span> <span class="s2">&quot;READY&quot;</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">replication_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">replication_state</span><span class="p">]</span>
 
@@ -764,9 +784,16 @@
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span></div>
 
 
-<span class="k">def</span> <span class="nf">_create_row_request</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">start_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_inclusive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                        <span class="n">app_profile_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">row_set</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_create_row_request</span><span class="p">(</span>
+    <span class="n">table_name</span><span class="p">,</span>
+    <span class="n">start_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_inclusive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">app_profile_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">row_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a request to read rows in a table.</span>
 
 <span class="sd">    :type table_name: str</span>
@@ -807,25 +834,22 @@
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if both</span>
 <span class="sd">             ``row_set`` and one of ``start_key`` or ``end_key`` are set</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">request_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;table_name&#39;</span><span class="p">:</span> <span class="n">table_name</span><span class="p">}</span>
-    <span class="k">if</span> <span class="p">((</span><span class="n">start_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">end_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span>
-            <span class="n">row_set</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Row range and row set cannot be &#39;</span>
-                         <span class="s1">&#39;set simultaneously&#39;</span><span class="p">)</span>
+    <span class="n">request_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;table_name&quot;</span><span class="p">:</span> <span class="n">table_name</span><span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">start_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">end_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="n">row_set</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Row range and row set cannot be &quot;</span> <span class="s2">&quot;set simultaneously&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">request_kwargs</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
+        <span class="n">request_kwargs</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">request_kwargs</span><span class="p">[</span><span class="s1">&#39;rows_limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="n">request_kwargs</span><span class="p">[</span><span class="s2">&quot;rows_limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
     <span class="k">if</span> <span class="n">app_profile_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">request_kwargs</span><span class="p">[</span><span class="s1">&#39;app_profile_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">app_profile_id</span>
+        <span class="n">request_kwargs</span><span class="p">[</span><span class="s2">&quot;app_profile_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">app_profile_id</span>
 
     <span class="n">message</span> <span class="o">=</span> <span class="n">data_messages_v2_pb2</span><span class="o">.</span><span class="n">ReadRowsRequest</span><span class="p">(</span><span class="o">**</span><span class="n">request_kwargs</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">start_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">end_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">row_set</span> <span class="o">=</span> <span class="n">RowSet</span><span class="p">()</span>
-        <span class="n">row_set</span><span class="o">.</span><span class="n">add_row_range</span><span class="p">(</span><span class="n">RowRange</span><span class="p">(</span><span class="n">start_key</span><span class="p">,</span> <span class="n">end_key</span><span class="p">,</span>
-                                       <span class="n">end_inclusive</span><span class="o">=</span><span class="n">end_inclusive</span><span class="p">))</span>
+        <span class="n">row_set</span><span class="o">.</span><span class="n">add_row_range</span><span class="p">(</span><span class="n">RowRange</span><span class="p">(</span><span class="n">start_key</span><span class="p">,</span> <span class="n">end_key</span><span class="p">,</span> <span class="n">end_inclusive</span><span class="o">=</span><span class="n">end_inclusive</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">row_set</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">row_set</span><span class="o">.</span><span class="n">_update_message_request</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
@@ -851,7 +875,8 @@
 <span class="sd">             greater than 100,000</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">request_pb</span> <span class="o">=</span> <span class="n">data_messages_v2_pb2</span><span class="o">.</span><span class="n">MutateRowsRequest</span><span class="p">(</span>
-        <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="n">app_profile_id</span><span class="p">)</span>
+        <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="n">app_profile_id</span>
+    <span class="p">)</span>
     <span class="n">mutations_count</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
         <span class="n">_check_row_table_name</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
@@ -860,8 +885,9 @@
         <span class="n">request_pb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">row_key</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">row_key</span><span class="p">,</span> <span class="n">mutations</span><span class="o">=</span><span class="n">mutations</span><span class="p">)</span>
         <span class="n">mutations_count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mutations</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mutations_count</span> <span class="o">&gt;</span> <span class="n">_MAX_BULK_MUTATIONS</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">TooManyMutationsError</span><span class="p">(</span><span class="s1">&#39;Maximum number of mutations is </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
-                                    <span class="p">(</span><span class="n">_MAX_BULK_MUTATIONS</span><span class="p">,))</span>
+        <span class="k">raise</span> <span class="n">TooManyMutationsError</span><span class="p">(</span>
+            <span class="s2">&quot;Maximum number of mutations is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">_MAX_BULK_MUTATIONS</span><span class="p">,)</span>
+        <span class="p">)</span>
     <span class="k">return</span> <span class="n">request_pb</span>
 
 
@@ -880,8 +906,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">table_name</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">TableMismatchError</span><span class="p">(</span>
-            <span class="s1">&#39;Row </span><span class="si">%s</span><span class="s1"> is a part of </span><span class="si">%s</span><span class="s1"> table. Current table: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
-            <span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">row_key</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">table_name</span><span class="p">))</span>
+            <span class="s2">&quot;Row </span><span class="si">%s</span><span class="s2"> is a part of </span><span class="si">%s</span><span class="s2"> table. Current table: </span><span class="si">%s</span><span class="s2">&quot;</span>
+            <span class="o">%</span> <span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">row_key</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">table_name</span><span class="p">)</span>
+        <span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_check_row_type</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
@@ -895,8 +922,9 @@
 <span class="sd">             instance of DirectRow.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">DirectRow</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Bulk processing can not be applied for &#39;</span>
-                        <span class="s1">&#39;conditional or append mutations.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s2">&quot;Bulk processing can not be applied for &quot;</span> <span class="s2">&quot;conditional or append mutations.&quot;</span>
+        <span class="p">)</span>
 </pre></div>
 
           </div>

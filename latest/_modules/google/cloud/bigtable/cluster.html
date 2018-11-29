@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.cluster &#8212; google-cloud f20a5b8 documentation</title>
+    <title>google.cloud.bigtable.cluster &#8212; google-cloud 2745b34 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -55,9 +55,11 @@
 <span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 
 
-<span class="n">_CLUSTER_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^projects/(?P&lt;project&gt;[^/]+)/&#39;</span>
-                              <span class="sa">r</span><span class="s1">&#39;instances/(?P&lt;instance&gt;[^/]+)/clusters/&#39;</span>
-                              <span class="sa">r</span><span class="s1">&#39;(?P&lt;cluster_id&gt;[a-z][-a-z0-9]*)$&#39;</span><span class="p">)</span>
+<span class="n">_CLUSTER_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;^projects/(?P&lt;project&gt;[^/]+)/&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;instances/(?P&lt;instance&gt;[^/]+)/clusters/&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;cluster_id&gt;[a-z][-a-z0-9]*)$&quot;</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="Cluster"><a class="viewcode-back" href="../../../../bigtable/cluster.html#google.cloud.bigtable.cluster.Cluster">[docs]</a><span class="k">class</span> <span class="nc">Cluster</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -107,13 +109,15 @@
 <span class="sd">                   :data:`google.cloud.bigtable.enums.Cluster.State.DISABLED`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">cluster_id</span><span class="p">,</span>
-                 <span class="n">instance</span><span class="p">,</span>
-                 <span class="n">location_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">serve_nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">default_storage_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">cluster_id</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">,</span>
+        <span class="n">location_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">serve_nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">default_storage_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span> <span class="o">=</span> <span class="n">cluster_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">instance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">location_id</span> <span class="o">=</span> <span class="n">location_id</span>
@@ -143,15 +147,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">match_cluster_name</span> <span class="o">=</span> <span class="n">_CLUSTER_NAME_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">cluster_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">match_cluster_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cluster protobuf name was not in the &#39;</span>
-                             <span class="s1">&#39;expected format.&#39;</span><span class="p">,</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">match_cluster_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;instance&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">instance</span><span class="o">.</span><span class="n">instance_id</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Instance ID on cluster does not match the &#39;</span>
-                             <span class="s1">&#39;instance ID on the client&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">match_cluster_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Project ID on cluster does not match the &#39;</span>
-                             <span class="s1">&#39;project ID on the client&#39;</span><span class="p">)</span>
-        <span class="n">cluster_id</span> <span class="o">=</span> <span class="n">match_cluster_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cluster_id&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Cluster protobuf name was not in the &quot;</span> <span class="s2">&quot;expected format.&quot;</span><span class="p">,</span>
+                <span class="n">cluster_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">match_cluster_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;instance&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">instance</span><span class="o">.</span><span class="n">instance_id</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Instance ID on cluster does not match the &quot;</span> <span class="s2">&quot;instance ID on the client&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">match_cluster_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Project ID on cluster does not match the &quot;</span> <span class="s2">&quot;project ID on the client&quot;</span>
+            <span class="p">)</span>
+        <span class="n">cluster_id</span> <span class="o">=</span> <span class="n">match_cluster_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;cluster_id&quot;</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">cluster_id</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">cluster_pb</span><span class="p">)</span>
@@ -162,7 +170,7 @@
 <span class="sd">        Helper for :meth:`from_pb` and :meth:`reload`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">location_id</span> <span class="o">=</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location_id</span> <span class="o">=</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">serve_nodes</span> <span class="o">=</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">serve_nodes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_storage_type</span> <span class="o">=</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">default_storage_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">state</span>
@@ -183,8 +191,8 @@
 <span class="sd">        :returns: The cluster name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">cluster_path</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -200,8 +208,7 @@
         <span class="c1">#       intentional, since the same cluster can be in different states</span>
         <span class="c1">#       if not synchronized. Clusters with similar instance/cluster</span>
         <span class="c1">#       settings but different clients can&#39;t be used in the same way.</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">cluster_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">_instance</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">cluster_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">_instance</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
@@ -215,8 +222,7 @@
 <span class="sd">            :start-after: [START bigtable_reload_cluster]</span>
 <span class="sd">            :end-before: [END bigtable_reload_cluster]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cluster_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">get_cluster</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">cluster_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">get_cluster</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="c1"># NOTE: _update_from_pb does not check that the project and</span>
         <span class="c1">#       cluster ID on the response match the request.</span>
@@ -272,7 +278,8 @@
         <span class="n">cluster_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_pb</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">create_cluster</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span><span class="p">,</span> <span class="n">cluster_pb</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span><span class="p">,</span> <span class="n">cluster_pb</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Cluster.update"><a class="viewcode-back" href="../../../../bigtable/cluster.html#google.cloud.bigtable.cluster.Cluster.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update this cluster.</span>
@@ -315,7 +322,8 @@
         <span class="c1"># Location is set only at the time of creation of a cluster</span>
         <span class="c1"># and can not be changed after cluster has been created.</span>
         <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">update_cluster</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">serve_nodes</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">serve_nodes</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Cluster.delete"><a class="viewcode-back" href="../../../../bigtable/cluster.html#google.cloud.bigtable.cluster.Cluster.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this cluster.</span>
@@ -350,11 +358,13 @@
         <span class="sd">&quot;&quot;&quot; Create cluster proto buff message for API calls &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="n">location</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_id</span><span class="p">)</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_id</span>
+        <span class="p">)</span>
         <span class="n">cluster_pb</span> <span class="o">=</span> <span class="n">instance_pb2</span><span class="o">.</span><span class="n">Cluster</span><span class="p">(</span>
             <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
             <span class="n">serve_nodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">serve_nodes</span><span class="p">,</span>
-            <span class="n">default_storage_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">default_storage_type</span><span class="p">)</span>
+            <span class="n">default_storage_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">default_storage_type</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">cluster_pb</span></div>
 </pre></div>
 

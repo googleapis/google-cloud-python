@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dns.changes &#8212; google-cloud f20a5b8 documentation</title>
+    <title>google.cloud.dns.changes &#8212; google-cloud 2745b34 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -97,12 +97,18 @@
 <span class="sd">        :param resource: change set representation returned from the API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">resource</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_additions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span>
-            <span class="n">ResourceRecordSet</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">added_res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">added_res</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;additions&#39;</span><span class="p">,</span> <span class="p">())])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_deletions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span>
-            <span class="n">ResourceRecordSet</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">added_res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">added_res</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;deletions&#39;</span><span class="p">,</span> <span class="p">())])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_additions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">ResourceRecordSet</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">added_res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">added_res</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;additions&quot;</span><span class="p">,</span> <span class="p">())</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_deletions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">ResourceRecordSet</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">added_res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">added_res</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;deletions&quot;</span><span class="p">,</span> <span class="p">())</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">resource</span>
 
     <span class="nd">@property</span>
@@ -112,8 +118,11 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the path based on project, zone, and change set names.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/managedZones/</span><span class="si">%s</span><span class="s1">/changes/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;/projects/</span><span class="si">%s</span><span class="s2">/managedZones/</span><span class="si">%s</span><span class="s2">/changes/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -122,7 +131,7 @@
 <span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: Name, as set by the back-end, or None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
 
     <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -133,7 +142,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -142,7 +151,7 @@
 <span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: Status, as set by the back-end, or None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">started</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -151,7 +160,7 @@
 <span class="sd">        :rtype: ``datetime.datetime`` or ``NoneType``</span>
 <span class="sd">        :returns: Time, as set by the back-end, or None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">stamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startTime&#39;</span><span class="p">)</span>
+        <span class="n">stamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;startTime&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">stamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">stamp</span><span class="p">)</span>
 
@@ -218,24 +227,27 @@
 
     <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for ``create``.&quot;&quot;&quot;</span>
-        <span class="n">additions</span> <span class="o">=</span> <span class="p">[{</span>
-            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">added</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">added</span><span class="o">.</span><span class="n">record_type</span><span class="p">,</span>
-            <span class="s1">&#39;ttl&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">added</span><span class="o">.</span><span class="n">ttl</span><span class="p">),</span>
-            <span class="s1">&#39;rrdatas&#39;</span><span class="p">:</span> <span class="n">added</span><span class="o">.</span><span class="n">rrdatas</span><span class="p">,</span>
-        <span class="p">}</span> <span class="k">for</span> <span class="n">added</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">additions</span><span class="p">]</span>
+        <span class="n">additions</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">added</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">added</span><span class="o">.</span><span class="n">record_type</span><span class="p">,</span>
+                <span class="s2">&quot;ttl&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">added</span><span class="o">.</span><span class="n">ttl</span><span class="p">),</span>
+                <span class="s2">&quot;rrdatas&quot;</span><span class="p">:</span> <span class="n">added</span><span class="o">.</span><span class="n">rrdatas</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">added</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">additions</span>
+        <span class="p">]</span>
 
-        <span class="n">deletions</span> <span class="o">=</span> <span class="p">[{</span>
-            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">deleted</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">deleted</span><span class="o">.</span><span class="n">record_type</span><span class="p">,</span>
-            <span class="s1">&#39;ttl&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">deleted</span><span class="o">.</span><span class="n">ttl</span><span class="p">),</span>
-            <span class="s1">&#39;rrdatas&#39;</span><span class="p">:</span> <span class="n">deleted</span><span class="o">.</span><span class="n">rrdatas</span><span class="p">,</span>
-        <span class="p">}</span> <span class="k">for</span> <span class="n">deleted</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">deletions</span><span class="p">]</span>
+        <span class="n">deletions</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">deleted</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">deleted</span><span class="o">.</span><span class="n">record_type</span><span class="p">,</span>
+                <span class="s2">&quot;ttl&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">deleted</span><span class="o">.</span><span class="n">ttl</span><span class="p">),</span>
+                <span class="s2">&quot;rrdatas&quot;</span><span class="p">:</span> <span class="n">deleted</span><span class="o">.</span><span class="n">rrdatas</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">deleted</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">deletions</span>
+        <span class="p">]</span>
 
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;additions&#39;</span><span class="p">:</span> <span class="n">additions</span><span class="p">,</span>
-            <span class="s1">&#39;deletions&#39;</span><span class="p">:</span> <span class="n">deletions</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;additions&quot;</span><span class="p">:</span> <span class="n">additions</span><span class="p">,</span> <span class="s2">&quot;deletions&quot;</span><span class="p">:</span> <span class="n">deletions</span><span class="p">}</span>
 
 <div class="viewcode-block" id="Changes.create"><a class="viewcode-back" href="../../../../dns/changes.html#google.cloud.dns.changes.Changes.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  create the change set via a POST request.</span>
@@ -251,10 +263,13 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">additions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deletions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No record sets added or deleted&quot;</span><span class="p">)</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/managedZones/</span><span class="si">%s</span><span class="s1">/changes&#39;</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/projects/</span><span class="si">%s</span><span class="s2">/managedZones/</span><span class="si">%s</span><span class="s2">/changes&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Changes.exists"><a class="viewcode-back" href="../../../../dns/changes.html#google.cloud.dns.changes.Changes.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -273,8 +288,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                           <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="s1">&#39;id&#39;</span><span class="p">})</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span><span class="p">}</span>
+            <span class="p">)</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
@@ -293,8 +309,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div></div>
 </pre></div>
 

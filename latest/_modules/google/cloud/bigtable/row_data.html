@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.row_data &#8212; google-cloud f20a5b8 documentation</title>
+    <title>google.cloud.bigtable.row_data &#8212; google-cloud 2745b34 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -59,19 +59,17 @@
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">retry</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigtable_v2.proto</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">bigtable_pb2</span> <span class="k">as</span> <span class="n">data_messages_v2_pb2</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigtable_v2.proto</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">data_pb2</span> <span class="k">as</span> <span class="n">data_v2_pb2</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigtable_v2.proto</span> <span class="k">import</span> <span class="n">bigtable_pb2</span> <span class="k">as</span> <span class="n">data_messages_v2_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigtable_v2.proto</span> <span class="k">import</span> <span class="n">data_pb2</span> <span class="k">as</span> <span class="n">data_v2_pb2</span>
 
-<span class="n">_MISSING_COLUMN_FAMILY</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;Column family </span><span class="si">{}</span><span class="s1"> is not among the cells stored in this row.&#39;</span><span class="p">)</span>
+<span class="n">_MISSING_COLUMN_FAMILY</span> <span class="o">=</span> <span class="s2">&quot;Column family </span><span class="si">{}</span><span class="s2"> is not among the cells stored in this row.&quot;</span>
 <span class="n">_MISSING_COLUMN</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;Column </span><span class="si">{}</span><span class="s1"> is not among the cells stored in this row in the &#39;</span>
-    <span class="s1">&#39;column family </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="p">)</span>
+    <span class="s2">&quot;Column </span><span class="si">{}</span><span class="s2"> is not among the cells stored in this row in the &quot;</span> <span class="s2">&quot;column family </span><span class="si">{}</span><span class="s2">.&quot;</span>
+<span class="p">)</span>
 <span class="n">_MISSING_INDEX</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;Index </span><span class="si">{!r}</span><span class="s1"> is not valid for the cells stored in this row for column </span><span class="si">{}</span><span class="s1"> &#39;</span>
-    <span class="s1">&#39;in the column family </span><span class="si">{}</span><span class="s1">. There are </span><span class="si">{}</span><span class="s1"> such cells.&#39;</span><span class="p">)</span>
+    <span class="s2">&quot;Index </span><span class="si">{!r}</span><span class="s2"> is not valid for the cells stored in this row for column </span><span class="si">{}</span><span class="s2"> &quot;</span>
+    <span class="s2">&quot;in the column family </span><span class="si">{}</span><span class="s2">. There are </span><span class="si">{}</span><span class="s2"> such cells.&quot;</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="Cell"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.Cell">[docs]</a><span class="k">class</span> <span class="nc">Cell</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -103,8 +101,7 @@
 <span class="sd">        :returns: The cell corresponding to the protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">cell_pb</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">cell_pb</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">,</span>
-                       <span class="n">labels</span><span class="o">=</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">cell_pb</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">cell_pb</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">)</span></div>
 
@@ -115,9 +112,11 @@
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">timestamp_micros</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_micros</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">labels</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+            <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">timestamp_micros</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_micros</span>
+            <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">labels</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span></div>
@@ -148,8 +147,10 @@
 <span class="sd">    :type value: bytes</span>
 <span class="sd">    :param value: The (accumulated) value of the (partial) cell.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">family_name</span><span class="p">,</span> <span class="n">qualifier</span><span class="p">,</span> <span class="n">timestamp_micros</span><span class="p">,</span>
-                 <span class="n">labels</span><span class="o">=</span><span class="p">(),</span> <span class="n">value</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">family_name</span><span class="p">,</span> <span class="n">qualifier</span><span class="p">,</span> <span class="n">timestamp_micros</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">(),</span> <span class="n">value</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;&quot;</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">row_key</span> <span class="o">=</span> <span class="n">row_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">family_name</span> <span class="o">=</span> <span class="n">family_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">qualifier</span> <span class="o">=</span> <span class="n">qualifier</span>
@@ -183,8 +184,7 @@
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">_row_key</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">_cells</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cells</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">_row_key</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">_cells</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cells</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
@@ -201,8 +201,7 @@
         <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">columns</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cells</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">column_qual</span><span class="p">,</span> <span class="n">cells</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">)</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;:&#39;</span> <span class="o">+</span>
-                       <span class="n">_to_bytes</span><span class="p">(</span><span class="n">column_qual</span><span class="p">))</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">)</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">column_qual</span><span class="p">)</span>
                 <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">cells</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
@@ -288,8 +287,7 @@
             <span class="n">cell</span> <span class="o">=</span> <span class="n">cells</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
             <span class="n">num_cells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">_MISSING_INDEX</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">index</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">num_cells</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_MISSING_INDEX</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">num_cells</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span></div>
@@ -336,8 +334,7 @@
 <span class="k">def</span> <span class="nf">_retry_read_rows_exception</span><span class="p">(</span><span class="n">exc</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">grpc</span><span class="o">.</span><span class="n">RpcError</span><span class="p">):</span>
         <span class="n">exc</span> <span class="o">=</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_grpc_error</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="p">(</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">,</span>
-                            <span class="n">exceptions</span><span class="o">.</span><span class="n">DeadlineExceeded</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="p">(</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">,</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">DeadlineExceeded</span><span class="p">))</span>
 
 
 <span class="n">DEFAULT_RETRY_READ_ROWS</span> <span class="o">=</span> <span class="n">retry</span><span class="o">.</span><span class="n">Retry</span><span class="p">(</span>
@@ -378,20 +375,21 @@
 <span class="sd">                  :meth:`~google.api_core.retry.Retry.with_deadline` method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">NEW_ROW</span> <span class="o">=</span> <span class="s1">&#39;New row&#39;</span>  <span class="c1"># No cells yet complete for row</span>
-    <span class="n">ROW_IN_PROGRESS</span> <span class="o">=</span> <span class="s1">&#39;Row in progress&#39;</span>  <span class="c1"># Some cells complete for row</span>
-    <span class="n">CELL_IN_PROGRESS</span> <span class="o">=</span> <span class="s1">&#39;Cell in progress&#39;</span>  <span class="c1"># Incomplete cell for row</span>
+    <span class="n">NEW_ROW</span> <span class="o">=</span> <span class="s2">&quot;New row&quot;</span>  <span class="c1"># No cells yet complete for row</span>
+    <span class="n">ROW_IN_PROGRESS</span> <span class="o">=</span> <span class="s2">&quot;Row in progress&quot;</span>  <span class="c1"># Some cells complete for row</span>
+    <span class="n">CELL_IN_PROGRESS</span> <span class="o">=</span> <span class="s2">&quot;Cell in progress&quot;</span>  <span class="c1"># Incomplete cell for row</span>
 
     <span class="n">STATE_NEW_ROW</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">STATE_ROW_IN_PROGRESS</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">STATE_CELL_IN_PROGRESS</span> <span class="o">=</span> <span class="mi">3</span>
 
-    <span class="n">read_states</span> <span class="o">=</span> <span class="p">{</span><span class="n">STATE_NEW_ROW</span><span class="p">:</span> <span class="n">NEW_ROW</span><span class="p">,</span>
-                   <span class="n">STATE_ROW_IN_PROGRESS</span><span class="p">:</span> <span class="n">ROW_IN_PROGRESS</span><span class="p">,</span>
-                   <span class="n">STATE_CELL_IN_PROGRESS</span><span class="p">:</span> <span class="n">CELL_IN_PROGRESS</span><span class="p">}</span>
+    <span class="n">read_states</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">STATE_NEW_ROW</span><span class="p">:</span> <span class="n">NEW_ROW</span><span class="p">,</span>
+        <span class="n">STATE_ROW_IN_PROGRESS</span><span class="p">:</span> <span class="n">ROW_IN_PROGRESS</span><span class="p">,</span>
+        <span class="n">STATE_CELL_IN_PROGRESS</span><span class="p">:</span> <span class="n">CELL_IN_PROGRESS</span><span class="p">,</span>
+    <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_method</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
-                 <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY_READ_ROWS</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_method</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY_READ_ROWS</span><span class="p">):</span>
         <span class="c1"># Counter for rows returned to the user</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="c1"># In-progress row, unset until first response, after commit/reset</span>
@@ -444,9 +442,9 @@
 
     <span class="k">def</span> <span class="nf">_create_retry_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`__iter__`.&quot;&quot;&quot;</span>
-        <span class="n">req_manager</span> <span class="o">=</span> <span class="n">_ReadRowsRequestManager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span>
-                                              <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_row_key</span><span class="p">,</span>
-                                              <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span><span class="p">)</span>
+        <span class="n">req_manager</span> <span class="o">=</span> <span class="n">_ReadRowsRequestManager</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_row_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">req_manager</span><span class="o">.</span><span class="n">build_updated_request</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_on_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc</span><span class="p">):</span>
@@ -478,8 +476,7 @@
                 <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_next_response</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NEW_ROW</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s1">&#39;The row remains partial / is not committed.&#39;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The row remains partial / is not committed.&quot;</span><span class="p">)</span>
                 <span class="k">break</span>
 
             <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
@@ -504,8 +501,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_cell</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="o">.</span><span class="n">row_key</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span><span class="o">.</span><span class="n">row_key</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="o">.</span><span class="n">row_key</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span><span class="o">.</span><span class="n">row_key</span>
+            <span class="p">):</span>
                 <span class="k">raise</span> <span class="n">InvalidChunk</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="n">PartialRowData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="o">.</span><span class="n">row_key</span><span class="p">)</span>
 
@@ -527,10 +526,10 @@
     <span class="k">def</span> <span class="nf">_update_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">qualifier</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;qualifier&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;qualifier&quot;</span><span class="p">):</span>
                 <span class="n">qualifier</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">qualifier</span><span class="o">.</span><span class="n">value</span>
             <span class="n">family</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;family_name&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;family_name&quot;</span><span class="p">):</span>
                 <span class="n">family</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">family_name</span><span class="o">.</span><span class="n">value</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="n">PartialCellData</span><span class="p">(</span>
@@ -539,7 +538,8 @@
                 <span class="n">qualifier</span><span class="p">,</span>
                 <span class="n">chunk</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">,</span>
                 <span class="n">chunk</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
-                <span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_copy_from_previous</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_validate_cell_data_new_cell</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -547,9 +547,7 @@
 
     <span class="k">def</span> <span class="nf">_validate_cell_data_new_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span>
-        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">cell</span><span class="o">.</span><span class="n">row_key</span> <span class="ow">or</span>
-                <span class="ow">not</span> <span class="n">cell</span><span class="o">.</span><span class="n">family_name</span> <span class="ow">or</span>
-                <span class="n">cell</span><span class="o">.</span><span class="n">qualifier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cell</span><span class="o">.</span><span class="n">row_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">cell</span><span class="o">.</span><span class="n">family_name</span> <span class="ow">or</span> <span class="n">cell</span><span class="o">.</span><span class="n">qualifier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidChunk</span><span class="p">()</span>
 
         <span class="n">prev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span>
@@ -562,8 +560,8 @@
 
         <span class="c1"># No reset with other keys</span>
         <span class="n">_raise_if</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span><span class="p">)</span>
-        <span class="n">_raise_if</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;family_name&#39;</span><span class="p">))</span>
-        <span class="n">_raise_if</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;qualifier&#39;</span><span class="p">))</span>
+        <span class="n">_raise_if</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;family_name&quot;</span><span class="p">))</span>
+        <span class="n">_raise_if</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;qualifier&quot;</span><span class="p">))</span>
         <span class="n">_raise_if</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">)</span>
         <span class="n">_raise_if</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
         <span class="n">_raise_if</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">value_size</span><span class="p">)</span>
@@ -617,31 +615,37 @@
     <span class="k">def</span> <span class="nf">build_updated_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Updates the given message request as per last scanned key</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">r_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;table_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span>
-                    <span class="s1">&#39;filter&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">filter</span><span class="p">}</span>
+        <span class="n">r_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;table_name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span>
+            <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">filter</span><span class="p">,</span>
+        <span class="p">}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">rows_limit</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">r_kwargs</span><span class="p">[</span><span class="s1">&#39;rows_limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">rows_limit</span> <span class="o">-</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">rows_read_so_far</span><span class="p">)</span>
+            <span class="n">r_kwargs</span><span class="p">[</span><span class="s2">&quot;rows_limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">rows_limit</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows_read_so_far</span>
+            <span class="p">)</span>
 
         <span class="c1"># if neither RowSet.row_keys nor RowSet.row_ranges currently exist,</span>
         <span class="c1"># add row_range that starts with last_scanned_key as start_key_open</span>
         <span class="c1"># to request only rows that have not been returned yet</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;rows&#39;</span><span class="p">):</span>
-            <span class="n">row_range</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowRange</span><span class="p">(</span>
-                <span class="n">start_key_open</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_key</span><span class="p">)</span>
-            <span class="n">r_kwargs</span><span class="p">[</span><span class="s1">&#39;rows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowSet</span><span class="p">(</span><span class="n">row_ranges</span><span class="o">=</span><span class="p">[</span><span class="n">row_range</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;rows&quot;</span><span class="p">):</span>
+            <span class="n">row_range</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowRange</span><span class="p">(</span><span class="n">start_key_open</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_key</span><span class="p">)</span>
+            <span class="n">r_kwargs</span><span class="p">[</span><span class="s2">&quot;rows&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowSet</span><span class="p">(</span><span class="n">row_ranges</span><span class="o">=</span><span class="p">[</span><span class="n">row_range</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">row_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_rows_keys</span><span class="p">()</span>
             <span class="n">row_ranges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_row_ranges</span><span class="p">()</span>
-            <span class="n">r_kwargs</span><span class="p">[</span><span class="s1">&#39;rows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowSet</span><span class="p">(</span><span class="n">row_keys</span><span class="o">=</span><span class="n">row_keys</span><span class="p">,</span>
-                                                  <span class="n">row_ranges</span><span class="o">=</span><span class="n">row_ranges</span><span class="p">)</span>
+            <span class="n">r_kwargs</span><span class="p">[</span><span class="s2">&quot;rows&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowSet</span><span class="p">(</span>
+                <span class="n">row_keys</span><span class="o">=</span><span class="n">row_keys</span><span class="p">,</span> <span class="n">row_ranges</span><span class="o">=</span><span class="n">row_ranges</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">data_messages_v2_pb2</span><span class="o">.</span><span class="n">ReadRowsRequest</span><span class="p">(</span><span class="o">**</span><span class="n">r_kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_filter_rows_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Helper for :meth:`build_updated_request`&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">row_key</span> <span class="k">for</span> <span class="n">row_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">row_keys</span>
-                <span class="k">if</span> <span class="n">row_key</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">row_key</span>
+            <span class="k">for</span> <span class="n">row_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">row_keys</span>
+            <span class="k">if</span> <span class="n">row_key</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_key</span>
+        <span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_filter_row_ranges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Helper for :meth:`build_updated_request`&quot;&quot;&quot;</span>
@@ -653,7 +657,7 @@
             <span class="c1"># NOTE: Empty string in end_key means &quot;end of table&quot;</span>
             <span class="n">end_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end_key_set</span><span class="p">(</span><span class="n">row_range</span><span class="p">)</span>
             <span class="c1"># if end_key is already read, skip to the next row_range</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">end_key</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_already_read</span><span class="p">(</span><span class="n">end_key</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">end_key</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_already_read</span><span class="p">(</span><span class="n">end_key</span><span class="p">):</span>
                 <span class="k">continue</span>
 
             <span class="c1"># if current start_key (open or closed) is set, return its value,</span>
@@ -665,7 +669,7 @@
             <span class="c1"># create a row_range with last_scanned_key as start_key_open</span>
             <span class="c1"># to be passed to retry request</span>
             <span class="n">retry_row_range</span> <span class="o">=</span> <span class="n">row_range</span>
-            <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key_already_read</span><span class="p">(</span><span class="n">start_key</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_already_read</span><span class="p">(</span><span class="n">start_key</span><span class="p">):</span>
                 <span class="n">retry_row_range</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">row_range</span><span class="p">)</span>
                 <span class="n">retry_row_range</span><span class="o">.</span><span class="n">start_key_closed</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="n">retry_row_range</span><span class="o">.</span><span class="n">start_key_open</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_key</span>

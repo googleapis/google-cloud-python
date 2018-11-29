@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.column_family &#8212; google-cloud f20a5b8 documentation</title>
+    <title>google.cloud.bigtable.column_family &#8212; google-cloud 2745b34 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -51,10 +51,10 @@
 
 
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigtable_admin_v2.proto</span> <span class="k">import</span> <span class="n">table_pb2</span> <span class="k">as</span> <span class="n">table_v2_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable_admin_v2.proto</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">table_pb2</span> <span class="k">as</span> <span class="n">table_v2_pb2</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigtable_admin_v2.proto</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">bigtable_table_admin_pb2</span> <span class="k">as</span> <span class="n">table_admin_v2_pb2</span><span class="p">)</span>
+    <span class="n">bigtable_table_admin_pb2</span> <span class="k">as</span> <span class="n">table_admin_v2_pb2</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="GarbageCollectionRule"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.GarbageCollectionRule">[docs]</a><span class="k">class</span> <span class="nc">GarbageCollectionRule</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -154,8 +154,7 @@
 <span class="sd">        :rtype: :class:`.table_v2_pb2.GcRule`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">union</span> <span class="o">=</span> <span class="n">table_v2_pb2</span><span class="o">.</span><span class="n">GcRule</span><span class="o">.</span><span class="n">Union</span><span class="p">(</span>
-            <span class="n">rules</span><span class="o">=</span><span class="p">[</span><span class="n">rule</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">])</span>
+        <span class="n">union</span> <span class="o">=</span> <span class="n">table_v2_pb2</span><span class="o">.</span><span class="n">GcRule</span><span class="o">.</span><span class="n">Union</span><span class="p">(</span><span class="n">rules</span><span class="o">=</span><span class="p">[</span><span class="n">rule</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">table_v2_pb2</span><span class="o">.</span><span class="n">GcRule</span><span class="p">(</span><span class="n">union</span><span class="o">=</span><span class="n">union</span><span class="p">)</span></div></div>
 
 
@@ -184,7 +183,8 @@
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">intersection</span> <span class="o">=</span> <span class="n">table_v2_pb2</span><span class="o">.</span><span class="n">GcRule</span><span class="o">.</span><span class="n">Intersection</span><span class="p">(</span>
-            <span class="n">rules</span><span class="o">=</span><span class="p">[</span><span class="n">rule</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">])</span>
+            <span class="n">rules</span><span class="o">=</span><span class="p">[</span><span class="n">rule</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">table_v2_pb2</span><span class="o">.</span><span class="n">GcRule</span><span class="p">(</span><span class="n">intersection</span><span class="o">=</span><span class="n">intersection</span><span class="p">)</span></div></div>
 
 
@@ -230,14 +230,16 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The column family name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/columnFamilies/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;/columnFamilies/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">column_family_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">_table</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">gc_rule</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">gc_rule</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span><span class="o">.</span><span class="n">column_family_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span>
+            <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">_table</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span>
+            <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">gc_rule</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">gc_rule</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
@@ -256,15 +258,16 @@
 <div class="viewcode-block" id="ColumnFamily.create"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.ColumnFamily.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create this column family.&quot;&quot;&quot;</span>
         <span class="n">column_family</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
-        <span class="n">modification</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">table_admin_v2_pb2</span><span class="o">.</span><span class="n">ModifyColumnFamiliesRequest</span><span class="o">.</span><span class="n">Modification</span><span class="p">(</span>
-                <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">column_family</span><span class="p">))</span>
+        <span class="n">modification</span> <span class="o">=</span> <span class="n">table_admin_v2_pb2</span><span class="o">.</span><span class="n">ModifyColumnFamiliesRequest</span><span class="o">.</span><span class="n">Modification</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">column_family</span>
+        <span class="p">)</span>
 
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="c1"># data it contains are the GC rule and the column family ID already</span>
         <span class="c1"># stored on this instance.</span>
         <span class="n">client</span><span class="o">.</span><span class="n">table_admin_client</span><span class="o">.</span><span class="n">modify_column_families</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="n">modification</span><span class="p">])</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="n">modification</span><span class="p">]</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ColumnFamily.update"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.ColumnFamily.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update this column family.</span>
@@ -275,27 +278,29 @@
 <span class="sd">            you will simply be referring to a different column family.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">column_family</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
-        <span class="n">modification</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">table_admin_v2_pb2</span><span class="o">.</span><span class="n">ModifyColumnFamiliesRequest</span><span class="o">.</span><span class="n">Modification</span><span class="p">(</span>
-                <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">column_family</span><span class="p">))</span>
+        <span class="n">modification</span> <span class="o">=</span> <span class="n">table_admin_v2_pb2</span><span class="o">.</span><span class="n">ModifyColumnFamiliesRequest</span><span class="o">.</span><span class="n">Modification</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">column_family</span>
+        <span class="p">)</span>
 
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="c1"># data it contains are the GC rule and the column family ID already</span>
         <span class="c1"># stored on this instance.</span>
         <span class="n">client</span><span class="o">.</span><span class="n">table_admin_client</span><span class="o">.</span><span class="n">modify_column_families</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="n">modification</span><span class="p">])</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="n">modification</span><span class="p">]</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ColumnFamily.delete"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.ColumnFamily.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this column family.&quot;&quot;&quot;</span>
-        <span class="n">modification</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">table_admin_v2_pb2</span><span class="o">.</span><span class="n">ModifyColumnFamiliesRequest</span><span class="o">.</span><span class="n">Modification</span><span class="p">(</span>
-                <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">modification</span> <span class="o">=</span> <span class="n">table_admin_v2_pb2</span><span class="o">.</span><span class="n">ModifyColumnFamiliesRequest</span><span class="o">.</span><span class="n">Modification</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
 
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="c1"># data it contains are the GC rule and the column family ID already</span>
         <span class="c1"># stored on this instance.</span>
         <span class="n">client</span><span class="o">.</span><span class="n">table_admin_client</span><span class="o">.</span><span class="n">modify_column_families</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="n">modification</span><span class="p">])</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="n">modification</span><span class="p">]</span>
+        <span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_gc_rule_from_pb</span><span class="p">(</span><span class="n">gc_rule_pb</span><span class="p">):</span>
@@ -311,24 +316,22 @@
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the rule name</span>
 <span class="sd">             is unexpected.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">rule_name</span> <span class="o">=</span> <span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">WhichOneof</span><span class="p">(</span><span class="s1">&#39;rule&#39;</span><span class="p">)</span>
+    <span class="n">rule_name</span> <span class="o">=</span> <span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">WhichOneof</span><span class="p">(</span><span class="s2">&quot;rule&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">rule_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s1">&#39;max_num_versions&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s2">&quot;max_num_versions&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">MaxVersionsGCRule</span><span class="p">(</span><span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">max_num_versions</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s1">&#39;max_age&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s2">&quot;max_age&quot;</span><span class="p">:</span>
         <span class="n">max_age</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_duration_pb_to_timedelta</span><span class="p">(</span><span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">max_age</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">MaxAgeGCRule</span><span class="p">(</span><span class="n">max_age</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s1">&#39;union&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">GCRuleUnion</span><span class="p">([</span><span class="n">_gc_rule_from_pb</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
-                            <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">union</span><span class="o">.</span><span class="n">rules</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s1">&#39;intersection&#39;</span><span class="p">:</span>
-        <span class="n">rules</span> <span class="o">=</span> <span class="p">[</span><span class="n">_gc_rule_from_pb</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
-                 <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">intersection</span><span class="o">.</span><span class="n">rules</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s2">&quot;union&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">GCRuleUnion</span><span class="p">([</span><span class="n">_gc_rule_from_pb</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">union</span><span class="o">.</span><span class="n">rules</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s2">&quot;intersection&quot;</span><span class="p">:</span>
+        <span class="n">rules</span> <span class="o">=</span> <span class="p">[</span><span class="n">_gc_rule_from_pb</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">intersection</span><span class="o">.</span><span class="n">rules</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">GCRuleIntersection</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected rule name&#39;</span><span class="p">,</span> <span class="n">rule_name</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected rule name&quot;</span><span class="p">,</span> <span class="n">rule_name</span><span class="p">)</span>
 </pre></div>
 
           </div>

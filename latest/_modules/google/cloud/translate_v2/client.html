@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.translate_v2.client &#8212; google-cloud f20a5b8 documentation</title>
+    <title>google.cloud.translate_v2.client &#8212; google-cloud 2745b34 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -57,13 +57,13 @@
 <span class="kn">from</span> <span class="nn">google.cloud.translate_v2._http</span> <span class="k">import</span> <span class="n">Connection</span>
 
 
-<span class="n">ENGLISH_ISO_639</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span>
+<span class="n">ENGLISH_ISO_639</span> <span class="o">=</span> <span class="s2">&quot;en&quot;</span>
 <span class="sd">&quot;&quot;&quot;ISO 639-1 language code for English.&quot;&quot;&quot;</span>
 
-<span class="n">BASE</span> <span class="o">=</span> <span class="s1">&#39;base&#39;</span>
+<span class="n">BASE</span> <span class="o">=</span> <span class="s2">&quot;base&quot;</span>
 <span class="sd">&quot;&quot;&quot;Base translation model.&quot;&quot;&quot;</span>
 
-<span class="n">NMT</span> <span class="o">=</span> <span class="s1">&#39;nmt&#39;</span>
+<span class="n">NMT</span> <span class="o">=</span> <span class="s2">&quot;nmt&quot;</span>
 <span class="sd">&quot;&quot;&quot;Neural Machine Translation model.&quot;&quot;&quot;</span>
 
 
@@ -91,11 +91,10 @@
 <span class="sd">                  change in the future.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,)</span>
+    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;https://www.googleapis.com/auth/cloud-platform&quot;</span><span class="p">,)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="n">ENGLISH_ISO_639</span><span class="p">,</span>
-                 <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="n">ENGLISH_ISO_639</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target_language</span> <span class="o">=</span> <span class="n">target_language</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -124,10 +123,11 @@
         <span class="k">if</span> <span class="n">target_language</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">target_language</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_language</span>
         <span class="k">if</span> <span class="n">target_language</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_language</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_language</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/languages&#39;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;languages&#39;</span><span class="p">,</span> <span class="p">())</span></div>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/languages&quot;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;languages&quot;</span><span class="p">,</span> <span class="p">())</span></div>
 
 <div class="viewcode-block" id="Client.detect_language"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate_v2.client.Client.detect_language">[docs]</a>    <span class="k">def</span> <span class="nf">detect_language</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect the language of a string or list of strings.</span>
@@ -163,18 +163,18 @@
             <span class="n">single_value</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">]</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">values</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">values</span><span class="p">}</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/detect&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/detect&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span>
+        <span class="p">)</span>
 
-        <span class="n">detections</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;detections&#39;</span><span class="p">,</span> <span class="p">())</span>
+        <span class="n">detections</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;detections&quot;</span><span class="p">,</span> <span class="p">())</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Expected same number of values and detections&#39;</span><span class="p">,</span>
-                             <span class="n">values</span><span class="p">,</span> <span class="n">detections</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Expected same number of values and detections&quot;</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">detections</span>
+            <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
             <span class="c1"># Empirically, even clearly ambiguous text like &quot;no&quot; only returns</span>
@@ -183,22 +183,29 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">detections</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">detections</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Expected a single detection per value, API &#39;</span>
-                           <span class="s1">&#39;returned </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">[</span><span class="n">index</span><span class="p">]),)</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">&quot;Expected a single detection per value, API &quot;</span> <span class="s2">&quot;returned </span><span class="si">%d</span><span class="s2">&quot;</span>
+                <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">[</span><span class="n">index</span><span class="p">]),)</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">detections</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
 
-            <span class="n">detections</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;input&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">detections</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;input&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
             <span class="c1"># The ``isReliable`` field is deprecated.</span>
-            <span class="n">detections</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;isReliable&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">detections</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;isReliable&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">single_value</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">detections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">detections</span></div>
 
-<div class="viewcode-block" id="Client.translate"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate_v2.client.Client.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">source_language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">customization_ids</span><span class="o">=</span><span class="p">(),</span>
-                  <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.translate"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate_v2.client.Client.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">values</span><span class="p">,</span>
+        <span class="n">target_language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">source_language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customization_ids</span><span class="o">=</span><span class="p">(),</span>
+        <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Translate a string or list of strings.</span>
 
 <span class="sd">        See https://cloud.google.com/translate/docs/translating-text</span>
@@ -256,23 +263,23 @@
             <span class="n">customization_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">customization_ids</span><span class="p">]</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="n">target_language</span><span class="p">,</span>
-            <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">values</span><span class="p">,</span>
-            <span class="s1">&#39;cid&#39;</span><span class="p">:</span> <span class="n">customization_ids</span><span class="p">,</span>
-            <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">format_</span><span class="p">,</span>
-            <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="n">source_language</span><span class="p">,</span>
-            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span>
+            <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">target_language</span><span class="p">,</span>
+            <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">values</span><span class="p">,</span>
+            <span class="s2">&quot;cid&quot;</span><span class="p">:</span> <span class="n">customization_ids</span><span class="p">,</span>
+            <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="n">format_</span><span class="p">,</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source_language</span><span class="p">,</span>
+            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
-        <span class="n">translations</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;translations&#39;</span><span class="p">,</span> <span class="p">())</span>
+        <span class="n">translations</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;translations&quot;</span><span class="p">,</span> <span class="p">())</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">translations</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Expected iterations to have same length&#39;</span><span class="p">,</span>
-                             <span class="n">values</span><span class="p">,</span> <span class="n">translations</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Expected iterations to have same length&quot;</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">translations</span>
+            <span class="p">)</span>
         <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">translation</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">translations</span><span class="p">):</span>
-            <span class="n">translation</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">translation</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
         <span class="k">if</span> <span class="n">single_value</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">translations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
