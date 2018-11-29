@@ -25,6 +25,7 @@ class Config(object):
     This is a mutable stand-in to allow test set-up to modify
     global state.
     """
+
     CLIENT = None
 
 
@@ -33,51 +34,44 @@ def setUpModule():
 
 
 class TestTranslate(unittest.TestCase):
-
     def test_get_languages(self):
         result = Config.CLIENT.get_languages()
         # There are **many** more than 10 languages.
         self.assertGreater(len(result), 10)
 
-        lang_map = {val['language']: val['name'] for val in result}
-        self.assertEqual(lang_map['en'], 'English')
-        self.assertEqual(lang_map['ja'], 'Japanese')
-        self.assertEqual(lang_map['lv'], 'Latvian')
-        self.assertEqual(lang_map['zu'], 'Zulu')
+        lang_map = {val["language"]: val["name"] for val in result}
+        self.assertEqual(lang_map["en"], "English")
+        self.assertEqual(lang_map["ja"], "Japanese")
+        self.assertEqual(lang_map["lv"], "Latvian")
+        self.assertEqual(lang_map["zu"], "Zulu")
 
     def test_detect_language(self):
-        values = ['takoy', u'fa\xe7ade', 's\'il vous plait']
+        values = ["takoy", u"fa\xe7ade", "s'il vous plait"]
         detections = Config.CLIENT.detect_language(values)
         self.assertEqual(len(values), len(detections))
-        self.assertEqual(detections[0]['language'], 'ru')
-        self.assertEqual(detections[1]['language'], 'fr')
-        self.assertEqual(detections[2]['language'], 'fr')
+        self.assertEqual(detections[0]["language"], "ru")
+        self.assertEqual(detections[1]["language"], "fr")
+        self.assertEqual(detections[2]["language"], "fr")
 
     def test_translate(self):
-        values = ['hvala ti', 'dankon',
-                  'Me llamo Jeff', 'My name is Jeff']
+        values = ["hvala ti", "dankon", "Me llamo Jeff", "My name is Jeff"]
         translations = Config.CLIENT.translate(
-            values, target_language='de', model='nmt')
+            values, target_language="de", model="nmt"
+        )
         self.assertEqual(len(values), len(translations))
 
-        self.assertEqual(
-            translations[0]['detectedSourceLanguage'].lower(), 'hr')
-        self.assertEqual(
-            translations[0]['translatedText'].lower(), 'danke')
+        self.assertEqual(translations[0]["detectedSourceLanguage"].lower(), "hr")
+        self.assertEqual(translations[0]["translatedText"].lower(), "danke")
 
-        self.assertEqual(
-            translations[1]['detectedSourceLanguage'], 'eo')
+        self.assertEqual(translations[1]["detectedSourceLanguage"], "eo")
         # For some reason this is translated as both "dank" and "danke"
         # in a seemingly non-deterministic way.
-        self.assertIn(
-            translations[1]['translatedText'].lower(), ('dank', 'danke'))
+        self.assertIn(translations[1]["translatedText"].lower(), ("dank", "danke"))
 
-        self.assertEqual(
-            translations[2]['detectedSourceLanguage'], 'es')
-        self.assertEqual(
-            translations[2]['translatedText'].lower(), u'ich heiße jeff')
+        self.assertEqual(translations[2]["detectedSourceLanguage"], "es")
+        self.assertEqual(translations[2]["translatedText"].lower(), u"ich heiße jeff")
 
+        self.assertEqual(translations[3]["detectedSourceLanguage"], "en")
         self.assertEqual(
-            translations[3]['detectedSourceLanguage'], 'en')
-        self.assertEqual(
-            translations[3]['translatedText'].lower(), 'mein name ist jeff')
+            translations[3]["translatedText"].lower(), "mein name ist jeff"
+        )

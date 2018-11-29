@@ -16,11 +16,10 @@ import unittest
 
 
 class TestVariable(unittest.TestCase):
-    PROJECT = 'PROJECT'
-    CONFIG_NAME = 'config_name'
-    VARIABLE_NAME = 'variable_name'
-    PATH = 'projects/%s/configs/%s/variables/%s' % (
-        PROJECT, CONFIG_NAME, VARIABLE_NAME)
+    PROJECT = "PROJECT"
+    CONFIG_NAME = "config_name"
+    VARIABLE_NAME = "variable_name"
+    PATH = "projects/%s/configs/%s/variables/%s" % (PROJECT, CONFIG_NAME, VARIABLE_NAME)
 
     @staticmethod
     def _get_target_class():
@@ -35,23 +34,24 @@ class TestVariable(unittest.TestCase):
         import base64
         from google.api_core import datetime_helpers
 
-        if 'name' in resource:
-            self.assertEqual(variable.full_name, resource['name'])
+        if "name" in resource:
+            self.assertEqual(variable.full_name, resource["name"])
 
-        if 'value' in resource:
-            self.assertEqual(
-                variable.value, base64.b64decode(resource['value']))
+        if "value" in resource:
+            self.assertEqual(variable.value, base64.b64decode(resource["value"]))
         else:
             self.assertIsNone(variable.value)
 
-        if 'state' in resource:
-            self.assertEqual(variable.state, resource['state'])
+        if "state" in resource:
+            self.assertEqual(variable.state, resource["state"])
 
-        if 'updateTime' in resource:
+        if "updateTime" in resource:
             self.assertEqual(
                 variable.update_time,
                 datetime_helpers.DatetimeWithNanoseconds.from_rfc3339(
-                    resource['updateTime']))
+                    resource["updateTime"]
+                ),
+            )
         else:
             self.assertIsNone(variable.update_time)
 
@@ -64,7 +64,7 @@ class TestVariable(unittest.TestCase):
         variable = self._make_one(name=self.VARIABLE_NAME, config=config)
         self.assertEqual(variable.name, self.VARIABLE_NAME)
         self.assertEqual(variable.full_name, self.PATH)
-        self.assertEqual(variable.path, '/%s' % (self.PATH,))
+        self.assertEqual(variable.path, "/%s" % (self.PATH,))
         self.assertEqual(variable.state, STATE_UNSPECIFIED)
         self.assertIs(variable.client, client)
 
@@ -75,7 +75,7 @@ class TestVariable(unittest.TestCase):
         config = Config(name=self.CONFIG_NAME, client=client)
         variable = self._make_one(name=None, config=config)
         with self.assertRaises(ValueError):
-            getattr(variable, 'full_name')
+            getattr(variable, "full_name")
 
     def test_exists_miss_w_bound_client(self):
         from google.cloud.runtimeconfig.config import Config
@@ -89,9 +89,9 @@ class TestVariable(unittest.TestCase):
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % (self.PATH,))
-        self.assertEqual(req['query_params'], {'fields': 'name'})
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/%s" % (self.PATH,))
+        self.assertEqual(req["query_params"], {"fields": "name"})
 
     def test_exists_hit_w_alternate_client(self):
         from google.cloud.runtimeconfig.config import Config
@@ -108,18 +108,18 @@ class TestVariable(unittest.TestCase):
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % (self.PATH,))
-        self.assertEqual(req['query_params'], {'fields': 'name'})
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/%s" % (self.PATH,))
+        self.assertEqual(req["query_params"], {"fields": "name"})
 
     def test_reload_w_bound_client(self):
         from google.cloud.runtimeconfig.config import Config
 
         RESOURCE = {
-            'name': self.PATH,
-            'value': 'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value
-            'updateTime': '2016-04-14T21:21:54.5000Z',
-            'state': 'VARIABLE_STATE_UNSPECIFIED',
+            "name": self.PATH,
+            "value": "bXktdmFyaWFibGUtdmFsdWU=",  # base64 my-variable-value
+            "updateTime": "2016-04-14T21:21:54.5000Z",
+            "state": "VARIABLE_STATE_UNSPECIFIED",
         }
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -130,8 +130,8 @@ class TestVariable(unittest.TestCase):
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % (self.PATH,))
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/%s" % (self.PATH,))
         self._verifyResourceProperties(variable, RESOURCE)
 
     def test_reload_w_empty_resource(self):
@@ -150,18 +150,18 @@ class TestVariable(unittest.TestCase):
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % (self.PATH,))
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/%s" % (self.PATH,))
         self._verifyResourceProperties(variable, RESOURCE)
 
     def test_reload_w_alternate_client(self):
         from google.cloud.runtimeconfig.config import Config
 
         RESOURCE = {
-            'name': self.PATH,
-            'value': 'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value
-            'updateTime': '2016-04-14T21:21:54.5000Z',
-            'state': 'VARIABLE_STATE_UNSPECIFIED',
+            "name": self.PATH,
+            "value": "bXktdmFyaWFibGUtdmFsdWU=",  # base64 my-variable-value
+            "updateTime": "2016-04-14T21:21:54.5000Z",
+            "state": "VARIABLE_STATE_UNSPECIFIED",
         }
         conn1 = _Connection()
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
@@ -175,16 +175,14 @@ class TestVariable(unittest.TestCase):
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % (self.PATH,))
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/%s" % (self.PATH,))
         self._verifyResourceProperties(variable, RESOURCE)
 
     def test_with_microseconds(self):
         from google.cloud.runtimeconfig.config import Config
 
-        resource = {
-            'updateTime': '2016-04-14T21:21:54.123456Z',
-        }
+        resource = {"updateTime": "2016-04-14T21:21:54.123456Z"}
         conn = _Connection(resource)
         client = _Client(project=self.PROJECT, connection=conn)
         config = Config(name=self.CONFIG_NAME, client=client)
@@ -195,9 +193,7 @@ class TestVariable(unittest.TestCase):
     def test_with_nanoseconds(self):
         from google.cloud.runtimeconfig.config import Config
 
-        resource = {
-            'updateTime': '2016-04-14T21:21:54.123456789Z',
-        }
+        resource = {"updateTime": "2016-04-14T21:21:54.123456789Z"}
         conn = _Connection(resource)
         client = _Client(project=self.PROJECT, connection=conn)
         config = Config(name=self.CONFIG_NAME, client=client)
@@ -216,18 +212,18 @@ class _Client(object):
 
 
 class _Connection(object):
-
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
 
     def api_request(self, **kw):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kw)
 
         try:
             response, self._responses = self._responses[0], self._responses[1:]
         except IndexError:
-            raise NotFound('miss')
+            raise NotFound("miss")
         else:
             return response

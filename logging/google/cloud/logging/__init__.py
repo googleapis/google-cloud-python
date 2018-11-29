@@ -16,14 +16,15 @@
 
 
 from pkg_resources import get_distribution
-__version__ = get_distribution('google-cloud-logging').version
+
+__version__ = get_distribution("google-cloud-logging").version
 
 from google.cloud.logging.client import Client
 
 
-ASCENDING = 'timestamp asc'
+ASCENDING = "timestamp asc"
 """Query string to order by ascending timestamps."""
-DESCENDING = 'timestamp desc'
+DESCENDING = "timestamp desc"
 """Query string to order by decending timestamps."""
 
-__all__ = ['__version__', 'ASCENDING', 'Client', 'DESCENDING']
+__all__ = ["__version__", "ASCENDING", "Client", "DESCENDING"]

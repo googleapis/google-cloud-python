@@ -25,8 +25,8 @@ def _make_credentials():
 
 class TestClient(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
-    ZONE_NAME = 'zone-name'
+    PROJECT = "PROJECT"
+    ZONE_NAME = "zone-name"
 
     @staticmethod
     def _get_target_class():
@@ -42,14 +42,13 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=self.PROJECT, credentials=creds,
-                                _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
 
     def test_quotas_defaults(self):
-        PATH = 'projects/%s' % (self.PROJECT,)
+        PATH = "projects/%s" % (self.PROJECT,)
         MANAGED_ZONES = 1234
         RRS_PER_RRSET = 23
         RRSETS_PER_ZONE = 345
@@ -57,17 +56,16 @@ class TestClient(unittest.TestCase):
         RRSET_DELETIONS = 567
         TOTAL_SIZE = 67890
         DATA = {
-            'quota': {
-                'managedZones': str(MANAGED_ZONES),
-                'resourceRecordsPerRrset': str(RRS_PER_RRSET),
-                'rrsetsPerManagedZone': str(RRSETS_PER_ZONE),
-                'rrsetAdditionsPerChange': str(RRSET_ADDITIONS),
-                'rrsetDeletionsPerChange': str(RRSET_DELETIONS),
-                'totalRrdataSizePerChange': str(TOTAL_SIZE),
+            "quota": {
+                "managedZones": str(MANAGED_ZONES),
+                "resourceRecordsPerRrset": str(RRS_PER_RRSET),
+                "rrsetsPerManagedZone": str(RRSETS_PER_ZONE),
+                "rrsetAdditionsPerChange": str(RRSET_ADDITIONS),
+                "rrsetDeletionsPerChange": str(RRSET_DELETIONS),
+                "totalRrdataSizePerChange": str(TOTAL_SIZE),
             }
         }
-        CONVERTED = {key: int(value)
-                     for key, value in DATA['quota'].items()}
+        CONVERTED = {key: int(value) for key, value in DATA["quota"].items()}
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
@@ -78,11 +76,11 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/%s" % PATH)
 
     def test_quotas_w_kind_key(self):
-        PATH = 'projects/%s' % (self.PROJECT,)
+        PATH = "projects/%s" % (self.PROJECT,)
         MANAGED_ZONES = 1234
         RRS_PER_RRSET = 23
         RRSETS_PER_ZONE = 345
@@ -90,19 +88,18 @@ class TestClient(unittest.TestCase):
         RRSET_DELETIONS = 567
         TOTAL_SIZE = 67890
         DATA = {
-            'quota': {
-                'managedZones': str(MANAGED_ZONES),
-                'resourceRecordsPerRrset': str(RRS_PER_RRSET),
-                'rrsetsPerManagedZone': str(RRSETS_PER_ZONE),
-                'rrsetAdditionsPerChange': str(RRSET_ADDITIONS),
-                'rrsetDeletionsPerChange': str(RRSET_DELETIONS),
-                'totalRrdataSizePerChange': str(TOTAL_SIZE),
+            "quota": {
+                "managedZones": str(MANAGED_ZONES),
+                "resourceRecordsPerRrset": str(RRS_PER_RRSET),
+                "rrsetsPerManagedZone": str(RRSETS_PER_ZONE),
+                "rrsetAdditionsPerChange": str(RRSET_ADDITIONS),
+                "rrsetDeletionsPerChange": str(RRSET_DELETIONS),
+                "totalRrdataSizePerChange": str(TOTAL_SIZE),
             }
         }
-        CONVERTED = {key: int(value)
-                     for key, value in DATA['quota'].items()}
-        WITH_KIND = {'quota': DATA['quota'].copy()}
-        WITH_KIND['quota']['kind'] = 'dns#quota'
+        CONVERTED = {key: int(value) for key, value in DATA["quota"].items()}
+        WITH_KIND = {"quota": DATA["quota"].copy()}
+        WITH_KIND["quota"]["kind"] = "dns#quota"
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(WITH_KIND)
@@ -113,33 +110,37 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/%s" % PATH)
 
     def test_list_zones_defaults(self):
         import six
         from google.cloud.dns.zone import ManagedZone
 
-        ID_1 = '123'
-        ZONE_1 = 'zone_one'
-        DNS_1 = 'one.example.com'
-        ID_2 = '234'
-        ZONE_2 = 'zone_two'
-        DNS_2 = 'two.example.com'
-        PATH = 'projects/%s/managedZones' % (self.PROJECT,)
-        TOKEN = 'TOKEN'
+        ID_1 = "123"
+        ZONE_1 = "zone_one"
+        DNS_1 = "one.example.com"
+        ID_2 = "234"
+        ZONE_2 = "zone_two"
+        DNS_2 = "two.example.com"
+        PATH = "projects/%s/managedZones" % (self.PROJECT,)
+        TOKEN = "TOKEN"
         DATA = {
-            'nextPageToken': TOKEN,
-            'managedZones': [
-                {'kind': 'dns#managedZone',
-                 'id': ID_1,
-                 'name': ZONE_1,
-                 'dnsName': DNS_1},
-                {'kind': 'dns#managedZone',
-                 'id': ID_2,
-                 'name': ZONE_2,
-                 'dnsName': DNS_2},
-            ]
+            "nextPageToken": TOKEN,
+            "managedZones": [
+                {
+                    "kind": "dns#managedZone",
+                    "id": ID_1,
+                    "name": ZONE_1,
+                    "dnsName": DNS_1,
+                },
+                {
+                    "kind": "dns#managedZone",
+                    "id": ID_2,
+                    "name": ZONE_2,
+                    "dnsName": DNS_2,
+                },
+            ],
         }
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
@@ -150,41 +151,45 @@ class TestClient(unittest.TestCase):
         zones = list(page)
         token = iterator.next_page_token
 
-        self.assertEqual(len(zones), len(DATA['managedZones']))
-        for found, expected in zip(zones, DATA['managedZones']):
+        self.assertEqual(len(zones), len(DATA["managedZones"]))
+        for found, expected in zip(zones, DATA["managedZones"]):
             self.assertIsInstance(found, ManagedZone)
-            self.assertEqual(found.zone_id, expected['id'])
-            self.assertEqual(found.name, expected['name'])
-            self.assertEqual(found.dns_name, expected['dnsName'])
+            self.assertEqual(found.zone_id, expected["id"])
+            self.assertEqual(found.name, expected["name"])
+            self.assertEqual(found.dns_name, expected["dnsName"])
         self.assertEqual(token, TOKEN)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/%s" % PATH)
 
     def test_list_zones_explicit(self):
         import six
         from google.cloud.dns.zone import ManagedZone
 
-        ID_1 = '123'
-        ZONE_1 = 'zone_one'
-        DNS_1 = 'one.example.com'
-        ID_2 = '234'
-        ZONE_2 = 'zone_two'
-        DNS_2 = 'two.example.com'
-        PATH = 'projects/%s/managedZones' % (self.PROJECT,)
-        TOKEN = 'TOKEN'
+        ID_1 = "123"
+        ZONE_1 = "zone_one"
+        DNS_1 = "one.example.com"
+        ID_2 = "234"
+        ZONE_2 = "zone_two"
+        DNS_2 = "two.example.com"
+        PATH = "projects/%s/managedZones" % (self.PROJECT,)
+        TOKEN = "TOKEN"
         DATA = {
-            'managedZones': [
-                {'kind': 'dns#managedZone',
-                 'id': ID_1,
-                 'name': ZONE_1,
-                 'dnsName': DNS_1},
-                {'kind': 'dns#managedZone',
-                 'id': ID_2,
-                 'name': ZONE_2,
-                 'dnsName': DNS_2},
+            "managedZones": [
+                {
+                    "kind": "dns#managedZone",
+                    "id": ID_1,
+                    "name": ZONE_1,
+                    "dnsName": DNS_1,
+                },
+                {
+                    "kind": "dns#managedZone",
+                    "id": ID_2,
+                    "name": ZONE_2,
+                    "dnsName": DNS_2,
+                },
             ]
         }
         creds = _make_credentials()
@@ -196,26 +201,25 @@ class TestClient(unittest.TestCase):
         zones = list(page)
         token = iterator.next_page_token
 
-        self.assertEqual(len(zones), len(DATA['managedZones']))
-        for found, expected in zip(zones, DATA['managedZones']):
+        self.assertEqual(len(zones), len(DATA["managedZones"]))
+        for found, expected in zip(zones, DATA["managedZones"]):
             self.assertIsInstance(found, ManagedZone)
-            self.assertEqual(found.zone_id, expected['id'])
-            self.assertEqual(found.name, expected['name'])
-            self.assertEqual(found.dns_name, expected['dnsName'])
+            self.assertEqual(found.zone_id, expected["id"])
+            self.assertEqual(found.name, expected["name"])
+            self.assertEqual(found.dns_name, expected["dnsName"])
         self.assertIsNone(token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['query_params'],
-                         {'maxResults': 3, 'pageToken': TOKEN})
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/%s" % PATH)
+        self.assertEqual(req["query_params"], {"maxResults": 3, "pageToken": TOKEN})
 
     def test_zone_explicit(self):
         from google.cloud.dns.zone import ManagedZone
 
-        DESCRIPTION = 'DESCRIPTION'
-        DNS_NAME = 'test.example.com'
+        DESCRIPTION = "DESCRIPTION"
+        DNS_NAME = "test.example.com"
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME, DNS_NAME, DESCRIPTION)
@@ -228,7 +232,7 @@ class TestClient(unittest.TestCase):
     def test_zone_w_dns_name_wo_description(self):
         from google.cloud.dns.zone import ManagedZone
 
-        DNS_NAME = 'test.example.com'
+        DNS_NAME = "test.example.com"
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME, DNS_NAME)
@@ -252,7 +256,6 @@ class TestClient(unittest.TestCase):
 
 
 class _Connection(object):
-
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []

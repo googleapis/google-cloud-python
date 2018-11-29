@@ -62,12 +62,18 @@ class Changes(object):
         :param resource: change set representation returned from the API.
         """
         resource = resource.copy()
-        self._additions = tuple([
-            ResourceRecordSet.from_api_repr(added_res, self.zone)
-            for added_res in resource.pop('additions', ())])
-        self._deletions = tuple([
-            ResourceRecordSet.from_api_repr(added_res, self.zone)
-            for added_res in resource.pop('deletions', ())])
+        self._additions = tuple(
+            [
+                ResourceRecordSet.from_api_repr(added_res, self.zone)
+                for added_res in resource.pop("additions", ())
+            ]
+        )
+        self._deletions = tuple(
+            [
+                ResourceRecordSet.from_api_repr(added_res, self.zone)
+                for added_res in resource.pop("deletions", ())
+            ]
+        )
         self._properties = resource
 
     @property
@@ -77,8 +83,11 @@ class Changes(object):
         :rtype: str
         :returns: the path based on project, zone, and change set names.
         """
-        return '/projects/%s/managedZones/%s/changes/%s' % (
-            self.zone.project, self.zone.name, self.name)
+        return "/projects/%s/managedZones/%s/changes/%s" % (
+            self.zone.project,
+            self.zone.name,
+            self.name,
+        )
 
     @property
     def name(self):
@@ -87,7 +96,7 @@ class Changes(object):
         :rtype: str or ``NoneType``
         :returns: Name, as set by the back-end, or None.
         """
-        return self._properties.get('id')
+        return self._properties.get("id")
 
     @name.setter
     def name(self, value):
@@ -98,7 +107,7 @@ class Changes(object):
         """
         if not isinstance(value, six.string_types):
             raise ValueError("Pass a string")
-        self._properties['id'] = value
+        self._properties["id"] = value
 
     @property
     def status(self):
@@ -107,7 +116,7 @@ class Changes(object):
         :rtype: str or ``NoneType``
         :returns: Status, as set by the back-end, or None.
         """
-        return self._properties.get('status')
+        return self._properties.get("status")
 
     @property
     def started(self):
@@ -116,7 +125,7 @@ class Changes(object):
         :rtype: ``datetime.datetime`` or ``NoneType``
         :returns: Time, as set by the back-end, or None.
         """
-        stamp = self._properties.get('startTime')
+        stamp = self._properties.get("startTime")
         if stamp is not None:
             return _rfc3339_to_datetime(stamp)
 
@@ -183,24 +192,27 @@ class Changes(object):
 
     def _build_resource(self):
         """Generate a resource for ``create``."""
-        additions = [{
-            'name': added.name,
-            'type': added.record_type,
-            'ttl': str(added.ttl),
-            'rrdatas': added.rrdatas,
-        } for added in self.additions]
+        additions = [
+            {
+                "name": added.name,
+                "type": added.record_type,
+                "ttl": str(added.ttl),
+                "rrdatas": added.rrdatas,
+            }
+            for added in self.additions
+        ]
 
-        deletions = [{
-            'name': deleted.name,
-            'type': deleted.record_type,
-            'ttl': str(deleted.ttl),
-            'rrdatas': deleted.rrdatas,
-        } for deleted in self.deletions]
+        deletions = [
+            {
+                "name": deleted.name,
+                "type": deleted.record_type,
+                "ttl": str(deleted.ttl),
+                "rrdatas": deleted.rrdatas,
+            }
+            for deleted in self.deletions
+        ]
 
-        return {
-            'additions': additions,
-            'deletions': deletions,
-        }
+        return {"additions": additions, "deletions": deletions}
 
     def create(self, client=None):
         """API call:  create the change set via a POST request.
@@ -216,10 +228,13 @@ class Changes(object):
         if len(self.additions) == 0 and len(self.deletions) == 0:
             raise ValueError("No record sets added or deleted")
         client = self._require_client(client)
-        path = '/projects/%s/managedZones/%s/changes' % (
-            self.zone.project, self.zone.name)
+        path = "/projects/%s/managedZones/%s/changes" % (
+            self.zone.project,
+            self.zone.name,
+        )
         api_response = client._connection.api_request(
-            method='POST', path=path, data=self._build_resource())
+            method="POST", path=path, data=self._build_resource()
+        )
         self._set_properties(api_response)
 
     def exists(self, client=None):
@@ -238,8 +253,9 @@ class Changes(object):
         """
         client = self._require_client(client)
         try:
-            client._connection.api_request(method='GET', path=self.path,
-                                           query_params={'fields': 'id'})
+            client._connection.api_request(
+                method="GET", path=self.path, query_params={"fields": "id"}
+            )
         except NotFound:
             return False
         else:
@@ -258,6 +274,5 @@ class Changes(object):
         """
         client = self._require_client(client)
 
-        api_response = client._connection.api_request(
-            method='GET', path=self.path)
+        api_response = client._connection.api_request(method="GET", path=self.path)
         self._set_properties(api_response)

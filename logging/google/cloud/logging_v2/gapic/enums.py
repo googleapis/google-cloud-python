@@ -52,6 +52,7 @@ class LaunchStage(enum.IntEnum):
       Platform Subject to the Deprecation
       Policy <https://cloud.google.com/terms/deprecation>`__ documentation.
     """
+
     LAUNCH_STAGE_UNSPECIFIED = 0
     EARLY_ACCESS = 1
     ALPHA = 2
@@ -70,6 +71,7 @@ class NullValue(enum.IntEnum):
     Attributes:
       NULL_VALUE (int): Null value.
     """
+
     NULL_VALUE = 0
 
 
@@ -106,6 +108,7 @@ class LogSeverity(enum.IntEnum):
       ALERT (int): (700) A person must take an action immediately.
       EMERGENCY (int): (800) One or more systems are unusable.
     """
+
     DEFAULT = 0
     DEBUG = 100
     INFO = 200
@@ -127,6 +130,7 @@ class LabelDescriptor(object):
           BOOL (int): Boolean; true or false.
           INT64 (int): A 64-bit signed integer.
         """
+
         STRING = 0
         BOOL = 1
         INT64 = 2
@@ -147,6 +151,7 @@ class MetricDescriptor(object):
           value to zero and sets a new start time for the following
           points.
         """
+
         METRIC_KIND_UNSPECIFIED = 0
         GAUGE = 1
         DELTA = 2
@@ -167,6 +172,7 @@ class MetricDescriptor(object):
           DISTRIBUTION (int): The value is a ``Distribution``.
           MONEY (int): The value is money.
         """
+
         VALUE_TYPE_UNSPECIFIED = 0
         BOOL = 1
         INT64 = 2
@@ -185,6 +191,7 @@ class LogMetric(object):
           V2 (int): Logging API v2.
           V1 (int): Logging API v1.
         """
+
         V2 = 0
         V1 = 1
 
@@ -201,6 +208,7 @@ class LogSink(object):
           V2 (int): ``LogEntry`` version 2 format.
           V1 (int): ``LogEntry`` version 1 format.
         """
+
         VERSION_FORMAT_UNSPECIFIED = 0
         V2 = 1
         V1 = 2

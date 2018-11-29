@@ -17,7 +17,4 @@ from __future__ import absolute_import
 from google.cloud.bigtable_v2 import BigtableClient
 from google.cloud.bigtable_v2 import types
 
-__all__ = (
-    'types',
-    'BigtableClient',
-)
+__all__ = ("types", "BigtableClient")

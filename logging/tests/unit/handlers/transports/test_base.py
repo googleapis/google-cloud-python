@@ -17,7 +17,7 @@ import unittest
 
 class TestBaseHandler(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
+    PROJECT = "PROJECT"
 
     @staticmethod
     def _get_target_class():

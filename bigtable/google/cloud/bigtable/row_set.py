@@ -66,8 +66,9 @@ class RowSet(object):
         """
         self.row_ranges.append(row_range)
 
-    def add_row_range_from_keys(self, start_key=None, end_key=None,
-                                start_inclusive=True, end_inclusive=False):
+    def add_row_range_from_keys(
+        self, start_key=None, end_key=None, start_inclusive=True, end_inclusive=False
+    ):
         """Add row range to row_ranges list from the row keys
 
         :type start_key: bytes
@@ -87,8 +88,7 @@ class RowSet(object):
         :param end_inclusive: (Optional) Whether the ``end_key`` should be
                   considered inclusive. The default is False (exclusive).
         """
-        row_range = RowRange(start_key, end_key,
-                             start_inclusive, end_inclusive)
+        row_range = RowRange(start_key, end_key, start_inclusive, end_inclusive)
         self.row_ranges.append(row_range)
 
     def _update_message_request(self, message):
@@ -126,8 +126,9 @@ class RowRange(object):
                   considered inclusive. The default is False (exclusive).
     """
 
-    def __init__(self, start_key=None, end_key=None,
-                 start_inclusive=True, end_inclusive=False):
+    def __init__(
+        self, start_key=None, end_key=None, start_inclusive=True, end_inclusive=False
+    ):
         self.start_key = start_key
         self.start_inclusive = start_inclusive
         self.end_key = end_key
@@ -141,12 +142,7 @@ class RowRange(object):
         Returns:
             Tuple[str]: The contents of this :class:`.RowRange`.
         """
-        return (
-            self.start_key,
-            self.start_inclusive,
-            self.end_key,
-            self.end_inclusive,
-        )
+        return (self.start_key, self.start_inclusive, self.end_key, self.end_inclusive)
 
     def __hash__(self):
         return hash(self._key())
@@ -165,14 +161,14 @@ class RowRange(object):
         """
         range_kwargs = {}
         if self.start_key is not None:
-            start_key_key = 'start_key_open'
+            start_key_key = "start_key_open"
             if self.start_inclusive:
-                start_key_key = 'start_key_closed'
+                start_key_key = "start_key_closed"
             range_kwargs[start_key_key] = _to_bytes(self.start_key)
 
         if self.end_key is not None:
-            end_key_key = 'end_key_open'
+            end_key_key = "end_key_open"
             if self.end_inclusive:
-                end_key_key = 'end_key_closed'
+                end_key_key = "end_key_closed"
             range_kwargs[end_key_key] = _to_bytes(self.end_key)
         return range_kwargs

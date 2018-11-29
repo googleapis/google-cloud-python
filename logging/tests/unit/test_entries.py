@@ -18,29 +18,27 @@ import mock
 
 
 class Test_logger_name_from_path(unittest.TestCase):
-
     def _call_fut(self, path):
         from google.cloud.logging.entries import logger_name_from_path
 
         return logger_name_from_path(path)
 
     def test_w_simple_name(self):
-        LOGGER_NAME = 'LOGGER_NAME'
-        PROJECT = 'my-project-1234'
-        PATH = 'projects/%s/logs/%s' % (PROJECT, LOGGER_NAME)
+        LOGGER_NAME = "LOGGER_NAME"
+        PROJECT = "my-project-1234"
+        PATH = "projects/%s/logs/%s" % (PROJECT, LOGGER_NAME)
         logger_name = self._call_fut(PATH)
         self.assertEqual(logger_name, LOGGER_NAME)
 
     def test_w_name_w_all_extras(self):
-        LOGGER_NAME = 'LOGGER_NAME-part.one~part.two%part-three'
-        PROJECT = 'my-project-1234'
-        PATH = 'projects/%s/logs/%s' % (PROJECT, LOGGER_NAME)
+        LOGGER_NAME = "LOGGER_NAME-part.one~part.two%part-three"
+        PROJECT = "my-project-1234"
+        PATH = "projects/%s/logs/%s" % (PROJECT, LOGGER_NAME)
         logger_name = self._call_fut(PATH)
         self.assertEqual(logger_name, LOGGER_NAME)
 
 
 class Test__int_or_none(unittest.TestCase):
-
     def _call_fut(self, value):
         from google.cloud.logging.entries import _int_or_none
 
@@ -53,13 +51,13 @@ class Test__int_or_none(unittest.TestCase):
         self.assertEqual(self._call_fut(123), 123)
 
     def test_w_str(self):
-        self.assertEqual(self._call_fut('123'), 123)
+        self.assertEqual(self._call_fut("123"), 123)
 
 
 class TestLogEntry(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
-    LOGGER_NAME = 'LOGGER_NAME'
+    PROJECT = "PROJECT"
+    LOGGER_NAME = "LOGGER_NAME"
 
     @staticmethod
     def _get_target_class():
@@ -94,38 +92,25 @@ class TestLogEntry(unittest.TestCase):
         import datetime
         from google.cloud.logging.resource import Resource
 
-        LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
-        IID = 'IID'
+        LOG_NAME = "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        IID = "IID"
         TIMESTAMP = datetime.datetime.now()
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
-        resource = Resource(type='global', labels={})
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        FILE = 'my_file.py'
+        LABELS = {"foo": "bar", "baz": "qux"}
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
+        resource = Resource(type="global", labels={})
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        FILE = "my_file.py"
         LINE_NO = 123
-        FUNCTION = 'my_function'
-        SOURCE_LOCATION = {
-            'file': FILE,
-            'line': LINE_NO,
-            'function': FUNCTION,
-        }
-        OP_ID = 'OP_ID'
-        PRODUCER = 'PRODUCER'
-        OPERATION = {
-            'id': OP_ID,
-            'producer': PRODUCER,
-            'first': True,
-            'last': False,
-        }
+        FUNCTION = "my_function"
+        SOURCE_LOCATION = {"file": FILE, "line": LINE_NO, "function": FUNCTION}
+        OP_ID = "OP_ID"
+        PRODUCER = "PRODUCER"
+        OPERATION = {"id": OP_ID, "producer": PRODUCER, "first": True, "last": False}
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
 
         entry = self._make_one(
@@ -150,28 +135,26 @@ class TestLogEntry(unittest.TestCase):
         self.assertEqual(entry.timestamp, TIMESTAMP)
         self.assertEqual(entry.labels, LABELS)
         self.assertEqual(entry.severity, SEVERITY)
-        self.assertEqual(entry.http_request['requestMethod'], METHOD)
-        self.assertEqual(entry.http_request['requestUrl'], URI)
-        self.assertEqual(entry.http_request['status'], STATUS)
+        self.assertEqual(entry.http_request["requestMethod"], METHOD)
+        self.assertEqual(entry.http_request["requestUrl"], URI)
+        self.assertEqual(entry.http_request["status"], STATUS)
         self.assertEqual(entry.resource, resource)
         self.assertEqual(entry.trace, TRACE)
         self.assertEqual(entry.span_id, SPANID)
         self.assertTrue(entry.trace_sampled)
 
         source_location = entry.source_location
-        self.assertEqual(source_location['file'], FILE)
-        self.assertEqual(source_location['line'], LINE_NO)
-        self.assertEqual(source_location['function'], FUNCTION)
+        self.assertEqual(source_location["file"], FILE)
+        self.assertEqual(source_location["line"], LINE_NO)
+        self.assertEqual(source_location["function"], FUNCTION)
 
         self.assertEqual(entry.operation, OPERATION)
         self.assertIsNone(entry.payload)
 
     def test_from_api_repr_missing_data_no_loggers(self):
         client = _Client(self.PROJECT)
-        LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
-        API_REPR = {
-            'logName': LOG_NAME,
-        }
+        LOG_NAME = "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        API_REPR = {"logName": LOG_NAME}
         klass = self._get_target_class()
 
         entry = klass.from_api_repr(API_REPR, client)
@@ -199,60 +182,48 @@ class TestLogEntry(unittest.TestCase):
 
         klass = self._get_target_class()
         client = _Client(self.PROJECT)
-        SEVERITY = 'CRITICAL'
-        IID = 'IID'
+        SEVERITY = "CRITICAL"
+        IID = "IID"
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
-        LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
+        LOG_NAME = "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        LABELS = {"foo": "bar", "baz": "qux"}
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
         RESOURCE = Resource(
-            type='gae_app',
+            type="gae_app",
             labels={
-                'type': 'gae_app',
-                'labels': {
-                    'module_id': 'default',
-                    'version': 'test',
-                }
-            }
-        )
-        STATUS = '500'
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        FILE = 'my_file.py'
-        LINE_NO = 123
-        FUNCTION = 'my_function'
-        SOURCE_LOCATION = {
-            'file': FILE,
-            'line': str(LINE_NO),
-            'function': FUNCTION,
-        }
-        OP_ID = 'OP_ID'
-        PRODUCER = 'PRODUCER'
-        OPERATION = {
-            'id': OP_ID,
-            'producer': PRODUCER,
-            'first': True,
-            'last': False,
-        }
-        API_REPR = {
-            'logName': LOG_NAME,
-            'insertId': IID,
-            'timestamp': TIMESTAMP,
-            'labels': LABELS,
-            'severity': SEVERITY,
-            'httpRequest': {
-                'requestMethod': METHOD,
-                'requestUrl': URI,
-                'status': STATUS,
+                "type": "gae_app",
+                "labels": {"module_id": "default", "version": "test"},
             },
-            'resource': RESOURCE._to_dict(),
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-            'sourceLocation': SOURCE_LOCATION,
-            'operation': OPERATION,
+        )
+        STATUS = "500"
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        FILE = "my_file.py"
+        LINE_NO = 123
+        FUNCTION = "my_function"
+        SOURCE_LOCATION = {"file": FILE, "line": str(LINE_NO), "function": FUNCTION}
+        OP_ID = "OP_ID"
+        PRODUCER = "PRODUCER"
+        OPERATION = {"id": OP_ID, "producer": PRODUCER, "first": True, "last": False}
+        API_REPR = {
+            "logName": LOG_NAME,
+            "insertId": IID,
+            "timestamp": TIMESTAMP,
+            "labels": LABELS,
+            "severity": SEVERITY,
+            "httpRequest": {
+                "requestMethod": METHOD,
+                "requestUrl": URI,
+                "status": STATUS,
+            },
+            "resource": RESOURCE._to_dict(),
+            "trace": TRACE,
+            "spanId": SPANID,
+            "traceSampled": True,
+            "sourceLocation": SOURCE_LOCATION,
+            "operation": OPERATION,
         }
         loggers = {}
 
@@ -267,9 +238,9 @@ class TestLogEntry(unittest.TestCase):
         self.assertIsNone(entry.received_timestamp)
         self.assertEqual(entry.labels, LABELS)
         self.assertEqual(entry.severity, SEVERITY)
-        self.assertEqual(entry.http_request['requestMethod'], METHOD)
-        self.assertEqual(entry.http_request['requestUrl'], URI)
-        self.assertEqual(entry.http_request['status'], STATUS)
+        self.assertEqual(entry.http_request["requestMethod"], METHOD)
+        self.assertEqual(entry.http_request["requestUrl"], URI)
+        self.assertEqual(entry.http_request["status"], STATUS)
         self.assertIs(logger.client, client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertEqual(loggers, {LOG_NAME: logger})
@@ -279,9 +250,9 @@ class TestLogEntry(unittest.TestCase):
         self.assertTrue(entry.trace_sampled)
 
         source_location = entry.source_location
-        self.assertEqual(source_location['file'], FILE)
-        self.assertEqual(source_location['line'], LINE_NO)
-        self.assertEqual(source_location['function'], FUNCTION)
+        self.assertEqual(source_location["file"], FILE)
+        self.assertEqual(source_location["line"], LINE_NO)
+        self.assertEqual(source_location["function"], FUNCTION)
 
         self.assertEqual(entry.operation, OPERATION)
         self.assertIsNone(entry.payload)
@@ -292,42 +263,33 @@ class TestLogEntry(unittest.TestCase):
         from google.cloud._helpers import UTC
 
         client = _Client(self.PROJECT)
-        IID = 'IID'
+        IID = "IID"
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         LATER = NOW + timedelta(seconds=1)
         TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
         RECEIVED = _datetime_to_rfc3339_w_nanos(LATER)
-        LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        FILE = 'my_file.py'
+        LOG_NAME = "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        LABELS = {"foo": "bar", "baz": "qux"}
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        FILE = "my_file.py"
         LINE_NO = 123
-        FUNCTION = 'my_function'
-        SOURCE_LOCATION = {
-            'file': FILE,
-            'line': str(LINE_NO),
-            'function': FUNCTION,
-        }
-        OP_ID = 'OP_ID'
-        PRODUCER = 'PRODUCER'
-        OPERATION = {
-            'id': OP_ID,
-            'producer': PRODUCER,
-            'first': True,
-            'last': False,
-        }
+        FUNCTION = "my_function"
+        SOURCE_LOCATION = {"file": FILE, "line": str(LINE_NO), "function": FUNCTION}
+        OP_ID = "OP_ID"
+        PRODUCER = "PRODUCER"
+        OPERATION = {"id": OP_ID, "producer": PRODUCER, "first": True, "last": False}
         API_REPR = {
-            'logName': LOG_NAME,
-            'insertId': IID,
-            'timestamp': TIMESTAMP,
-            'receiveTimestamp': RECEIVED,
-            'labels': LABELS,
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-            'sourceLocation': SOURCE_LOCATION,
-            'operation': OPERATION,
+            "logName": LOG_NAME,
+            "insertId": IID,
+            "timestamp": TIMESTAMP,
+            "receiveTimestamp": RECEIVED,
+            "labels": LABELS,
+            "trace": TRACE,
+            "spanId": SPANID,
+            "traceSampled": True,
+            "sourceLocation": SOURCE_LOCATION,
+            "operation": OPERATION,
         }
         LOGGER = object()
         loggers = {LOG_NAME: LOGGER}
@@ -346,9 +308,9 @@ class TestLogEntry(unittest.TestCase):
         self.assertTrue(entry.trace_sampled)
 
         source_location = entry.source_location
-        self.assertEqual(source_location['file'], FILE)
-        self.assertEqual(source_location['line'], LINE_NO)
-        self.assertEqual(source_location['function'], FUNCTION)
+        self.assertEqual(source_location["file"], FILE)
+        self.assertEqual(source_location["line"], LINE_NO)
+        self.assertEqual(source_location["function"], FUNCTION)
 
         self.assertEqual(entry.operation, OPERATION)
         self.assertIsNone(entry.payload)
@@ -356,23 +318,15 @@ class TestLogEntry(unittest.TestCase):
     def test_to_api_repr_w_source_location_no_line(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
-        LOG_NAME = 'test.log'
-        FILE = 'my_file.py'
-        FUNCTION = 'my_function'
-        SOURCE_LOCATION = {
-            'file': FILE,
-            'function': FUNCTION,
-        }
-        entry = self._make_one(
-            log_name=LOG_NAME, source_location=SOURCE_LOCATION)
+        LOG_NAME = "test.log"
+        FILE = "my_file.py"
+        FUNCTION = "my_function"
+        SOURCE_LOCATION = {"file": FILE, "function": FUNCTION}
+        entry = self._make_one(log_name=LOG_NAME, source_location=SOURCE_LOCATION)
         expected = {
-            'logName': LOG_NAME,
-            'resource': _GLOBAL_RESOURCE._to_dict(),
-            'sourceLocation': {
-                'file': FILE,
-                'line': '0',
-                'function': FUNCTION,
-            }
+            "logName": LOG_NAME,
+            "resource": _GLOBAL_RESOURCE._to_dict(),
+            "sourceLocation": {"file": FILE, "line": "0", "function": FUNCTION},
         }
         self.assertEqual(entry.to_api_repr(), expected)
 
@@ -381,61 +335,40 @@ class TestLogEntry(unittest.TestCase):
         from google.cloud.logging.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
-        LOG_NAME = 'test.log'
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        LOG_NAME = "test.log"
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        FILE = 'my_file.py'
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        FILE = "my_file.py"
         LINE = 123
-        FUNCTION = 'my_function'
-        SOURCE_LOCATION = {
-            'file': FILE,
-            'line': LINE,
-            'function': FUNCTION,
-        }
-        OP_ID = 'OP_ID'
-        PRODUCER = 'PRODUCER'
-        OPERATION = {
-            'id': OP_ID,
-            'producer': PRODUCER,
-            'first': True,
-            'last': False,
-        }
+        FUNCTION = "my_function"
+        SOURCE_LOCATION = {"file": FILE, "line": LINE, "function": FUNCTION}
+        OP_ID = "OP_ID"
+        PRODUCER = "PRODUCER"
+        OPERATION = {"id": OP_ID, "producer": PRODUCER, "first": True, "last": False}
         expected = {
-            'logName': LOG_NAME,
-            'labels': LABELS,
-            'insertId': IID,
-            'severity': SEVERITY,
-            'httpRequest': REQUEST,
-            'timestamp': _datetime_to_rfc3339(TIMESTAMP),
-            'resource': RESOURCE._to_dict(),
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-            'sourceLocation': {
-                'file': FILE,
-                'line': str(LINE),
-                'function': FUNCTION,
-            },
-            'operation': OPERATION,
+            "logName": LOG_NAME,
+            "labels": LABELS,
+            "insertId": IID,
+            "severity": SEVERITY,
+            "httpRequest": REQUEST,
+            "timestamp": _datetime_to_rfc3339(TIMESTAMP),
+            "resource": RESOURCE._to_dict(),
+            "trace": TRACE,
+            "spanId": SPANID,
+            "traceSampled": True,
+            "sourceLocation": {"file": FILE, "line": str(LINE), "function": FUNCTION},
+            "operation": OPERATION,
         }
         entry = self._make_one(
             log_name=LOG_NAME,
@@ -457,8 +390,8 @@ class TestLogEntry(unittest.TestCase):
 
 class TestTextEntry(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
-    LOGGER_NAME = 'LOGGER_NAME'
+    PROJECT = "PROJECT"
+    LOGGER_NAME = "LOGGER_NAME"
 
     @staticmethod
     def _get_target_class():
@@ -472,13 +405,13 @@ class TestTextEntry(unittest.TestCase):
     def test_to_api_repr_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
-        LOG_NAME = 'test.log'
-        TEXT = 'TESTING'
+        LOG_NAME = "test.log"
+        TEXT = "TESTING"
         entry = self._make_one(log_name=LOG_NAME, payload=TEXT)
         expected = {
-            'logName': LOG_NAME,
-            'textPayload': TEXT,
-            'resource': _GLOBAL_RESOURCE._to_dict(),
+            "logName": LOG_NAME,
+            "textPayload": TEXT,
+            "resource": _GLOBAL_RESOURCE._to_dict(),
         }
         self.assertEqual(entry.to_api_repr(), expected)
 
@@ -487,63 +420,42 @@ class TestTextEntry(unittest.TestCase):
         from google.cloud.logging.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
-        LOG_NAME = 'test.log'
-        TEXT = 'This is the entry text'
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        LOG_NAME = "test.log"
+        TEXT = "This is the entry text"
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        FILE = 'my_file.py'
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        FILE = "my_file.py"
         LINE = 123
-        FUNCTION = 'my_function'
-        SOURCE_LOCATION = {
-            'file': FILE,
-            'line': LINE,
-            'function': FUNCTION,
-        }
-        OP_ID = 'OP_ID'
-        PRODUCER = 'PRODUCER'
-        OPERATION = {
-            'id': OP_ID,
-            'producer': PRODUCER,
-            'first': True,
-            'last': False,
-        }
+        FUNCTION = "my_function"
+        SOURCE_LOCATION = {"file": FILE, "line": LINE, "function": FUNCTION}
+        OP_ID = "OP_ID"
+        PRODUCER = "PRODUCER"
+        OPERATION = {"id": OP_ID, "producer": PRODUCER, "first": True, "last": False}
         expected = {
-            'logName': LOG_NAME,
-            'textPayload': TEXT,
-            'labels': LABELS,
-            'insertId': IID,
-            'severity': SEVERITY,
-            'httpRequest': REQUEST,
-            'timestamp': _datetime_to_rfc3339(TIMESTAMP),
-            'resource': RESOURCE._to_dict(),
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-            'sourceLocation': {
-                'file': FILE,
-                'line': str(LINE),
-                'function': FUNCTION,
-            },
-            'operation': OPERATION,
+            "logName": LOG_NAME,
+            "textPayload": TEXT,
+            "labels": LABELS,
+            "insertId": IID,
+            "severity": SEVERITY,
+            "httpRequest": REQUEST,
+            "timestamp": _datetime_to_rfc3339(TIMESTAMP),
+            "resource": RESOURCE._to_dict(),
+            "trace": TRACE,
+            "spanId": SPANID,
+            "traceSampled": True,
+            "sourceLocation": {"file": FILE, "line": str(LINE), "function": FUNCTION},
+            "operation": OPERATION,
         }
         entry = self._make_one(
             log_name=LOG_NAME,
@@ -566,8 +478,8 @@ class TestTextEntry(unittest.TestCase):
 
 class TestStructEntry(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
-    LOGGER_NAME = 'LOGGER_NAME'
+    PROJECT = "PROJECT"
+    LOGGER_NAME = "LOGGER_NAME"
 
     @staticmethod
     def _get_target_class():
@@ -581,13 +493,13 @@ class TestStructEntry(unittest.TestCase):
     def test_to_api_repr_defaults(self):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
-        LOG_NAME = 'test.log'
-        JSON_PAYLOAD = {'key': 'value'}
+        LOG_NAME = "test.log"
+        JSON_PAYLOAD = {"key": "value"}
         entry = self._make_one(log_name=LOG_NAME, payload=JSON_PAYLOAD)
         expected = {
-            'logName': LOG_NAME,
-            'jsonPayload': JSON_PAYLOAD,
-            'resource': _GLOBAL_RESOURCE._to_dict(),
+            "logName": LOG_NAME,
+            "jsonPayload": JSON_PAYLOAD,
+            "resource": _GLOBAL_RESOURCE._to_dict(),
         }
         self.assertEqual(entry.to_api_repr(), expected)
 
@@ -596,63 +508,42 @@ class TestStructEntry(unittest.TestCase):
         from google.cloud.logging.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
-        LOG_NAME = 'test.log'
-        JSON_PAYLOAD = {'key': 'value'}
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        LOG_NAME = "test.log"
+        JSON_PAYLOAD = {"key": "value"}
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        FILE = 'my_file.py'
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        FILE = "my_file.py"
         LINE = 123
-        FUNCTION = 'my_function'
-        SOURCE_LOCATION = {
-            'file': FILE,
-            'line': LINE,
-            'function': FUNCTION,
-        }
-        OP_ID = 'OP_ID'
-        PRODUCER = 'PRODUCER'
-        OPERATION = {
-            'id': OP_ID,
-            'producer': PRODUCER,
-            'first': True,
-            'last': False,
-        }
+        FUNCTION = "my_function"
+        SOURCE_LOCATION = {"file": FILE, "line": LINE, "function": FUNCTION}
+        OP_ID = "OP_ID"
+        PRODUCER = "PRODUCER"
+        OPERATION = {"id": OP_ID, "producer": PRODUCER, "first": True, "last": False}
         expected = {
-            'logName': LOG_NAME,
-            'jsonPayload': JSON_PAYLOAD,
-            'labels': LABELS,
-            'insertId': IID,
-            'severity': SEVERITY,
-            'httpRequest': REQUEST,
-            'timestamp': _datetime_to_rfc3339(TIMESTAMP),
-            'resource': RESOURCE._to_dict(),
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-            'sourceLocation': {
-                'file': FILE,
-                'line': str(LINE),
-                'function': FUNCTION,
-            },
-            'operation': OPERATION,
+            "logName": LOG_NAME,
+            "jsonPayload": JSON_PAYLOAD,
+            "labels": LABELS,
+            "insertId": IID,
+            "severity": SEVERITY,
+            "httpRequest": REQUEST,
+            "timestamp": _datetime_to_rfc3339(TIMESTAMP),
+            "resource": RESOURCE._to_dict(),
+            "trace": TRACE,
+            "spanId": SPANID,
+            "traceSampled": True,
+            "sourceLocation": {"file": FILE, "line": str(LINE), "function": FUNCTION},
+            "operation": OPERATION,
         }
         entry = self._make_one(
             log_name=LOG_NAME,
@@ -675,8 +566,8 @@ class TestStructEntry(unittest.TestCase):
 
 class TestProtobufEntry(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
-    LOGGER_NAME = 'LOGGER_NAME'
+    PROJECT = "PROJECT"
+    LOGGER_NAME = "LOGGER_NAME"
 
     @staticmethod
     def _get_target_class():
@@ -688,7 +579,7 @@ class TestProtobufEntry(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor_basic(self):
-        payload = {'foo': 'bar'}
+        payload = {"foo": "bar"}
 
         pb_entry = self._make_one(payload=payload, logger=mock.sentinel.logger)
 
@@ -732,14 +623,14 @@ class TestProtobufEntry(unittest.TestCase):
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
 
-        message = Struct(fields={'foo': Value(bool_value=False)})
-        with_true = Struct(fields={'foo': Value(bool_value=True)})
+        message = Struct(fields={"foo": Value(bool_value=False)})
+        with_true = Struct(fields={"foo": Value(bool_value=True)})
         payload = json.loads(MessageToJson(with_true))
         entry = self._make_one(payload=payload, logger=mock.sentinel.logger)
 
         entry.parse_message(message)
 
-        self.assertTrue(message.fields['foo'])
+        self.assertTrue(message.fields["foo"])
 
     def test_to_api_repr_proto_defaults(self):
         from google.protobuf.json_format import MessageToDict
@@ -747,14 +638,14 @@ class TestProtobufEntry(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
-        LOG_NAME = 'test.log'
-        message = Struct(fields={'foo': Value(bool_value=True)})
+        LOG_NAME = "test.log"
+        message = Struct(fields={"foo": Value(bool_value=True)})
 
         entry = self._make_one(log_name=LOG_NAME, payload=message)
         expected = {
-            'logName': LOG_NAME,
-            'protoPayload': MessageToDict(message),
-            'resource': _GLOBAL_RESOURCE._to_dict(),
+            "logName": LOG_NAME,
+            "protoPayload": MessageToDict(message),
+            "resource": _GLOBAL_RESOURCE._to_dict(),
         }
         self.assertEqual(entry.to_api_repr(), expected)
 
@@ -766,63 +657,42 @@ class TestProtobufEntry(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
-        LOG_NAME = 'test.log'
-        message = Struct(fields={'foo': Value(bool_value=True)})
-        LABELS = {'foo': 'bar', 'baz': 'qux'}
-        IID = 'IID'
-        SEVERITY = 'CRITICAL'
-        METHOD = 'POST'
-        URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
-        REQUEST = {
-            'requestMethod': METHOD,
-            'requestUrl': URI,
-            'status': STATUS,
-        }
+        LOG_NAME = "test.log"
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test'
-            }
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
         )
-        TRACE = '12345678-1234-5678-1234-567812345678'
-        SPANID = '000000000000004a'
-        FILE = 'my_file.py'
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        FILE = "my_file.py"
         LINE = 123
-        FUNCTION = 'my_function'
-        SOURCE_LOCATION = {
-            'file': FILE,
-            'line': LINE,
-            'function': FUNCTION,
-        }
-        OP_ID = 'OP_ID'
-        PRODUCER = 'PRODUCER'
-        OPERATION = {
-            'id': OP_ID,
-            'producer': PRODUCER,
-            'first': True,
-            'last': False,
-        }
+        FUNCTION = "my_function"
+        SOURCE_LOCATION = {"file": FILE, "line": LINE, "function": FUNCTION}
+        OP_ID = "OP_ID"
+        PRODUCER = "PRODUCER"
+        OPERATION = {"id": OP_ID, "producer": PRODUCER, "first": True, "last": False}
         expected = {
-            'logName': LOG_NAME,
-            'protoPayload': MessageToDict(message),
-            'labels': LABELS,
-            'insertId': IID,
-            'severity': SEVERITY,
-            'httpRequest': REQUEST,
-            'timestamp': _datetime_to_rfc3339(TIMESTAMP),
-            'resource': RESOURCE._to_dict(),
-            'trace': TRACE,
-            'spanId': SPANID,
-            'traceSampled': True,
-            'sourceLocation': {
-                'file': FILE,
-                'line': str(LINE),
-                'function': FUNCTION,
-            },
-            'operation': OPERATION,
+            "logName": LOG_NAME,
+            "protoPayload": MessageToDict(message),
+            "labels": LABELS,
+            "insertId": IID,
+            "severity": SEVERITY,
+            "httpRequest": REQUEST,
+            "timestamp": _datetime_to_rfc3339(TIMESTAMP),
+            "resource": RESOURCE._to_dict(),
+            "trace": TRACE,
+            "spanId": SPANID,
+            "traceSampled": True,
+            "sourceLocation": {"file": FILE, "line": str(LINE), "function": FUNCTION},
+            "operation": OPERATION,
         }
 
         entry = self._make_one(
@@ -848,18 +718,16 @@ def _datetime_to_rfc3339_w_nanos(value):
     from google.cloud._helpers import _RFC3339_NO_FRACTION
 
     no_fraction = value.strftime(_RFC3339_NO_FRACTION)
-    return '%s.%09dZ' % (no_fraction, value.microsecond * 1000)
+    return "%s.%09dZ" % (no_fraction, value.microsecond * 1000)
 
 
 class _Logger(object):
-
     def __init__(self, name, client):
         self.name = name
         self.client = client
 
 
 class _Client(object):
-
     def __init__(self, project):
         self.project = project
 

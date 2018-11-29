@@ -35,18 +35,16 @@ class Connection(_http.JSONConnection):
     :param client: The client that owns the current connection.
     """
 
-    API_BASE_URL = 'https://logging.googleapis.com'
+    API_BASE_URL = "https://logging.googleapis.com"
     """The base of the API call URL."""
 
-    API_VERSION = 'v2'
+    API_VERSION = "v2"
     """The version of the API, used in building the API call's URL."""
 
-    API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
+    API_URL_TEMPLATE = "{api_base_url}/{api_version}{path}"
     """A template for the URL of a particular API call."""
 
-    _EXTRA_HEADERS = {
-        _http.CLIENT_INFO_HEADER: _CLIENT_INFO,
-    }
+    _EXTRA_HEADERS = {_http.CLIENT_INFO_HEADER: _CLIENT_INFO}
 
 
 class _LoggingAPI(object):
@@ -64,8 +62,9 @@ class _LoggingAPI(object):
         self._client = client
         self.api_request = client._connection.api_request
 
-    def list_entries(self, projects, filter_=None, order_by=None,
-                     page_size=None, page_token=None):
+    def list_entries(
+        self, projects, filter_=None, order_by=None, page_size=None, page_token=None
+    ):
         """Return a page of log entry resources.
 
         See
@@ -97,38 +96,37 @@ class _LoggingAPI(object):
         :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
                   accessible to the current API.
         """
-        extra_params = {'projectIds': projects}
+        extra_params = {"projectIds": projects}
 
         if filter_ is not None:
-            extra_params['filter'] = filter_
+            extra_params["filter"] = filter_
 
         if order_by is not None:
-            extra_params['orderBy'] = order_by
+            extra_params["orderBy"] = order_by
 
         if page_size is not None:
-            extra_params['pageSize'] = page_size
+            extra_params["pageSize"] = page_size
 
-        path = '/entries:list'
+        path = "/entries:list"
         # We attach a mutable loggers dictionary so that as Logger
         # objects are created by entry_from_resource, they can be
         # re-used by other log entries from the same logger.
         loggers = {}
-        item_to_value = functools.partial(
-            _item_to_entry, loggers=loggers)
+        item_to_value = functools.partial(_item_to_entry, loggers=loggers)
         iterator = page_iterator.HTTPIterator(
             client=self._client,
             api_request=self._client._connection.api_request,
             path=path,
             item_to_value=item_to_value,
-            items_key='entries',
+            items_key="entries",
             page_token=page_token,
-            extra_params=extra_params)
+            extra_params=extra_params,
+        )
         # This method uses POST to make a read-only request.
-        iterator._HTTP_METHOD = 'POST'
+        iterator._HTTP_METHOD = "POST"
         return iterator
 
-    def write_entries(self, entries, logger_name=None, resource=None,
-                      labels=None):
+    def write_entries(self, entries, logger_name=None, resource=None, labels=None):
         """API call:  log an entry resource via a POST request
 
         See
@@ -149,18 +147,18 @@ class _LoggingAPI(object):
         :param labels: default labels to associate with entries;
                        individual entries may override.
         """
-        data = {'entries': list(entries)}
+        data = {"entries": list(entries)}
 
         if logger_name is not None:
-            data['logName'] = logger_name
+            data["logName"] = logger_name
 
         if resource is not None:
-            data['resource'] = resource
+            data["resource"] = resource
 
         if labels is not None:
-            data['labels'] = labels
+            data["labels"] = labels
 
-        self.api_request(method='POST', path='/entries:write', data=data)
+        self.api_request(method="POST", path="/entries:write", data=data)
 
     def logger_delete(self, project, logger_name):
         """API call:  delete all entries in a logger via a DELETE request
@@ -174,8 +172,8 @@ class _LoggingAPI(object):
         :type logger_name: str
         :param logger_name: name of logger containing the log entries to delete
         """
-        path = '/projects/%s/logs/%s' % (project, logger_name)
-        self.api_request(method='DELETE', path=path)
+        path = "/projects/%s/logs/%s" % (project, logger_name)
+        self.api_request(method="DELETE", path=path)
 
 
 class _SinksAPI(object):
@@ -187,6 +185,7 @@ class _SinksAPI(object):
     :type client: :class:`~google.cloud.logging.client.Client`
     :param client: The client used to make API requests.
     """
+
     def __init__(self, client):
         self._client = client
         self.api_request = client._connection.api_request
@@ -217,20 +216,22 @@ class _SinksAPI(object):
         extra_params = {}
 
         if page_size is not None:
-            extra_params['pageSize'] = page_size
+            extra_params["pageSize"] = page_size
 
-        path = '/projects/%s/sinks' % (project,)
+        path = "/projects/%s/sinks" % (project,)
         return page_iterator.HTTPIterator(
             client=self._client,
             api_request=self._client._connection.api_request,
             path=path,
             item_to_value=_item_to_sink,
-            items_key='sinks',
+            items_key="sinks",
             page_token=page_token,
-            extra_params=extra_params)
+            extra_params=extra_params,
+        )
 
-    def sink_create(self, project, sink_name, filter_, destination,
-                    unique_writer_identity=False):
+    def sink_create(
+        self, project, sink_name, filter_, destination, unique_writer_identity=False
+    ):
         """API call:  create a sink resource.
 
         See
@@ -258,18 +259,11 @@ class _SinksAPI(object):
         :rtype: dict
         :returns: The returned (created) resource.
         """
-        target = '/projects/%s/sinks' % (project,)
-        data = {
-            'name': sink_name,
-            'filter': filter_,
-            'destination': destination,
-        }
-        query_params = {'uniqueWriterIdentity': unique_writer_identity}
+        target = "/projects/%s/sinks" % (project,)
+        data = {"name": sink_name, "filter": filter_, "destination": destination}
+        query_params = {"uniqueWriterIdentity": unique_writer_identity}
         return self.api_request(
-            method='POST',
-            path=target,
-            data=data,
-            query_params=query_params,
+            method="POST", path=target, data=data, query_params=query_params
         )
 
     def sink_get(self, project, sink_name):
@@ -287,11 +281,12 @@ class _SinksAPI(object):
         :rtype: dict
         :returns: The JSON sink object returned from the API.
         """
-        target = '/projects/%s/sinks/%s' % (project, sink_name)
-        return self.api_request(method='GET', path=target)
+        target = "/projects/%s/sinks/%s" % (project, sink_name)
+        return self.api_request(method="GET", path=target)
 
-    def sink_update(self, project, sink_name, filter_, destination,
-                    unique_writer_identity=False):
+    def sink_update(
+        self, project, sink_name, filter_, destination, unique_writer_identity=False
+    ):
         """API call:  update a sink resource.
 
         See
@@ -319,15 +314,12 @@ class _SinksAPI(object):
         :rtype: dict
         :returns: The returned (updated) resource.
         """
-        target = '/projects/%s/sinks/%s' % (project, sink_name)
-        data = {
-            'name': sink_name,
-            'filter': filter_,
-            'destination': destination,
-        }
-        query_params = {'uniqueWriterIdentity': unique_writer_identity}
+        target = "/projects/%s/sinks/%s" % (project, sink_name)
+        data = {"name": sink_name, "filter": filter_, "destination": destination}
+        query_params = {"uniqueWriterIdentity": unique_writer_identity}
         return self.api_request(
-            method='PUT', path=target, query_params=query_params, data=data)
+            method="PUT", path=target, query_params=query_params, data=data
+        )
 
     def sink_delete(self, project, sink_name):
         """API call:  delete a sink resource.
@@ -341,8 +333,8 @@ class _SinksAPI(object):
         :type sink_name: str
         :param sink_name: the name of the sink
         """
-        target = '/projects/%s/sinks/%s' % (project, sink_name)
-        self.api_request(method='DELETE', path=target)
+        target = "/projects/%s/sinks/%s" % (project, sink_name)
+        self.api_request(method="DELETE", path=target)
 
 
 class _MetricsAPI(object):
@@ -354,6 +346,7 @@ class _MetricsAPI(object):
     :type client: :class:`~google.cloud.logging.client.Client`
     :param client: The client used to make API requests.
     """
+
     def __init__(self, client):
         self._client = client
         self.api_request = client._connection.api_request
@@ -384,17 +377,18 @@ class _MetricsAPI(object):
         extra_params = {}
 
         if page_size is not None:
-            extra_params['pageSize'] = page_size
+            extra_params["pageSize"] = page_size
 
-        path = '/projects/%s/metrics' % (project,)
+        path = "/projects/%s/metrics" % (project,)
         return page_iterator.HTTPIterator(
             client=self._client,
             api_request=self._client._connection.api_request,
             path=path,
             item_to_value=_item_to_metric,
-            items_key='metrics',
+            items_key="metrics",
             page_token=page_token,
-            extra_params=extra_params)
+            extra_params=extra_params,
+        )
 
     def metric_create(self, project, metric_name, filter_, description=None):
         """API call:  create a metric resource.
@@ -415,13 +409,9 @@ class _MetricsAPI(object):
         :type description: str
         :param description: description of the metric.
         """
-        target = '/projects/%s/metrics' % (project,)
-        data = {
-            'name': metric_name,
-            'filter': filter_,
-            'description': description,
-        }
-        self.api_request(method='POST', path=target, data=data)
+        target = "/projects/%s/metrics" % (project,)
+        data = {"name": metric_name, "filter": filter_, "description": description}
+        self.api_request(method="POST", path=target, data=data)
 
     def metric_get(self, project, metric_name):
         """API call:  retrieve a metric resource.
@@ -438,8 +428,8 @@ class _MetricsAPI(object):
         :rtype: dict
         :returns: The JSON metric object returned from the API.
         """
-        target = '/projects/%s/metrics/%s' % (project, metric_name)
-        return self.api_request(method='GET', path=target)
+        target = "/projects/%s/metrics/%s" % (project, metric_name)
+        return self.api_request(method="GET", path=target)
 
     def metric_update(self, project, metric_name, filter_, description):
         """API call:  update a metric resource.
@@ -463,13 +453,9 @@ class _MetricsAPI(object):
         :rtype: dict
         :returns: The returned (updated) resource.
         """
-        target = '/projects/%s/metrics/%s' % (project, metric_name)
-        data = {
-            'name': metric_name,
-            'filter': filter_,
-            'description': description,
-        }
-        return self.api_request(method='PUT', path=target, data=data)
+        target = "/projects/%s/metrics/%s" % (project, metric_name)
+        data = {"name": metric_name, "filter": filter_, "description": description}
+        return self.api_request(method="PUT", path=target, data=data)
 
     def metric_delete(self, project, metric_name):
         """API call:  delete a metric resource.
@@ -483,8 +469,8 @@ class _MetricsAPI(object):
         :type metric_name: str
         :param metric_name: the name of the metric.
         """
-        target = '/projects/%s/metrics/%s' % (project, metric_name)
-        self.api_request(method='DELETE', path=target)
+        target = "/projects/%s/metrics/%s" % (project, metric_name)
+        self.api_request(method="DELETE", path=target)
 
 
 def _item_to_entry(iterator, resource, loggers):

@@ -31,12 +31,11 @@ except (ImportError, SyntaxError):  # pragma: NO COVER
     # in the tests.
     webapp2 = None
 
-from google.cloud.logging.handlers.middleware.request import (
-    _get_django_request)
+from google.cloud.logging.handlers.middleware.request import _get_django_request
 
-_DJANGO_TRACE_HEADER = 'HTTP_X_CLOUD_TRACE_CONTEXT'
-_FLASK_TRACE_HEADER = 'X_CLOUD_TRACE_CONTEXT'
-_WEBAPP2_TRACE_HEADER = 'X-CLOUD-TRACE-CONTEXT'
+_DJANGO_TRACE_HEADER = "HTTP_X_CLOUD_TRACE_CONTEXT"
+_FLASK_TRACE_HEADER = "X_CLOUD_TRACE_CONTEXT"
+_WEBAPP2_TRACE_HEADER = "X-CLOUD-TRACE-CONTEXT"
 
 
 def format_stackdriver_json(record, message):
@@ -48,13 +47,10 @@ def format_stackdriver_json(record, message):
     subsecond, second = math.modf(record.created)
 
     payload = {
-        'message': message,
-        'timestamp': {
-            'seconds': int(second),
-            'nanos': int(subsecond * 1e9),
-        },
-        'thread': record.thread,
-        'severity': record.levelname,
+        "message": message,
+        "timestamp": {"seconds": int(second), "nanos": int(subsecond * 1e9)},
+        "thread": record.thread,
+        "severity": record.levelname,
     }
 
     return json.dumps(payload)
@@ -74,7 +70,7 @@ def get_trace_id_from_flask():
     if header is None:
         return None
 
-    trace_id = header.split('/', 1)[0]
+    trace_id = header.split("/", 1)[0]
 
     return trace_id
 
@@ -101,7 +97,7 @@ def get_trace_id_from_webapp2():
     if header is None:
         return None
 
-    trace_id = header.split('/', 1)[0]
+    trace_id = header.split("/", 1)[0]
 
     return trace_id
 
@@ -121,7 +117,7 @@ def get_trace_id_from_django():
     if header is None:
         return None
 
-    trace_id = header.split('/', 1)[0]
+    trace_id = header.split("/", 1)[0]
 
     return trace_id
 
@@ -132,9 +128,11 @@ def get_trace_id():
     :rtype: str
     :returns: TraceID in HTTP request headers.
     """
-    checkers = (get_trace_id_from_django,
-                get_trace_id_from_flask,
-                get_trace_id_from_webapp2)
+    checkers = (
+        get_trace_id_from_django,
+        get_trace_id_from_flask,
+        get_trace_id_from_webapp2,
+    )
 
     for checker in checkers:
         trace_id = checker()

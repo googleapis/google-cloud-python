@@ -23,6 +23,7 @@ the background.
 from google.cloud.logging.handlers.transports.base import Transport
 from google.cloud.logging.handlers.transports.sync import SyncTransport
 from google.cloud.logging.handlers.transports.background_thread import (
-    BackgroundThreadTransport)
+    BackgroundThreadTransport,
+)
 
-__all__ = ['BackgroundThreadTransport', 'SyncTransport', 'Transport']
+__all__ = ["BackgroundThreadTransport", "SyncTransport", "Transport"]
