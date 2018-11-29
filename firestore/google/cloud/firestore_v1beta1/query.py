@@ -27,6 +27,7 @@ from google.protobuf import wrappers_pb2
 
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import document
+from google.cloud.firestore_v1beta1 import transforms
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import query_pb2
 from google.cloud.firestore_v1beta1.order import Order
@@ -46,6 +47,7 @@ _BAD_OP_STRING = 'Operator string {!r} is invalid. Valid choices are: {}.'
 _BAD_OP_NAN_NULL = (
     'Only an equality filter ("==") can be used with None or NaN values')
 _BAD_DIR_STRING = 'Invalid direction {!r}. Must be one of {!r} or {!r}.'
+_INVALID_CURSOR_TRANSFORM = 'Transforms cannot be used as cursor values.'
 _MISSING_ORDER_BY = (
     'The "order by" field path {!r} is not present in the cursor data {!r}. '
     'All fields sent to ``order_by()`` must be present in the fields '
@@ -562,6 +564,12 @@ class Query(object):
             msg = _MISMATCH_CURSOR_W_ORDER_BY.format(
                 document_fields, order_keys)
             raise ValueError(msg)
+
+        _transform_bases = (transforms.Sentinel, transforms._ValueList)
+        for field in document_fields:
+            if isinstance(field, _transform_bases):
+                msg = _INVALID_CURSOR_TRANSFORM
+                raise ValueError(msg)
 
         return document_fields, before
 

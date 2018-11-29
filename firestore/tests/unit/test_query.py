@@ -503,6 +503,46 @@ class TestQuery(unittest.TestCase):
         with self.assertRaises(ValueError):
             query._normalize_cursor(cursor, query._orders)
 
+    def test__normalize_cursor_w_delete(self):
+        from google.cloud.firestore_v1beta1 import DELETE_FIELD
+
+        cursor = ([DELETE_FIELD], True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
+    def test__normalize_cursor_w_server_timestamp(self):
+        from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
+
+        cursor = ([SERVER_TIMESTAMP], True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
+    def test__normalize_cursor_w_array_remove(self):
+        from google.cloud.firestore_v1beta1 import ArrayRemove
+
+        cursor = ([ArrayRemove([1, 3, 5])], True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
+    def test__normalize_cursor_w_array_union(self):
+        from google.cloud.firestore_v1beta1 import ArrayUnion
+
+        cursor = ([ArrayUnion([2, 4, 8])], True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
     def test__normalize_cursor_as_list_hit(self):
         cursor = ([1], True)
         query = self._make_one(
