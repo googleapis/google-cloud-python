@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.grpc_helpers &#8212; google-cloud d8a3ec3 documentation</title>
+    <title>google.api_core.grpc_helpers &#8212; google-cloud f20a5b8 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -63,15 +63,13 @@
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">grpc_gcp</span>
+
     <span class="n">HAS_GRPC_GCP</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">HAS_GRPC_GCP</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="c1"># The list of gRPC Callable interfaces that return iterators.</span>
-<span class="n">_STREAM_WRAP_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">grpc</span><span class="o">.</span><span class="n">UnaryStreamMultiCallable</span><span class="p">,</span>
-    <span class="n">grpc</span><span class="o">.</span><span class="n">StreamStreamMultiCallable</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="n">_STREAM_WRAP_CLASSES</span> <span class="o">=</span> <span class="p">(</span><span class="n">grpc</span><span class="o">.</span><span class="n">UnaryStreamMultiCallable</span><span class="p">,</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StreamStreamMultiCallable</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_patch_callable_name</span><span class="p">(</span><span class="n">callable_</span><span class="p">):</span>
@@ -80,7 +78,7 @@
 <span class="sd">    gRPC callable lack the ``__name__`` attribute which causes</span>
 <span class="sd">    :func:`functools.wraps` to error. This adds the attribute if needed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">callable_</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">callable_</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">):</span>
         <span class="n">callable_</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">callable_</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
 
 
@@ -189,11 +187,9 @@
         <span class="k">return</span> <span class="n">_wrap_unary_errors</span><span class="p">(</span><span class="n">callable_</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="create_channel"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.create_channel">[docs]</a><span class="k">def</span> <span class="nf">create_channel</span><span class="p">(</span><span class="n">target</span><span class="p">,</span>
-                   <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">scopes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">ssl_credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="create_channel"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.create_channel">[docs]</a><span class="k">def</span> <span class="nf">create_channel</span><span class="p">(</span>
+    <span class="n">target</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scopes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ssl_credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a secure channel with credentials.</span>
 
 <span class="sd">    Args:</span>
@@ -216,13 +212,15 @@
         <span class="n">credentials</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">scopes</span><span class="o">=</span><span class="n">scopes</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">credentials</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">with_scopes_if_required</span><span class="p">(</span>
-            <span class="n">credentials</span><span class="p">,</span> <span class="n">scopes</span><span class="p">)</span>
+            <span class="n">credentials</span><span class="p">,</span> <span class="n">scopes</span>
+        <span class="p">)</span>
 
     <span class="n">request</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">()</span>
 
     <span class="c1"># Create the metadata plugin for inserting the authorization header.</span>
     <span class="n">metadata_plugin</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">grpc</span><span class="o">.</span><span class="n">AuthMetadataPlugin</span><span class="p">(</span>
-        <span class="n">credentials</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="n">credentials</span><span class="p">,</span> <span class="n">request</span>
+    <span class="p">)</span>
 
     <span class="c1"># Create a set of grpc.CallCredentials using the metadata plugin.</span>
     <span class="n">google_auth_credentials</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">metadata_call_credentials</span><span class="p">(</span><span class="n">metadata_plugin</span><span class="p">)</span>
@@ -232,7 +230,8 @@
 
     <span class="c1"># Combine the ssl credentials and the authorization credentials.</span>
     <span class="n">composite_credentials</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">composite_channel_credentials</span><span class="p">(</span>
-        <span class="n">ssl_credentials</span><span class="p">,</span> <span class="n">google_auth_credentials</span><span class="p">)</span>
+        <span class="n">ssl_credentials</span><span class="p">,</span> <span class="n">google_auth_credentials</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">HAS_GRPC_GCP</span><span class="p">:</span>
         <span class="c1"># If grpc_gcp module is available use grpc_gcp.secure_channel,</span>
@@ -243,10 +242,10 @@
 
 
 <span class="n">_MethodCall</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
-    <span class="s1">&#39;_MethodCall&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="s1">&#39;timeout&#39;</span><span class="p">,</span> <span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="s1">&#39;credentials&#39;</span><span class="p">))</span>
+    <span class="s2">&quot;_MethodCall&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="s2">&quot;credentials&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="n">_ChannelRequest</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
-    <span class="s1">&#39;_ChannelRequest&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="s1">&#39;request&#39;</span><span class="p">))</span>
+<span class="n">_ChannelRequest</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;_ChannelRequest&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="s2">&quot;request&quot;</span><span class="p">))</span>
 
 
 <span class="k">class</span> <span class="nc">_CallableStub</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -273,10 +272,8 @@
 <span class="sd">        request, timeout, metadata, and credentials.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">_ChannelRequest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">,</span> <span class="n">request</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">_MethodCall</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">credentials</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_ChannelRequest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">,</span> <span class="n">request</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_MethodCall</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">credentials</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span>
@@ -285,8 +282,9 @@
                 <span class="n">response</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">responses</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">&#39;</span><span class="si">{method}</span><span class="s1">.response and </span><span class="si">{method}</span><span class="s1">.responses are mutually &#39;</span>
-                    <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">))</span>
+                    <span class="s2">&quot;</span><span class="si">{method}</span><span class="s2">.response and </span><span class="si">{method}</span><span class="s2">.responses are mutually &quot;</span>
+                    <span class="s2">&quot;exclusive.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">)</span>
+                <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">response</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
@@ -297,8 +295,7 @@
         <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">response</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s1">&#39;Method stub for &quot;</span><span class="si">{}</span><span class="s1">&quot; has no response.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Method stub for &quot;</span><span class="si">{}</span><span class="s1">&quot; has no response.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">_simplify_method_name</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
@@ -314,7 +311,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        str: The simplified name of the method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">method</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">method</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="ChannelStub"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub">[docs]</a><span class="k">class</span> <span class="nc">ChannelStub</span><span class="p">(</span><span class="n">grpc</span><span class="o">.</span><span class="n">Channel</span><span class="p">):</span>
@@ -391,27 +388,21 @@
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span>
 
-<div class="viewcode-block" id="ChannelStub.unary_unary"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.unary_unary">[docs]</a>    <span class="k">def</span> <span class="nf">unary_unary</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
-            <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ChannelStub.unary_unary"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.unary_unary">[docs]</a>    <span class="k">def</span> <span class="nf">unary_unary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;grpc.Channel.unary_unary implementation.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ChannelStub.unary_stream"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.unary_stream">[docs]</a>    <span class="k">def</span> <span class="nf">unary_stream</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
-            <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ChannelStub.unary_stream"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.unary_stream">[docs]</a>    <span class="k">def</span> <span class="nf">unary_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;grpc.Channel.unary_stream implementation.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ChannelStub.stream_unary"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.stream_unary">[docs]</a>    <span class="k">def</span> <span class="nf">stream_unary</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
-            <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ChannelStub.stream_unary"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.stream_unary">[docs]</a>    <span class="k">def</span> <span class="nf">stream_unary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;grpc.Channel.stream_unary implementation.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ChannelStub.stream_stream"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.stream_stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream_stream</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
-            <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;grpc.Channel.stream_stream implementation.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
 

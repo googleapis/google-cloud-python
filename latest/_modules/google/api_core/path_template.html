@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.path_template &#8212; google-cloud d8a3ec3 documentation</title>
+    <title>google.api_core.path_template &#8212; google-cloud f20a5b8 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -76,22 +76,25 @@
 <span class="c1"># - &quot;{name=**}&quot;: a multi-segment wildcard named variable, for example</span>
 <span class="c1">#   &quot;shelf/{name=**}&quot;</span>
 <span class="c1"># - &quot;{name=/path/*/**}&quot;: a multi-segment named variable with a sub-template.</span>
-<span class="n">_VARIABLE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    (  # Capture the entire variable expression</span>
-<span class="s2">        (?P&lt;positional&gt;\*\*?)  # Match &amp; capture * and ** positional variables.</span>
-<span class="s2">        |</span>
-<span class="s2">        # Match &amp; capture named variables </span><span class="si">{name}</span><span class="s2"></span>
-<span class="s2">        {</span>
-<span class="s2">            (?P&lt;name&gt;[^/]+?)</span>
-<span class="s2">            # Optionally match and capture the named variable&#39;s template.</span>
-<span class="s2">            (?:=(?P&lt;template&gt;.+?))?</span>
-<span class="s2">        }</span>
-<span class="s2">    )</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+<span class="n">_VARIABLE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (  # Capture the entire variable expression</span>
+<span class="sd">        (?P&lt;positional&gt;\*\*?)  # Match &amp; capture * and ** positional variables.</span>
+<span class="sd">        |</span>
+<span class="sd">        # Match &amp; capture named variables {name}</span>
+<span class="sd">        {</span>
+<span class="sd">            (?P&lt;name&gt;[^/]+?)</span>
+<span class="sd">            # Optionally match and capture the named variable&#39;s template.</span>
+<span class="sd">            (?:=(?P&lt;template&gt;.+?))?</span>
+<span class="sd">        }</span>
+<span class="sd">    )</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="c1"># Segment expressions used for validating paths against a template.</span>
-<span class="n">_SINGLE_SEGMENT_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;([^/]+)&#39;</span>
-<span class="n">_MULTI_SEGMENT_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;(.+)&#39;</span>
+<span class="n">_SINGLE_SEGMENT_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;([^/]+)&quot;</span>
+<span class="n">_MULTI_SEGMENT_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(.+)&quot;</span>
 
 
 <span class="k">def</span> <span class="nf">_expand_variable_match</span><span class="p">(</span><span class="n">positional_vars</span><span class="p">,</span> <span class="n">named_vars</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
@@ -111,28 +114,26 @@
 <span class="sd">            template but not specified or if an unexpected template expression</span>
 <span class="sd">            is encountered.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">positional</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;positional&#39;</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">positional</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;positional&quot;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">(</span><span class="n">named_vars</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;Named variable </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1"> not specified and needed by template &#39;</span>
-                <span class="s1">&#39;`</span><span class="si">{}</span><span class="s1">` at position </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">name</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()))</span>
+                <span class="s2">&quot;Named variable &#39;</span><span class="si">{}</span><span class="s2">&#39; not specified and needed by template &quot;</span>
+                <span class="s2">&quot;`</span><span class="si">{}</span><span class="s2">` at position </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">())</span>
+            <span class="p">)</span>
     <span class="k">elif</span> <span class="n">positional</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">(</span><span class="n">positional_vars</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;Positional variable not specified and needed by template &#39;</span>
-                <span class="s1">&#39;`</span><span class="si">{}</span><span class="s1">` at position </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">match</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()))</span>
+                <span class="s2">&quot;Positional variable not specified and needed by template &quot;</span>
+                <span class="s2">&quot;`</span><span class="si">{}</span><span class="s2">` at position </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">())</span>
+            <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s1">&#39;Unknown template expression </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown template expression </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
 
 
 <div class="viewcode-block" id="expand"><a class="viewcode-back" href="../../../core/path_template.html#google.api_core.path_template.expand">[docs]</a><span class="k">def</span> <span class="nf">expand</span><span class="p">(</span><span class="n">tmpl</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -175,24 +176,22 @@
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If an unexpected template expression is encountered.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">positional</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;positional&#39;</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-    <span class="n">template</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;template&#39;</span><span class="p">)</span>
+    <span class="n">positional</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;positional&quot;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;template&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">template</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_SINGLE_SEGMENT_PATTERN</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">template</span> <span class="o">==</span> <span class="s1">&#39;**&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;**&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_MULTI_SEGMENT_PATTERN</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_generate_pattern_for_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">positional</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">positional</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_SINGLE_SEGMENT_PATTERN</span>
-    <span class="k">elif</span> <span class="n">positional</span> <span class="o">==</span> <span class="s1">&#39;**&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">positional</span> <span class="o">==</span> <span class="s2">&quot;**&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_MULTI_SEGMENT_PATTERN</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s1">&#39;Unknown template expression </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown template expression </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
 
 
 <span class="k">def</span> <span class="nf">_generate_pattern_for_template</span><span class="p">(</span><span class="n">tmpl</span><span class="p">):</span>
@@ -229,7 +228,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if the path matches.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pattern</span> <span class="o">=</span> <span class="n">_generate_pattern_for_template</span><span class="p">(</span><span class="n">tmpl</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;$&#39;</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">_generate_pattern_for_template</span><span class="p">(</span><span class="n">tmpl</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;$&quot;</span>
     <span class="k">return</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span></div>
 </pre></div>
 

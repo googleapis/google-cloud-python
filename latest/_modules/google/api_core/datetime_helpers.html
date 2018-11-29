@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.datetime_helpers &#8212; google-cloud d8a3ec3 documentation</title>
+    <title>google.api_core.datetime_helpers &#8212; google-cloud f20a5b8 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -57,19 +57,22 @@
 
 
 <span class="n">_UTC_EPOCH</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-<span class="n">_RFC3339_MICROS</span> <span class="o">=</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S.</span><span class="si">%f</span><span class="s1">Z&#39;</span>
-<span class="n">_RFC3339_NO_FRACTION</span> <span class="o">=</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S&#39;</span>
+<span class="n">_RFC3339_MICROS</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span>
+<span class="n">_RFC3339_NO_FRACTION</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span>
 <span class="c1"># datetime.strptime cannot handle nanosecond precision:  parse w/ regex</span>
-<span class="n">_RFC3339_NANOS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    (?P&lt;no_fraction&gt;</span>
-<span class="s2">        \d</span><span class="si">{4}</span><span class="s2">-\d</span><span class="si">{2}</span><span class="s2">-\d</span><span class="si">{2}</span><span class="s2">T\d</span><span class="si">{2}</span><span class="s2">:\d</span><span class="si">{2}</span><span class="s2">:\d</span><span class="si">{2}</span><span class="s2">  # YYYY-MM-DDTHH:MM:SS</span>
-<span class="s2">    )</span>
-<span class="s2">    (                                        # Optional decimal part</span>
-<span class="s2">     \.                                      # decimal point</span>
-<span class="s2">     (?P&lt;nanos&gt;\d{1,9})                      # nanoseconds, maybe truncated</span>
-<span class="s2">    )?</span>
-<span class="s2">    Z                                        # Zulu</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+<span class="n">_RFC3339_NANOS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (?P&lt;no_fraction&gt;</span>
+<span class="sd">        \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}  # YYYY-MM-DDTHH:MM:SS</span>
+<span class="sd">    )</span>
+<span class="sd">    (                                        # Optional decimal part</span>
+<span class="sd">     \.                                      # decimal point</span>
+<span class="sd">     (?P&lt;nanos&gt;\d{1,9})                      # nanoseconds, maybe truncated</span>
+<span class="sd">    )?</span>
+<span class="sd">    Z                                        # Zulu</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="utcnow"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.utcnow">[docs]</a><span class="k">def</span> <span class="nf">utcnow</span><span class="p">():</span>
@@ -129,7 +132,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        datetime.date: A date equivalent to the date string.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span></div>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="from_iso8601_time"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.from_iso8601_time">[docs]</a><span class="k">def</span> <span class="nf">from_iso8601_time</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -141,7 +144,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        datetime.time: A time equivalent to the time string.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">()</span></div>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="from_rfc3339"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.from_rfc3339">[docs]</a><span class="k">def</span> <span class="nf">from_rfc3339</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -154,8 +157,7 @@
 <span class="sd">        datetime.datetime: The datetime object equivalent to the timestamp in</span>
 <span class="sd">            UTC.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
-        <span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_MICROS</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_MICROS</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="from_rfc3339_nanos"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.from_rfc3339_nanos">[docs]</a><span class="k">def</span> <span class="nf">from_rfc3339_nanos</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -180,12 +182,15 @@
 
     <span class="k">if</span> <span class="n">with_nanos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s1">&#39;Timestamp: </span><span class="si">{!r}</span><span class="s1">, does not match pattern: </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_NANOS</span><span class="o">.</span><span class="n">pattern</span><span class="p">))</span>
+            <span class="s2">&quot;Timestamp: </span><span class="si">{!r}</span><span class="s2">, does not match pattern: </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_NANOS</span><span class="o">.</span><span class="n">pattern</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="n">bare_seconds</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
-        <span class="n">with_nanos</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;no_fraction&#39;</span><span class="p">),</span> <span class="n">_RFC3339_NO_FRACTION</span><span class="p">)</span>
-    <span class="n">fraction</span> <span class="o">=</span> <span class="n">with_nanos</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;nanos&#39;</span><span class="p">)</span>
+        <span class="n">with_nanos</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;no_fraction&quot;</span><span class="p">),</span> <span class="n">_RFC3339_NO_FRACTION</span>
+    <span class="p">)</span>
+    <span class="n">fraction</span> <span class="o">=</span> <span class="n">with_nanos</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;nanos&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">fraction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">micros</span> <span class="o">=</span> <span class="mi">0</span>
@@ -221,19 +226,20 @@
 
 <span class="sd">    Nanosecond can be passed only as a keyword argument.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_nanosecond&#39;</span><span class="p">,)</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_nanosecond&quot;</span><span class="p">,)</span>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
     <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-        <span class="n">nanos</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;nanosecond&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">nanos</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;nanosecond&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">nanos</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;microsecond&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="s2">&quot;Specify only one of &#39;microsecond&#39; or &#39;nanosecond&#39;&quot;</span><span class="p">)</span>
-            <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;microsecond&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nanos</span> <span class="o">//</span> <span class="mi">1000</span>
+            <span class="k">if</span> <span class="s2">&quot;microsecond&quot;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Specify only one of &#39;microsecond&#39; or &#39;nanosecond&#39;&quot;</span><span class="p">)</span>
+            <span class="n">kw</span><span class="p">[</span><span class="s2">&quot;microsecond&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nanos</span> <span class="o">//</span> <span class="mi">1000</span>
         <span class="n">inst</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
         <span class="n">inst</span><span class="o">.</span><span class="n">_nanosecond</span> <span class="o">=</span> <span class="n">nanos</span> <span class="ow">or</span> <span class="mi">0</span>
         <span class="k">return</span> <span class="n">inst</span>
+
     <span class="c1"># pylint: disable=arguments-differ</span>
 
     <span class="nd">@property</span>
@@ -249,8 +255,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nanosecond</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">to_rfc3339</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">nanos</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nanosecond</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">Z&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">_RFC3339_NO_FRACTION</span><span class="p">),</span> <span class="n">nanos</span><span class="p">)</span></div>
+        <span class="n">nanos</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nanosecond</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">Z&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">_RFC3339_NO_FRACTION</span><span class="p">),</span> <span class="n">nanos</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatetimeWithNanoseconds.from_rfc3339"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.DatetimeWithNanoseconds.from_rfc3339">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_rfc3339</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">stamp</span><span class="p">):</span>
@@ -269,19 +275,29 @@
         <span class="n">with_nanos</span> <span class="o">=</span> <span class="n">_RFC3339_NANOS</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">stamp</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">with_nanos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;Timestamp: </span><span class="si">{}</span><span class="s1">, does not match pattern: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">stamp</span><span class="p">,</span> <span class="n">_RFC3339_NANOS</span><span class="o">.</span><span class="n">pattern</span><span class="p">))</span>
+                <span class="s2">&quot;Timestamp: </span><span class="si">{}</span><span class="s2">, does not match pattern: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">stamp</span><span class="p">,</span> <span class="n">_RFC3339_NANOS</span><span class="o">.</span><span class="n">pattern</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
         <span class="n">bare</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
-            <span class="n">with_nanos</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;no_fraction&#39;</span><span class="p">),</span> <span class="n">_RFC3339_NO_FRACTION</span><span class="p">)</span>
-        <span class="n">fraction</span> <span class="o">=</span> <span class="n">with_nanos</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;nanos&#39;</span><span class="p">)</span>
+            <span class="n">with_nanos</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;no_fraction&quot;</span><span class="p">),</span> <span class="n">_RFC3339_NO_FRACTION</span>
+        <span class="p">)</span>
+        <span class="n">fraction</span> <span class="o">=</span> <span class="n">with_nanos</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;nanos&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fraction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">nanos</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">scale</span> <span class="o">=</span> <span class="mi">9</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">fraction</span><span class="p">)</span>
             <span class="n">nanos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fraction</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="n">scale</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">bare</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">bare</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">bare</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
-                   <span class="n">bare</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span> <span class="n">bare</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="n">bare</span><span class="o">.</span><span class="n">second</span><span class="p">,</span>
-                   <span class="n">nanosecond</span><span class="o">=</span><span class="n">nanos</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">UTC</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">bare</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+            <span class="n">bare</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+            <span class="n">bare</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+            <span class="n">bare</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span>
+            <span class="n">bare</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span>
+            <span class="n">bare</span><span class="o">.</span><span class="n">second</span><span class="p">,</span>
+            <span class="n">nanosecond</span><span class="o">=</span><span class="n">nanos</span><span class="p">,</span>
+            <span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">UTC</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
           </div>

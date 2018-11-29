@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.operation &#8212; google-cloud d8a3ec3 documentation</title>
+    <title>google.api_core.operation &#8212; google-cloud f20a5b8 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -103,8 +103,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">refresh</span><span class="p">,</span> <span class="n">cancel</span><span class="p">,</span>
-            <span class="n">result_type</span><span class="p">,</span> <span class="n">metadata_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">polling</span><span class="o">.</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">,</span>
+        <span class="n">refresh</span><span class="p">,</span>
+        <span class="n">cancel</span><span class="p">,</span>
+        <span class="n">result_type</span><span class="p">,</span>
+        <span class="n">metadata_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">retry</span><span class="o">=</span><span class="n">polling</span><span class="o">.</span><span class="n">DEFAULT_RETRY</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Operation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span> <span class="o">=</span> <span class="n">operation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_refresh</span> <span class="o">=</span> <span class="n">refresh</span>
@@ -123,11 +129,12 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;google.protobuf.Message: the current operation metadata.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;metadata&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">return</span> <span class="n">protobuf_helpers</span><span class="o">.</span><span class="n">from_any_pb</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">metadata</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_result_from_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the result or exception from the operation if it is complete.&quot;&quot;&quot;</span>
@@ -142,20 +149,23 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">done</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="p">:</span>
                 <span class="k">return</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">):</span>
                 <span class="n">response</span> <span class="o">=</span> <span class="n">protobuf_helpers</span><span class="o">.</span><span class="n">from_any_pb</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_result_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_result_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">response</span>
+                <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">):</span>
                 <span class="n">exception</span> <span class="o">=</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">GoogleAPICallError</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="p">,</span>
                     <span class="n">errors</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">error</span><span class="p">,),</span>
-                    <span class="n">response</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="p">)</span>
+                    <span class="n">response</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="p">,</span>
+                <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">exception</span> <span class="o">=</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">GoogleAPICallError</span><span class="p">(</span>
-                    <span class="s1">&#39;Unexpected state: Long-running operation had neither &#39;</span>
-                    <span class="s1">&#39;response nor error set.&#39;</span><span class="p">)</span>
+                    <span class="s2">&quot;Unexpected state: Long-running operation had neither &quot;</span>
+                    <span class="s2">&quot;response nor error set.&quot;</span>
+                <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_refresh_and_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -191,8 +201,10 @@
 <div class="viewcode-block" id="Operation.cancelled"><a class="viewcode-back" href="../../../core/operation.html#google.api_core.operation.Operation.cancelled">[docs]</a>    <span class="k">def</span> <span class="nf">cancelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;True if the operation was cancelled.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_and_update</span><span class="p">()</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">code_pb2</span><span class="o">.</span><span class="n">CANCELLED</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">code_pb2</span><span class="o">.</span><span class="n">CANCELLED</span>
+        <span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_refresh_http</span><span class="p">(</span><span class="n">api_request</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">):</span>
@@ -207,10 +219,9 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        google.longrunning.operations_pb2.Operation: The operation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;operations/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">operation_name</span><span class="p">)</span>
-    <span class="n">api_response</span> <span class="o">=</span> <span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span>
-        <span class="n">api_response</span><span class="p">,</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="p">())</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;operations/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">operation_name</span><span class="p">)</span>
+    <span class="n">api_response</span> <span class="o">=</span> <span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span><span class="n">api_response</span><span class="p">,</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="p">())</span>
 
 
 <span class="k">def</span> <span class="nf">_cancel_http</span><span class="p">(</span><span class="n">api_request</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">):</span>
@@ -222,8 +233,8 @@
 <span class="sd">            :meth:`google.cloud._http.Connection.api_request`.</span>
 <span class="sd">        operation_name (str): The name of the operation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;operations/</span><span class="si">{}</span><span class="s1">:cancel&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">operation_name</span><span class="p">)</span>
-    <span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;operations/</span><span class="si">{}</span><span class="s2">:cancel&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">operation_name</span><span class="p">)</span>
+    <span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="from_http_json"><a class="viewcode-back" href="../../../core/operation.html#google.api_core.operation.from_http_json">[docs]</a><span class="k">def</span> <span class="nf">from_http_json</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">result_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -247,12 +258,9 @@
 <span class="sd">        ~.api_core.operation.Operation: The operation future to track the given</span>
 <span class="sd">            operation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">operation_proto</span> <span class="o">=</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span>
-        <span class="n">operation</span><span class="p">,</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="p">())</span>
-    <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-        <span class="n">_refresh_http</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">operation_proto</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">cancel</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-        <span class="n">_cancel_http</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">operation_proto</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">operation_proto</span> <span class="o">=</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="p">())</span>
+    <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_refresh_http</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">operation_proto</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">cancel</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_cancel_http</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">operation_proto</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="n">operation_proto</span><span class="p">,</span> <span class="n">refresh</span><span class="p">,</span> <span class="n">cancel</span><span class="p">,</span> <span class="n">result_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
@@ -304,10 +312,8 @@
 <span class="sd">        ~.api_core.operation.Operation: The operation future to track the given</span>
 <span class="sd">            operation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-        <span class="n">_refresh_grpc</span><span class="p">,</span> <span class="n">operations_stub</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">cancel</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-        <span class="n">_cancel_grpc</span><span class="p">,</span> <span class="n">operations_stub</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_refresh_grpc</span><span class="p">,</span> <span class="n">operations_stub</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">cancel</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_cancel_grpc</span><span class="p">,</span> <span class="n">operations_stub</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">refresh</span><span class="p">,</span> <span class="n">cancel</span><span class="p">,</span> <span class="n">result_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
@@ -332,10 +338,8 @@
 <span class="sd">        ~.api_core.operation.Operation: The operation future to track the given</span>
 <span class="sd">            operation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-        <span class="n">operations_client</span><span class="o">.</span><span class="n">get_operation</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">cancel</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-        <span class="n">operations_client</span><span class="o">.</span><span class="n">cancel_operation</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">operations_client</span><span class="o">.</span><span class="n">get_operation</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">cancel</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">operations_client</span><span class="o">.</span><span class="n">cancel_operation</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">refresh</span><span class="p">,</span> <span class="n">cancel</span><span class="p">,</span> <span class="n">result_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
 

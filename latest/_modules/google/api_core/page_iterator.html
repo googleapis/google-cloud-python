@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.page_iterator &#8212; google-cloud d8a3ec3 documentation</title>
+    <title>google.api_core.page_iterator &#8212; google-cloud f20a5b8 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -189,8 +189,13 @@
 <span class="sd">        max_results (int): The maximum number of results to fetch.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_value_identity</span><span class="p">,</span>
-                 <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">,</span>
+        <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_value_identity</span><span class="p">,</span>
+        <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="sd">&quot;&quot;&quot;Optional[Any]: The client that created this iterator.&quot;&quot;&quot;</span>
@@ -225,7 +230,7 @@
 <span class="sd">            ValueError: If the iterator has already been started.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Iterator has already started&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Iterator has already started&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -246,7 +251,7 @@
 <span class="sd">            ValueError: If the iterator has already been started.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Iterator has already started&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Iterator has already started&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_iter</span><span class="p">()</span>
 
@@ -336,20 +341,29 @@
 <span class="sd">    .. autoattribute:: pages</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_DEFAULT_ITEMS_KEY</span> <span class="o">=</span> <span class="s1">&#39;items&#39;</span>
-    <span class="n">_PAGE_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;pageToken&#39;</span>
-    <span class="n">_MAX_RESULTS</span> <span class="o">=</span> <span class="s1">&#39;maxResults&#39;</span>
-    <span class="n">_NEXT_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;nextPageToken&#39;</span>
+    <span class="n">_DEFAULT_ITEMS_KEY</span> <span class="o">=</span> <span class="s2">&quot;items&quot;</span>
+    <span class="n">_PAGE_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;pageToken&quot;</span>
+    <span class="n">_MAX_RESULTS</span> <span class="o">=</span> <span class="s2">&quot;maxResults&quot;</span>
+    <span class="n">_NEXT_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;nextPageToken&quot;</span>
     <span class="n">_RESERVED_PARAMS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span><span class="n">_PAGE_TOKEN</span><span class="p">])</span>
-    <span class="n">_HTTP_METHOD</span> <span class="o">=</span> <span class="s1">&#39;GET&#39;</span>
+    <span class="n">_HTTP_METHOD</span> <span class="o">=</span> <span class="s2">&quot;GET&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span>
-                 <span class="n">items_key</span><span class="o">=</span><span class="n">_DEFAULT_ITEMS_KEY</span><span class="p">,</span>
-                 <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">page_start</span><span class="o">=</span><span class="n">_do_nothing_page_start</span><span class="p">,</span> <span class="n">next_token</span><span class="o">=</span><span class="n">_NEXT_TOKEN</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">,</span>
+        <span class="n">api_request</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">,</span>
+        <span class="n">item_to_value</span><span class="p">,</span>
+        <span class="n">items_key</span><span class="o">=</span><span class="n">_DEFAULT_ITEMS_KEY</span><span class="p">,</span>
+        <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">page_start</span><span class="o">=</span><span class="n">_do_nothing_page_start</span><span class="p">,</span>
+        <span class="n">next_token</span><span class="o">=</span><span class="n">_NEXT_TOKEN</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">HTTPIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span> <span class="o">=</span> <span class="n">api_request</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_items_key</span> <span class="o">=</span> <span class="n">items_key</span>
@@ -367,11 +381,9 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: If a reserved parameter is used.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">reserved_in_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_RESERVED_PARAMS</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="n">reserved_in_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_RESERVED_PARAMS</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">reserved_in_use</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Using a reserved parameter&#39;</span><span class="p">,</span>
-                             <span class="n">reserved_in_use</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Using a reserved parameter&quot;</span><span class="p">,</span> <span class="n">reserved_in_use</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the next page in the iterator.</span>
@@ -429,18 +441,16 @@
 <span class="sd">            ValueError: If the HTTP method is not ``GET`` or ``POST``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_query_params</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">,</span>
-                <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+                <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">,</span>
-                <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                <span class="n">data</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+                <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">params</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected HTTP method&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected HTTP method&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">)</span></div>
 
 
 <span class="k">class</span> <span class="nc">_GAXIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
@@ -460,8 +470,11 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">_GAXIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_iter</span><span class="o">.</span><span class="n">page_token</span><span class="p">,</span>
-            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+            <span class="n">client</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_iter</span><span class="o">.</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gax_page_iter</span> <span class="o">=</span> <span class="n">page_iter</span>
 
     <span class="k">def</span> <span class="nf">_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -509,21 +522,23 @@
 <span class="sd">    .. autoattribute:: pages</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_DEFAULT_REQUEST_TOKEN_FIELD</span> <span class="o">=</span> <span class="s1">&#39;page_token&#39;</span>
-    <span class="n">_DEFAULT_RESPONSE_TOKEN_FIELD</span> <span class="o">=</span> <span class="s1">&#39;next_page_token&#39;</span>
+    <span class="n">_DEFAULT_REQUEST_TOKEN_FIELD</span> <span class="o">=</span> <span class="s2">&quot;page_token&quot;</span>
+    <span class="n">_DEFAULT_RESPONSE_TOKEN_FIELD</span> <span class="o">=</span> <span class="s2">&quot;next_page_token&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">client</span><span class="p">,</span>
-            <span class="n">method</span><span class="p">,</span>
-            <span class="n">request</span><span class="p">,</span>
-            <span class="n">items_field</span><span class="p">,</span>
-            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_value_identity</span><span class="p">,</span>
-            <span class="n">request_token_field</span><span class="o">=</span><span class="n">_DEFAULT_REQUEST_TOKEN_FIELD</span><span class="p">,</span>
-            <span class="n">response_token_field</span><span class="o">=</span><span class="n">_DEFAULT_RESPONSE_TOKEN_FIELD</span><span class="p">,</span>
-            <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">,</span>
+        <span class="n">method</span><span class="p">,</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="n">items_field</span><span class="p">,</span>
+        <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_value_identity</span><span class="p">,</span>
+        <span class="n">request_token_field</span><span class="o">=</span><span class="n">_DEFAULT_REQUEST_TOKEN_FIELD</span><span class="p">,</span>
+        <span class="n">response_token_field</span><span class="o">=</span><span class="n">_DEFAULT_RESPONSE_TOKEN_FIELD</span><span class="p">,</span>
+        <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GRPCIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">method</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_request</span> <span class="o">=</span> <span class="n">request</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_items_field</span> <span class="o">=</span> <span class="n">items_field</span>
@@ -541,8 +556,7 @@
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">setattr</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_token_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_token_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span><span class="p">)</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">)</span>
 

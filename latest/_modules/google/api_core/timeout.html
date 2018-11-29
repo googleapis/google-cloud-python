@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.timeout &#8212; google-cloud d8a3ec3 documentation</title>
+    <title>google.api_core.timeout &#8212; google-cloud f20a5b8 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -115,6 +115,7 @@
 <span class="sd">            wrapped function. If `None`, the target function is expected to</span>
 <span class="sd">            never timeout.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span> <span class="o">=</span> <span class="n">timeout</span>
 
@@ -128,15 +129,17 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Callable: The wrapped function.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="nd">@general_helpers</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">func_with_timeout</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Wrapped function that adds timeout.&quot;&quot;&quot;</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;timeout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">func_with_timeout</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;&lt;ConstantTimeout timeout=</span><span class="si">{:.1f}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">&quot;&lt;ConstantTimeout timeout=</span><span class="si">{:.1f}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_exponential_timeout_generator</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">,</span> <span class="n">deadline</span><span class="p">):</span>
@@ -152,9 +155,9 @@
 <span class="sd">        float: A timeout value.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">deadline</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">deadline_datetime</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">datetime_helpers</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">+</span>
-            <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">deadline</span><span class="p">))</span>
+        <span class="n">deadline_datetime</span> <span class="o">=</span> <span class="n">datetime_helpers</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
+            <span class="n">seconds</span><span class="o">=</span><span class="n">deadline</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">deadline_datetime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">max</span>
 
@@ -167,7 +170,8 @@
             <span class="c1"># The set maximum timeout.</span>
             <span class="n">maximum</span><span class="p">,</span>
             <span class="c1"># The remaining time before the deadline is reached.</span>
-            <span class="nb">float</span><span class="p">((</span><span class="n">deadline_datetime</span> <span class="o">-</span> <span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">seconds</span><span class="p">))</span>
+            <span class="nb">float</span><span class="p">((</span><span class="n">deadline_datetime</span> <span class="o">-</span> <span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">seconds</span><span class="p">),</span>
+        <span class="p">)</span>
         <span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span> <span class="o">*</span> <span class="n">multiplier</span>
 
 
@@ -195,12 +199,14 @@
 <span class="sd">            :mod:`google.api_core.retry`. If ``None``, the timeouts will not</span>
 <span class="sd">            be adjusted to accomodate an overall deadline.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">initial</span><span class="o">=</span><span class="n">_DEFAULT_INITIAL_TIMEOUT</span><span class="p">,</span>
-            <span class="n">maximum</span><span class="o">=</span><span class="n">_DEFAULT_MAXIMUM_TIMEOUT</span><span class="p">,</span>
-            <span class="n">multiplier</span><span class="o">=</span><span class="n">_DEFAULT_TIMEOUT_MULTIPLIER</span><span class="p">,</span>
-            <span class="n">deadline</span><span class="o">=</span><span class="n">_DEFAULT_DEADLINE</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">initial</span><span class="o">=</span><span class="n">_DEFAULT_INITIAL_TIMEOUT</span><span class="p">,</span>
+        <span class="n">maximum</span><span class="o">=</span><span class="n">_DEFAULT_MAXIMUM_TIMEOUT</span><span class="p">,</span>
+        <span class="n">multiplier</span><span class="o">=</span><span class="n">_DEFAULT_TIMEOUT_MULTIPLIER</span><span class="p">,</span>
+        <span class="n">deadline</span><span class="o">=</span><span class="n">_DEFAULT_DEADLINE</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_initial</span> <span class="o">=</span> <span class="n">initial</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span> <span class="o">=</span> <span class="n">maximum</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span> <span class="o">=</span> <span class="n">multiplier</span>
@@ -219,7 +225,8 @@
             <span class="n">initial</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">,</span>
             <span class="n">maximum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span>
             <span class="n">multiplier</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span>
-            <span class="n">deadline</span><span class="o">=</span><span class="n">deadline</span><span class="p">)</span></div>
+            <span class="n">deadline</span><span class="o">=</span><span class="n">deadline</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Apply the timeout decorator.</span>
@@ -232,22 +239,24 @@
 <span class="sd">            Callable: The wrapped function.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">timeouts</span> <span class="o">=</span> <span class="n">_exponential_timeout_generator</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deadline</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deadline</span>
+        <span class="p">)</span>
 
         <span class="nd">@general_helpers</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">func_with_timeout</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Wrapped function that adds timeout.&quot;&quot;&quot;</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;timeout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">timeouts</span><span class="p">)</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">timeouts</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">func_with_timeout</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="s1">&#39;&lt;ExponentialTimeout initial=</span><span class="si">{:.1f}</span><span class="s1">, maximum=</span><span class="si">{:.1f}</span><span class="s1">, &#39;</span>
-            <span class="s1">&#39;multiplier=</span><span class="si">{:.1f}</span><span class="s1">, deadline=</span><span class="si">{:.1f}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_deadline</span><span class="p">))</span></div>
+            <span class="s2">&quot;&lt;ExponentialTimeout initial=</span><span class="si">{:.1f}</span><span class="s2">, maximum=</span><span class="si">{:.1f}</span><span class="s2">, &quot;</span>
+            <span class="s2">&quot;multiplier=</span><span class="si">{:.1f}</span><span class="s2">, deadline=</span><span class="si">{:.1f}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deadline</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
 </pre></div>
 
           </div>
