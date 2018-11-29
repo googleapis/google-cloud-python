@@ -28,9 +28,9 @@ from google.oauth2 import service_account
 
 
 _GOOGLE_AUTH_CREDENTIALS_HELP = (
-    'This library only supports credentials from google-auth-library-python. '
-    'See https://google-cloud-python.readthedocs.io/en/latest/core/auth.html '
-    'for help on authentication with this library.'
+    "This library only supports credentials from google-auth-library-python. "
+    "See https://google-cloud-python.readthedocs.io/en/latest/core/auth.html "
+    "for help on authentication with this library."
 )
 
 
@@ -67,17 +67,18 @@ class _ClientFactoryMixin(object):
         :raises TypeError: if there is a conflict with the kwargs
                  and the credentials created by the factory.
         """
-        if 'credentials' in kwargs:
-            raise TypeError('credentials must not be in keyword arguments')
-        with io.open(json_credentials_path, 'r', encoding='utf-8') as json_fi:
+        if "credentials" in kwargs:
+            raise TypeError("credentials must not be in keyword arguments")
+        with io.open(json_credentials_path, "r", encoding="utf-8") as json_fi:
             credentials_info = json.load(json_fi)
         credentials = service_account.Credentials.from_service_account_info(
-            credentials_info)
+            credentials_info
+        )
         if cls._SET_PROJECT:
-            if 'project' not in kwargs:
-                kwargs['project'] = credentials_info.get('project_id')
+            if "project" not in kwargs:
+                kwargs["project"] = credentials_info.get("project_id")
 
-        kwargs['credentials'] = credentials
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
 
@@ -121,22 +122,27 @@ class Client(_ClientFactoryMixin):
     """
 
     def __init__(self, credentials=None, _http=None):
-        if (credentials is not None and
-                not isinstance(
-                    credentials, google.auth.credentials.Credentials)):
+        if credentials is not None and not isinstance(
+            credentials, google.auth.credentials.Credentials
+        ):
             raise ValueError(_GOOGLE_AUTH_CREDENTIALS_HELP)
         if credentials is None and _http is None:
             credentials, _ = google.auth.default()
         self._credentials = google.auth.credentials.with_scopes_if_required(
-            credentials, self.SCOPE)
+            credentials, self.SCOPE
+        )
         self._http_internal = _http
 
     def __getstate__(self):
         """Explicitly state that clients are not pickleable."""
-        raise PicklingError('\n'.join([
-            'Pickling client objects is explicitly not supported.',
-            'Clients have non-trivial state that is local and unpickleable.',
-        ]))
+        raise PicklingError(
+            "\n".join(
+                [
+                    "Pickling client objects is explicitly not supported.",
+                    "Clients have non-trivial state that is local and unpickleable.",
+                ]
+            )
+        )
 
     @property
     def _http(self):
@@ -146,9 +152,9 @@ class Client(_ClientFactoryMixin):
         :returns: An HTTP object.
         """
         if self._http_internal is None:
-            self._http_internal = (
-                google.auth.transport.requests.AuthorizedSession(
-                    self._credentials))
+            self._http_internal = google.auth.transport.requests.AuthorizedSession(
+                self._credentials
+            )
         return self._http_internal
 
 
@@ -168,12 +174,14 @@ class _ClientProjectMixin(object):
     def __init__(self, project=None):
         project = self._determine_default(project)
         if project is None:
-            raise EnvironmentError('Project was not passed and could not be '
-                                   'determined from the environment.')
+            raise EnvironmentError(
+                "Project was not passed and could not be "
+                "determined from the environment."
+            )
         if isinstance(project, six.binary_type):
-            project = project.decode('utf-8')
+            project = project.decode("utf-8")
         if not isinstance(project, six.string_types):
-            raise ValueError('Project must be a string.')
+            raise ValueError("Project must be a string.")
         self.project = project
 
     @staticmethod

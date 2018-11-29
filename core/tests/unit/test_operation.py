@@ -16,7 +16,6 @@ import unittest
 
 
 class Test__compute_type_url(unittest.TestCase):
-
     def _call_fut(self, klass, prefix=None):
         from google.cloud.operation import _compute_type_url
 
@@ -31,23 +30,20 @@ class Test__compute_type_url(unittest.TestCase):
         type_url = self._call_fut(Struct)
 
         self.assertEqual(
-            type_url,
-            '%s/%s' % (_GOOGLE_APIS_PREFIX, Struct.DESCRIPTOR.full_name))
+            type_url, "%s/%s" % (_GOOGLE_APIS_PREFIX, Struct.DESCRIPTOR.full_name)
+        )
 
     def test_w_prefix(self):
         from google.protobuf.struct_pb2 import Struct
 
-        PREFIX = 'test.google-cloud-python.com'
+        PREFIX = "test.google-cloud-python.com"
 
         type_url = self._call_fut(Struct, PREFIX)
 
-        self.assertEqual(
-            type_url,
-            '%s/%s' % (PREFIX, Struct.DESCRIPTOR.full_name))
+        self.assertEqual(type_url, "%s/%s" % (PREFIX, Struct.DESCRIPTOR.full_name))
 
 
 class Test_register_type(unittest.TestCase):
-
     def _call_fut(self, klass, type_url=None):
         from google.cloud.operation import register_type
 
@@ -57,7 +53,7 @@ class Test_register_type(unittest.TestCase):
         from google.cloud import operation as MUT
         from google.cloud._testing import _Monkey
 
-        type_url = 'testing.google-cloud-python.com/testing'
+        type_url = "testing.google-cloud-python.com/testing"
         klass = object()
         type_url_map = {}
 
@@ -82,7 +78,7 @@ class Test_register_type(unittest.TestCase):
         from google.cloud import operation as MUT
         from google.cloud._testing import _Monkey
 
-        type_url = 'testing.google-cloud-python.com/testing'
+        type_url = "testing.google-cloud-python.com/testing"
         klass = object()
         type_url_map = {type_url: klass}
 
@@ -95,7 +91,7 @@ class Test_register_type(unittest.TestCase):
         from google.cloud import operation as MUT
         from google.cloud._testing import _Monkey
 
-        type_url = 'testing.google-cloud-python.com/testing'
+        type_url = "testing.google-cloud-python.com/testing"
         klass, other = object(), object()
         type_url_map = {type_url: other}
 
@@ -108,7 +104,7 @@ class Test_register_type(unittest.TestCase):
 
 class TestOperation(unittest.TestCase):
 
-    OPERATION_NAME = 'operations/projects/foo/instances/bar/operations/123'
+    OPERATION_NAME = "operations/projects/foo/instances/bar/operations/123"
 
     @staticmethod
     def _get_target_class():
@@ -121,8 +117,7 @@ class TestOperation(unittest.TestCase):
 
     def test_ctor_defaults(self):
         client = _Client()
-        operation = self._make_one(
-            self.OPERATION_NAME, client)
+        operation = self._make_one(self.OPERATION_NAME, client)
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertIs(operation.client, client)
         self.assertIsNone(operation.target)
@@ -134,8 +129,7 @@ class TestOperation(unittest.TestCase):
 
     def test_ctor_explicit(self):
         client = _Client()
-        operation = self._make_one(
-            self.OPERATION_NAME, client, foo='bar')
+        operation = self._make_one(self.OPERATION_NAME, client, foo="bar")
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertIs(operation.client, client)
@@ -143,7 +137,7 @@ class TestOperation(unittest.TestCase):
         self.assertIsNone(operation.response)
         self.assertIsNone(operation.error)
         self.assertIsNone(operation.metadata)
-        self.assertEqual(operation.caller_metadata, {'foo': 'bar'})
+        self.assertEqual(operation.caller_metadata, {"foo": "bar"})
         self.assertTrue(operation._from_grpc)
 
     def test_from_pb_wo_metadata_or_kw(self):
@@ -168,12 +162,13 @@ class TestOperation(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud import operation as MUT
 
-        type_url = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
+        type_url = "type.googleapis.com/%s" % (Struct.DESCRIPTOR.full_name,)
         client = _Client()
-        meta = ParseDict({'foo': 'Bar'}, Struct())
+        meta = ParseDict({"foo": "Bar"}, Struct())
         metadata_pb = Any(type_url=type_url, value=meta.SerializeToString())
         operation_pb = operations_pb2.Operation(
-            name=self.OPERATION_NAME, metadata=metadata_pb)
+            name=self.OPERATION_NAME, metadata=metadata_pb
+        )
         klass = self._get_target_class()
 
         with _Monkey(MUT, _TYPE_URL_MAP={type_url: Struct}):
@@ -192,36 +187,34 @@ class TestOperation(unittest.TestCase):
         from google.cloud import operation as MUT
         from google.cloud._testing import _Monkey
 
-        type_url = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
+        type_url = "type.googleapis.com/%s" % (Struct.DESCRIPTOR.full_name,)
         type_url_map = {type_url: Struct}
 
         client = _Client()
-        meta = Struct(fields={'foo': Value(string_value=u'Bar')})
+        meta = Struct(fields={"foo": Value(string_value=u"Bar")})
         metadata_pb = Any(type_url=type_url, value=meta.SerializeToString())
         operation_pb = operations_pb2.Operation(
-            name=self.OPERATION_NAME, metadata=metadata_pb)
+            name=self.OPERATION_NAME, metadata=metadata_pb
+        )
         klass = self._get_target_class()
 
         with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
-            operation = klass.from_pb(operation_pb, client, baz='qux')
+            operation = klass.from_pb(operation_pb, client, baz="qux")
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertIs(operation.client, client)
         self.assertEqual(operation.metadata, meta)
-        self.assertEqual(operation.caller_metadata, {'baz': 'qux'})
+        self.assertEqual(operation.caller_metadata, {"baz": "qux"})
 
     def test_from_dict(self):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud._testing import _Monkey
         from google.cloud import operation as MUT
 
-        type_url = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
+        type_url = "type.googleapis.com/%s" % (Struct.DESCRIPTOR.full_name,)
         api_response = {
-            'name': self.OPERATION_NAME,
-            'metadata': {
-                '@type': type_url,
-                'value': {'foo': 'Bar'},
-            },
+            "name": self.OPERATION_NAME,
+            "metadata": {"@type": type_url, "value": {"foo": "Bar"}},
         }
 
         client = _Client()
@@ -237,8 +230,7 @@ class TestOperation(unittest.TestCase):
         self.assertIsNone(operation.error)
         self.assertIsInstance(operation.metadata, Struct)
         self.assertEqual(len(operation.metadata.fields), 1)
-        self.assertEqual(
-            operation.metadata.fields['foo'].string_value, 'Bar')
+        self.assertEqual(operation.metadata.fields["foo"].string_value, "Bar")
         self.assertEqual(operation.caller_metadata, {})
         self.assertFalse(operation._from_grpc)
 
@@ -294,15 +286,12 @@ class TestOperation(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud import operation as MUT
 
-        type_url = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
-        name = '2302903294023'
+        type_url = "type.googleapis.com/%s" % (Struct.DESCRIPTOR.full_name,)
+        name = "2302903294023"
         api_response = {
-            'name': name,
-            'done': True,
-            'metadata': {
-                '@type': type_url,
-                'value': {'foo': 'Bar'},
-            },
+            "name": name,
+            "done": True,
+            "metadata": {"@type": type_url, "value": {"foo": "Bar"}},
         }
         connection = _Connection(api_response)
         client = _Client(connection)
@@ -312,11 +301,10 @@ class TestOperation(unittest.TestCase):
         with _Monkey(MUT, _TYPE_URL_MAP={type_url: Struct}):
             self.assertTrue(operation.poll())
 
-        expected_path = 'operations/%s' % (name,)
-        self.assertEqual(connection._requested, [{
-            'method': 'GET',
-            'path': expected_path,
-        }])
+        expected_path = "operations/%s" % (name,)
+        self.assertEqual(
+            connection._requested, [{"method": "GET", "path": expected_path}]
+        )
 
     def test__update_state_done(self):
         from google.longrunning import operations_pb2
@@ -338,7 +326,7 @@ class TestOperation(unittest.TestCase):
         self.assertIsNone(operation.metadata)
 
         val_pb = Value(number_value=1337)
-        type_url = 'type.googleapis.com/%s' % (Value.DESCRIPTOR.full_name,)
+        type_url = "type.googleapis.com/%s" % (Value.DESCRIPTOR.full_name,)
         val_any = Any(type_url=type_url, value=val_pb.SerializeToString())
         operation_pb = operations_pb2.Operation(metadata=val_any)
 
@@ -373,10 +361,9 @@ class TestOperation(unittest.TestCase):
         self.assertIsNone(operation.error)
         self.assertIsNone(operation.response)
 
-        response_pb = Value(string_value='totes a response')
-        type_url = 'type.googleapis.com/%s' % (Value.DESCRIPTOR.full_name,)
-        response_any = Any(type_url=type_url,
-                           value=response_pb.SerializeToString())
+        response_pb = Value(string_value="totes a response")
+        type_url = "type.googleapis.com/%s" % (Value.DESCRIPTOR.full_name,)
+        response_any = Any(type_url=type_url, value=response_pb.SerializeToString())
         operation_pb = operations_pb2.Operation(response=response_any)
 
         with _Monkey(MUT, _TYPE_URL_MAP={type_url: Value}):
@@ -401,14 +388,12 @@ class TestOperation(unittest.TestCase):
 
 
 class _OperationsStub(object):
-
     def GetOperation(self, request_pb):
         self._get_operation_requested = request_pb
         return self._get_operation_response
 
 
 class _Connection(object):
-
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
@@ -420,7 +405,6 @@ class _Connection(object):
 
 
 class _Client(object):
-
     def __init__(self, connection=None):
         self._operations_stub = _OperationsStub()
         self._connection = connection

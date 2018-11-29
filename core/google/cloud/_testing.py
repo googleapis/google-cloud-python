@@ -23,7 +23,7 @@ class _Monkey(object):
     def __init__(self, module, **kw):
         self.module = module
         if not kw:  # pragma: NO COVER
-            raise ValueError('_Monkey was used with nothing to monkey-patch')
+            raise ValueError("_Monkey was used with nothing to monkey-patch")
         self.to_restore = {key: getattr(module, key) for key in kw}
         for key, value in kw.items():
             setattr(module, key, value)
@@ -37,10 +37,10 @@ class _Monkey(object):
 
 
 class _NamedTemporaryFile(object):
-
-    def __init__(self, suffix=''):
+    def __init__(self, suffix=""):
         import os
         import tempfile
+
         filehandle, self.name = tempfile.mkstemp(suffix=suffix)
         os.close(filehandle)
 
@@ -49,6 +49,7 @@ class _NamedTemporaryFile(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         import os
+
         os.remove(self.name)
 
 
@@ -86,36 +87,40 @@ class _GAXBaseAPI(object):
         from grpc._channel import _RPCState
         from google.cloud.exceptions import GrpcRendezvous
 
-        details = 'Some error details.'
+        details = "Some error details."
         exc_state = _RPCState((), None, trailing, status_code, details)
         return GrpcRendezvous(exc_state, None, None, None)
 
     def _make_grpc_not_found(self):
         from grpc import StatusCode
+
         return self._make_grpc_error(StatusCode.NOT_FOUND)
 
     def _make_grpc_failed_precondition(self):
         from grpc import StatusCode
+
         return self._make_grpc_error(StatusCode.FAILED_PRECONDITION)
 
     def _make_grpc_already_exists(self):
         from grpc import StatusCode
+
         return self._make_grpc_error(StatusCode.ALREADY_EXISTS)
 
     def _make_grpc_deadline_exceeded(self):
         from grpc import StatusCode
+
         return self._make_grpc_error(StatusCode.DEADLINE_EXCEEDED)
 
 
 class _GAXPageIterator(object):
-
     def __init__(self, *pages, **kwargs):
         self._pages = iter(pages)
-        self.page_token = kwargs.get('page_token')
+        self.page_token = kwargs.get("page_token")
 
     def next(self):
         """Iterate to the next page."""
         import six
+
         return six.next(self._pages)
 
     __next__ = next

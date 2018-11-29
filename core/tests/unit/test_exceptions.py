@@ -21,30 +21,30 @@ from google.cloud import exceptions
 
 
 def test_create_google_cloud_error():
-    exception = exceptions.GoogleCloudError('Testing')
+    exception = exceptions.GoogleCloudError("Testing")
     exception.code = 600
-    assert str(exception) == '600 Testing'
-    assert exception.message == 'Testing'
+    assert str(exception) == "600 Testing"
+    assert exception.message == "Testing"
     assert exception.errors == []
 
 
 def test_create_google_cloud_error_with_args():
     error = {
-        'domain': 'global',
-        'location': 'test',
-        'locationType': 'testing',
-        'message': 'Testing',
-        'reason': 'test',
+        "domain": "global",
+        "location": "test",
+        "locationType": "testing",
+        "message": "Testing",
+        "reason": "test",
     }
-    exception = exceptions.GoogleCloudError('Testing', [error])
+    exception = exceptions.GoogleCloudError("Testing", [error])
     exception.code = 600
-    assert str(exception) == '600 Testing'
-    assert exception.message == 'Testing'
+    assert str(exception) == "600 Testing"
+    assert exception.message == "Testing"
     assert exception.errors == [error]
 
 
 def test_from_http_status():
-    message = 'message'
+    message = "message"
     exception = exceptions.from_http_status(http_client.NOT_FOUND, message)
     assert exception.code == http_client.NOT_FOUND
     assert exception.message == message
@@ -52,10 +52,11 @@ def test_from_http_status():
 
 
 def test_from_http_status_with_errors():
-    message = 'message'
-    errors = ['1', '2']
+    message = "message"
+    errors = ["1", "2"]
     exception = exceptions.from_http_status(
-        http_client.NOT_FOUND, message, errors=errors)
+        http_client.NOT_FOUND, message, errors=errors
+    )
 
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http_client.NOT_FOUND
@@ -64,7 +65,7 @@ def test_from_http_status_with_errors():
 
 
 def test_from_http_status_unknown_code():
-    message = 'message'
+    message = "message"
     status_code = 156
     exception = exceptions.from_http_status(status_code, message)
     assert exception.code == status_code
@@ -76,7 +77,8 @@ def make_response(content):
     response._content = content
     response.status_code = http_client.NOT_FOUND
     response.request = requests.Request(
-        method='POST', url='https://example.com').prepare()
+        method="POST", url="https://example.com"
+    ).prepare()
     return response
 
 
@@ -87,41 +89,40 @@ def test_from_http_response_no_content():
 
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http_client.NOT_FOUND
-    assert exception.message == 'POST https://example.com/: unknown error'
+    assert exception.message == "POST https://example.com/: unknown error"
     assert exception.response == response
 
 
 def test_from_http_response_text_content():
-    response = make_response(b'message')
+    response = make_response(b"message")
 
     exception = exceptions.from_http_response(response)
 
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http_client.NOT_FOUND
-    assert exception.message == 'POST https://example.com/: message'
+    assert exception.message == "POST https://example.com/: message"
 
 
 def test_from_http_response_json_content():
-    response = make_response(json.dumps({
-        'error': {
-            'message': 'json message',
-            'errors': ['1', '2']
-        }
-    }).encode('utf-8'))
+    response = make_response(
+        json.dumps({"error": {"message": "json message", "errors": ["1", "2"]}}).encode(
+            "utf-8"
+        )
+    )
 
     exception = exceptions.from_http_response(response)
 
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http_client.NOT_FOUND
-    assert exception.message == 'POST https://example.com/: json message'
-    assert exception.errors == ['1', '2']
+    assert exception.message == "POST https://example.com/: json message"
+    assert exception.errors == ["1", "2"]
 
 
 def test_from_http_response_bad_json_content():
-    response = make_response(json.dumps({'meep': 'moop'}).encode('utf-8'))
+    response = make_response(json.dumps({"meep": "moop"}).encode("utf-8"))
 
     exception = exceptions.from_http_response(response)
 
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http_client.NOT_FOUND
-    assert exception.message == 'POST https://example.com/: unknown error'
+    assert exception.message == "POST https://example.com/: unknown error"

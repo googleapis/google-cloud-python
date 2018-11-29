@@ -16,6 +16,4 @@
 
 from google.api_core.future.base import Future
 
-__all__ = [
-    'Future',
-]
+__all__ = ["Future"]

@@ -33,17 +33,17 @@ def _utcnow_monotonic():
 
 
 def test_wrap_method_basic():
-    method = mock.Mock(spec=['__call__'], return_value=42)
+    method = mock.Mock(spec=["__call__"], return_value=42)
 
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(method)
 
-    result = wrapped_method(1, 2, meep='moop')
+    result = wrapped_method(1, 2, meep="moop")
 
     assert result == 42
-    method.assert_called_once_with(1, 2, meep='moop', metadata=mock.ANY)
+    method.assert_called_once_with(1, 2, meep="moop", metadata=mock.ANY)
 
     # Check that the default client info was specified in the metadata.
-    metadata = method.call_args[1]['metadata']
+    metadata = method.call_args[1]["metadata"]
     assert len(metadata) == 1
     client_info = google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO
     user_agent_metadata = client_info.to_grpc_metadata()
@@ -51,72 +51,78 @@ def test_wrap_method_basic():
 
 
 def test_wrap_method_with_no_client_info():
-    method = mock.Mock(spec=['__call__'])
+    method = mock.Mock(spec=["__call__"])
 
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, client_info=None)
+        method, client_info=None
+    )
 
-    wrapped_method(1, 2, meep='moop')
+    wrapped_method(1, 2, meep="moop")
 
-    method.assert_called_once_with(1, 2, meep='moop')
+    method.assert_called_once_with(1, 2, meep="moop")
 
 
 def test_wrap_method_with_custom_client_info():
     client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-        python_version=1, grpc_version=2, api_core_version=3, gapic_version=4,
-        client_library_version=5)
-    method = mock.Mock(spec=['__call__'])
+        python_version=1,
+        grpc_version=2,
+        api_core_version=3,
+        gapic_version=4,
+        client_library_version=5,
+    )
+    method = mock.Mock(spec=["__call__"])
 
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, client_info=client_info)
+        method, client_info=client_info
+    )
 
-    wrapped_method(1, 2, meep='moop')
+    wrapped_method(1, 2, meep="moop")
 
-    method.assert_called_once_with(1, 2, meep='moop', metadata=mock.ANY)
+    method.assert_called_once_with(1, 2, meep="moop", metadata=mock.ANY)
 
     # Check that the custom client info was specified in the metadata.
-    metadata = method.call_args[1]['metadata']
+    metadata = method.call_args[1]["metadata"]
     assert client_info.to_grpc_metadata() in metadata
 
 
 def test_invoke_wrapped_method_with_metadata():
-    method = mock.Mock(spec=['__call__'])
+    method = mock.Mock(spec=["__call__"])
 
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(method)
 
-    wrapped_method(mock.sentinel.request, metadata=[('a', 'b')])
+    wrapped_method(mock.sentinel.request, metadata=[("a", "b")])
 
     method.assert_called_once_with(mock.sentinel.request, metadata=mock.ANY)
-    metadata = method.call_args[1]['metadata']
+    metadata = method.call_args[1]["metadata"]
     # Metadata should have two items: the client info metadata and our custom
     # metadata.
     assert len(metadata) == 2
-    assert ('a', 'b') in metadata
+    assert ("a", "b") in metadata
 
 
 def test_invoke_wrapped_method_with_metadata_as_none():
-    method = mock.Mock(spec=['__call__'])
+    method = mock.Mock(spec=["__call__"])
 
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(method)
 
     wrapped_method(mock.sentinel.request, metadata=None)
 
     method.assert_called_once_with(mock.sentinel.request, metadata=mock.ANY)
-    metadata = method.call_args[1]['metadata']
+    metadata = method.call_args[1]["metadata"]
     # Metadata should have just one items: the client info metadata.
     assert len(metadata) == 1
 
 
-@mock.patch('time.sleep')
+@mock.patch("time.sleep")
 def test_wrap_method_with_default_retry_and_timeout(unusued_sleep):
     method = mock.Mock(
-        spec=['__call__'],
-        side_effect=[exceptions.InternalServerError(None), 42]
+        spec=["__call__"], side_effect=[exceptions.InternalServerError(None), 42]
     )
     default_retry = retry.Retry()
     default_timeout = timeout.ConstantTimeout(60)
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, default_retry, default_timeout)
+        method, default_retry, default_timeout
+    )
 
     result = wrapped_method()
 
@@ -125,83 +131,84 @@ def test_wrap_method_with_default_retry_and_timeout(unusued_sleep):
     method.assert_called_with(timeout=60, metadata=mock.ANY)
 
 
-@mock.patch('time.sleep')
-def test_wrap_method_with_default_retry_and_timeout_using_sentinel(
-        unusued_sleep):
+@mock.patch("time.sleep")
+def test_wrap_method_with_default_retry_and_timeout_using_sentinel(unusued_sleep):
     method = mock.Mock(
-        spec=['__call__'],
-        side_effect=[exceptions.InternalServerError(None), 42]
+        spec=["__call__"], side_effect=[exceptions.InternalServerError(None), 42]
     )
     default_retry = retry.Retry()
     default_timeout = timeout.ConstantTimeout(60)
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, default_retry, default_timeout)
+        method, default_retry, default_timeout
+    )
 
     result = wrapped_method(
         retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT)
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+    )
 
     assert result == 42
     assert method.call_count == 2
     method.assert_called_with(timeout=60, metadata=mock.ANY)
 
 
-@mock.patch('time.sleep')
+@mock.patch("time.sleep")
 def test_wrap_method_with_overriding_retry_and_timeout(unusued_sleep):
-    method = mock.Mock(
-        spec=['__call__'],
-        side_effect=[exceptions.NotFound(None), 42]
-    )
+    method = mock.Mock(spec=["__call__"], side_effect=[exceptions.NotFound(None), 42])
     default_retry = retry.Retry()
     default_timeout = timeout.ConstantTimeout(60)
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, default_retry, default_timeout)
+        method, default_retry, default_timeout
+    )
 
     result = wrapped_method(
         retry=retry.Retry(retry.if_exception_type(exceptions.NotFound)),
-        timeout=timeout.ConstantTimeout(22))
+        timeout=timeout.ConstantTimeout(22),
+    )
 
     assert result == 42
     assert method.call_count == 2
     method.assert_called_with(timeout=22, metadata=mock.ANY)
 
 
-@mock.patch('time.sleep')
+@mock.patch("time.sleep")
 @mock.patch(
-    'google.api_core.datetime_helpers.utcnow',
+    "google.api_core.datetime_helpers.utcnow",
     side_effect=_utcnow_monotonic(),
-    autospec=True)
+    autospec=True,
+)
 def test_wrap_method_with_overriding_retry_deadline(utcnow, unused_sleep):
     method = mock.Mock(
-        spec=['__call__'],
-        side_effect=([exceptions.InternalServerError(None)] * 4) + [42]
+        spec=["__call__"],
+        side_effect=([exceptions.InternalServerError(None)] * 4) + [42],
     )
     default_retry = retry.Retry()
     default_timeout = timeout.ExponentialTimeout(deadline=60)
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, default_retry, default_timeout)
+        method, default_retry, default_timeout
+    )
 
     # Overriding only the retry's deadline should also override the timeout's
     # deadline.
-    result = wrapped_method(
-        retry=default_retry.with_deadline(30))
+    result = wrapped_method(retry=default_retry.with_deadline(30))
 
     assert result == 42
-    timeout_args = [call[1]['timeout'] for call in method.call_args_list]
+    timeout_args = [call[1]["timeout"] for call in method.call_args_list]
     assert timeout_args == [5.0, 10.0, 20.0, 26.0, 25.0]
     assert utcnow.call_count == (
-        1 +  # First to set the deadline.
-        5 +  # One for each min(timeout, maximum, (DEADLINE - NOW).seconds)
-        5
+        1
+        + 5  # First to set the deadline.
+        + 5  # One for each min(timeout, maximum, (DEADLINE - NOW).seconds)
     )
 
 
 def test_wrap_method_with_overriding_timeout_as_a_number():
-    method = mock.Mock(spec=['__call__'], return_value=42)
+    method = mock.Mock(spec=["__call__"], return_value=42)
     default_retry = retry.Retry()
     default_timeout = timeout.ConstantTimeout(60)
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, default_retry, default_timeout)
+        method, default_retry, default_timeout
+    )
 
     result = wrapped_method(timeout=22)
 

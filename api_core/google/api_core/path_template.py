@@ -41,7 +41,8 @@ import six
 # - "{name=**}": a multi-segment wildcard named variable, for example
 #   "shelf/{name=**}"
 # - "{name=/path/*/**}": a multi-segment named variable with a sub-template.
-_VARIABLE_RE = re.compile(r"""
+_VARIABLE_RE = re.compile(
+    r"""
     (  # Capture the entire variable expression
         (?P<positional>\*\*?)  # Match & capture * and ** positional variables.
         |
@@ -52,11 +53,13 @@ _VARIABLE_RE = re.compile(r"""
             (?:=(?P<template>.+?))?
         }
     )
-    """, re.VERBOSE)
+    """,
+    re.VERBOSE,
+)
 
 # Segment expressions used for validating paths against a template.
-_SINGLE_SEGMENT_PATTERN = r'([^/]+)'
-_MULTI_SEGMENT_PATTERN = r'(.+)'
+_SINGLE_SEGMENT_PATTERN = r"([^/]+)"
+_MULTI_SEGMENT_PATTERN = r"(.+)"
 
 
 def _expand_variable_match(positional_vars, named_vars, match):
@@ -76,28 +79,26 @@ def _expand_variable_match(positional_vars, named_vars, match):
             template but not specified or if an unexpected template expression
             is encountered.
     """
-    positional = match.group('positional')
-    name = match.group('name')
+    positional = match.group("positional")
+    name = match.group("name")
     if name is not None:
         try:
             return six.text_type(named_vars[name])
         except KeyError:
             raise ValueError(
-                'Named variable \'{}\' not specified and needed by template '
-                '`{}` at position {}'.format(
-                    name, match.string, match.start()))
+                "Named variable '{}' not specified and needed by template "
+                "`{}` at position {}".format(name, match.string, match.start())
+            )
     elif positional is not None:
         try:
             return six.text_type(positional_vars.pop(0))
         except IndexError:
             raise ValueError(
-                'Positional variable not specified and needed by template '
-                '`{}` at position {}'.format(
-                    match.string, match.start()))
+                "Positional variable not specified and needed by template "
+                "`{}` at position {}".format(match.string, match.start())
+            )
     else:
-        raise ValueError(
-            'Unknown template expression {}'.format(
-                match.group(0)))
+        raise ValueError("Unknown template expression {}".format(match.group(0)))
 
 
 def expand(tmpl, *args, **kwargs):
@@ -140,24 +141,22 @@ def _replace_variable_with_pattern(match):
     Raises:
         ValueError: If an unexpected template expression is encountered.
     """
-    positional = match.group('positional')
-    name = match.group('name')
-    template = match.group('template')
+    positional = match.group("positional")
+    name = match.group("name")
+    template = match.group("template")
     if name is not None:
         if not template:
             return _SINGLE_SEGMENT_PATTERN.format(name)
-        elif template == '**':
+        elif template == "**":
             return _MULTI_SEGMENT_PATTERN.format(name)
         else:
             return _generate_pattern_for_template(template)
-    elif positional == '*':
+    elif positional == "*":
         return _SINGLE_SEGMENT_PATTERN
-    elif positional == '**':
+    elif positional == "**":
         return _MULTI_SEGMENT_PATTERN
     else:
-        raise ValueError(
-            'Unknown template expression {}'.format(
-                match.group(0)))
+        raise ValueError("Unknown template expression {}".format(match.group(0)))
 
 
 def _generate_pattern_for_template(tmpl):
@@ -194,5 +193,5 @@ def validate(tmpl, path):
     Returns:
         bool: True if the path matches.
     """
-    pattern = _generate_pattern_for_template(tmpl) + '$'
+    pattern = _generate_pattern_for_template(tmpl) + "$"
     return True if re.match(pattern, path) is not None else False

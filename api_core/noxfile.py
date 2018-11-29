@@ -28,85 +28,78 @@ def default(session):
     run the tests.
     """
     # Install all test dependencies, then install this package in-place.
-    session.install(
-        'mock',
-        'pytest',
-        'pytest-cov',
-        'grpcio >= 1.0.2',
-    )
-    session.install('-e', '.')
+    session.install("mock", "pytest", "pytest-cov", "grpcio >= 1.0.2")
+    session.install("-e", ".")
 
     # Run py.test against the unit tests.
     session.run(
-        'py.test',
-        '--quiet',
-        '--cov=google.api_core',
-        '--cov=tests.unit',
-        '--cov-append',
-        '--cov-config=.coveragerc',
-        '--cov-report=',
-        '--cov-fail-under=97',
-        os.path.join('tests', 'unit'),
+        "py.test",
+        "--quiet",
+        "--cov=google.api_core",
+        "--cov=tests.unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=97",
+        os.path.join("tests", "unit"),
         *session.posargs
     )
 
 
-@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
 def unit_grpc_gcp(session):
     """Run the unit test suite with grpcio-gcp installed."""
 
     # Install grpcio-gcp
-    session.install('grpcio-gcp')
+    session.install("grpcio-gcp")
 
     default(session)
 
 
-@nox.session(python='3.6')
+@nox.session(python="3.6")
 def lint(session):
     """Run linters.
 
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install('flake8', 'flake8-import-order')
-    session.install('.')
-    session.run('flake8', 'google', 'tests')
+    session.install("flake8", "flake8-import-order")
+    session.install(".")
+    session.run("flake8", "google", "tests")
 
 
-@nox.session(python='3.6')
+@nox.session(python="3.6")
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
-    session.install('docutils', 'Pygments')
-    session.run(
-        'python', 'setup.py', 'check', '--restructuredtext', '--strict')
+    session.install("docutils", "Pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
 # No 2.7 due to https://github.com/google/importlab/issues/26.
 # No 3.7 because pytype supports up to 3.6 only.
-@nox.session(python='3.6')
+@nox.session(python="3.6")
 def pytype(session):
-  """Run type-checking."""
-  session.install('.',
-                  'grpcio >= 1.8.2',
-                  'grpcio-gcp >= 0.2.2',
-                  'pytype >= 2018.9.26')
-  session.run('pytype')
+    """Run type-checking."""
+    session.install(
+        ".", "grpcio >= 1.8.2", "grpcio-gcp >= 0.2.2", "pytype >= 2018.9.26"
+    )
+    session.run("pytype")
 
 
-@nox.session(python='3.6')
+@nox.session(python="3.6")
 def cover(session):
     """Run the final coverage report.
 
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.install('coverage', 'pytest-cov')
-    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
-    session.run('coverage', 'erase')
+    session.install("coverage", "pytest-cov")
+    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "erase")

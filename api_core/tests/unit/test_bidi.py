@@ -25,7 +25,6 @@ from google.api_core import exceptions
 
 
 class Test_RequestQueueGenerator(object):
-
     def test_bounded_consume(self):
         call = mock.create_autospec(grpc.Call, instance=True)
         call.is_active.return_value = True
@@ -53,8 +52,7 @@ class Test_RequestQueueGenerator(object):
         call = mock.create_autospec(grpc.Call, instance=True)
         call.is_active.return_value = False
 
-        generator = bidi._RequestQueueGenerator(
-            q, initial_request=mock.sentinel.A)
+        generator = bidi._RequestQueueGenerator(q, initial_request=mock.sentinel.A)
         generator.call = call
 
         items = list(generator)
@@ -68,7 +66,8 @@ class Test_RequestQueueGenerator(object):
         call.is_active.return_value = False
 
         generator = bidi._RequestQueueGenerator(
-            q, initial_request=lambda: mock.sentinel.A)
+            q, initial_request=lambda: mock.sentinel.A
+        )
         generator.call = call
 
         items = list(generator)
@@ -166,7 +165,7 @@ class TestBidiRpc(object):
 
     def test_done_callbacks(self):
         bidi_rpc = bidi.BidiRpc(None)
-        callback = mock.Mock(spec=['__call__'])
+        callback = mock.Mock(spec=["__call__"])
 
         bidi_rpc.add_done_callback(callback)
         bidi_rpc._on_call_done(mock.sentinel.future)
@@ -287,10 +286,9 @@ class TestResumableBidiRpc(object):
         assert bidi_rpc.is_active is False
 
     def test_done_callbacks_recoverable(self):
-        start_rpc = mock.create_autospec(
-            grpc.StreamStreamMultiCallable, instance=True)
+        start_rpc = mock.create_autospec(grpc.StreamStreamMultiCallable, instance=True)
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, lambda _: True)
-        callback = mock.Mock(spec=['__call__'])
+        callback = mock.Mock(spec=["__call__"])
 
         bidi_rpc.add_done_callback(callback)
         bidi_rpc._on_call_done(mock.sentinel.future)
@@ -301,7 +299,7 @@ class TestResumableBidiRpc(object):
 
     def test_done_callbacks_non_recoverable(self):
         bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: False)
-        callback = mock.Mock(spec=['__call__'])
+        callback = mock.Mock(spec=["__call__"])
 
         bidi_rpc.add_done_callback(callback)
         bidi_rpc._on_call_done(mock.sentinel.future)
@@ -313,10 +311,9 @@ class TestResumableBidiRpc(object):
         call_1 = CallStub([error], active=False)
         call_2 = CallStub([])
         start_rpc = mock.create_autospec(
-            grpc.StreamStreamMultiCallable,
-            instance=True,
-            side_effect=[call_1, call_2])
-        should_recover = mock.Mock(spec=['__call__'], return_value=True)
+            grpc.StreamStreamMultiCallable, instance=True, side_effect=[call_1, call_2]
+        )
+        should_recover = mock.Mock(spec=["__call__"], return_value=True)
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
 
         bidi_rpc.open()
@@ -334,10 +331,9 @@ class TestResumableBidiRpc(object):
         error = ValueError()
         call = CallStub([error], active=False)
         start_rpc = mock.create_autospec(
-            grpc.StreamStreamMultiCallable,
-            instance=True,
-            return_value=call)
-        should_recover = mock.Mock(spec=['__call__'], return_value=False)
+            grpc.StreamStreamMultiCallable, instance=True, return_value=call
+        )
+        should_recover = mock.Mock(spec=["__call__"], return_value=False)
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
 
         bidi_rpc.open()
@@ -358,10 +354,9 @@ class TestResumableBidiRpc(object):
         call_1 = CallStub([1, error])
         call_2 = CallStub([2, 3])
         start_rpc = mock.create_autospec(
-            grpc.StreamStreamMultiCallable,
-            instance=True,
-            side_effect=[call_1, call_2])
-        should_recover = mock.Mock(spec=['__call__'], return_value=True)
+            grpc.StreamStreamMultiCallable, instance=True, side_effect=[call_1, call_2]
+        )
+        should_recover = mock.Mock(spec=["__call__"], return_value=True)
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
 
         bidi_rpc.open()
@@ -379,9 +374,8 @@ class TestResumableBidiRpc(object):
         call_1 = CallStub([])
         call_2 = CallStub([])
         start_rpc = mock.create_autospec(
-            grpc.StreamStreamMultiCallable,
-            instance=True,
-            side_effect=[call_1, call_2])
+            grpc.StreamStreamMultiCallable, instance=True, side_effect=[call_1, call_2]
+        )
         callback = mock.Mock()
         callback.return_value = True
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, callback)
@@ -397,10 +391,9 @@ class TestResumableBidiRpc(object):
         error = ValueError()
         call = CallStub([error])
         start_rpc = mock.create_autospec(
-            grpc.StreamStreamMultiCallable,
-            instance=True,
-            return_value=call)
-        should_recover = mock.Mock(spec=['__call__'], return_value=False)
+            grpc.StreamStreamMultiCallable, instance=True, return_value=call
+        )
+        should_recover = mock.Mock(spec=["__call__"], return_value=False)
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
 
         bidi_rpc.open()
@@ -415,16 +408,15 @@ class TestResumableBidiRpc(object):
         assert call.cancelled is True
 
     def test_reopen_failure_on_rpc_restart(self):
-        error1 = ValueError('1')
-        error2 = ValueError('2')
+        error1 = ValueError("1")
+        error2 = ValueError("2")
         call = CallStub([error1])
         # Invoking start RPC a second time will trigger an error.
         start_rpc = mock.create_autospec(
-            grpc.StreamStreamMultiCallable,
-            instance=True,
-            side_effect=[call, error2])
-        should_recover = mock.Mock(spec=['__call__'], return_value=True)
-        callback = mock.Mock(spec=['__call__'])
+            grpc.StreamStreamMultiCallable, instance=True, side_effect=[call, error2]
+        )
+        should_recover = mock.Mock(spec=["__call__"], return_value=True)
+        callback = mock.Mock(spec=["__call__"])
 
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
         bidi_rpc.add_done_callback(callback)
@@ -453,13 +445,12 @@ class TestResumableBidiRpc(object):
             bidi_rpc.recv()
 
     def test_finalize_idempotent(self):
-        error1 = ValueError('1')
-        error2 = ValueError('2')
-        callback = mock.Mock(spec=['__call__'])
-        should_recover = mock.Mock(spec=['__call__'], return_value=False)
+        error1 = ValueError("1")
+        error2 = ValueError("2")
+        callback = mock.Mock(spec=["__call__"])
+        should_recover = mock.Mock(spec=["__call__"], return_value=False)
 
-        bidi_rpc = bidi.ResumableBidiRpc(
-            mock.sentinel.start_rpc, should_recover)
+        bidi_rpc = bidi.ResumableBidiRpc(mock.sentinel.start_rpc, should_recover)
 
         bidi_rpc.add_done_callback(callback)
 
@@ -514,10 +505,9 @@ class TestBackgroundConsumer(object):
         should_continue = threading.Event()
         responses_and_events = {
             mock.sentinel.response_1: threading.Event(),
-            mock.sentinel.response_2: threading.Event()
+            mock.sentinel.response_2: threading.Event(),
         }
-        bidi_rpc.recv.side_effect = [
-            mock.sentinel.response_1, mock.sentinel.response_2]
+        bidi_rpc.recv.side_effect = [mock.sentinel.response_1, mock.sentinel.response_2]
 
         recved_responses = []
         consumer = None
@@ -549,8 +539,7 @@ class TestBackgroundConsumer(object):
 
         responses_and_events[mock.sentinel.response_2].wait()
 
-        assert recved_responses == [
-            mock.sentinel.response_1, mock.sentinel.response_2]
+        assert recved_responses == [mock.sentinel.response_1, mock.sentinel.response_2]
 
         consumer.stop()
 
@@ -561,8 +550,7 @@ class TestBackgroundConsumer(object):
 
         bidi_rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
         bidi_rpc.is_active = True
-        bidi_rpc.add_done_callback.side_effect = (
-            lambda _: should_continue.set())
+        bidi_rpc.add_done_callback.side_effect = lambda _: should_continue.set()
 
         consumer = bidi.BackgroundConsumer(bidi_rpc, mock.sentinel.on_response)
 
@@ -573,8 +561,7 @@ class TestBackgroundConsumer(object):
 
         # Wait for add_done_callback to be called
         should_continue.wait()
-        bidi_rpc.add_done_callback.assert_called_once_with(
-            consumer._on_call_done)
+        bidi_rpc.add_done_callback.assert_called_once_with(consumer._on_call_done)
 
         # The consumer should now be blocked on waiting to be unpaused.
         assert consumer.is_active
@@ -594,9 +581,9 @@ class TestBackgroundConsumer(object):
 
         bidi_rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
         bidi_rpc.is_active = True
-        bidi_rpc.recv.side_effect = exceptions.ServiceUnavailable('Gone away')
+        bidi_rpc.recv.side_effect = exceptions.ServiceUnavailable("Gone away")
 
-        on_response = mock.Mock(spec=['__call__'])
+        on_response = mock.Mock(spec=["__call__"])
 
         consumer = bidi.BackgroundConsumer(bidi_rpc, on_response)
 
@@ -608,7 +595,7 @@ class TestBackgroundConsumer(object):
 
         on_response.assert_not_called()
         bidi_rpc.recv.assert_called_once()
-        assert 'caught error' in caplog.text
+        assert "caught error" in caplog.text
 
     def test_consumer_unexpected_error(self, caplog):
         caplog.set_level(logging.DEBUG)
@@ -617,7 +604,7 @@ class TestBackgroundConsumer(object):
         bidi_rpc.is_active = True
         bidi_rpc.recv.side_effect = ValueError()
 
-        on_response = mock.Mock(spec=['__call__'])
+        on_response = mock.Mock(spec=["__call__"])
 
         consumer = bidi.BackgroundConsumer(bidi_rpc, on_response)
 
@@ -629,13 +616,13 @@ class TestBackgroundConsumer(object):
 
         on_response.assert_not_called()
         bidi_rpc.recv.assert_called_once()
-        assert 'caught unexpected exception' in caplog.text
+        assert "caught unexpected exception" in caplog.text
 
     def test_double_stop(self, caplog):
         caplog.set_level(logging.DEBUG)
         bidi_rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
         bidi_rpc.is_active = True
-        on_response = mock.Mock(spec=['__call__'])
+        on_response = mock.Mock(spec=["__call__"])
 
         def close_side_effect():
             bidi_rpc.is_active = False
