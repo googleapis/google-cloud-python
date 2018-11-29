@@ -46,7 +46,8 @@ from google.cloud.automl_v1beta1.proto import service_pb2_grpc
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import empty_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    'google-cloud-automl', ).version
 
 
 class AutoMlClient(object):
@@ -62,12 +63,12 @@ class AutoMlClient(object):
     then the id for the item is ``{dataset_id}``.
     """
 
-    SERVICE_ADDRESS = "automl.googleapis.com:443"
+    SERVICE_ADDRESS = 'automl.googleapis.com:443'
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.cloud.automl.v1beta1.AutoMl"
+    _INTERFACE_NAME = 'google.cloud.automl.v1beta1.AutoMl'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -83,8 +84,9 @@ class AutoMlClient(object):
         Returns:
             AutoMlClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -93,7 +95,7 @@ class AutoMlClient(object):
     def location_path(cls, project, location):
         """Return a fully-qualified location string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}",
+            'projects/{project}/locations/{location}',
             project=project,
             location=location,
         )
@@ -102,7 +104,7 @@ class AutoMlClient(object):
     def dataset_path(cls, project, location, dataset):
         """Return a fully-qualified dataset string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/datasets/{dataset}",
+            'projects/{project}/locations/{location}/datasets/{dataset}',
             project=project,
             location=location,
             dataset=dataset,
@@ -112,7 +114,7 @@ class AutoMlClient(object):
     def model_path(cls, project, location, model):
         """Return a fully-qualified model string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/models/{model}",
+            'projects/{project}/locations/{location}/models/{model}',
             project=project,
             location=location,
             model=model,
@@ -122,21 +124,19 @@ class AutoMlClient(object):
     def model_evaluation_path(cls, project, location, model, model_evaluation):
         """Return a fully-qualified model_evaluation string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/models/{model}/modelEvaluations/{model_evaluation}",
+            'projects/{project}/locations/{location}/models/{model}/modelEvaluations/{model_evaluation}',
             project=project,
             location=location,
             model=model,
             model_evaluation=model_evaluation,
         )
 
-    def __init__(
-        self,
-        transport=None,
-        channel=None,
-        credentials=None,
-        client_config=None,
-        client_info=None,
-    ):
+    def __init__(self,
+                 transport=None,
+                 channel=None,
+                 credentials=None,
+                 client_config=None,
+                 client_info=None):
         """Constructor.
 
         Args:
@@ -170,19 +170,18 @@ class AutoMlClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                "The `client_config` argument is deprecated.",
+                'The `client_config` argument is deprecated.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
         else:
             client_config = auto_ml_client_config.config
 
         if channel:
             warnings.warn(
-                "The `channel` argument is deprecated; use " "`transport` instead.",
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -196,19 +195,19 @@ class AutoMlClient(object):
             else:
                 if credentials:
                     raise ValueError(
-                        "Received both a transport instance and "
-                        "credentials; these are mutually exclusive."
-                    )
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
                 self.transport = transport
         else:
             self.transport = auto_ml_grpc_transport.AutoMlGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
-            )
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -218,8 +217,7 @@ class AutoMlClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
-        )
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -228,14 +226,12 @@ class AutoMlClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def create_dataset(
-        self,
-        parent,
-        dataset,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def create_dataset(self,
+                       parent,
+                       dataset,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Creates a dataset.
 
@@ -277,28 +273,28 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_dataset" not in self._inner_api_calls:
+        if 'create_dataset' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_dataset"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_dataset,
-                default_retry=self._method_configs["CreateDataset"].retry,
-                default_timeout=self._method_configs["CreateDataset"].timeout,
-                client_info=self._client_info,
-            )
+                'create_dataset'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_dataset,
+                    default_retry=self._method_configs['CreateDataset'].retry,
+                    default_timeout=self._method_configs['CreateDataset'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.CreateDatasetRequest(parent=parent, dataset=dataset)
-        return self._inner_api_calls["create_dataset"](
-            request, retry=retry, timeout=timeout, metadata=metadata
+        request = service_pb2.CreateDatasetRequest(
+            parent=parent,
+            dataset=dataset,
         )
+        return self._inner_api_calls['create_dataset'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def get_dataset(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def get_dataset(self,
+                    name,
+                    retry=google.api_core.gapic_v1.method.DEFAULT,
+                    timeout=google.api_core.gapic_v1.method.DEFAULT,
+                    metadata=None):
         """
         Gets a dataset.
 
@@ -333,30 +329,26 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_dataset" not in self._inner_api_calls:
+        if 'get_dataset' not in self._inner_api_calls:
             self._inner_api_calls[
-                "get_dataset"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_dataset,
-                default_retry=self._method_configs["GetDataset"].retry,
-                default_timeout=self._method_configs["GetDataset"].timeout,
-                client_info=self._client_info,
-            )
+                'get_dataset'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_dataset,
+                    default_retry=self._method_configs['GetDataset'].retry,
+                    default_timeout=self._method_configs['GetDataset'].timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.GetDatasetRequest(name=name)
-        return self._inner_api_calls["get_dataset"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = service_pb2.GetDatasetRequest(name=name, )
+        return self._inner_api_calls['get_dataset'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def list_datasets(
-        self,
-        parent,
-        filter_=None,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def list_datasets(self,
+                      parent,
+                      filter_=None,
+                      page_size=None,
+                      retry=google.api_core.gapic_v1.method.DEFAULT,
+                      timeout=google.api_core.gapic_v1.method.DEFAULT,
+                      metadata=None):
         """
         Lists datasets in a project.
 
@@ -419,41 +411,40 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_datasets" not in self._inner_api_calls:
+        if 'list_datasets' not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_datasets"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_datasets,
-                default_retry=self._method_configs["ListDatasets"].retry,
-                default_timeout=self._method_configs["ListDatasets"].timeout,
-                client_info=self._client_info,
-            )
+                'list_datasets'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_datasets,
+                    default_retry=self._method_configs['ListDatasets'].retry,
+                    default_timeout=self._method_configs['ListDatasets'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = service_pb2.ListDatasetsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent,
+            filter=filter_,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_datasets"],
+                self._inner_api_calls['list_datasets'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="datasets",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='datasets',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
-    def delete_dataset(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def delete_dataset(self,
+                       name,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Deletes a dataset and all of its contents. Returns empty response in the
         ``response`` field when it completes, and ``delete_details`` in the
@@ -499,20 +490,19 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_dataset" not in self._inner_api_calls:
+        if 'delete_dataset' not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_dataset"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_dataset,
-                default_retry=self._method_configs["DeleteDataset"].retry,
-                default_timeout=self._method_configs["DeleteDataset"].timeout,
-                client_info=self._client_info,
-            )
+                'delete_dataset'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_dataset,
+                    default_retry=self._method_configs['DeleteDataset'].retry,
+                    default_timeout=self._method_configs['DeleteDataset'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.DeleteDatasetRequest(name=name)
-        operation = self._inner_api_calls["delete_dataset"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = service_pb2.DeleteDatasetRequest(name=name, )
+        operation = self._inner_api_calls['delete_dataset'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -520,14 +510,12 @@ class AutoMlClient(object):
             metadata_type=proto_operations_pb2.OperationMetadata,
         )
 
-    def import_data(
-        self,
-        name,
-        input_config,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def import_data(self,
+                    name,
+                    input_config,
+                    retry=google.api_core.gapic_v1.method.DEFAULT,
+                    timeout=google.api_core.gapic_v1.method.DEFAULT,
+                    metadata=None):
         """
         Imports data into a dataset. Returns an empty response in the
         ``response`` field when it completes.
@@ -580,20 +568,21 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "import_data" not in self._inner_api_calls:
+        if 'import_data' not in self._inner_api_calls:
             self._inner_api_calls[
-                "import_data"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.import_data,
-                default_retry=self._method_configs["ImportData"].retry,
-                default_timeout=self._method_configs["ImportData"].timeout,
-                client_info=self._client_info,
-            )
+                'import_data'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.import_data,
+                    default_retry=self._method_configs['ImportData'].retry,
+                    default_timeout=self._method_configs['ImportData'].timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.ImportDataRequest(name=name, input_config=input_config)
-        operation = self._inner_api_calls["import_data"](
-            request, retry=retry, timeout=timeout, metadata=metadata
+        request = service_pb2.ImportDataRequest(
+            name=name,
+            input_config=input_config,
         )
+        operation = self._inner_api_calls['import_data'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -601,14 +590,12 @@ class AutoMlClient(object):
             metadata_type=proto_operations_pb2.OperationMetadata,
         )
 
-    def export_data(
-        self,
-        name,
-        output_config,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def export_data(self,
+                    name,
+                    output_config,
+                    retry=google.api_core.gapic_v1.method.DEFAULT,
+                    timeout=google.api_core.gapic_v1.method.DEFAULT,
+                    metadata=None):
         """
         Exports dataset's data to a Google Cloud Storage bucket. Returns an
         empty response in the ``response`` field when it completes.
@@ -660,20 +647,21 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "export_data" not in self._inner_api_calls:
+        if 'export_data' not in self._inner_api_calls:
             self._inner_api_calls[
-                "export_data"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.export_data,
-                default_retry=self._method_configs["ExportData"].retry,
-                default_timeout=self._method_configs["ExportData"].timeout,
-                client_info=self._client_info,
-            )
+                'export_data'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.export_data,
+                    default_retry=self._method_configs['ExportData'].retry,
+                    default_timeout=self._method_configs['ExportData'].timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.ExportDataRequest(name=name, output_config=output_config)
-        operation = self._inner_api_calls["export_data"](
-            request, retry=retry, timeout=timeout, metadata=metadata
+        request = service_pb2.ExportDataRequest(
+            name=name,
+            output_config=output_config,
         )
+        operation = self._inner_api_calls['export_data'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -681,14 +669,12 @@ class AutoMlClient(object):
             metadata_type=proto_operations_pb2.OperationMetadata,
         )
 
-    def create_model(
-        self,
-        parent,
-        model,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def create_model(self,
+                     parent,
+                     model,
+                     retry=google.api_core.gapic_v1.method.DEFAULT,
+                     timeout=google.api_core.gapic_v1.method.DEFAULT,
+                     metadata=None):
         """
         Creates a model. Returns a Model in the ``response`` field when it
         completes. When you create a model, several model evaluations are
@@ -742,20 +728,22 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_model" not in self._inner_api_calls:
+        if 'create_model' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_model"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_model,
-                default_retry=self._method_configs["CreateModel"].retry,
-                default_timeout=self._method_configs["CreateModel"].timeout,
-                client_info=self._client_info,
-            )
+                'create_model'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_model,
+                    default_retry=self._method_configs['CreateModel'].retry,
+                    default_timeout=self._method_configs['CreateModel'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.CreateModelRequest(parent=parent, model=model)
-        operation = self._inner_api_calls["create_model"](
-            request, retry=retry, timeout=timeout, metadata=metadata
+        request = service_pb2.CreateModelRequest(
+            parent=parent,
+            model=model,
         )
+        operation = self._inner_api_calls['create_model'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -763,13 +751,11 @@ class AutoMlClient(object):
             metadata_type=proto_operations_pb2.OperationMetadata,
         )
 
-    def get_model(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def get_model(self,
+                  name,
+                  retry=google.api_core.gapic_v1.method.DEFAULT,
+                  timeout=google.api_core.gapic_v1.method.DEFAULT,
+                  metadata=None):
         """
         Gets a model.
 
@@ -804,30 +790,26 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_model" not in self._inner_api_calls:
+        if 'get_model' not in self._inner_api_calls:
             self._inner_api_calls[
-                "get_model"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_model,
-                default_retry=self._method_configs["GetModel"].retry,
-                default_timeout=self._method_configs["GetModel"].timeout,
-                client_info=self._client_info,
-            )
+                'get_model'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_model,
+                    default_retry=self._method_configs['GetModel'].retry,
+                    default_timeout=self._method_configs['GetModel'].timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.GetModelRequest(name=name)
-        return self._inner_api_calls["get_model"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = service_pb2.GetModelRequest(name=name, )
+        return self._inner_api_calls['get_model'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def list_models(
-        self,
-        parent,
-        filter_=None,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def list_models(self,
+                    parent,
+                    filter_=None,
+                    page_size=None,
+                    retry=google.api_core.gapic_v1.method.DEFAULT,
+                    timeout=google.api_core.gapic_v1.method.DEFAULT,
+                    metadata=None):
         """
         Lists models.
 
@@ -893,41 +875,39 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_models" not in self._inner_api_calls:
+        if 'list_models' not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_models"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_models,
-                default_retry=self._method_configs["ListModels"].retry,
-                default_timeout=self._method_configs["ListModels"].timeout,
-                client_info=self._client_info,
-            )
+                'list_models'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_models,
+                    default_retry=self._method_configs['ListModels'].retry,
+                    default_timeout=self._method_configs['ListModels'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = service_pb2.ListModelsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent,
+            filter=filter_,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_models"],
+                self._inner_api_calls['list_models'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="model",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='model',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
-    def delete_model(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def delete_model(self,
+                     name,
+                     retry=google.api_core.gapic_v1.method.DEFAULT,
+                     timeout=google.api_core.gapic_v1.method.DEFAULT,
+                     metadata=None):
         """
         Deletes a model. If a model is already deployed, this only deletes the
         model in AutoML BE, and does not change the status of the deployed model
@@ -975,20 +955,19 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_model" not in self._inner_api_calls:
+        if 'delete_model' not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_model"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_model,
-                default_retry=self._method_configs["DeleteModel"].retry,
-                default_timeout=self._method_configs["DeleteModel"].timeout,
-                client_info=self._client_info,
-            )
+                'delete_model'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_model,
+                    default_retry=self._method_configs['DeleteModel'].retry,
+                    default_timeout=self._method_configs['DeleteModel'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.DeleteModelRequest(name=name)
-        operation = self._inner_api_calls["delete_model"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = service_pb2.DeleteModelRequest(name=name, )
+        operation = self._inner_api_calls['delete_model'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -996,13 +975,11 @@ class AutoMlClient(object):
             metadata_type=proto_operations_pb2.OperationMetadata,
         )
 
-    def deploy_model(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def deploy_model(self,
+                     name,
+                     retry=google.api_core.gapic_v1.method.DEFAULT,
+                     timeout=google.api_core.gapic_v1.method.DEFAULT,
+                     metadata=None):
         """
         Deploys model. Returns a ``DeployModelResponse`` in the ``response``
         field when it completes.
@@ -1038,28 +1015,25 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "deploy_model" not in self._inner_api_calls:
+        if 'deploy_model' not in self._inner_api_calls:
             self._inner_api_calls[
-                "deploy_model"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.deploy_model,
-                default_retry=self._method_configs["DeployModel"].retry,
-                default_timeout=self._method_configs["DeployModel"].timeout,
-                client_info=self._client_info,
-            )
+                'deploy_model'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.deploy_model,
+                    default_retry=self._method_configs['DeployModel'].retry,
+                    default_timeout=self._method_configs['DeployModel'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.DeployModelRequest(name=name)
-        return self._inner_api_calls["deploy_model"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = service_pb2.DeployModelRequest(name=name, )
+        return self._inner_api_calls['deploy_model'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def undeploy_model(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def undeploy_model(self,
+                       name,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Undeploys model. Returns an ``UndeployModelResponse`` in the
         ``response`` field when it completes.
@@ -1095,28 +1069,25 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "undeploy_model" not in self._inner_api_calls:
+        if 'undeploy_model' not in self._inner_api_calls:
             self._inner_api_calls[
-                "undeploy_model"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.undeploy_model,
-                default_retry=self._method_configs["UndeployModel"].retry,
-                default_timeout=self._method_configs["UndeployModel"].timeout,
-                client_info=self._client_info,
-            )
+                'undeploy_model'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.undeploy_model,
+                    default_retry=self._method_configs['UndeployModel'].retry,
+                    default_timeout=self._method_configs['UndeployModel'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.UndeployModelRequest(name=name)
-        return self._inner_api_calls["undeploy_model"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = service_pb2.UndeployModelRequest(name=name, )
+        return self._inner_api_calls['undeploy_model'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def get_model_evaluation(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def get_model_evaluation(self,
+                             name,
+                             retry=google.api_core.gapic_v1.method.DEFAULT,
+                             timeout=google.api_core.gapic_v1.method.DEFAULT,
+                             metadata=None):
         """
         Gets a model evaluation.
 
@@ -1151,30 +1122,28 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_model_evaluation" not in self._inner_api_calls:
+        if 'get_model_evaluation' not in self._inner_api_calls:
             self._inner_api_calls[
-                "get_model_evaluation"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_model_evaluation,
-                default_retry=self._method_configs["GetModelEvaluation"].retry,
-                default_timeout=self._method_configs["GetModelEvaluation"].timeout,
-                client_info=self._client_info,
-            )
+                'get_model_evaluation'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_model_evaluation,
+                    default_retry=self._method_configs['GetModelEvaluation'].
+                    retry,
+                    default_timeout=self._method_configs['GetModelEvaluation'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = service_pb2.GetModelEvaluationRequest(name=name)
-        return self._inner_api_calls["get_model_evaluation"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = service_pb2.GetModelEvaluationRequest(name=name, )
+        return self._inner_api_calls['get_model_evaluation'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def list_model_evaluations(
-        self,
-        parent,
-        filter_=None,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def list_model_evaluations(self,
+                               parent,
+                               filter_=None,
+                               page_size=None,
+                               retry=google.api_core.gapic_v1.method.DEFAULT,
+                               timeout=google.api_core.gapic_v1.method.DEFAULT,
+                               metadata=None):
         """
         Lists model evaluations.
 
@@ -1242,30 +1211,32 @@ class AutoMlClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_model_evaluations" not in self._inner_api_calls:
+        if 'list_model_evaluations' not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_model_evaluations"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_model_evaluations,
-                default_retry=self._method_configs["ListModelEvaluations"].retry,
-                default_timeout=self._method_configs["ListModelEvaluations"].timeout,
-                client_info=self._client_info,
-            )
+                'list_model_evaluations'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_model_evaluations,
+                    default_retry=self._method_configs['ListModelEvaluations'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['ListModelEvaluations'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = service_pb2.ListModelEvaluationsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent,
+            filter=filter_,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_model_evaluations"],
+                self._inner_api_calls['list_model_evaluations'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="model_evaluation",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='model_evaluation',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
