@@ -26,4 +26,8 @@ class ClusterManagerClient(cluster_manager_client.ClusterManagerClient):
     enums = enums
 
 
-__all__ = ("enums", "types", "ClusterManagerClient")
+__all__ = (
+    'enums',
+    'types',
+    'ClusterManagerClient',
+)
