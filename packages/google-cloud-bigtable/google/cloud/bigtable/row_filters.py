@@ -17,8 +17,7 @@
 
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable_v2.proto import (
-    data_pb2 as data_v2_pb2)
+from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
 
 
 class RowFilter(object):
@@ -264,8 +263,7 @@ class TimestampRange(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return (other.start == self.start and
-                other.end == self.end)
+        return other.start == self.start and other.end == self.end
 
     def __ne__(self, other):
         return not self == other
@@ -278,13 +276,14 @@ class TimestampRange(object):
         """
         timestamp_range_kwargs = {}
         if self.start is not None:
-            timestamp_range_kwargs['start_timestamp_micros'] = (
-                _microseconds_from_datetime(self.start) // 1000 * 1000)
+            timestamp_range_kwargs["start_timestamp_micros"] = (
+                _microseconds_from_datetime(self.start) // 1000 * 1000
+            )
         if self.end is not None:
             end_time = _microseconds_from_datetime(self.end)
             if end_time % 1000 != 0:
                 end_time = end_time // 1000 * 1000 + 1000
-            timestamp_range_kwargs['end_timestamp_micros'] = end_time
+            timestamp_range_kwargs["end_timestamp_micros"] = end_time
         return data_v2_pb2.TimestampRange(**timestamp_range_kwargs)
 
 
@@ -315,8 +314,7 @@ class TimestampRangeFilter(RowFilter):
         :rtype: :class:`.data_v2_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_v2_pb2.RowFilter(
-            timestamp_range_filter=self.range_.to_pb())
+        return data_v2_pb2.RowFilter(timestamp_range_filter=self.range_.to_pb())
 
 
 class ColumnRangeFilter(RowFilter):
@@ -356,34 +354,44 @@ class ColumnRangeFilter(RowFilter):
              is set but no ``end_column`` is given
     """
 
-    def __init__(self, column_family_id, start_column=None, end_column=None,
-                 inclusive_start=None, inclusive_end=None):
+    def __init__(
+        self,
+        column_family_id,
+        start_column=None,
+        end_column=None,
+        inclusive_start=None,
+        inclusive_end=None,
+    ):
         self.column_family_id = column_family_id
 
         if inclusive_start is None:
             inclusive_start = True
         elif start_column is None:
-            raise ValueError('Inclusive start was specified but no '
-                             'start column was given.')
+            raise ValueError(
+                "Inclusive start was specified but no " "start column was given."
+            )
         self.start_column = start_column
         self.inclusive_start = inclusive_start
 
         if inclusive_end is None:
             inclusive_end = True
         elif end_column is None:
-            raise ValueError('Inclusive end was specified but no '
-                             'end column was given.')
+            raise ValueError(
+                "Inclusive end was specified but no " "end column was given."
+            )
         self.end_column = end_column
         self.inclusive_end = inclusive_end
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return (other.column_family_id == self.column_family_id and
-                other.start_column == self.start_column and
-                other.end_column == self.end_column and
-                other.inclusive_start == self.inclusive_start and
-                other.inclusive_end == self.inclusive_end)
+        return (
+            other.column_family_id == self.column_family_id
+            and other.start_column == self.start_column
+            and other.end_column == self.end_column
+            and other.inclusive_start == self.inclusive_start
+            and other.inclusive_end == self.inclusive_end
+        )
 
     def __ne__(self, other):
         return not self == other
@@ -397,18 +405,18 @@ class ColumnRangeFilter(RowFilter):
         :rtype: :class:`.data_v2_pb2.RowFilter`
         :returns: The converted current object.
         """
-        column_range_kwargs = {'family_name': self.column_family_id}
+        column_range_kwargs = {"family_name": self.column_family_id}
         if self.start_column is not None:
             if self.inclusive_start:
-                key = 'start_qualifier_closed'
+                key = "start_qualifier_closed"
             else:
-                key = 'start_qualifier_open'
+                key = "start_qualifier_open"
             column_range_kwargs[key] = _to_bytes(self.start_column)
         if self.end_column is not None:
             if self.inclusive_end:
-                key = 'end_qualifier_closed'
+                key = "end_qualifier_closed"
             else:
-                key = 'end_qualifier_open'
+                key = "end_qualifier_open"
             column_range_kwargs[key] = _to_bytes(self.end_column)
 
         column_range = data_v2_pb2.ColumnRange(**column_range_kwargs)
@@ -479,31 +487,36 @@ class ValueRangeFilter(RowFilter):
              is set but no ``end_value`` is given
     """
 
-    def __init__(self, start_value=None, end_value=None,
-                 inclusive_start=None, inclusive_end=None):
+    def __init__(
+        self, start_value=None, end_value=None, inclusive_start=None, inclusive_end=None
+    ):
         if inclusive_start is None:
             inclusive_start = True
         elif start_value is None:
-            raise ValueError('Inclusive start was specified but no '
-                             'start value was given.')
+            raise ValueError(
+                "Inclusive start was specified but no " "start value was given."
+            )
         self.start_value = start_value
         self.inclusive_start = inclusive_start
 
         if inclusive_end is None:
             inclusive_end = True
         elif end_value is None:
-            raise ValueError('Inclusive end was specified but no '
-                             'end value was given.')
+            raise ValueError(
+                "Inclusive end was specified but no " "end value was given."
+            )
         self.end_value = end_value
         self.inclusive_end = inclusive_end
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return (other.start_value == self.start_value and
-                other.end_value == self.end_value and
-                other.inclusive_start == self.inclusive_start and
-                other.inclusive_end == self.inclusive_end)
+        return (
+            other.start_value == self.start_value
+            and other.end_value == self.end_value
+            and other.inclusive_start == self.inclusive_start
+            and other.inclusive_end == self.inclusive_end
+        )
 
     def __ne__(self, other):
         return not self == other
@@ -520,15 +533,15 @@ class ValueRangeFilter(RowFilter):
         value_range_kwargs = {}
         if self.start_value is not None:
             if self.inclusive_start:
-                key = 'start_value_closed'
+                key = "start_value_closed"
             else:
-                key = 'start_value_open'
+                key = "start_value_open"
             value_range_kwargs[key] = _to_bytes(self.start_value)
         if self.end_value is not None:
             if self.inclusive_end:
-                key = 'end_value_closed'
+                key = "end_value_closed"
             else:
-                key = 'end_value_open'
+                key = "end_value_open"
             value_range_kwargs[key] = _to_bytes(self.end_value)
 
         value_range = data_v2_pb2.ValueRange(**value_range_kwargs)
@@ -570,8 +583,7 @@ class CellsRowOffsetFilter(_CellCountFilter):
         :rtype: :class:`.data_v2_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_v2_pb2.RowFilter(
-            cells_per_row_offset_filter=self.num_cells)
+        return data_v2_pb2.RowFilter(cells_per_row_offset_filter=self.num_cells)
 
 
 class CellsRowLimitFilter(_CellCountFilter):
@@ -605,8 +617,7 @@ class CellsColumnLimitFilter(_CellCountFilter):
         :rtype: :class:`.data_v2_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_v2_pb2.RowFilter(
-            cells_per_column_limit_filter=self.num_cells)
+        return data_v2_pb2.RowFilter(cells_per_column_limit_filter=self.num_cells)
 
 
 class StripValueTransformerFilter(_BoolFilter):
@@ -709,7 +720,8 @@ class RowFilterChain(_FilterCombination):
         :returns: The converted current object.
         """
         chain = data_v2_pb2.RowFilter.Chain(
-            filters=[row_filter.to_pb() for row_filter in self.filters])
+            filters=[row_filter.to_pb() for row_filter in self.filters]
+        )
         return data_v2_pb2.RowFilter(chain=chain)
 
 
@@ -733,7 +745,8 @@ class RowFilterUnion(_FilterCombination):
         :returns: The converted current object.
         """
         interleave = data_v2_pb2.RowFilter.Interleave(
-            filters=[row_filter.to_pb() for row_filter in self.filters])
+            filters=[row_filter.to_pb() for row_filter in self.filters]
+        )
         return data_v2_pb2.RowFilter(interleave=interleave)
 
 
@@ -775,9 +788,11 @@ class ConditionalRowFilter(RowFilter):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return (other.base_filter == self.base_filter and
-                other.true_filter == self.true_filter and
-                other.false_filter == self.false_filter)
+        return (
+            other.base_filter == self.base_filter
+            and other.true_filter == self.true_filter
+            and other.false_filter == self.false_filter
+        )
 
     def __ne__(self, other):
         return not self == other
@@ -788,10 +803,10 @@ class ConditionalRowFilter(RowFilter):
         :rtype: :class:`.data_v2_pb2.RowFilter`
         :returns: The converted current object.
         """
-        condition_kwargs = {'predicate_filter': self.base_filter.to_pb()}
+        condition_kwargs = {"predicate_filter": self.base_filter.to_pb()}
         if self.true_filter is not None:
-            condition_kwargs['true_filter'] = self.true_filter.to_pb()
+            condition_kwargs["true_filter"] = self.true_filter.to_pb()
         if self.false_filter is not None:
-            condition_kwargs['false_filter'] = self.false_filter.to_pb()
+            condition_kwargs["false_filter"] = self.false_filter.to_pb()
         condition = data_v2_pb2.RowFilter.Condition(**condition_kwargs)
         return data_v2_pb2.RowFilter(condition=condition)

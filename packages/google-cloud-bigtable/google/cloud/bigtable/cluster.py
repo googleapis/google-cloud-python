@@ -20,9 +20,11 @@ from google.cloud.bigtable_admin_v2.types import instance_pb2
 from google.api_core.exceptions import NotFound
 
 
-_CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
-                              r'instances/(?P<instance>[^/]+)/clusters/'
-                              r'(?P<cluster_id>[a-z][-a-z0-9]*)$')
+_CLUSTER_NAME_RE = re.compile(
+    r"^projects/(?P<project>[^/]+)/"
+    r"instances/(?P<instance>[^/]+)/clusters/"
+    r"(?P<cluster_id>[a-z][-a-z0-9]*)$"
+)
 
 
 class Cluster(object):
@@ -72,13 +74,15 @@ class Cluster(object):
                    :data:`google.cloud.bigtable.enums.Cluster.State.DISABLED`.
     """
 
-    def __init__(self,
-                 cluster_id,
-                 instance,
-                 location_id=None,
-                 serve_nodes=None,
-                 default_storage_type=None,
-                 _state=None):
+    def __init__(
+        self,
+        cluster_id,
+        instance,
+        location_id=None,
+        serve_nodes=None,
+        default_storage_type=None,
+        _state=None,
+    ):
         self.cluster_id = cluster_id
         self._instance = instance
         self.location_id = location_id
@@ -108,15 +112,19 @@ class Cluster(object):
         """
         match_cluster_name = _CLUSTER_NAME_RE.match(cluster_pb.name)
         if match_cluster_name is None:
-            raise ValueError('Cluster protobuf name was not in the '
-                             'expected format.', cluster_pb.name)
-        if match_cluster_name.group('instance') != instance.instance_id:
-            raise ValueError('Instance ID on cluster does not match the '
-                             'instance ID on the client')
-        if match_cluster_name.group('project') != instance._client.project:
-            raise ValueError('Project ID on cluster does not match the '
-                             'project ID on the client')
-        cluster_id = match_cluster_name.group('cluster_id')
+            raise ValueError(
+                "Cluster protobuf name was not in the " "expected format.",
+                cluster_pb.name,
+            )
+        if match_cluster_name.group("instance") != instance.instance_id:
+            raise ValueError(
+                "Instance ID on cluster does not match the " "instance ID on the client"
+            )
+        if match_cluster_name.group("project") != instance._client.project:
+            raise ValueError(
+                "Project ID on cluster does not match the " "project ID on the client"
+            )
+        cluster_id = match_cluster_name.group("cluster_id")
 
         result = cls(cluster_id, instance)
         result._update_from_pb(cluster_pb)
@@ -127,7 +135,7 @@ class Cluster(object):
         Helper for :meth:`from_pb` and :meth:`reload`.
         """
 
-        self.location_id = cluster_pb.location.split('/')[-1]
+        self.location_id = cluster_pb.location.split("/")[-1]
         self.serve_nodes = cluster_pb.serve_nodes
         self.default_storage_type = cluster_pb.default_storage_type
         self._state = cluster_pb.state
@@ -148,8 +156,8 @@ class Cluster(object):
         :returns: The cluster name.
         """
         return self._instance._client.instance_admin_client.cluster_path(
-            self._instance._client.project, self._instance.instance_id,
-            self.cluster_id)
+            self._instance._client.project, self._instance.instance_id, self.cluster_id
+        )
 
     @property
     def state(self):
@@ -165,8 +173,7 @@ class Cluster(object):
         #       intentional, since the same cluster can be in different states
         #       if not synchronized. Clusters with similar instance/cluster
         #       settings but different clients can't be used in the same way.
-        return (other.cluster_id == self.cluster_id and
-                other._instance == self._instance)
+        return other.cluster_id == self.cluster_id and other._instance == self._instance
 
     def __ne__(self, other):
         return not self == other
@@ -180,8 +187,7 @@ class Cluster(object):
             :start-after: [START bigtable_reload_cluster]
             :end-before: [END bigtable_reload_cluster]
         """
-        cluster_pb = self._instance._client.instance_admin_client.get_cluster(
-            self.name)
+        cluster_pb = self._instance._client.instance_admin_client.get_cluster(self.name)
 
         # NOTE: _update_from_pb does not check that the project and
         #       cluster ID on the response match the request.
@@ -237,7 +243,8 @@ class Cluster(object):
         cluster_pb = self._to_pb()
 
         return client.instance_admin_client.create_cluster(
-            self._instance.name, self.cluster_id, cluster_pb)
+            self._instance.name, self.cluster_id, cluster_pb
+        )
 
     def update(self):
         """Update this cluster.
@@ -280,7 +287,8 @@ class Cluster(object):
         # Location is set only at the time of creation of a cluster
         # and can not be changed after cluster has been created.
         return client.instance_admin_client.update_cluster(
-            self.name, self.serve_nodes, None)
+            self.name, self.serve_nodes, None
+        )
 
     def delete(self):
         """Delete this cluster.
@@ -315,9 +323,11 @@ class Cluster(object):
         """ Create cluster proto buff message for API calls """
         client = self._instance._client
         location = client.instance_admin_client.location_path(
-            client.project, self.location_id)
+            client.project, self.location_id
+        )
         cluster_pb = instance_pb2.Cluster(
             location=location,
             serve_nodes=self.serve_nodes,
-            default_storage_type=self.default_storage_type)
+            default_storage_type=self.default_storage_type,
+        )
         return cluster_pb

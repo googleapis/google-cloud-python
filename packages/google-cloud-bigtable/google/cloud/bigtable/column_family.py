@@ -16,10 +16,10 @@
 
 
 from google.cloud import _helpers
+from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
 from google.cloud.bigtable_admin_v2.proto import (
-    table_pb2 as table_v2_pb2)
-from google.cloud.bigtable_admin_v2.proto import (
-    bigtable_table_admin_pb2 as table_admin_v2_pb2)
+    bigtable_table_admin_pb2 as table_admin_v2_pb2,
+)
 
 
 class GarbageCollectionRule(object):
@@ -119,8 +119,7 @@ class GCRuleUnion(GarbageCollectionRule):
         :rtype: :class:`.table_v2_pb2.GcRule`
         :returns: The converted current object.
         """
-        union = table_v2_pb2.GcRule.Union(
-            rules=[rule.to_pb() for rule in self.rules])
+        union = table_v2_pb2.GcRule.Union(rules=[rule.to_pb() for rule in self.rules])
         return table_v2_pb2.GcRule(union=union)
 
 
@@ -149,7 +148,8 @@ class GCRuleIntersection(GarbageCollectionRule):
         :returns: The converted current object.
         """
         intersection = table_v2_pb2.GcRule.Intersection(
-            rules=[rule.to_pb() for rule in self.rules])
+            rules=[rule.to_pb() for rule in self.rules]
+        )
         return table_v2_pb2.GcRule(intersection=intersection)
 
 
@@ -195,14 +195,16 @@ class ColumnFamily(object):
         :rtype: str
         :returns: The column family name.
         """
-        return self._table.name + '/columnFamilies/' + self.column_family_id
+        return self._table.name + "/columnFamilies/" + self.column_family_id
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return (other.column_family_id == self.column_family_id and
-                other._table == self._table and
-                other.gc_rule == self.gc_rule)
+        return (
+            other.column_family_id == self.column_family_id
+            and other._table == self._table
+            and other.gc_rule == self.gc_rule
+        )
 
     def __ne__(self, other):
         return not self == other
@@ -221,15 +223,16 @@ class ColumnFamily(object):
     def create(self):
         """Create this column family."""
         column_family = self.to_pb()
-        modification = (
-            table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
-                id=self.column_family_id, create=column_family))
+        modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
+            id=self.column_family_id, create=column_family
+        )
 
         client = self._table._instance._client
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
         client.table_admin_client.modify_column_families(
-            self._table.name, [modification])
+            self._table.name, [modification]
+        )
 
     def update(self):
         """Update this column family.
@@ -240,27 +243,29 @@ class ColumnFamily(object):
             you will simply be referring to a different column family.
         """
         column_family = self.to_pb()
-        modification = (
-            table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
-                id=self.column_family_id, update=column_family))
+        modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
+            id=self.column_family_id, update=column_family
+        )
 
         client = self._table._instance._client
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
         client.table_admin_client.modify_column_families(
-            self._table.name, [modification])
+            self._table.name, [modification]
+        )
 
     def delete(self):
         """Delete this column family."""
-        modification = (
-            table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
-                id=self.column_family_id, drop=True))
+        modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
+            id=self.column_family_id, drop=True
+        )
 
         client = self._table._instance._client
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
         client.table_admin_client.modify_column_families(
-            self._table.name, [modification])
+            self._table.name, [modification]
+        )
 
 
 def _gc_rule_from_pb(gc_rule_pb):
@@ -276,21 +281,19 @@ def _gc_rule_from_pb(gc_rule_pb):
     :raises: :class:`ValueError <exceptions.ValueError>` if the rule name
              is unexpected.
     """
-    rule_name = gc_rule_pb.WhichOneof('rule')
+    rule_name = gc_rule_pb.WhichOneof("rule")
     if rule_name is None:
         return None
 
-    if rule_name == 'max_num_versions':
+    if rule_name == "max_num_versions":
         return MaxVersionsGCRule(gc_rule_pb.max_num_versions)
-    elif rule_name == 'max_age':
+    elif rule_name == "max_age":
         max_age = _helpers._duration_pb_to_timedelta(gc_rule_pb.max_age)
         return MaxAgeGCRule(max_age)
-    elif rule_name == 'union':
-        return GCRuleUnion([_gc_rule_from_pb(rule)
-                            for rule in gc_rule_pb.union.rules])
-    elif rule_name == 'intersection':
-        rules = [_gc_rule_from_pb(rule)
-                 for rule in gc_rule_pb.intersection.rules]
+    elif rule_name == "union":
+        return GCRuleUnion([_gc_rule_from_pb(rule) for rule in gc_rule_pb.union.rules])
+    elif rule_name == "intersection":
+        rules = [_gc_rule_from_pb(rule) for rule in gc_rule_pb.intersection.rules]
         return GCRuleIntersection(rules)
     else:
-        raise ValueError('Unexpected rule name', rule_name)
+        raise ValueError("Unexpected rule name", rule_name)

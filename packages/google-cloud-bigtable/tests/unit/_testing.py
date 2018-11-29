@@ -30,8 +30,8 @@ def _make_credentials():
     import google.auth.credentials
 
     class _CredentialsWithScopes(
-            google.auth.credentials.Credentials,
-            google.auth.credentials.Scoped):
+        google.auth.credentials.Credentials, google.auth.credentials.Scoped
+    ):
         pass
 
     return mock.Mock(spec=_CredentialsWithScopes)
