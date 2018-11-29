@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
 import shutil
 
@@ -50,7 +51,7 @@ def main():
     builder = "{}:FFIBUILDER".format(build_path)
     cffi_dep = "cffi >= 1.0.0"
 
-    with io.open("README.md", encoding='utf-8') as readme_file:
+    with io.open("README.md", encoding="utf-8") as readme_file:
         readme = readme_file.read()
 
     setuptools.setup(
@@ -58,8 +59,8 @@ def main():
         version="0.0.1",
         description="A python wrapper of the C library 'Google CRC32C'",
         long_description=readme,
-        author='Google LLC',
-        author_email='googleapis-packages@oogle.com',
+        author="Google LLC",
+        author_email="googleapis-packages@oogle.com",
         scripts=(),
         url="https://github.com/googleapis/python-crc32c",
         packages=["crc32c"],
