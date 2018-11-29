@@ -18,7 +18,6 @@ from google.api_core import general_helpers
 
 
 def test_wraps_normal_func():
-
     def func():
         return 42
 
@@ -30,7 +29,6 @@ def test_wraps_normal_func():
 
 
 def test_wraps_partial():
-
     def func():
         return 42
 

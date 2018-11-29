@@ -31,10 +31,10 @@ def complain(distribution_name):
     try:
         pkg_resources.get_distribution(distribution_name)
         warnings.warn(
-            'The {pkg} distribution is now obsolete. '
-            'Please `pip uninstall {pkg}`. '
-            'In the future, this warning will become an ImportError.'.format(
-                pkg=distribution_name,
+            "The {pkg} distribution is now obsolete. "
+            "Please `pip uninstall {pkg}`. "
+            "In the future, this warning will become an ImportError.".format(
+                pkg=distribution_name
             ),
             DeprecationWarning,
         )

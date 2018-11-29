@@ -41,12 +41,13 @@ except ImportError:  # pragma: NO COVER
 
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.
-_RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
-_RFC3339_NO_FRACTION = '%Y-%m-%dT%H:%M:%S'
-_TIMEONLY_W_MICROS = '%H:%M:%S.%f'
-_TIMEONLY_NO_FRACTION = '%H:%M:%S'
+_RFC3339_MICROS = "%Y-%m-%dT%H:%M:%S.%fZ"
+_RFC3339_NO_FRACTION = "%Y-%m-%dT%H:%M:%S"
+_TIMEONLY_W_MICROS = "%H:%M:%S.%f"
+_TIMEONLY_NO_FRACTION = "%H:%M:%S"
 # datetime.strptime cannot handle nanosecond precision:  parse w/ regex
-_RFC3339_NANOS = re.compile(r"""
+_RFC3339_NANOS = re.compile(
+    r"""
     (?P<no_fraction>
         \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}  # YYYY-MM-DDTHH:MM:SS
     )
@@ -55,17 +56,18 @@ _RFC3339_NANOS = re.compile(r"""
      (?P<nanos>\d{1,9})                      # nanoseconds, maybe truncated
     )?
     Z                                        # Zulu
-""", re.VERBOSE)
+""",
+    re.VERBOSE,
+)
 # NOTE: Catching this ImportError is a workaround for GAE not supporting the
 #       "pwd" module which is imported lazily when "expanduser" is called.
 try:
-    _USER_ROOT = os.path.expanduser('~')
+    _USER_ROOT = os.path.expanduser("~")
 except ImportError:  # pragma: NO COVER
     _USER_ROOT = None
-_GCLOUD_CONFIG_FILE = os.path.join(
-    'gcloud', 'configurations', 'config_default')
-_GCLOUD_CONFIG_SECTION = 'core'
-_GCLOUD_CONFIG_KEY = 'project'
+_GCLOUD_CONFIG_FILE = os.path.join("gcloud", "configurations", "config_default")
+_GCLOUD_CONFIG_SECTION = "core"
+_GCLOUD_CONFIG_KEY = "project"
 
 
 class _LocalStack(Local):
@@ -74,6 +76,7 @@ class _LocalStack(Local):
     Intended for use in :class:`google.cloud.datastore.batch.Batch.__enter__`,
     :class:`google.cloud.storage.batch.Batch.__enter__`, etc.
     """
+
     def __init__(self):
         super(_LocalStack, self).__init__()
         self._stack = []
@@ -115,7 +118,7 @@ class _UTC(datetime.tzinfo):
     """
 
     _dst = datetime.timedelta(0)
-    _tzname = 'UTC'
+    _tzname = "UTC"
     _utcoffset = _dst
 
     def dst(self, dt):  # pylint: disable=unused-argument
@@ -137,7 +140,7 @@ class _UTC(datetime.tzinfo):
         return self._utcoffset
 
     def __repr__(self):
-        return '<%s>' % (self._tzname,)
+        return "<%s>" % (self._tzname,)
 
     def __str__(self):
         return self._tzname
@@ -160,8 +163,10 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
     :raises TypeError: if the ``tuple_or_list`` is not a tuple or list.
     """
     if not isinstance(tuple_or_list, (tuple, list)):
-        raise TypeError('Expected %s to be a tuple or list. '
-                        'Received %r' % (arg_name, tuple_or_list))
+        raise TypeError(
+            "Expected %s to be a tuple or list. "
+            "Received %r" % (arg_name, tuple_or_list)
+        )
     return list(tuple_or_list)
 
 
@@ -247,7 +252,7 @@ def _date_from_iso8601_date(value):
     :returns: A datetime date object created from the string
 
     """
-    return datetime.datetime.strptime(value, '%Y-%m-%d').date()
+    return datetime.datetime.strptime(value, "%Y-%m-%d").date()
 
 
 def _time_from_iso8601_time_naive(value):
@@ -278,8 +283,7 @@ def _rfc3339_to_datetime(dt_str):
     :rtype: :class:`datetime.datetime`
     :returns: The datetime object created from the string.
     """
-    return datetime.datetime.strptime(
-        dt_str, _RFC3339_MICROS).replace(tzinfo=UTC)
+    return datetime.datetime.strptime(dt_str, _RFC3339_MICROS).replace(tzinfo=UTC)
 
 
 def _rfc3339_nanos_to_datetime(dt_str):
@@ -301,11 +305,13 @@ def _rfc3339_nanos_to_datetime(dt_str):
     with_nanos = _RFC3339_NANOS.match(dt_str)
     if with_nanos is None:
         raise ValueError(
-            'Timestamp: %r, does not match pattern: %r' % (
-                dt_str, _RFC3339_NANOS.pattern))
+            "Timestamp: %r, does not match pattern: %r"
+            % (dt_str, _RFC3339_NANOS.pattern)
+        )
     bare_seconds = datetime.datetime.strptime(
-        with_nanos.group('no_fraction'), _RFC3339_NO_FRACTION)
-    fraction = with_nanos.group('nanos')
+        with_nanos.group("no_fraction"), _RFC3339_NO_FRACTION
+    )
+    fraction = with_nanos.group("nanos")
     if fraction is None:
         micros = 0
     else:
@@ -335,7 +341,7 @@ def _datetime_to_rfc3339(value, ignore_zone=True):
     return value.strftime(_RFC3339_MICROS)
 
 
-def _to_bytes(value, encoding='ascii'):
+def _to_bytes(value, encoding="ascii"):
     """Converts a string value to bytes, if necessary.
 
     Unfortunately, ``six.b`` is insufficient for this task since in
@@ -357,12 +363,11 @@ def _to_bytes(value, encoding='ascii'):
               in if it started out as bytes.
     :raises TypeError: if the value could not be converted to bytes.
     """
-    result = (value.encode(encoding)
-              if isinstance(value, six.text_type) else value)
+    result = value.encode(encoding) if isinstance(value, six.text_type) else value
     if isinstance(result, six.binary_type):
         return result
     else:
-        raise TypeError('%r could not be converted to bytes' % (value,))
+        raise TypeError("%r could not be converted to bytes" % (value,))
 
 
 def _bytes_to_unicode(value):
@@ -377,12 +382,11 @@ def _bytes_to_unicode(value):
 
     :raises ValueError: if the value could not be converted to unicode.
     """
-    result = (value.decode('utf-8')
-              if isinstance(value, six.binary_type) else value)
+    result = value.decode("utf-8") if isinstance(value, six.binary_type) else value
     if isinstance(result, six.text_type):
         return result
     else:
-        raise ValueError('%r could not be converted to unicode' % (value,))
+        raise ValueError("%r could not be converted to unicode" % (value,))
 
 
 def _from_any_pb(pb_type, any_pb):
@@ -402,8 +406,10 @@ def _from_any_pb(pb_type, any_pb):
     msg = pb_type()
     if not any_pb.Unpack(msg):
         raise TypeError(
-            'Could not convert {} to {}'.format(
-                any_pb.__class__.__name__, pb_type.__name__))
+            "Could not convert {} to {}".format(
+                any_pb.__class__.__name__, pb_type.__name__
+            )
+        )
 
     return msg
 
@@ -417,12 +423,8 @@ def _pb_timestamp_to_datetime(timestamp_pb):
     :rtype: :class:`datetime.datetime`
     :returns: A UTC datetime object converted from a protobuf timestamp.
     """
-    return (
-        _EPOCH +
-        datetime.timedelta(
-            seconds=timestamp_pb.seconds,
-            microseconds=(timestamp_pb.nanos / 1000.0),
-        )
+    return _EPOCH + datetime.timedelta(
+        seconds=timestamp_pb.seconds, microseconds=(timestamp_pb.nanos / 1000.0)
     )
 
 
@@ -449,8 +451,8 @@ def _datetime_to_pb_timestamp(when):
     :returns: A timestamp protobuf corresponding to the object.
     """
     ms_value = _microseconds_from_datetime(when)
-    seconds, micros = divmod(ms_value, 10**6)
-    nanos = micros * 10**3
+    seconds, micros = divmod(ms_value, 10 ** 6)
+    nanos = micros * 10 ** 3
     return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
 
 
@@ -488,8 +490,7 @@ def _duration_pb_to_timedelta(duration_pb):
     :returns: The converted timedelta object.
     """
     return datetime.timedelta(
-        seconds=duration_pb.seconds,
-        microseconds=(duration_pb.nanos / 1000.0),
+        seconds=duration_pb.seconds, microseconds=(duration_pb.nanos / 1000.0)
     )
 
 
@@ -521,17 +522,19 @@ def _name_from_project_path(path, project, template):
     match = template.match(path)
 
     if not match:
-        raise ValueError('path "%s" did not match expected pattern "%s"' % (
-            path, template.pattern,))
+        raise ValueError(
+            'path "%s" did not match expected pattern "%s"' % (path, template.pattern)
+        )
 
     if project is not None:
-        found_project = match.group('project')
+        found_project = match.group("project")
         if found_project != project:
             raise ValueError(
-                'Project from client (%s) should agree with '
-                'project from resource(%s).' % (project, found_project))
+                "Project from client (%s) should agree with "
+                "project from resource(%s)." % (project, found_project)
+            )
 
-    return match.group('name')
+    return match.group("name")
 
 
 def make_secure_channel(credentials, user_agent, host, extra_options=()):
@@ -556,20 +559,17 @@ def make_secure_channel(credentials, user_agent, host, extra_options=()):
     :rtype: :class:`grpc._channel.Channel`
     :returns: gRPC secure channel with credentials attached.
     """
-    target = '%s:%d' % (host, http_client.HTTPS_PORT)
+    target = "%s:%d" % (host, http_client.HTTPS_PORT)
     http_request = google.auth.transport.requests.Request()
 
-    user_agent_option = ('grpc.primary_user_agent', user_agent)
+    user_agent_option = ("grpc.primary_user_agent", user_agent)
     options = (user_agent_option,) + extra_options
     return google.auth.transport.grpc.secure_authorized_channel(
-        credentials,
-        http_request,
-        target,
-        options=options)
+        credentials, http_request, target, options=options
+    )
 
 
-def make_secure_stub(credentials, user_agent, stub_class, host,
-                     extra_options=()):
+def make_secure_stub(credentials, user_agent, stub_class, host, extra_options=()):
     """Makes a secure stub for an RPC service.
 
     Uses / depends on gRPC.
@@ -594,8 +594,9 @@ def make_secure_stub(credentials, user_agent, stub_class, host,
     :rtype: object, instance of ``stub_class``
     :returns: The stub object used to make gRPC requests to a given API.
     """
-    channel = make_secure_channel(credentials, user_agent, host,
-                                  extra_options=extra_options)
+    channel = make_secure_channel(
+        credentials, user_agent, host, extra_options=extra_options
+    )
     return stub_class(channel)
 
 
@@ -621,7 +622,7 @@ def make_insecure_stub(stub_class, host, port=None):
         target = host
     else:
         # NOTE: This assumes port != http_client.HTTPS_PORT:
-        target = '%s:%d' % (host, port)
+        target = "%s:%d" % (host, port)
     channel = grpc.insecure_channel(target)
     return stub_class(channel)
 

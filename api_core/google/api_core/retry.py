@@ -86,18 +86,20 @@ def if_exception_type(*exception_types):
         Callable[Exception]: A predicate that returns True if the provided
             exception is of the given type(s).
     """
+
     def if_exception_type_predicate(exception):
         """Bound predicate for checking an exception type."""
         return isinstance(exception, exception_types)
+
     return if_exception_type_predicate
 
 
 # pylint: disable=invalid-name
 # Pylint sees this as a constant, but it is also an alias that should be
 # considered a function.
-if_transient_error = if_exception_type((
-    exceptions.InternalServerError,
-    exceptions.TooManyRequests))
+if_transient_error = if_exception_type(
+    (exceptions.InternalServerError, exceptions.TooManyRequests)
+)
 """A predicate that checks if an exception is a transient API error.
 
 The following server errors are considered transient:
@@ -111,8 +113,7 @@ The following server errors are considered transient:
 # pylint: enable=invalid-name
 
 
-def exponential_sleep_generator(
-        initial, maximum, multiplier=_DEFAULT_DELAY_MULTIPLIER):
+def exponential_sleep_generator(initial, maximum, multiplier=_DEFAULT_DELAY_MULTIPLIER):
     """Generates sleep intervals based on the exponential back-off algorithm.
 
     This implements the `Truncated Exponential Back-off`_ algorithm.
@@ -165,8 +166,9 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
         Exception: If the target raises a method that isn't retryable.
     """
     if deadline is not None:
-        deadline_datetime = (
-            datetime_helpers.utcnow() + datetime.timedelta(seconds=deadline))
+        deadline_datetime = datetime_helpers.utcnow() + datetime.timedelta(
+            seconds=deadline
+        )
     else:
         deadline_datetime = None
 
@@ -189,16 +191,20 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
         if deadline_datetime is not None and deadline_datetime < now:
             six.raise_from(
                 exceptions.RetryError(
-                    'Deadline of {:.1f}s exceeded while calling {}'.format(
-                        deadline, target),
-                    last_exc),
-                last_exc)
+                    "Deadline of {:.1f}s exceeded while calling {}".format(
+                        deadline, target
+                    ),
+                    last_exc,
+                ),
+                last_exc,
+            )
 
-        _LOGGER.debug('Retrying due to {}, sleeping {:.1f}s ...'.format(
-            last_exc, sleep))
+        _LOGGER.debug(
+            "Retrying due to {}, sleeping {:.1f}s ...".format(last_exc, sleep)
+        )
         time.sleep(sleep)
 
-    raise ValueError('Sleep generator stopped yielding sleep values.')
+    raise ValueError("Sleep generator stopped yielding sleep values.")
 
 
 @six.python_2_unicode_compatible
@@ -220,13 +226,15 @@ class Retry(object):
         multiplier (float): The multiplier applied to the delay.
         deadline (float): How long to keep retrying in seconds.
     """
+
     def __init__(
-            self,
-            predicate=if_transient_error,
-            initial=_DEFAULT_INITIAL_DELAY,
-            maximum=_DEFAULT_MAXIMUM_DELAY,
-            multiplier=_DEFAULT_DELAY_MULTIPLIER,
-            deadline=_DEFAULT_DEADLINE):
+        self,
+        predicate=if_transient_error,
+        initial=_DEFAULT_INITIAL_DELAY,
+        maximum=_DEFAULT_MAXIMUM_DELAY,
+        multiplier=_DEFAULT_DELAY_MULTIPLIER,
+        deadline=_DEFAULT_DEADLINE,
+    ):
         self._predicate = predicate
         self._initial = initial
         self._multiplier = multiplier
@@ -246,12 +254,14 @@ class Retry(object):
             Callable: A callable that will invoke ``func`` with retry
                 behavior.
         """
+
         @general_helpers.wraps(func)
         def retry_wrapped_func(*args, **kwargs):
             """A wrapper that calls target function with retry."""
             target = functools.partial(func, *args, **kwargs)
             sleep_generator = exponential_sleep_generator(
-                self._initial, self._maximum, multiplier=self._multiplier)
+                self._initial, self._maximum, multiplier=self._multiplier
+            )
             return retry_target(
                 target,
                 self._predicate,
@@ -276,7 +286,8 @@ class Retry(object):
             initial=self._initial,
             maximum=self._maximum,
             multiplier=self._multiplier,
-            deadline=deadline)
+            deadline=deadline,
+        )
 
     def with_predicate(self, predicate):
         """Return a copy of this retry with the given predicate.
@@ -293,10 +304,10 @@ class Retry(object):
             initial=self._initial,
             maximum=self._maximum,
             multiplier=self._multiplier,
-            deadline=self._deadline)
+            deadline=self._deadline,
+        )
 
-    def with_delay(
-            self, initial=None, maximum=None, multiplier=None):
+    def with_delay(self, initial=None, maximum=None, multiplier=None):
         """Return a copy of this retry with the given delay options.
 
         Args:
@@ -313,11 +324,17 @@ class Retry(object):
             initial=initial if initial is not None else self._initial,
             maximum=maximum if maximum is not None else self._maximum,
             multiplier=multiplier if maximum is not None else self._multiplier,
-            deadline=self._deadline)
+            deadline=self._deadline,
+        )
 
     def __str__(self):
         return (
-            '<Retry predicate={}, initial={:.1f}, maximum={:.1f}, '
-            'multiplier={:.1f}, deadline={:.1f}>'.format(
-                self._predicate, self._initial, self._maximum,
-                self._multiplier, self._deadline))
+            "<Retry predicate={}, initial={:.1f}, maximum={:.1f}, "
+            "multiplier={:.1f}, deadline={:.1f}>".format(
+                self._predicate,
+                self._initial,
+                self._maximum,
+                self._multiplier,
+                self._deadline,
+            )
+        )

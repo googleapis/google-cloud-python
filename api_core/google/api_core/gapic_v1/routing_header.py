@@ -24,7 +24,7 @@ import sys
 
 from six.moves.urllib.parse import urlencode
 
-ROUTING_METADATA_KEY = 'x-goog-request-params'
+ROUTING_METADATA_KEY = "x-goog-request-params"
 
 
 def to_routing_header(params):
@@ -39,11 +39,12 @@ def to_routing_header(params):
     """
     if sys.version_info[0] < 3:
         # Python 2 does not have the "safe" parameter for urlencode.
-        return urlencode(params).replace('%2F', '/')
+        return urlencode(params).replace("%2F", "/")
     return urlencode(
         params,
         # Per Google API policy (go/api-url-encoding), / is not encoded.
-        safe='/')
+        safe="/",
+    )
 
 
 def to_grpc_metadata(params):

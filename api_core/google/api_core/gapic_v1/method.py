@@ -69,8 +69,11 @@ def _determine_timeout(default_timeout, specified_timeout, retry):
         # a non-default retry is specified, make sure the timeout's deadline
         # matches the retry's. This handles the case where the user leaves
         # the timeout default but specifies a lower deadline via the retry.
-        if (retry and retry is not DEFAULT
-                and isinstance(default_timeout, timeout.ExponentialTimeout)):
+        if (
+            retry
+            and retry is not DEFAULT
+            and isinstance(default_timeout, timeout.ExponentialTimeout)
+        ):
             return default_timeout.with_deadline(retry._deadline)
         else:
             return default_timeout
@@ -111,13 +114,14 @@ class _GapicCallable(object):
         # extract the retry and timeout params.
         timeout_ = _determine_timeout(
             self._timeout,
-            kwargs.pop('timeout', self._timeout),
+            kwargs.pop("timeout", self._timeout),
             # Use only the invocation-specified retry only for this, as we only
             # want to adjust the timeout deadline if the *user* specified
             # a different retry.
-            kwargs.get('retry', None))
+            kwargs.get("retry", None),
+        )
 
-        retry = kwargs.pop('retry', self._retry)
+        retry = kwargs.pop("retry", self._retry)
 
         if retry is DEFAULT:
             retry = self._retry
@@ -127,21 +131,24 @@ class _GapicCallable(object):
 
         # Add the user agent metadata to the call.
         if self._metadata is not None:
-            metadata = kwargs.get('metadata', [])
+            metadata = kwargs.get("metadata", [])
             # Due to the nature of invocation, None should be treated the same
             # as not specified.
             if metadata is None:
                 metadata = []
             metadata = list(metadata)
             metadata.extend(self._metadata)
-            kwargs['metadata'] = metadata
+            kwargs["metadata"] = metadata
 
         return wrapped_func(*args, **kwargs)
 
 
 def wrap_method(
-        func, default_retry=None, default_timeout=None,
-        client_info=client_info.DEFAULT_CLIENT_INFO):
+    func,
+    default_retry=None,
+    default_timeout=None,
+    client_info=client_info.DEFAULT_CLIENT_INFO,
+):
     """Wrap an RPC method with common behavior.
 
     This applies common error wrapping, retry, and timeout behavior a function.
@@ -230,5 +237,6 @@ def wrap_method(
 
     return general_helpers.wraps(func)(
         _GapicCallable(
-            func, default_retry, default_timeout,
-            metadata=user_agent_metadata))
+            func, default_retry, default_timeout, metadata=user_agent_metadata
+        )
+    )

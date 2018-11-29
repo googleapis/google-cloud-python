@@ -23,16 +23,16 @@ from six.moves.urllib.parse import urlencode
 from google.cloud import exceptions
 
 
-API_BASE_URL = 'https://www.googleapis.com'
+API_BASE_URL = "https://www.googleapis.com"
 """The base of the API call URL."""
 
-DEFAULT_USER_AGENT = 'gcloud-python/{0}'.format(
-    get_distribution('google-cloud-core').version)
+DEFAULT_USER_AGENT = "gcloud-python/{0}".format(
+    get_distribution("google-cloud-core").version
+)
 """The user agent for google-cloud-python requests."""
 
-CLIENT_INFO_HEADER = 'X-Goog-API-Client'
-CLIENT_INFO_TEMPLATE = (
-    'gl-python/' + platform.python_version() + ' gccl/{}')
+CLIENT_INFO_HEADER = "X-Goog-API-Client"
+CLIENT_INFO_TEMPLATE = "gl-python/" + platform.python_version() + " gccl/{}"
 
 
 class Connection(object):
@@ -102,8 +102,9 @@ class JSONConnection(Connection):
     """A template for the URL of a particular API call."""
 
     @classmethod
-    def build_api_url(cls, path, query_params=None,
-                      api_base_url=None, api_version=None):
+    def build_api_url(
+        cls, path, query_params=None, api_base_url=None, api_version=None
+    ):
         """Construct an API url given a few components, some optional.
 
         Typically, you shouldn't need to use this method.
@@ -131,16 +132,24 @@ class JSONConnection(Connection):
         url = cls.API_URL_TEMPLATE.format(
             api_base_url=(api_base_url or cls.API_BASE_URL),
             api_version=(api_version or cls.API_VERSION),
-            path=path)
+            path=path,
+        )
 
         query_params = query_params or {}
         if query_params:
-            url += '?' + urlencode(query_params, doseq=True)
+            url += "?" + urlencode(query_params, doseq=True)
 
         return url
 
-    def _make_request(self, method, url, data=None, content_type=None,
-                      headers=None, target_object=None):
+    def _make_request(
+        self,
+        method,
+        url,
+        data=None,
+        content_type=None,
+        headers=None,
+        target_object=None,
+    ):
         """A low level method to send a request to the API.
 
         Typically, you shouldn't need to use this method.
@@ -173,17 +182,18 @@ class JSONConnection(Connection):
         """
         headers = headers or {}
         headers.update(self._EXTRA_HEADERS)
-        headers['Accept-Encoding'] = 'gzip'
+        headers["Accept-Encoding"] = "gzip"
 
         if content_type:
-            headers['Content-Type'] = content_type
+            headers["Content-Type"] = content_type
 
-        headers['User-Agent'] = self.USER_AGENT
+        headers["User-Agent"] = self.USER_AGENT
 
         return self._do_request(method, url, headers, data, target_object)
 
-    def _do_request(self, method, url, headers, data,
-                    target_object):  # pylint: disable=unused-argument
+    def _do_request(
+        self, method, url, headers, data, target_object
+    ):  # pylint: disable=unused-argument
         """Low-level helper:  perform the actual API request over HTTP.
 
         Allows batch context managers to override and defer a request.
@@ -208,13 +218,21 @@ class JSONConnection(Connection):
         :rtype: :class:`requests.Response`
         :returns: The HTTP response.
         """
-        return self.http.request(
-            url=url, method=method, headers=headers, data=data)
+        return self.http.request(url=url, method=method, headers=headers, data=data)
 
-    def api_request(self, method, path, query_params=None,
-                    data=None, content_type=None, headers=None,
-                    api_base_url=None, api_version=None,
-                    expect_json=True, _target_object=None):
+    def api_request(
+        self,
+        method,
+        path,
+        query_params=None,
+        data=None,
+        content_type=None,
+        headers=None,
+        api_base_url=None,
+        api_version=None,
+        expect_json=True,
+        _target_object=None,
+    ):
         """Make a request over the HTTP transport to the API.
 
         You shouldn't need to use this method, but if you plan to
@@ -275,19 +293,27 @@ class JSONConnection(Connection):
         :returns: The API response payload, either as a raw string or
                   a dictionary if the response is valid JSON.
         """
-        url = self.build_api_url(path=path, query_params=query_params,
-                                 api_base_url=api_base_url,
-                                 api_version=api_version)
+        url = self.build_api_url(
+            path=path,
+            query_params=query_params,
+            api_base_url=api_base_url,
+            api_version=api_version,
+        )
 
         # Making the executive decision that any dictionary
         # data will be sent properly as JSON.
         if data and isinstance(data, dict):
             data = json.dumps(data)
-            content_type = 'application/json'
+            content_type = "application/json"
 
         response = self._make_request(
-            method=method, url=url, data=data, content_type=content_type,
-            headers=headers, target_object=_target_object)
+            method=method,
+            url=url,
+            data=data,
+            content_type=content_type,
+            headers=headers,
+            target_object=_target_object,
+        )
 
         if not 200 <= response.status_code < 300:
             raise exceptions.from_http_response(response)

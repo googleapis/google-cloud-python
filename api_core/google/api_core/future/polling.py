@@ -25,6 +25,7 @@ from google.api_core.future import base
 
 class _OperationNotComplete(Exception):
     """Private exception used for polling via retry."""
+
     pass
 
 
@@ -52,6 +53,7 @@ class PollingFuture(base.Future):
             is polled. Regardless of the retry's ``deadline``, it will be
             overridden by the ``timeout`` argument to :meth:`result`.
     """
+
     def __init__(self, retry=DEFAULT_RETRY):
         super(PollingFuture, self).__init__()
         self._retry = retry
@@ -99,8 +101,8 @@ class PollingFuture(base.Future):
             retry_(self._done_or_raise)()
         except exceptions.RetryError:
             raise concurrent.futures.TimeoutError(
-                'Operation did not complete within the designated '
-                'timeout.')
+                "Operation did not complete within the designated " "timeout."
+            )
 
     def result(self, timeout=None):
         """Get the result of the operation, blocking if necessary.
@@ -160,7 +162,8 @@ class PollingFuture(base.Future):
             # The polling thread will exit on its own as soon as the operation
             # is done.
             self._polling_thread = _helpers.start_daemon_thread(
-                target=self._blocking_poll)
+                target=self._blocking_poll
+            )
 
     def _invoke_callbacks(self, *args, **kwargs):
         """Invoke all done callbacks."""

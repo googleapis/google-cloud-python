@@ -20,28 +20,28 @@ import setuptools
 
 # Package metadata.
 
-name = 'google-api-core'
-description = 'Google API client core library'
-version = '1.5.2'
+name = "google-api-core"
+description = "Google API client core library"
+version = "1.5.2"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
-release_status = 'Development Status :: 5 - Production/Stable'
+release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    'googleapis-common-protos >= 1.5.3, != 1.5.4, < 2.0dev',
-    'protobuf >= 3.4.0',
-    'google-auth >= 0.4.0, < 2.0dev',
-    'requests >= 2.18.0, < 3.0.0dev',
-    'setuptools >= 34.0.0',
-    'six >= 1.10.0',
-    'pytz',
-    'futures >= 3.2.0; python_version < "3.2"'
+    "googleapis-common-protos >= 1.5.3, != 1.5.4, < 2.0dev",
+    "protobuf >= 3.4.0",
+    "google-auth >= 0.4.0, < 2.0dev",
+    "requests >= 2.18.0, < 3.0.0dev",
+    "setuptools >= 34.0.0",
+    "six >= 1.10.0",
+    "pytz",
+    'futures >= 3.2.0; python_version < "3.2"',
 ]
 extras = {
-    'grpc': 'grpcio >= 1.8.2',
-    'grpcgcp': 'grpcio-gcp >= 0.2.2',
-    'grpcio-gcp': 'grpcio-gcp >= 0.2.2'
+    "grpc": "grpcio >= 1.8.2",
+    "grpcgcp": "grpcio-gcp >= 0.2.2",
+    "grpcio-gcp": "grpcio-gcp >= 0.2.2",
 }
 
 
@@ -49,20 +49,20 @@ extras = {
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-readme_filename = os.path.join(package_root, 'README.rst')
-with io.open(readme_filename, encoding='utf-8') as readme_file:
+readme_filename = os.path.join(package_root, "README.rst")
+with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 # Only include packages under the 'google' namespace. Do not include tests,
 # benchmarks, etc.
 packages = [
-    package for package in setuptools.find_packages()
-    if package.startswith('google')]
+    package for package in setuptools.find_packages() if package.startswith("google")
+]
 
 # Determine which namespaces are needed.
-namespaces = ['google']
-if 'google.cloud' in packages:
-    namespaces.append('google.cloud')
+namespaces = ["google"]
+if "google.cloud" in packages:
+    namespaces.append("google.cloud")
 
 
 setuptools.setup(
@@ -70,25 +70,25 @@ setuptools.setup(
     version=version,
     description=description,
     long_description=readme,
-    author='Google LLC',
-    author_email='googleapis-packages@google.com',
-    license='Apache 2.0',
-    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    license="Apache 2.0",
+    url="https://github.com/GoogleCloudPlatform/google-cloud-python",
     classifiers=[
         release_status,
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Operating System :: OS Independent',
-        'Topic :: Internet',
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Operating System :: OS Independent",
+        "Topic :: Internet",
     ],
-    platforms='Posix; MacOS X; Windows',
+    platforms="Posix; MacOS X; Windows",
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,

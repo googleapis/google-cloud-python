@@ -28,42 +28,42 @@ def test_constructor_defaults():
 
 def test_constructor_options():
     info = client_info.ClientInfo(
-        python_version='1',
-        grpc_version='2',
-        api_core_version='3',
-        gapic_version='4',
-        client_library_version='5')
+        python_version="1",
+        grpc_version="2",
+        api_core_version="3",
+        gapic_version="4",
+        client_library_version="5",
+    )
 
-    assert info.python_version == '1'
-    assert info.grpc_version == '2'
-    assert info.api_core_version == '3'
-    assert info.gapic_version == '4'
-    assert info.client_library_version == '5'
+    assert info.python_version == "1"
+    assert info.grpc_version == "2"
+    assert info.api_core_version == "3"
+    assert info.gapic_version == "4"
+    assert info.client_library_version == "5"
 
 
 def test_to_user_agent_minimal():
     info = client_info.ClientInfo(
-        python_version='1',
-        api_core_version='2',
-        grpc_version=None
+        python_version="1", api_core_version="2", grpc_version=None
     )
 
     user_agent = info.to_user_agent()
 
-    assert user_agent == 'gl-python/1 gax/2'
+    assert user_agent == "gl-python/1 gax/2"
 
 
 def test_to_user_agent_full():
     info = client_info.ClientInfo(
-        python_version='1',
-        grpc_version='2',
-        api_core_version='3',
-        gapic_version='4',
-        client_library_version='5')
+        python_version="1",
+        grpc_version="2",
+        api_core_version="3",
+        gapic_version="4",
+        client_library_version="5",
+    )
 
     user_agent = info.to_user_agent()
 
-    assert user_agent == 'gl-python/1 grpc/2 gax/3 gapic/4 gccl/5'
+    assert user_agent == "gl-python/1 grpc/2 gax/3 gapic/4 gccl/5"
 
 
 def test_to_grpc_metadata():

@@ -58,7 +58,7 @@ def test_set_result():
 
 def test_set_exception():
     future = PollingFutureImpl()
-    exception = ValueError('meep')
+    exception = ValueError("meep")
 
     future.set_exception(exception)
 
@@ -127,18 +127,20 @@ class PollingFutureImplTransient(PollingFutureImplWithPoll):
     def done(self):
         if self._errors:
             error, self._errors = self._errors[0], self._errors[1:]
-            raise error('testing')
+            raise error("testing")
         self.poll_count += 1
         self.set_result(42)
         return True
 
 
 def test_result_transient_error():
-    future = PollingFutureImplTransient((
-        exceptions.TooManyRequests,
-        exceptions.InternalServerError,
-        exceptions.BadGateway,
-    ))
+    future = PollingFutureImplTransient(
+        (
+            exceptions.TooManyRequests,
+            exceptions.InternalServerError,
+            exceptions.BadGateway,
+        )
+    )
     result = future.result()
     assert result == 42
     assert future.poll_count == 1
