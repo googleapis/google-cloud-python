@@ -74,4 +74,4 @@ test_script:
     - "%PYTHON37%/python -m pytest tests"
 
 artifacts:
-    - path: 'python-crc32c*win*.whl'
+    - path: 'python_crc32c*win*.whl'
