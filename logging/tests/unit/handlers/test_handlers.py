@@ -18,7 +18,7 @@ import unittest
 
 class TestCloudLoggingHandler(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
+    PROJECT = "PROJECT"
 
     @staticmethod
     def _get_target_class():
@@ -39,20 +39,20 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         handler = self._make_one(
-            client, transport=_Transport, resource=_GLOBAL_RESOURCE)
-        logname = 'loggername'
-        message = 'hello world'
-        record = logging.LogRecord(logname, logging, None, None, message,
-                                   None, None)
+            client, transport=_Transport, resource=_GLOBAL_RESOURCE
+        )
+        logname = "loggername"
+        message = "hello world"
+        record = logging.LogRecord(logname, logging, None, None, message, None, None)
         handler.emit(record)
 
         self.assertEqual(
             handler.transport.send_called_with,
-            (record, message, _GLOBAL_RESOURCE, None))
+            (record, message, _GLOBAL_RESOURCE, None),
+        )
 
 
 class TestSetupLogging(unittest.TestCase):
-
     def _call_fut(self, handler, excludes=None):
         from google.cloud.logging.handlers.handlers import setup_logging
 
@@ -69,8 +69,8 @@ class TestSetupLogging(unittest.TestCase):
         self.assertIn(handler, root_handlers)
 
     def test_setup_logging_excludes(self):
-        INCLUDED_LOGGER_NAME = 'includeme'
-        EXCLUDED_LOGGER_NAME = 'excludeme'
+        INCLUDED_LOGGER_NAME = "includeme"
+        EXCLUDED_LOGGER_NAME = "excludeme"
 
         handler = _Handler(logging.INFO)
         self._call_fut(handler, (EXCLUDED_LOGGER_NAME,))
@@ -91,7 +91,6 @@ class TestSetupLogging(unittest.TestCase):
 
 
 class _Handler(object):
-
     def __init__(self, level):
         self.level = level
 
@@ -103,13 +102,11 @@ class _Handler(object):
 
 
 class _Client(object):
-
     def __init__(self, project):
         self.project = project
 
 
 class _Transport(object):
-
     def __init__(self, client, name):
         pass
 

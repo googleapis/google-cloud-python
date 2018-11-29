@@ -40,7 +40,6 @@ def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
 
 
 class Test__get_gcd_project(unittest.TestCase):
-
     def _call_fut(self):
         from google.cloud.datastore.client import _get_gcd_project
 
@@ -48,7 +47,7 @@ class Test__get_gcd_project(unittest.TestCase):
 
     def test_no_value(self):
         environ = {}
-        with mock.patch('os.getenv', new=environ.get):
+        with mock.patch("os.getenv", new=environ.get):
             project = self._call_fut()
             self.assertIsNone(project)
 
@@ -57,35 +56,33 @@ class Test__get_gcd_project(unittest.TestCase):
 
         MOCK_PROJECT = object()
         environ = {GCD_DATASET: MOCK_PROJECT}
-        with mock.patch('os.getenv', new=environ.get):
+        with mock.patch("os.getenv", new=environ.get):
             project = self._call_fut()
             self.assertEqual(project, MOCK_PROJECT)
 
 
 class Test__determine_default_project(unittest.TestCase):
-
     def _call_fut(self, project=None):
-        from google.cloud.datastore.client import (
-            _determine_default_project)
+        from google.cloud.datastore.client import _determine_default_project
 
         return _determine_default_project(project=project)
 
-    def _determine_default_helper(self, gcd=None, fallback=None,
-                                  project_called=None):
+    def _determine_default_helper(self, gcd=None, fallback=None, project_called=None):
         _callers = []
 
         def gcd_mock():
-            _callers.append('gcd_mock')
+            _callers.append("gcd_mock")
             return gcd
 
         def fallback_mock(project=None):
-            _callers.append(('fallback_mock', project))
+            _callers.append(("fallback_mock", project))
             return fallback
 
         patch = mock.patch.multiple(
-            'google.cloud.datastore.client',
+            "google.cloud.datastore.client",
             _get_gcd_project=gcd_mock,
-            _base_default_project=fallback_mock)
+            _base_default_project=fallback_mock,
+        )
         with patch:
             returned_project = self._call_fut(project_called)
 
@@ -94,12 +91,11 @@ class Test__determine_default_project(unittest.TestCase):
     def test_no_value(self):
         project, callers = self._determine_default_helper()
         self.assertIsNone(project)
-        self.assertEqual(callers, ['gcd_mock', ('fallback_mock', None)])
+        self.assertEqual(callers, ["gcd_mock", ("fallback_mock", None)])
 
     def test_explicit(self):
         PROJECT = object()
-        project, callers = self._determine_default_helper(
-            project_called=PROJECT)
+        project, callers = self._determine_default_helper(project_called=PROJECT)
         self.assertEqual(project, PROJECT)
         self.assertEqual(callers, [])
 
@@ -107,18 +103,18 @@ class Test__determine_default_project(unittest.TestCase):
         PROJECT = object()
         project, callers = self._determine_default_helper(gcd=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['gcd_mock'])
+        self.assertEqual(callers, ["gcd_mock"])
 
     def test_fallback(self):
         PROJECT = object()
         project, callers = self._determine_default_helper(fallback=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['gcd_mock', ('fallback_mock', None)])
+        self.assertEqual(callers, ["gcd_mock", ("fallback_mock", None)])
 
 
 class TestClient(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
+    PROJECT = "PROJECT"
 
     @staticmethod
     def _get_target_class():
@@ -126,35 +122,43 @@ class TestClient(unittest.TestCase):
 
         return Client
 
-    def _make_one(self, project=PROJECT, namespace=None,
-                  credentials=None, _http=None, _use_grpc=None):
-        return self._get_target_class()(project=project,
-                                        namespace=namespace,
-                                        credentials=credentials,
-                                        _http=_http,
-                                        _use_grpc=_use_grpc)
+    def _make_one(
+        self,
+        project=PROJECT,
+        namespace=None,
+        credentials=None,
+        _http=None,
+        _use_grpc=None,
+    ):
+        return self._get_target_class()(
+            project=project,
+            namespace=namespace,
+            credentials=credentials,
+            _http=_http,
+            _use_grpc=_use_grpc,
+        )
 
     def test_constructor_w_project_no_environ(self):
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
         patch = mock.patch(
-            'google.cloud.datastore.client._base_default_project',
-            return_value=None)
+            "google.cloud.datastore.client._base_default_project", return_value=None
+        )
         with patch:
             self.assertRaises(EnvironmentError, self._make_one, None)
 
     def test_constructor_w_implicit_inputs(self):
         from google.cloud.datastore.client import _DATASTORE_BASE_URL
 
-        other = 'other'
+        other = "other"
         creds = _make_credentials()
 
         klass = self._get_target_class()
         patch1 = mock.patch(
-            'google.cloud.datastore.client._determine_default_project',
-            return_value=other)
-        patch2 = mock.patch(
-            'google.auth.default', return_value=(creds, None))
+            "google.cloud.datastore.client._determine_default_project",
+            return_value=other,
+        )
+        patch2 = mock.patch("google.auth.default", return_value=(creds, None))
 
         with patch1 as _determine_default_project:
             with patch2 as default:
@@ -175,14 +179,13 @@ class TestClient(unittest.TestCase):
     def test_constructor_w_explicit_inputs(self):
         from google.cloud.datastore.client import _DATASTORE_BASE_URL
 
-        other = 'other'
-        namespace = 'namespace'
+        other = "other"
+        namespace = "namespace"
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=other,
-                                namespace=namespace,
-                                credentials=creds,
-                                _http=http)
+        client = self._make_one(
+            project=other, namespace=namespace, credentials=creds, _http=http
+        )
         self.assertEqual(client.project, other)
         self.assertEqual(client.namespace, namespace)
         self.assertIs(client._credentials, creds)
@@ -194,73 +197,71 @@ class TestClient(unittest.TestCase):
     def test_constructor_use_grpc_default(self):
         import google.cloud.datastore.client as MUT
 
-        project = 'PROJECT'
+        project = "PROJECT"
         creds = _make_credentials()
         http = object()
 
-        with mock.patch.object(MUT, '_USE_GRPC', new=True):
-            client1 = self._make_one(
-                project=project, credentials=creds, _http=http)
+        with mock.patch.object(MUT, "_USE_GRPC", new=True):
+            client1 = self._make_one(project=project, credentials=creds, _http=http)
             self.assertTrue(client1._use_grpc)
             # Explicitly over-ride the environment.
             client2 = self._make_one(
-                project=project, credentials=creds, _http=http,
-                _use_grpc=False)
+                project=project, credentials=creds, _http=http, _use_grpc=False
+            )
             self.assertFalse(client2._use_grpc)
 
-        with mock.patch.object(MUT, '_USE_GRPC', new=False):
-            client3 = self._make_one(
-                project=project, credentials=creds, _http=http)
+        with mock.patch.object(MUT, "_USE_GRPC", new=False):
+            client3 = self._make_one(project=project, credentials=creds, _http=http)
             self.assertFalse(client3._use_grpc)
             # Explicitly over-ride the environment.
             client4 = self._make_one(
-                project=project, credentials=creds, _http=http,
-                _use_grpc=True)
+                project=project, credentials=creds, _http=http, _use_grpc=True
+            )
             self.assertTrue(client4._use_grpc)
 
     def test_constructor_gcd_host(self):
         from google.cloud.environment_vars import GCD_HOST
 
-        host = 'localhost:1234'
+        host = "localhost:1234"
         fake_environ = {GCD_HOST: host}
-        project = 'PROJECT'
+        project = "PROJECT"
         creds = _make_credentials()
         http = object()
 
-        with mock.patch('os.environ', new=fake_environ):
-            client = self._make_one(
-                project=project, credentials=creds, _http=http)
-            self.assertEqual(client.base_url, 'http://' + host)
+        with mock.patch("os.environ", new=fake_environ):
+            client = self._make_one(project=project, credentials=creds, _http=http)
+            self.assertEqual(client.base_url, "http://" + host)
 
     def test__datastore_api_property_gapic(self):
         client = self._make_one(
-            project='prahj-ekt', credentials=_make_credentials(),
-            _http=object(), _use_grpc=True)
+            project="prahj-ekt",
+            credentials=_make_credentials(),
+            _http=object(),
+            _use_grpc=True,
+        )
 
         self.assertIsNone(client._datastore_api_internal)
         patch = mock.patch(
-            'google.cloud.datastore.client.make_datastore_api',
-            return_value=mock.sentinel.ds_api)
+            "google.cloud.datastore.client.make_datastore_api",
+            return_value=mock.sentinel.ds_api,
+        )
         with patch as make_api:
             ds_api = client._datastore_api
             self.assertIs(ds_api, mock.sentinel.ds_api)
             make_api.assert_called_once_with(client)
-            self.assertIs(
-                client._datastore_api_internal, mock.sentinel.ds_api)
+            self.assertIs(client._datastore_api_internal, mock.sentinel.ds_api)
             # Make sure the cached value is used.
             self.assertEqual(make_api.call_count, 1)
-            self.assertIs(
-                client._datastore_api, mock.sentinel.ds_api)
+            self.assertIs(client._datastore_api, mock.sentinel.ds_api)
             self.assertEqual(make_api.call_count, 1)
 
     def test_base_url_property(self):
-        alternate_url = 'https://alias.example.com/'
-        project = 'PROJECT'
+        alternate_url = "https://alias.example.com/"
+        project = "PROJECT"
         creds = _make_credentials()
         http = object()
 
-        client = self._make_one(
-            project=project, credentials=creds, _http=http)
+        client = self._make_one(project=project, credentials=creds, _http=http)
         client.base_url = alternate_url
         self.assertEqual(client.base_url, alternate_url)
 
@@ -268,8 +269,11 @@ class TestClient(unittest.TestCase):
         from google.cloud.datastore._http import HTTPDatastoreAPI
 
         client = self._make_one(
-            project='prahj-ekt', credentials=_make_credentials(),
-            _http=object(), _use_grpc=False)
+            project="prahj-ekt",
+            credentials=_make_credentials(),
+            _http=object(),
+            _use_grpc=False,
+        )
 
         self.assertIsNone(client._datastore_api_internal)
         ds_api = client._datastore_api
@@ -314,13 +318,13 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.get(key))
 
         self.assertEqual(_called_with[0][0], ())
-        self.assertEqual(_called_with[0][1]['keys'], [key])
-        self.assertIsNone(_called_with[0][1]['missing'])
-        self.assertIsNone(_called_with[0][1]['deferred'])
-        self.assertIsNone(_called_with[0][1]['transaction'])
+        self.assertEqual(_called_with[0][1]["keys"], [key])
+        self.assertIsNone(_called_with[0][1]["missing"])
+        self.assertIsNone(_called_with[0][1]["deferred"])
+        self.assertIsNone(_called_with[0][1]["transaction"])
 
     def test_get_hit(self):
-        TXN_ID = '123'
+        TXN_ID = "123"
         _called_with = []
         _entity = object()
 
@@ -337,10 +341,10 @@ class TestClient(unittest.TestCase):
         self.assertIs(client.get(key, missing, deferred, TXN_ID), _entity)
 
         self.assertEqual(_called_with[0][0], ())
-        self.assertEqual(_called_with[0][1]['keys'], [key])
-        self.assertIs(_called_with[0][1]['missing'], missing)
-        self.assertIs(_called_with[0][1]['deferred'], deferred)
-        self.assertEqual(_called_with[0][1]['transaction'], TXN_ID)
+        self.assertEqual(_called_with[0][1]["keys"], [key])
+        self.assertIs(_called_with[0][1]["missing"], missing)
+        self.assertIs(_called_with[0][1]["deferred"], deferred)
+        self.assertEqual(_called_with[0][1]["transaction"], TXN_ID)
 
     def test_get_multi_no_keys(self):
         creds = _make_credentials()
@@ -357,15 +361,13 @@ class TestClient(unittest.TestCase):
         ds_api = _make_datastore_api()
         client._datastore_api_internal = ds_api
 
-        key = Key('Kind', 1234, project=self.PROJECT)
+        key = Key("Kind", 1234, project=self.PROJECT)
         results = client.get_multi([key])
         self.assertEqual(results, [])
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT,
-            [key.to_protobuf()],
-            read_options=read_options,
+            self.PROJECT, [key.to_protobuf()], read_options=read_options
         )
 
     def test_get_multi_miss_w_missing(self):
@@ -373,7 +375,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
-        KIND = 'Kind'
+        KIND = "Kind"
         ID = 1234
 
         # Make a missing entity pb to be returned from mock backend.
@@ -395,14 +397,11 @@ class TestClient(unittest.TestCase):
         entities = client.get_multi([key], missing=missing)
         self.assertEqual(entities, [])
         key_pb = key.to_protobuf()
-        self.assertEqual(
-            [missed.key.to_protobuf() for missed in missing], [key_pb])
+        self.assertEqual([missed.key.to_protobuf() for missed in missing], [key_pb])
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT,
-            [key_pb],
-            read_options=read_options,
+            self.PROJECT, [key_pb], read_options=read_options
         )
 
     def test_get_multi_w_missing_non_empty(self):
@@ -410,28 +409,26 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        key = Key('Kind', 1234, project=self.PROJECT)
+        key = Key("Kind", 1234, project=self.PROJECT)
 
-        missing = ['this', 'list', 'is', 'not', 'empty']
-        self.assertRaises(ValueError, client.get_multi,
-                          [key], missing=missing)
+        missing = ["this", "list", "is", "not", "empty"]
+        self.assertRaises(ValueError, client.get_multi, [key], missing=missing)
 
     def test_get_multi_w_deferred_non_empty(self):
         from google.cloud.datastore.key import Key
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        key = Key('Kind', 1234, project=self.PROJECT)
+        key = Key("Kind", 1234, project=self.PROJECT)
 
-        deferred = ['this', 'list', 'is', 'not', 'empty']
-        self.assertRaises(ValueError, client.get_multi,
-                          [key], deferred=deferred)
+        deferred = ["this", "list", "is", "not", "empty"]
+        self.assertRaises(ValueError, client.get_multi, [key], deferred=deferred)
 
     def test_get_multi_miss_w_deferred(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
-        key = Key('Kind', 1234, project=self.PROJECT)
+        key = Key("Kind", 1234, project=self.PROJECT)
         key_pb = key.to_protobuf()
 
         # Set deferred entity on mock connection.
@@ -444,14 +441,11 @@ class TestClient(unittest.TestCase):
         deferred = []
         entities = client.get_multi([key], deferred=deferred)
         self.assertEqual(entities, [])
-        self.assertEqual(
-            [def_key.to_protobuf() for def_key in deferred], [key_pb])
+        self.assertEqual([def_key.to_protobuf() for def_key in deferred], [key_pb])
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT,
-            [key_pb],
-            read_options=read_options,
+            self.PROJECT, [key_pb], read_options=read_options
         )
 
     def test_get_multi_w_deferred_from_backend_but_not_passed(self):
@@ -460,9 +454,9 @@ class TestClient(unittest.TestCase):
         from google.cloud.datastore.entity import Entity
         from google.cloud.datastore.key import Key
 
-        key1 = Key('Kind', project=self.PROJECT)
+        key1 = Key("Kind", project=self.PROJECT)
         key1_pb = key1.to_protobuf()
-        key2 = Key('Kind', 2345, project=self.PROJECT)
+        key2 = Key("Kind", 2345, project=self.PROJECT)
         key2_pb = key2.to_protobuf()
 
         entity1_pb = entity_pb2.Entity()
@@ -475,11 +469,13 @@ class TestClient(unittest.TestCase):
         # Mock up two separate requests. Using an iterable as side_effect
         # allows multiple return values.
         lookup_response1 = _make_lookup_response(
-            results=[entity1_pb], deferred=[key2_pb])
+            results=[entity1_pb], deferred=[key2_pb]
+        )
         lookup_response2 = _make_lookup_response(results=[entity2_pb])
         ds_api = _make_datastore_api()
         ds_api.lookup = mock.Mock(
-            side_effect=[lookup_response1, lookup_response2], spec=[])
+            side_effect=[lookup_response1, lookup_response2], spec=[]
+        )
         client._datastore_api_internal = ds_api
 
         missing = []
@@ -499,26 +495,22 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds_api.lookup.call_count, 2)
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_any_call(
-            self.PROJECT,
-            [key2_pb],
-            read_options=read_options,
+            self.PROJECT, [key2_pb], read_options=read_options
         )
         ds_api.lookup.assert_any_call(
-            self.PROJECT,
-            [key1_pb, key2_pb],
-            read_options=read_options,
+            self.PROJECT, [key1_pb, key2_pb], read_options=read_options
         )
 
     def test_get_multi_hit(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
-        kind = 'Kind'
+        kind = "Kind"
         id_ = 1234
-        path = [{'kind': kind, 'id': id_}]
+        path = [{"kind": kind, "id": id_}]
 
         # Make a found entity pb to be returned from mock backend.
-        entity_pb = _make_entity_pb(self.PROJECT, kind, id_, 'foo', 'Foo')
+        entity_pb = _make_entity_pb(self.PROJECT, kind, id_, "foo", "Foo")
 
         # Make a connection to return the entity pb.
         creds = _make_credentials()
@@ -535,27 +527,25 @@ class TestClient(unittest.TestCase):
         self.assertIsNot(new_key, key)
         self.assertEqual(new_key.project, self.PROJECT)
         self.assertEqual(new_key.path, path)
-        self.assertEqual(list(result), ['foo'])
-        self.assertEqual(result['foo'], 'Foo')
+        self.assertEqual(list(result), ["foo"])
+        self.assertEqual(result["foo"], "Foo")
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT,
-            [key.to_protobuf()],
-            read_options=read_options,
+            self.PROJECT, [key.to_protobuf()], read_options=read_options
         )
 
     def test_get_multi_hit_w_transaction(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
-        txn_id = b'123'
-        kind = 'Kind'
+        txn_id = b"123"
+        kind = "Kind"
         id_ = 1234
-        path = [{'kind': kind, 'id': id_}]
+        path = [{"kind": kind, "id": id_}]
 
         # Make a found entity pb to be returned from mock backend.
-        entity_pb = _make_entity_pb(self.PROJECT, kind, id_, 'foo', 'Foo')
+        entity_pb = _make_entity_pb(self.PROJECT, kind, id_, "foo", "Foo")
 
         # Make a connection to return the entity pb.
         creds = _make_credentials()
@@ -574,21 +564,19 @@ class TestClient(unittest.TestCase):
         self.assertIsNot(new_key, key)
         self.assertEqual(new_key.project, self.PROJECT)
         self.assertEqual(new_key.path, path)
-        self.assertEqual(list(result), ['foo'])
-        self.assertEqual(result['foo'], 'Foo')
+        self.assertEqual(list(result), ["foo"])
+        self.assertEqual(result["foo"], "Foo")
 
         read_options = datastore_pb2.ReadOptions(transaction=txn_id)
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT,
-            [key.to_protobuf()],
-            read_options=read_options,
+            self.PROJECT, [key.to_protobuf()], read_options=read_options
         )
 
     def test_get_multi_hit_multiple_keys_same_project(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
-        kind = 'Kind'
+        kind = "Kind"
         id1 = 1234
         id2 = 2345
 
@@ -599,8 +587,7 @@ class TestClient(unittest.TestCase):
         # Make a connection to return the entity pbs.
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        lookup_response = _make_lookup_response(
-            results=[entity_pb1, entity_pb2])
+        lookup_response = _make_lookup_response(results=[entity_pb1, entity_pb2])
         ds_api = _make_datastore_api(lookup_response=lookup_response)
         client._datastore_api_internal = ds_api
 
@@ -624,14 +611,14 @@ class TestClient(unittest.TestCase):
     def test_get_multi_hit_multiple_keys_different_project(self):
         from google.cloud.datastore.key import Key
 
-        PROJECT1 = 'PROJECT'
-        PROJECT2 = 'PROJECT-ALT'
+        PROJECT1 = "PROJECT"
+        PROJECT2 = "PROJECT-ALT"
 
         # Make sure our IDs are actually different.
         self.assertNotEqual(PROJECT1, PROJECT2)
 
-        key1 = Key('KIND', 1234, project=PROJECT1)
-        key2 = Key('KIND', 1234, project=PROJECT2)
+        key1 = Key("KIND", 1234, project=PROJECT1)
+        key2 = Key("KIND", 1234, project=PROJECT2)
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
@@ -642,11 +629,11 @@ class TestClient(unittest.TestCase):
     def test_get_multi_max_loops(self):
         from google.cloud.datastore.key import Key
 
-        kind = 'Kind'
+        kind = "Kind"
         id_ = 1234
 
         # Make a found entity pb to be returned from mock backend.
-        entity_pb = _make_entity_pb(self.PROJECT, kind, id_, 'foo', 'Foo')
+        entity_pb = _make_entity_pb(self.PROJECT, kind, id_, "foo", "Foo")
 
         # Make a connection to return the entity pb.
         creds = _make_credentials()
@@ -659,11 +646,9 @@ class TestClient(unittest.TestCase):
         deferred = []
         missing = []
 
-        patch = mock.patch(
-            'google.cloud.datastore.client._MAX_LOOPS', new=-1)
+        patch = mock.patch("google.cloud.datastore.client._MAX_LOOPS", new=-1)
         with patch:
-            result = client.get_multi([key], missing=missing,
-                                      deferred=deferred)
+            result = client.get_multi([key], missing=missing, deferred=deferred)
 
         # Make sure we have no results, even though the connection has been
         # set up as in `test_hit` to return a single result.
@@ -686,7 +671,7 @@ class TestClient(unittest.TestCase):
         client.put(entity)
 
         self.assertEqual(_called_with[0][0], ())
-        self.assertEqual(_called_with[0][1]['entities'], [entity])
+        self.assertEqual(_called_with[0][1]["entities"], [entity])
 
     def test_put_multi_no_entities(self):
         creds = _make_credentials()
@@ -705,7 +690,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.helpers import _property_tuples
 
-        entity = _Entity(foo=u'bar')
+        entity = _Entity(foo=u"bar")
         key = entity.key = _Key(self.PROJECT)
         key._id = None
 
@@ -720,43 +705,42 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(ds_api.commit.call_count, 1)
         _, positional, keyword = ds_api.commit.mock_calls[0]
-        self.assertEqual(keyword, {'transaction': None})
+        self.assertEqual(keyword, {"transaction": None})
 
         self.assertEqual(len(positional), 3)
         self.assertEqual(positional[0], self.PROJECT)
-        self.assertEqual(
-            positional[1], datastore_pb2.CommitRequest.NON_TRANSACTIONAL)
+        self.assertEqual(positional[1], datastore_pb2.CommitRequest.NON_TRANSACTIONAL)
 
         mutations = positional[2]
-        mutated_entity = _mutated_pb(self, mutations, 'insert')
+        mutated_entity = _mutated_pb(self, mutations, "insert")
         self.assertEqual(mutated_entity.key, key.to_protobuf())
 
         prop_list = list(_property_tuples(mutated_entity))
         self.assertTrue(len(prop_list), 1)
         name, value_pb = prop_list[0]
-        self.assertEqual(name, 'foo')
-        self.assertEqual(value_pb.string_value, u'bar')
+        self.assertEqual(name, "foo")
+        self.assertEqual(value_pb.string_value, u"bar")
 
     def test_put_multi_existing_batch_w_completed_key(self):
         from google.cloud.datastore.helpers import _property_tuples
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        entity = _Entity(foo=u'bar')
+        entity = _Entity(foo=u"bar")
         key = entity.key = _Key(self.PROJECT)
 
         with _NoCommitBatch(client) as CURR_BATCH:
             result = client.put_multi([entity])
 
         self.assertIsNone(result)
-        mutated_entity = _mutated_pb(self, CURR_BATCH.mutations, 'upsert')
+        mutated_entity = _mutated_pb(self, CURR_BATCH.mutations, "upsert")
         self.assertEqual(mutated_entity.key, key.to_protobuf())
 
         prop_list = list(_property_tuples(mutated_entity))
         self.assertTrue(len(prop_list), 1)
         name, value_pb = prop_list[0]
-        self.assertEqual(name, 'foo')
-        self.assertEqual(value_pb.string_value, u'bar')
+        self.assertEqual(name, "foo")
+        self.assertEqual(value_pb.string_value, u"bar")
 
     def test_delete(self):
         _called_with = []
@@ -772,7 +756,7 @@ class TestClient(unittest.TestCase):
         client.delete(key)
 
         self.assertEqual(_called_with[0][0], ())
-        self.assertEqual(_called_with[0][1]['keys'], [key])
+        self.assertEqual(_called_with[0][1]["keys"], [key])
 
     def test_delete_multi_no_keys(self):
         creds = _make_credentials()
@@ -798,15 +782,14 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(ds_api.commit.call_count, 1)
         _, positional, keyword = ds_api.commit.mock_calls[0]
-        self.assertEqual(keyword, {'transaction': None})
+        self.assertEqual(keyword, {"transaction": None})
 
         self.assertEqual(len(positional), 3)
         self.assertEqual(positional[0], self.PROJECT)
-        self.assertEqual(
-            positional[1], datastore_pb2.CommitRequest.NON_TRANSACTIONAL)
+        self.assertEqual(positional[1], datastore_pb2.CommitRequest.NON_TRANSACTIONAL)
 
         mutations = positional[2]
-        mutated_key = _mutated_pb(self, mutations, 'delete')
+        mutated_key = _mutated_pb(self, mutations, "delete")
         self.assertEqual(mutated_key, key.to_protobuf())
 
     def test_delete_multi_w_existing_batch(self):
@@ -820,7 +803,7 @@ class TestClient(unittest.TestCase):
             result = client.delete_multi([key])
 
         self.assertIsNone(result)
-        mutated_key = _mutated_pb(self, CURR_BATCH.mutations, 'delete')
+        mutated_key = _mutated_pb(self, CURR_BATCH.mutations, "delete")
         self.assertEqual(mutated_key, key._key)
         client._datastore_api_internal.commit.assert_not_called()
 
@@ -835,7 +818,7 @@ class TestClient(unittest.TestCase):
             result = client.delete_multi([key])
 
         self.assertIsNone(result)
-        mutated_key = _mutated_pb(self, CURR_XACT.mutations, 'delete')
+        mutated_key = _mutated_pb(self, CURR_XACT.mutations, "delete")
         self.assertEqual(mutated_key, key._key)
         client._datastore_api_internal.commit.assert_not_called()
 
@@ -847,10 +830,9 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds, _use_grpc=False)
-        allocated = mock.Mock(
-            keys=[_KeyPB(i) for i in range(num_ids)], spec=['keys'])
+        allocated = mock.Mock(keys=[_KeyPB(i) for i in range(num_ids)], spec=["keys"])
         alloc_ids = mock.Mock(return_value=allocated, spec=[])
-        ds_api = mock.Mock(allocate_ids=alloc_ids, spec=['allocate_ids'])
+        ds_api = mock.Mock(allocate_ids=alloc_ids, spec=["allocate_ids"])
         client._datastore_api_internal = ds_api
 
         result = client.allocate_ids(incomplete_key, num_ids)
@@ -866,48 +848,47 @@ class TestClient(unittest.TestCase):
         self.assertRaises(ValueError, client.allocate_ids, COMPLETE_KEY, 2)
 
     def test_key_w_project(self):
-        KIND = 'KIND'
+        KIND = "KIND"
         ID = 1234
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
-        self.assertRaises(TypeError,
-                          client.key, KIND, ID, project=self.PROJECT)
+        self.assertRaises(TypeError, client.key, KIND, ID, project=self.PROJECT)
 
     def test_key_wo_project(self):
-        kind = 'KIND'
+        kind = "KIND"
         id_ = 1234
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
-        patch = mock.patch(
-            'google.cloud.datastore.client.Key', spec=['__call__'])
+        patch = mock.patch("google.cloud.datastore.client.Key", spec=["__call__"])
         with patch as mock_klass:
             key = client.key(kind, id_)
             self.assertIs(key, mock_klass.return_value)
             mock_klass.assert_called_once_with(
-                kind, id_, project=self.PROJECT, namespace=None)
+                kind, id_, project=self.PROJECT, namespace=None
+            )
 
     def test_key_w_namespace(self):
-        kind = 'KIND'
+        kind = "KIND"
         id_ = 1234
         namespace = object()
 
         creds = _make_credentials()
         client = self._make_one(namespace=namespace, credentials=creds)
 
-        patch = mock.patch(
-            'google.cloud.datastore.client.Key', spec=['__call__'])
+        patch = mock.patch("google.cloud.datastore.client.Key", spec=["__call__"])
         with patch as mock_klass:
             key = client.key(kind, id_)
             self.assertIs(key, mock_klass.return_value)
             mock_klass.assert_called_once_with(
-                kind, id_, project=self.PROJECT, namespace=namespace)
+                kind, id_, project=self.PROJECT, namespace=namespace
+            )
 
     def test_key_w_namespace_collision(self):
-        kind = 'KIND'
+        kind = "KIND"
         id_ = 1234
         namespace1 = object()
         namespace2 = object()
@@ -915,20 +896,19 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(namespace=namespace1, credentials=creds)
 
-        patch = mock.patch(
-            'google.cloud.datastore.client.Key', spec=['__call__'])
+        patch = mock.patch("google.cloud.datastore.client.Key", spec=["__call__"])
         with patch as mock_klass:
             key = client.key(kind, id_, namespace=namespace2)
             self.assertIs(key, mock_klass.return_value)
             mock_klass.assert_called_once_with(
-                kind, id_, project=self.PROJECT, namespace=namespace2)
+                kind, id_, project=self.PROJECT, namespace=namespace2
+            )
 
     def test_batch(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
-        patch = mock.patch(
-            'google.cloud.datastore.client.Batch', spec=['__call__'])
+        patch = mock.patch("google.cloud.datastore.client.Batch", spec=["__call__"])
         with patch as mock_klass:
             batch = client.batch()
             self.assertIs(batch, mock_klass.return_value)
@@ -939,7 +919,8 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Transaction', spec=['__call__'])
+            "google.cloud.datastore.client.Transaction", spec=["__call__"]
+        )
         with patch as mock_klass:
             xact = client.transaction()
             self.assertIs(xact, mock_klass.return_value)
@@ -947,22 +928,19 @@ class TestClient(unittest.TestCase):
 
     def test_read_only_transaction_defaults(self):
         from google.cloud.datastore_v1.types import TransactionOptions
+
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         xact = client.transaction(read_only=True)
         self.assertEqual(
-            xact._options,
-            TransactionOptions(
-                read_only=TransactionOptions.ReadOnly()
-            )
+            xact._options, TransactionOptions(read_only=TransactionOptions.ReadOnly())
         )
         self.assertFalse(xact._options.HasField("read_write"))
         self.assertTrue(xact._options.HasField("read_only"))
-        self.assertEqual(xact._options.read_only,
-                         TransactionOptions.ReadOnly())
+        self.assertEqual(xact._options.read_only, TransactionOptions.ReadOnly())
 
     def test_query_w_client(self):
-        KIND = 'KIND'
+        KIND = "KIND"
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
@@ -971,40 +949,38 @@ class TestClient(unittest.TestCase):
         self.assertRaises(TypeError, client.query, kind=KIND, client=other)
 
     def test_query_w_project(self):
-        KIND = 'KIND'
+        KIND = "KIND"
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
-        self.assertRaises(TypeError,
-                          client.query, kind=KIND, project=self.PROJECT)
+        self.assertRaises(TypeError, client.query, kind=KIND, project=self.PROJECT)
 
     def test_query_w_defaults(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
-        patch = mock.patch(
-            'google.cloud.datastore.client.Query', spec=['__call__'])
+        patch = mock.patch("google.cloud.datastore.client.Query", spec=["__call__"])
         with patch as mock_klass:
             query = client.query()
             self.assertIs(query, mock_klass.return_value)
             mock_klass.assert_called_once_with(
-                client, project=self.PROJECT, namespace=None)
+                client, project=self.PROJECT, namespace=None
+            )
 
     def test_query_explicit(self):
-        kind = 'KIND'
-        namespace = 'NAMESPACE'
+        kind = "KIND"
+        namespace = "NAMESPACE"
         ancestor = object()
-        filters = [('PROPERTY', '==', 'VALUE')]
-        projection = ['__key__']
-        order = ['PROPERTY']
-        distinct_on = ['DISTINCT_ON']
+        filters = [("PROPERTY", "==", "VALUE")]
+        projection = ["__key__"]
+        order = ["PROPERTY"]
+        distinct_on = ["DISTINCT_ON"]
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
-        patch = mock.patch(
-            'google.cloud.datastore.client.Query', spec=['__call__'])
+        patch = mock.patch("google.cloud.datastore.client.Query", spec=["__call__"])
         with patch as mock_klass:
             query = client.query(
                 kind=kind,
@@ -1029,39 +1005,38 @@ class TestClient(unittest.TestCase):
             )
 
     def test_query_w_namespace(self):
-        kind = 'KIND'
+        kind = "KIND"
         namespace = object()
 
         creds = _make_credentials()
         client = self._make_one(namespace=namespace, credentials=creds)
 
-        patch = mock.patch(
-            'google.cloud.datastore.client.Query', spec=['__call__'])
+        patch = mock.patch("google.cloud.datastore.client.Query", spec=["__call__"])
         with patch as mock_klass:
             query = client.query(kind=kind)
             self.assertIs(query, mock_klass.return_value)
             mock_klass.assert_called_once_with(
-                client, project=self.PROJECT, namespace=namespace, kind=kind)
+                client, project=self.PROJECT, namespace=namespace, kind=kind
+            )
 
     def test_query_w_namespace_collision(self):
-        kind = 'KIND'
+        kind = "KIND"
         namespace1 = object()
         namespace2 = object()
 
         creds = _make_credentials()
         client = self._make_one(namespace=namespace1, credentials=creds)
 
-        patch = mock.patch(
-            'google.cloud.datastore.client.Query', spec=['__call__'])
+        patch = mock.patch("google.cloud.datastore.client.Query", spec=["__call__"])
         with patch as mock_klass:
             query = client.query(kind=kind, namespace=namespace2)
             self.assertIs(query, mock_klass.return_value)
             mock_klass.assert_called_once_with(
-                client, project=self.PROJECT, namespace=namespace2, kind=kind)
+                client, project=self.PROJECT, namespace=namespace2, kind=kind
+            )
 
 
 class _NoCommitBatch(object):
-
     def __init__(self, client):
         from google.cloud.datastore.batch import Batch
 
@@ -1078,8 +1053,7 @@ class _NoCommitBatch(object):
 
 
 class _NoCommitTransaction(object):
-
-    def __init__(self, client, transaction_id='TRANSACTION'):
+    def __init__(self, client, transaction_id="TRANSACTION"):
         from google.cloud.datastore.batch import Batch
         from google.cloud.datastore.transaction import Transaction
 
@@ -1104,8 +1078,8 @@ class _Entity(dict):
 
 class _Key(object):
     _MARKER = object()
-    _kind = 'KIND'
-    _key = 'KEY'
+    _kind = "KIND"
+    _key = "KEY"
     _path = None
     _id = 1234
     _stored = None
@@ -1139,13 +1113,11 @@ class _Key(object):
 
 
 class _PathElementPB(object):
-
     def __init__(self, id_):
         self.id = id_
 
 
 class _KeyPB(object):
-
     def __init__(self, id_):
         self.path = [_PathElementPB(id_)]
 
@@ -1161,8 +1133,7 @@ def _mutated_pb(test_case, mutation_pb_list, mutation_type):
     # We grab the only mutation.
     mutated_pb = mutation_pb_list[0]
     # Then check if it is the correct type.
-    test_case.assertEqual(mutated_pb.WhichOneof('operation'),
-                          mutation_type)
+    test_case.assertEqual(mutated_pb.WhichOneof("operation"), mutation_type)
 
     return getattr(mutated_pb, mutation_type)
 
@@ -1179,31 +1150,29 @@ def _make_key(id_):
 def _make_commit_response(*keys):
     from google.cloud.datastore_v1.proto import datastore_pb2
 
-    mutation_results = [
-        datastore_pb2.MutationResult(key=key) for key in keys]
+    mutation_results = [datastore_pb2.MutationResult(key=key) for key in keys]
     return datastore_pb2.CommitResponse(mutation_results=mutation_results)
 
 
 def _make_lookup_response(results=(), missing=(), deferred=()):
     entity_results_found = [
-        mock.Mock(entity=result, spec=['entity']) for result in results]
+        mock.Mock(entity=result, spec=["entity"]) for result in results
+    ]
     entity_results_missing = [
-        mock.Mock(entity=missing_entity, spec=['entity'])
-        for missing_entity in missing]
+        mock.Mock(entity=missing_entity, spec=["entity"]) for missing_entity in missing
+    ]
     return mock.Mock(
         found=entity_results_found,
         missing=entity_results_missing,
         deferred=deferred,
-        spec=['found', 'missing', 'deferred'])
+        spec=["found", "missing", "deferred"],
+    )
 
 
 def _make_datastore_api(*keys, **kwargs):
-    commit_method = mock.Mock(
-        return_value=_make_commit_response(*keys), spec=[])
-    lookup_response = kwargs.pop(
-        'lookup_response', _make_lookup_response())
-    lookup_method = mock.Mock(
-        return_value=lookup_response, spec=[])
+    commit_method = mock.Mock(return_value=_make_commit_response(*keys), spec=[])
+    lookup_response = kwargs.pop("lookup_response", _make_lookup_response())
+    lookup_method = mock.Mock(return_value=lookup_response, spec=[])
     return mock.Mock(
-        commit=commit_method, lookup=lookup_method,
-        spec=['commit', 'lookup'])
+        commit=commit_method, lookup=lookup_method, spec=["commit", "lookup"]
+    )

@@ -19,22 +19,25 @@ import mock
 
 class TestInstance(unittest.TestCase):
 
-    PROJECT = 'project'
-    PARENT = 'projects/' + PROJECT
-    INSTANCE_ID = 'instance-id'
-    INSTANCE_NAME = PARENT + '/instances/' + INSTANCE_ID
-    CONFIG_NAME = 'configuration-name'
-    LOCATION = 'projects/' + PROJECT + '/locations/' + CONFIG_NAME
-    DISPLAY_NAME = 'display_name'
+    PROJECT = "project"
+    PARENT = "projects/" + PROJECT
+    INSTANCE_ID = "instance-id"
+    INSTANCE_NAME = PARENT + "/instances/" + INSTANCE_ID
+    CONFIG_NAME = "configuration-name"
+    LOCATION = "projects/" + PROJECT + "/locations/" + CONFIG_NAME
+    DISPLAY_NAME = "display_name"
     NODE_COUNT = 5
     OP_ID = 8915
-    OP_NAME = ('operations/projects/%s/instances/%soperations/%d' %
-               (PROJECT, INSTANCE_ID, OP_ID))
-    TABLE_ID = 'table_id'
-    TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
+    OP_NAME = "operations/projects/%s/instances/%soperations/%d" % (
+        PROJECT,
+        INSTANCE_ID,
+        OP_ID,
+    )
+    TABLE_ID = "table_id"
+    TABLE_NAME = INSTANCE_NAME + "/tables/" + TABLE_ID
     TIMEOUT_SECONDS = 1
-    DATABASE_ID = 'database_id'
-    DATABASE_NAME = '%s/databases/%s' % (INSTANCE_NAME, DATABASE_ID)
+    DATABASE_ID = "database_id"
+    DATABASE_NAME = "%s/databases/%s" % (INSTANCE_NAME, DATABASE_ID)
 
     def _getTargetClass(self):
         from google.cloud.spanner_v1.instance import Instance
@@ -56,13 +59,16 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
 
     def test_constructor_non_default(self):
-        DISPLAY_NAME = 'display_name'
+        DISPLAY_NAME = "display_name"
         client = object()
 
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  configuration_name=self.CONFIG_NAME,
-                                  node_count=self.NODE_COUNT,
-                                  display_name=DISPLAY_NAME)
+        instance = self._make_one(
+            self.INSTANCE_ID,
+            client,
+            configuration_name=self.CONFIG_NAME,
+            node_count=self.NODE_COUNT,
+            display_name=DISPLAY_NAME,
+        )
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertIs(instance._client, client)
         self.assertEqual(instance.configuration_name, self.CONFIG_NAME)
@@ -70,11 +76,12 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, DISPLAY_NAME)
 
     def test_copy(self):
-        DISPLAY_NAME = 'display_name'
+        DISPLAY_NAME = "display_name"
 
         client = _Client(self.PROJECT)
-        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME,
-                                  display_name=DISPLAY_NAME)
+        instance = self._make_one(
+            self.INSTANCE_ID, client, self.CONFIG_NAME, display_name=DISPLAY_NAME
+        )
         new_instance = instance.copy()
 
         # Make sure the client copy succeeded.
@@ -86,12 +93,11 @@ class TestInstance(unittest.TestCase):
 
     def test__update_from_pb_success(self):
         from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2 as admin_v1_pb2)
-
-        display_name = 'display_name'
-        instance_pb = admin_v1_pb2.Instance(
-            display_name=display_name,
+            spanner_instance_admin_pb2 as admin_v1_pb2,
         )
+
+        display_name = "display_name"
+        instance_pb = admin_v1_pb2.Instance(display_name=display_name)
 
         instance = self._make_one(None, None, None, None)
         self.assertEqual(instance.display_name, None)
@@ -100,7 +106,8 @@ class TestInstance(unittest.TestCase):
 
     def test__update_from_pb_no_display_name(self):
         from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2 as admin_v1_pb2)
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
 
         instance_pb = admin_v1_pb2.Instance()
         instance = self._make_one(None, None, None, None)
@@ -111,9 +118,10 @@ class TestInstance(unittest.TestCase):
 
     def test_from_pb_bad_instance_name(self):
         from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2 as admin_v1_pb2)
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
 
-        instance_name = 'INCORRECT_FORMAT'
+        instance_name = "INCORRECT_FORMAT"
         instance_pb = admin_v1_pb2.Instance(name=instance_name)
 
         klass = self._getTargetClass()
@@ -122,9 +130,10 @@ class TestInstance(unittest.TestCase):
 
     def test_from_pb_project_mistmatch(self):
         from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2 as admin_v1_pb2)
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
 
-        ALT_PROJECT = 'ALT_PROJECT'
+        ALT_PROJECT = "ALT_PROJECT"
         client = _Client(project=ALT_PROJECT)
 
         self.assertNotEqual(self.PROJECT, ALT_PROJECT)
@@ -137,7 +146,8 @@ class TestInstance(unittest.TestCase):
 
     def test_from_pb_success(self):
         from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2 as admin_v1_pb2)
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
 
         client = _Client(project=self.PROJECT)
 
@@ -176,22 +186,22 @@ class TestInstance(unittest.TestCase):
         client = object()
         instance1 = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
         instance2 = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
-        comparison_val = (instance1 != instance2)
+        comparison_val = instance1 != instance2
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        instance1 = self._make_one('instance_id1', 'client1', self.CONFIG_NAME)
-        instance2 = self._make_one('instance_id2', 'client2', self.CONFIG_NAME)
+        instance1 = self._make_one("instance_id1", "client1", self.CONFIG_NAME)
+        instance2 = self._make_one("instance_id2", "client2", self.CONFIG_NAME)
         self.assertNotEqual(instance1, instance2)
 
     def test_create_grpc_error(self):
         from google.api_core.exceptions import Unknown
 
         client = _Client(self.PROJECT)
-        client.instance_admin_api = _FauxInstanceAdminAPI(
-            _rpc_error=True)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  configuration_name=self.CONFIG_NAME)
+        client.instance_admin_api = _FauxInstanceAdminAPI(_rpc_error=True)
+        instance = self._make_one(
+            self.INSTANCE_ID, client, configuration_name=self.CONFIG_NAME
+        )
 
         with self.assertRaises(Unknown):
             instance.create()
@@ -201,9 +211,11 @@ class TestInstance(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _create_instance_conflict=True)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  configuration_name=self.CONFIG_NAME)
+            _create_instance_conflict=True
+        )
+        instance = self._make_one(
+            self.INSTANCE_ID, client, configuration_name=self.CONFIG_NAME
+        )
 
         with self.assertRaises(Conflict):
             instance.create()
@@ -215,18 +227,21 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
         self.assertEqual(instance.node_count, 1)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_create_success(self):
         op_future = _FauxOperationFuture()
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _create_instance_response=op_future)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  configuration_name=self.CONFIG_NAME,
-                                  display_name=self.DISPLAY_NAME,
-                                  node_count=self.NODE_COUNT)
+            _create_instance_response=op_future
+        )
+        instance = self._make_one(
+            self.INSTANCE_ID,
+            client,
+            configuration_name=self.CONFIG_NAME,
+            display_name=self.DISPLAY_NAME,
+            node_count=self.NODE_COUNT,
+        )
 
         future = instance.create()
 
@@ -239,15 +254,13 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_exists_instance_grpc_error(self):
         from google.api_core.exceptions import Unknown
 
         client = _Client(self.PROJECT)
-        client.instance_admin_api = _FauxInstanceAdminAPI(
-            _rpc_error=True)
+        client.instance_admin_api = _FauxInstanceAdminAPI(_rpc_error=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
         with self.assertRaises(Unknown):
@@ -256,7 +269,8 @@ class TestInstance(unittest.TestCase):
     def test_exists_instance_not_found(self):
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _instance_not_found=True)
+            _instance_not_found=True
+        )
         api._instance_not_found = True
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
@@ -264,12 +278,12 @@ class TestInstance(unittest.TestCase):
 
         name, metadata = api._got_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_exists_success(self):
         from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2 as admin_v1_pb2)
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
 
         client = _Client(self.PROJECT)
         instance_pb = admin_v1_pb2.Instance(
@@ -279,22 +293,21 @@ class TestInstance(unittest.TestCase):
             node_count=self.NODE_COUNT,
         )
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _get_instance_response=instance_pb)
+            _get_instance_response=instance_pb
+        )
         instance = self._make_one(self.INSTANCE_ID, client)
 
         self.assertTrue(instance.exists())
 
         name, metadata = api._got_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_reload_instance_grpc_error(self):
         from google.api_core.exceptions import Unknown
 
         client = _Client(self.PROJECT)
-        client.instance_admin_api = _FauxInstanceAdminAPI(
-            _rpc_error=True)
+        client.instance_admin_api = _FauxInstanceAdminAPI(_rpc_error=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
         with self.assertRaises(Unknown):
@@ -305,7 +318,8 @@ class TestInstance(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _instance_not_found=True)
+            _instance_not_found=True
+        )
         api._instance_not_found = True
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
@@ -314,12 +328,12 @@ class TestInstance(unittest.TestCase):
 
         name, metadata = api._got_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_reload_success(self):
         from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2 as admin_v1_pb2)
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
 
         client = _Client(self.PROJECT)
         instance_pb = admin_v1_pb2.Instance(
@@ -329,7 +343,8 @@ class TestInstance(unittest.TestCase):
             node_count=self.NODE_COUNT,
         )
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _get_instance_response=instance_pb)
+            _get_instance_response=instance_pb
+        )
         instance = self._make_one(self.INSTANCE_ID, client)
 
         instance.reload()
@@ -340,17 +355,16 @@ class TestInstance(unittest.TestCase):
 
         name, metadata = api._got_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_update_grpc_error(self):
         from google.api_core.exceptions import Unknown
 
         client = _Client(self.PROJECT)
-        client.instance_admin_api = _FauxInstanceAdminAPI(
-            _rpc_error=True)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  configuration_name=self.CONFIG_NAME)
+        client.instance_admin_api = _FauxInstanceAdminAPI(_rpc_error=True)
+        instance = self._make_one(
+            self.INSTANCE_ID, client, configuration_name=self.CONFIG_NAME
+        )
 
         with self.assertRaises(Unknown):
             instance.update()
@@ -361,53 +375,54 @@ class TestInstance(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _instance_not_found=True)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  configuration_name=self.CONFIG_NAME)
+            _instance_not_found=True
+        )
+        instance = self._make_one(
+            self.INSTANCE_ID, client, configuration_name=self.CONFIG_NAME
+        )
 
         with self.assertRaises(NotFound):
             instance.update()
 
         instance, field_mask, metadata = api._updated_instance
-        self.assertEqual(field_mask.paths,
-                         ['config', 'display_name', 'node_count'])
+        self.assertEqual(field_mask.paths, ["config", "display_name", "node_count"])
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
         self.assertEqual(instance.node_count, DEFAULT_NODE_COUNT)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_update_success(self):
         op_future = _FauxOperationFuture()
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _update_instance_response=op_future)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  configuration_name=self.CONFIG_NAME,
-                                  node_count=self.NODE_COUNT,
-                                  display_name=self.DISPLAY_NAME)
+            _update_instance_response=op_future
+        )
+        instance = self._make_one(
+            self.INSTANCE_ID,
+            client,
+            configuration_name=self.CONFIG_NAME,
+            node_count=self.NODE_COUNT,
+            display_name=self.DISPLAY_NAME,
+        )
 
         future = instance.update()
 
         self.assertIs(future, op_future)
 
         instance, field_mask, metadata = api._updated_instance
-        self.assertEqual(field_mask.paths,
-                         ['config', 'display_name', 'node_count'])
+        self.assertEqual(field_mask.paths, ["config", "display_name", "node_count"])
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_delete_grpc_error(self):
         from google.api_core.exceptions import Unknown
 
         client = _Client(self.PROJECT)
-        client.instance_admin_api = _FauxInstanceAdminAPI(
-            _rpc_error=True)
+        client.instance_admin_api = _FauxInstanceAdminAPI(_rpc_error=True)
         instance = self._make_one(self.INSTANCE_ID, client)
 
         with self.assertRaises(Unknown):
@@ -418,7 +433,8 @@ class TestInstance(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _instance_not_found=True)
+            _instance_not_found=True
+        )
         instance = self._make_one(self.INSTANCE_ID, client)
 
         with self.assertRaises(NotFound):
@@ -426,23 +442,22 @@ class TestInstance(unittest.TestCase):
 
         name, metadata = api._deleted_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_delete_success(self):
         from google.protobuf.empty_pb2 import Empty
 
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
-            _delete_instance_response=Empty())
+            _delete_instance_response=Empty()
+        )
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
         instance.delete()
 
         name, metadata = api._deleted_instance
         self.assertEqual(name, self.INSTANCE_NAME)
-        self.assertEqual(
-            metadata, [('google-cloud-resource-prefix', instance.name)])
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_database_factory_defaults(self):
         from google.cloud.spanner_v1.database import Database
@@ -450,7 +465,7 @@ class TestInstance(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
-        DATABASE_ID = 'database-id'
+        DATABASE_ID = "database-id"
 
         database = instance.database(DATABASE_ID)
 
@@ -468,11 +483,12 @@ class TestInstance(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
-        DATABASE_ID = 'database-id'
+        DATABASE_ID = "database-id"
         pool = _Pool()
 
         database = instance.database(
-            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool)
+            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool
+        )
 
         self.assertTrue(isinstance(database, Database))
         self.assertEqual(database.database_id, DATABASE_ID)
@@ -482,10 +498,10 @@ class TestInstance(unittest.TestCase):
         self.assertIs(pool._bound, database)
 
     def test_list_databases(self):
-        from google.cloud.spanner_admin_database_v1.gapic import (
-            database_admin_client)
+        from google.cloud.spanner_admin_database_v1.gapic import database_admin_client
         from google.cloud.spanner_admin_database_v1.proto import (
-            spanner_database_admin_pb2)
+            spanner_database_admin_pb2,
+        )
         from google.cloud.spanner_v1.database import Database
 
         api = database_admin_client.DatabaseAdminClient(mock.Mock())
@@ -496,70 +512,70 @@ class TestInstance(unittest.TestCase):
         databases_pb = spanner_database_admin_pb2.ListDatabasesResponse(
             databases=[
                 spanner_database_admin_pb2.Database(
-                    name='{}/databases/aa'.format(self.INSTANCE_NAME)),
+                    name="{}/databases/aa".format(self.INSTANCE_NAME)
+                ),
                 spanner_database_admin_pb2.Database(
-                    name='{}/databases/bb'.format(self.INSTANCE_NAME))
+                    name="{}/databases/bb".format(self.INSTANCE_NAME)
+                ),
             ]
         )
 
-        ld_api = api._inner_api_calls['list_databases'] = mock.Mock(
-            return_value=databases_pb)
+        ld_api = api._inner_api_calls["list_databases"] = mock.Mock(
+            return_value=databases_pb
+        )
 
         response = instance.list_databases()
         databases = list(response)
 
         self.assertIsInstance(databases[0], Database)
-        self.assertTrue(databases[0].name.endswith('/aa'))
-        self.assertTrue(databases[1].name.endswith('/bb'))
+        self.assertTrue(databases[0].name.endswith("/aa"))
+        self.assertTrue(databases[1].name.endswith("/bb"))
 
         ld_api.assert_called_once_with(
-            spanner_database_admin_pb2.ListDatabasesRequest(
-                parent=self.INSTANCE_NAME),
-            metadata=[('google-cloud-resource-prefix', instance.name)],
+            spanner_database_admin_pb2.ListDatabasesRequest(parent=self.INSTANCE_NAME),
+            metadata=[("google-cloud-resource-prefix", instance.name)],
             retry=mock.ANY,
-            timeout=mock.ANY)
+            timeout=mock.ANY,
+        )
 
     def test_list_databases_w_options(self):
-        from google.cloud.spanner_admin_database_v1.gapic import (
-            database_admin_client)
+        from google.cloud.spanner_admin_database_v1.gapic import database_admin_client
         from google.cloud.spanner_admin_database_v1.proto import (
-            spanner_database_admin_pb2)
+            spanner_database_admin_pb2,
+        )
 
         api = database_admin_client.DatabaseAdminClient(mock.Mock())
         client = _Client(self.PROJECT)
         client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)
 
-        databases_pb = spanner_database_admin_pb2.ListDatabasesResponse(
-            databases=[]
+        databases_pb = spanner_database_admin_pb2.ListDatabasesResponse(databases=[])
+
+        ld_api = api._inner_api_calls["list_databases"] = mock.Mock(
+            return_value=databases_pb
         )
 
-        ld_api = api._inner_api_calls['list_databases'] = mock.Mock(
-            return_value=databases_pb)
-
         page_size = 42
-        page_token = 'token'
-        response = instance.list_databases(
-            page_size=page_size, page_token=page_token)
+        page_token = "token"
+        response = instance.list_databases(page_size=page_size, page_token=page_token)
         databases = list(response)
 
         self.assertEqual(databases, [])
 
         ld_api.assert_called_once_with(
             spanner_database_admin_pb2.ListDatabasesRequest(
-                parent=self.INSTANCE_NAME,
-                page_size=page_size,
-                page_token=page_token),
-            metadata=[('google-cloud-resource-prefix', instance.name)],
+                parent=self.INSTANCE_NAME, page_size=page_size, page_token=page_token
+            ),
+            metadata=[("google-cloud-resource-prefix", instance.name)],
             retry=mock.ANY,
-            timeout=mock.ANY)
+            timeout=mock.ANY,
+        )
 
 
 class _Client(object):
-
     def __init__(self, project, timeout_seconds=None):
         self.project = project
-        self.project_name = 'projects/' + self.project
+        self.project_name = "projects/" + self.project
         self.timeout_seconds = timeout_seconds
 
     def copy(self):
@@ -568,9 +584,11 @@ class _Client(object):
         return deepcopy(self)
 
     def __eq__(self, other):
-        return (other.project == self.project and
-                other.project_name == self.project_name and
-                other.timeout_seconds == self.timeout_seconds)
+        return (
+            other.project == self.project
+            and other.project_name == self.project_name
+            and other.timeout_seconds == self.timeout_seconds
+        )
 
 
 class _FauxInstanceAdminAPI(object):
@@ -587,9 +605,9 @@ class _FauxInstanceAdminAPI(object):
 
         self._created_instance = (parent, instance_id, instance, metadata)
         if self._rpc_error:
-            raise Unknown('error')
+            raise Unknown("error")
         if self._create_instance_conflict:
-            raise AlreadyExists('conflict')
+            raise AlreadyExists("conflict")
         return self._create_instance_response
 
     def get_instance(self, name, metadata=None):
@@ -597,9 +615,9 @@ class _FauxInstanceAdminAPI(object):
 
         self._got_instance = (name, metadata)
         if self._rpc_error:
-            raise Unknown('error')
+            raise Unknown("error")
         if self._instance_not_found:
-            raise NotFound('error')
+            raise NotFound("error")
         return self._get_instance_response
 
     def update_instance(self, instance, field_mask, metadata=None):
@@ -607,9 +625,9 @@ class _FauxInstanceAdminAPI(object):
 
         self._updated_instance = (instance, field_mask, metadata)
         if self._rpc_error:
-            raise Unknown('error')
+            raise Unknown("error")
         if self._instance_not_found:
-            raise NotFound('error')
+            raise NotFound("error")
         return self._update_instance_response
 
     def delete_instance(self, name, metadata=None):
@@ -617,9 +635,9 @@ class _FauxInstanceAdminAPI(object):
 
         self._deleted_instance = name, metadata
         if self._rpc_error:
-            raise Unknown('error')
+            raise Unknown("error")
         if self._instance_not_found:
-            raise NotFound('error')
+            raise NotFound("error")
         return self._delete_instance_response
 
 

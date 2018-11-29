@@ -23,9 +23,10 @@ from google.protobuf import field_mask_pb2
 from google.api_core.exceptions import NotFound
 
 _APP_PROFILE_NAME_RE = re.compile(
-    r'^projects/(?P<project>[^/]+)/'
-    r'instances/(?P<instance>[^/]+)/'
-    r'appProfiles/(?P<app_profile_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$')
+    r"^projects/(?P<project>[^/]+)/"
+    r"instances/(?P<instance>[^/]+)/"
+    r"appProfiles/(?P<app_profile_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
+)
 
 
 class AppProfile(object):
@@ -64,10 +65,15 @@ class AppProfile(object):
                                         ROUTING_POLICY_TYPE_SINGLE.
     """
 
-    def __init__(self, app_profile_id, instance,
-                 routing_policy_type=None,
-                 description=None, cluster_id=None,
-                 allow_transactional_writes=None):
+    def __init__(
+        self,
+        app_profile_id,
+        instance,
+        routing_policy_type=None,
+        description=None,
+        cluster_id=None,
+        allow_transactional_writes=None,
+    ):
         self.app_profile_id = app_profile_id
         self._instance = instance
         self.routing_policy_type = routing_policy_type
@@ -91,8 +97,10 @@ class AppProfile(object):
         :returns: The AppProfile name.
         """
         return self.instance_admin_client.app_profile_path(
-            self._instance._client.project, self._instance.instance_id,
-            self.app_profile_id)
+            self._instance._client.project,
+            self._instance.instance_id,
+            self.app_profile_id,
+        )
 
     @property
     def instance_admin_client(self):
@@ -111,8 +119,10 @@ class AppProfile(object):
         #       identifying values instance, AppProfile ID and client. This is
         #       intentional, since the same AppProfile can be in different
         #       states if not synchronized.
-        return (other.app_profile_id == self.app_profile_id and
-                other._instance == self._instance)
+        return (
+            other.app_profile_id == self.app_profile_id
+            and other._instance == self._instance
+        )
 
     def __ne__(self, other):
         return not self == other
@@ -138,18 +148,23 @@ class AppProfile(object):
                  or if the parsed project ID does not match the project ID
                  on the client.
         """
-        match_app_profile_name = (
-            _APP_PROFILE_NAME_RE.match(app_profile_pb.name))
+        match_app_profile_name = _APP_PROFILE_NAME_RE.match(app_profile_pb.name)
         if match_app_profile_name is None:
-            raise ValueError('AppProfile protobuf name was not in the '
-                             'expected format.', app_profile_pb.name)
-        if match_app_profile_name.group('instance') != instance.instance_id:
-            raise ValueError('Instance ID on app_profile does not match the '
-                             'instance ID on the client')
-        if match_app_profile_name.group('project') != instance._client.project:
-            raise ValueError('Project ID on app_profile does not match the '
-                             'project ID on the client')
-        app_profile_id = match_app_profile_name.group('app_profile_id')
+            raise ValueError(
+                "AppProfile protobuf name was not in the " "expected format.",
+                app_profile_pb.name,
+            )
+        if match_app_profile_name.group("instance") != instance.instance_id:
+            raise ValueError(
+                "Instance ID on app_profile does not match the "
+                "instance ID on the client"
+            )
+        if match_app_profile_name.group("project") != instance._client.project:
+            raise ValueError(
+                "Project ID on app_profile does not match the "
+                "project ID on the client"
+            )
+        app_profile_id = match_app_profile_name.group("app_profile_id")
 
         result = cls(app_profile_id, instance)
         result._update_from_pb(app_profile_pb)
@@ -166,15 +181,15 @@ class AppProfile(object):
         self.description = app_profile_pb.description
 
         routing_policy_type = None
-        if app_profile_pb.HasField('multi_cluster_routing_use_any'):
+        if app_profile_pb.HasField("multi_cluster_routing_use_any"):
             routing_policy_type = RoutingPolicyType.ANY
             self.allow_transactional_writes = False
         else:
             routing_policy_type = RoutingPolicyType.SINGLE
             self.cluster_id = app_profile_pb.single_cluster_routing.cluster_id
             self.allow_transactional_writes = (
-                app_profile_pb.single_cluster_routing
-                .allow_transactional_writes)
+                app_profile_pb.single_cluster_routing.allow_transactional_writes
+            )
         self.routing_policy_type = routing_policy_type
 
     def _to_pb(self):
@@ -186,34 +201,33 @@ class AppProfile(object):
                  routing_policy_type is not set
         """
         if not self.routing_policy_type:
-            raise ValueError('AppProfile required routing policy.')
+            raise ValueError("AppProfile required routing policy.")
 
         single_cluster_routing = None
         multi_cluster_routing_use_any = None
 
         if self.routing_policy_type == RoutingPolicyType.ANY:
             multi_cluster_routing_use_any = (
-                instance_pb2.AppProfile.MultiClusterRoutingUseAny())
+                instance_pb2.AppProfile.MultiClusterRoutingUseAny()
+            )
         else:
-            single_cluster_routing = (
-                instance_pb2.AppProfile.SingleClusterRouting(
-                    cluster_id=self.cluster_id,
-                    allow_transactional_writes=self.allow_transactional_writes)
+            single_cluster_routing = instance_pb2.AppProfile.SingleClusterRouting(
+                cluster_id=self.cluster_id,
+                allow_transactional_writes=self.allow_transactional_writes,
             )
 
         app_profile_pb = instance_pb2.AppProfile(
-            name=self.name, description=self.description,
+            name=self.name,
+            description=self.description,
             multi_cluster_routing_use_any=multi_cluster_routing_use_any,
-            single_cluster_routing=single_cluster_routing
+            single_cluster_routing=single_cluster_routing,
         )
         return app_profile_pb
 
     def reload(self):
         """Reload the metadata for this cluster"""
 
-        app_profile_pb = (
-            self.instance_admin_client.get_app_profile(
-                self.name))
+        app_profile_pb = self.instance_admin_client.get_app_profile(self.name)
 
         # NOTE: _update_from_pb does not check that the project and
         #       app_profile ID on the response match the request.
@@ -258,10 +272,15 @@ class AppProfile(object):
         :param: ignore_warnings: (Optional) If true, ignore safety checks when
                                  creating the AppProfile.
         """
-        return self.from_pb(self.instance_admin_client.create_app_profile(
-            parent=self._instance.name, app_profile_id=self.app_profile_id,
-            app_profile=self._to_pb(), ignore_warnings=ignore_warnings),
-            self._instance)
+        return self.from_pb(
+            self.instance_admin_client.create_app_profile(
+                parent=self._instance.name,
+                app_profile_id=self.app_profile_id,
+                app_profile=self._to_pb(),
+                ignore_warnings=ignore_warnings,
+            ),
+            self._instance,
+        )
 
     def update(self, ignore_warnings=None):
         """Update this app_profile.
@@ -278,16 +297,18 @@ class AppProfile(object):
         update_mask_pb = field_mask_pb2.FieldMask()
 
         if self.description is not None:
-            update_mask_pb.paths.append('description')
+            update_mask_pb.paths.append("description")
 
         if self.routing_policy_type == RoutingPolicyType.ANY:
-            update_mask_pb.paths.append('multi_cluster_routing_use_any')
+            update_mask_pb.paths.append("multi_cluster_routing_use_any")
         else:
-            update_mask_pb.paths.append('single_cluster_routing')
+            update_mask_pb.paths.append("single_cluster_routing")
 
         return self.instance_admin_client.update_app_profile(
-            app_profile=self._to_pb(), update_mask=update_mask_pb,
-            ignore_warnings=ignore_warnings)
+            app_profile=self._to_pb(),
+            update_mask=update_mask_pb,
+            ignore_warnings=ignore_warnings,
+        )
 
     def delete(self, ignore_warnings=None):
         """Delete this AppProfile.
@@ -301,5 +322,4 @@ class AppProfile(object):
                  If the request failed due to a retryable error and retry
                  attempts failed. ValueError: If the parameters are invalid.
         """
-        self.instance_admin_client.delete_app_profile(
-            self.name, ignore_warnings)
+        self.instance_admin_client.delete_app_profile(self.name, ignore_warnings)

@@ -14,8 +14,6 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -23,9 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/dataproc_v1/proto/operations.proto',
   package='google.cloud.dataproc.v1',
   syntax='proto3',
-  serialized_pb=_b('\n/google/cloud/dataproc_v1/proto/operations.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf5\x01\n\x16\x43lusterOperationStatus\x12\x45\n\x05state\x18\x01 \x01(\x0e\x32\x36.google.cloud.dataproc.v1.ClusterOperationStatus.State\x12\x13\n\x0binner_state\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65tails\x18\x03 \x01(\t\x12\x34\n\x10state_start_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\"\x90\x03\n\x18\x43lusterOperationMetadata\x12\x14\n\x0c\x63luster_name\x18\x07 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x08 \x01(\t\x12@\n\x06status\x18\t \x01(\x0b\x32\x30.google.cloud.dataproc.v1.ClusterOperationStatus\x12H\n\x0estatus_history\x18\n \x03(\x0b\x32\x30.google.cloud.dataproc.v1.ClusterOperationStatus\x12\x16\n\x0eoperation_type\x18\x0b \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x0c \x01(\t\x12N\n\x06labels\x18\r \x03(\x0b\x32>.google.cloud.dataproc.v1.ClusterOperationMetadata.LabelsEntry\x12\x10\n\x08warnings\x18\x0e \x03(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42s\n\x1c\x63om.google.cloud.dataproc.v1B\x0fOperationsProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3')
+  serialized_pb=_b('\n/google/cloud/dataproc_v1/proto/operations.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf5\x01\n\x16\x43lusterOperationStatus\x12\x45\n\x05state\x18\x01 \x01(\x0e\x32\x36.google.cloud.dataproc.v1.ClusterOperationStatus.State\x12\x13\n\x0binner_state\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65tails\x18\x03 \x01(\t\x12\x34\n\x10state_start_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\"\x90\x03\n\x18\x43lusterOperationMetadata\x12\x14\n\x0c\x63luster_name\x18\x07 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x08 \x01(\t\x12@\n\x06status\x18\t \x01(\x0b\x32\x30.google.cloud.dataproc.v1.ClusterOperationStatus\x12H\n\x0estatus_history\x18\n \x03(\x0b\x32\x30.google.cloud.dataproc.v1.ClusterOperationStatus\x12\x16\n\x0eoperation_type\x18\x0b \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x0c \x01(\t\x12N\n\x06labels\x18\r \x03(\x0b\x32>.google.cloud.dataproc.v1.ClusterOperationMetadata.LabelsEntry\x12\x10\n\x08warnings\x18\x0e \x03(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42s\n\x1c\x63om.google.cloud.dataproc.v1B\x0fOperationsProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3')
   ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
 
 
@@ -54,8 +52,8 @@ _CLUSTEROPERATIONSTATUS_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=396,
-  serialized_end=452,
+  serialized_start=330,
+  serialized_end=386,
 )
 _sym_db.RegisterEnumDescriptor(_CLUSTEROPERATIONSTATUS_STATE)
 
@@ -108,8 +106,8 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=207,
-  serialized_end=452,
+  serialized_start=141,
+  serialized_end=386,
 )
 
 
@@ -146,8 +144,8 @@ _CLUSTEROPERATIONMETADATA_LABELSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=810,
-  serialized_end=855,
+  serialized_start=744,
+  serialized_end=789,
 )
 
 _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
@@ -225,8 +223,8 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=455,
-  serialized_end=855,
+  serialized_start=389,
+  serialized_end=789,
 )
 
 _CLUSTEROPERATIONSTATUS.fields_by_name['state'].enum_type = _CLUSTEROPERATIONSTATUS_STATE
@@ -249,15 +247,15 @@ ClusterOperationStatus = _reflection.GeneratedProtocolMessageType('ClusterOperat
   
   Attributes:
       state:
-          Output-only. A message containing the operation state.
+          Output only. A message containing the operation state.
       inner_state:
-          Output-only. A message containing the detailed operation
+          Output only. A message containing the detailed operation
           state.
       details:
-          Output-only.A message containing any operation metadata
+          Output only. A message containing any operation metadata
           details.
       state_start_time:
-          Output-only. The time this state was entered.
+          Output only. The time this state was entered.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.ClusterOperationStatus)
   ))
@@ -279,21 +277,21 @@ ClusterOperationMetadata = _reflection.GeneratedProtocolMessageType('ClusterOper
   
   Attributes:
       cluster_name:
-          Output-only. Name of the cluster for the operation.
+          Output only. Name of the cluster for the operation.
       cluster_uuid:
-          Output-only. Cluster UUID for the operation.
+          Output only. Cluster UUID for the operation.
       status:
-          Output-only. Current operation status.
+          Output only. Current operation status.
       status_history:
-          Output-only. The previous operation status.
+          Output only. The previous operation status.
       operation_type:
-          Output-only. The operation type.
+          Output only. The operation type.
       description:
-          Output-only. Short description of operation.
+          Output only. Short description of operation.
       labels:
-          Output-only. Labels associated with the operation
+          Output only. Labels associated with the operation
       warnings:
-          Output-only. Errors encountered during operation execution.
+          Output only. Errors encountered during operation execution.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.ClusterOperationMetadata)
   ))

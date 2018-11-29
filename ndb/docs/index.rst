@@ -16,7 +16,7 @@
    blobstore
    metadata
    stats
-   async
+   context
 
 .. automodule:: google.cloud.ndb
     :no-members:

@@ -37,11 +37,7 @@ _shared_modules = [
     latlng_pb2,
 ]
 
-_local_modules = [
-    datastore_pb2,
-    entity_pb2,
-    query_pb2,
-]
+_local_modules = [datastore_pb2, entity_pb2, query_pb2]
 
 names = []
 
@@ -52,7 +48,7 @@ for module in _shared_modules:
 
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = 'google.cloud.datastore_v1.types'
+        message.__module__ = "google.cloud.datastore_v1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 

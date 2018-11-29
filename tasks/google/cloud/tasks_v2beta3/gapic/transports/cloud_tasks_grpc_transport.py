@@ -27,14 +27,14 @@ class CloudTasksGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='cloudtasks.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="cloudtasks.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -52,26 +52,21 @@ class CloudTasksGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {
-            'cloud_tasks_stub': cloudtasks_pb2_grpc.CloudTasksStub(channel),
-        }
+        self._stubs = {"cloud_tasks_stub": cloudtasks_pb2_grpc.CloudTasksStub(channel)}
 
     @classmethod
-    def create_channel(cls,
-                       address='cloudtasks.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="cloudtasks.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -86,10 +81,17 @@ class CloudTasksGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def list_queues(self):
@@ -104,7 +106,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].ListQueues
+        return self._stubs["cloud_tasks_stub"].ListQueues
 
     @property
     def get_queue(self):
@@ -117,7 +119,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].GetQueue
+        return self._stubs["cloud_tasks_stub"].GetQueue
 
     @property
     def create_queue(self):
@@ -140,7 +142,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].CreateQueue
+        return self._stubs["cloud_tasks_stub"].CreateQueue
 
     @property
     def update_queue(self):
@@ -166,7 +168,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].UpdateQueue
+        return self._stubs["cloud_tasks_stub"].UpdateQueue
 
     @property
     def delete_queue(self):
@@ -190,7 +192,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].DeleteQueue
+        return self._stubs["cloud_tasks_stub"].DeleteQueue
 
     @property
     def purge_queue(self):
@@ -208,7 +210,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].PurgeQueue
+        return self._stubs["cloud_tasks_stub"].PurgeQueue
 
     @property
     def pause_queue(self):
@@ -225,7 +227,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].PauseQueue
+        return self._stubs["cloud_tasks_stub"].PauseQueue
 
     @property
     def resume_queue(self):
@@ -247,7 +249,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].ResumeQueue
+        return self._stubs["cloud_tasks_stub"].ResumeQueue
 
     @property
     def get_iam_policy(self):
@@ -267,7 +269,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].GetIamPolicy
+        return self._stubs["cloud_tasks_stub"].GetIamPolicy
 
     @property
     def set_iam_policy(self):
@@ -290,7 +292,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].SetIamPolicy
+        return self._stubs["cloud_tasks_stub"].SetIamPolicy
 
     @property
     def test_iam_permissions(self):
@@ -309,7 +311,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].TestIamPermissions
+        return self._stubs["cloud_tasks_stub"].TestIamPermissions
 
     @property
     def list_tasks(self):
@@ -329,7 +331,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].ListTasks
+        return self._stubs["cloud_tasks_stub"].ListTasks
 
     @property
     def get_task(self):
@@ -342,7 +344,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].GetTask
+        return self._stubs["cloud_tasks_stub"].GetTask
 
     @property
     def create_task(self):
@@ -359,7 +361,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].CreateTask
+        return self._stubs["cloud_tasks_stub"].CreateTask
 
     @property
     def delete_task(self):
@@ -376,7 +378,7 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].DeleteTask
+        return self._stubs["cloud_tasks_stub"].DeleteTask
 
     @property
     def run_task(self):
@@ -409,4 +411,4 @@ class CloudTasksGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_tasks_stub'].RunTask
+        return self._stubs["cloud_tasks_stub"].RunTask

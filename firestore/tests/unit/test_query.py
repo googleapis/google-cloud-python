@@ -17,9 +17,13 @@ import types
 import unittest
 
 import mock
+import six
 
 
 class TestQuery(unittest.TestCase):
+
+    if six.PY2:
+        assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
 
     @staticmethod
     def _get_target_class():
@@ -943,8 +947,7 @@ class TestQuery(unittest.TestCase):
         doc2._data = {'first': {'stringValue': 'Ada'},
                       'last': {'stringValue': 'lovelace'}}
 
-        with self.assertRaisesRegexp(ValueError,
-                                     "Can only compare fields "):
+        with self.assertRaisesRegex(ValueError, "Can only compare fields "):
             query._comparator(doc1, doc2)
 
 
@@ -965,7 +968,8 @@ class Test__enum_from_op_string(unittest.TestCase):
         self.assertEqual(self._call_fut('=='), op_class.EQUAL)
         self.assertEqual(self._call_fut('>='), op_class.GREATER_THAN_OR_EQUAL)
         self.assertEqual(self._call_fut('>'), op_class.GREATER_THAN)
-        self.assertEqual(self._call_fut('array_contains'), op_class.ARRAY_CONTAINS)
+        self.assertEqual(
+            self._call_fut('array_contains'), op_class.ARRAY_CONTAINS)
 
     def test_failure(self):
         with self.assertRaises(ValueError):

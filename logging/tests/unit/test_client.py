@@ -25,14 +25,14 @@ def _make_credentials():
 
 class TestClient(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
-    LOGGER_NAME = 'LOGGER_NAME'
-    SINK_NAME = 'SINK_NAME'
-    FILTER = 'logName:syslog AND severity>=ERROR'
-    DESTINATION_URI = 'faux.googleapis.com/destination'
-    METRIC_NAME = 'metric_name'
-    FILTER = 'logName:syslog AND severity>=ERROR'
-    DESCRIPTION = 'DESCRIPTION'
+    PROJECT = "PROJECT"
+    LOGGER_NAME = "LOGGER_NAME"
+    SINK_NAME = "SINK_NAME"
+    FILTER = "logName:syslog AND severity>=ERROR"
+    DESTINATION_URI = "faux.googleapis.com/destination"
+    METRIC_NAME = "metric_name"
+    FILTER = "logName:syslog AND severity>=ERROR"
+    DESCRIPTION = "DESCRIPTION"
 
     @staticmethod
     def _get_target_class():
@@ -51,9 +51,9 @@ class TestClient(unittest.TestCase):
     def test_logging_api_wo_gapic(self):
         from google.cloud.logging._http import _LoggingAPI
 
-        client = self._make_one(self.PROJECT,
-                                credentials=_make_credentials(),
-                                _use_grpc=False)
+        client = self._make_one(
+            self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
 
         conn = client._connection = _Connection()
         api = client.logging_api
@@ -73,10 +73,9 @@ class TestClient(unittest.TestCase):
             return api_obj
 
         creds = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=creds,
-                                _use_grpc=True)
+        client = self._make_one(project=self.PROJECT, credentials=creds, _use_grpc=True)
 
-        patch = mock.patch('google.cloud.logging.client._gapic')
+        patch = mock.patch("google.cloud.logging.client._gapic")
         with patch as gapic_module:
             gapic_module.make_logging_api.side_effect = make_api
             api = client.logging_api
@@ -91,12 +90,11 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging._http import _LoggingAPI
 
         creds = _make_credentials()
-        patch = mock.patch(
-            'google.cloud.logging.client._USE_GRPC',
-            new=True)
+        patch = mock.patch("google.cloud.logging.client._USE_GRPC", new=True)
         with patch:
-            client = self._make_one(project=self.PROJECT, credentials=creds,
-                                    _use_grpc=False)
+            client = self._make_one(
+                project=self.PROJECT, credentials=creds, _use_grpc=False
+            )
 
         api = client.logging_api
         self.assertIsInstance(api, _LoggingAPI)
@@ -105,8 +103,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging._http import _SinksAPI
 
         client = self._make_one(
-            self.PROJECT, credentials=_make_credentials(),
-            _use_grpc=False)
+            self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
 
         conn = client._connection = _Connection()
         api = client.sinks_api
@@ -126,10 +124,9 @@ class TestClient(unittest.TestCase):
             return api_obj
 
         creds = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=creds,
-                                _use_grpc=True)
+        client = self._make_one(project=self.PROJECT, credentials=creds, _use_grpc=True)
 
-        patch = mock.patch('google.cloud.logging.client._gapic')
+        patch = mock.patch("google.cloud.logging.client._gapic")
         with patch as gapic_module:
             gapic_module.make_sinks_api.side_effect = make_api
             api = client.sinks_api
@@ -144,8 +141,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging._http import _MetricsAPI
 
         client = self._make_one(
-            self.PROJECT, credentials=_make_credentials(),
-            _use_grpc=False)
+            self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
 
         conn = client._connection = _Connection()
         api = client.metrics_api
@@ -165,10 +162,9 @@ class TestClient(unittest.TestCase):
             return api_obj
 
         creds = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=creds,
-                                _use_grpc=True)
+        client = self._make_one(project=self.PROJECT, credentials=creds, _use_grpc=True)
 
-        patch = mock.patch('google.cloud.logging.client._gapic')
+        patch = mock.patch("google.cloud.logging.client._gapic")
         with patch as gapic_module:
             gapic_module.make_metrics_api.side_effect = make_api
             api = client.metrics_api
@@ -194,25 +190,22 @@ class TestClient(unittest.TestCase):
         import six
         from google.cloud.logging.entries import TextEntry
 
-        IID = 'IID'
-        TEXT = 'TEXT'
-        TOKEN = 'TOKEN'
-        ENTRIES = [{
-            'textPayload': TEXT,
-            'insertId': IID,
-            'resource': {
-                'type': 'global',
-            },
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-        }]
+        IID = "IID"
+        TEXT = "TEXT"
+        TOKEN = "TOKEN"
+        ENTRIES = [
+            {
+                "textPayload": TEXT,
+                "insertId": IID,
+                "resource": {"type": "global"},
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+            }
+        ]
         creds = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=creds,
-                                _use_grpc=False)
-        returned = {
-            'entries': ENTRIES,
-            'nextPageToken': TOKEN,
-        }
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _use_grpc=False
+        )
+        returned = {"entries": ENTRIES, "nextPageToken": TOKEN}
         client._connection = _Connection(returned)
 
         iterator = client.list_entries()
@@ -232,11 +225,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         called_with = client._connection._called_with
-        self.assertEqual(called_with, {
-            'path': '/entries:list',
-            'method': 'POST',
-            'data': {'projectIds': [self.PROJECT]},
-        })
+        self.assertEqual(
+            called_with,
+            {
+                "path": "/entries:list",
+                "method": "POST",
+                "data": {"projectIds": [self.PROJECT]},
+            },
+        )
 
     def test_list_entries_explicit(self):
         from google.cloud.logging import DESCENDING
@@ -244,41 +240,43 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging.entries import StructEntry
         from google.cloud.logging.logger import Logger
 
-        PROJECT1 = 'PROJECT1'
-        PROJECT2 = 'PROJECT2'
-        FILTER = 'logName:LOGNAME'
-        IID1 = 'IID1'
-        IID2 = 'IID2'
-        PAYLOAD = {'message': 'MESSAGE', 'weather': 'partly cloudy'}
+        PROJECT1 = "PROJECT1"
+        PROJECT2 = "PROJECT2"
+        FILTER = "logName:LOGNAME"
+        IID1 = "IID1"
+        IID2 = "IID2"
+        PAYLOAD = {"message": "MESSAGE", "weather": "partly cloudy"}
         PROTO_PAYLOAD = PAYLOAD.copy()
-        PROTO_PAYLOAD['@type'] = 'type.googleapis.com/testing.example'
-        TOKEN = 'TOKEN'
+        PROTO_PAYLOAD["@type"] = "type.googleapis.com/testing.example"
+        TOKEN = "TOKEN"
         PAGE_SIZE = 42
-        ENTRIES = [{
-            'jsonPayload': PAYLOAD,
-            'insertId': IID1,
-            'resource': {
-                'type': 'global',
+        ENTRIES = [
+            {
+                "jsonPayload": PAYLOAD,
+                "insertId": IID1,
+                "resource": {"type": "global"},
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
             },
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-        }, {
-            'protoPayload': PROTO_PAYLOAD,
-            'insertId': IID2,
-            'resource': {
-                'type': 'global',
+            {
+                "protoPayload": PROTO_PAYLOAD,
+                "insertId": IID2,
+                "resource": {"type": "global"},
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
             },
-            'logName': 'projects/%s/logs/%s' % (
-                self.PROJECT, self.LOGGER_NAME),
-        }]
-        client = self._make_one(self.PROJECT, credentials=_make_credentials(),
-                                _use_grpc=False)
-        returned = {'entries': ENTRIES}
+        ]
+        client = self._make_one(
+            self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
+        returned = {"entries": ENTRIES}
         client._connection = _Connection(returned)
 
         iterator = client.list_entries(
-            projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
-            page_size=PAGE_SIZE, page_token=TOKEN)
+            projects=[PROJECT1, PROJECT2],
+            filter_=FILTER,
+            order_by=DESCENDING,
+            page_size=PAGE_SIZE,
+            page_token=TOKEN,
+        )
         entries = list(iterator)
         token = iterator.next_page_token
 
@@ -308,17 +306,20 @@ class TestClient(unittest.TestCase):
         self.assertIs(entries[0].logger, entries[1].logger)
 
         called_with = client._connection._called_with
-        self.assertEqual(called_with, {
-            'path': '/entries:list',
-            'method': 'POST',
-            'data': {
-                'filter': FILTER,
-                'orderBy': DESCENDING,
-                'pageSize': PAGE_SIZE,
-                'pageToken': TOKEN,
-                'projectIds': [PROJECT1, PROJECT2],
+        self.assertEqual(
+            called_with,
+            {
+                "path": "/entries:list",
+                "method": "POST",
+                "data": {
+                    "filter": FILTER,
+                    "orderBy": DESCENDING,
+                    "pageSize": PAGE_SIZE,
+                    "pageToken": TOKEN,
+                    "projectIds": [PROJECT1, PROJECT2],
+                },
             },
-        })
+        )
 
     def test_sink_defaults(self):
         from google.cloud.logging.sink import Sink
@@ -350,22 +351,17 @@ class TestClient(unittest.TestCase):
         import six
         from google.cloud.logging.sink import Sink
 
-        PROJECT = 'PROJECT'
-        TOKEN = 'TOKEN'
-        SINK_NAME = 'sink_name'
-        FILTER = 'logName:syslog AND severity>=ERROR'
-        SINKS = [{
-            'name': SINK_NAME,
-            'filter': FILTER,
-            'destination': self.DESTINATION_URI,
-        }]
-        client = self._make_one(project=PROJECT,
-                                credentials=_make_credentials(),
-                                _use_grpc=False)
-        returned = {
-            'sinks': SINKS,
-            'nextPageToken': TOKEN,
-        }
+        PROJECT = "PROJECT"
+        TOKEN = "TOKEN"
+        SINK_NAME = "sink_name"
+        FILTER = "logName:syslog AND severity>=ERROR"
+        SINKS = [
+            {"name": SINK_NAME, "filter": FILTER, "destination": self.DESTINATION_URI}
+        ]
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
+        returned = {"sinks": SINKS, "nextPageToken": TOKEN}
         client._connection = _Connection(returned)
 
         iterator = client.list_sinks()
@@ -386,31 +382,26 @@ class TestClient(unittest.TestCase):
 
         # Verify the mocked transport.
         called_with = client._connection._called_with
-        path = '/projects/%s/sinks' % (self.PROJECT,)
-        self.assertEqual(called_with, {
-            'method': 'GET',
-            'path': path,
-            'query_params': {},
-        })
+        path = "/projects/%s/sinks" % (self.PROJECT,)
+        self.assertEqual(
+            called_with, {"method": "GET", "path": path, "query_params": {}}
+        )
 
     def test_list_sinks_with_paging(self):
         from google.cloud.logging.sink import Sink
 
-        PROJECT = 'PROJECT'
-        SINK_NAME = 'sink_name'
-        FILTER = 'logName:syslog AND severity>=ERROR'
-        TOKEN = 'TOKEN'
+        PROJECT = "PROJECT"
+        SINK_NAME = "sink_name"
+        FILTER = "logName:syslog AND severity>=ERROR"
+        TOKEN = "TOKEN"
         PAGE_SIZE = 42
-        SINKS = [{
-            'name': SINK_NAME,
-            'filter': FILTER,
-            'destination': self.DESTINATION_URI,
-        }]
+        SINKS = [
+            {"name": SINK_NAME, "filter": FILTER, "destination": self.DESTINATION_URI}
+        ]
         client = self._make_one(
-            project=PROJECT, credentials=_make_credentials(), _use_grpc=False)
-        returned = {
-            'sinks': SINKS,
-        }
+            project=PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
+        returned = {"sinks": SINKS}
         client._connection = _Connection(returned)
 
         iterator = client.list_sinks(PAGE_SIZE, TOKEN)
@@ -430,15 +421,15 @@ class TestClient(unittest.TestCase):
 
         # Verify the mocked transport.
         called_with = client._connection._called_with
-        path = '/projects/%s/sinks' % (self.PROJECT,)
-        self.assertEqual(called_with, {
-            'method': 'GET',
-            'path': path,
-            'query_params': {
-                'pageSize': PAGE_SIZE,
-                'pageToken': TOKEN,
+        path = "/projects/%s/sinks" % (self.PROJECT,)
+        self.assertEqual(
+            called_with,
+            {
+                "method": "GET",
+                "path": path,
+                "query_params": {"pageSize": PAGE_SIZE, "pageToken": TOKEN},
             },
-        })
+        )
 
     def test_metric_defaults(self):
         from google.cloud.logging.metric import Metric
@@ -450,7 +441,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(metric, Metric)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertIsNone(metric.filter_)
-        self.assertEqual(metric.description, '')
+        self.assertEqual(metric.description, "")
         self.assertIs(metric.client, client_obj)
         self.assertEqual(metric.project, self.PROJECT)
 
@@ -460,8 +451,9 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
 
         client_obj = self._make_one(project=self.PROJECT, credentials=creds)
-        metric = client_obj.metric(self.METRIC_NAME, self.FILTER,
-                                   description=self.DESCRIPTION)
+        metric = client_obj.metric(
+            self.METRIC_NAME, self.FILTER, description=self.DESCRIPTION
+        )
         self.assertIsInstance(metric, Metric)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
@@ -472,17 +464,17 @@ class TestClient(unittest.TestCase):
     def test_list_metrics_no_paging(self):
         from google.cloud.logging.metric import Metric
 
-        metrics = [{
-            'name': self.METRIC_NAME,
-            'filter': self.FILTER,
-            'description': self.DESCRIPTION,
-        }]
+        metrics = [
+            {
+                "name": self.METRIC_NAME,
+                "filter": self.FILTER,
+                "description": self.DESCRIPTION,
+            }
+        ]
         client = self._make_one(
-            project=self.PROJECT, credentials=_make_credentials(),
-            _use_grpc=False)
-        returned = {
-            'metrics': metrics,
-        }
+            project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
+        returned = {"metrics": metrics}
         client._connection = _Connection(returned)
 
         # Execute request.
@@ -500,32 +492,29 @@ class TestClient(unittest.TestCase):
 
         # Verify mocked transport.
         called_with = client._connection._called_with
-        path = '/projects/%s/metrics' % (self.PROJECT,)
-        self.assertEqual(called_with, {
-            'method': 'GET',
-            'path': path,
-            'query_params': {},
-        })
+        path = "/projects/%s/metrics" % (self.PROJECT,)
+        self.assertEqual(
+            called_with, {"method": "GET", "path": path, "query_params": {}}
+        )
 
     def test_list_metrics_with_paging(self):
         import six
         from google.cloud.logging.metric import Metric
 
-        token = 'TOKEN'
-        next_token = 'T00KEN'
+        token = "TOKEN"
+        next_token = "T00KEN"
         page_size = 42
-        metrics = [{
-            'name': self.METRIC_NAME,
-            'filter': self.FILTER,
-            'description': self.DESCRIPTION,
-        }]
+        metrics = [
+            {
+                "name": self.METRIC_NAME,
+                "filter": self.FILTER,
+                "description": self.DESCRIPTION,
+            }
+        ]
         client = self._make_one(
-            project=self.PROJECT, credentials=_make_credentials(),
-            _use_grpc=False)
-        returned = {
-            'metrics': metrics,
-            'nextPageToken': next_token,
-        }
+            project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
+        returned = {"metrics": metrics, "nextPageToken": next_token}
         client._connection = _Connection(returned)
 
         # Execute request.
@@ -546,15 +535,15 @@ class TestClient(unittest.TestCase):
 
         # Verify mocked transport.
         called_with = client._connection._called_with
-        path = '/projects/%s/metrics' % (self.PROJECT,)
-        self.assertEqual(called_with, {
-            'method': 'GET',
-            'path': path,
-            'query_params': {
-                'pageSize': page_size,
-                'pageToken': token,
+        path = "/projects/%s/metrics" % (self.PROJECT,)
+        self.assertEqual(
+            called_with,
+            {
+                "method": "GET",
+                "path": path,
+                "query_params": {"pageSize": page_size, "pageToken": token},
             },
-        })
+        )
 
     def test_get_default_handler_app_engine(self):
         import os
@@ -564,10 +553,10 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
 
-        with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
-            client = self._make_one(project=self.PROJECT,
-                                    credentials=credentials,
-                                    _use_grpc=False)
+        with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: "True"}):
+            client = self._make_one(
+                project=self.PROJECT, credentials=credentials, _use_grpc=False
+            )
             handler = client.get_default_handler()
 
         self.assertIsInstance(handler, AppEngineHandler)
@@ -576,13 +565,13 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging.handlers import ContainerEngineHandler
 
         client = self._make_one(
-            project=self.PROJECT,
-            credentials=_make_credentials(),
-            _use_grpc=False)
+            project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
 
         patch = mock.patch(
-            'google.cloud.logging.client.retrieve_metadata_server',
-            return_value='test-gke-cluster')
+            "google.cloud.logging.client.retrieve_metadata_server",
+            return_value="test-gke-cluster",
+        )
 
         with patch:
             handler = client.get_default_handler()
@@ -594,9 +583,9 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
 
-        client = self._make_one(project=self.PROJECT,
-                                credentials=credentials,
-                                _use_grpc=False)
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
         handler = client.get_default_handler()
 
         self.assertIsInstance(handler, CloudLoggingHandler)
@@ -606,11 +595,10 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
 
-        with mock.patch('google.cloud.logging.client.setup_logging',
-                        new=setup_logging):
-            client = self._make_one(project=self.PROJECT,
-                                    credentials=credentials,
-                                    _use_grpc=False)
+        with mock.patch("google.cloud.logging.client.setup_logging", new=setup_logging):
+            client = self._make_one(
+                project=self.PROJECT, credentials=credentials, _use_grpc=False
+            )
             client.setup_logging()
 
         setup_logging.assert_called()

@@ -26,7 +26,7 @@ def _future(*args, **kwargs):
 
 
 def test_constructor_defaults():
-    with mock.patch.object(threading, 'Event', autospec=True) as Event:
+    with mock.patch.object(threading, "Event", autospec=True) as Event:
         future = _future()
 
     assert future._result == futures.Future._SENTINEL
@@ -58,26 +58,26 @@ def test_cancelled():
 def test_running():
     future = _future()
     assert future.running() is True
-    future.set_result('foobar')
+    future.set_result("foobar")
     assert future.running() is False
 
 
 def test_done():
     future = _future()
     assert future.done() is False
-    future.set_result('12345')
+    future.set_result("12345")
     assert future.done() is True
 
 
 def test_exception_no_error():
     future = _future()
-    future.set_result('12345')
+    future.set_result("12345")
     assert future.exception() is None
 
 
 def test_exception_with_error():
     future = _future()
-    error = RuntimeError('Something really bad happened.')
+    error = RuntimeError("Something really bad happened.")
     future.set_exception(error)
 
     # Make sure that the exception that is returned is the batch's error.
@@ -97,13 +97,13 @@ def test_exception_timeout():
 
 def test_result_no_error():
     future = _future()
-    future.set_result('42')
-    assert future.result() == '42'
+    future.set_result("42")
+    assert future.result() == "42"
 
 
 def test_result_with_error():
     future = _future()
-    future.set_exception(RuntimeError('Something really bad happened.'))
+    future.set_exception(RuntimeError("Something really bad happened."))
     with pytest.raises(RuntimeError):
         future.result()
 
@@ -119,7 +119,7 @@ def test_add_done_callback_pending_batch():
 
 def test_add_done_callback_completed_batch():
     future = _future()
-    future.set_result('12345')
+    future.set_result("12345")
     callback = mock.Mock(spec=())
     future.add_done_callback(callback)
     callback.assert_called_once_with(future)
@@ -130,19 +130,19 @@ def test_trigger():
     callback = mock.Mock(spec=())
     future.add_done_callback(callback)
     assert callback.call_count == 0
-    future.set_result('12345')
+    future.set_result("12345")
     callback.assert_called_once_with(future)
 
 
 def test_set_result_once_only():
     future = _future()
-    future.set_result('12345')
+    future.set_result("12345")
     with pytest.raises(RuntimeError):
-        future.set_result('67890')
+        future.set_result("67890")
 
 
 def test_set_exception_once_only():
     future = _future()
-    future.set_exception(ValueError('wah wah'))
+    future.set_exception(ValueError("wah wah"))
     with pytest.raises(RuntimeError):
-        future.set_exception(TypeError('other wah wah'))
+        future.set_exception(TypeError("other wah wah"))

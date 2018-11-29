@@ -348,8 +348,10 @@ class TestFilterNode:
     @staticmethod
     def test_constructor_with_key():
         key = key_module.Key("a", "b", app="c", namespace="d")
-        with pytest.raises(NotImplementedError):
-            query.FilterNode("name", "=", key)
+        filter_node = query.FilterNode("name", "=", key)
+        assert filter_node._name == "name"
+        assert filter_node._opsymbol == "="
+        assert filter_node._value is key._key
 
     @staticmethod
     def test_constructor_in():

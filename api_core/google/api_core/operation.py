@@ -68,8 +68,14 @@ class Operation(polling.PollingFuture):
     """
 
     def __init__(
-            self, operation, refresh, cancel,
-            result_type, metadata_type=None, retry=polling.DEFAULT_RETRY):
+        self,
+        operation,
+        refresh,
+        cancel,
+        result_type,
+        metadata_type=None,
+        retry=polling.DEFAULT_RETRY,
+    ):
         super(Operation, self).__init__(retry=retry)
         self._operation = operation
         self._refresh = refresh
@@ -88,11 +94,12 @@ class Operation(polling.PollingFuture):
     @property
     def metadata(self):
         """google.protobuf.Message: the current operation metadata."""
-        if not self._operation.HasField('metadata'):
+        if not self._operation.HasField("metadata"):
             return None
 
         return protobuf_helpers.from_any_pb(
-            self._metadata_type, self._operation.metadata)
+            self._metadata_type, self._operation.metadata
+        )
 
     def _set_result_from_operation(self):
         """Set the result or exception from the operation if it is complete."""
@@ -107,20 +114,23 @@ class Operation(polling.PollingFuture):
             if not self._operation.done or self._result_set:
                 return
 
-            if self._operation.HasField('response'):
+            if self._operation.HasField("response"):
                 response = protobuf_helpers.from_any_pb(
-                    self._result_type, self._operation.response)
+                    self._result_type, self._operation.response
+                )
                 self.set_result(response)
-            elif self._operation.HasField('error'):
+            elif self._operation.HasField("error"):
                 exception = exceptions.GoogleAPICallError(
                     self._operation.error.message,
                     errors=(self._operation.error,),
-                    response=self._operation)
+                    response=self._operation,
+                )
                 self.set_exception(exception)
             else:
                 exception = exceptions.GoogleAPICallError(
-                    'Unexpected state: Long-running operation had neither '
-                    'response nor error set.')
+                    "Unexpected state: Long-running operation had neither "
+                    "response nor error set."
+                )
                 self.set_exception(exception)
 
     def _refresh_and_update(self):
@@ -156,8 +166,10 @@ class Operation(polling.PollingFuture):
     def cancelled(self):
         """True if the operation was cancelled."""
         self._refresh_and_update()
-        return (self._operation.HasField('error') and
-                self._operation.error.code == code_pb2.CANCELLED)
+        return (
+            self._operation.HasField("error")
+            and self._operation.error.code == code_pb2.CANCELLED
+        )
 
 
 def _refresh_http(api_request, operation_name):
@@ -172,10 +184,9 @@ def _refresh_http(api_request, operation_name):
     Returns:
         google.longrunning.operations_pb2.Operation: The operation.
     """
-    path = 'operations/{}'.format(operation_name)
-    api_response = api_request(method='GET', path=path)
-    return json_format.ParseDict(
-        api_response, operations_pb2.Operation())
+    path = "operations/{}".format(operation_name)
+    api_response = api_request(method="GET", path=path)
+    return json_format.ParseDict(api_response, operations_pb2.Operation())
 
 
 def _cancel_http(api_request, operation_name):
@@ -187,15 +198,15 @@ def _cancel_http(api_request, operation_name):
             :meth:`google.cloud._http.Connection.api_request`.
         operation_name (str): The name of the operation.
     """
-    path = 'operations/{}:cancel'.format(operation_name)
-    api_request(method='POST', path=path)
+    path = "operations/{}:cancel".format(operation_name)
+    api_request(method="POST", path=path)
 
 
 def from_http_json(operation, api_request, result_type, **kwargs):
     """Create an operation future using a HTTP/JSON client.
 
     This interacts with the long-running operations `service`_ (specific
-    to a given API) vis `HTTP/JSON`_.
+    to a given API) via `HTTP/JSON`_.
 
     .. _HTTP/JSON: https://cloud.google.com/speech/reference/rest/\
             v1beta1/operations#Operation
@@ -212,12 +223,9 @@ def from_http_json(operation, api_request, result_type, **kwargs):
         ~.api_core.operation.Operation: The operation future to track the given
             operation.
     """
-    operation_proto = json_format.ParseDict(
-        operation, operations_pb2.Operation())
-    refresh = functools.partial(
-        _refresh_http, api_request, operation_proto.name)
-    cancel = functools.partial(
-        _cancel_http, api_request, operation_proto.name)
+    operation_proto = json_format.ParseDict(operation, operations_pb2.Operation())
+    refresh = functools.partial(_refresh_http, api_request, operation_proto.name)
+    cancel = functools.partial(_cancel_http, api_request, operation_proto.name)
     return Operation(operation_proto, refresh, cancel, result_type, **kwargs)
 
 
@@ -269,10 +277,8 @@ def from_grpc(operation, operations_stub, result_type, **kwargs):
         ~.api_core.operation.Operation: The operation future to track the given
             operation.
     """
-    refresh = functools.partial(
-        _refresh_grpc, operations_stub, operation.name)
-    cancel = functools.partial(
-        _cancel_grpc, operations_stub, operation.name)
+    refresh = functools.partial(_refresh_grpc, operations_stub, operation.name)
+    cancel = functools.partial(_cancel_grpc, operations_stub, operation.name)
     return Operation(operation, refresh, cancel, result_type, **kwargs)
 
 
@@ -297,8 +303,6 @@ def from_gapic(operation, operations_client, result_type, **kwargs):
         ~.api_core.operation.Operation: The operation future to track the given
             operation.
     """
-    refresh = functools.partial(
-        operations_client.get_operation, operation.name)
-    cancel = functools.partial(
-        operations_client.cancel_operation, operation.name)
+    refresh = functools.partial(operations_client.get_operation, operation.name)
+    cancel = functools.partial(operations_client.cancel_operation, operation.name)
     return Operation(operation, refresh, cancel, result_type, **kwargs)

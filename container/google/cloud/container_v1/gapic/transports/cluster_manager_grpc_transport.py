@@ -27,14 +27,14 @@ class ClusterManagerGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='container.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="container.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -52,27 +52,23 @@ class ClusterManagerGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'cluster_manager_stub':
-            cluster_service_pb2_grpc.ClusterManagerStub(channel),
+            "cluster_manager_stub": cluster_service_pb2_grpc.ClusterManagerStub(channel)
         }
 
     @classmethod
-    def create_channel(cls,
-                       address='container.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="container.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -87,10 +83,17 @@ class ClusterManagerGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def list_clusters(self):
@@ -104,7 +107,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].ListClusters
+        return self._stubs["cluster_manager_stub"].ListClusters
 
     @property
     def get_cluster(self):
@@ -117,7 +120,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].GetCluster
+        return self._stubs["cluster_manager_stub"].GetCluster
 
     @property
     def create_cluster(self):
@@ -141,7 +144,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].CreateCluster
+        return self._stubs["cluster_manager_stub"].CreateCluster
 
     @property
     def update_cluster(self):
@@ -154,105 +157,105 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].UpdateCluster
+        return self._stubs["cluster_manager_stub"].UpdateCluster
 
     @property
     def update_node_pool(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Updates the version and/or image type of a specific node pool.
+        Updates the version and/or image type for a specific node pool.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].UpdateNodePool
+        return self._stubs["cluster_manager_stub"].UpdateNodePool
 
     @property
     def set_node_pool_autoscaling(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the autoscaling settings of a specific node pool.
+        Sets the autoscaling settings for a specific node pool.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetNodePoolAutoscaling
+        return self._stubs["cluster_manager_stub"].SetNodePoolAutoscaling
 
     @property
     def set_logging_service(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the logging service of a specific cluster.
+        Sets the logging service for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetLoggingService
+        return self._stubs["cluster_manager_stub"].SetLoggingService
 
     @property
     def set_monitoring_service(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the monitoring service of a specific cluster.
+        Sets the monitoring service for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetMonitoringService
+        return self._stubs["cluster_manager_stub"].SetMonitoringService
 
     @property
     def set_addons_config(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the addons of a specific cluster.
+        Sets the addons for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetAddonsConfig
+        return self._stubs["cluster_manager_stub"].SetAddonsConfig
 
     @property
     def set_locations(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the locations of a specific cluster.
+        Sets the locations for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetLocations
+        return self._stubs["cluster_manager_stub"].SetLocations
 
     @property
     def update_master(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Updates the master of a specific cluster.
+        Updates the master for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].UpdateMaster
+        return self._stubs["cluster_manager_stub"].UpdateMaster
 
     @property
     def set_master_auth(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
         Used to set master auth materials. Currently supports :-
-        Changing the admin password of a specific cluster.
+        Changing the admin password for a specific cluster.
         This can be either via password generation or explicitly set the password.
 
         Returns:
@@ -260,7 +263,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetMasterAuth
+        return self._stubs["cluster_manager_stub"].SetMasterAuth
 
     @property
     def delete_cluster(self):
@@ -281,7 +284,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].DeleteCluster
+        return self._stubs["cluster_manager_stub"].DeleteCluster
 
     @property
     def list_operations(self):
@@ -294,7 +297,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].ListOperations
+        return self._stubs["cluster_manager_stub"].ListOperations
 
     @property
     def get_operation(self):
@@ -307,7 +310,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].GetOperation
+        return self._stubs["cluster_manager_stub"].GetOperation
 
     @property
     def cancel_operation(self):
@@ -320,20 +323,20 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].CancelOperation
+        return self._stubs["cluster_manager_stub"].CancelOperation
 
     @property
     def get_server_config(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Returns configuration info about the Container Engine service.
+        Returns configuration info about the Kubernetes Engine service.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].GetServerConfig
+        return self._stubs["cluster_manager_stub"].GetServerConfig
 
     @property
     def list_node_pools(self):
@@ -346,7 +349,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].ListNodePools
+        return self._stubs["cluster_manager_stub"].ListNodePools
 
     @property
     def get_node_pool(self):
@@ -359,7 +362,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].GetNodePool
+        return self._stubs["cluster_manager_stub"].GetNodePool
 
     @property
     def create_node_pool(self):
@@ -372,7 +375,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].CreateNodePool
+        return self._stubs["cluster_manager_stub"].CreateNodePool
 
     @property
     def delete_node_pool(self):
@@ -385,7 +388,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].DeleteNodePool
+        return self._stubs["cluster_manager_stub"].DeleteNodePool
 
     @property
     def rollback_node_pool_upgrade(self):
@@ -399,7 +402,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].RollbackNodePoolUpgrade
+        return self._stubs["cluster_manager_stub"].RollbackNodePoolUpgrade
 
     @property
     def set_node_pool_management(self):
@@ -412,7 +415,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetNodePoolManagement
+        return self._stubs["cluster_manager_stub"].SetNodePoolManagement
 
     @property
     def set_labels(self):
@@ -425,7 +428,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetLabels
+        return self._stubs["cluster_manager_stub"].SetLabels
 
     @property
     def set_legacy_abac(self):
@@ -438,7 +441,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetLegacyAbac
+        return self._stubs["cluster_manager_stub"].SetLegacyAbac
 
     @property
     def start_i_p_rotation(self):
@@ -451,7 +454,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].StartIPRotation
+        return self._stubs["cluster_manager_stub"].StartIPRotation
 
     @property
     def complete_i_p_rotation(self):
@@ -464,20 +467,20 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].CompleteIPRotation
+        return self._stubs["cluster_manager_stub"].CompleteIPRotation
 
     @property
     def set_node_pool_size(self):
         """Return the gRPC stub for {$apiMethod.name}.
 
-        Sets the size of a specific node pool.
+        Sets the size for a specific node pool.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetNodePoolSize
+        return self._stubs["cluster_manager_stub"].SetNodePoolSize
 
     @property
     def set_network_policy(self):
@@ -490,7 +493,7 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetNetworkPolicy
+        return self._stubs["cluster_manager_stub"].SetNetworkPolicy
 
     @property
     def set_maintenance_policy(self):
@@ -503,4 +506,4 @@ class ClusterManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_manager_stub'].SetMaintenancePolicy
+        return self._stubs["cluster_manager_stub"].SetMaintenancePolicy

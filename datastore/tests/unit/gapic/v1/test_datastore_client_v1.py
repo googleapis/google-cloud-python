@@ -49,10 +49,7 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -71,15 +68,14 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup Request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
         keys = []
 
         response = client.lookup(project_id, keys)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = datastore_pb2.LookupRequest(
-            project_id=project_id, keys=keys)
+        expected_request = datastore_pb2.LookupRequest(project_id=project_id, keys=keys)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -89,7 +85,7 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
         keys = []
 
         with pytest.raises(CustomException):
@@ -105,7 +101,7 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup Request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
         partition_id = {}
 
         response = client.run_query(project_id, partition_id)
@@ -113,7 +109,8 @@ class TestDatastoreClient(object):
 
         assert len(channel.requests) == 1
         expected_request = datastore_pb2.RunQueryRequest(
-            project_id=project_id, partition_id=partition_id)
+            project_id=project_id, partition_id=partition_id
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -123,7 +120,7 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
         partition_id = {}
 
         with pytest.raises(CustomException):
@@ -131,24 +128,22 @@ class TestDatastoreClient(object):
 
     def test_begin_transaction(self):
         # Setup Expected Response
-        transaction = b'-34'
-        expected_response = {'transaction': transaction}
-        expected_response = datastore_pb2.BeginTransactionResponse(
-            **expected_response)
+        transaction = b"-34"
+        expected_response = {"transaction": transaction}
+        expected_response = datastore_pb2.BeginTransactionResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup Request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
 
         response = client.begin_transaction(project_id)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = datastore_pb2.BeginTransactionRequest(
-            project_id=project_id)
+        expected_request = datastore_pb2.BeginTransactionRequest(project_id=project_id)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -158,7 +153,7 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
 
         with pytest.raises(CustomException):
             client.begin_transaction(project_id)
@@ -166,7 +161,7 @@ class TestDatastoreClient(object):
     def test_commit(self):
         # Setup Expected Response
         index_updates = 1425228195
-        expected_response = {'index_updates': index_updates}
+        expected_response = {"index_updates": index_updates}
         expected_response = datastore_pb2.CommitResponse(**expected_response)
 
         # Mock the API response
@@ -174,7 +169,7 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup Request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
         mode = enums.CommitRequest.Mode.MODE_UNSPECIFIED
         mutations = []
 
@@ -183,7 +178,8 @@ class TestDatastoreClient(object):
 
         assert len(channel.requests) == 1
         expected_request = datastore_pb2.CommitRequest(
-            project_id=project_id, mode=mode, mutations=mutations)
+            project_id=project_id, mode=mode, mutations=mutations
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -193,7 +189,7 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
         mode = enums.CommitRequest.Mode.MODE_UNSPECIFIED
         mutations = []
 
@@ -210,15 +206,16 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup Request
-        project_id = 'projectId-1969970175'
-        transaction = b'-34'
+        project_id = "projectId-1969970175"
+        transaction = b"-34"
 
         response = client.rollback(project_id, transaction)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = datastore_pb2.RollbackRequest(
-            project_id=project_id, transaction=transaction)
+            project_id=project_id, transaction=transaction
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -228,8 +225,8 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup request
-        project_id = 'projectId-1969970175'
-        transaction = b'-34'
+        project_id = "projectId-1969970175"
+        transaction = b"-34"
 
         with pytest.raises(CustomException):
             client.rollback(project_id, transaction)
@@ -237,15 +234,14 @@ class TestDatastoreClient(object):
     def test_allocate_ids(self):
         # Setup Expected Response
         expected_response = {}
-        expected_response = datastore_pb2.AllocateIdsResponse(
-            **expected_response)
+        expected_response = datastore_pb2.AllocateIdsResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup Request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
         keys = []
 
         response = client.allocate_ids(project_id, keys)
@@ -253,7 +249,8 @@ class TestDatastoreClient(object):
 
         assert len(channel.requests) == 1
         expected_request = datastore_pb2.AllocateIdsRequest(
-            project_id=project_id, keys=keys)
+            project_id=project_id, keys=keys
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -263,7 +260,7 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
         keys = []
 
         with pytest.raises(CustomException):
@@ -272,15 +269,14 @@ class TestDatastoreClient(object):
     def test_reserve_ids(self):
         # Setup Expected Response
         expected_response = {}
-        expected_response = datastore_pb2.ReserveIdsResponse(
-            **expected_response)
+        expected_response = datastore_pb2.ReserveIdsResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup Request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
         keys = []
 
         response = client.reserve_ids(project_id, keys)
@@ -288,7 +284,8 @@ class TestDatastoreClient(object):
 
         assert len(channel.requests) == 1
         expected_request = datastore_pb2.ReserveIdsRequest(
-            project_id=project_id, keys=keys)
+            project_id=project_id, keys=keys
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -298,7 +295,7 @@ class TestDatastoreClient(object):
         client = datastore_v1.DatastoreClient(channel=channel)
 
         # Setup request
-        project_id = 'projectId-1969970175'
+        project_id = "projectId-1969970175"
         keys = []
 
         with pytest.raises(CustomException):

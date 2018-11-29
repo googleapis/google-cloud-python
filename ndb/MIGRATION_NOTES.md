@@ -109,6 +109,19 @@ The primary differences come from:
 - The `Parameter()` constructor (and subclasses) originally accepted `int`,
   `unicode` and `str` (the Python 2 versions) for `key` but we only accept
   `int` and `str`.
+- When a `Key` is used to create a query "node", e.g. via
+  `MyModel.my_value == some_key`, the underlying behavior has changed.
+  Previously a `FilterNode` would be created with the actual value set to
+  `some_key.to_old_key()`. Now, we set it to `some_key._key`.
+- The `google.appengine.api.users.User` class is missing, so there is a
+  replacement in `google.cloud.ndb.model.User` that is also available as
+  `google.cloud.ndb.User`. This does not support federated identity and
+  has new support for adding such a user to a `google.cloud.datastore.Entity`
+  and for reading one from a new-style `Entity`
+- The `UserProperty` class no longer supports `auto_current_user(_add)`
+- `Model.__repr__` will use `_key` to describe the entity's key when there
+  is also a user-defined property named `key`. For an example, see the
+  class docstring for `Model`.
 
 ## Comments
 

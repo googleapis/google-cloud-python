@@ -24,19 +24,17 @@ from google.api_core import exceptions
 from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable_v2.proto import (
-    bigtable_pb2 as data_messages_v2_pb2)
-from google.cloud.bigtable_v2.proto import (
-    data_pb2 as data_v2_pb2)
+from google.cloud.bigtable_v2.proto import bigtable_pb2 as data_messages_v2_pb2
+from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
 
-_MISSING_COLUMN_FAMILY = (
-    'Column family {} is not among the cells stored in this row.')
+_MISSING_COLUMN_FAMILY = "Column family {} is not among the cells stored in this row."
 _MISSING_COLUMN = (
-    'Column {} is not among the cells stored in this row in the '
-    'column family {}.')
+    "Column {} is not among the cells stored in this row in the " "column family {}."
+)
 _MISSING_INDEX = (
-    'Index {!r} is not valid for the cells stored in this row for column {} '
-    'in the column family {}. There are {} such cells.')
+    "Index {!r} is not valid for the cells stored in this row for column {} "
+    "in the column family {}. There are {} such cells."
+)
 
 
 class Cell(object):
@@ -68,8 +66,7 @@ class Cell(object):
         :returns: The cell corresponding to the protobuf.
         """
         if cell_pb.labels:
-            return cls(cell_pb.value, cell_pb.timestamp_micros,
-                       labels=cell_pb.labels)
+            return cls(cell_pb.value, cell_pb.timestamp_micros, labels=cell_pb.labels)
         else:
             return cls(cell_pb.value, cell_pb.timestamp_micros)
 
@@ -80,9 +77,11 @@ class Cell(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return (other.value == self.value and
-                other.timestamp_micros == self.timestamp_micros and
-                other.labels == self.labels)
+        return (
+            other.value == self.value
+            and other.timestamp_micros == self.timestamp_micros
+            and other.labels == self.labels
+        )
 
     def __ne__(self, other):
         return not self == other
@@ -113,8 +112,10 @@ class PartialCellData(object):
     :type value: bytes
     :param value: The (accumulated) value of the (partial) cell.
     """
-    def __init__(self, row_key, family_name, qualifier, timestamp_micros,
-                 labels=(), value=b''):
+
+    def __init__(
+        self, row_key, family_name, qualifier, timestamp_micros, labels=(), value=b""
+    ):
         self.row_key = row_key
         self.family_name = family_name
         self.qualifier = qualifier
@@ -148,8 +149,7 @@ class PartialRowData(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return (other._row_key == self._row_key and
-                other._cells == self._cells)
+        return other._row_key == self._row_key and other._cells == self._cells
 
     def __ne__(self, other):
         return not self == other
@@ -166,8 +166,7 @@ class PartialRowData(object):
         result = {}
         for column_family_id, columns in six.iteritems(self._cells):
             for column_qual, cells in six.iteritems(columns):
-                key = (_to_bytes(column_family_id) + b':' +
-                       _to_bytes(column_qual))
+                key = _to_bytes(column_family_id) + b":" + _to_bytes(column_qual)
                 result[key] = cells
         return result
 
@@ -181,7 +180,7 @@ class PartialRowData(object):
                   and second for column names/qualifiers within a family). For
                   a given column, a list of :class:`Cell` objects is stored.
         """
-        return copy.deepcopy(self._cells)
+        return self._cells
 
     @property
     def row_key(self):
@@ -253,8 +252,7 @@ class PartialRowData(object):
             cell = cells[index]
         except (TypeError, IndexError):
             num_cells = len(cells)
-            msg = _MISSING_INDEX.format(
-                index, column, column_family_id, num_cells)
+            msg = _MISSING_INDEX.format(index, column, column_family_id, num_cells)
             raise IndexError(msg)
 
         return cell.value
@@ -301,8 +299,7 @@ class InvalidChunk(RuntimeError):
 def _retry_read_rows_exception(exc):
     if isinstance(exc, grpc.RpcError):
         exc = exceptions.from_grpc_error(exc)
-    return isinstance(exc, (exceptions.ServiceUnavailable,
-                            exceptions.DeadlineExceeded))
+    return isinstance(exc, (exceptions.ServiceUnavailable, exceptions.DeadlineExceeded))
 
 
 DEFAULT_RETRY_READ_ROWS = retry.Retry(
@@ -343,20 +340,21 @@ class PartialRowsData(object):
                   :meth:`~google.api_core.retry.Retry.with_deadline` method.
     """
 
-    NEW_ROW = 'New row'  # No cells yet complete for row
-    ROW_IN_PROGRESS = 'Row in progress'  # Some cells complete for row
-    CELL_IN_PROGRESS = 'Cell in progress'  # Incomplete cell for row
+    NEW_ROW = "New row"  # No cells yet complete for row
+    ROW_IN_PROGRESS = "Row in progress"  # Some cells complete for row
+    CELL_IN_PROGRESS = "Cell in progress"  # Incomplete cell for row
 
     STATE_NEW_ROW = 1
     STATE_ROW_IN_PROGRESS = 2
     STATE_CELL_IN_PROGRESS = 3
 
-    read_states = {STATE_NEW_ROW: NEW_ROW,
-                   STATE_ROW_IN_PROGRESS: ROW_IN_PROGRESS,
-                   STATE_CELL_IN_PROGRESS: CELL_IN_PROGRESS}
+    read_states = {
+        STATE_NEW_ROW: NEW_ROW,
+        STATE_ROW_IN_PROGRESS: ROW_IN_PROGRESS,
+        STATE_CELL_IN_PROGRESS: CELL_IN_PROGRESS,
+    }
 
-    def __init__(self, read_method, request,
-                 retry=DEFAULT_RETRY_READ_ROWS):
+    def __init__(self, read_method, request, retry=DEFAULT_RETRY_READ_ROWS):
         # Counter for rows returned to the user
         self._counter = 0
         # In-progress row, unset until first response, after commit/reset
@@ -409,9 +407,9 @@ class PartialRowsData(object):
 
     def _create_retry_request(self):
         """Helper for :meth:`__iter__`."""
-        req_manager = _ReadRowsRequestManager(self.request,
-                                              self.last_scanned_row_key,
-                                              self._counter)
+        req_manager = _ReadRowsRequestManager(
+            self.request, self.last_scanned_row_key, self._counter
+        )
         return req_manager.build_updated_request()
 
     def _on_error(self, exc):
@@ -443,8 +441,7 @@ class PartialRowsData(object):
                 response = self._read_next_response()
             except StopIteration:
                 if self.state != self.NEW_ROW:
-                    raise ValueError(
-                        'The row remains partial / is not committed.')
+                    raise ValueError("The row remains partial / is not committed.")
                 break
 
             for chunk in response.chunks:
@@ -469,8 +466,10 @@ class PartialRowsData(object):
         self._update_cell(chunk)
 
         if self._row is None:
-            if (self._previous_row is not None and
-                    self._cell.row_key <= self._previous_row.row_key):
+            if (
+                self._previous_row is not None
+                and self._cell.row_key <= self._previous_row.row_key
+            ):
                 raise InvalidChunk()
             self._row = PartialRowData(self._cell.row_key)
 
@@ -492,10 +491,10 @@ class PartialRowsData(object):
     def _update_cell(self, chunk):
         if self._cell is None:
             qualifier = None
-            if chunk.HasField('qualifier'):
+            if chunk.HasField("qualifier"):
                 qualifier = chunk.qualifier.value
             family = None
-            if chunk.HasField('family_name'):
+            if chunk.HasField("family_name"):
                 family = chunk.family_name.value
 
             self._cell = PartialCellData(
@@ -504,7 +503,8 @@ class PartialRowsData(object):
                 qualifier,
                 chunk.timestamp_micros,
                 chunk.labels,
-                chunk.value)
+                chunk.value,
+            )
             self._copy_from_previous(self._cell)
             self._validate_cell_data_new_cell()
         else:
@@ -512,9 +512,7 @@ class PartialRowsData(object):
 
     def _validate_cell_data_new_cell(self):
         cell = self._cell
-        if (not cell.row_key or
-                not cell.family_name or
-                cell.qualifier is None):
+        if not cell.row_key or not cell.family_name or cell.qualifier is None:
             raise InvalidChunk()
 
         prev = self._previous_cell
@@ -527,8 +525,8 @@ class PartialRowsData(object):
 
         # No reset with other keys
         _raise_if(chunk.row_key)
-        _raise_if(chunk.HasField('family_name'))
-        _raise_if(chunk.HasField('qualifier'))
+        _raise_if(chunk.HasField("family_name"))
+        _raise_if(chunk.HasField("qualifier"))
         _raise_if(chunk.timestamp_micros)
         _raise_if(chunk.labels)
         _raise_if(chunk.value_size)
@@ -582,31 +580,37 @@ class _ReadRowsRequestManager(object):
     def build_updated_request(self):
         """ Updates the given message request as per last scanned key
         """
-        r_kwargs = {'table_name': self.message.table_name,
-                    'filter': self.message.filter}
+        r_kwargs = {
+            "table_name": self.message.table_name,
+            "filter": self.message.filter,
+        }
 
         if self.message.rows_limit != 0:
-            r_kwargs['rows_limit'] = max(1, self.message.rows_limit -
-                                         self.rows_read_so_far)
+            r_kwargs["rows_limit"] = max(
+                1, self.message.rows_limit - self.rows_read_so_far
+            )
 
         # if neither RowSet.row_keys nor RowSet.row_ranges currently exist,
         # add row_range that starts with last_scanned_key as start_key_open
         # to request only rows that have not been returned yet
-        if not self.message.HasField('rows'):
-            row_range = data_v2_pb2.RowRange(
-                start_key_open=self.last_scanned_key)
-            r_kwargs['rows'] = data_v2_pb2.RowSet(row_ranges=[row_range])
+        if not self.message.HasField("rows"):
+            row_range = data_v2_pb2.RowRange(start_key_open=self.last_scanned_key)
+            r_kwargs["rows"] = data_v2_pb2.RowSet(row_ranges=[row_range])
         else:
             row_keys = self._filter_rows_keys()
             row_ranges = self._filter_row_ranges()
-            r_kwargs['rows'] = data_v2_pb2.RowSet(row_keys=row_keys,
-                                                  row_ranges=row_ranges)
+            r_kwargs["rows"] = data_v2_pb2.RowSet(
+                row_keys=row_keys, row_ranges=row_ranges
+            )
         return data_messages_v2_pb2.ReadRowsRequest(**r_kwargs)
 
     def _filter_rows_keys(self):
         """ Helper for :meth:`build_updated_request`"""
-        return [row_key for row_key in self.message.rows.row_keys
-                if row_key > self.last_scanned_key]
+        return [
+            row_key
+            for row_key in self.message.rows.row_keys
+            if row_key > self.last_scanned_key
+        ]
 
     def _filter_row_ranges(self):
         """ Helper for :meth:`build_updated_request`"""
@@ -618,7 +622,7 @@ class _ReadRowsRequestManager(object):
             # NOTE: Empty string in end_key means "end of table"
             end_key = self._end_key_set(row_range)
             # if end_key is already read, skip to the next row_range
-            if(end_key and self._key_already_read(end_key)):
+            if end_key and self._key_already_read(end_key):
                 continue
 
             # if current start_key (open or closed) is set, return its value,
@@ -630,7 +634,7 @@ class _ReadRowsRequestManager(object):
             # create a row_range with last_scanned_key as start_key_open
             # to be passed to retry request
             retry_row_range = row_range
-            if(self._key_already_read(start_key)):
+            if self._key_already_read(start_key):
                 retry_row_range = copy.deepcopy(row_range)
                 retry_row_range.start_key_closed = _to_bytes("")
                 retry_row_range.start_key_open = self.last_scanned_key

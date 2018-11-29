@@ -18,32 +18,42 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
+common = gcp.CommonTemplates()
+versions = ["v1beta1"]
 
-versions = ['v1beta1']
 
-
+# ----------------------------------------------------------------------------
+# Generate automl GAPIC layer
+# ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library('automl', version)
-    s.move(library / f'google/cloud/automl_{version}')
-    s.move(library / f'tests/unit/gapic/{version}')
-    s.move(library / f'docs/gapic/{version}')
+    library = gapic.py_library("automl", version)
+    s.move(library / f"google/cloud/automl_{version}")
+    s.move(library / f"tests/unit/gapic/{version}")
+    s.move(library / f"docs/gapic/{version}")
 
 # Use the highest version library to generate import alias.
-s.move(library / 'google/cloud/automl.py')
-
+s.move(library / "google/cloud/automl.py")
 
 # Fixup issues in generated code
 s.replace(
-    '**/gapic/*_client.py',
-    r'metadata_type=operations_pb2.OperationMetadata',
-    r'metadata_type=proto_operations_pb2.OperationMetadata')
+    "**/gapic/*_client.py",
+    r"metadata_type=operations_pb2.OperationMetadata",
+    r"metadata_type=proto_operations_pb2.OperationMetadata",
+)
 
 # Fix spacing/'::' issues in docstrings
 s.replace(
-    'google/cloud/automl_v1beta1/gapic/prediction_service_client.py',
-    '^\s+::',
-    '')
+    "google/cloud/automl_v1beta1/gapic/prediction_service_client.py", "^\s+::", ""
+)
 
-s.replace('google/cloud/automl_v1beta1/gapic/auto_ml_client.py',
-          '^(\s+)(::)\n\n\s+?([^\s])',
-          '    \g<1>\g<2>\n    \g<1>\g<3>')
+s.replace(
+    "google/cloud/automl_v1beta1/gapic/auto_ml_client.py",
+    "^(\s+)(::)\n\n\s+?([^\s])",
+    "    \g<1>\g<2>\n    \g<1>\g<3>",
+)
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(unit_cov_level=82, cov_level=83)
+s.move(templated_files)

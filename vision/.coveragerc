@@ -9,6 +9,10 @@ exclude_lines =
     pragma: NO COVER
     # Ignore debug-only repr
     def __repr__
+    # Ignore abstract methods
+    raise NotImplementedError
 omit =
-  google/cloud/vision_v1/gapic/*.py
-  google/cloud/vision_v1/proto/*.py
+  */gapic/*.py
+  */proto/*.py
+  */google-cloud-python/core/*.py
+  */site-packages/*.py

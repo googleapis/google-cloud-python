@@ -45,12 +45,13 @@ class Client(ClientWithProject):
                   change in the future.
     """
 
-    SCOPE = ('https://www.googleapis.com/auth/ndev.clouddns.readwrite',)
+    SCOPE = ("https://www.googleapis.com/auth/ndev.clouddns.readwrite",)
     """The scopes required for authenticating as a Cloud DNS consumer."""
 
     def __init__(self, project=None, credentials=None, _http=None):
         super(Client, self).__init__(
-            project=project, credentials=credentials, _http=_http)
+            project=project, credentials=credentials, _http=_http
+        )
         self._connection = Connection(self)
 
     def quotas(self):
@@ -63,12 +64,12 @@ class Client(ClientWithProject):
         :returns: keys for the mapping correspond to those of the ``quota``
                   sub-mapping of the project resource.
         """
-        path = '/projects/%s' % (self.project,)
-        resp = self._connection.api_request(method='GET', path=path)
+        path = "/projects/%s" % (self.project,)
+        resp = self._connection.api_request(method="GET", path=path)
 
-        return {key: int(value)
-                for key, value in resp['quota'].items()
-                if key != 'kind'}
+        return {
+            key: int(value) for key, value in resp["quota"].items() if key != "kind"
+        }
 
     def list_zones(self, max_results=None, page_token=None):
         """List zones for the project associated with this client.
@@ -89,15 +90,16 @@ class Client(ClientWithProject):
         :returns: Iterator of :class:`~google.cloud.dns.zone.ManagedZone`
                   belonging to this project.
         """
-        path = '/projects/%s/managedZones' % (self.project,)
+        path = "/projects/%s/managedZones" % (self.project,)
         return page_iterator.HTTPIterator(
             client=self,
             api_request=self._connection.api_request,
             path=path,
             item_to_value=_item_to_zone,
-            items_key='managedZones',
+            items_key="managedZones",
             page_token=page_token,
-            max_results=max_results)
+            max_results=max_results,
+        )
 
     def zone(self, name, dns_name=None, description=None):
         """Construct a zone bound to this client.
@@ -118,8 +120,7 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.dns.zone.ManagedZone`
         :returns: a new ``ManagedZone`` instance.
         """
-        return ManagedZone(name, dns_name, client=self,
-                           description=description)
+        return ManagedZone(name, dns_name, client=self, description=description)
 
 
 def _item_to_zone(iterator, resource):

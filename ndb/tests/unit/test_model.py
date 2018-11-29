@@ -18,12 +18,13 @@ import types
 import unittest.mock
 import zlib
 
+from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
 import pytest
 
 from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
-from google.cloud.ndb import key
+from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import query
 import tests.unit.utils
@@ -34,7 +35,7 @@ def test___all__():
 
 
 def test_Key():
-    assert model.Key is key.Key
+    assert model.Key is key_module.Key
 
 
 def test_BlobKey():
@@ -1294,11 +1295,125 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
 
+class Test__validate_key:
+    @staticmethod
+    def test_valid_value():
+        value = model.Key("This", 1)
+        result = model._validate_key(value)
+        assert result is value
+
+    @staticmethod
+    def test_invalid_value():
+        with pytest.raises(exceptions.BadValueError):
+            model._validate_key(None)
+
+    @staticmethod
+    def test_unchecked_model_type():
+        value = model.Key("This", 1)
+        entity = object.__new__(model.Model)
+
+        result = model._validate_key(value, entity=entity)
+        assert result is value
+
+    @staticmethod
+    def test_unchecked_expando_type():
+        value = model.Key("This", 1)
+        entity = object.__new__(model.Expando)
+
+        result = model._validate_key(value, entity=entity)
+        assert result is value
+
+    @staticmethod
+    def test_same_kind():
+        class Mine(model.Model):
+            pass
+
+        value = model.Key(Mine, "yours")
+        entity = unittest.mock.Mock(spec=Mine)
+        entity._get_kind.return_value = "Mine"
+
+        result = model._validate_key(value, entity=entity)
+        assert result is value
+        entity._get_kind.assert_called_once_with()
+
+    @staticmethod
+    def test_different_kind():
+        class Mine(model.Model):
+            pass
+
+        value = model.Key(Mine, "yours")
+        entity = unittest.mock.Mock(spec=Mine)
+        entity._get_kind.return_value = "NotMine"
+
+        with pytest.raises(model.KindError):
+            model._validate_key(value, entity=entity)
+
+        calls = [unittest.mock.call(), unittest.mock.call()]
+        entity._get_kind.assert_has_calls(calls)
+
+
 class TestModelKey:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.ModelKey()
+        prop = model.ModelKey()
+        assert prop._name == "__key__"
+        assert prop.__dict__ == {"_name": "__key__"}
+
+    @staticmethod
+    def test_compare_valid():
+        prop = model.ModelKey()
+        value = key_module.Key("say", "quay")
+        filter_node = prop._comparison(">=", value)
+        assert filter_node == query.FilterNode("__key__", ">=", value)
+
+    @staticmethod
+    def test_compare_invalid():
+        prop = model.ModelKey()
+        with pytest.raises(exceptions.BadValueError):
+            prop == None
+
+    @staticmethod
+    def test__validate():
+        prop = model.ModelKey()
+        value = key_module.Key("Up", 909)
+        assert prop._validate(value) is value
+
+    @staticmethod
+    def test__validate_wrong_type():
+        prop = model.ModelKey()
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__set_value():
+        entity = object.__new__(model.Model)
+        value = key_module.Key("Map", 8898)
+
+        model.ModelKey._set_value(entity, value)
+        assert entity._entity_key is value
+
+    @staticmethod
+    def test__set_value_none():
+        entity = unittest.mock.Mock(spec=("_entity_key",))
+
+        assert entity._entity_key is not None
+        model.ModelKey._set_value(entity, None)
+        assert entity._entity_key is None
+
+    @staticmethod
+    def test__get_value():
+        entity = unittest.mock.Mock(spec=("_entity_key",))
+
+        result = model.ModelKey._get_value(entity)
+        assert result is entity._entity_key
+
+    @staticmethod
+    def test__delete_value():
+        entity = unittest.mock.Mock(spec=("_entity_key",))
+
+        assert entity._entity_key is not None
+        model.ModelKey._delete_value(entity)
+        assert entity._entity_key is None
 
 
 class TestBooleanProperty:
@@ -1589,6 +1704,12 @@ class TestTextProperty:
             model.TextProperty(indexed=True)
 
     @staticmethod
+    def test_repr():
+        prop = model.TextProperty(name="text")
+        expected = "TextProperty('text')"
+        assert repr(prop) == expected
+
+    @staticmethod
     def test__validate():
         prop = model.TextProperty(name="text")
         assert prop._validate("abc") is None
@@ -1657,6 +1778,12 @@ class TestStringProperty:
     def test_constructor_not_allowed():
         with pytest.raises(NotImplementedError):
             model.StringProperty(indexed=False)
+
+    @staticmethod
+    def test_repr():
+        prop = model.StringProperty(name="limited-text")
+        expected = "StringProperty('limited-text')"
+        assert repr(prop) == expected
 
     @staticmethod
     def test__validate_bad_length():
@@ -1776,11 +1903,255 @@ class TestJsonProperty:
             prop._from_base_type("{}")
 
 
+class TestUser:
+    @staticmethod
+    def test_constructor_defaults():
+        with pytest.raises(ValueError):
+            model.User()
+
+    @staticmethod
+    def _make_default():
+        return model.User(email="foo@example.com", _auth_domain="example.com")
+
+    def test_constructor_explicit(self):
+        user_value = self._make_default()
+        assert user_value._auth_domain == "example.com"
+        assert user_value._email == "foo@example.com"
+        assert user_value._user_id is None
+
+    @staticmethod
+    def test_constructor_no_email():
+        with pytest.raises(model.UserNotFoundError):
+            model.User(_auth_domain="example.com")
+        with pytest.raises(model.UserNotFoundError):
+            model.User(email="", _auth_domain="example.com")
+
+    def test_nickname(self):
+        user_value = self._make_default()
+        assert user_value.nickname() == "foo"
+
+    @staticmethod
+    def test_nickname_mismatch_domain():
+        user_value = model.User(
+            email="foo@example.org", _auth_domain="example.com"
+        )
+        assert user_value.nickname() == "foo@example.org"
+
+    def test_email(self):
+        user_value = self._make_default()
+        assert user_value.email() == "foo@example.com"
+
+    @staticmethod
+    def test_user_id():
+        user_value = model.User(
+            email="foo@example.com", _auth_domain="example.com", _user_id="123"
+        )
+        assert user_value.user_id() == "123"
+
+    def test_auth_domain(self):
+        user_value = self._make_default()
+        assert user_value.auth_domain() == "example.com"
+
+    @staticmethod
+    def _add_to_entity_helper(user_value):
+        entity = entity_module.Entity()
+        name = "u"
+
+        user_value.add_to_entity(entity, name)
+        assert list(entity.keys()) == [name]
+        user_entity = entity[name]
+        assert entity._meanings == {
+            name: (model._MEANING_PREDEFINED_ENTITY_USER, user_entity)
+        }
+        assert user_entity["email"] == user_value._email
+        assert user_entity["auth_domain"] == user_value._auth_domain
+        return user_entity
+
+    def test_add_to_entity(self):
+        user_value = self._make_default()
+        user_entity = self._add_to_entity_helper(user_value)
+        assert sorted(user_entity.keys()) == ["auth_domain", "email"]
+        assert user_entity.exclude_from_indexes == set(
+            ["auth_domain", "email"]
+        )
+
+    def test_add_to_entity_with_user_id(self):
+        user_value = model.User(
+            email="foo@example.com",
+            _auth_domain="example.com",
+            _user_id="197382",
+        )
+        user_entity = self._add_to_entity_helper(user_value)
+        assert sorted(user_entity.keys()) == [
+            "auth_domain",
+            "email",
+            "user_id",
+        ]
+        assert user_entity["user_id"] == user_value._user_id
+        assert user_entity.exclude_from_indexes == set(
+            ["auth_domain", "email", "user_id"]
+        )
+
+    @staticmethod
+    def _prepare_entity(name, email, auth_domain):
+        entity = entity_module.Entity()
+        user_entity = entity_module.Entity()
+
+        entity[name] = user_entity
+        entity._meanings[name] = (
+            model._MEANING_PREDEFINED_ENTITY_USER,
+            user_entity,
+        )
+        user_entity.exclude_from_indexes.update(["auth_domain", "email"])
+        user_entity["auth_domain"] = auth_domain
+        user_entity["email"] = email
+
+        return entity
+
+    def test_read_from_entity(self):
+        name = "you_sir"
+        email = "foo@example.com"
+        auth_domain = "example.com"
+        entity = self._prepare_entity(name, email, auth_domain)
+
+        user_value = model.User.read_from_entity(entity, name)
+        assert user_value._auth_domain == auth_domain
+        assert user_value._email == email
+        assert user_value._user_id is None
+
+    def test_read_from_entity_bad_meaning(self):
+        name = "you_sir"
+        email = "foo@example.com"
+        auth_domain = "example.com"
+        entity = self._prepare_entity(name, email, auth_domain)
+
+        # Wrong meaning.
+        entity._meanings[name] = ("not-20", entity[name])
+        with pytest.raises(ValueError):
+            model.User.read_from_entity(entity, name)
+
+        # Wrong assocated value.
+        entity._meanings[name] = (model._MEANING_PREDEFINED_ENTITY_USER, None)
+        with pytest.raises(ValueError):
+            model.User.read_from_entity(entity, name)
+
+        # No meaning.
+        entity._meanings.clear()
+        with pytest.raises(ValueError):
+            model.User.read_from_entity(entity, name)
+
+    def test_read_from_entity_with_user_id(self):
+        name = "you_sir"
+        email = "foo@example.com"
+        auth_domain = "example.com"
+        entity = self._prepare_entity(name, email, auth_domain)
+        entity[name].exclude_from_indexes.add("user_id")
+        user_id = "80131394"
+        entity[name]["user_id"] = user_id
+
+        user_value = model.User.read_from_entity(entity, name)
+        assert user_value._auth_domain == auth_domain
+        assert user_value._email == email
+        assert user_value._user_id == user_id
+
+    def test___str__(self):
+        user_value = self._make_default()
+        assert str(user_value) == "foo"
+
+    def test___repr__(self):
+        user_value = self._make_default()
+        assert repr(user_value) == "users.User(email='foo@example.com')"
+
+    @staticmethod
+    def test___repr__with_user_id():
+        user_value = model.User(
+            email="foo@example.com", _auth_domain="example.com", _user_id="123"
+        )
+        expected = "users.User(email='foo@example.com', _user_id='123')"
+        assert repr(user_value) == expected
+
+    def test___hash__(self):
+        user_value = self._make_default()
+        expected = hash((user_value._email, user_value._auth_domain))
+        assert hash(user_value) == expected
+
+    def test___eq__(self):
+        user_value1 = self._make_default()
+        user_value2 = model.User(
+            email="foo@example.org", _auth_domain="example.com"
+        )
+        user_value3 = model.User(
+            email="foo@example.com", _auth_domain="example.org"
+        )
+        user_value4 = unittest.mock.sentinel.blob_key
+        assert user_value1 == user_value1
+        assert not user_value1 == user_value2
+        assert not user_value1 == user_value3
+        assert not user_value1 == user_value4
+
+    def test___lt__(self):
+        user_value1 = self._make_default()
+        user_value2 = model.User(
+            email="foo@example.org", _auth_domain="example.com"
+        )
+        user_value3 = model.User(
+            email="foo@example.com", _auth_domain="example.org"
+        )
+        user_value4 = unittest.mock.sentinel.blob_key
+        assert not user_value1 < user_value1
+        assert user_value1 < user_value2
+        assert user_value1 < user_value3
+        with pytest.raises(TypeError):
+            user_value1 < user_value4
+
+
 class TestUserProperty:
     @staticmethod
-    def test_constructor():
+    def test_constructor_defaults():
+        prop = model.UserProperty()
+        # Check that none of the constructor defaults were used.
+        assert prop.__dict__ == {}
+
+    @staticmethod
+    def test_constructor_auto_current_user():
         with pytest.raises(NotImplementedError):
-            model.UserProperty()
+            model.UserProperty(auto_current_user=True)
+
+    @staticmethod
+    def test_constructor_auto_current_user_add():
+        with pytest.raises(NotImplementedError):
+            model.UserProperty(auto_current_user_add=True)
+
+    @staticmethod
+    def test__validate():
+        prop = model.UserProperty(name="u")
+        user_value = model.User(
+            email="foo@example.com", _auth_domain="example.com"
+        )
+        assert prop._validate(user_value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        prop = model.UserProperty(name="u")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__prepare_for_put():
+        prop = model.UserProperty(name="u")
+        assert prop._prepare_for_put(None) is None
+
+    @staticmethod
+    def test__db_set_value():
+        prop = model.UserProperty(name="u")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.UserProperty(name="u")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestKeyProperty:
@@ -1880,13 +2251,13 @@ class TestKeyProperty:
     def test__validate():
         kind = "Simple"
         prop = model.KeyProperty("keyp", kind=kind)
-        value = key.Key(kind, 182983)
+        value = key_module.Key(kind, 182983)
         assert prop._validate(value) is None
 
     @staticmethod
     def test__validate_without_kind():
         prop = model.KeyProperty("keyp")
-        value = key.Key("Foo", "Bar")
+        value = key_module.Key("Foo", "Bar")
         assert prop._validate(value) is None
 
     @staticmethod
@@ -1898,14 +2269,14 @@ class TestKeyProperty:
     @staticmethod
     def test__validate_partial_key():
         prop = model.KeyProperty("keyp")
-        value = key.Key("Kynd", None)
+        value = key_module.Key("Kynd", None)
         with pytest.raises(exceptions.BadValueError):
             prop._validate(value)
 
     @staticmethod
     def test__validate_wrong_kind():
         prop = model.KeyProperty("keyp", kind="Simple")
-        value = key.Key("Kynd", 184939)
+        value = key_module.Key("Kynd", 184939)
         with pytest.raises(exceptions.BadValueError):
             prop._validate(value)
 
@@ -2169,16 +2540,167 @@ class TestComputedProperty:
 
 class TestMetaModel:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.MetaModel()
+    def test___repr__():
+        expected = "Model<>"
+        assert repr(model.Model) == expected
+
+    @staticmethod
+    def test___repr__extended():
+        class Mine(model.Model):
+            first = model.IntegerProperty()
+            second = model.StringProperty()
+
+        expected = (
+            "Mine<first=IntegerProperty('first'), "
+            "second=StringProperty('second')>"
+        )
+        assert repr(Mine) == expected
+
+    @staticmethod
+    def test_bad_kind():
+        with pytest.raises(model.KindError):
+
+            class Mine(model.Model):
+                @classmethod
+                def _get_kind(cls):
+                    return 525600
+
+    @staticmethod
+    def test_invalid_property_name():
+        with pytest.raises(TypeError):
+
+            class Mine(model.Model):
+                _foo = model.StringProperty()
+
+    @staticmethod
+    def test_repeated_property():
+        class Mine(model.Model):
+            foo = model.StringProperty(repeated=True)
+
+        assert Mine._has_repeated
+
+    @staticmethod
+    def test_non_property_attribute():
+        model_attr = unittest.mock.Mock(spec=model.ModelAttribute)
+
+        class Mine(model.Model):
+            baz = model_attr
+
+        model_attr._fix_up.assert_called_once_with(Mine, "baz")
 
 
 class TestModel:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.Model()
+    def test_constructor_defaults():
+        entity = model.Model()
+        assert entity.__dict__ == {"_values": {}}
+
+    @staticmethod
+    def test_constructor_key():
+        key = key_module.Key("Foo", "bar")
+        entity = model.Model(key=key)
+        assert entity.__dict__ == {"_values": {}, "_entity_key": key}
+
+        entity = model.Model(_key=key)
+        assert entity.__dict__ == {"_values": {}, "_entity_key": key}
+
+    @staticmethod
+    def test_constructor_key_parts():
+        entity = model.Model(id=124)
+        key = key_module.Key("Model", 124)
+        assert entity.__dict__ == {"_values": {}, "_entity_key": key}
+
+    @staticmethod
+    def test_constructor_key_and_key_parts():
+        key = key_module.Key("Foo", "bar")
+        with pytest.raises(exceptions.BadArgumentError):
+            model.Model(key=key, id=124)
+
+    @staticmethod
+    def test_constructor_user_property_collision():
+        class SecretMap(model.Model):
+            key = model.IntegerProperty()
+
+        entity = SecretMap(key=1001)
+        assert entity.__dict__ == {"_values": {"key": 1001}}
+
+    @staticmethod
+    def test_constructor_with_projection():
+        class Book(model.Model):
+            pages = model.IntegerProperty()
+            author = model.StringProperty()
+            publisher = model.StringProperty()
+
+        entity = Book(
+            pages=287, author="Tim Robert", projection=("pages", "author")
+        )
+        assert entity.__dict__ == {
+            "_values": {"pages": 287, "author": "Tim Robert"},
+            "_projection": ("pages", "author"),
+        }
+
+    @staticmethod
+    def test_constructor_non_existent_property():
+        with pytest.raises(AttributeError):
+            model.Model(pages=287)
+
+    @staticmethod
+    def test_constructor_non_property():
+        class TimeTravelVehicle(model.Model):
+            speed = 88
+
+        with pytest.raises(TypeError):
+            TimeTravelVehicle(speed=28)
+
+    @staticmethod
+    def test_repr():
+        entity = ManyFields(self=909, id="hi", key=[88.5, 0.0], value=None)
+        expected = "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None)"
+        assert repr(entity) == expected
+
+    @staticmethod
+    def test_repr_with_projection():
+        entity = ManyFields(
+            self=909,
+            id="hi",
+            key=[88.5, 0.0],
+            value=None,
+            projection=("self", "id"),
+        )
+        expected = (
+            "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None, "
+            "_projection=('self', 'id'))"
+        )
+        assert repr(entity) == expected
+
+    @staticmethod
+    def test_repr_with_property_named_key():
+        entity = ManyFields(
+            self=909, id="hi", key=[88.5, 0.0], value=None, _id=78
+        )
+        expected = (
+            "ManyFields(_key=Key('ManyFields', 78), id='hi', key=[88.5, 0.0], "
+            "self=909, value=None)"
+        )
+        assert repr(entity) == expected
+
+    @staticmethod
+    def test_repr_with_property_named_key_not_set():
+        entity = ManyFields(self=909, id="hi", value=None, _id=78)
+        expected = (
+            "ManyFields(_key=Key('ManyFields', 78), id='hi', "
+            "self=909, value=None)"
+        )
+        assert repr(entity) == expected
+
+    @staticmethod
+    def test_repr_no_property_named_key():
+        class NoKeyCollision(model.Model):
+            word = model.StringProperty()
+
+        entity = NoKeyCollision(word="one", id=801)
+        expected = "NoKeyCollision(key=Key('NoKeyCollision', 801), word='one')"
+        assert repr(entity) == expected
 
     @staticmethod
     def test__get_kind():
@@ -2188,6 +2710,17 @@ class TestModel:
             pass
 
         assert Simple._get_kind() == "Simple"
+
+    @staticmethod
+    def test__validate_key():
+        value = unittest.mock.sentinel.value
+        assert model.Model._validate_key(value) is value
+
+    @staticmethod
+    def test__put():
+        entity = model.Model()
+        with pytest.raises(NotImplementedError):
+            entity._put()
 
 
 class TestExpando:
@@ -2270,3 +2803,11 @@ def test_get_indexes_async():
 def test_get_indexes():
     with pytest.raises(NotImplementedError):
         model.get_indexes()
+
+
+class ManyFields(model.Model):
+    self = model.IntegerProperty()
+    id = model.StringProperty()
+    key = model.FloatProperty(repeated=True)
+    value = model.StringProperty()
+    unused = model.FloatProperty()

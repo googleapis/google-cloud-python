@@ -21,23 +21,23 @@ from google.cloud.logging.entries import TextEntry
 from google.cloud.logging.resource import Resource
 
 
-_GLOBAL_RESOURCE = Resource(type='global', labels={})
+_GLOBAL_RESOURCE = Resource(type="global", labels={})
 
 
 _OUTBOUND_ENTRY_FIELDS = (  # (name, default)
-    ('type_', None),
-    ('log_name', None),
-    ('payload', None),
-    ('labels', None),
-    ('insert_id', None),
-    ('severity', None),
-    ('http_request', None),
-    ('timestamp', None),
-    ('resource', _GLOBAL_RESOURCE),
-    ('trace', None),
-    ('span_id', None),
-    ('trace_sampled', None),
-    ('source_location', None),
+    ("type_", None),
+    ("log_name", None),
+    ("payload", None),
+    ("labels", None),
+    ("insert_id", None),
+    ("severity", None),
+    ("http_request", None),
+    ("timestamp", None),
+    ("resource", _GLOBAL_RESOURCE),
+    ("trace", None),
+    ("span_id", None),
+    ("trace_sampled", None),
+    ("source_location", None),
 )
 
 
@@ -58,6 +58,7 @@ class Logger(object):
     :param labels: (optional) mapping of default labels for entries written
                    via this logger.
     """
+
     def __init__(self, name, client, labels=None):
         self.name = name
         self._client = client
@@ -76,12 +77,12 @@ class Logger(object):
     @property
     def full_name(self):
         """Fully-qualified name used in logging APIs"""
-        return 'projects/%s/logs/%s' % (self.project, self.name)
+        return "projects/%s/logs/%s" % (self.project, self.name)
 
     @property
     def path(self):
         """URI path for use in logging APIs"""
-        return '/%s' % (self.full_name,)
+        return "/%s" % (self.full_name,)
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -118,9 +119,9 @@ class Logger(object):
         client = self._require_client(client)
 
         # Apply defaults
-        kw['log_name'] = kw.pop('log_name', self.full_name)
-        kw['labels'] = kw.pop('labels', self.labels)
-        kw['resource'] = kw.pop('resource', _GLOBAL_RESOURCE)
+        kw["log_name"] = kw.pop("log_name", self.full_name)
+        kw["labels"] = kw.pop("labels", self.labels)
+        kw["resource"] = kw.pop("resource", _GLOBAL_RESOURCE)
 
         if payload is not None:
             entry = _entry_class(payload=payload, **kw)
@@ -221,8 +222,14 @@ class Logger(object):
         client = self._require_client(client)
         client.logging_api.logger_delete(self.project, self.name)
 
-    def list_entries(self, projects=None, filter_=None, order_by=None,
-                     page_size=None, page_token=None):
+    def list_entries(
+        self,
+        projects=None,
+        filter_=None,
+        order_by=None,
+        page_size=None,
+        page_token=None,
+    ):
         """Return a page of log entries.
 
         See
@@ -254,14 +261,18 @@ class Logger(object):
         :returns: Iterator of log entries accessible to the current logger.
                   See :class:`~google.cloud.logging.entries.LogEntry`.
         """
-        log_filter = 'logName=%s' % (self.full_name,)
+        log_filter = "logName=%s" % (self.full_name,)
         if filter_ is not None:
-            filter_ = '%s AND %s' % (filter_, log_filter)
+            filter_ = "%s AND %s" % (filter_, log_filter)
         else:
             filter_ = log_filter
         return self.client.list_entries(
-            projects=projects, filter_=filter_, order_by=order_by,
-            page_size=page_size, page_token=page_token)
+            projects=projects,
+            filter_=filter_,
+            order_by=order_by,
+            page_size=page_size,
+            page_token=page_token,
+        )
 
 
 class Batch(object):
@@ -284,6 +295,7 @@ class Batch(object):
                      if explicitly set to None. If no entries' resource are
                      set to None, this parameter will be ignored on the server.
     """
+
     def __init__(self, logger, client, resource=None):
         self.logger = logger
         self.entries = []
@@ -353,15 +365,13 @@ class Batch(object):
         if client is None:
             client = self.client
 
-        kwargs = {
-            'logger_name': self.logger.full_name,
-        }
+        kwargs = {"logger_name": self.logger.full_name}
 
         if self.resource is not None:
-            kwargs['resource'] = self.resource._to_dict()
+            kwargs["resource"] = self.resource._to_dict()
 
         if self.logger.labels is not None:
-            kwargs['labels'] = self.logger.labels
+            kwargs["labels"] = self.logger.labels
 
         entries = [entry.to_api_repr() for entry in self.entries]
 

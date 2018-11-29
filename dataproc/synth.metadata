@@ -1,0 +1,19 @@
+{
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.2",
+        "dockerImage": "googleapis/artman@sha256:2f6b261ee7fe1aedf238991c93a20b3820de37a343d0cacf3e3e9555c2aaf2ea"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "3cef6c237ba87a81470b5fdf082ed187cbb23ded",
+        "internalRef": "222456573"
+      }
+    }
+  ]
+}

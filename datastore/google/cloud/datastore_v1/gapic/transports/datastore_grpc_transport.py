@@ -27,17 +27,17 @@ class DatastoreGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/datastore',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/datastore",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='datastore.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="datastore.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -55,26 +55,21 @@ class DatastoreGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {
-            'datastore_stub': datastore_pb2_grpc.DatastoreStub(channel),
-        }
+        self._stubs = {"datastore_stub": datastore_pb2_grpc.DatastoreStub(channel)}
 
     @classmethod
-    def create_channel(cls,
-                       address='datastore.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="datastore.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -89,10 +84,17 @@ class DatastoreGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def lookup(self):
@@ -105,7 +107,7 @@ class DatastoreGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['datastore_stub'].Lookup
+        return self._stubs["datastore_stub"].Lookup
 
     @property
     def run_query(self):
@@ -118,7 +120,7 @@ class DatastoreGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['datastore_stub'].RunQuery
+        return self._stubs["datastore_stub"].RunQuery
 
     @property
     def begin_transaction(self):
@@ -131,7 +133,7 @@ class DatastoreGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['datastore_stub'].BeginTransaction
+        return self._stubs["datastore_stub"].BeginTransaction
 
     @property
     def commit(self):
@@ -145,7 +147,7 @@ class DatastoreGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['datastore_stub'].Commit
+        return self._stubs["datastore_stub"].Commit
 
     @property
     def rollback(self):
@@ -158,7 +160,7 @@ class DatastoreGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['datastore_stub'].Rollback
+        return self._stubs["datastore_stub"].Rollback
 
     @property
     def allocate_ids(self):
@@ -172,7 +174,7 @@ class DatastoreGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['datastore_stub'].AllocateIds
+        return self._stubs["datastore_stub"].AllocateIds
 
     @property
     def reserve_ids(self):
@@ -186,4 +188,4 @@ class DatastoreGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['datastore_stub'].ReserveIds
+        return self._stubs["datastore_stub"].ReserveIds

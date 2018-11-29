@@ -26,13 +26,13 @@ import warnings
 
 # Generic IAM roles
 
-OWNER_ROLE = 'roles/owner'
+OWNER_ROLE = "roles/owner"
 """Generic role implying all rights to an object."""
 
-EDITOR_ROLE = 'roles/editor'
+EDITOR_ROLE = "roles/editor"
 """Generic role implying rights to modify an object."""
 
-VIEWER_ROLE = 'roles/viewer'
+VIEWER_ROLE = "roles/viewer"
 """Generic role implying rights to access an object."""
 
 _ASSIGNMENT_DEPRECATED_MSG = """\
@@ -51,6 +51,7 @@ class Policy(collections_abc.MutableMapping):
     :type version: int
     :param version: unique version of the policy
     """
+
     _OWNER_ROLES = (OWNER_ROLE,)
     """Roles mapped onto our ``owners`` attribute."""
 
@@ -93,8 +94,8 @@ class Policy(collections_abc.MutableMapping):
     def owners(self, value):
         """Update owners."""
         warnings.warn(
-            _ASSIGNMENT_DEPRECATED_MSG.format('owners', OWNER_ROLE),
-            DeprecationWarning)
+            _ASSIGNMENT_DEPRECATED_MSG.format("owners", OWNER_ROLE), DeprecationWarning
+        )
         self[OWNER_ROLE] = value
 
     @property
@@ -110,8 +111,9 @@ class Policy(collections_abc.MutableMapping):
     def editors(self, value):
         """Update editors."""
         warnings.warn(
-            _ASSIGNMENT_DEPRECATED_MSG.format('editors', EDITOR_ROLE),
-            DeprecationWarning)
+            _ASSIGNMENT_DEPRECATED_MSG.format("editors", EDITOR_ROLE),
+            DeprecationWarning,
+        )
         self[EDITOR_ROLE] = value
 
     @property
@@ -127,8 +129,9 @@ class Policy(collections_abc.MutableMapping):
     def viewers(self, value):
         """Update viewers."""
         warnings.warn(
-            _ASSIGNMENT_DEPRECATED_MSG.format('viewers', VIEWER_ROLE),
-            DeprecationWarning)
+            _ASSIGNMENT_DEPRECATED_MSG.format("viewers", VIEWER_ROLE),
+            DeprecationWarning,
+        )
         self[VIEWER_ROLE] = value
 
     @staticmethod
@@ -141,7 +144,7 @@ class Policy(collections_abc.MutableMapping):
         :rtype: str
         :returns: A member string corresponding to the given user.
         """
-        return 'user:%s' % (email,)
+        return "user:%s" % (email,)
 
     @staticmethod
     def service_account(email):
@@ -153,7 +156,7 @@ class Policy(collections_abc.MutableMapping):
         :rtype: str
         :returns: A member string corresponding to the given service account.
         """
-        return 'serviceAccount:%s' % (email,)
+        return "serviceAccount:%s" % (email,)
 
     @staticmethod
     def group(email):
@@ -165,7 +168,7 @@ class Policy(collections_abc.MutableMapping):
         :rtype: str
         :returns: A member string corresponding to the given group.
         """
-        return 'group:%s' % (email,)
+        return "group:%s" % (email,)
 
     @staticmethod
     def domain(domain):
@@ -177,7 +180,7 @@ class Policy(collections_abc.MutableMapping):
         :rtype: str
         :returns: A member string corresponding to the given domain.
         """
-        return 'domain:%s' % (domain,)
+        return "domain:%s" % (domain,)
 
     @staticmethod
     def all_users():
@@ -186,7 +189,7 @@ class Policy(collections_abc.MutableMapping):
         :rtype: str
         :returns: A member string representing all users.
         """
-        return 'allUsers'
+        return "allUsers"
 
     @staticmethod
     def authenticated_users():
@@ -195,7 +198,7 @@ class Policy(collections_abc.MutableMapping):
         :rtype: str
         :returns: A member string representing all authenticated users.
         """
-        return 'allAuthenticatedUsers'
+        return "allAuthenticatedUsers"
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -207,12 +210,12 @@ class Policy(collections_abc.MutableMapping):
         :rtype: :class:`Policy`
         :returns: the parsed policy
         """
-        version = resource.get('version')
-        etag = resource.get('etag')
+        version = resource.get("version")
+        etag = resource.get("etag")
         policy = cls(etag, version)
-        for binding in resource.get('bindings', ()):
-            role = binding['role']
-            members = sorted(binding['members'])
+        for binding in resource.get("bindings", ()):
+            role = binding["role"]
+            members = sorted(binding["members"])
             policy[role] = members
         return policy
 
@@ -225,20 +228,19 @@ class Policy(collections_abc.MutableMapping):
         resource = {}
 
         if self.etag is not None:
-            resource['etag'] = self.etag
+            resource["etag"] = self.etag
 
         if self.version is not None:
-            resource['version'] = self.version
+            resource["version"] = self.version
 
         if self._bindings:
-            bindings = resource['bindings'] = []
+            bindings = resource["bindings"] = []
             for role, members in sorted(self._bindings.items()):
                 if members:
-                    bindings.append(
-                        {'role': role, 'members': sorted(set(members))})
+                    bindings.append({"role": role, "members": sorted(set(members))})
 
             if not bindings:
-                del resource['bindings']
+                del resource["bindings"]
 
         return resource
 

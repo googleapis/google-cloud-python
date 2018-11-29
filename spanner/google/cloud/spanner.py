@@ -30,15 +30,15 @@ from google.cloud.spanner_v1 import types
 
 
 __all__ = (
-    '__version__',
-    'AbstractSessionPool',
-    'BurstyPool',
-    'Client',
-    'COMMIT_TIMESTAMP',
-    'enums',
-    'FixedSizePool',
-    'KeyRange',
-    'KeySet',
-    'param_types',
-    'types',
+    "__version__",
+    "AbstractSessionPool",
+    "BurstyPool",
+    "Client",
+    "COMMIT_TIMESTAMP",
+    "enums",
+    "FixedSizePool",
+    "KeyRange",
+    "KeySet",
+    "param_types",
+    "types",
 )

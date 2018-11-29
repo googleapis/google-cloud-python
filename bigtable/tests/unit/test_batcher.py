@@ -26,8 +26,8 @@ from google.cloud.bigtable.row import DirectRow
 class TestMutationsBatcher(unittest.TestCase):
     from grpc import StatusCode
 
-    TABLE_ID = 'table-id'
-    TABLE_NAME = '/tables/' + TABLE_ID
+    TABLE_ID = "table-id"
+    TABLE_NAME = "/tables/" + TABLE_ID
 
     # RPC Status Codes
     SUCCESS = StatusCode.OK.value[0]
@@ -52,10 +52,11 @@ class TestMutationsBatcher(unittest.TestCase):
 
     def test_constructor(self):
         credentials = _make_credentials()
-        client = self._make_client(project='project-id',
-                                   credentials=credentials, admin=True)
+        client = self._make_client(
+            project="project-id", credentials=credentials, admin=True
+        )
 
-        instance = client.instance(instance_id='instance-id')
+        instance = client.instance(instance_id="instance-id")
         table = self._make_table(self.TABLE_ID, instance)
 
         mutation_batcher = MutationsBatcher(table)
@@ -65,10 +66,12 @@ class TestMutationsBatcher(unittest.TestCase):
         table = _Table(self.TABLE_NAME)
         mutation_batcher = MutationsBatcher(table=table)
 
-        rows = [DirectRow(row_key=b'row_key'),
-                DirectRow(row_key=b'row_key_2'),
-                DirectRow(row_key=b'row_key_3'),
-                DirectRow(row_key=b'row_key_4')]
+        rows = [
+            DirectRow(row_key=b"row_key"),
+            DirectRow(row_key=b"row_key_2"),
+            DirectRow(row_key=b"row_key_3"),
+            DirectRow(row_key=b"row_key_4"),
+        ]
 
         mutation_batcher.mutate_rows(rows)
         mutation_batcher.flush()
@@ -79,11 +82,11 @@ class TestMutationsBatcher(unittest.TestCase):
         table = _Table(self.TABLE_NAME)
         mutation_batcher = MutationsBatcher(table=table)
 
-        row = DirectRow(row_key=b'row_key')
-        row.set_cell('cf1', b'c1', 1)
-        row.set_cell('cf1', b'c2', 2)
-        row.set_cell('cf1', b'c3', 3)
-        row.set_cell('cf1', b'c4', 4)
+        row = DirectRow(row_key=b"row_key")
+        row.set_cell("cf1", b"c1", 1)
+        row.set_cell("cf1", b"c2", 2)
+        row.set_cell("cf1", b"c3", 3)
+        row.set_cell("cf1", b"c4", 4)
 
         mutation_batcher.mutate(row)
 
@@ -102,9 +105,9 @@ class TestMutationsBatcher(unittest.TestCase):
         table = _Table(self.TABLE_NAME)
         mutation_batcher = MutationsBatcher(table=table, flush_count=3)
 
-        row_1 = DirectRow(row_key=b'row_key_1')
-        row_2 = DirectRow(row_key=b'row_key_2')
-        row_3 = DirectRow(row_key=b'row_key_3')
+        row_1 = DirectRow(row_key=b"row_key_1")
+        row_2 = DirectRow(row_key=b"row_key_2")
+        row_3 = DirectRow(row_key=b"row_key_3")
 
         mutation_batcher.mutate(row_1)
         mutation_batcher.mutate(row_2)
@@ -112,31 +115,31 @@ class TestMutationsBatcher(unittest.TestCase):
 
         self.assertEqual(table.mutation_calls, 1)
 
-    @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=3)
+    @mock.patch("google.cloud.bigtable.batcher.MAX_MUTATIONS", new=3)
     def test_mutate_row_with_max_mutations_failure(self):
         from google.cloud.bigtable.batcher import MaxMutationsError
 
         table = _Table(self.TABLE_NAME)
         mutation_batcher = MutationsBatcher(table=table)
 
-        row = DirectRow(row_key=b'row_key')
-        row.set_cell('cf1', b'c1', 1)
-        row.set_cell('cf1', b'c2', 2)
-        row.set_cell('cf1', b'c3', 3)
-        row.set_cell('cf1', b'c4', 4)
+        row = DirectRow(row_key=b"row_key")
+        row.set_cell("cf1", b"c1", 1)
+        row.set_cell("cf1", b"c2", 2)
+        row.set_cell("cf1", b"c3", 3)
+        row.set_cell("cf1", b"c4", 4)
 
         with self.assertRaises(MaxMutationsError):
             mutation_batcher.mutate(row)
 
-    @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=3)
+    @mock.patch("google.cloud.bigtable.batcher.MAX_MUTATIONS", new=3)
     def test_mutate_row_with_max_mutations(self):
         table = _Table(self.TABLE_NAME)
         mutation_batcher = MutationsBatcher(table=table)
 
-        row = DirectRow(row_key=b'row_key')
-        row.set_cell('cf1', b'c1', 1)
-        row.set_cell('cf1', b'c2', 2)
-        row.set_cell('cf1', b'c3', 3)
+        row = DirectRow(row_key=b"row_key")
+        row.set_cell("cf1", b"c1", 1)
+        row.set_cell("cf1", b"c2", 2)
+        row.set_cell("cf1", b"c3", 3)
 
         mutation_batcher.mutate(row)
         mutation_batcher.flush()
@@ -145,16 +148,15 @@ class TestMutationsBatcher(unittest.TestCase):
 
     def test_mutate_row_with_max_row_bytes(self):
         table = _Table(self.TABLE_NAME)
-        mutation_batcher = MutationsBatcher(table=table,
-                                            max_row_bytes=3 * 1024 * 1024)
+        mutation_batcher = MutationsBatcher(table=table, max_row_bytes=3 * 1024 * 1024)
 
         number_of_bytes = 1 * 1024 * 1024
-        max_value = b'1' * number_of_bytes
+        max_value = b"1" * number_of_bytes
 
-        row = DirectRow(row_key=b'row_key')
-        row.set_cell('cf1', b'c1', max_value)
-        row.set_cell('cf1', b'c2', max_value)
-        row.set_cell('cf1', b'c3', max_value)
+        row = DirectRow(row_key=b"row_key")
+        row.set_cell("cf1", b"c1", max_value)
+        row.set_cell("cf1", b"c2", max_value)
+        row.set_cell("cf1", b"c3", max_value)
 
         mutation_batcher.mutate(row)
 
@@ -162,13 +164,11 @@ class TestMutationsBatcher(unittest.TestCase):
 
 
 class _Instance(object):
-
     def __init__(self, client=None):
         self._client = client
 
 
 class _Table(object):
-
     def __init__(self, name, client=None):
         self.name = name
         self._instance = _Instance(client)

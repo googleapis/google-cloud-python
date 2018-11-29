@@ -23,6 +23,7 @@ from google.api import http_pb2
 from google.cloud.dataproc_v1.proto import clusters_pb2
 from google.cloud.dataproc_v1.proto import jobs_pb2
 from google.cloud.dataproc_v1.proto import operations_pb2 as proto_operations_pb2
+from google.cloud.dataproc_v1.proto import workflow_templates_pb2
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import any_pb2
 from google.protobuf import descriptor_pb2
@@ -44,11 +45,7 @@ _shared_modules = [
     status_pb2,
 ]
 
-_local_modules = [
-    clusters_pb2,
-    jobs_pb2,
-    proto_operations_pb2,
-]
+_local_modules = [clusters_pb2, jobs_pb2, proto_operations_pb2, workflow_templates_pb2]
 
 names = []
 
@@ -58,7 +55,7 @@ for module in _shared_modules:
         names.append(name)
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = 'google.cloud.dataproc_v1.types'
+        message.__module__ = "google.cloud.dataproc_v1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 

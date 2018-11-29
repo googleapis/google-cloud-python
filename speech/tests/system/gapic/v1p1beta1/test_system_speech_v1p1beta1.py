@@ -23,14 +23,14 @@ class TestSystemSpeech(object):
     def test_recognize(self):
 
         client = speech_v1p1beta1.SpeechClient()
-        language_code = 'en-US'
+        language_code = "en-US"
         sample_rate_hertz = 44100
         encoding = enums.RecognitionConfig.AudioEncoding.FLAC
         config = {
-            'language_code': language_code,
-            'sample_rate_hertz': sample_rate_hertz,
-            'encoding': encoding
+            "language_code": language_code,
+            "sample_rate_hertz": sample_rate_hertz,
+            "encoding": encoding,
         }
-        uri = 'gs://gapic-toolkit/hello.flac'
-        audio = {'uri': uri}
+        uri = "gs://gapic-toolkit/hello.flac"
+        audio = {"uri": uri}
         response = client.recognize(config, audio)

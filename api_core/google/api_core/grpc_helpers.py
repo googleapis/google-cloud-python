@@ -28,15 +28,13 @@ import google.auth.transport.requests
 
 try:
     import grpc_gcp
+
     HAS_GRPC_GCP = True
 except ImportError:
     HAS_GRPC_GCP = False
 
 # The list of gRPC Callable interfaces that return iterators.
-_STREAM_WRAP_CLASSES = (
-    grpc.UnaryStreamMultiCallable,
-    grpc.StreamStreamMultiCallable,
-)
+_STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCallable)
 
 
 def _patch_callable_name(callable_):
@@ -45,7 +43,7 @@ def _patch_callable_name(callable_):
     gRPC callable lack the ``__name__`` attribute which causes
     :func:`functools.wraps` to error. This adds the attribute if needed.
     """
-    if not hasattr(callable_, '__name__'):
+    if not hasattr(callable_, "__name__"):
         callable_.__name__ = callable_.__class__.__name__
 
 
@@ -154,11 +152,9 @@ def wrap_errors(callable_):
         return _wrap_unary_errors(callable_)
 
 
-def create_channel(target,
-                   credentials=None,
-                   scopes=None,
-                   ssl_credentials=None,
-                   **kwargs):
+def create_channel(
+    target, credentials=None, scopes=None, ssl_credentials=None, **kwargs
+):
     """Create a secure channel with credentials.
 
     Args:
@@ -181,13 +177,15 @@ def create_channel(target,
         credentials, _ = google.auth.default(scopes=scopes)
     else:
         credentials = google.auth.credentials.with_scopes_if_required(
-            credentials, scopes)
+            credentials, scopes
+        )
 
     request = google.auth.transport.requests.Request()
 
     # Create the metadata plugin for inserting the authorization header.
     metadata_plugin = google.auth.transport.grpc.AuthMetadataPlugin(
-        credentials, request)
+        credentials, request
+    )
 
     # Create a set of grpc.CallCredentials using the metadata plugin.
     google_auth_credentials = grpc.metadata_call_credentials(metadata_plugin)
@@ -197,7 +195,8 @@ def create_channel(target,
 
     # Combine the ssl credentials and the authorization credentials.
     composite_credentials = grpc.composite_channel_credentials(
-        ssl_credentials, google_auth_credentials)
+        ssl_credentials, google_auth_credentials
+    )
 
     if HAS_GRPC_GCP:
         # If grpc_gcp module is available use grpc_gcp.secure_channel,
@@ -208,10 +207,10 @@ def create_channel(target,
 
 
 _MethodCall = collections.namedtuple(
-    '_MethodCall', ('request', 'timeout', 'metadata', 'credentials'))
+    "_MethodCall", ("request", "timeout", "metadata", "credentials")
+)
 
-_ChannelRequest = collections.namedtuple(
-    '_ChannelRequest', ('method', 'request'))
+_ChannelRequest = collections.namedtuple("_ChannelRequest", ("method", "request"))
 
 
 class _CallableStub(object):
@@ -238,10 +237,8 @@ class _CallableStub(object):
         request, timeout, metadata, and credentials."""
 
     def __call__(self, request, timeout=None, metadata=None, credentials=None):
-        self._channel.requests.append(
-            _ChannelRequest(self._method, request))
-        self.calls.append(
-            _MethodCall(request, timeout, metadata, credentials))
+        self._channel.requests.append(_ChannelRequest(self._method, request))
+        self.calls.append(_MethodCall(request, timeout, metadata, credentials))
         self.requests.append(request)
 
         response = self.response
@@ -250,8 +247,9 @@ class _CallableStub(object):
                 response = next(self.responses)
             else:
                 raise ValueError(
-                    '{method}.response and {method}.responses are mutually '
-                    'exclusive.'.format(method=self._method))
+                    "{method}.response and {method}.responses are mutually "
+                    "exclusive.".format(method=self._method)
+                )
 
         if callable(response):
             return response(request)
@@ -262,8 +260,7 @@ class _CallableStub(object):
         if response is not None:
             return response
 
-        raise ValueError(
-            'Method stub for "{}" has no response.'.format(self._method))
+        raise ValueError('Method stub for "{}" has no response.'.format(self._method))
 
 
 def _simplify_method_name(method):
@@ -279,7 +276,7 @@ def _simplify_method_name(method):
     Returns:
         str: The simplified name of the method.
     """
-    return method.rsplit('/', 1).pop()
+    return method.rsplit("/", 1).pop()
 
 
 class ChannelStub(grpc.Channel):
@@ -356,27 +353,21 @@ class ChannelStub(grpc.Channel):
         except KeyError:
             raise AttributeError
 
-    def unary_unary(
-            self, method,
-            request_serializer=None, response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         """grpc.Channel.unary_unary implementation."""
         return self._stub_for_method(method)
 
-    def unary_stream(
-            self, method,
-            request_serializer=None, response_deserializer=None):
+    def unary_stream(self, method, request_serializer=None, response_deserializer=None):
         """grpc.Channel.unary_stream implementation."""
         return self._stub_for_method(method)
 
-    def stream_unary(
-            self, method,
-            request_serializer=None, response_deserializer=None):
+    def stream_unary(self, method, request_serializer=None, response_deserializer=None):
         """grpc.Channel.stream_unary implementation."""
         return self._stub_for_method(method)
 
     def stream_stream(
-            self, method,
-            request_serializer=None, response_deserializer=None):
+        self, method, request_serializer=None, response_deserializer=None
+    ):
         """grpc.Channel.stream_stream implementation."""
         return self._stub_for_method(method)
 

@@ -28,6 +28,7 @@ class ProtectionLevel(enum.IntEnum):
       SOFTWARE (int): Crypto operations are performed in software.
       HSM (int): Crypto operations are performed in a Hardware Security Module.
     """
+
     PROTECTION_LEVEL_UNSPECIFIED = 0
     SOFTWARE = 1
     HSM = 2
@@ -49,6 +50,7 @@ class CryptoKey(object):
           ASYMMETRIC_DECRYPT (int): ``CryptoKeys`` with this purpose may be used with ``AsymmetricDecrypt``
           and ``GetPublicKey``.
         """
+
         CRYPTO_KEY_PURPOSE_UNSPECIFIED = 0
         ENCRYPT_DECRYPT = 1
         ASYMMETRIC_SIGN = 5
@@ -65,6 +67,7 @@ class KeyOperationAttestation(object):
           CAVIUM_V1_COMPRESSED (int): Cavium HSM attestation compressed with gzip. Note that this format is
           defined by Cavium and subject to change at any time.
         """
+
         ATTESTATION_FORMAT_UNSPECIFIED = 0
         CAVIUM_V1_COMPRESSED = 3
 
@@ -116,6 +119,7 @@ class CryptoKeyVersion(object):
           EC_SIGN_P256_SHA256 (int): ECDSA on the NIST P-256 curve with a SHA256 digest.
           EC_SIGN_P384_SHA384 (int): ECDSA on the NIST P-384 curve with a SHA384 digest.
         """
+
         CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 0
         GOOGLE_SYMMETRIC_ENCRYPTION = 1
         RSA_SIGN_PSS_2048_SHA256 = 2
@@ -148,6 +152,7 @@ class CryptoKeyVersion(object):
           Call ``RestoreCryptoKeyVersion`` to put it back into the ``DISABLED``
           state.
         """
+
         CRYPTO_KEY_VERSION_STATE_UNSPECIFIED = 0
         PENDING_GENERATION = 5
         ENABLED = 1
@@ -168,5 +173,6 @@ class CryptoKeyVersion(object):
           FULL (int): Provides all fields in each ``CryptoKeyVersion``, including the
           ``attestation``.
         """
+
         CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED = 0
         FULL = 1

@@ -24,7 +24,4 @@ class LanguageServiceClient(language_service_client.LanguageServiceClient):
     enums = enums
 
 
-__all__ = (
-    'enums',
-    'types',
-    'LanguageServiceClient', )
+__all__ = ("enums", "types", "LanguageServiceClient")

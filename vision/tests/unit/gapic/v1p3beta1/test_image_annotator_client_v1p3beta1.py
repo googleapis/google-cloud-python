@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -52,10 +53,7 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -68,11 +66,15 @@ class TestImageAnnotatorClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = image_annotator_pb2.BatchAnnotateImagesResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p3beta1.ImageAnnotatorClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ImageAnnotatorClient()
 
         # Setup Request
         requests = []
@@ -82,14 +84,18 @@ class TestImageAnnotatorClient(object):
 
         assert len(channel.requests) == 1
         expected_request = image_annotator_pb2.BatchAnnotateImagesRequest(
-            requests=requests)
+            requests=requests
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_batch_annotate_images_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p3beta1.ImageAnnotatorClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ImageAnnotatorClient()
 
         # Setup request
         requests = []
@@ -101,14 +107,19 @@ class TestImageAnnotatorClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = image_annotator_pb2.AsyncBatchAnnotateFilesResponse(
-            **expected_response)
+            **expected_response
+        )
         operation = operations_pb2.Operation(
-            name='operations/test_async_batch_annotate_files', done=True)
+            name="operations/test_async_batch_annotate_files", done=True
+        )
         operation.response.Pack(expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = vision_v1p3beta1.ImageAnnotatorClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ImageAnnotatorClient()
 
         # Setup Request
         requests = []
@@ -119,7 +130,8 @@ class TestImageAnnotatorClient(object):
 
         assert len(channel.requests) == 1
         expected_request = image_annotator_pb2.AsyncBatchAnnotateFilesRequest(
-            requests=requests)
+            requests=requests
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -127,13 +139,16 @@ class TestImageAnnotatorClient(object):
         # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
-            name='operations/test_async_batch_annotate_files_exception',
-            done=True)
+            name="operations/test_async_batch_annotate_files_exception", done=True
+        )
         operation.error.CopyFrom(error)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = vision_v1p3beta1.ImageAnnotatorClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ImageAnnotatorClient()
 
         # Setup Request
         requests = []

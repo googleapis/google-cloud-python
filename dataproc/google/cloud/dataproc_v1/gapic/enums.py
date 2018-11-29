@@ -18,23 +18,6 @@
 import enum
 
 
-class ClusterOperationStatus(object):
-    class State(enum.IntEnum):
-        """
-        The operation state.
-
-        Attributes:
-          UNKNOWN (int): Unused.
-          PENDING (int): The operation has been created.
-          RUNNING (int): The operation is running.
-          DONE (int): The operation is done; either cancelled or completed.
-        """
-        UNKNOWN = 0
-        PENDING = 1
-        RUNNING = 2
-        DONE = 3
-
-
 class ClusterStatus(object):
     class State(enum.IntEnum):
         """
@@ -48,6 +31,7 @@ class ClusterStatus(object):
           DELETING (int): The cluster is being deleted. It cannot be used.
           UPDATING (int): The cluster is being updated. It continues to accept and process jobs.
         """
+
         UNKNOWN = 0
         CREATING = 1
         RUNNING = 2
@@ -57,8 +41,10 @@ class ClusterStatus(object):
 
     class Substate(enum.IntEnum):
         """
+        The cluster substate.
+
         Attributes:
-          UNSPECIFIED (int)
+          UNSPECIFIED (int): The cluster substate is unknown.
           UNHEALTHY (int): The cluster is known to be in an unhealthy state
           (for example, critical daemons are not running or HDFS capacity is
           exhausted).
@@ -69,6 +55,7 @@ class ClusterStatus(object):
 
           Applies to RUNNING state.
         """
+
         UNSPECIFIED = 0
         UNHEALTHY = 1
         STALE_STATUS = 2
@@ -92,6 +79,7 @@ class LoggingConfig(object):
           FATAL (int): Use FATAL level for log4j.
           OFF (int): Turn off log4j.
         """
+
         LEVEL_UNSPECIFIED = 0
         ALL = 1
         TRACE = 2
@@ -125,6 +113,7 @@ class JobStatus(object):
 
           Applies to restartable jobs only.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         SETUP_DONE = 8
@@ -138,8 +127,10 @@ class JobStatus(object):
 
     class Substate(enum.IntEnum):
         """
+        The job substate.
+
         Attributes:
-          UNSPECIFIED (int)
+          UNSPECIFIED (int): The job substate is unknown.
           SUBMITTED (int): The Job is submitted to the agent.
 
           Applies to RUNNING state.
@@ -154,6 +145,7 @@ class JobStatus(object):
 
           Applies to RUNNING state.
         """
+
         UNSPECIFIED = 0
         SUBMITTED = 1
         QUEUED = 2
@@ -177,6 +169,7 @@ class YarnApplication(object):
           FAILED (int): Status is FAILED.
           KILLED (int): Status is KILLED.
         """
+
         STATE_UNSPECIFIED = 0
         NEW = 1
         NEW_SAVING = 2
@@ -199,6 +192,66 @@ class ListJobsRequest(object):
           CANCEL\_PENDING.
           NON_ACTIVE (int): Only match jobs in terminal states: CANCELLED, DONE, or ERROR.
         """
+
         ALL = 0
         ACTIVE = 1
         NON_ACTIVE = 2
+
+
+class ClusterOperationStatus(object):
+    class State(enum.IntEnum):
+        """
+        The operation state.
+
+        Attributes:
+          UNKNOWN (int): Unused.
+          PENDING (int): The operation has been created.
+          RUNNING (int): The operation is running.
+          DONE (int): The operation is done; either cancelled or completed.
+        """
+
+        UNKNOWN = 0
+        PENDING = 1
+        RUNNING = 2
+        DONE = 3
+
+
+class WorkflowMetadata(object):
+    class State(enum.IntEnum):
+        """
+        The operation state.
+
+        Attributes:
+          UNKNOWN (int): Unused.
+          PENDING (int): The operation has been created.
+          RUNNING (int): The operation is running.
+          DONE (int): The operation is done; either cancelled or completed.
+        """
+
+        UNKNOWN = 0
+        PENDING = 1
+        RUNNING = 2
+        DONE = 3
+
+
+class WorkflowNode(object):
+    class NodeState(enum.IntEnum):
+        """
+        The workflow node state.
+
+        Attributes:
+          NODE_STATE_UNSPECIFIED (int): State is unspecified.
+          BLOCKED (int): The node is awaiting prerequisite node to finish.
+          RUNNABLE (int): The node is runnable but not running.
+          RUNNING (int): The node is running.
+          COMPLETED (int): The node completed successfully.
+          FAILED (int): The node failed. A node can be marked FAILED because
+          its ancestor or peer failed.
+        """
+
+        NODE_STATE_UNSPECIFIED = 0
+        BLOCKED = 1
+        RUNNABLE = 2
+        RUNNING = 3
+        COMPLETED = 4
+        FAILED = 5
