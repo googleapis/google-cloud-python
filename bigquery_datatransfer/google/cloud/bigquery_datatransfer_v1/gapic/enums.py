@@ -28,7 +28,6 @@ class NullValue(enum.IntEnum):
     Attributes:
       NULL_VALUE (int): Null value.
     """
-
     NULL_VALUE = 0
 
 
@@ -42,7 +41,6 @@ class TransferType(enum.IntEnum):
       STREAMING (int): Streaming data transfer. Streaming data source currently doesn't
       support multiple transfer configs per project.
     """
-
     TRANSFER_TYPE_UNSPECIFIED = 0
     BATCH = 1
     STREAMING = 2
@@ -61,7 +59,6 @@ class TransferState(enum.IntEnum):
       FAILED (int): Data transfer failed.
       CANCELLED (int): Data transfer is cancelled.
     """
-
     TRANSFER_STATE_UNSPECIFIED = 0
     PENDING = 2
     RUNNING = 3
@@ -81,7 +78,6 @@ class TransferMessage(object):
           WARNING (int): Warning message.
           ERROR (int): Error message.
         """
-
         MESSAGE_SEVERITY_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2
@@ -103,7 +99,6 @@ class DataSourceParameter(object):
           RECORD (int): Record parameter.
           PLUS_PAGE (int): Page ID for a Google+ Page.
         """
-
         TYPE_UNSPECIFIED = 0
         STRING = 1
         INTEGER = 2
@@ -125,7 +120,6 @@ class DataSource(object):
           GOOGLE_PLUS_AUTHORIZATION_CODE (int): Return an authorization code for a given Google+ page that can then be
           exchanged for a refresh token on the backend.
         """
-
         AUTHORIZATION_TYPE_UNSPECIFIED = 0
         AUTHORIZATION_CODE = 1
         GOOGLE_PLUS_AUTHORIZATION_CODE = 2
@@ -143,7 +137,6 @@ class DataSource(object):
           for the past few days. Allows custom values to be set for each transfer
           config.
         """
-
         DATA_REFRESH_TYPE_UNSPECIFIED = 0
         SLIDING_WINDOW = 1
         CUSTOM_SLIDING_WINDOW = 2
@@ -158,6 +151,5 @@ class ListTransferRunsRequest(object):
           RUN_ATTEMPT_UNSPECIFIED (int): All runs should be returned.
           LATEST (int): Only latest run per day should be returned.
         """
-
         RUN_ATTEMPT_UNSPECIFIED = 0
         LATEST = 1
