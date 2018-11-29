@@ -43,3 +43,5 @@ for version in versions:
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=87, cov_level=87)
 s.move(templated_files)
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

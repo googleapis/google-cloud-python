@@ -38,3 +38,5 @@ s.move(library / "tests/system/gapic")
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=80, cov_level=80)
 s.move(templated_files)
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)
