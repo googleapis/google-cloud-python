@@ -31,7 +31,6 @@ class Instance(object):
           READY (int): The instance is fully created and ready to do work such as
           creating databases.
         """
-
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
