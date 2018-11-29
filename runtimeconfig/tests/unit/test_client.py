@@ -24,7 +24,6 @@ def _make_credentials():
 
 
 class TestClient(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.runtimeconfig.client import Client
@@ -35,8 +34,8 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_config(self):
-        PROJECT = 'PROJECT'
-        CONFIG_NAME = 'config_name'
+        PROJECT = "PROJECT"
+        CONFIG_NAME = "config_name"
         creds = _make_credentials()
 
         client_obj = self._make_one(project=PROJECT, credentials=creds)
@@ -44,6 +43,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(new_config.name, CONFIG_NAME)
         self.assertIs(new_config._client, client_obj)
         self.assertEqual(new_config.project, PROJECT)
-        self.assertEqual(new_config.full_name,
-                         'projects/%s/configs/%s' % (PROJECT, CONFIG_NAME))
+        self.assertEqual(
+            new_config.full_name, "projects/%s/configs/%s" % (PROJECT, CONFIG_NAME)
+        )
         self.assertFalse(new_config.description)

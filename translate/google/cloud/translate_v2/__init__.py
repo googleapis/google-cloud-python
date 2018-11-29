@@ -16,12 +16,10 @@
 
 
 from pkg_resources import get_distribution
-__version__ = get_distribution('google-cloud-translate').version
+
+__version__ = get_distribution("google-cloud-translate").version
 
 from google.cloud.translate_v2.client import Client
 
 
-__all__ = (
-    '__version__',
-    'Client',
-)
+__all__ = ("__version__", "Client")

@@ -30,7 +30,7 @@ def _get_django_request():
     :rtype: str
     :returns: Django request.
     """
-    return getattr(_thread_locals, 'request', None)
+    return getattr(_thread_locals, "request", None)
 
 
 try:

@@ -42,7 +42,7 @@ class Config(object):
         self._properties = {}
 
     def __repr__(self):
-        return '<Config: %s>' % (self.name,)
+        return "<Config: %s>" % (self.name,)
 
     @property
     def client(self):
@@ -59,7 +59,7 @@ class Config(object):
         :rtype: str, or ``NoneType``
         :returns: the description (None until set from the server).
         """
-        return self._properties.get('description')
+        return self._properties.get("description")
 
     @property
     def project(self):
@@ -83,8 +83,8 @@ class Config(object):
         :raises: :class:`ValueError` if the config is missing a name.
         """
         if not self.name:
-            raise ValueError('Missing config name.')
-        return 'projects/%s/configs/%s' % (self._client.project, self.name)
+            raise ValueError("Missing config name.")
+        return "projects/%s/configs/%s" % (self._client.project, self.name)
 
     @property
     def path(self):
@@ -93,7 +93,7 @@ class Config(object):
         :rtype: str
         :returns: The URL path based on project and config names.
         """
-        return '/%s' % (self.full_name,)
+        return "/%s" % (self.full_name,)
 
     def variable(self, variable_name):
         """Factory constructor for variable object.
@@ -133,8 +133,8 @@ class Config(object):
         """
         self._properties.clear()
         cleaned = api_response.copy()
-        if 'name' in cleaned:
-            self.name = config_name_from_full_name(cleaned.pop('name'))
+        if "name" in cleaned:
+            self.name = config_name_from_full_name(cleaned.pop("name"))
         self._properties.update(cleaned)
 
     def exists(self, client=None):
@@ -152,9 +152,10 @@ class Config(object):
         try:
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
-            query_params = {'fields': 'name'}
+            query_params = {"fields": "name"}
             client._connection.api_request(
-                method='GET', path=self.path, query_params=query_params)
+                method="GET", path=self.path, query_params=query_params
+            )
             return True
         except NotFound:
             return False
@@ -176,7 +177,7 @@ class Config(object):
 
         # We assume the config exists. If it doesn't it will raise a NotFound
         # exception.
-        resp = client._connection.api_request(method='GET', path=self.path)
+        resp = client._connection.api_request(method="GET", path=self.path)
         self._set_properties(api_response=resp)
 
     def get_variable(self, variable_name, client=None):
@@ -237,17 +238,18 @@ class Config(object):
             Iterator of :class:`~google.cloud.runtimeconfig.variable.Variable`
             belonging to this project.
         """
-        path = '%s/variables' % (self.path,)
+        path = "%s/variables" % (self.path,)
         client = self._require_client(client)
         iterator = page_iterator.HTTPIterator(
             client=client,
             api_request=client._connection.api_request,
             path=path,
             item_to_value=_item_to_variable,
-            items_key='variables',
+            items_key="variables",
             page_token=page_token,
-            max_results=page_size)
-        iterator._MAX_RESULTS = 'pageSize'
+            max_results=page_size,
+        )
+        iterator._MAX_RESULTS = "pageSize"
         iterator.config = self
         return iterator
 

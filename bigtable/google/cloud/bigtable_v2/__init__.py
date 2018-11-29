@@ -24,7 +24,4 @@ class BigtableClient(bigtable_client.BigtableClient):
     __doc__ = bigtable_client.BigtableClient.__doc__
 
 
-__all__ = (
-    'types',
-    'BigtableClient',
-)
+__all__ = ("types", "BigtableClient")

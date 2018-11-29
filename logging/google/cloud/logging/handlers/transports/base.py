@@ -22,8 +22,9 @@ class Transport(object):
     client and name object, and must override :meth:`send`.
     """
 
-    def send(self, record, message, resource=None, labels=None,
-             trace=None, span_id=None):
+    def send(
+        self, record, message, resource=None, labels=None, trace=None, span_id=None
+    ):
         """Transport send to be implemented by subclasses.
 
         :type record: :class:`logging.LogRecord`

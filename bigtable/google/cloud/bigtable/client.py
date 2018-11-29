@@ -50,26 +50,24 @@ from google.cloud.environment_vars import BIGTABLE_EMULATOR
 INSTANCE_TYPE_PRODUCTION = enums.Instance.Type.PRODUCTION
 INSTANCE_TYPE_DEVELOPMENT = enums.Instance.Type.DEVELOPMENT
 INSTANCE_TYPE_UNSPECIFIED = enums.Instance.Type.TYPE_UNSPECIFIED
-_CLIENT_INFO = client_info.ClientInfo(
-    client_library_version=__version__)
-SPANNER_ADMIN_SCOPE = 'https://www.googleapis.com/auth/spanner.admin'
-ADMIN_SCOPE = 'https://www.googleapis.com/auth/bigtable.admin'
+_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
+SPANNER_ADMIN_SCOPE = "https://www.googleapis.com/auth/spanner.admin"
+ADMIN_SCOPE = "https://www.googleapis.com/auth/bigtable.admin"
 """Scope for interacting with the Cluster Admin and Table Admin APIs."""
-DATA_SCOPE = 'https://www.googleapis.com/auth/bigtable.data'
+DATA_SCOPE = "https://www.googleapis.com/auth/bigtable.data"
 """Scope for reading and writing table data."""
-READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
+READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 """Scope for reading table data."""
 
 
 def _create_gapic_client(client_class):
-
     def inner(self):
         if self._emulator_host is None:
-            return client_class(
-                credentials=self._credentials, client_info=_CLIENT_INFO)
+            return client_class(credentials=self._credentials, client_info=_CLIENT_INFO)
         else:
             return client_class(
-                channel=self._emulator_channel, client_info=_CLIENT_INFO)
+                channel=self._emulator_channel, client_info=_CLIENT_INFO
+            )
 
     return inner
 
@@ -111,15 +109,18 @@ class Client(ClientWithProject):
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
     """
+
     _table_data_client = None
     _table_admin_client = None
     _instance_admin_client = None
 
-    def __init__(self, project=None, credentials=None,
-                 read_only=False, admin=False, channel=None):
+    def __init__(
+        self, project=None, credentials=None, read_only=False, admin=False, channel=None
+    ):
         if read_only and admin:
-            raise ValueError('A read-only client cannot also perform'
-                             'administrative actions.')
+            raise ValueError(
+                "A read-only client cannot also perform" "administrative actions."
+            )
 
         # NOTE: We set the scopes **before** calling the parent constructor.
         #       It **may** use those scopes in ``with_scopes_if_required``.
@@ -134,7 +135,9 @@ class Client(ClientWithProject):
         if channel is not None:
             warnings.warn(
                 "'channel' is deprecated and no longer used.",
-                DeprecationWarning, stacklevel=2)
+                DeprecationWarning,
+                stacklevel=2,
+            )
 
         self._channel = channel
         self.SCOPE = self._get_scopes()
@@ -182,8 +185,9 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
-            self._table_data_client = _create_gapic_client(
-                bigtable_v2.BigtableClient)(self)
+            self._table_data_client = _create_gapic_client(bigtable_v2.BigtableClient)(
+                self
+            )
         return self._table_data_client
 
     @property
@@ -198,9 +202,10 @@ class Client(ClientWithProject):
         """
         if self._table_admin_client is None:
             if not self._admin:
-                raise ValueError('Client is not an admin client.')
+                raise ValueError("Client is not an admin client.")
             self._table_admin_client = _create_gapic_client(
-                bigtable_admin_v2.BigtableTableAdminClient)(self)
+                bigtable_admin_v2.BigtableTableAdminClient
+            )(self)
         return self._table_admin_client
 
     @property
@@ -215,13 +220,13 @@ class Client(ClientWithProject):
         """
         if self._instance_admin_client is None:
             if not self._admin:
-                raise ValueError('Client is not an admin client.')
+                raise ValueError("Client is not an admin client.")
             self._instance_admin_client = _create_gapic_client(
-                bigtable_admin_v2.BigtableInstanceAdminClient)(self)
+                bigtable_admin_v2.BigtableInstanceAdminClient
+            )(self)
         return self._instance_admin_client
 
-    def instance(self, instance_id, display_name=None,
-                 instance_type=None, labels=None):
+    def instance(self, instance_id, display_name=None, instance_type=None, labels=None):
         """Factory to create a instance associated with this client.
 
         For example:
@@ -262,8 +267,13 @@ class Client(ClientWithProject):
         :rtype: :class:`~google.cloud.bigtable.instance.Instance`
         :returns: an instance owned by this client.
         """
-        return Instance(instance_id, self, display_name=display_name,
-                        instance_type=instance_type, labels=labels)
+        return Instance(
+            instance_id,
+            self,
+            display_name=display_name,
+            instance_type=instance_type,
+            labels=labels,
+        )
 
     def list_instances(self):
         """List instances owned by the project.
@@ -282,8 +292,7 @@ class Client(ClientWithProject):
             be resolved.
         """
         resp = self.instance_admin_client.list_instances(self.project_path)
-        instances = [
-            Instance.from_pb(instance, self) for instance in resp.instances]
+        instances = [Instance.from_pb(instance, self) for instance in resp.instances]
         return instances, resp.failed_locations
 
     def list_clusters(self):
@@ -302,13 +311,14 @@ class Client(ClientWithProject):
             'failed_locations' is a list of strings representing
             locations which could not be resolved.
         """
-        resp = (self.instance_admin_client.list_clusters(
-            self.instance_admin_client.instance_path(self.project, '-')))
+        resp = self.instance_admin_client.list_clusters(
+            self.instance_admin_client.instance_path(self.project, "-")
+        )
         clusters = []
         instances = {}
         for cluster in resp.clusters:
             match_cluster_name = _CLUSTER_NAME_RE.match(cluster.name)
-            instance_id = match_cluster_name.group('instance')
+            instance_id = match_cluster_name.group("instance")
             if instance_id not in instances:
                 instances[instance_id] = self.instance(instance_id)
             clusters.append(Cluster.from_pb(cluster, instances[instance_id]))

@@ -16,11 +16,12 @@ import unittest
 
 
 class TestContainerEngineHandler(unittest.TestCase):
-    PROJECT = 'PROJECT'
+    PROJECT = "PROJECT"
 
     def _get_target_class(self):
         from google.cloud.logging.handlers.container_engine import (
-            ContainerEngineHandler)
+            ContainerEngineHandler,
+        )
 
         return ContainerEngineHandler
 
@@ -32,19 +33,17 @@ class TestContainerEngineHandler(unittest.TestCase):
         import json
 
         handler = self._make_one()
-        logname = 'loggername'
-        message = 'hello world'
-        record = logging.LogRecord(logname, logging.INFO, None, None,
-                                   message, None, None)
+        logname = "loggername"
+        message = "hello world"
+        record = logging.LogRecord(
+            logname, logging.INFO, None, None, message, None, None
+        )
         record.created = 5.03
         expected_payload = {
-            'message': message,
-            'timestamp': {
-                'seconds': 5,
-                'nanos': int(.03 * 1e9)
-            },
-            'thread': record.thread,
-            'severity': record.levelname,
+            "message": message,
+            "timestamp": {"seconds": 5, "nanos": int(0.03 * 1e9)},
+            "thread": record.thread,
+            "severity": record.levelname,
         }
         payload = handler.format(record)
 

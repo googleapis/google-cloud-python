@@ -37,9 +37,9 @@ class MetricsServiceV2Client(metrics_service_v2_client.MetricsServiceV2Client):
 
 
 __all__ = (
-    'enums',
-    'types',
-    'LoggingServiceV2Client',
-    'ConfigServiceV2Client',
-    'MetricsServiceV2Client',
+    "enums",
+    "types",
+    "LoggingServiceV2Client",
+    "ConfigServiceV2Client",
+    "MetricsServiceV2Client",
 )
