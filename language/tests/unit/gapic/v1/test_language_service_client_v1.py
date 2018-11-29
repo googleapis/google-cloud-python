@@ -50,7 +50,10 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -61,15 +64,14 @@ class CustomException(Exception):
 class TestLanguageServiceClient(object):
     def test_analyze_sentiment(self):
         # Setup Expected Response
-        language = "language-1613589672"
-        expected_response = {"language": language}
+        language = 'language-1613589672'
+        expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeSentimentResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -82,15 +84,14 @@ class TestLanguageServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = language_service_pb2.AnalyzeSentimentRequest(
-            document=document
-        )
+            document=document)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_analyze_sentiment_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -103,15 +104,14 @@ class TestLanguageServiceClient(object):
 
     def test_analyze_entities(self):
         # Setup Expected Response
-        language = "language-1613589672"
-        expected_response = {"language": language}
+        language = 'language-1613589672'
+        expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeEntitiesResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -124,15 +124,14 @@ class TestLanguageServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = language_service_pb2.AnalyzeEntitiesRequest(
-            document=document
-        )
+            document=document)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_analyze_entities_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -145,15 +144,14 @@ class TestLanguageServiceClient(object):
 
     def test_analyze_entity_sentiment(self):
         # Setup Expected Response
-        language = "language-1613589672"
-        expected_response = {"language": language}
+        language = 'language-1613589672'
+        expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeEntitySentimentResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -166,15 +164,14 @@ class TestLanguageServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = language_service_pb2.AnalyzeEntitySentimentRequest(
-            document=document
-        )
+            document=document)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_analyze_entity_sentiment_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -187,15 +184,14 @@ class TestLanguageServiceClient(object):
 
     def test_analyze_syntax(self):
         # Setup Expected Response
-        language = "language-1613589672"
-        expected_response = {"language": language}
+        language = 'language-1613589672'
+        expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeSyntaxResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -207,14 +203,15 @@ class TestLanguageServiceClient(object):
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = language_service_pb2.AnalyzeSyntaxRequest(document=document)
+        expected_request = language_service_pb2.AnalyzeSyntaxRequest(
+            document=document)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_analyze_syntax_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -229,12 +226,11 @@ class TestLanguageServiceClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = language_service_pb2.ClassifyTextResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -246,14 +242,15 @@ class TestLanguageServiceClient(object):
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = language_service_pb2.ClassifyTextRequest(document=document)
+        expected_request = language_service_pb2.ClassifyTextRequest(
+            document=document)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_classify_text_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -266,15 +263,14 @@ class TestLanguageServiceClient(object):
 
     def test_annotate_text(self):
         # Setup Expected Response
-        language = "language-1613589672"
-        expected_response = {"language": language}
+        language = 'language-1613589672'
+        expected_response = {'language': language}
         expected_response = language_service_pb2.AnnotateTextResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()
@@ -288,15 +284,14 @@ class TestLanguageServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = language_service_pb2.AnnotateTextRequest(
-            document=document, features=features
-        )
+            document=document, features=features)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_annotate_text_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = language_v1.LanguageServiceClient()

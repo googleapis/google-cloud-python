@@ -39,7 +39,6 @@ class EncodingType(enum.IntEnum):
       based on the UTF-32 encoding of the input. Python is an example of a
       language that uses this encoding natively.
     """
-
     NONE = 0
     UTF8 = 1
     UTF16 = 2
@@ -56,7 +55,6 @@ class Document(object):
           PLAIN_TEXT (int): Plain text
           HTML (int): HTML
         """
-
         TYPE_UNSPECIFIED = 0
         PLAIN_TEXT = 1
         HTML = 2
@@ -77,7 +75,6 @@ class Entity(object):
           CONSUMER_GOOD (int): Consumer goods
           OTHER (int): Other types
         """
-
         UNKNOWN = 0
         PERSON = 1
         LOCATION = 2
@@ -109,7 +106,6 @@ class PartOfSpeech(object):
           X (int): Other: foreign words, typos, abbreviations
           AFFIX (int): Affix
         """
-
         UNKNOWN = 0
         ADJ = 1
         ADP = 2
@@ -135,7 +131,6 @@ class PartOfSpeech(object):
           IMPERFECTIVE (int): Imperfective
           PROGRESSIVE (int): Progressive
         """
-
         ASPECT_UNKNOWN = 0
         PERFECTIVE = 1
         IMPERFECTIVE = 2
@@ -164,7 +159,6 @@ class PartOfSpeech(object):
           RELATIVE_CASE (int): Relative
           VOCATIVE (int): Vocative
         """
-
         CASE_UNKNOWN = 0
         ACCUSATIVE = 1
         ADVERBIAL = 2
@@ -202,7 +196,6 @@ class PartOfSpeech(object):
           ORDER (int): Order form
           SPECIFIC (int): Specific form
         """
-
         FORM_UNKNOWN = 0
         ADNOMIAL = 1
         AUXILIARY = 2
@@ -226,7 +219,6 @@ class PartOfSpeech(object):
           MASCULINE (int): Masculine
           NEUTER (int): Neuter
         """
-
         GENDER_UNKNOWN = 0
         FEMININE = 1
         MASCULINE = 2
@@ -245,7 +237,6 @@ class PartOfSpeech(object):
           JUSSIVE (int): Jussive
           SUBJUNCTIVE (int): Subjunctive
         """
-
         MOOD_UNKNOWN = 0
         CONDITIONAL_MOOD = 1
         IMPERATIVE = 2
@@ -264,7 +255,6 @@ class PartOfSpeech(object):
           PLURAL (int): Plural
           DUAL (int): Dual
         """
-
         NUMBER_UNKNOWN = 0
         SINGULAR = 1
         PLURAL = 2
@@ -281,7 +271,6 @@ class PartOfSpeech(object):
           THIRD (int): Third
           REFLEXIVE_PERSON (int): Reflexive
         """
-
         PERSON_UNKNOWN = 0
         FIRST = 1
         SECOND = 2
@@ -297,7 +286,6 @@ class PartOfSpeech(object):
           PROPER (int): Proper
           NOT_PROPER (int): Not proper
         """
-
         PROPER_UNKNOWN = 0
         PROPER = 1
         NOT_PROPER = 2
@@ -312,7 +300,6 @@ class PartOfSpeech(object):
           RECIPROCAL (int): Reciprocal
           NON_RECIPROCAL (int): Non-reciprocal
         """
-
         RECIPROCITY_UNKNOWN = 0
         RECIPROCAL = 1
         NON_RECIPROCAL = 2
@@ -330,7 +317,6 @@ class PartOfSpeech(object):
           IMPERFECT (int): Imperfect
           PLUPERFECT (int): Pluperfect
         """
-
         TENSE_UNKNOWN = 0
         CONDITIONAL_TENSE = 1
         FUTURE = 2
@@ -350,7 +336,6 @@ class PartOfSpeech(object):
           CAUSATIVE (int): Causative
           PASSIVE (int): Passive
         """
-
         VOICE_UNKNOWN = 0
         ACTIVE = 1
         CAUSATIVE = 2
@@ -447,7 +432,6 @@ class DependencyEdge(object):
           MES (int): Measure
           NCOMP (int): Nominal complement of a noun
         """
-
         UNKNOWN = 0
         ABBREV = 1
         ACOMP = 2
@@ -543,7 +527,6 @@ class EntityMention(object):
           PROPER (int): Proper name
           COMMON (int): Common noun (or noun compound)
         """
-
         TYPE_UNKNOWN = 0
         PROPER = 1
         COMMON = 2
