@@ -20,4 +20,8 @@ from google.cloud.asset_v1beta1 import AssetServiceClient
 from google.cloud.asset_v1beta1 import enums
 from google.cloud.asset_v1beta1 import types
 
-__all__ = ("enums", "types", "AssetServiceClient")
+__all__ = (
+    'enums',
+    'types',
+    'AssetServiceClient',
+)
