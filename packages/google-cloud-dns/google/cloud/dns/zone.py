@@ -70,11 +70,12 @@ class ManagedZone(object):
         :rtype: :class:`google.cloud.dns.zone.ManagedZone`
         :returns: Zone parsed from ``resource``.
         """
-        name = resource.get('name')
-        dns_name = resource.get('dnsName')
+        name = resource.get("name")
+        dns_name = resource.get("dnsName")
         if name is None or dns_name is None:
-            raise KeyError('Resource lacks required identity information:'
-                           '["name"]["dnsName"]')
+            raise KeyError(
+                "Resource lacks required identity information:" '["name"]["dnsName"]'
+            )
         zone = cls(name, dns_name, client=client)
         zone._set_properties(resource)
         return zone
@@ -95,7 +96,7 @@ class ManagedZone(object):
         :rtype: str
         :returns: the path based on project and dataste name.
         """
-        return '/projects/%s/managedZones/%s' % (self.project, self.name)
+        return "/projects/%s/managedZones/%s" % (self.project, self.name)
 
     @property
     def created(self):
@@ -104,7 +105,7 @@ class ManagedZone(object):
         :rtype: ``datetime.datetime``, or ``NoneType``
         :returns: the creation time (None until set from the server).
         """
-        return self._properties.get('creationTime')
+        return self._properties.get("creationTime")
 
     @property
     def name_servers(self):
@@ -113,7 +114,7 @@ class ManagedZone(object):
         :rtype: list of strings, or ``NoneType``.
         :returns: the assigned name servers (None until set from the server).
         """
-        return self._properties.get('nameServers')
+        return self._properties.get("nameServers")
 
     @property
     def zone_id(self):
@@ -122,7 +123,7 @@ class ManagedZone(object):
         :rtype: str, or ``NoneType``
         :returns: the ID (None until set from the server).
         """
-        return self._properties.get('id')
+        return self._properties.get("id")
 
     @property
     def description(self):
@@ -131,7 +132,7 @@ class ManagedZone(object):
         :rtype: str, or ``NoneType``
         :returns: The description as set by the user, or None (the default).
         """
-        return self._properties.get('description')
+        return self._properties.get("description")
 
     @description.setter
     def description(self, value):
@@ -144,7 +145,7 @@ class ManagedZone(object):
         """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
-        self._properties['description'] = value
+        self._properties["description"] = value
 
     @property
     def name_server_set(self):
@@ -158,7 +159,7 @@ class ManagedZone(object):
         :rtype: str, or ``NoneType``
         :returns: The name as set by the user, or None (the default).
         """
-        return self._properties.get('nameServerSet')
+        return self._properties.get("nameServerSet")
 
     @name_server_set.setter
     def name_server_set(self, value):
@@ -171,7 +172,7 @@ class ManagedZone(object):
         """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
-        self._properties['nameServerSet'] = value
+        self._properties["nameServerSet"] = value
 
     def resource_record_set(self, name, record_type, ttl, rrdatas):
         """Construct a resource record set bound to this zone.
@@ -224,26 +225,23 @@ class ManagedZone(object):
         """
         self._properties.clear()
         cleaned = api_response.copy()
-        self.dns_name = cleaned.pop('dnsName', None)
-        if 'creationTime' in cleaned:
-            cleaned['creationTime'] = _rfc3339_to_datetime(
-                cleaned['creationTime'])
+        self.dns_name = cleaned.pop("dnsName", None)
+        if "creationTime" in cleaned:
+            cleaned["creationTime"] = _rfc3339_to_datetime(cleaned["creationTime"])
         self._properties.update(cleaned)
 
     def _build_resource(self):
         """Generate a resource for ``create`` or ``update``."""
-        resource = {
-            'name': self.name,
-        }
+        resource = {"name": self.name}
 
         if self.dns_name is not None:
-            resource['dnsName'] = self.dns_name
+            resource["dnsName"] = self.dns_name
 
         if self.description is not None:
-            resource['description'] = self.description
+            resource["description"] = self.description
 
         if self.name_server_set is not None:
-            resource['nameServerSet'] = self.name_server_set
+            resource["nameServerSet"] = self.name_server_set
 
         return resource
 
@@ -259,9 +257,10 @@ class ManagedZone(object):
             ``client`` stored on the current zone.
         """
         client = self._require_client(client)
-        path = '/projects/%s/managedZones' % (self.project,)
+        path = "/projects/%s/managedZones" % (self.project,)
         api_response = client._connection.api_request(
-            method='POST', path=path, data=self._build_resource())
+            method="POST", path=path, data=self._build_resource()
+        )
         self._set_properties(api_response)
 
     def exists(self, client=None):
@@ -281,8 +280,9 @@ class ManagedZone(object):
         client = self._require_client(client)
 
         try:
-            client._connection.api_request(method='GET', path=self.path,
-                                           query_params={'fields': 'id'})
+            client._connection.api_request(
+                method="GET", path=self.path, query_params={"fields": "id"}
+            )
         except NotFound:
             return False
         else:
@@ -301,8 +301,7 @@ class ManagedZone(object):
         """
         client = self._require_client(client)
 
-        api_response = client._connection.api_request(
-            method='GET', path=self.path)
+        api_response = client._connection.api_request(method="GET", path=self.path)
         self._set_properties(api_response)
 
     def delete(self, client=None):
@@ -317,10 +316,9 @@ class ManagedZone(object):
             ``client`` stored on the current zone.
         """
         client = self._require_client(client)
-        client._connection.api_request(method='DELETE', path=self.path)
+        client._connection.api_request(method="DELETE", path=self.path)
 
-    def list_resource_record_sets(self, max_results=None, page_token=None,
-                                  client=None):
+    def list_resource_record_sets(self, max_results=None, page_token=None, client=None):
         """List resource record sets for this zone.
 
         See
@@ -345,16 +343,16 @@ class ManagedZone(object):
                   belonging to this zone.
         """
         client = self._require_client(client)
-        path = '/projects/%s/managedZones/%s/rrsets' % (
-            self.project, self.name)
+        path = "/projects/%s/managedZones/%s/rrsets" % (self.project, self.name)
         iterator = page_iterator.HTTPIterator(
             client=client,
             api_request=client._connection.api_request,
             path=path,
             item_to_value=_item_to_resource_record_set,
-            items_key='rrsets',
+            items_key="rrsets",
             page_token=page_token,
-            max_results=max_results)
+            max_results=max_results,
+        )
         iterator.zone = self
         return iterator
 
@@ -383,16 +381,16 @@ class ManagedZone(object):
                   belonging to this zone.
         """
         client = self._require_client(client)
-        path = '/projects/%s/managedZones/%s/changes' % (
-            self.project, self.name)
+        path = "/projects/%s/managedZones/%s/changes" % (self.project, self.name)
         iterator = page_iterator.HTTPIterator(
             client=client,
             api_request=client._connection.api_request,
             path=path,
             item_to_value=_item_to_changes,
-            items_key='changes',
+            items_key="changes",
             page_token=page_token,
-            max_results=max_results)
+            max_results=max_results,
+        )
         iterator.zone = self
         return iterator
 
