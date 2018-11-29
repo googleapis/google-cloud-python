@@ -31,7 +31,6 @@ class Likelihood(enum.IntEnum):
       LIKELY (int)
       VERY_LIKELY (int): Many matching elements.
     """
-
     LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -54,7 +53,6 @@ class FileType(enum.IntEnum):
         rb, rbw, rs, rc, scala, sh, sql, tex, txt, text, tsv, vcard, vcs, wml,
         xml, xsl, xsd, yml, yaml.
     """
-
     FILE_TYPE_UNSPECIFIED = 0
     BINARY_FILE = 1
     TEXT_FILE = 2
@@ -74,7 +72,6 @@ class DayOfWeek(enum.IntEnum):
       SATURDAY (int): The day-of-week of Saturday.
       SUNDAY (int): The day-of-week of Sunday.
     """
-
     DAY_OF_WEEK_UNSPECIFIED = 0
     MONDAY = 1
     TUESDAY = 2
@@ -94,7 +91,6 @@ class ContentOption(enum.IntEnum):
       CONTENT_TEXT (int): Text content within the data, excluding any metadata.
       CONTENT_IMAGE (int): Images found in the data.
     """
-
     CONTENT_UNSPECIFIED = 0
     CONTENT_TEXT = 1
     CONTENT_IMAGE = 2
@@ -124,7 +120,6 @@ class MatchingType(enum.IntEnum):
       - Regex: finding doesn't match the regex
       - Exclude info type: no intersection with affecting info types findings
     """
-
     MATCHING_TYPE_UNSPECIFIED = 0
     MATCHING_TYPE_FULL_MATCH = 1
     MATCHING_TYPE_PARTIAL_MATCH = 2
@@ -140,7 +135,6 @@ class InfoTypeSupportedBy(enum.IntEnum):
       INSPECT (int): Supported by the inspect operations.
       RISK_ANALYSIS (int): Supported by the risk analysis operations.
     """
-
     ENUM_TYPE_UNSPECIFIED = 0
     INSPECT = 1
     RISK_ANALYSIS = 2
@@ -160,7 +154,6 @@ class RelationalOperator(enum.IntEnum):
       LESS_THAN_OR_EQUALS (int): Less than or equals.
       EXISTS (int): Exists
     """
-
     RELATIONAL_OPERATOR_UNSPECIFIED = 0
     EQUAL_TO = 1
     NOT_EQUAL_TO = 2
@@ -180,7 +173,6 @@ class DlpJobType(enum.IntEnum):
       INSPECT_JOB (int): The job inspected Google Cloud for sensitive data.
       RISK_ANALYSIS_JOB (int): The job executed a Risk Analysis computation.
     """
-
     DLP_JOB_TYPE_UNSPECIFIED = 0
     INSPECT_JOB = 1
     RISK_ANALYSIS_JOB = 2
@@ -200,7 +192,6 @@ class StoredInfoTypeState(enum.IntEnum):
       user-controlled storage were modified. To fix an invalid StoredInfoType,
       use the ``UpdateStoredInfoType`` method to create a new version.
     """
-
     STORED_INFO_TYPE_STATE_UNSPECIFIED = 0
     PENDING = 1
     READY = 2
@@ -216,7 +207,6 @@ class CustomInfoType(object):
           EXCLUSION_TYPE_EXCLUDE (int): A finding of this custom info type will be excluded from final results,
           but can still affect rule execution.
         """
-
         EXCLUSION_TYPE_UNSPECIFIED = 0
         EXCLUSION_TYPE_EXCLUDE = 1
 
@@ -234,7 +224,6 @@ class CloudStorageOptions(object):
           RANDOM_START (int): For each file larger than bytes\_limit\_per\_file, randomly pick the
           offset to start scanning. The scanned bytes are contiguous.
         """
-
         SAMPLE_METHOD_UNSPECIFIED = 0
         TOP = 1
         RANDOM_START = 2
@@ -252,7 +241,6 @@ class BigQueryOptions(object):
           TOP (int): Scan from the top (default).
           RANDOM_START (int): Randomly pick the row to start scanning. The scanned rows are contiguous.
         """
-
         SAMPLE_METHOD_UNSPECIFIED = 0
         TOP = 1
         RANDOM_START = 2
@@ -270,7 +258,6 @@ class ByteContentItem(object):
           IMAGE_SVG (int)
           TEXT_UTF8 (int)
         """
-
         BYTES_TYPE_UNSPECIFIED = 0
         IMAGE = 6
         IMAGE_JPEG = 1
@@ -294,7 +281,6 @@ class OutputStorageConfig(object):
           BIG_QUERY_COLUMNS (int): Schema tailored to findings from scanning Google BigQuery.
           ALL_COLUMNS (int): Schema containing all columns.
         """
-
         OUTPUT_SCHEMA_UNSPECIFIED = 0
         BASIC_COLUMNS = 1
         GCS_COLUMNS = 2
@@ -315,7 +301,6 @@ class TimePartConfig(object):
           WEEK_OF_YEAR (int): [1-52]
           HOUR_OF_DAY (int): [0-23]
         """
-
         TIME_PART_UNSPECIFIED = 0
         YEAR = 1
         MONTH = 2
@@ -336,7 +321,6 @@ class CharsToIgnore(object):
           PUNCTUATION (int): US Punctuation, one of !"#$%&'()\*+,-./:;<=>?@[]^\_\`{\|}~
           WHITESPACE (int): Whitespace character
         """
-
         COMMON_CHARS_TO_IGNORE_UNSPECIFIED = 0
         NUMERIC = 1
         ALPHA_UPPER_CASE = 2
@@ -359,7 +343,6 @@ class CryptoReplaceFfxFpeConfig(object):
           UPPER_CASE_ALPHA_NUMERIC (int): [0-9A-Z] (radix of 36)
           ALPHA_NUMERIC (int): [0-9A-Za-z] (radix of 62)
         """
-
         FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED = 0
         NUMERIC = 1
         HEXADECIMAL = 2
@@ -375,7 +358,6 @@ class RecordCondition(object):
               LOGICAL_OPERATOR_UNSPECIFIED (int)
               AND (int)
             """
-
             LOGICAL_OPERATOR_UNSPECIFIED = 0
             AND = 1
 
@@ -390,7 +372,6 @@ class TransformationSummary(object):
           SUCCESS (int)
           ERROR (int)
         """
-
         TRANSFORMATION_RESULT_CODE_UNSPECIFIED = 0
         SUCCESS = 1
         ERROR = 2
@@ -410,7 +391,6 @@ class JobTrigger(object):
           PAUSED (int): Trigger is temporarily paused.
           CANCELLED (int): Trigger is cancelled and can not be resumed.
         """
-
         STATUS_UNSPECIFIED = 0
         HEALTHY = 1
         PAUSED = 2
@@ -428,7 +408,6 @@ class DlpJob(object):
           CANCELED (int): The job was canceled before it could complete.
           FAILED (int): The job had an error and did not complete.
         """
-
         JOB_STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
