@@ -565,9 +565,8 @@ def test_query_get(client, cleanup):
     assert expected_ab_pairs == ab_pairs2
 
     # 3. Use a start and end cursor.
-    query3 = collection.start_at({'a': num_vals - 2})
-    query3 = query3.order_by('a')
-    query3 = query3.end_before({'a': num_vals - 1})
+    query3 = collection.order_by(
+        'a').start_at({'a': num_vals - 2}).end_before({'a': num_vals - 1})
     values3 = [
         (snapshot.id, snapshot.to_dict())
         for snapshot in query3.get()
