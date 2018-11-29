@@ -20,4 +20,4 @@ This package contains common code and utilties used by Google client libraries.
 from pkg_resources import get_distribution
 
 
-__version__ = get_distribution('google-api-core').version
+__version__ = get_distribution("google-api-core").version
