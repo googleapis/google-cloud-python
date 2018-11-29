@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Google Cloud Dataproc API &#8212; google-cloud b3ac921 documentation</title>
+    <title>Client for Google Cloud Dataproc API &#8212; google-cloud fd33ead documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -582,19 +582,23 @@ request body would be set as follows:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>Currently, only the following fields can be updated:</p>
-<ul>
-<li><code class="docutils literal notranslate"><span class="pre">labels</span></code>: Update labels</li>
-<li><code class="docutils literal notranslate"><span class="pre">config.worker_config.num_instances</span></code>: Resize primary
-worker group</li>
-<li><code class="docutils literal notranslate"><span class="pre">config.secondary_worker_config.num_instances</span></code>: Resize
-secondary worker group</li>
-</ul>
-<p class="last">If a dict is provided, it must be of the same form as the protobuf
+<p>Note: currently only the following fields can be updated:</p>
+<table><tr><td><p>Mask</p>
+</td><td><p>Purpose</p>
+</td></tr><tr><td><p>labels</p>
+</td><td><p>Updates labels</p>
+</td></tr><tr><td><p>config.worker_config.num_instances</p>
+</td><td><p>Resize primary worker group</p>
+</td></tr><tr><td><p>config.secondary_worker_config.num_instances</p>
+</td><td><p>Resize secondary worker group</p>
+</td></tr><tr><td><p>config.lifecycle_config.auto_delete_ttl</p>
+</td><td><p>Reset MAX TTL duration</p>
+</td></tr><tr><td><p>config.lifecycle_config.auto_delete_time</p>
+</td><td><p>Update MAX TTL deletion timestamp</p>
+</td></tr><tr><td><p>config.lifecycle_config.idle_delete_ttl</p>
+</td><td><p>Update Idle TTL duration</p>
+</td></tr></table><p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.dataproc_v1beta2.types.FieldMask" title="google.cloud.dataproc_v1beta2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
-</div>
 </li>
 <li><strong>graceful_decommission_timeout</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dataproc_v1beta2.types.Duration" title="google.cloud.dataproc_v1beta2.types.Duration"><em>Duration</em></a><em>]</em>) – <p>Optional. Timeout for graceful YARN decomissioning. Graceful
 decommissioning allows removing nodes from the cluster without
