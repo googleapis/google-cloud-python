@@ -21,9 +21,14 @@ from google.cloud.bigquery_datatransfer_v1.gapic import data_transfer_service_cl
 from google.cloud.bigquery_datatransfer_v1.gapic import enums
 
 
-class DataTransferServiceClient(data_transfer_service_client.DataTransferServiceClient):
+class DataTransferServiceClient(
+        data_transfer_service_client.DataTransferServiceClient):
     __doc__ = data_transfer_service_client.DataTransferServiceClient.__doc__
     enums = enums
 
 
-__all__ = ("enums", "types", "DataTransferServiceClient")
+__all__ = (
+    'enums',
+    'types',
+    'DataTransferServiceClient',
+)
