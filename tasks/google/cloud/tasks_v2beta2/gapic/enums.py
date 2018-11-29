@@ -30,7 +30,6 @@ class HttpMethod(enum.IntEnum):
       PUT (int): HTTP PUT
       DELETE (int): HTTP DELETE
     """
-
     HTTP_METHOD_UNSPECIFIED = 0
     POST = 1
     GET = 2
@@ -164,7 +163,6 @@ class Code(enum.IntEnum):
 
       HTTP Mapping: 500 Internal Server Error
     """
-
     OK = 0
     CANCELLED = 1
     UNKNOWN = 2
@@ -218,7 +216,6 @@ class Queue(object):
           To permanently delete this queue and all of its tasks, call
           ``DeleteQueue``.
         """
-
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         PAUSED = 2
@@ -250,7 +247,6 @@ class Task(object):
           `Google IAM <https://cloud.google.com/iam/>`__ permission on the
           ``Queue`` resource.
         """
-
         VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 2

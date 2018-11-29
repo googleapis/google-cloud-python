@@ -47,7 +47,12 @@ _shared_modules = [
     status_pb2,
 ]
 
-_local_modules = [cloudtasks_pb2, queue_pb2, target_pb2, task_pb2]
+_local_modules = [
+    cloudtasks_pb2,
+    queue_pb2,
+    target_pb2,
+    task_pb2,
+]
 
 names = []
 
@@ -57,7 +62,7 @@ for module in _shared_modules:
         names.append(name)
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = "google.cloud.tasks_v2beta2.types"
+        message.__module__ = 'google.cloud.tasks_v2beta2.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 
