@@ -3718,23 +3718,12 @@ class Model(metaclass=MetaModel):
         if set(self._projection) != set(other._projection):
             return False
 
-        # Short-circuit equality check, can only happen for ``Expando``.
-        if len(self._properties) != len(other._properties):
-            return False
-
         prop_names = set(self._properties.keys())
-        other_prop_names = set(other._properties.keys())
-        if prop_names != other_prop_names:
-            return False  # Can only happen for ``Expando``.
-
         # Restrict properties to the projection if set.
         if self._projection:
             prop_names = set(self._projection)
 
         for name in prop_names:
-            if "." in name:
-                # Only use / compare on base name.
-                name, _ = name.split(".", 1)
             value = self._properties[name]._get_value(self)
             if value != other._properties[name]._get_value(other):
                 return False

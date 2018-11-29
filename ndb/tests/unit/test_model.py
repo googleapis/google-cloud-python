@@ -2712,6 +2712,99 @@ class TestModel:
         assert Simple._get_kind() == "Simple"
 
     @staticmethod
+    def test___hash__():
+        entity = ManyFields(self=909, id="hi", value=None, _id=78)
+        with pytest.raises(TypeError):
+            hash(entity)
+
+    @staticmethod
+    def test___eq__wrong_type():
+        class Simple(model.Model):
+            pass
+
+        entity1 = ManyFields(self=909, id="hi", value=None, _id=78)
+        entity2 = Simple()
+        assert not entity1 == entity2
+
+    @staticmethod
+    def test___eq__wrong_key():
+        entity1 = ManyFields(_id=78)
+        entity2 = ManyFields(_id="seventy-eight")
+        assert not entity1 == entity2
+
+    @staticmethod
+    def test___eq__wrong_projection():
+        entity1 = ManyFields(self=90, projection=("self",))
+        entity2 = ManyFields(
+            value="a", unused=0.0, projection=("value", "unused")
+        )
+        assert not entity1 == entity2
+
+    @staticmethod
+    def test___eq__same_type_same_key():
+        entity1 = ManyFields(self=909, id="hi", _id=78)
+        entity2 = ManyFields(self=909, id="bye", _id=78)
+        assert entity1 == entity1
+        assert not entity1 == entity2
+
+    @staticmethod
+    def test___eq__same_type_same_key_same_projection():
+        entity1 = ManyFields(self=-9, id="hi", projection=("self", "id"))
+        entity2 = ManyFields(self=-9, id="bye", projection=("self", "id"))
+        assert entity1 == entity1
+        assert not entity1 == entity2
+
+    @staticmethod
+    def test__equivalent_wrong_type():
+        class Simple(model.Model):
+            pass
+
+        entity1 = ManyFields(self=909, id="hi", value=None, _id=78)
+        entity2 = Simple()
+        with pytest.raises(NotImplementedError):
+            entity1._equivalent(entity2)
+
+    @staticmethod
+    def test___ne__():
+        class Simple(model.Model):
+            pass
+
+        entity1 = ManyFields(self=-9, id="hi")
+        entity2 = Simple()
+        entity3 = ManyFields(self=-9, id="bye")
+        entity4 = ManyFields(self=-9, id="bye", projection=("self", "id"))
+        entity5 = None
+        assert not entity1 != entity1
+        assert entity1 != entity2
+        assert entity1 != entity3
+        assert entity1 != entity4
+        assert entity1 != entity5
+
+    @staticmethod
+    def test___lt__():
+        entity = ManyFields(self=-9, id="hi")
+        with pytest.raises(TypeError):
+            entity < entity
+
+    @staticmethod
+    def test___le__():
+        entity = ManyFields(self=-9, id="hi")
+        with pytest.raises(TypeError):
+            entity <= entity
+
+    @staticmethod
+    def test___gt__():
+        entity = ManyFields(self=-9, id="hi")
+        with pytest.raises(TypeError):
+            entity > entity
+
+    @staticmethod
+    def test___ge__():
+        entity = ManyFields(self=-9, id="hi")
+        with pytest.raises(TypeError):
+            entity >= entity
+
+    @staticmethod
     def test__validate_key():
         value = unittest.mock.sentinel.value
         assert model.Model._validate_key(value) is value
