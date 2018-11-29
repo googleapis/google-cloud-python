@@ -16,6 +16,4 @@
 
 from google.api_core.operations_v1.operations_client import OperationsClient
 
-__all__ = [
-    'OperationsClient'
-]
+__all__ = ["OperationsClient"]

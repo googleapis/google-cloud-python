@@ -21,22 +21,20 @@ from google.api_core import timeout
 
 
 def test__exponential_timeout_generator_base_2():
-    gen = timeout._exponential_timeout_generator(
-        1.0, 60.0, 2.0, deadline=None)
+    gen = timeout._exponential_timeout_generator(1.0, 60.0, 2.0, deadline=None)
 
     result = list(itertools.islice(gen, 8))
     assert result == [1, 2, 4, 8, 16, 32, 60, 60]
 
 
-@mock.patch('google.api_core.datetime_helpers.utcnow', autospec=True)
+@mock.patch("google.api_core.datetime_helpers.utcnow", autospec=True)
 def test__exponential_timeout_generator_base_deadline(utcnow):
     # Make each successive call to utcnow() advance one second.
     utcnow.side_effect = [
-        datetime.datetime.min + datetime.timedelta(seconds=n)
-        for n in range(15)]
+        datetime.datetime.min + datetime.timedelta(seconds=n) for n in range(15)
+    ]
 
-    gen = timeout._exponential_timeout_generator(
-        1.0, 60.0, 2.0, deadline=30.0)
+    gen = timeout._exponential_timeout_generator(1.0, 60.0, 2.0, deadline=30.0)
 
     result = list(itertools.islice(gen, 14))
     # Should grow until the cumulative time is > 30s, then start decreasing as
@@ -45,7 +43,6 @@ def test__exponential_timeout_generator_base_deadline(utcnow):
 
 
 class TestConstantTimeout(object):
-
     def test_constructor(self):
         timeout_ = timeout.ConstantTimeout()
         assert timeout_._timeout is None
@@ -56,10 +53,10 @@ class TestConstantTimeout(object):
 
     def test___str__(self):
         timeout_ = timeout.ConstantTimeout(1)
-        assert str(timeout_) == '<ConstantTimeout timeout=1.0>'
+        assert str(timeout_) == "<ConstantTimeout timeout=1.0>"
 
     def test_apply(self):
-        target = mock.Mock(spec=['__call__', '__name__'], __name__='target')
+        target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
         timeout_ = timeout.ConstantTimeout(42.0)
         wrapped = timeout_(target)
 
@@ -68,17 +65,16 @@ class TestConstantTimeout(object):
         target.assert_called_once_with(timeout=42.0)
 
     def test_apply_passthrough(self):
-        target = mock.Mock(spec=['__call__', '__name__'], __name__='target')
+        target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
         timeout_ = timeout.ConstantTimeout(42.0)
         wrapped = timeout_(target)
 
-        wrapped(1, 2, meep='moop')
+        wrapped(1, 2, meep="moop")
 
-        target.assert_called_once_with(1, 2, meep='moop', timeout=42.0)
+        target.assert_called_once_with(1, 2, meep="moop", timeout=42.0)
 
 
 class TestExponentialTimeout(object):
-
     def test_constructor(self):
         timeout_ = timeout.ExponentialTimeout()
         assert timeout_._initial == timeout._DEFAULT_INITIAL_TIMEOUT
@@ -105,11 +101,12 @@ class TestExponentialTimeout(object):
     def test___str__(self):
         timeout_ = timeout.ExponentialTimeout(1, 2, 3, 4)
         assert str(timeout_) == (
-            '<ExponentialTimeout initial=1.0, maximum=2.0, multiplier=3.0, '
-            'deadline=4.0>')
+            "<ExponentialTimeout initial=1.0, maximum=2.0, multiplier=3.0, "
+            "deadline=4.0>"
+        )
 
     def test_apply(self):
-        target = mock.Mock(spec=['__call__', '__name__'], __name__='target')
+        target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
         timeout_ = timeout.ExponentialTimeout(1, 10, 2)
         wrapped = timeout_(target)
 
@@ -123,10 +120,10 @@ class TestExponentialTimeout(object):
         target.assert_called_with(timeout=4)
 
     def test_apply_passthrough(self):
-        target = mock.Mock(spec=['__call__', '__name__'], __name__='target')
+        target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
         timeout_ = timeout.ExponentialTimeout(42.0, 100, 2)
         wrapped = timeout_(target)
 
-        wrapped(1, 2, meep='moop')
+        wrapped(1, 2, meep="moop")
 
-        target.assert_called_once_with(1, 2, meep='moop', timeout=42.0)
+        target.assert_called_once_with(1, 2, meep="moop", timeout=42.0)

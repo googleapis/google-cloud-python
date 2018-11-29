@@ -23,14 +23,14 @@ import platform
 import pkg_resources
 
 _PY_VERSION = platform.python_version()
-_API_CORE_VERSION = pkg_resources.get_distribution('google-api-core').version
+_API_CORE_VERSION = pkg_resources.get_distribution("google-api-core").version
 
 try:
-    _GRPC_VERSION = pkg_resources.get_distribution('grpcio').version
+    _GRPC_VERSION = pkg_resources.get_distribution("grpcio").version
 except pkg_resources.DistributionNotFound:  # pragma: NO COVER
     _GRPC_VERSION = None
 
-METRICS_METADATA_KEY = 'x-goog-api-client'
+METRICS_METADATA_KEY = "x-goog-api-client"
 
 
 class ClientInfo(object):
@@ -52,13 +52,15 @@ class ClientInfo(object):
             by gapic or if additional functionality was built on top of
             a gapic client library.
     """
+
     def __init__(
-            self,
-            python_version=_PY_VERSION,
-            grpc_version=_GRPC_VERSION,
-            api_core_version=_API_CORE_VERSION,
-            gapic_version=None,
-            client_library_version=None):
+        self,
+        python_version=_PY_VERSION,
+        grpc_version=_GRPC_VERSION,
+        api_core_version=_API_CORE_VERSION,
+        gapic_version=None,
+        client_library_version=None,
+    ):
         self.python_version = python_version
         self.grpc_version = grpc_version
         self.api_core_version = api_core_version
@@ -69,18 +71,18 @@ class ClientInfo(object):
         """Returns the user-agent string for this client info."""
         # Note: the order here is important as the internal metrics system
         # expects these items to be in specific locations.
-        ua = 'gl-python/{python_version} '
+        ua = "gl-python/{python_version} "
 
         if self.grpc_version is not None:
-            ua += 'grpc/{grpc_version} '
+            ua += "grpc/{grpc_version} "
 
-        ua += 'gax/{api_core_version} '
+        ua += "gax/{api_core_version} "
 
         if self.gapic_version is not None:
-            ua += 'gapic/{gapic_version} '
+            ua += "gapic/{gapic_version} "
 
         if self.client_library_version is not None:
-            ua += 'gccl/{client_library_version} '
+            ua += "gccl/{client_library_version} "
 
         return ua.format(**self.__dict__).strip()
 
