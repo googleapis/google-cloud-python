@@ -19,8 +19,6 @@
 
 set -e -x
 
-PKG_NAME="python-crc32c"
-
 # Check that the REPO_ROOT, PY_BIN and PY_TAG environment variables are set.
 if [[ -z "${REPO_ROOT}" ]]; then
     echo "REPO_ROOT environment variable should be set by the caller."
@@ -56,7 +54,7 @@ ${VENV}/bin/delocate-wheel \
     --check-archs \
     --wheel-dir ${FIXED_WHEELS} \
     --verbose \
-    ${DIST_WHEELS}/${PKG_NAME}*${PY_TAG}*.whl
+    ${DIST_WHEELS}/python_crc32c*${PY_TAG}*.whl
 
 # Clean up.
 rm -fr ${DIST_WHEELS}
