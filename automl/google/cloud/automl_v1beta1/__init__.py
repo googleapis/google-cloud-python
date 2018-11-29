@@ -22,7 +22,8 @@ from google.cloud.automl_v1beta1.gapic import enums
 from google.cloud.automl_v1beta1.gapic import prediction_service_client
 
 
-class PredictionServiceClient(prediction_service_client.PredictionServiceClient):
+class PredictionServiceClient(
+        prediction_service_client.PredictionServiceClient):
     __doc__ = prediction_service_client.PredictionServiceClient.__doc__
     enums = enums
 
@@ -32,4 +33,9 @@ class AutoMlClient(auto_ml_client.AutoMlClient):
     enums = enums
 
 
-__all__ = ("enums", "types", "PredictionServiceClient", "AutoMlClient")
+__all__ = (
+    'enums',
+    'types',
+    'PredictionServiceClient',
+    'AutoMlClient',
+)
