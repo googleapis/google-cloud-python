@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud 9ab4885 documentation</title>
+    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud a355ea1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -91,6 +91,8 @@
     <span class="s1">&#39;When defining a cursor with one of ``start_at()`` / ``start_after()`` / &#39;</span>
     <span class="s1">&#39;``end_before()`` / ``end_at()``, all fields in the cursor must &#39;</span>
     <span class="s1">&#39;come from fields set in ``order_by()``.&#39;</span><span class="p">)</span>
+<span class="n">_MISMATCH_CURSOR_W_ORDER_BY</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;The cursor </span><span class="si">{!r}</span><span class="s1"> does not match the order fields </span><span class="si">{!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
 <span class="n">_EMPTY_DOC_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s1">&#39;Unexpected server response. All responses other than the first must &#39;</span>
     <span class="s1">&#39;contain a document. The response at index </span><span class="si">{}</span><span class="s1"> was</span><span class="se">\n</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="p">)</span>
@@ -384,10 +386,10 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
-<span class="sd">                document.DocumentSnapshot, dict]): Either a document snapshot</span>
-<span class="sd">                or a dictionary of fields representing a query results</span>
-<span class="sd">                cursor. A cursor is a collection of values that represent a</span>
-<span class="sd">                position in a query result set.</span>
+<span class="sd">                document.DocumentSnapshot, dict, list, tuple]): a document</span>
+<span class="sd">                snapshot or a dictionary/list/tuple of fields representing a</span>
+<span class="sd">                query results cursor. A cursor is a collection of values that</span>
+<span class="sd">                represent a position in a query result set.</span>
 <span class="sd">            before (bool): Flag indicating if the document in</span>
 <span class="sd">                ``document_fields`` should (:data:`False`) or</span>
 <span class="sd">                shouldn&#39;t (:data:`True`) be included in the result set.</span>
@@ -399,12 +401,13 @@
 <span class="sd">            a copy of the current query, modified with the newly added</span>
 <span class="sd">            &quot;start at&quot; cursor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">document_fields</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="n">document</span><span class="o">.</span><span class="n">DocumentSnapshot</span><span class="p">):</span>
+            <span class="n">document_fields</span> <span class="o">=</span> <span class="n">document_fields</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
             <span class="c1"># NOTE: We copy so that the caller can&#39;t modify after calling.</span>
             <span class="n">document_fields</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># NOTE: This **assumes** a DocumentSnapshot.</span>
-            <span class="n">document_fields</span> <span class="o">=</span> <span class="n">document_fields</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 
         <span class="n">cursor_pair</span> <span class="o">=</span> <span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span>
         <span class="n">query_kwargs</span> <span class="o">=</span> <span class="p">{</span>
@@ -440,10 +443,10 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
-<span class="sd">                document.DocumentSnapshot, dict]): Either a document snapshot</span>
-<span class="sd">                or a dictionary of fields representing a query results</span>
-<span class="sd">                cursor. A cursor is a collection of values that represent a</span>
-<span class="sd">                position in a query result set.</span>
+<span class="sd">                document.DocumentSnapshot, dict, list, tuple]): a document</span>
+<span class="sd">                snapshot or a dictionary/list/tuple of fields representing a</span>
+<span class="sd">                query results cursor. A cursor is a collection of values that</span>
+<span class="sd">                represent a position in a query result set.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as</span>
@@ -469,10 +472,10 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
-<span class="sd">                document.DocumentSnapshot, dict]): Either a document snapshot</span>
-<span class="sd">                or a dictionary of fields representing a query results</span>
-<span class="sd">                cursor. A cursor is a collection of values that represent a</span>
-<span class="sd">                position in a query result set.</span>
+<span class="sd">                document.DocumentSnapshot, dict, list, tuple]): a document</span>
+<span class="sd">                snapshot or a dictionary/list/tuple of fields representing a</span>
+<span class="sd">                query results cursor. A cursor is a collection of values that</span>
+<span class="sd">                represent a position in a query result set.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as</span>
@@ -498,10 +501,10 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
-<span class="sd">                document.DocumentSnapshot, dict]): Either a document snapshot</span>
-<span class="sd">                or a dictionary of fields representing a query results</span>
-<span class="sd">                cursor. A cursor is a collection of values that represent a</span>
-<span class="sd">                position in a query result set.</span>
+<span class="sd">                document.DocumentSnapshot, dict, list, tuple]): a document</span>
+<span class="sd">                snapshot or a dictionary/list/tuple of fields representing a</span>
+<span class="sd">                query results cursor. A cursor is a collection of values that</span>
+<span class="sd">                represent a position in a query result set.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as</span>
@@ -527,10 +530,10 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
-<span class="sd">                document.DocumentSnapshot, dict]): Either a document snapshot</span>
-<span class="sd">                or a dictionary of fields representing a query results</span>
-<span class="sd">                cursor. A cursor is a collection of values that represent a</span>
-<span class="sd">                position in a query result set.</span>
+<span class="sd">                document.DocumentSnapshot, dict, list, tuple]): a document</span>
+<span class="sd">                snapshot or a dictionary/list/tuple of fields representing a</span>
+<span class="sd">                query results cursor. A cursor is a collection of values that</span>
+<span class="sd">                represent a position in a query result set.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as</span>
@@ -565,6 +568,38 @@
             <span class="k">return</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span>
                 <span class="n">composite_filter</span><span class="o">=</span><span class="n">composite_filter</span><span class="p">)</span>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_normalize_cursor</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">orders</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper: convert cursor to a list of values based on orders.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cursor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">orders</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_NO_ORDERS_FOR_CURSOR</span><span class="p">)</span>
+
+        <span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span> <span class="o">=</span> <span class="n">cursor</span>
+
+        <span class="n">order_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">field_path</span> <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># Transform to list using orders</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">document_fields</span>
+            <span class="k">for</span> <span class="n">order_key</span> <span class="ow">in</span> <span class="n">order_keys</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">get_nested_value</span><span class="p">(</span><span class="n">order_key</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="n">_MISSING_ORDER_BY</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">order_key</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">document_fields</span> <span class="o">=</span> <span class="n">values</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">orders</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_MISMATCH_CURSOR_W_ORDER_BY</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">document_fields</span><span class="p">,</span> <span class="n">order_keys</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span>
+
     <span class="k">def</span> <span class="nf">_to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert the current query into the equivalent protobuf.</span>
 
@@ -572,6 +607,9 @@
 <span class="sd">            google.cloud.firestore_v1beta1.types.StructuredQuery: The</span>
 <span class="sd">            query protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_at</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_cursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">)</span>
+        <span class="n">end_at</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_cursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">)</span>
+
         <span class="n">query_kwargs</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;select&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">,</span>
             <span class="s1">&#39;from&#39;</span><span class="p">:</span> <span class="p">[</span>
@@ -581,8 +619,8 @@
             <span class="p">],</span>
             <span class="s1">&#39;where&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filters_pb</span><span class="p">(),</span>
             <span class="s1">&#39;order_by&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">,</span>
-            <span class="s1">&#39;start_at&#39;</span><span class="p">:</span> <span class="n">_cursor_pb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">),</span>
-            <span class="s1">&#39;end_at&#39;</span><span class="p">:</span> <span class="n">_cursor_pb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">),</span>
+            <span class="s1">&#39;start_at&#39;</span><span class="p">:</span> <span class="n">_cursor_pb</span><span class="p">(</span><span class="n">start_at</span><span class="p">),</span>
+            <span class="s1">&#39;end_at&#39;</span><span class="p">:</span> <span class="n">_cursor_pb</span><span class="p">(</span><span class="n">end_at</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">query_kwargs</span><span class="p">[</span><span class="s1">&#39;offset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
@@ -810,54 +848,25 @@
             <span class="s1">&#39;Unexpected filter type&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">field_or_unary</span><span class="p">),</span> <span class="n">field_or_unary</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_cursor_pb</span><span class="p">(</span><span class="n">cursor_pair</span><span class="p">,</span> <span class="n">orders</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_cursor_pb</span><span class="p">(</span><span class="n">cursor_pair</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a cursor pair to a protobuf.</span>
 
 <span class="sd">    If ``cursor_pair`` is :data:`None`, just returns :data:`None`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        cursor_pair (Optional[Tuple[dict, bool]]): Two-tuple of</span>
+<span class="sd">        cursor_pair (Optional[Tuple[list, bool]]): Two-tuple of</span>
 
-<span class="sd">            * a mapping of fields. Any field that is present in this mapping</span>
-<span class="sd">              must also be present in ``orders``</span>
+<span class="sd">            * a list of field values.</span>
 <span class="sd">            * a ``before`` flag</span>
-
-<span class="sd">        orders (Tuple[google.cloud.proto.firestore.v1beta1.\</span>
-<span class="sd">            query_pb2.StructuredQuery.Order, ...]]): The &quot;order by&quot; entries</span>
-<span class="sd">            to use for a query. (We use this rather than a list of field path</span>
-<span class="sd">            strings just because it is how a query stores calls</span>
-<span class="sd">            to ``order_by``.)</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Optional[google.cloud.firestore_v1beta1.types.Cursor]: A</span>
 <span class="sd">        protobuf cursor corresponding to the values.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If ``cursor_pair`` is not :data:`None`, but there are</span>
-<span class="sd">            no ``orders``.</span>
-<span class="sd">        ValueError: If one of the field paths in ``orders`` is not contained</span>
-<span class="sd">            in the ``data`` (i.e. the first component of ``cursor_pair``).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">cursor_pair</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">orders</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_NO_ORDERS_FOR_CURSOR</span><span class="p">)</span>
-
-    <span class="n">data</span><span class="p">,</span> <span class="n">before</span> <span class="o">=</span> <span class="n">cursor_pair</span>
-    <span class="n">value_pbs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
-        <span class="n">field_path</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">field_path</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_nested_value</span><span class="p">(</span><span class="n">field_path</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">_MISSING_ORDER_BY</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field_path</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-
-        <span class="n">value_pb</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">encode_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="n">value_pbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value_pb</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">Cursor</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">value_pbs</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="n">before</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cursor_pair</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">before</span> <span class="o">=</span> <span class="n">cursor_pair</span>
+        <span class="n">value_pbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">_helpers</span><span class="o">.</span><span class="n">encode_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">Cursor</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">value_pbs</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="n">before</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_query_response_to_snapshot</span><span class="p">(</span><span class="n">response_pb</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">expected_prefix</span><span class="p">):</span>
