@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.client &#8212; google-cloud fd25494 documentation</title>
+    <title>google.cloud.firestore_v1beta1.client &#8212; google-cloud d8a3ec3 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -367,6 +367,19 @@
         <span class="k">for</span> <span class="n">get_doc_response</span> <span class="ow">in</span> <span class="n">response_iterator</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">_parse_batch_get</span><span class="p">(</span><span class="n">get_doc_response</span><span class="p">,</span> <span class="n">reference_map</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Client.collections"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.collections">[docs]</a>    <span class="k">def</span> <span class="nf">collections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List top-level collections of the client&#39;s database.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sequence[~.firestore_v1beta1.collection.CollectionReference]:</span>
+<span class="sd">                iterator of subcollections of the current document.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">list_collection_ids</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">)</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="n">_item_to_collection_ref</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
+
 <div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a batch instance from this client.</span>
 
@@ -512,6 +525,17 @@
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">types</span><span class="o">.</span><span class="n">DocumentMask</span><span class="p">(</span><span class="n">field_paths</span><span class="o">=</span><span class="n">field_paths</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_item_to_collection_ref</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert collection ID to collection ref.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        iterator (google.api_core.page_iterator.GRPCIterator):</span>
+<span class="sd">            iterator response</span>
+<span class="sd">        item (str): ID of the collection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 </pre></div>
 
           </div>
