@@ -28,7 +28,6 @@ class NullValue(enum.IntEnum):
     Attributes:
       NULL_VALUE (int): Null value.
     """
-
     NULL_VALUE = 0
 
 
@@ -46,7 +45,6 @@ class ComparisonType(enum.IntEnum):
       COMPARISON_EQ (int): The left argument is equal to the right argument.
       COMPARISON_NE (int): The left argument is not equal to the right argument.
     """
-
     COMPARISON_UNSPECIFIED = 0
     COMPARISON_GT = 1
     COMPARISON_GE = 2
@@ -76,7 +74,6 @@ class ServiceTier(enum.IntEnum):
       metrics. For more details, see `the service tiers
       documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
     """
-
     SERVICE_TIER_UNSPECIFIED = 0
     SERVICE_TIER_BASIC = 1
     SERVICE_TIER_PREMIUM = 2
@@ -116,7 +113,6 @@ class LaunchStage(enum.IntEnum):
       Platform Subject to the Deprecation
       Policy <https://cloud.google.com/terms/deprecation>`__ documentation.
     """
-
     LAUNCH_STAGE_UNSPECIFIED = 0
     EARLY_ACCESS = 1
     ALPHA = 2
@@ -139,7 +135,6 @@ class UptimeCheckRegion(enum.IntEnum):
       ASIA_PACIFIC (int): Allows checks to run from locations within the Asia Pacific area (ex:
       Singapore).
     """
-
     REGION_UNSPECIFIED = 0
     USA = 1
     EUROPE = 2
@@ -161,7 +156,6 @@ class GroupResourceType(enum.IntEnum):
       Amazon Web Services (AWS).
       AWS_ELB_LOAD_BALANCER (int): A group of Amazon ELB load balancers.
     """
-
     RESOURCE_TYPE_UNSPECIFIED = 0
     INSTANCE = 1
     AWS_ELB_LOAD_BALANCER = 2
@@ -177,7 +171,6 @@ class LabelDescriptor(object):
           BOOL (int): Boolean; true or false.
           INT64 (int): A 64-bit signed integer.
         """
-
         STRING = 0
         BOOL = 1
         INT64 = 2
@@ -291,7 +284,6 @@ class Aggregation(object):
           taken that the values for the metric will always be positive. The output
           is a gauge metric with value type ``DOUBLE``.
         """
-
         ALIGN_NONE = 0
         ALIGN_DELTA = 1
         ALIGN_RATE = 2
@@ -371,7 +363,6 @@ class Aggregation(object):
           each alignment period. This reducer is valid for gauge and delta metrics
           of numeric and distribution type. The value of the output is ``DOUBLE``
         """
-
         REDUCE_NONE = 0
         REDUCE_MEAN = 1
         REDUCE_MIN = 2
@@ -403,7 +394,6 @@ class MetricDescriptor(object):
           value to zero and sets a new start time for the following
           points.
         """
-
         METRIC_KIND_UNSPECIFIED = 0
         GAUGE = 1
         DELTA = 2
@@ -424,7 +414,6 @@ class MetricDescriptor(object):
           DISTRIBUTION (int): The value is a ``Distribution``.
           MONEY (int): The value is money.
         """
-
         VALUE_TYPE_UNSPECIFIED = 0
         BOOL = 1
         INT64 = 2
@@ -451,7 +440,6 @@ class AlertPolicy(object):
           regular ``AND`` option, an incident is created only if all conditions
           are met simultaneously on at least one resource.
         """
-
         COMBINE_UNSPECIFIED = 0
         AND = 1
         OR = 2
@@ -477,7 +465,6 @@ class NotificationChannel(object):
           notification channel and that someone on the project has access
           to messages that are delivered to that channel.
         """
-
         VERIFICATION_STATUS_UNSPECIFIED = 0
         UNVERIFIED = 1
         VERIFIED = 2
@@ -494,6 +481,5 @@ class ListTimeSeriesRequest(object):
           HEADERS (int): Returns the identity of the metric and the time series resource,
           but not the time series data.
         """
-
         FULL = 0
         HEADERS = 1
