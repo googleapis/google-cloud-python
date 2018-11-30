@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Queries &#8212; google-cloud b41293d documentation</title>
+    <title>Queries &#8212; google-cloud 92a907a documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -329,8 +329,11 @@ copy of the current query, modified with the newly added
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Query</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">direction</span></code> is not one of <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.ASCENDING" title="google.cloud.firestore_v1beta1.query.Query.ASCENDING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ASCENDING</span></code></a> or
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.DESCENDING" title="google.cloud.firestore_v1beta1.query.Query.DESCENDING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DESCENDING</span></code></a>.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">field_path</span></code> is invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">direction</span></code> is not one of <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.ASCENDING" title="google.cloud.firestore_v1beta1.query.Query.ASCENDING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ASCENDING</span></code></a> or
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.DESCENDING" title="google.cloud.firestore_v1beta1.query.Query.DESCENDING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DESCENDING</span></code></a>.</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -359,6 +362,8 @@ a copy of the current query, modified with the newly added
 projection.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Query</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If any <code class="docutils literal notranslate"><span class="pre">field_path</span></code> is invalid.</td>
 </tr>
 </tbody>
 </table>
@@ -461,8 +466,11 @@ copy of the current query, modified with the newly added filter.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Query</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">value</span></code> is a NaN or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> and
-<code class="docutils literal notranslate"><span class="pre">op_string</span></code> is not <code class="docutils literal notranslate"><span class="pre">==</span></code>.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">field_path</span></code> is invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">value</span></code> is a NaN or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> and
+<code class="docutils literal notranslate"><span class="pre">op_string</span></code> is not <code class="docutils literal notranslate"><span class="pre">==</span></code>.</li>
+</ul>
 </td>
 </tr>
 </tbody>

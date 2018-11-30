@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud b41293d documentation</title>
+    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud 92a907a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -195,7 +195,13 @@
 <span class="sd">            ~.firestore_v1beta1.query.Query: A &quot;projected&quot; query. Acts as</span>
 <span class="sd">            a copy of the current query, modified with the newly added</span>
 <span class="sd">            projection.</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If any ``field_path`` is invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_paths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">field_paths</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">field_path</span> <span class="ow">in</span> <span class="n">field_paths</span><span class="p">:</span>
+            <span class="n">_helpers</span><span class="o">.</span><span class="n">split_field_path</span><span class="p">(</span><span class="n">field_path</span><span class="p">)</span>  <span class="c1"># raises</span>
+
         <span class="n">new_projection</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span>
             <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
                 <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldReference</span><span class="p">(</span><span class="n">field_path</span><span class="o">=</span><span class="n">field_path</span><span class="p">)</span>
@@ -239,9 +245,12 @@
 <span class="sd">            copy of the current query, modified with the newly added filter.</span>
 
 <span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If ``field_path`` is invalid.</span>
 <span class="sd">            ValueError: If ``value`` is a NaN or :data:`None` and</span>
 <span class="sd">                ``op_string`` is not ``==``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">split_field_path</span><span class="p">(</span><span class="n">field_path</span><span class="p">)</span>  <span class="c1"># raises</span>
+
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">op_string</span> <span class="o">!=</span> <span class="n">_EQ_OP</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_BAD_OP_NAN_NULL</span><span class="p">)</span>
@@ -304,9 +313,12 @@
 <span class="sd">            &quot;order by&quot; constraint.</span>
 
 <span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If ``field_path`` is invalid.</span>
 <span class="sd">            ValueError: If ``direction`` is not one of :attr:`ASCENDING` or</span>
 <span class="sd">                :attr:`DESCENDING`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">split_field_path</span><span class="p">(</span><span class="n">field_path</span><span class="p">)</span>  <span class="c1"># raises</span>
+
         <span class="n">order_pb</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Order</span><span class="p">(</span>
             <span class="n">field</span><span class="o">=</span><span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldReference</span><span class="p">(</span>
                 <span class="n">field_path</span><span class="o">=</span><span class="n">field_path</span><span class="p">,</span>
