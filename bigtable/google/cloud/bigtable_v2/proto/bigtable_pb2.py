@@ -2,744 +2,1236 @@
 # source: google/cloud/bigtable_v2/proto/bigtable.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.bigtable_v2.proto import data_pb2 as google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2
+from google.cloud.bigtable_v2.proto import (
+    data_pb2 as google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2,
+)
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/bigtable_v2/proto/bigtable.proto',
-  package='google.bigtable.v2',
-  syntax='proto3',
-  serialized_pb=_b('\n-google/cloud/bigtable_v2/proto/bigtable.proto\x12\x12google.bigtable.v2\x1a\x1cgoogle/api/annotations.proto\x1a)google/cloud/bigtable_v2/proto/data.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto\"\xaa\x01\n\x0fReadRowsRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x05 \x01(\t\x12(\n\x04rows\x18\x02 \x01(\x0b\x32\x1a.google.bigtable.v2.RowSet\x12-\n\x06\x66ilter\x18\x03 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x12\n\nrows_limit\x18\x04 \x01(\x03\"\xf8\x02\n\x10ReadRowsResponse\x12>\n\x06\x63hunks\x18\x01 \x03(\x0b\x32..google.bigtable.v2.ReadRowsResponse.CellChunk\x12\x1c\n\x14last_scanned_row_key\x18\x02 \x01(\x0c\x1a\x85\x02\n\tCellChunk\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x31\n\x0b\x66\x61mily_name\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\tqualifier\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.BytesValue\x12\x18\n\x10timestamp_micros\x18\x04 \x01(\x03\x12\x0e\n\x06labels\x18\x05 \x03(\t\x12\r\n\x05value\x18\x06 \x01(\x0c\x12\x12\n\nvalue_size\x18\x07 \x01(\x05\x12\x13\n\treset_row\x18\x08 \x01(\x08H\x00\x12\x14\n\ncommit_row\x18\t \x01(\x08H\x00\x42\x0c\n\nrow_status\"B\n\x14SampleRowKeysRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x02 \x01(\t\">\n\x15SampleRowKeysResponse\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x14\n\x0coffset_bytes\x18\x02 \x01(\x03\"\x80\x01\n\x10MutateRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x04 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12/\n\tmutations\x18\x03 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation\"\x13\n\x11MutateRowResponse\"\xc8\x01\n\x11MutateRowsRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x03 \x01(\t\x12<\n\x07\x65ntries\x18\x02 \x03(\x0b\x32+.google.bigtable.v2.MutateRowsRequest.Entry\x1aI\n\x05\x45ntry\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12/\n\tmutations\x18\x02 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation\"\x8f\x01\n\x12MutateRowsResponse\x12=\n\x07\x65ntries\x18\x01 \x03(\x0b\x32,.google.bigtable.v2.MutateRowsResponse.Entry\x1a:\n\x05\x45ntry\x12\r\n\x05index\x18\x01 \x01(\x03\x12\"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status\"\xfd\x01\n\x18\x43heckAndMutateRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x07 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12\x37\n\x10predicate_filter\x18\x06 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x34\n\x0etrue_mutations\x18\x04 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation\x12\x35\n\x0f\x66\x61lse_mutations\x18\x05 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation\"6\n\x19\x43heckAndMutateRowResponse\x12\x19\n\x11predicate_matched\x18\x01 \x01(\x08\"\x90\x01\n\x19ReadModifyWriteRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x04 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12\x36\n\x05rules\x18\x03 \x03(\x0b\x32\'.google.bigtable.v2.ReadModifyWriteRule\"B\n\x1aReadModifyWriteRowResponse\x12$\n\x03row\x18\x01 \x01(\x0b\x32\x17.google.bigtable.v2.Row2\xad\x08\n\x08\x42igtable\x12\x9d\x01\n\x08ReadRows\x12#.google.bigtable.v2.ReadRowsRequest\x1a$.google.bigtable.v2.ReadRowsResponse\"D\x82\xd3\xe4\x93\x02>\"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\x01*0\x01\x12\xae\x01\n\rSampleRowKeys\x12(.google.bigtable.v2.SampleRowKeysRequest\x1a).google.bigtable.v2.SampleRowKeysResponse\"F\x82\xd3\xe4\x93\x02@\x12>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys0\x01\x12\x9f\x01\n\tMutateRow\x12$.google.bigtable.v2.MutateRowRequest\x1a%.google.bigtable.v2.MutateRowResponse\"E\x82\xd3\xe4\x93\x02?\":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\x01*\x12\xa5\x01\n\nMutateRows\x12%.google.bigtable.v2.MutateRowsRequest\x1a&.google.bigtable.v2.MutateRowsResponse\"F\x82\xd3\xe4\x93\x02@\";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\x01*0\x01\x12\xbf\x01\n\x11\x43heckAndMutateRow\x12,.google.bigtable.v2.CheckAndMutateRowRequest\x1a-.google.bigtable.v2.CheckAndMutateRowResponse\"M\x82\xd3\xe4\x93\x02G\"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\x01*\x12\xc3\x01\n\x12ReadModifyWriteRow\x12-.google.bigtable.v2.ReadModifyWriteRowRequest\x1a..google.bigtable.v2.ReadModifyWriteRowResponse\"N\x82\xd3\xe4\x93\x02H\"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\x01*B\x9b\x01\n\x16\x63om.google.bigtable.v2B\rBigtableProtoP\x01Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\xaa\x02\x18Google.Cloud.Bigtable.V2\xca\x02\x18Google\\Cloud\\Bigtable\\V2b\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
-
-
+    name="google/cloud/bigtable_v2/proto/bigtable.proto",
+    package="google.bigtable.v2",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n-google/cloud/bigtable_v2/proto/bigtable.proto\x12\x12google.bigtable.v2\x1a\x1cgoogle/api/annotations.proto\x1a)google/cloud/bigtable_v2/proto/data.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto"\xaa\x01\n\x0fReadRowsRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x05 \x01(\t\x12(\n\x04rows\x18\x02 \x01(\x0b\x32\x1a.google.bigtable.v2.RowSet\x12-\n\x06\x66ilter\x18\x03 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x12\n\nrows_limit\x18\x04 \x01(\x03"\xf8\x02\n\x10ReadRowsResponse\x12>\n\x06\x63hunks\x18\x01 \x03(\x0b\x32..google.bigtable.v2.ReadRowsResponse.CellChunk\x12\x1c\n\x14last_scanned_row_key\x18\x02 \x01(\x0c\x1a\x85\x02\n\tCellChunk\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x31\n\x0b\x66\x61mily_name\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\tqualifier\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.BytesValue\x12\x18\n\x10timestamp_micros\x18\x04 \x01(\x03\x12\x0e\n\x06labels\x18\x05 \x03(\t\x12\r\n\x05value\x18\x06 \x01(\x0c\x12\x12\n\nvalue_size\x18\x07 \x01(\x05\x12\x13\n\treset_row\x18\x08 \x01(\x08H\x00\x12\x14\n\ncommit_row\x18\t \x01(\x08H\x00\x42\x0c\n\nrow_status"B\n\x14SampleRowKeysRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x02 \x01(\t">\n\x15SampleRowKeysResponse\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x14\n\x0coffset_bytes\x18\x02 \x01(\x03"\x80\x01\n\x10MutateRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x04 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12/\n\tmutations\x18\x03 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation"\x13\n\x11MutateRowResponse"\xc8\x01\n\x11MutateRowsRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x03 \x01(\t\x12<\n\x07\x65ntries\x18\x02 \x03(\x0b\x32+.google.bigtable.v2.MutateRowsRequest.Entry\x1aI\n\x05\x45ntry\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12/\n\tmutations\x18\x02 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation"\x8f\x01\n\x12MutateRowsResponse\x12=\n\x07\x65ntries\x18\x01 \x03(\x0b\x32,.google.bigtable.v2.MutateRowsResponse.Entry\x1a:\n\x05\x45ntry\x12\r\n\x05index\x18\x01 \x01(\x03\x12"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status"\xfd\x01\n\x18\x43heckAndMutateRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x07 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12\x37\n\x10predicate_filter\x18\x06 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x34\n\x0etrue_mutations\x18\x04 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation\x12\x35\n\x0f\x66\x61lse_mutations\x18\x05 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation"6\n\x19\x43heckAndMutateRowResponse\x12\x19\n\x11predicate_matched\x18\x01 \x01(\x08"\x90\x01\n\x19ReadModifyWriteRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x04 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12\x36\n\x05rules\x18\x03 \x03(\x0b\x32\'.google.bigtable.v2.ReadModifyWriteRule"B\n\x1aReadModifyWriteRowResponse\x12$\n\x03row\x18\x01 \x01(\x0b\x32\x17.google.bigtable.v2.Row2\xad\x08\n\x08\x42igtable\x12\x9d\x01\n\x08ReadRows\x12#.google.bigtable.v2.ReadRowsRequest\x1a$.google.bigtable.v2.ReadRowsResponse"D\x82\xd3\xe4\x93\x02>"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\x01*0\x01\x12\xae\x01\n\rSampleRowKeys\x12(.google.bigtable.v2.SampleRowKeysRequest\x1a).google.bigtable.v2.SampleRowKeysResponse"F\x82\xd3\xe4\x93\x02@\x12>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys0\x01\x12\x9f\x01\n\tMutateRow\x12$.google.bigtable.v2.MutateRowRequest\x1a%.google.bigtable.v2.MutateRowResponse"E\x82\xd3\xe4\x93\x02?":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\x01*\x12\xa5\x01\n\nMutateRows\x12%.google.bigtable.v2.MutateRowsRequest\x1a&.google.bigtable.v2.MutateRowsResponse"F\x82\xd3\xe4\x93\x02@";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\x01*0\x01\x12\xbf\x01\n\x11\x43heckAndMutateRow\x12,.google.bigtable.v2.CheckAndMutateRowRequest\x1a-.google.bigtable.v2.CheckAndMutateRowResponse"M\x82\xd3\xe4\x93\x02G"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\x01*\x12\xc3\x01\n\x12ReadModifyWriteRow\x12-.google.bigtable.v2.ReadModifyWriteRowRequest\x1a..google.bigtable.v2.ReadModifyWriteRowResponse"N\x82\xd3\xe4\x93\x02H"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\x01*B\x9b\x01\n\x16\x63om.google.bigtable.v2B\rBigtableProtoP\x01Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\xaa\x02\x18Google.Cloud.Bigtable.V2\xca\x02\x18Google\\Cloud\\Bigtable\\V2b\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
+        google_dot_rpc_dot_status__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _READROWSREQUEST = _descriptor.Descriptor(
-  name='ReadRowsRequest',
-  full_name='google.bigtable.v2.ReadRowsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='google.bigtable.v2.ReadRowsRequest.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='app_profile_id', full_name='google.bigtable.v2.ReadRowsRequest.app_profile_id', index=1,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='rows', full_name='google.bigtable.v2.ReadRowsRequest.rows', index=2,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filter', full_name='google.bigtable.v2.ReadRowsRequest.filter', index=3,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='rows_limit', full_name='google.bigtable.v2.ReadRowsRequest.rows_limit', index=4,
-      number=4, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=200,
-  serialized_end=370,
+    name="ReadRowsRequest",
+    full_name="google.bigtable.v2.ReadRowsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="table_name",
+            full_name="google.bigtable.v2.ReadRowsRequest.table_name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="app_profile_id",
+            full_name="google.bigtable.v2.ReadRowsRequest.app_profile_id",
+            index=1,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="rows",
+            full_name="google.bigtable.v2.ReadRowsRequest.rows",
+            index=2,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="google.bigtable.v2.ReadRowsRequest.filter",
+            index=3,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="rows_limit",
+            full_name="google.bigtable.v2.ReadRowsRequest.rows_limit",
+            index=4,
+            number=4,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=200,
+    serialized_end=370,
 )
 
 
 _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
-  name='CellChunk',
-  full_name='google.bigtable.v2.ReadRowsResponse.CellChunk',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='row_key', full_name='google.bigtable.v2.ReadRowsResponse.CellChunk.row_key', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='family_name', full_name='google.bigtable.v2.ReadRowsResponse.CellChunk.family_name', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='qualifier', full_name='google.bigtable.v2.ReadRowsResponse.CellChunk.qualifier', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='timestamp_micros', full_name='google.bigtable.v2.ReadRowsResponse.CellChunk.timestamp_micros', index=3,
-      number=4, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='labels', full_name='google.bigtable.v2.ReadRowsResponse.CellChunk.labels', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.bigtable.v2.ReadRowsResponse.CellChunk.value', index=5,
-      number=6, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value_size', full_name='google.bigtable.v2.ReadRowsResponse.CellChunk.value_size', index=6,
-      number=7, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='reset_row', full_name='google.bigtable.v2.ReadRowsResponse.CellChunk.reset_row', index=7,
-      number=8, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='commit_row', full_name='google.bigtable.v2.ReadRowsResponse.CellChunk.commit_row', index=8,
-      number=9, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='row_status', full_name='google.bigtable.v2.ReadRowsResponse.CellChunk.row_status',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=488,
-  serialized_end=749,
+    name="CellChunk",
+    full_name="google.bigtable.v2.ReadRowsResponse.CellChunk",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="row_key",
+            full_name="google.bigtable.v2.ReadRowsResponse.CellChunk.row_key",
+            index=0,
+            number=1,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="family_name",
+            full_name="google.bigtable.v2.ReadRowsResponse.CellChunk.family_name",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="qualifier",
+            full_name="google.bigtable.v2.ReadRowsResponse.CellChunk.qualifier",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="timestamp_micros",
+            full_name="google.bigtable.v2.ReadRowsResponse.CellChunk.timestamp_micros",
+            index=3,
+            number=4,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="labels",
+            full_name="google.bigtable.v2.ReadRowsResponse.CellChunk.labels",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.bigtable.v2.ReadRowsResponse.CellChunk.value",
+            index=5,
+            number=6,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value_size",
+            full_name="google.bigtable.v2.ReadRowsResponse.CellChunk.value_size",
+            index=6,
+            number=7,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="reset_row",
+            full_name="google.bigtable.v2.ReadRowsResponse.CellChunk.reset_row",
+            index=7,
+            number=8,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="commit_row",
+            full_name="google.bigtable.v2.ReadRowsResponse.CellChunk.commit_row",
+            index=8,
+            number=9,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="row_status",
+            full_name="google.bigtable.v2.ReadRowsResponse.CellChunk.row_status",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=488,
+    serialized_end=749,
 )
 
 _READROWSRESPONSE = _descriptor.Descriptor(
-  name='ReadRowsResponse',
-  full_name='google.bigtable.v2.ReadRowsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='chunks', full_name='google.bigtable.v2.ReadRowsResponse.chunks', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_scanned_row_key', full_name='google.bigtable.v2.ReadRowsResponse.last_scanned_row_key', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_READROWSRESPONSE_CELLCHUNK, ],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=373,
-  serialized_end=749,
+    name="ReadRowsResponse",
+    full_name="google.bigtable.v2.ReadRowsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="chunks",
+            full_name="google.bigtable.v2.ReadRowsResponse.chunks",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_scanned_row_key",
+            full_name="google.bigtable.v2.ReadRowsResponse.last_scanned_row_key",
+            index=1,
+            number=2,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_READROWSRESPONSE_CELLCHUNK],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=373,
+    serialized_end=749,
 )
 
 
 _SAMPLEROWKEYSREQUEST = _descriptor.Descriptor(
-  name='SampleRowKeysRequest',
-  full_name='google.bigtable.v2.SampleRowKeysRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='google.bigtable.v2.SampleRowKeysRequest.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='app_profile_id', full_name='google.bigtable.v2.SampleRowKeysRequest.app_profile_id', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=751,
-  serialized_end=817,
+    name="SampleRowKeysRequest",
+    full_name="google.bigtable.v2.SampleRowKeysRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="table_name",
+            full_name="google.bigtable.v2.SampleRowKeysRequest.table_name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="app_profile_id",
+            full_name="google.bigtable.v2.SampleRowKeysRequest.app_profile_id",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=751,
+    serialized_end=817,
 )
 
 
 _SAMPLEROWKEYSRESPONSE = _descriptor.Descriptor(
-  name='SampleRowKeysResponse',
-  full_name='google.bigtable.v2.SampleRowKeysResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='row_key', full_name='google.bigtable.v2.SampleRowKeysResponse.row_key', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='offset_bytes', full_name='google.bigtable.v2.SampleRowKeysResponse.offset_bytes', index=1,
-      number=2, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=819,
-  serialized_end=881,
+    name="SampleRowKeysResponse",
+    full_name="google.bigtable.v2.SampleRowKeysResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="row_key",
+            full_name="google.bigtable.v2.SampleRowKeysResponse.row_key",
+            index=0,
+            number=1,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="offset_bytes",
+            full_name="google.bigtable.v2.SampleRowKeysResponse.offset_bytes",
+            index=1,
+            number=2,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=819,
+    serialized_end=881,
 )
 
 
 _MUTATEROWREQUEST = _descriptor.Descriptor(
-  name='MutateRowRequest',
-  full_name='google.bigtable.v2.MutateRowRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='google.bigtable.v2.MutateRowRequest.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='app_profile_id', full_name='google.bigtable.v2.MutateRowRequest.app_profile_id', index=1,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='row_key', full_name='google.bigtable.v2.MutateRowRequest.row_key', index=2,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mutations', full_name='google.bigtable.v2.MutateRowRequest.mutations', index=3,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=884,
-  serialized_end=1012,
+    name="MutateRowRequest",
+    full_name="google.bigtable.v2.MutateRowRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="table_name",
+            full_name="google.bigtable.v2.MutateRowRequest.table_name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="app_profile_id",
+            full_name="google.bigtable.v2.MutateRowRequest.app_profile_id",
+            index=1,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="row_key",
+            full_name="google.bigtable.v2.MutateRowRequest.row_key",
+            index=2,
+            number=2,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mutations",
+            full_name="google.bigtable.v2.MutateRowRequest.mutations",
+            index=3,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=884,
+    serialized_end=1012,
 )
 
 
 _MUTATEROWRESPONSE = _descriptor.Descriptor(
-  name='MutateRowResponse',
-  full_name='google.bigtable.v2.MutateRowResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1014,
-  serialized_end=1033,
+    name="MutateRowResponse",
+    full_name="google.bigtable.v2.MutateRowResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1014,
+    serialized_end=1033,
 )
 
 
 _MUTATEROWSREQUEST_ENTRY = _descriptor.Descriptor(
-  name='Entry',
-  full_name='google.bigtable.v2.MutateRowsRequest.Entry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='row_key', full_name='google.bigtable.v2.MutateRowsRequest.Entry.row_key', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mutations', full_name='google.bigtable.v2.MutateRowsRequest.Entry.mutations', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1163,
-  serialized_end=1236,
+    name="Entry",
+    full_name="google.bigtable.v2.MutateRowsRequest.Entry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="row_key",
+            full_name="google.bigtable.v2.MutateRowsRequest.Entry.row_key",
+            index=0,
+            number=1,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mutations",
+            full_name="google.bigtable.v2.MutateRowsRequest.Entry.mutations",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1163,
+    serialized_end=1236,
 )
 
 _MUTATEROWSREQUEST = _descriptor.Descriptor(
-  name='MutateRowsRequest',
-  full_name='google.bigtable.v2.MutateRowsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='google.bigtable.v2.MutateRowsRequest.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='app_profile_id', full_name='google.bigtable.v2.MutateRowsRequest.app_profile_id', index=1,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='entries', full_name='google.bigtable.v2.MutateRowsRequest.entries', index=2,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MUTATEROWSREQUEST_ENTRY, ],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1036,
-  serialized_end=1236,
+    name="MutateRowsRequest",
+    full_name="google.bigtable.v2.MutateRowsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="table_name",
+            full_name="google.bigtable.v2.MutateRowsRequest.table_name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="app_profile_id",
+            full_name="google.bigtable.v2.MutateRowsRequest.app_profile_id",
+            index=1,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="entries",
+            full_name="google.bigtable.v2.MutateRowsRequest.entries",
+            index=2,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_MUTATEROWSREQUEST_ENTRY],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1036,
+    serialized_end=1236,
 )
 
 
 _MUTATEROWSRESPONSE_ENTRY = _descriptor.Descriptor(
-  name='Entry',
-  full_name='google.bigtable.v2.MutateRowsResponse.Entry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='index', full_name='google.bigtable.v2.MutateRowsResponse.Entry.index', index=0,
-      number=1, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='status', full_name='google.bigtable.v2.MutateRowsResponse.Entry.status', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1324,
-  serialized_end=1382,
+    name="Entry",
+    full_name="google.bigtable.v2.MutateRowsResponse.Entry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="index",
+            full_name="google.bigtable.v2.MutateRowsResponse.Entry.index",
+            index=0,
+            number=1,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="status",
+            full_name="google.bigtable.v2.MutateRowsResponse.Entry.status",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1324,
+    serialized_end=1382,
 )
 
 _MUTATEROWSRESPONSE = _descriptor.Descriptor(
-  name='MutateRowsResponse',
-  full_name='google.bigtable.v2.MutateRowsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='entries', full_name='google.bigtable.v2.MutateRowsResponse.entries', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MUTATEROWSRESPONSE_ENTRY, ],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1239,
-  serialized_end=1382,
+    name="MutateRowsResponse",
+    full_name="google.bigtable.v2.MutateRowsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="entries",
+            full_name="google.bigtable.v2.MutateRowsResponse.entries",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[_MUTATEROWSRESPONSE_ENTRY],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1239,
+    serialized_end=1382,
 )
 
 
 _CHECKANDMUTATEROWREQUEST = _descriptor.Descriptor(
-  name='CheckAndMutateRowRequest',
-  full_name='google.bigtable.v2.CheckAndMutateRowRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='google.bigtable.v2.CheckAndMutateRowRequest.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='app_profile_id', full_name='google.bigtable.v2.CheckAndMutateRowRequest.app_profile_id', index=1,
-      number=7, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='row_key', full_name='google.bigtable.v2.CheckAndMutateRowRequest.row_key', index=2,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='predicate_filter', full_name='google.bigtable.v2.CheckAndMutateRowRequest.predicate_filter', index=3,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='true_mutations', full_name='google.bigtable.v2.CheckAndMutateRowRequest.true_mutations', index=4,
-      number=4, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='false_mutations', full_name='google.bigtable.v2.CheckAndMutateRowRequest.false_mutations', index=5,
-      number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1385,
-  serialized_end=1638,
+    name="CheckAndMutateRowRequest",
+    full_name="google.bigtable.v2.CheckAndMutateRowRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="table_name",
+            full_name="google.bigtable.v2.CheckAndMutateRowRequest.table_name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="app_profile_id",
+            full_name="google.bigtable.v2.CheckAndMutateRowRequest.app_profile_id",
+            index=1,
+            number=7,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="row_key",
+            full_name="google.bigtable.v2.CheckAndMutateRowRequest.row_key",
+            index=2,
+            number=2,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="predicate_filter",
+            full_name="google.bigtable.v2.CheckAndMutateRowRequest.predicate_filter",
+            index=3,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="true_mutations",
+            full_name="google.bigtable.v2.CheckAndMutateRowRequest.true_mutations",
+            index=4,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="false_mutations",
+            full_name="google.bigtable.v2.CheckAndMutateRowRequest.false_mutations",
+            index=5,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1385,
+    serialized_end=1638,
 )
 
 
 _CHECKANDMUTATEROWRESPONSE = _descriptor.Descriptor(
-  name='CheckAndMutateRowResponse',
-  full_name='google.bigtable.v2.CheckAndMutateRowResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='predicate_matched', full_name='google.bigtable.v2.CheckAndMutateRowResponse.predicate_matched', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1640,
-  serialized_end=1694,
+    name="CheckAndMutateRowResponse",
+    full_name="google.bigtable.v2.CheckAndMutateRowResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="predicate_matched",
+            full_name="google.bigtable.v2.CheckAndMutateRowResponse.predicate_matched",
+            index=0,
+            number=1,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1640,
+    serialized_end=1694,
 )
 
 
 _READMODIFYWRITEROWREQUEST = _descriptor.Descriptor(
-  name='ReadModifyWriteRowRequest',
-  full_name='google.bigtable.v2.ReadModifyWriteRowRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='table_name', full_name='google.bigtable.v2.ReadModifyWriteRowRequest.table_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='app_profile_id', full_name='google.bigtable.v2.ReadModifyWriteRowRequest.app_profile_id', index=1,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='row_key', full_name='google.bigtable.v2.ReadModifyWriteRowRequest.row_key', index=2,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='rules', full_name='google.bigtable.v2.ReadModifyWriteRowRequest.rules', index=3,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1697,
-  serialized_end=1841,
+    name="ReadModifyWriteRowRequest",
+    full_name="google.bigtable.v2.ReadModifyWriteRowRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="table_name",
+            full_name="google.bigtable.v2.ReadModifyWriteRowRequest.table_name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="app_profile_id",
+            full_name="google.bigtable.v2.ReadModifyWriteRowRequest.app_profile_id",
+            index=1,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="row_key",
+            full_name="google.bigtable.v2.ReadModifyWriteRowRequest.row_key",
+            index=2,
+            number=2,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="rules",
+            full_name="google.bigtable.v2.ReadModifyWriteRowRequest.rules",
+            index=3,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1697,
+    serialized_end=1841,
 )
 
 
 _READMODIFYWRITEROWRESPONSE = _descriptor.Descriptor(
-  name='ReadModifyWriteRowResponse',
-  full_name='google.bigtable.v2.ReadModifyWriteRowResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='row', full_name='google.bigtable.v2.ReadModifyWriteRowResponse.row', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1843,
-  serialized_end=1909,
+    name="ReadModifyWriteRowResponse",
+    full_name="google.bigtable.v2.ReadModifyWriteRowResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="row",
+            full_name="google.bigtable.v2.ReadModifyWriteRowResponse.row",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1843,
+    serialized_end=1909,
 )
 
-_READROWSREQUEST.fields_by_name['rows'].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._ROWSET
-_READROWSREQUEST.fields_by_name['filter'].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._ROWFILTER
-_READROWSRESPONSE_CELLCHUNK.fields_by_name['family_name'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
-_READROWSRESPONSE_CELLCHUNK.fields_by_name['qualifier'].message_type = google_dot_protobuf_dot_wrappers__pb2._BYTESVALUE
+_READROWSREQUEST.fields_by_name[
+    "rows"
+].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._ROWSET
+_READROWSREQUEST.fields_by_name[
+    "filter"
+].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._ROWFILTER
+_READROWSRESPONSE_CELLCHUNK.fields_by_name[
+    "family_name"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
+_READROWSRESPONSE_CELLCHUNK.fields_by_name[
+    "qualifier"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._BYTESVALUE
 _READROWSRESPONSE_CELLCHUNK.containing_type = _READROWSRESPONSE
-_READROWSRESPONSE_CELLCHUNK.oneofs_by_name['row_status'].fields.append(
-  _READROWSRESPONSE_CELLCHUNK.fields_by_name['reset_row'])
-_READROWSRESPONSE_CELLCHUNK.fields_by_name['reset_row'].containing_oneof = _READROWSRESPONSE_CELLCHUNK.oneofs_by_name['row_status']
-_READROWSRESPONSE_CELLCHUNK.oneofs_by_name['row_status'].fields.append(
-  _READROWSRESPONSE_CELLCHUNK.fields_by_name['commit_row'])
-_READROWSRESPONSE_CELLCHUNK.fields_by_name['commit_row'].containing_oneof = _READROWSRESPONSE_CELLCHUNK.oneofs_by_name['row_status']
-_READROWSRESPONSE.fields_by_name['chunks'].message_type = _READROWSRESPONSE_CELLCHUNK
-_MUTATEROWREQUEST.fields_by_name['mutations'].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._MUTATION
-_MUTATEROWSREQUEST_ENTRY.fields_by_name['mutations'].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._MUTATION
+_READROWSRESPONSE_CELLCHUNK.oneofs_by_name["row_status"].fields.append(
+    _READROWSRESPONSE_CELLCHUNK.fields_by_name["reset_row"]
+)
+_READROWSRESPONSE_CELLCHUNK.fields_by_name[
+    "reset_row"
+].containing_oneof = _READROWSRESPONSE_CELLCHUNK.oneofs_by_name["row_status"]
+_READROWSRESPONSE_CELLCHUNK.oneofs_by_name["row_status"].fields.append(
+    _READROWSRESPONSE_CELLCHUNK.fields_by_name["commit_row"]
+)
+_READROWSRESPONSE_CELLCHUNK.fields_by_name[
+    "commit_row"
+].containing_oneof = _READROWSRESPONSE_CELLCHUNK.oneofs_by_name["row_status"]
+_READROWSRESPONSE.fields_by_name["chunks"].message_type = _READROWSRESPONSE_CELLCHUNK
+_MUTATEROWREQUEST.fields_by_name[
+    "mutations"
+].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._MUTATION
+_MUTATEROWSREQUEST_ENTRY.fields_by_name[
+    "mutations"
+].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._MUTATION
 _MUTATEROWSREQUEST_ENTRY.containing_type = _MUTATEROWSREQUEST
-_MUTATEROWSREQUEST.fields_by_name['entries'].message_type = _MUTATEROWSREQUEST_ENTRY
-_MUTATEROWSRESPONSE_ENTRY.fields_by_name['status'].message_type = google_dot_rpc_dot_status__pb2._STATUS
+_MUTATEROWSREQUEST.fields_by_name["entries"].message_type = _MUTATEROWSREQUEST_ENTRY
+_MUTATEROWSRESPONSE_ENTRY.fields_by_name[
+    "status"
+].message_type = google_dot_rpc_dot_status__pb2._STATUS
 _MUTATEROWSRESPONSE_ENTRY.containing_type = _MUTATEROWSRESPONSE
-_MUTATEROWSRESPONSE.fields_by_name['entries'].message_type = _MUTATEROWSRESPONSE_ENTRY
-_CHECKANDMUTATEROWREQUEST.fields_by_name['predicate_filter'].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._ROWFILTER
-_CHECKANDMUTATEROWREQUEST.fields_by_name['true_mutations'].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._MUTATION
-_CHECKANDMUTATEROWREQUEST.fields_by_name['false_mutations'].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._MUTATION
-_READMODIFYWRITEROWREQUEST.fields_by_name['rules'].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._READMODIFYWRITERULE
-_READMODIFYWRITEROWRESPONSE.fields_by_name['row'].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._ROW
-DESCRIPTOR.message_types_by_name['ReadRowsRequest'] = _READROWSREQUEST
-DESCRIPTOR.message_types_by_name['ReadRowsResponse'] = _READROWSRESPONSE
-DESCRIPTOR.message_types_by_name['SampleRowKeysRequest'] = _SAMPLEROWKEYSREQUEST
-DESCRIPTOR.message_types_by_name['SampleRowKeysResponse'] = _SAMPLEROWKEYSRESPONSE
-DESCRIPTOR.message_types_by_name['MutateRowRequest'] = _MUTATEROWREQUEST
-DESCRIPTOR.message_types_by_name['MutateRowResponse'] = _MUTATEROWRESPONSE
-DESCRIPTOR.message_types_by_name['MutateRowsRequest'] = _MUTATEROWSREQUEST
-DESCRIPTOR.message_types_by_name['MutateRowsResponse'] = _MUTATEROWSRESPONSE
-DESCRIPTOR.message_types_by_name['CheckAndMutateRowRequest'] = _CHECKANDMUTATEROWREQUEST
-DESCRIPTOR.message_types_by_name['CheckAndMutateRowResponse'] = _CHECKANDMUTATEROWRESPONSE
-DESCRIPTOR.message_types_by_name['ReadModifyWriteRowRequest'] = _READMODIFYWRITEROWREQUEST
-DESCRIPTOR.message_types_by_name['ReadModifyWriteRowResponse'] = _READMODIFYWRITEROWRESPONSE
+_MUTATEROWSRESPONSE.fields_by_name["entries"].message_type = _MUTATEROWSRESPONSE_ENTRY
+_CHECKANDMUTATEROWREQUEST.fields_by_name[
+    "predicate_filter"
+].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._ROWFILTER
+_CHECKANDMUTATEROWREQUEST.fields_by_name[
+    "true_mutations"
+].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._MUTATION
+_CHECKANDMUTATEROWREQUEST.fields_by_name[
+    "false_mutations"
+].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._MUTATION
+_READMODIFYWRITEROWREQUEST.fields_by_name[
+    "rules"
+].message_type = (
+    google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._READMODIFYWRITERULE
+)
+_READMODIFYWRITEROWRESPONSE.fields_by_name[
+    "row"
+].message_type = google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2._ROW
+DESCRIPTOR.message_types_by_name["ReadRowsRequest"] = _READROWSREQUEST
+DESCRIPTOR.message_types_by_name["ReadRowsResponse"] = _READROWSRESPONSE
+DESCRIPTOR.message_types_by_name["SampleRowKeysRequest"] = _SAMPLEROWKEYSREQUEST
+DESCRIPTOR.message_types_by_name["SampleRowKeysResponse"] = _SAMPLEROWKEYSRESPONSE
+DESCRIPTOR.message_types_by_name["MutateRowRequest"] = _MUTATEROWREQUEST
+DESCRIPTOR.message_types_by_name["MutateRowResponse"] = _MUTATEROWRESPONSE
+DESCRIPTOR.message_types_by_name["MutateRowsRequest"] = _MUTATEROWSREQUEST
+DESCRIPTOR.message_types_by_name["MutateRowsResponse"] = _MUTATEROWSRESPONSE
+DESCRIPTOR.message_types_by_name["CheckAndMutateRowRequest"] = _CHECKANDMUTATEROWREQUEST
+DESCRIPTOR.message_types_by_name[
+    "CheckAndMutateRowResponse"
+] = _CHECKANDMUTATEROWRESPONSE
+DESCRIPTOR.message_types_by_name[
+    "ReadModifyWriteRowRequest"
+] = _READMODIFYWRITEROWREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ReadModifyWriteRowResponse"
+] = _READMODIFYWRITEROWRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-ReadRowsRequest = _reflection.GeneratedProtocolMessageType('ReadRowsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _READROWSREQUEST,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Request message for Bigtable.ReadRows.
+ReadRowsRequest = _reflection.GeneratedProtocolMessageType(
+    "ReadRowsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_READROWSREQUEST,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Request message for Bigtable.ReadRows.
   
   
   Attributes:
@@ -760,17 +1252,22 @@ ReadRowsRequest = _reflection.GeneratedProtocolMessageType('ReadRowsRequest', (_
           The read will terminate after committing to N rows' worth of
           results. The default (zero) is to return all results.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadRowsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadRowsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ReadRowsRequest)
 
-ReadRowsResponse = _reflection.GeneratedProtocolMessageType('ReadRowsResponse', (_message.Message,), dict(
-
-  CellChunk = _reflection.GeneratedProtocolMessageType('CellChunk', (_message.Message,), dict(
-    DESCRIPTOR = _READROWSRESPONSE_CELLCHUNK,
-    __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-    ,
-    __doc__ = """Specifies a piece of a row's contents returned as part of the read
+ReadRowsResponse = _reflection.GeneratedProtocolMessageType(
+    "ReadRowsResponse",
+    (_message.Message,),
+    dict(
+        CellChunk=_reflection.GeneratedProtocolMessageType(
+            "CellChunk",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_READROWSRESPONSE_CELLCHUNK,
+                __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+                __doc__="""Specifies a piece of a row's contents returned as part of the read
     response stream.
     
     
@@ -824,13 +1321,12 @@ ReadRowsResponse = _reflection.GeneratedProtocolMessageType('ReadRowsResponse', 
             Indicates that the client can safely process all previous
             chunks for ``row_key``, as its data has been fully read.
     """,
-    # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadRowsResponse.CellChunk)
-    ))
-  ,
-  DESCRIPTOR = _READROWSRESPONSE,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Response message for Bigtable.ReadRows.
+                # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadRowsResponse.CellChunk)
+            ),
+        ),
+        DESCRIPTOR=_READROWSRESPONSE,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Response message for Bigtable.ReadRows.
   
   
   Attributes:
@@ -843,16 +1339,19 @@ ReadRowsResponse = _reflection.GeneratedProtocolMessageType('ReadRowsResponse', 
           lot of data that was filtered out since the last committed row
           key, allowing the client to skip that work on a retry.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadRowsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadRowsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ReadRowsResponse)
 _sym_db.RegisterMessage(ReadRowsResponse.CellChunk)
 
-SampleRowKeysRequest = _reflection.GeneratedProtocolMessageType('SampleRowKeysRequest', (_message.Message,), dict(
-  DESCRIPTOR = _SAMPLEROWKEYSREQUEST,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Request message for Bigtable.SampleRowKeys.
+SampleRowKeysRequest = _reflection.GeneratedProtocolMessageType(
+    "SampleRowKeysRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_SAMPLEROWKEYSREQUEST,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Request message for Bigtable.SampleRowKeys.
   
   
   Attributes:
@@ -864,15 +1363,18 @@ SampleRowKeysRequest = _reflection.GeneratedProtocolMessageType('SampleRowKeysRe
           This value specifies routing for replication. If not
           specified, the "default" application profile will be used.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.SampleRowKeysRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.SampleRowKeysRequest)
+    ),
+)
 _sym_db.RegisterMessage(SampleRowKeysRequest)
 
-SampleRowKeysResponse = _reflection.GeneratedProtocolMessageType('SampleRowKeysResponse', (_message.Message,), dict(
-  DESCRIPTOR = _SAMPLEROWKEYSRESPONSE,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Response message for Bigtable.SampleRowKeys.
+SampleRowKeysResponse = _reflection.GeneratedProtocolMessageType(
+    "SampleRowKeysResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_SAMPLEROWKEYSRESPONSE,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Response message for Bigtable.SampleRowKeys.
   
   
   Attributes:
@@ -891,15 +1393,18 @@ SampleRowKeysResponse = _reflection.GeneratedProtocolMessageType('SampleRowKeysR
           between two subsequent samples would require space roughly
           equal to the difference in their ``offset_bytes`` fields.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.SampleRowKeysResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.SampleRowKeysResponse)
+    ),
+)
 _sym_db.RegisterMessage(SampleRowKeysResponse)
 
-MutateRowRequest = _reflection.GeneratedProtocolMessageType('MutateRowRequest', (_message.Message,), dict(
-  DESCRIPTOR = _MUTATEROWREQUEST,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Request message for Bigtable.MutateRow.
+MutateRowRequest = _reflection.GeneratedProtocolMessageType(
+    "MutateRowRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_MUTATEROWREQUEST,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Request message for Bigtable.MutateRow.
   
   
   Attributes:
@@ -918,27 +1423,35 @@ MutateRowRequest = _reflection.GeneratedProtocolMessageType('MutateRowRequest', 
           masked by later ones. Must contain at least one entry and at
           most 100000.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowRequest)
+    ),
+)
 _sym_db.RegisterMessage(MutateRowRequest)
 
-MutateRowResponse = _reflection.GeneratedProtocolMessageType('MutateRowResponse', (_message.Message,), dict(
-  DESCRIPTOR = _MUTATEROWRESPONSE,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Response message for Bigtable.MutateRow.
+MutateRowResponse = _reflection.GeneratedProtocolMessageType(
+    "MutateRowResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_MUTATEROWRESPONSE,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Response message for Bigtable.MutateRow.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowResponse)
+    ),
+)
 _sym_db.RegisterMessage(MutateRowResponse)
 
-MutateRowsRequest = _reflection.GeneratedProtocolMessageType('MutateRowsRequest', (_message.Message,), dict(
-
-  Entry = _reflection.GeneratedProtocolMessageType('Entry', (_message.Message,), dict(
-    DESCRIPTOR = _MUTATEROWSREQUEST_ENTRY,
-    __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-    ,
-    __doc__ = """Attributes:
+MutateRowsRequest = _reflection.GeneratedProtocolMessageType(
+    "MutateRowsRequest",
+    (_message.Message,),
+    dict(
+        Entry=_reflection.GeneratedProtocolMessageType(
+            "Entry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_MUTATEROWSREQUEST_ENTRY,
+                __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+                __doc__="""Attributes:
         row_key:
             The key of the row to which the ``mutations`` should be
             applied.
@@ -948,13 +1461,12 @@ MutateRowsRequest = _reflection.GeneratedProtocolMessageType('MutateRowsRequest'
             can be masked by later ones. You must specify at least one
             mutation.
     """,
-    # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowsRequest.Entry)
-    ))
-  ,
-  DESCRIPTOR = _MUTATEROWSREQUEST,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Request message for BigtableService.MutateRows.
+                # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowsRequest.Entry)
+            ),
+        ),
+        DESCRIPTOR=_MUTATEROWSREQUEST,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Request message for BigtableService.MutateRows.
   
   
   Attributes:
@@ -972,18 +1484,23 @@ MutateRowsRequest = _reflection.GeneratedProtocolMessageType('MutateRowsRequest'
           specified, and in total the entries can contain at most 100000
           mutations.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowsRequest)
+    ),
+)
 _sym_db.RegisterMessage(MutateRowsRequest)
 _sym_db.RegisterMessage(MutateRowsRequest.Entry)
 
-MutateRowsResponse = _reflection.GeneratedProtocolMessageType('MutateRowsResponse', (_message.Message,), dict(
-
-  Entry = _reflection.GeneratedProtocolMessageType('Entry', (_message.Message,), dict(
-    DESCRIPTOR = _MUTATEROWSRESPONSE_ENTRY,
-    __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-    ,
-    __doc__ = """Attributes:
+MutateRowsResponse = _reflection.GeneratedProtocolMessageType(
+    "MutateRowsResponse",
+    (_message.Message,),
+    dict(
+        Entry=_reflection.GeneratedProtocolMessageType(
+            "Entry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_MUTATEROWSRESPONSE_ENTRY,
+                __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+                __doc__="""Attributes:
         index:
             The index into the original request's ``entries`` list of the
             Entry for which a result is being reported.
@@ -994,29 +1511,31 @@ MutateRowsResponse = _reflection.GeneratedProtocolMessageType('MutateRowsRespons
             Entry. In the event that this occurs, the same error will be
             reported for both entries.
     """,
-    # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowsResponse.Entry)
-    ))
-  ,
-  DESCRIPTOR = _MUTATEROWSRESPONSE,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Response message for BigtableService.MutateRows.
+                # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowsResponse.Entry)
+            ),
+        ),
+        DESCRIPTOR=_MUTATEROWSRESPONSE,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Response message for BigtableService.MutateRows.
   
   
   Attributes:
       entries:
           One or more results for Entries from the batch request.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowsResponse)
+    ),
+)
 _sym_db.RegisterMessage(MutateRowsResponse)
 _sym_db.RegisterMessage(MutateRowsResponse.Entry)
 
-CheckAndMutateRowRequest = _reflection.GeneratedProtocolMessageType('CheckAndMutateRowRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CHECKANDMUTATEROWREQUEST,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Request message for Bigtable.CheckAndMutateRow.
+CheckAndMutateRowRequest = _reflection.GeneratedProtocolMessageType(
+    "CheckAndMutateRowRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CHECKANDMUTATEROWREQUEST,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Request message for Bigtable.CheckAndMutateRow.
   
   
   Attributes:
@@ -1050,15 +1569,18 @@ CheckAndMutateRowRequest = _reflection.GeneratedProtocolMessageType('CheckAndMut
           least one entry if ``true_mutations`` is empty, and at most
           100000.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.CheckAndMutateRowRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.CheckAndMutateRowRequest)
+    ),
+)
 _sym_db.RegisterMessage(CheckAndMutateRowRequest)
 
-CheckAndMutateRowResponse = _reflection.GeneratedProtocolMessageType('CheckAndMutateRowResponse', (_message.Message,), dict(
-  DESCRIPTOR = _CHECKANDMUTATEROWRESPONSE,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Response message for Bigtable.CheckAndMutateRow.
+CheckAndMutateRowResponse = _reflection.GeneratedProtocolMessageType(
+    "CheckAndMutateRowResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CHECKANDMUTATEROWRESPONSE,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Response message for Bigtable.CheckAndMutateRow.
   
   
   Attributes:
@@ -1066,15 +1588,18 @@ CheckAndMutateRowResponse = _reflection.GeneratedProtocolMessageType('CheckAndMu
           Whether or not the request's ``predicate_filter`` yielded any
           results for the specified row.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.CheckAndMutateRowResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.CheckAndMutateRowResponse)
+    ),
+)
 _sym_db.RegisterMessage(CheckAndMutateRowResponse)
 
-ReadModifyWriteRowRequest = _reflection.GeneratedProtocolMessageType('ReadModifyWriteRowRequest', (_message.Message,), dict(
-  DESCRIPTOR = _READMODIFYWRITEROWREQUEST,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Request message for Bigtable.ReadModifyWriteRow.
+ReadModifyWriteRowRequest = _reflection.GeneratedProtocolMessageType(
+    "ReadModifyWriteRowRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_READMODIFYWRITEROWREQUEST,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Request message for Bigtable.ReadModifyWriteRow.
   
   
   Attributes:
@@ -1093,15 +1618,18 @@ ReadModifyWriteRowRequest = _reflection.GeneratedProtocolMessageType('ReadModify
           transformed into writes. Entries are applied in order, meaning
           that earlier rules will affect the results of later ones.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadModifyWriteRowRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadModifyWriteRowRequest)
+    ),
+)
 _sym_db.RegisterMessage(ReadModifyWriteRowRequest)
 
-ReadModifyWriteRowResponse = _reflection.GeneratedProtocolMessageType('ReadModifyWriteRowResponse', (_message.Message,), dict(
-  DESCRIPTOR = _READMODIFYWRITEROWRESPONSE,
-  __module__ = 'google.cloud.bigtable_v2.proto.bigtable_pb2'
-  ,
-  __doc__ = """Response message for Bigtable.ReadModifyWriteRow.
+ReadModifyWriteRowResponse = _reflection.GeneratedProtocolMessageType(
+    "ReadModifyWriteRowResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_READMODIFYWRITEROWRESPONSE,
+        __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
+        __doc__="""Response message for Bigtable.ReadModifyWriteRow.
   
   
   Attributes:
@@ -1109,80 +1637,117 @@ ReadModifyWriteRowResponse = _reflection.GeneratedProtocolMessageType('ReadModif
           A Row containing the new contents of all cells modified by the
           request.
   """,
-  # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadModifyWriteRowResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadModifyWriteRowResponse)
+    ),
+)
 _sym_db.RegisterMessage(ReadModifyWriteRowResponse)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\026com.google.bigtable.v2B\rBigtableProtoP\001Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\252\002\030Google.Cloud.Bigtable.V2\312\002\030Google\\Cloud\\Bigtable\\V2'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\026com.google.bigtable.v2B\rBigtableProtoP\001Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\252\002\030Google.Cloud.Bigtable.V2\312\002\030Google\\Cloud\\Bigtable\\V2"
+    ),
+)
 
 _BIGTABLE = _descriptor.ServiceDescriptor(
-  name='Bigtable',
-  full_name='google.bigtable.v2.Bigtable',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=1912,
-  serialized_end=2981,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='ReadRows',
-    full_name='google.bigtable.v2.Bigtable.ReadRows',
+    name="Bigtable",
+    full_name="google.bigtable.v2.Bigtable",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_READROWSREQUEST,
-    output_type=_READROWSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002>\"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='SampleRowKeys',
-    full_name='google.bigtable.v2.Bigtable.SampleRowKeys',
-    index=1,
-    containing_service=None,
-    input_type=_SAMPLEROWKEYSREQUEST,
-    output_type=_SAMPLEROWKEYSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002@\022>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='MutateRow',
-    full_name='google.bigtable.v2.Bigtable.MutateRow',
-    index=2,
-    containing_service=None,
-    input_type=_MUTATEROWREQUEST,
-    output_type=_MUTATEROWRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002?\":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='MutateRows',
-    full_name='google.bigtable.v2.Bigtable.MutateRows',
-    index=3,
-    containing_service=None,
-    input_type=_MUTATEROWSREQUEST,
-    output_type=_MUTATEROWSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002@\";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CheckAndMutateRow',
-    full_name='google.bigtable.v2.Bigtable.CheckAndMutateRow',
-    index=4,
-    containing_service=None,
-    input_type=_CHECKANDMUTATEROWREQUEST,
-    output_type=_CHECKANDMUTATEROWRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002G\"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ReadModifyWriteRow',
-    full_name='google.bigtable.v2.Bigtable.ReadModifyWriteRow',
-    index=5,
-    containing_service=None,
-    input_type=_READMODIFYWRITEROWREQUEST,
-    output_type=_READMODIFYWRITEROWRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002H\"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\001*')),
-  ),
-])
+    options=None,
+    serialized_start=1912,
+    serialized_end=2981,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="ReadRows",
+            full_name="google.bigtable.v2.Bigtable.ReadRows",
+            index=0,
+            containing_service=None,
+            input_type=_READROWSREQUEST,
+            output_type=_READROWSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002>"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="SampleRowKeys",
+            full_name="google.bigtable.v2.Bigtable.SampleRowKeys",
+            index=1,
+            containing_service=None,
+            input_type=_SAMPLEROWKEYSREQUEST,
+            output_type=_SAMPLEROWKEYSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002@\022>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="MutateRow",
+            full_name="google.bigtable.v2.Bigtable.MutateRow",
+            index=2,
+            containing_service=None,
+            input_type=_MUTATEROWREQUEST,
+            output_type=_MUTATEROWRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002?":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="MutateRows",
+            full_name="google.bigtable.v2.Bigtable.MutateRows",
+            index=3,
+            containing_service=None,
+            input_type=_MUTATEROWSREQUEST,
+            output_type=_MUTATEROWSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002@";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CheckAndMutateRow",
+            full_name="google.bigtable.v2.Bigtable.CheckAndMutateRow",
+            index=4,
+            containing_service=None,
+            input_type=_CHECKANDMUTATEROWREQUEST,
+            output_type=_CHECKANDMUTATEROWRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002G"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ReadModifyWriteRow",
+            full_name="google.bigtable.v2.Bigtable.ReadModifyWriteRow",
+            index=5,
+            containing_service=None,
+            input_type=_READMODIFYWRITEROWREQUEST,
+            output_type=_READMODIFYWRITEROWRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002H"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\001*'
+                ),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_BIGTABLE)
 
-DESCRIPTOR.services_by_name['Bigtable'] = _BIGTABLE
+DESCRIPTOR.services_by_name["Bigtable"] = _BIGTABLE
 
 # @@protoc_insertion_point(module_scope)

@@ -36,12 +36,7 @@ BQ_TO_AVRO_TYPES = {
     "int64": "long",
     "float64": "double",
     "bool": "boolean",
-    "numeric": {
-        "type": "bytes",
-        "logicalType": "decimal",
-        "precision": 38,
-        "scale": 9,
-    },
+    "numeric": {"type": "bytes", "logicalType": "decimal", "precision": 38, "scale": 9},
     "string": "string",
     "bytes": "bytes",
     "date": {"type": "int", "logicalType": "date"},
@@ -95,9 +90,7 @@ SCALAR_BLOCKS = [
             "bytes_col": b"\x54\x69\x6d",
             "date_col": datetime.date(1970, 1, 1),
             "time_col": datetime.time(16, 20),
-            "ts_col": datetime.datetime(
-                1991, 8, 25, 20, 57, 8, tzinfo=pytz.utc
-            ),
+            "ts_col": datetime.datetime(1991, 8, 25, 20, 57, 8, tzinfo=pytz.utc),
         }
     ],
 ]
@@ -117,9 +110,7 @@ def class_under_test(mut):
 
 @pytest.fixture()
 def mock_client():
-    from google.cloud.bigquery_storage_v1beta1.gapic import (
-        big_query_storage_client,
-    )
+    from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client
 
     return mock.create_autospec(big_query_storage_client.BigQueryStorageClient)
 
@@ -142,14 +133,12 @@ def _bq_to_avro_blocks(bq_blocks, avro_schema_json):
 def _avro_blocks_w_deadline(avro_blocks):
     for block in avro_blocks:
         yield block
-    raise google.api_core.exceptions.DeadlineExceeded('test: please reconnect')
+    raise google.api_core.exceptions.DeadlineExceeded("test: please reconnect")
 
 
 def _generate_read_session(avro_schema_json):
     schema = json.dumps(avro_schema_json)
-    return bigquery_storage_v1beta1.types.ReadSession(
-        avro_schema={"schema": schema},
-    )
+    return bigquery_storage_v1beta1.types.ReadSession(avro_schema={"schema": schema})
 
 
 def _bq_to_avro_schema(bq_columns):
@@ -165,13 +154,7 @@ def _bq_to_avro_schema(bq_columns):
         if mode == "nullable":
             type_ = ["null", type_]
 
-        fields.append(
-            {
-                "name": name,
-                "type": type_,
-                "doc": doc,
-            }
-        )
+        fields.append({"name": name, "type": type_, "doc": doc})
 
     return avro_schema
 
@@ -183,14 +166,10 @@ def _get_avro_bytes(rows, avro_schema):
     return avro_file.getvalue()
 
 
-def test_rows_raises_import_error(
-        mut, class_under_test, mock_client, monkeypatch):
-    monkeypatch.setattr(mut, 'fastavro', None)
+def test_rows_raises_import_error(mut, class_under_test, mock_client, monkeypatch):
+    monkeypatch.setattr(mut, "fastavro", None)
     reader = class_under_test(
-        [],
-        mock_client,
-        bigquery_storage_v1beta1.types.StreamPosition(),
-        {},
+        [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
     read_session = bigquery_storage_v1beta1.types.ReadSession()
 
@@ -199,16 +178,11 @@ def test_rows_raises_import_error(
 
 
 def test_rows_w_empty_stream(class_under_test, mock_client):
-    bq_columns = [
-        {"name": "int_col", "type": "int64"},
-    ]
+    bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
     read_session = _generate_read_session(avro_schema)
     reader = class_under_test(
-        [],
-        mock_client,
-        bigquery_storage_v1beta1.types.StreamPosition(),
-        {},
+        [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
 
     got = tuple(reader.rows(read_session))
@@ -221,10 +195,7 @@ def test_rows_w_scalars(class_under_test, mock_client):
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
 
     reader = class_under_test(
-        avro_blocks,
-        mock_client,
-        bigquery_storage_v1beta1.types.StreamPosition(),
-        {},
+        avro_blocks, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
     got = tuple(reader.rows(read_session))
 
@@ -233,9 +204,7 @@ def test_rows_w_scalars(class_under_test, mock_client):
 
 
 def test_rows_w_reconnect(class_under_test, mock_client):
-    bq_columns = [
-        {"name": "int_col", "type": "int64"},
-    ]
+    bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
     read_session = _generate_read_session(avro_schema)
     bq_blocks_1 = [
@@ -243,49 +212,45 @@ def test_rows_w_reconnect(class_under_test, mock_client):
         [{"int_col": 345}, {"int_col": 456}],
     ]
     avro_blocks_1 = _avro_blocks_w_deadline(
-        _bq_to_avro_blocks(bq_blocks_1, avro_schema),
+        _bq_to_avro_blocks(bq_blocks_1, avro_schema)
     )
-    bq_blocks_2 = [
-        [{"int_col": 567}, {"int_col": 789}],
-        [{"int_col": 890}],
-    ]
+    bq_blocks_2 = [[{"int_col": 567}, {"int_col": 789}], [{"int_col": 890}]]
     avro_blocks_2 = _bq_to_avro_blocks(bq_blocks_2, avro_schema)
     mock_client.read_rows.return_value = avro_blocks_2
     stream_position = bigquery_storage_v1beta1.types.StreamPosition(
-        stream={'name': 'test'},
+        stream={"name": "test"}
     )
 
     reader = class_under_test(
         avro_blocks_1,
         mock_client,
         stream_position,
-        {'metadata': {'test-key': 'test-value'}},
+        {"metadata": {"test-key": "test-value"}},
     )
     got = tuple(reader.rows(read_session))
 
-    expected = tuple(itertools.chain(
-        itertools.chain.from_iterable(bq_blocks_1),
-        itertools.chain.from_iterable(bq_blocks_2),
-    ))
+    expected = tuple(
+        itertools.chain(
+            itertools.chain.from_iterable(bq_blocks_1),
+            itertools.chain.from_iterable(bq_blocks_2),
+        )
+    )
 
     assert got == expected
     mock_client.read_rows.assert_called_once_with(
         bigquery_storage_v1beta1.types.StreamPosition(
-            stream={'name': 'test'},
-            offset=4,
+            stream={"name": "test"}, offset=4
         ),
-        metadata={'test-key': 'test-value'},
+        metadata={"test-key": "test-value"},
     )
 
 
 def test_to_dataframe_no_pandas_raises_import_error(
-        mut, class_under_test, mock_client, monkeypatch):
-    monkeypatch.setattr(mut, 'pandas', None)
+    mut, class_under_test, mock_client, monkeypatch
+):
+    monkeypatch.setattr(mut, "pandas", None)
     reader = class_under_test(
-        [],
-        mock_client,
-        bigquery_storage_v1beta1.types.StreamPosition(),
-        {},
+        [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
     read_session = bigquery_storage_v1beta1.types.ReadSession()
 
@@ -294,13 +259,11 @@ def test_to_dataframe_no_pandas_raises_import_error(
 
 
 def test_to_dataframe_no_fastavro_raises_import_error(
-        mut, class_under_test, mock_client, monkeypatch):
-    monkeypatch.setattr(mut, 'fastavro', None)
+    mut, class_under_test, mock_client, monkeypatch
+):
+    monkeypatch.setattr(mut, "fastavro", None)
     reader = class_under_test(
-        [],
-        mock_client,
-        bigquery_storage_v1beta1.types.StreamPosition(),
-        {},
+        [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
     read_session = bigquery_storage_v1beta1.types.ReadSession()
 
@@ -314,22 +277,17 @@ def test_to_dataframe_w_scalars(class_under_test):
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
 
     reader = class_under_test(
-        avro_blocks,
-        mock_client,
-        bigquery_storage_v1beta1.types.StreamPosition(),
-        {},
+        avro_blocks, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
     got = reader.to_dataframe(read_session)
 
-    expected = pandas.DataFrame(
-        list(itertools.chain.from_iterable(SCALAR_BLOCKS)),
-    )
+    expected = pandas.DataFrame(list(itertools.chain.from_iterable(SCALAR_BLOCKS)))
     # fastavro provides its own UTC definition, so
     # compare the timestamp columns separately.
-    got_ts = got['ts_col']
-    got = got.drop(columns=['ts_col'])
-    expected_ts = expected['ts_col']
-    expected = expected.drop(columns=['ts_col'])
+    got_ts = got["ts_col"]
+    got = got.drop(columns=["ts_col"])
+    expected_ts = expected["ts_col"]
+    expected = expected.drop(columns=["ts_col"])
 
     pandas.testing.assert_frame_equal(
         got.reset_index(drop=True),  # reset_index to ignore row labels
