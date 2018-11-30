@@ -18,7 +18,7 @@ import unittest
 class TestPolicy(unittest.TestCase):
     @staticmethod
     def _get_target_class():
-        from google.cloud.iam import Policy
+        from google.api_core.iam import Policy
 
         return Policy
 
@@ -75,7 +75,7 @@ class TestPolicy(unittest.TestCase):
             del policy["nonesuch"]
 
     def test_owners_getter(self):
-        from google.cloud.iam import OWNER_ROLE
+        from google.api_core.iam import OWNER_ROLE
 
         MEMBER = "user:phred@example.com"
         expected = frozenset([MEMBER])
@@ -85,7 +85,7 @@ class TestPolicy(unittest.TestCase):
 
     def test_owners_setter(self):
         import warnings
-        from google.cloud.iam import OWNER_ROLE
+        from google.api_core.iam import OWNER_ROLE
 
         MEMBER = "user:phred@example.com"
         expected = set([MEMBER])
@@ -96,7 +96,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(policy[OWNER_ROLE], expected)
 
     def test_editors_getter(self):
-        from google.cloud.iam import EDITOR_ROLE
+        from google.api_core.iam import EDITOR_ROLE
 
         MEMBER = "user:phred@example.com"
         expected = frozenset([MEMBER])
@@ -106,7 +106,7 @@ class TestPolicy(unittest.TestCase):
 
     def test_editors_setter(self):
         import warnings
-        from google.cloud.iam import EDITOR_ROLE
+        from google.api_core.iam import EDITOR_ROLE
 
         MEMBER = "user:phred@example.com"
         expected = set([MEMBER])
@@ -117,7 +117,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(policy[EDITOR_ROLE], expected)
 
     def test_viewers_getter(self):
-        from google.cloud.iam import VIEWER_ROLE
+        from google.api_core.iam import VIEWER_ROLE
 
         MEMBER = "user:phred@example.com"
         expected = frozenset([MEMBER])
@@ -127,7 +127,7 @@ class TestPolicy(unittest.TestCase):
 
     def test_viewers_setter(self):
         import warnings
-        from google.cloud.iam import VIEWER_ROLE
+        from google.api_core.iam import VIEWER_ROLE
 
         MEMBER = "user:phred@example.com"
         expected = set([MEMBER])
@@ -182,7 +182,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(dict(policy), {})
 
     def test_from_api_repr_complete(self):
-        from google.cloud.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.api_core.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
 
         OWNER1 = "group:cloud-logs@google.com"
         OWNER2 = "user:phred@example.com"
@@ -243,7 +243,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(policy.to_api_repr(), {})
 
     def test_to_api_repr_binding_w_duplicates(self):
-        from google.cloud.iam import OWNER_ROLE
+        from google.api_core.iam import OWNER_ROLE
 
         OWNER = "group:cloud-logs@google.com"
         policy = self._make_one()
@@ -255,7 +255,7 @@ class TestPolicy(unittest.TestCase):
 
     def test_to_api_repr_full(self):
         import operator
-        from google.cloud.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.api_core.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
 
         OWNER1 = "group:cloud-logs@google.com"
         OWNER2 = "user:phred@example.com"
