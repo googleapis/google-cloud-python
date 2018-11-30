@@ -17,7 +17,8 @@
 
 class Sentinel(object):
     """Sentinel objects used to signal special handling."""
-    __slots__ = ('description',)
+
+    __slots__ = ("description",)
 
     def __init__(self, description):
         self.description = description
@@ -30,7 +31,8 @@ DELETE_FIELD = Sentinel("Value used to delete a field in a document.")
 
 
 SERVER_TIMESTAMP = Sentinel(
-    "Value used to set a document field to the server timestamp.")
+    "Value used to set a document field to the server timestamp."
+)
 
 
 class _ValueList(object):
@@ -39,7 +41,8 @@ class _ValueList(object):
     Args:
         values (List | Tuple): values held in the helper.
     """
-    slots = ('_values',)
+
+    slots = ("_values",)
 
     def __init__(self, values):
         if not isinstance(values, (list, tuple)):
