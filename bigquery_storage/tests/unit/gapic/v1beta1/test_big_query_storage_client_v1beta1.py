@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client  # noqa
@@ -77,8 +78,10 @@ class TestBigQueryStorageClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = big_query_storage_client.BigQueryStorageClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup Request
         table_reference = {}
@@ -96,8 +99,10 @@ class TestBigQueryStorageClient(object):
     def test_create_read_session_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = big_query_storage_client.BigQueryStorageClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup request
         table_reference = {}
@@ -113,8 +118,10 @@ class TestBigQueryStorageClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = big_query_storage_client.BigQueryStorageClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup Request
         read_position = {}
@@ -133,8 +140,10 @@ class TestBigQueryStorageClient(object):
     def test_read_rows_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = big_query_storage_client.BigQueryStorageClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup request
         read_position = {}
@@ -150,8 +159,10 @@ class TestBigQueryStorageClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = big_query_storage_client.BigQueryStorageClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup Request
         session = {}
@@ -170,8 +181,10 @@ class TestBigQueryStorageClient(object):
     def test_batch_create_read_session_streams_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = big_query_storage_client.BigQueryStorageClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup request
         session = {}
@@ -183,8 +196,10 @@ class TestBigQueryStorageClient(object):
 
     def test_finalize_stream(self):
         channel = ChannelStub()
-        client = big_query_storage_client.BigQueryStorageClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup Request
         stream = {}
@@ -199,8 +214,10 @@ class TestBigQueryStorageClient(object):
     def test_finalize_stream_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = big_query_storage_client.BigQueryStorageClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup request
         stream = {}
@@ -216,8 +233,10 @@ class TestBigQueryStorageClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = big_query_storage_client.BigQueryStorageClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup Request
         original_stream = {}
@@ -234,8 +253,10 @@ class TestBigQueryStorageClient(object):
     def test_split_read_stream_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = big_query_storage_client.BigQueryStorageClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup request
         original_stream = {}
