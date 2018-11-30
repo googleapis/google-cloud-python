@@ -52,16 +52,10 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
-    def unary_stream(self,
-                     method,
-                     request_serializer=None,
-                     response_deserializer=None):
+    def unary_stream(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -72,41 +66,42 @@ class CustomException(Exception):
 class TestBigQueryStorageClient(object):
     def test_create_read_session(self):
         # Setup Expected Response
-        name = 'name3373707'
-        expected_response = {'name': name}
+        name = "name3373707"
+        expected_response = {"name": name}
         expected_response = storage_pb2.ReadSession(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup Request
         table_reference = {}
-        parent = 'parent-995424086'
+        parent = "parent-995424086"
 
         response = client.create_read_session(table_reference, parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = storage_pb2.CreateReadSessionRequest(
-            table_reference=table_reference, parent=parent)
+            table_reference=table_reference, parent=parent
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_create_read_session_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = big_query_storage_client.BigQueryStorageClient()
 
         # Setup request
         table_reference = {}
-        parent = 'parent-995424086'
+        parent = "parent-995424086"
 
         with pytest.raises(CustomException):
             client.create_read_session(table_reference, parent)
@@ -118,7 +113,7 @@ class TestBigQueryStorageClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = big_query_storage_client.BigQueryStorageClient()
@@ -132,15 +127,14 @@ class TestBigQueryStorageClient(object):
         assert expected_response == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = storage_pb2.ReadRowsRequest(
-            read_position=read_position)
+        expected_request = storage_pb2.ReadRowsRequest(read_position=read_position)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_read_rows_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = big_query_storage_client.BigQueryStorageClient()
@@ -155,11 +149,12 @@ class TestBigQueryStorageClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = storage_pb2.BatchCreateReadSessionStreamsResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = big_query_storage_client.BigQueryStorageClient()
@@ -168,20 +163,20 @@ class TestBigQueryStorageClient(object):
         session = {}
         requested_streams = 1017221410
 
-        response = client.batch_create_read_session_streams(
-            session, requested_streams)
+        response = client.batch_create_read_session_streams(session, requested_streams)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = storage_pb2.BatchCreateReadSessionStreamsRequest(
-            session=session, requested_streams=requested_streams)
+            session=session, requested_streams=requested_streams
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_batch_create_read_session_streams_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = big_query_storage_client.BigQueryStorageClient()
@@ -191,12 +186,11 @@ class TestBigQueryStorageClient(object):
         requested_streams = 1017221410
 
         with pytest.raises(CustomException):
-            client.batch_create_read_session_streams(session,
-                                                     requested_streams)
+            client.batch_create_read_session_streams(session, requested_streams)
 
     def test_finalize_stream(self):
         channel = ChannelStub()
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = big_query_storage_client.BigQueryStorageClient()
@@ -214,7 +208,7 @@ class TestBigQueryStorageClient(object):
     def test_finalize_stream_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = big_query_storage_client.BigQueryStorageClient()
@@ -228,12 +222,11 @@ class TestBigQueryStorageClient(object):
     def test_split_read_stream(self):
         # Setup Expected Response
         expected_response = {}
-        expected_response = storage_pb2.SplitReadStreamResponse(
-            **expected_response)
+        expected_response = storage_pb2.SplitReadStreamResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = big_query_storage_client.BigQueryStorageClient()
@@ -246,14 +239,15 @@ class TestBigQueryStorageClient(object):
 
         assert len(channel.requests) == 1
         expected_request = storage_pb2.SplitReadStreamRequest(
-            original_stream=original_stream)
+            original_stream=original_stream
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_split_read_stream_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = big_query_storage_client.BigQueryStorageClient()
