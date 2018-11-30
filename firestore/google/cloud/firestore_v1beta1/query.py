@@ -161,7 +161,13 @@ class Query(object):
             ~.firestore_v1beta1.query.Query: A "projected" query. Acts as
             a copy of the current query, modified with the newly added
             projection.
+        Raises:
+            ValueError: If any ``field_path`` is invalid.
         """
+        field_paths = list(field_paths)
+        for field_path in field_paths:
+            _helpers.split_field_path(field_path)  # raises
+
         new_projection = query_pb2.StructuredQuery.Projection(
             fields=[
                 query_pb2.StructuredQuery.FieldReference(field_path=field_path)
@@ -205,9 +211,12 @@ class Query(object):
             copy of the current query, modified with the newly added filter.
 
         Raises:
+            ValueError: If ``field_path`` is invalid.
             ValueError: If ``value`` is a NaN or :data:`None` and
                 ``op_string`` is not ``==``.
         """
+        _helpers.split_field_path(field_path)  # raises
+
         if value is None:
             if op_string != _EQ_OP:
                 raise ValueError(_BAD_OP_NAN_NULL)
@@ -272,9 +281,12 @@ class Query(object):
             "order by" constraint.
 
         Raises:
+            ValueError: If ``field_path`` is invalid.
             ValueError: If ``direction`` is not one of :attr:`ASCENDING` or
                 :attr:`DESCENDING`.
         """
+        _helpers.split_field_path(field_path)  # raises
+
         order_pb = query_pb2.StructuredQuery.Order(
             field=query_pb2.StructuredQuery.FieldReference(
                 field_path=field_path,
@@ -539,6 +551,23 @@ class Query(object):
                 composite_filter=composite_filter)
 
     @staticmethod
+    def _normalize_projection(projection):
+        """Helper:  convert field paths to message."""
+        if projection is not None:
+
+            fields = list(projection.fields)
+
+            if not fields:
+                field_ref = query_pb2.StructuredQuery.FieldReference(
+                    field_path='__name__',
+                )
+                return query_pb2.StructuredQuery.Projection(
+                    fields=[field_ref],
+                )
+
+        return projection
+
+    @staticmethod
     def _normalize_cursor(cursor, orders):
         """Helper: convert cursor to a list of values based on orders."""
         if cursor is None:
@@ -583,11 +612,12 @@ class Query(object):
             google.cloud.firestore_v1beta1.types.StructuredQuery: The
             query protobuf.
         """
+        projection = self._normalize_projection(self._projection)
         start_at = self._normalize_cursor(self._start_at, self._orders)
         end_at = self._normalize_cursor(self._end_at, self._orders)
 
         query_kwargs = {
-            'select': self._projection,
+            'select': projection,
             'from': [
                 query_pb2.StructuredQuery.CollectionSelector(
                     collection_id=self._parent.id,

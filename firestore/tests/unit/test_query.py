@@ -101,6 +101,12 @@ class TestQuery(unittest.TestCase):
             ],
         )
 
+    def test_select_invalid_path(self):
+        query = self._make_one(mock.sentinel.parent)
+
+        with self.assertRaises(ValueError):
+            query.select(['*'])
+
     def test_select(self):
         query1 = self._make_one_all_fields()
 
@@ -122,6 +128,12 @@ class TestQuery(unittest.TestCase):
             query3._projection,
             self._make_projection_for_select(field_paths3))
         self._compare_queries(query2, query3, '_projection')
+
+    def test_where_invalid_path(self):
+        query = self._make_one(mock.sentinel.parent)
+
+        with self.assertRaises(ValueError):
+            query.where('*', '==', 1)
 
     def test_where(self):
         from google.cloud.firestore_v1beta1.gapic import enums
@@ -187,6 +199,7 @@ class TestQuery(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._where_unary_helper(float('nan'), 0, op_string='<=')
 
+
     def test_where_w_delete(self):
         from google.cloud.firestore_v1beta1 import DELETE_FIELD
 
@@ -210,6 +223,13 @@ class TestQuery(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self._where_unary_helper(ArrayUnion([2, 4, 8]), 0)
+
+    def test_order_by_invalid_path(self):
+        query = self._make_one(mock.sentinel.parent)
+
+        with self.assertRaises(ValueError):
+            query.order_by('*')
+
 
     def test_order_by(self):
         from google.cloud.firestore_v1beta1.gapic import enums
@@ -499,6 +519,23 @@ class TestQuery(unittest.TestCase):
             ),
         )
         self.assertEqual(filter_pb, expected_pb)
+
+    def test__normalize_projection_none(self):
+        query = self._make_one(mock.sentinel.parent)
+        self.assertIsNone(query._normalize_projection(None))
+
+    def test__normalize_projection_empty(self):
+        projection = self._make_projection_for_select([])
+        query = self._make_one(mock.sentinel.parent)
+        normalized = query._normalize_projection(projection)
+        field_paths = [
+            field_ref.field_path for field_ref in normalized.fields]
+        self.assertEqual(field_paths, ['__name__'])
+
+    def test__normalize_projection_non_empty(self):
+        projection = self._make_projection_for_select(['a', 'b'])
+        query = self._make_one(mock.sentinel.parent)
+        self.assertIs(query._normalize_projection(projection), projection)
 
     def test__normalize_cursor_none(self):
         query = self._make_one(mock.sentinel.parent)
