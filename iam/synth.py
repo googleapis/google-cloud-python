@@ -15,26 +15,32 @@
 """This script is used to synthesize generated parts of this library."""
 
 import synthtool as s
-import synthtool.gcp as gcp
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
+from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
+# ----------------------------------------------------------------------------
+# Generate automl GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
     "iam",
     "v1",
     config_path="/google/iam/credentials/artman_iamcredentials_v1.yaml",
-    artman_output_name="gapic-google-cloud-iamcredentials-v1"
+    artman_output_name="iamcredentials-v1"
 )
 
 excludes = [
     "README.rst",
-    "nox.py",
     "setup.py",
     "docs/index.rst",
 ]
-s.copy(library) # , excludes=excludes)
+s.copy(library, excludes=excludes)
 
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(unit_cov_level=82, cov_level=83)
+s.move(templated_files)
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)
