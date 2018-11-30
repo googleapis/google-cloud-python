@@ -160,7 +160,13 @@ class Query(object):
             ~.firestore_v1beta1.query.Query: A "projected" query. Acts as
             a copy of the current query, modified with the newly added
             projection.
+        Raises:
+            ValueError: If any ``field_path`` is invalid.
         """
+        field_paths = list(field_paths)
+        for field_path in field_paths:
+            _helpers.split_field_path(field_path)  # raises
+
         new_projection = query_pb2.StructuredQuery.Projection(
             fields=[
                 query_pb2.StructuredQuery.FieldReference(field_path=field_path)
@@ -204,9 +210,12 @@ class Query(object):
             copy of the current query, modified with the newly added filter.
 
         Raises:
+            ValueError: If ``field_path`` is invalid.
             ValueError: If ``value`` is a NaN or :data:`None` and
                 ``op_string`` is not ``==``.
         """
+        _helpers.split_field_path(field_path)  # raises
+
         if value is None:
             if op_string != _EQ_OP:
                 raise ValueError(_BAD_OP_NAN_NULL)
@@ -269,9 +278,12 @@ class Query(object):
             "order by" constraint.
 
         Raises:
+            ValueError: If ``field_path`` is invalid.
             ValueError: If ``direction`` is not one of :attr:`ASCENDING` or
                 :attr:`DESCENDING`.
         """
+        _helpers.split_field_path(field_path)  # raises
+
         order_pb = query_pb2.StructuredQuery.Order(
             field=query_pb2.StructuredQuery.FieldReference(
                 field_path=field_path,
