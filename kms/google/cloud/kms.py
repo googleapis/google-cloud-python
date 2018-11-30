@@ -20,4 +20,8 @@ from google.cloud.kms_v1 import KeyManagementServiceClient
 from google.cloud.kms_v1 import enums
 from google.cloud.kms_v1 import types
 
-__all__ = ("enums", "types", "KeyManagementServiceClient")
+__all__ = (
+    'enums',
+    'types',
+    'KeyManagementServiceClient',
+)

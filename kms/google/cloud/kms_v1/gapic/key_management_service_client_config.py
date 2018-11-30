@@ -3,7 +3,7 @@ config = {
         "google.cloud.kms.v1.KeyManagementService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
+                "non_idempotent": []
             },
             "retry_params": {
                 "default": {
@@ -13,121 +13,121 @@ config = {
                     "initial_rpc_timeout_millis": 20000,
                     "rpc_timeout_multiplier": 1.0,
                     "max_rpc_timeout_millis": 20000,
-                    "total_timeout_millis": 600000,
+                    "total_timeout_millis": 600000
                 }
             },
             "methods": {
                 "ListKeyRings": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "ListCryptoKeys": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "ListCryptoKeyVersions": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "GetKeyRing": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "GetCryptoKey": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "GetCryptoKeyVersion": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "CreateKeyRing": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "CreateCryptoKey": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "CreateCryptoKeyVersion": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "UpdateCryptoKey": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "UpdateCryptoKeyVersion": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "Encrypt": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "Decrypt": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "UpdateCryptoKeyPrimaryVersion": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "DestroyCryptoKeyVersion": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "RestoreCryptoKeyVersion": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "GetPublicKey": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "AsymmetricDecrypt": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "AsymmetricSign": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "SetIamPolicy": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "GetIamPolicy": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "TestIamPermissions": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-            },
+                    "retry_params_name": "default"
+                }
+            }
         }
     }
 }
