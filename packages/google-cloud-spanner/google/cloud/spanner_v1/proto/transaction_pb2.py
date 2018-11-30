@@ -2,12 +2,14 @@
 # source: google/cloud/spanner_v1/proto/transaction.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -19,342 +21,554 @@ from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/spanner_v1/proto/transaction.proto',
-  package='google.spanner.v1',
-  syntax='proto3',
-  serialized_pb=_b('\n/google/cloud/spanner_v1/proto/transaction.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc3\x04\n\x12TransactionOptions\x12\x45\n\nread_write\x18\x01 \x01(\x0b\x32/.google.spanner.v1.TransactionOptions.ReadWriteH\x00\x12O\n\x0fpartitioned_dml\x18\x03 \x01(\x0b\x32\x34.google.spanner.v1.TransactionOptions.PartitionedDmlH\x00\x12\x43\n\tread_only\x18\x02 \x01(\x0b\x32..google.spanner.v1.TransactionOptions.ReadOnlyH\x00\x1a\x0b\n\tReadWrite\x1a\x10\n\x0ePartitionedDml\x1a\xa8\x02\n\x08ReadOnly\x12\x10\n\x06strong\x18\x01 \x01(\x08H\x00\x12\x38\n\x12min_read_timestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x32\n\rmax_staleness\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x34\n\x0eread_timestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x34\n\x0f\x65xact_staleness\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x1d\n\x15return_read_timestamp\x18\x06 \x01(\x08\x42\x11\n\x0ftimestamp_boundB\x06\n\x04mode\"M\n\x0bTransaction\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x32\n\x0eread_timestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xa4\x01\n\x13TransactionSelector\x12;\n\nsingle_use\x18\x01 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12\x0c\n\x02id\x18\x02 \x01(\x0cH\x00\x12\x36\n\x05\x62\x65gin\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x42\n\n\x08selectorB\x99\x01\n\x15\x63om.google.spanner.v1B\x10TransactionProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
-
-
+    name="google/cloud/spanner_v1/proto/transaction.proto",
+    package="google.spanner.v1",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n/google/cloud/spanner_v1/proto/transaction.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xc3\x04\n\x12TransactionOptions\x12\x45\n\nread_write\x18\x01 \x01(\x0b\x32/.google.spanner.v1.TransactionOptions.ReadWriteH\x00\x12O\n\x0fpartitioned_dml\x18\x03 \x01(\x0b\x32\x34.google.spanner.v1.TransactionOptions.PartitionedDmlH\x00\x12\x43\n\tread_only\x18\x02 \x01(\x0b\x32..google.spanner.v1.TransactionOptions.ReadOnlyH\x00\x1a\x0b\n\tReadWrite\x1a\x10\n\x0ePartitionedDml\x1a\xa8\x02\n\x08ReadOnly\x12\x10\n\x06strong\x18\x01 \x01(\x08H\x00\x12\x38\n\x12min_read_timestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x32\n\rmax_staleness\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x34\n\x0eread_timestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x34\n\x0f\x65xact_staleness\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x1d\n\x15return_read_timestamp\x18\x06 \x01(\x08\x42\x11\n\x0ftimestamp_boundB\x06\n\x04mode"M\n\x0bTransaction\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x32\n\x0eread_timestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xa4\x01\n\x13TransactionSelector\x12;\n\nsingle_use\x18\x01 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12\x0c\n\x02id\x18\x02 \x01(\x0cH\x00\x12\x36\n\x05\x62\x65gin\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x42\n\n\x08selectorB\x99\x01\n\x15\x63om.google.spanner.v1B\x10TransactionProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _TRANSACTIONOPTIONS_READWRITE = _descriptor.Descriptor(
-  name='ReadWrite',
-  full_name='google.spanner.v1.TransactionOptions.ReadWrite',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=409,
-  serialized_end=420,
+    name="ReadWrite",
+    full_name="google.spanner.v1.TransactionOptions.ReadWrite",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=409,
+    serialized_end=420,
 )
 
 _TRANSACTIONOPTIONS_PARTITIONEDDML = _descriptor.Descriptor(
-  name='PartitionedDml',
-  full_name='google.spanner.v1.TransactionOptions.PartitionedDml',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=422,
-  serialized_end=438,
+    name="PartitionedDml",
+    full_name="google.spanner.v1.TransactionOptions.PartitionedDml",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=422,
+    serialized_end=438,
 )
 
 _TRANSACTIONOPTIONS_READONLY = _descriptor.Descriptor(
-  name='ReadOnly',
-  full_name='google.spanner.v1.TransactionOptions.ReadOnly',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='strong', full_name='google.spanner.v1.TransactionOptions.ReadOnly.strong', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='min_read_timestamp', full_name='google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='max_staleness', full_name='google.spanner.v1.TransactionOptions.ReadOnly.max_staleness', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='read_timestamp', full_name='google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='exact_staleness', full_name='google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='return_read_timestamp', full_name='google.spanner.v1.TransactionOptions.ReadOnly.return_read_timestamp', index=5,
-      number=6, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='timestamp_bound', full_name='google.spanner.v1.TransactionOptions.ReadOnly.timestamp_bound',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=441,
-  serialized_end=737,
+    name="ReadOnly",
+    full_name="google.spanner.v1.TransactionOptions.ReadOnly",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="strong",
+            full_name="google.spanner.v1.TransactionOptions.ReadOnly.strong",
+            index=0,
+            number=1,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="min_read_timestamp",
+            full_name="google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="max_staleness",
+            full_name="google.spanner.v1.TransactionOptions.ReadOnly.max_staleness",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="read_timestamp",
+            full_name="google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="exact_staleness",
+            full_name="google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="return_read_timestamp",
+            full_name="google.spanner.v1.TransactionOptions.ReadOnly.return_read_timestamp",
+            index=5,
+            number=6,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="timestamp_bound",
+            full_name="google.spanner.v1.TransactionOptions.ReadOnly.timestamp_bound",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=441,
+    serialized_end=737,
 )
 
 _TRANSACTIONOPTIONS = _descriptor.Descriptor(
-  name='TransactionOptions',
-  full_name='google.spanner.v1.TransactionOptions',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='read_write', full_name='google.spanner.v1.TransactionOptions.read_write', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='partitioned_dml', full_name='google.spanner.v1.TransactionOptions.partitioned_dml', index=1,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='read_only', full_name='google.spanner.v1.TransactionOptions.read_only', index=2,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_TRANSACTIONOPTIONS_READWRITE, _TRANSACTIONOPTIONS_PARTITIONEDDML, _TRANSACTIONOPTIONS_READONLY, ],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='mode', full_name='google.spanner.v1.TransactionOptions.mode',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=166,
-  serialized_end=745,
+    name="TransactionOptions",
+    full_name="google.spanner.v1.TransactionOptions",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="read_write",
+            full_name="google.spanner.v1.TransactionOptions.read_write",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="partitioned_dml",
+            full_name="google.spanner.v1.TransactionOptions.partitioned_dml",
+            index=1,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="read_only",
+            full_name="google.spanner.v1.TransactionOptions.read_only",
+            index=2,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[
+        _TRANSACTIONOPTIONS_READWRITE,
+        _TRANSACTIONOPTIONS_PARTITIONEDDML,
+        _TRANSACTIONOPTIONS_READONLY,
+    ],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="mode",
+            full_name="google.spanner.v1.TransactionOptions.mode",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=166,
+    serialized_end=745,
 )
 
 
 _TRANSACTION = _descriptor.Descriptor(
-  name='Transaction',
-  full_name='google.spanner.v1.Transaction',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='google.spanner.v1.Transaction.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='read_timestamp', full_name='google.spanner.v1.Transaction.read_timestamp', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=747,
-  serialized_end=824,
+    name="Transaction",
+    full_name="google.spanner.v1.Transaction",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="id",
+            full_name="google.spanner.v1.Transaction.id",
+            index=0,
+            number=1,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="read_timestamp",
+            full_name="google.spanner.v1.Transaction.read_timestamp",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=747,
+    serialized_end=824,
 )
 
 
 _TRANSACTIONSELECTOR = _descriptor.Descriptor(
-  name='TransactionSelector',
-  full_name='google.spanner.v1.TransactionSelector',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='single_use', full_name='google.spanner.v1.TransactionSelector.single_use', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='id', full_name='google.spanner.v1.TransactionSelector.id', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='begin', full_name='google.spanner.v1.TransactionSelector.begin', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='selector', full_name='google.spanner.v1.TransactionSelector.selector',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=827,
-  serialized_end=991,
+    name="TransactionSelector",
+    full_name="google.spanner.v1.TransactionSelector",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="single_use",
+            full_name="google.spanner.v1.TransactionSelector.single_use",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="id",
+            full_name="google.spanner.v1.TransactionSelector.id",
+            index=1,
+            number=2,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="begin",
+            full_name="google.spanner.v1.TransactionSelector.begin",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="selector",
+            full_name="google.spanner.v1.TransactionSelector.selector",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=827,
+    serialized_end=991,
 )
 
 _TRANSACTIONOPTIONS_READWRITE.containing_type = _TRANSACTIONOPTIONS
 _TRANSACTIONOPTIONS_PARTITIONEDDML.containing_type = _TRANSACTIONOPTIONS
-_TRANSACTIONOPTIONS_READONLY.fields_by_name['min_read_timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_TRANSACTIONOPTIONS_READONLY.fields_by_name['max_staleness'].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
-_TRANSACTIONOPTIONS_READONLY.fields_by_name['read_timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_TRANSACTIONOPTIONS_READONLY.fields_by_name['exact_staleness'].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+_TRANSACTIONOPTIONS_READONLY.fields_by_name[
+    "min_read_timestamp"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_TRANSACTIONOPTIONS_READONLY.fields_by_name[
+    "max_staleness"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+_TRANSACTIONOPTIONS_READONLY.fields_by_name[
+    "read_timestamp"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_TRANSACTIONOPTIONS_READONLY.fields_by_name[
+    "exact_staleness"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
 _TRANSACTIONOPTIONS_READONLY.containing_type = _TRANSACTIONOPTIONS
-_TRANSACTIONOPTIONS_READONLY.oneofs_by_name['timestamp_bound'].fields.append(
-  _TRANSACTIONOPTIONS_READONLY.fields_by_name['strong'])
-_TRANSACTIONOPTIONS_READONLY.fields_by_name['strong'].containing_oneof = _TRANSACTIONOPTIONS_READONLY.oneofs_by_name['timestamp_bound']
-_TRANSACTIONOPTIONS_READONLY.oneofs_by_name['timestamp_bound'].fields.append(
-  _TRANSACTIONOPTIONS_READONLY.fields_by_name['min_read_timestamp'])
-_TRANSACTIONOPTIONS_READONLY.fields_by_name['min_read_timestamp'].containing_oneof = _TRANSACTIONOPTIONS_READONLY.oneofs_by_name['timestamp_bound']
-_TRANSACTIONOPTIONS_READONLY.oneofs_by_name['timestamp_bound'].fields.append(
-  _TRANSACTIONOPTIONS_READONLY.fields_by_name['max_staleness'])
-_TRANSACTIONOPTIONS_READONLY.fields_by_name['max_staleness'].containing_oneof = _TRANSACTIONOPTIONS_READONLY.oneofs_by_name['timestamp_bound']
-_TRANSACTIONOPTIONS_READONLY.oneofs_by_name['timestamp_bound'].fields.append(
-  _TRANSACTIONOPTIONS_READONLY.fields_by_name['read_timestamp'])
-_TRANSACTIONOPTIONS_READONLY.fields_by_name['read_timestamp'].containing_oneof = _TRANSACTIONOPTIONS_READONLY.oneofs_by_name['timestamp_bound']
-_TRANSACTIONOPTIONS_READONLY.oneofs_by_name['timestamp_bound'].fields.append(
-  _TRANSACTIONOPTIONS_READONLY.fields_by_name['exact_staleness'])
-_TRANSACTIONOPTIONS_READONLY.fields_by_name['exact_staleness'].containing_oneof = _TRANSACTIONOPTIONS_READONLY.oneofs_by_name['timestamp_bound']
-_TRANSACTIONOPTIONS.fields_by_name['read_write'].message_type = _TRANSACTIONOPTIONS_READWRITE
-_TRANSACTIONOPTIONS.fields_by_name['partitioned_dml'].message_type = _TRANSACTIONOPTIONS_PARTITIONEDDML
-_TRANSACTIONOPTIONS.fields_by_name['read_only'].message_type = _TRANSACTIONOPTIONS_READONLY
-_TRANSACTIONOPTIONS.oneofs_by_name['mode'].fields.append(
-  _TRANSACTIONOPTIONS.fields_by_name['read_write'])
-_TRANSACTIONOPTIONS.fields_by_name['read_write'].containing_oneof = _TRANSACTIONOPTIONS.oneofs_by_name['mode']
-_TRANSACTIONOPTIONS.oneofs_by_name['mode'].fields.append(
-  _TRANSACTIONOPTIONS.fields_by_name['partitioned_dml'])
-_TRANSACTIONOPTIONS.fields_by_name['partitioned_dml'].containing_oneof = _TRANSACTIONOPTIONS.oneofs_by_name['mode']
-_TRANSACTIONOPTIONS.oneofs_by_name['mode'].fields.append(
-  _TRANSACTIONOPTIONS.fields_by_name['read_only'])
-_TRANSACTIONOPTIONS.fields_by_name['read_only'].containing_oneof = _TRANSACTIONOPTIONS.oneofs_by_name['mode']
-_TRANSACTION.fields_by_name['read_timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_TRANSACTIONSELECTOR.fields_by_name['single_use'].message_type = _TRANSACTIONOPTIONS
-_TRANSACTIONSELECTOR.fields_by_name['begin'].message_type = _TRANSACTIONOPTIONS
-_TRANSACTIONSELECTOR.oneofs_by_name['selector'].fields.append(
-  _TRANSACTIONSELECTOR.fields_by_name['single_use'])
-_TRANSACTIONSELECTOR.fields_by_name['single_use'].containing_oneof = _TRANSACTIONSELECTOR.oneofs_by_name['selector']
-_TRANSACTIONSELECTOR.oneofs_by_name['selector'].fields.append(
-  _TRANSACTIONSELECTOR.fields_by_name['id'])
-_TRANSACTIONSELECTOR.fields_by_name['id'].containing_oneof = _TRANSACTIONSELECTOR.oneofs_by_name['selector']
-_TRANSACTIONSELECTOR.oneofs_by_name['selector'].fields.append(
-  _TRANSACTIONSELECTOR.fields_by_name['begin'])
-_TRANSACTIONSELECTOR.fields_by_name['begin'].containing_oneof = _TRANSACTIONSELECTOR.oneofs_by_name['selector']
-DESCRIPTOR.message_types_by_name['TransactionOptions'] = _TRANSACTIONOPTIONS
-DESCRIPTOR.message_types_by_name['Transaction'] = _TRANSACTION
-DESCRIPTOR.message_types_by_name['TransactionSelector'] = _TRANSACTIONSELECTOR
+_TRANSACTIONOPTIONS_READONLY.oneofs_by_name["timestamp_bound"].fields.append(
+    _TRANSACTIONOPTIONS_READONLY.fields_by_name["strong"]
+)
+_TRANSACTIONOPTIONS_READONLY.fields_by_name[
+    "strong"
+].containing_oneof = _TRANSACTIONOPTIONS_READONLY.oneofs_by_name["timestamp_bound"]
+_TRANSACTIONOPTIONS_READONLY.oneofs_by_name["timestamp_bound"].fields.append(
+    _TRANSACTIONOPTIONS_READONLY.fields_by_name["min_read_timestamp"]
+)
+_TRANSACTIONOPTIONS_READONLY.fields_by_name[
+    "min_read_timestamp"
+].containing_oneof = _TRANSACTIONOPTIONS_READONLY.oneofs_by_name["timestamp_bound"]
+_TRANSACTIONOPTIONS_READONLY.oneofs_by_name["timestamp_bound"].fields.append(
+    _TRANSACTIONOPTIONS_READONLY.fields_by_name["max_staleness"]
+)
+_TRANSACTIONOPTIONS_READONLY.fields_by_name[
+    "max_staleness"
+].containing_oneof = _TRANSACTIONOPTIONS_READONLY.oneofs_by_name["timestamp_bound"]
+_TRANSACTIONOPTIONS_READONLY.oneofs_by_name["timestamp_bound"].fields.append(
+    _TRANSACTIONOPTIONS_READONLY.fields_by_name["read_timestamp"]
+)
+_TRANSACTIONOPTIONS_READONLY.fields_by_name[
+    "read_timestamp"
+].containing_oneof = _TRANSACTIONOPTIONS_READONLY.oneofs_by_name["timestamp_bound"]
+_TRANSACTIONOPTIONS_READONLY.oneofs_by_name["timestamp_bound"].fields.append(
+    _TRANSACTIONOPTIONS_READONLY.fields_by_name["exact_staleness"]
+)
+_TRANSACTIONOPTIONS_READONLY.fields_by_name[
+    "exact_staleness"
+].containing_oneof = _TRANSACTIONOPTIONS_READONLY.oneofs_by_name["timestamp_bound"]
+_TRANSACTIONOPTIONS.fields_by_name[
+    "read_write"
+].message_type = _TRANSACTIONOPTIONS_READWRITE
+_TRANSACTIONOPTIONS.fields_by_name[
+    "partitioned_dml"
+].message_type = _TRANSACTIONOPTIONS_PARTITIONEDDML
+_TRANSACTIONOPTIONS.fields_by_name[
+    "read_only"
+].message_type = _TRANSACTIONOPTIONS_READONLY
+_TRANSACTIONOPTIONS.oneofs_by_name["mode"].fields.append(
+    _TRANSACTIONOPTIONS.fields_by_name["read_write"]
+)
+_TRANSACTIONOPTIONS.fields_by_name[
+    "read_write"
+].containing_oneof = _TRANSACTIONOPTIONS.oneofs_by_name["mode"]
+_TRANSACTIONOPTIONS.oneofs_by_name["mode"].fields.append(
+    _TRANSACTIONOPTIONS.fields_by_name["partitioned_dml"]
+)
+_TRANSACTIONOPTIONS.fields_by_name[
+    "partitioned_dml"
+].containing_oneof = _TRANSACTIONOPTIONS.oneofs_by_name["mode"]
+_TRANSACTIONOPTIONS.oneofs_by_name["mode"].fields.append(
+    _TRANSACTIONOPTIONS.fields_by_name["read_only"]
+)
+_TRANSACTIONOPTIONS.fields_by_name[
+    "read_only"
+].containing_oneof = _TRANSACTIONOPTIONS.oneofs_by_name["mode"]
+_TRANSACTION.fields_by_name[
+    "read_timestamp"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_TRANSACTIONSELECTOR.fields_by_name["single_use"].message_type = _TRANSACTIONOPTIONS
+_TRANSACTIONSELECTOR.fields_by_name["begin"].message_type = _TRANSACTIONOPTIONS
+_TRANSACTIONSELECTOR.oneofs_by_name["selector"].fields.append(
+    _TRANSACTIONSELECTOR.fields_by_name["single_use"]
+)
+_TRANSACTIONSELECTOR.fields_by_name[
+    "single_use"
+].containing_oneof = _TRANSACTIONSELECTOR.oneofs_by_name["selector"]
+_TRANSACTIONSELECTOR.oneofs_by_name["selector"].fields.append(
+    _TRANSACTIONSELECTOR.fields_by_name["id"]
+)
+_TRANSACTIONSELECTOR.fields_by_name[
+    "id"
+].containing_oneof = _TRANSACTIONSELECTOR.oneofs_by_name["selector"]
+_TRANSACTIONSELECTOR.oneofs_by_name["selector"].fields.append(
+    _TRANSACTIONSELECTOR.fields_by_name["begin"]
+)
+_TRANSACTIONSELECTOR.fields_by_name[
+    "begin"
+].containing_oneof = _TRANSACTIONSELECTOR.oneofs_by_name["selector"]
+DESCRIPTOR.message_types_by_name["TransactionOptions"] = _TRANSACTIONOPTIONS
+DESCRIPTOR.message_types_by_name["Transaction"] = _TRANSACTION
+DESCRIPTOR.message_types_by_name["TransactionSelector"] = _TRANSACTIONSELECTOR
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOptions', (_message.Message,), dict(
-
-  ReadWrite = _reflection.GeneratedProtocolMessageType('ReadWrite', (_message.Message,), dict(
-    DESCRIPTOR = _TRANSACTIONOPTIONS_READWRITE,
-    __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
-    ,
-    __doc__ = """Message type to initiate a read-write transaction. Currently this
+TransactionOptions = _reflection.GeneratedProtocolMessageType(
+    "TransactionOptions",
+    (_message.Message,),
+    dict(
+        ReadWrite=_reflection.GeneratedProtocolMessageType(
+            "ReadWrite",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_TRANSACTIONOPTIONS_READWRITE,
+                __module__="google.cloud.spanner_v1.proto.transaction_pb2",
+                __doc__="""Message type to initiate a read-write transaction. Currently this
     transaction type has no options.
     """,
-    # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadWrite)
-    ))
-  ,
-
-  PartitionedDml = _reflection.GeneratedProtocolMessageType('PartitionedDml', (_message.Message,), dict(
-    DESCRIPTOR = _TRANSACTIONOPTIONS_PARTITIONEDDML,
-    __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
-    ,
-    __doc__ = """Message type to initiate a Partitioned DML transaction.
+                # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadWrite)
+            ),
+        ),
+        PartitionedDml=_reflection.GeneratedProtocolMessageType(
+            "PartitionedDml",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_TRANSACTIONOPTIONS_PARTITIONEDDML,
+                __module__="google.cloud.spanner_v1.proto.transaction_pb2",
+                __doc__="""Message type to initiate a Partitioned DML transaction.
     """,
-    # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.PartitionedDml)
-    ))
-  ,
-
-  ReadOnly = _reflection.GeneratedProtocolMessageType('ReadOnly', (_message.Message,), dict(
-    DESCRIPTOR = _TRANSACTIONOPTIONS_READONLY,
-    __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
-    ,
-    __doc__ = """Message type to initiate a read-only transaction.
+                # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.PartitionedDml)
+            ),
+        ),
+        ReadOnly=_reflection.GeneratedProtocolMessageType(
+            "ReadOnly",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_TRANSACTIONOPTIONS_READONLY,
+                __module__="google.cloud.spanner_v1.proto.transaction_pb2",
+                __doc__="""Message type to initiate a read-only transaction.
     
     
     Attributes:
@@ -408,13 +622,12 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
             in the [Transaction][google.spanner.v1.Transaction] message
             that describes the transaction.
     """,
-    # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadOnly)
-    ))
-  ,
-  DESCRIPTOR = _TRANSACTIONOPTIONS,
-  __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
-  ,
-  __doc__ = """Transactions
+                # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadOnly)
+            ),
+        ),
+        DESCRIPTOR=_TRANSACTIONOPTIONS,
+        __module__="google.cloud.spanner_v1.proto.transaction_pb2",
+        __doc__="""Transactions
   
   
   Each session can have at most one active transaction at a time. After
@@ -721,18 +934,21 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
           ``spanner.databases.beginReadOnlyTransaction`` permission on
           the ``session`` resource.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions)
+    ),
+)
 _sym_db.RegisterMessage(TransactionOptions)
 _sym_db.RegisterMessage(TransactionOptions.ReadWrite)
 _sym_db.RegisterMessage(TransactionOptions.PartitionedDml)
 _sym_db.RegisterMessage(TransactionOptions.ReadOnly)
 
-Transaction = _reflection.GeneratedProtocolMessageType('Transaction', (_message.Message,), dict(
-  DESCRIPTOR = _TRANSACTION,
-  __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
-  ,
-  __doc__ = """A transaction.
+Transaction = _reflection.GeneratedProtocolMessageType(
+    "Transaction",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_TRANSACTION,
+        __module__="google.cloud.spanner_v1.proto.transaction_pb2",
+        __doc__="""A transaction.
   
   
   Attributes:
@@ -752,15 +968,18 @@ Transaction = _reflection.GeneratedProtocolMessageType('Transaction', (_message.
           timestamp in RFC3339 UTC "Zulu" format, accurate to
           nanoseconds. Example: ``"2014-10-02T15:01:23.045123456Z"``.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.Transaction)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.Transaction)
+    ),
+)
 _sym_db.RegisterMessage(Transaction)
 
-TransactionSelector = _reflection.GeneratedProtocolMessageType('TransactionSelector', (_message.Message,), dict(
-  DESCRIPTOR = _TRANSACTIONSELECTOR,
-  __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
-  ,
-  __doc__ = """This message is used to select the transaction in which a
+TransactionSelector = _reflection.GeneratedProtocolMessageType(
+    "TransactionSelector",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_TRANSACTIONSELECTOR,
+        __module__="google.cloud.spanner_v1.proto.transaction_pb2",
+        __doc__="""This message is used to select the transaction in which a
   [Read][google.spanner.v1.Spanner.Read] or
   [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] call runs.
   
@@ -786,11 +1005,17 @@ TransactionSelector = _reflection.GeneratedProtocolMessageType('TransactionSelec
           data.transaction], which is a
           [Transaction][google.spanner.v1.Transaction].
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionSelector)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionSelector)
+    ),
+)
 _sym_db.RegisterMessage(TransactionSelector)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\020TransactionProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\025com.google.spanner.v1B\020TransactionProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1"
+    ),
+)
 # @@protoc_insertion_point(module_scope)
