@@ -2,103 +2,175 @@
 # source: google/cloud/automl_v1beta1/proto/annotation_payload.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.automl_v1beta1.proto import classification_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2
-from google.cloud.automl_v1beta1.proto import translation_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2
+from google.cloud.automl_v1beta1.proto import (
+    classification_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2,
+)
+from google.cloud.automl_v1beta1.proto import (
+    translation_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2,
+)
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/automl_v1beta1/proto/annotation_payload.proto',
-  package='google.cloud.automl.v1beta1',
-  syntax='proto3',
-  serialized_pb=_b('\n:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto\"\xeb\x01\n\x11\x41nnotationPayload\x12I\n\x0btranslation\x18\x02 \x01(\x0b\x32\x32.google.cloud.automl.v1beta1.TranslationAnnotationH\x00\x12O\n\x0e\x63lassification\x18\x03 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.ClassificationAnnotationH\x00\x12\x1a\n\x12\x61nnotation_spec_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x05 \x01(\tB\x08\n\x06\x64\x65tailBf\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2.DESCRIPTOR,google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2.DESCRIPTOR,])
-
-
+    name="google/cloud/automl_v1beta1/proto/annotation_payload.proto",
+    package="google.cloud.automl.v1beta1",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto"\xeb\x01\n\x11\x41nnotationPayload\x12I\n\x0btranslation\x18\x02 \x01(\x0b\x32\x32.google.cloud.automl.v1beta1.TranslationAnnotationH\x00\x12O\n\x0e\x63lassification\x18\x03 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.ClassificationAnnotationH\x00\x12\x1a\n\x12\x61nnotation_spec_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x05 \x01(\tB\x08\n\x06\x64\x65tailBf\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
-  name='AnnotationPayload',
-  full_name='google.cloud.automl.v1beta1.AnnotationPayload',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='translation', full_name='google.cloud.automl.v1beta1.AnnotationPayload.translation', index=0,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='classification', full_name='google.cloud.automl.v1beta1.AnnotationPayload.classification', index=1,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='annotation_spec_id', full_name='google.cloud.automl.v1beta1.AnnotationPayload.annotation_spec_id', index=2,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='display_name', full_name='google.cloud.automl.v1beta1.AnnotationPayload.display_name', index=3,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='detail', full_name='google.cloud.automl.v1beta1.AnnotationPayload.detail',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=231,
-  serialized_end=466,
+    name="AnnotationPayload",
+    full_name="google.cloud.automl.v1beta1.AnnotationPayload",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="translation",
+            full_name="google.cloud.automl.v1beta1.AnnotationPayload.translation",
+            index=0,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="classification",
+            full_name="google.cloud.automl.v1beta1.AnnotationPayload.classification",
+            index=1,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="annotation_spec_id",
+            full_name="google.cloud.automl.v1beta1.AnnotationPayload.annotation_spec_id",
+            index=2,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="display_name",
+            full_name="google.cloud.automl.v1beta1.AnnotationPayload.display_name",
+            index=3,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="detail",
+            full_name="google.cloud.automl.v1beta1.AnnotationPayload.detail",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=231,
+    serialized_end=466,
 )
 
-_ANNOTATIONPAYLOAD.fields_by_name['translation'].message_type = google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2._TRANSLATIONANNOTATION
-_ANNOTATIONPAYLOAD.fields_by_name['classification'].message_type = google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2._CLASSIFICATIONANNOTATION
-_ANNOTATIONPAYLOAD.oneofs_by_name['detail'].fields.append(
-  _ANNOTATIONPAYLOAD.fields_by_name['translation'])
-_ANNOTATIONPAYLOAD.fields_by_name['translation'].containing_oneof = _ANNOTATIONPAYLOAD.oneofs_by_name['detail']
-_ANNOTATIONPAYLOAD.oneofs_by_name['detail'].fields.append(
-  _ANNOTATIONPAYLOAD.fields_by_name['classification'])
-_ANNOTATIONPAYLOAD.fields_by_name['classification'].containing_oneof = _ANNOTATIONPAYLOAD.oneofs_by_name['detail']
-DESCRIPTOR.message_types_by_name['AnnotationPayload'] = _ANNOTATIONPAYLOAD
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "translation"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2._TRANSLATIONANNOTATION
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "classification"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2._CLASSIFICATIONANNOTATION
+)
+_ANNOTATIONPAYLOAD.oneofs_by_name["detail"].fields.append(
+    _ANNOTATIONPAYLOAD.fields_by_name["translation"]
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "translation"
+].containing_oneof = _ANNOTATIONPAYLOAD.oneofs_by_name["detail"]
+_ANNOTATIONPAYLOAD.oneofs_by_name["detail"].fields.append(
+    _ANNOTATIONPAYLOAD.fields_by_name["classification"]
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "classification"
+].containing_oneof = _ANNOTATIONPAYLOAD.oneofs_by_name["detail"]
+DESCRIPTOR.message_types_by_name["AnnotationPayload"] = _ANNOTATIONPAYLOAD
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-AnnotationPayload = _reflection.GeneratedProtocolMessageType('AnnotationPayload', (_message.Message,), dict(
-  DESCRIPTOR = _ANNOTATIONPAYLOAD,
-  __module__ = 'google.cloud.automl_v1beta1.proto.annotation_payload_pb2'
-  ,
-  __doc__ = """Contains annotation information that is relevant to AutoML.
+AnnotationPayload = _reflection.GeneratedProtocolMessageType(
+    "AnnotationPayload",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANNOTATIONPAYLOAD,
+        __module__="google.cloud.automl_v1beta1.proto.annotation_payload_pb2",
+        __doc__="""Contains annotation information that is relevant to AutoML.
   
   
   Attributes:
@@ -122,11 +194,17 @@ AnnotationPayload = _reflection.GeneratedProtocolMessageType('AnnotationPayload'
           dataset, the returned value could be different as model owner
           could update the display\_name between any two model training.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.AnnotationPayload)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.AnnotationPayload)
+    ),
+)
 _sym_db.RegisterMessage(AnnotationPayload)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl"
+    ),
+)
 # @@protoc_insertion_point(module_scope)
