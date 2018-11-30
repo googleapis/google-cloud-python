@@ -3,7 +3,7 @@ config = {
         "google.cloud.videointelligence.v1.VideoIntelligenceService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
+                "non_idempotent": []
             },
             "retry_params": {
                 "default": {
@@ -13,16 +13,16 @@ config = {
                     "initial_rpc_timeout_millis": 120000,
                     "rpc_timeout_multiplier": 1.0,
                     "max_rpc_timeout_millis": 120000,
-                    "total_timeout_millis": 600000,
+                    "total_timeout_millis": 600000
                 }
             },
             "methods": {
                 "AnnotateVideo": {
                     "timeout_millis": 600000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 }
-            },
+            }
         }
     }
 }
