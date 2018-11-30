@@ -28,17 +28,17 @@ class PublisherGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
-
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/pubsub",
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/pubsub',
     )
 
-    def __init__(
-        self, channel=None, credentials=None, address="pubsub.googleapis.com:443"
-    ):
+    def __init__(self,
+                 channel=None,
+                 credentials=None,
+                 address='pubsub.googleapis.com:443'):
         """Instantiate the transport class.
 
         Args:
@@ -56,24 +56,29 @@ class PublisherGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
-            )
+                'The `channel` and `credentials` arguments are mutually '
+                'exclusive.', )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+            )
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "iam_policy_stub": iam_policy_pb2.IAMPolicyStub(channel),
-            "publisher_stub": pubsub_pb2_grpc.PublisherStub(channel),
+            'iam_policy_stub': iam_policy_pb2.IAMPolicyStub(channel),
+            'publisher_stub': pubsub_pb2_grpc.PublisherStub(channel),
         }
 
     @classmethod
-    def create_channel(cls, address="pubsub.googleapis.com:443", credentials=None):
+    def create_channel(cls,
+                       address='pubsub.googleapis.com:443',
+                       credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -88,7 +93,9 @@ class PublisherGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
         )
 
     @property
@@ -112,7 +119,7 @@ class PublisherGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["publisher_stub"].CreateTopic
+        return self._stubs['publisher_stub'].CreateTopic
 
     @property
     def update_topic(self):
@@ -126,7 +133,7 @@ class PublisherGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["publisher_stub"].UpdateTopic
+        return self._stubs['publisher_stub'].UpdateTopic
 
     @property
     def publish(self):
@@ -140,7 +147,7 @@ class PublisherGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["publisher_stub"].Publish
+        return self._stubs['publisher_stub'].Publish
 
     @property
     def get_topic(self):
@@ -153,7 +160,7 @@ class PublisherGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["publisher_stub"].GetTopic
+        return self._stubs['publisher_stub'].GetTopic
 
     @property
     def list_topics(self):
@@ -166,7 +173,7 @@ class PublisherGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["publisher_stub"].ListTopics
+        return self._stubs['publisher_stub'].ListTopics
 
     @property
     def list_topic_subscriptions(self):
@@ -179,7 +186,7 @@ class PublisherGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["publisher_stub"].ListTopicSubscriptions
+        return self._stubs['publisher_stub'].ListTopicSubscriptions
 
     @property
     def delete_topic(self):
@@ -197,7 +204,7 @@ class PublisherGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["publisher_stub"].DeleteTopic
+        return self._stubs['publisher_stub'].DeleteTopic
 
     @property
     def set_iam_policy(self):
@@ -211,7 +218,7 @@ class PublisherGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["iam_policy_stub"].SetIamPolicy
+        return self._stubs['iam_policy_stub'].SetIamPolicy
 
     @property
     def get_iam_policy(self):
@@ -226,7 +233,7 @@ class PublisherGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["iam_policy_stub"].GetIamPolicy
+        return self._stubs['iam_policy_stub'].GetIamPolicy
 
     @property
     def test_iam_permissions(self):
@@ -241,4 +248,4 @@ class PublisherGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["iam_policy_stub"].TestIamPermissions
+        return self._stubs['iam_policy_stub'].TestIamPermissions

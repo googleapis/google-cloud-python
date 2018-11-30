@@ -54,7 +54,10 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -65,19 +68,19 @@ class CustomException(Exception):
 class TestPublisherClient(object):
     def test_create_topic(self):
         # Setup Expected Response
-        name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        name_2 = 'name2-1052831874'
+        expected_response = {'name': name_2}
         expected_response = pubsub_pb2.Topic(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        name = client.topic_path("[PROJECT]", "[TOPIC]")
+        name = client.topic_path('[PROJECT]', '[TOPIC]')
 
         response = client.create_topic(name)
         assert expected_response == response
@@ -90,26 +93,26 @@ class TestPublisherClient(object):
     def test_create_topic_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup request
-        name = client.topic_path("[PROJECT]", "[TOPIC]")
+        name = client.topic_path('[PROJECT]', '[TOPIC]')
 
         with pytest.raises(CustomException):
             client.create_topic(name)
 
     def test_update_topic(self):
         # Setup Expected Response
-        name = "name3373707"
-        expected_response = {"name": name}
+        name = 'name3373707'
+        expected_response = {'name': name}
         expected_response = pubsub_pb2.Topic(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
@@ -123,15 +126,14 @@ class TestPublisherClient(object):
 
         assert len(channel.requests) == 1
         expected_request = pubsub_pb2.UpdateTopicRequest(
-            topic=topic, update_mask=update_mask
-        )
+            topic=topic, update_mask=update_mask)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_update_topic_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
@@ -145,44 +147,45 @@ class TestPublisherClient(object):
 
     def test_publish(self):
         # Setup Expected Response
-        message_ids_element = "messageIdsElement-744837059"
+        message_ids_element = 'messageIdsElement-744837059'
         message_ids = [message_ids_element]
-        expected_response = {"message_ids": message_ids}
+        expected_response = {'message_ids': message_ids}
         expected_response = pubsub_pb2.PublishResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        topic = client.topic_path("[PROJECT]", "[TOPIC]")
-        data = b"-86"
-        messages_element = {"data": data}
+        topic = client.topic_path('[PROJECT]', '[TOPIC]')
+        data = b'-86'
+        messages_element = {'data': data}
         messages = [messages_element]
 
         response = client.publish(topic, messages)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = pubsub_pb2.PublishRequest(topic=topic, messages=messages)
+        expected_request = pubsub_pb2.PublishRequest(
+            topic=topic, messages=messages)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_publish_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup request
-        topic = client.topic_path("[PROJECT]", "[TOPIC]")
-        data = b"-86"
-        messages_element = {"data": data}
+        topic = client.topic_path('[PROJECT]', '[TOPIC]')
+        data = b'-86'
+        messages_element = {'data': data}
         messages = [messages_element]
 
         with pytest.raises(CustomException):
@@ -190,19 +193,19 @@ class TestPublisherClient(object):
 
     def test_get_topic(self):
         # Setup Expected Response
-        name = "name3373707"
-        expected_response = {"name": name}
+        name = 'name3373707'
+        expected_response = {'name': name}
         expected_response = pubsub_pb2.Topic(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        topic = client.topic_path("[PROJECT]", "[TOPIC]")
+        topic = client.topic_path('[PROJECT]', '[TOPIC]')
 
         response = client.get_topic(topic)
         assert expected_response == response
@@ -215,34 +218,37 @@ class TestPublisherClient(object):
     def test_get_topic_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup request
-        topic = client.topic_path("[PROJECT]", "[TOPIC]")
+        topic = client.topic_path('[PROJECT]', '[TOPIC]')
 
         with pytest.raises(CustomException):
             client.get_topic(topic)
 
     def test_list_topics(self):
         # Setup Expected Response
-        next_page_token = ""
+        next_page_token = ''
         topics_element = {}
         topics = [topics_element]
-        expected_response = {"next_page_token": next_page_token, "topics": topics}
+        expected_response = {
+            'next_page_token': next_page_token,
+            'topics': topics
+        }
         expected_response = pubsub_pb2.ListTopicsResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        project = client.project_path("[PROJECT]")
+        project = client.project_path('[PROJECT]')
 
         paged_list_response = client.list_topics(project)
         resources = list(paged_list_response)
@@ -257,13 +263,13 @@ class TestPublisherClient(object):
 
     def test_list_topics_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup request
-        project = client.project_path("[PROJECT]")
+        project = client.project_path('[PROJECT]')
 
         paged_list_response = client.list_topics(project)
         with pytest.raises(CustomException):
@@ -271,26 +277,25 @@ class TestPublisherClient(object):
 
     def test_list_topic_subscriptions(self):
         # Setup Expected Response
-        next_page_token = ""
-        subscriptions_element = "subscriptionsElement1698708147"
+        next_page_token = ''
+        subscriptions_element = 'subscriptionsElement1698708147'
         subscriptions = [subscriptions_element]
         expected_response = {
-            "next_page_token": next_page_token,
-            "subscriptions": subscriptions,
+            'next_page_token': next_page_token,
+            'subscriptions': subscriptions
         }
         expected_response = pubsub_pb2.ListTopicSubscriptionsResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        topic = client.topic_path("[PROJECT]", "[TOPIC]")
+        topic = client.topic_path('[PROJECT]', '[TOPIC]')
 
         paged_list_response = client.list_topic_subscriptions(topic)
         resources = list(paged_list_response)
@@ -299,19 +304,20 @@ class TestPublisherClient(object):
         assert expected_response.subscriptions[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = pubsub_pb2.ListTopicSubscriptionsRequest(topic=topic)
+        expected_request = pubsub_pb2.ListTopicSubscriptionsRequest(
+            topic=topic)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_topic_subscriptions_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup request
-        topic = client.topic_path("[PROJECT]", "[TOPIC]")
+        topic = client.topic_path('[PROJECT]', '[TOPIC]')
 
         paged_list_response = client.list_topic_subscriptions(topic)
         with pytest.raises(CustomException):
@@ -319,13 +325,13 @@ class TestPublisherClient(object):
 
     def test_delete_topic(self):
         channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        topic = client.topic_path("[PROJECT]", "[TOPIC]")
+        topic = client.topic_path('[PROJECT]', '[TOPIC]')
 
         client.delete_topic(topic)
 
@@ -337,13 +343,13 @@ class TestPublisherClient(object):
     def test_delete_topic_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup request
-        topic = client.topic_path("[PROJECT]", "[TOPIC]")
+        topic = client.topic_path('[PROJECT]', '[TOPIC]')
 
         with pytest.raises(CustomException):
             client.delete_topic(topic)
@@ -351,19 +357,19 @@ class TestPublisherClient(object):
     def test_set_iam_policy(self):
         # Setup Expected Response
         version = 351608024
-        etag = b"21"
-        expected_response = {"version": version, "etag": etag}
+        etag = b'21'
+        expected_response = {'version': version, 'etag': etag}
         expected_response = policy_pb2.Policy(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = client.topic_path('[PROJECT]', '[TOPIC]')
         policy = {}
 
         response = client.set_iam_policy(resource, policy)
@@ -371,21 +377,20 @@ class TestPublisherClient(object):
 
         assert len(channel.requests) == 1
         expected_request = iam_policy_pb2.SetIamPolicyRequest(
-            resource=resource, policy=policy
-        )
+            resource=resource, policy=policy)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_set_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = client.topic_path('[PROJECT]', '[TOPIC]')
         policy = {}
 
         with pytest.raises(CustomException):
@@ -394,38 +399,39 @@ class TestPublisherClient(object):
     def test_get_iam_policy(self):
         # Setup Expected Response
         version = 351608024
-        etag = b"21"
-        expected_response = {"version": version, "etag": etag}
+        etag = b'21'
+        expected_response = {'version': version, 'etag': etag}
         expected_response = policy_pb2.Policy(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = client.topic_path('[PROJECT]', '[TOPIC]')
 
         response = client.get_iam_policy(resource)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        expected_request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=resource)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_get_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = client.topic_path('[PROJECT]', '[TOPIC]')
 
         with pytest.raises(CustomException):
             client.get_iam_policy(resource)
@@ -434,18 +440,17 @@ class TestPublisherClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = iam_policy_pb2.TestIamPermissionsResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = client.topic_path('[PROJECT]', '[TOPIC]')
         permissions = []
 
         response = client.test_iam_permissions(resource, permissions)
@@ -453,21 +458,20 @@ class TestPublisherClient(object):
 
         assert len(channel.requests) == 1
         expected_request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions
-        )
+            resource=resource, permissions=permissions)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_test_iam_permissions_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = publisher_client.PublisherClient()
 
         # Setup request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = client.topic_path('[PROJECT]', '[TOPIC]')
         permissions = []
 
         with pytest.raises(CustomException):
