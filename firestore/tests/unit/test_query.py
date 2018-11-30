@@ -603,6 +603,36 @@ class TestQuery(unittest.TestCase):
 
         self.assertEqual(query._normalize_cursor(cursor, query._orders), ([1], True))
 
+    def test__normalize_cursor_w___name___w_slash(self):
+        db_string = "projects/my-project/database/(default)"
+        client = mock.Mock(spec=["_database_string"])
+        client._database_string = db_string
+        parent = mock.Mock(spec=["_path", "_client"])
+        parent._client = client
+        parent._path = ["C"]
+        query = self._make_one(parent).order_by("__name__", "ASCENDING")
+        expected = "{}/C/b".format(db_string)
+        cursor = ([expected], True)
+
+        self.assertEqual(
+            query._normalize_cursor(cursor, query._orders), ([expected], True)
+        )
+
+    def test__normalize_cursor_w___name___wo_slash(self):
+        db_string = "projects/my-project/database/(default)"
+        client = mock.Mock(spec=["_database_string"])
+        client._database_string = db_string
+        parent = mock.Mock(spec=["_path", "_client"])
+        parent._client = client
+        parent._path = ["C"]
+        query = self._make_one(parent).order_by("__name__", "ASCENDING")
+        cursor = (["b"], True)
+        expected = "{}/C/b".format(db_string)
+
+        self.assertEqual(
+            query._normalize_cursor(cursor, query._orders), ([expected], True)
+        )
+
     def test__to_protobuf_all_fields(self):
         from google.protobuf import wrappers_pb2
         from google.cloud.firestore_v1beta1.gapic import enums

@@ -563,8 +563,7 @@ class Query(object):
 
         return projection
 
-    @staticmethod
-    def _normalize_cursor(cursor, orders):
+    def _normalize_cursor(self, cursor, orders):
         """Helper: convert cursor to a list of values based on orders."""
         if cursor is None:
             return
@@ -597,6 +596,17 @@ class Query(object):
             if isinstance(field, _transform_bases):
                 msg = _INVALID_CURSOR_TRANSFORM
                 raise ValueError(msg)
+
+        try:
+            name_index = order_keys.index("__name__")
+        except ValueError:
+            pass
+        else:
+            name = document_fields[name_index]
+            if "/" not in name:
+                document_fields[name_index] = "{}/{}/{}".format(
+                    self._client._database_string, "/".join(self._parent._path), name
+                )
 
         return document_fields, before
 
