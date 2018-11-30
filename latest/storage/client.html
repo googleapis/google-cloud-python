@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Storage Client &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>Storage Client &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -149,7 +149,7 @@ listing their contents and downloading their blobs.</p>
 <code class="descname">create_bucket</code><span class="sig-paren">(</span><em>bucket_name</em>, <em>requester_pays=None</em>, <em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.create_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.create_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a new bucket.</p>
 <p>For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">)</span>
     <span class="c1"># &lt;Bucket: my-bucket&gt;</span>
 </pre></div>
@@ -208,9 +208,9 @@ no batch is active).</td>
 <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.exceptions.NotFound</span></code>.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">try</span><span class="p">:</span>
-        <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sorry, that bucket does not exist!&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sorry, that bucket does not exist!&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This implements “storage.buckets.get”.</p>
@@ -303,10 +303,10 @@ belonging to this project.</p>
 <dd><p>Get a bucket by name, returning None if not found.</p>
 <p>You can use this if you would rather check for a None value
 than catching an exception:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">lookup_bucket</span><span class="p">(</span><span class="s1">&#39;doesnt-exist&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">lookup_bucket</span><span class="p">(</span><span class="s2">&quot;doesnt-exist&quot;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="ow">not</span> <span class="n">bucket</span>
     <span class="c1"># None</span>
-    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">lookup_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">lookup_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">)</span>
     <span class="c1"># &lt;Bucket: my-bucket&gt;</span>
 </pre></div>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.dbapi.types &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.bigquery.dbapi.types &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -74,7 +74,7 @@
 <span class="sd">    :rtype: bytes</span>
 <span class="sd">    :returns: The UTF-8 encoded bytes representing the string.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TimeFromTicks"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.TimeFromTicks">[docs]</a><span class="k">def</span> <span class="nf">TimeFromTicks</span><span class="p">(</span><span class="n">ticks</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -111,12 +111,13 @@
         <span class="k">return</span> <span class="n">other</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span>
 
 
-<span class="n">STRING</span> <span class="o">=</span> <span class="s1">&#39;STRING&#39;</span>
-<span class="n">BINARY</span> <span class="o">=</span> <span class="n">_DBAPITypeObject</span><span class="p">(</span><span class="s1">&#39;BYTES&#39;</span><span class="p">,</span> <span class="s1">&#39;RECORD&#39;</span><span class="p">,</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">)</span>
+<span class="n">STRING</span> <span class="o">=</span> <span class="s2">&quot;STRING&quot;</span>
+<span class="n">BINARY</span> <span class="o">=</span> <span class="n">_DBAPITypeObject</span><span class="p">(</span><span class="s2">&quot;BYTES&quot;</span><span class="p">,</span> <span class="s2">&quot;RECORD&quot;</span><span class="p">,</span> <span class="s2">&quot;STRUCT&quot;</span><span class="p">)</span>
 <span class="n">NUMBER</span> <span class="o">=</span> <span class="n">_DBAPITypeObject</span><span class="p">(</span>
-    <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="s1">&#39;INT64&#39;</span><span class="p">,</span> <span class="s1">&#39;FLOAT&#39;</span><span class="p">,</span> <span class="s1">&#39;FLOAT64&#39;</span><span class="p">,</span> <span class="s1">&#39;NUMERIC&#39;</span><span class="p">,</span> <span class="s1">&#39;BOOLEAN&#39;</span><span class="p">,</span> <span class="s1">&#39;BOOL&#39;</span><span class="p">)</span>
-<span class="n">DATETIME</span> <span class="o">=</span> <span class="n">_DBAPITypeObject</span><span class="p">(</span><span class="s1">&#39;TIMESTAMP&#39;</span><span class="p">,</span> <span class="s1">&#39;DATE&#39;</span><span class="p">,</span> <span class="s1">&#39;TIME&#39;</span><span class="p">,</span> <span class="s1">&#39;DATETIME&#39;</span><span class="p">)</span>
-<span class="n">ROWID</span> <span class="o">=</span> <span class="s1">&#39;ROWID&#39;</span>
+    <span class="s2">&quot;INTEGER&quot;</span><span class="p">,</span> <span class="s2">&quot;INT64&quot;</span><span class="p">,</span> <span class="s2">&quot;FLOAT&quot;</span><span class="p">,</span> <span class="s2">&quot;FLOAT64&quot;</span><span class="p">,</span> <span class="s2">&quot;NUMERIC&quot;</span><span class="p">,</span> <span class="s2">&quot;BOOLEAN&quot;</span><span class="p">,</span> <span class="s2">&quot;BOOL&quot;</span>
+<span class="p">)</span>
+<span class="n">DATETIME</span> <span class="o">=</span> <span class="n">_DBAPITypeObject</span><span class="p">(</span><span class="s2">&quot;TIMESTAMP&quot;</span><span class="p">,</span> <span class="s2">&quot;DATE&quot;</span><span class="p">,</span> <span class="s2">&quot;TIME&quot;</span><span class="p">,</span> <span class="s2">&quot;DATETIME&quot;</span><span class="p">)</span>
+<span class="n">ROWID</span> <span class="o">=</span> <span class="s2">&quot;ROWID&quot;</span>
 </pre></div>
 
           </div>

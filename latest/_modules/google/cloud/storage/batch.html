@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.batch &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.storage.batch &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -84,26 +84,28 @@
 <span class="sd">    :param body: (Optional) HTTP payload</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
-            <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/json&#39;</span>
-            <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;application/json&quot;</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Content-Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">body</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> HTTP/1.1&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">)]</span>
-        <span class="n">lines</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-                      <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">headers</span><span class="o">.</span><span class="n">items</span><span class="p">())])</span>
-        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> HTTP/1.1&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">)]</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">headers</span><span class="o">.</span><span class="n">items</span><span class="p">())]</span>
+        <span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
-        <span class="n">payload</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
             <span class="c1"># email.message.Message is an old-style class, so we</span>
             <span class="c1"># cannot use &#39;super()&#39;.</span>
-            <span class="n">MIMEApplication</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="s1">&#39;http&#39;</span><span class="p">,</span> <span class="n">encode_noop</span><span class="p">)</span>
+            <span class="n">MIMEApplication</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="n">encode_noop</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER  Python3</span>
             <span class="n">super_init</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">MIMEApplicationHTTP</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span>
-            <span class="n">super_init</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="s1">&#39;http&#39;</span><span class="p">,</span> <span class="n">encode_noop</span><span class="p">)</span></div>
+            <span class="n">super_init</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="n">encode_noop</span><span class="p">)</span></div>
 
 
 <span class="k">class</span> <span class="nc">_FutureDict</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -125,8 +127,7 @@
 <span class="sd">        :raises: :class:`KeyError` always since the future is intended to fail</span>
 <span class="sd">                 as a dictionary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Cannot get(</span><span class="si">%r</span><span class="s1">, default=</span><span class="si">%r</span><span class="s1">) on a future&#39;</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Cannot get(</span><span class="si">%r</span><span class="s2">, default=</span><span class="si">%r</span><span class="s2">) on a future&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Stand-in for dict[key].</span>
@@ -137,7 +138,7 @@
 <span class="sd">        :raises: :class:`KeyError` always since the future is intended to fail</span>
 <span class="sd">                 as a dictionary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Cannot get item </span><span class="si">%r</span><span class="s1"> from a future&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,))</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Cannot get item </span><span class="si">%r</span><span class="s2"> from a future&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,))</span>
 
     <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Stand-in for dict[key] = value.</span>
@@ -151,11 +152,12 @@
 <span class="sd">        :raises: :class:`KeyError` always since the future is intended to fail</span>
 <span class="sd">                 as a dictionary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Cannot set </span><span class="si">%r</span><span class="s1"> -&gt; </span><span class="si">%r</span><span class="s1"> on a future&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Cannot set </span><span class="si">%r</span><span class="s2"> -&gt; </span><span class="si">%r</span><span class="s2"> on a future&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
 
 
 <span class="k">class</span> <span class="nc">_FutureResponse</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Reponse that returns a placeholder dictionary for a batched requests.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">future_dict</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">_FutureResponse</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_future_dict</span> <span class="o">=</span> <span class="n">future_dict</span>
@@ -175,6 +177,7 @@
 <span class="sd">    :type client: :class:`google.cloud.storage.client.Client`</span>
 <span class="sd">    :param client: The client to use for making connections.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_MAX_BATCH_SIZE</span> <span class="o">=</span> <span class="mi">1000</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
@@ -210,8 +213,9 @@
 <span class="sd">        :returns: The HTTP response object and the content of the response.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_BATCH_SIZE</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Too many deferred requests (max </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_BATCH_SIZE</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Too many deferred requests (max </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_BATCH_SIZE</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">_FutureDict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_target_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_object</span><span class="p">)</span>
@@ -245,7 +249,7 @@
         <span class="n">payload</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
 
         <span class="c1"># Strip off redundant header text</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">multi</span><span class="o">.</span><span class="n">_headers</span><span class="p">),</span> <span class="n">body</span>
 
     <span class="k">def</span> <span class="nf">_finish_futures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">responses</span><span class="p">):</span>
@@ -262,10 +266,9 @@
         <span class="n">exception_args</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_target_objects</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Expected a response for every request.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Expected a response for every request.&quot;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">target_object</span><span class="p">,</span> <span class="n">subresponse</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_target_objects</span><span class="p">,</span> <span class="n">responses</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">target_object</span><span class="p">,</span> <span class="n">subresponse</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_target_objects</span><span class="p">,</span> <span class="n">responses</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">subresponse</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
                 <span class="n">exception_args</span> <span class="o">=</span> <span class="n">exception_args</span> <span class="ow">or</span> <span class="n">subresponse</span>
             <span class="k">elif</span> <span class="n">target_object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -285,13 +288,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">headers</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_batch_request</span><span class="p">()</span>
 
-        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/batch/storage/v1&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_BASE_URL</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/batch/storage/v1&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_BASE_URL</span>
 
         <span class="c1"># Use the private ``_base_connection`` rather than the property</span>
         <span class="c1"># ``_connection``, since the property may be this</span>
         <span class="c1"># current batch.</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_base_connection</span><span class="o">.</span><span class="n">_make_request</span><span class="p">(</span>
-            <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+            <span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
+        <span class="p">)</span>
         <span class="n">responses</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_unpack_batch_response</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_finish_futures</span><span class="p">(</span><span class="n">responses</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">responses</span></div>
@@ -320,20 +324,16 @@
     <span class="c1"># We coerce to bytes to get consistent concat across</span>
     <span class="c1"># Py2 and Py3. Percent formatting is insufficient since</span>
     <span class="c1"># it includes the b in Py3.</span>
-    <span class="n">content_type</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_to_bytes</span><span class="p">(</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;content-type&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+    <span class="n">content_type</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
 
-    <span class="n">faux_message</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-        <span class="sa">b</span><span class="s1">&#39;Content-Type: &#39;</span><span class="p">,</span>
-        <span class="n">content_type</span><span class="p">,</span>
-        <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">MIME-Version: 1.0</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">,</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
-    <span class="p">])</span>
+    <span class="n">faux_message</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;Content-Type: &quot;</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">MIME-Version: 1.0</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">]</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parsestr</span><span class="p">(</span><span class="n">faux_message</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER  Python3</span>
-        <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parsestr</span><span class="p">(</span><span class="n">faux_message</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parsestr</span><span class="p">(</span><span class="n">faux_message</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">_unpack_batch_response</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
@@ -349,23 +349,23 @@
     <span class="n">message</span> <span class="o">=</span> <span class="n">_generate_faux_mime_message</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">_payload</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Bad response:  not multi-part&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Bad response:  not multi-part&quot;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">subrequest</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">_payload</span><span class="p">:</span>
-        <span class="n">status_line</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">subrequest</span><span class="o">.</span><span class="n">_payload</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">status_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">status_line</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">subrequest</span><span class="o">.</span><span class="n">_payload</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">status_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">sub_message</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parsestr</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="n">sub_message</span><span class="o">.</span><span class="n">_payload</span>
         <span class="n">msg_headers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sub_message</span><span class="o">.</span><span class="n">_headers</span><span class="p">)</span>
-        <span class="n">content_id</span> <span class="o">=</span> <span class="n">msg_headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Content-ID&#39;</span><span class="p">)</span>
+        <span class="n">content_id</span> <span class="o">=</span> <span class="n">msg_headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Content-ID&quot;</span><span class="p">)</span>
 
         <span class="n">subresponse</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">()</span>
         <span class="n">subresponse</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;BATCH&#39;</span><span class="p">,</span>
-            <span class="n">url</span><span class="o">=</span><span class="s1">&#39;contentid://</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">content_id</span><span class="p">))</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;BATCH&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;contentid://</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">content_id</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
         <span class="n">subresponse</span><span class="o">.</span><span class="n">status_code</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
         <span class="n">subresponse</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">msg_headers</span><span class="p">)</span>
-        <span class="n">subresponse</span><span class="o">.</span><span class="n">_content</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">subresponse</span><span class="o">.</span><span class="n">_content</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 
         <span class="k">yield</span> <span class="n">subresponse</span>
 </pre></div>

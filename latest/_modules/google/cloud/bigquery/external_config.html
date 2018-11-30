@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.external_config &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.bigquery.external_config &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -72,22 +72,22 @@
 <span class="sd">    :class:`~google.cloud.bigquery.job.SourceFormat`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">CSV</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
+    <span class="n">CSV</span> <span class="o">=</span> <span class="s2">&quot;CSV&quot;</span>
     <span class="sd">&quot;&quot;&quot;Specifies CSV format.&quot;&quot;&quot;</span>
 
-    <span class="n">GOOGLE_SHEETS</span> <span class="o">=</span> <span class="s1">&#39;GOOGLE_SHEETS&#39;</span>
+    <span class="n">GOOGLE_SHEETS</span> <span class="o">=</span> <span class="s2">&quot;GOOGLE_SHEETS&quot;</span>
     <span class="sd">&quot;&quot;&quot;Specifies Google Sheets format.&quot;&quot;&quot;</span>
 
-    <span class="n">NEWLINE_DELIMITED_JSON</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
+    <span class="n">NEWLINE_DELIMITED_JSON</span> <span class="o">=</span> <span class="s2">&quot;NEWLINE_DELIMITED_JSON&quot;</span>
     <span class="sd">&quot;&quot;&quot;Specifies newline delimited JSON format.&quot;&quot;&quot;</span>
 
-    <span class="n">AVRO</span> <span class="o">=</span> <span class="s1">&#39;AVRO&#39;</span>
+    <span class="n">AVRO</span> <span class="o">=</span> <span class="s2">&quot;AVRO&quot;</span>
     <span class="sd">&quot;&quot;&quot;Specifies Avro format.&quot;&quot;&quot;</span>
 
-    <span class="n">DATASTORE_BACKUP</span> <span class="o">=</span> <span class="s1">&#39;DATASTORE_BACKUP&#39;</span>
+    <span class="n">DATASTORE_BACKUP</span> <span class="o">=</span> <span class="s2">&quot;DATASTORE_BACKUP&quot;</span>
     <span class="sd">&quot;&quot;&quot;Specifies datastore backup format&quot;&quot;&quot;</span>
 
-    <span class="n">BIGTABLE</span> <span class="o">=</span> <span class="s1">&#39;BIGTABLE&#39;</span>
+    <span class="n">BIGTABLE</span> <span class="o">=</span> <span class="s2">&quot;BIGTABLE&quot;</span>
     <span class="sd">&quot;&quot;&quot;Specifies Bigtable format.&quot;&quot;&quot;</span></div>
 
 
@@ -105,11 +105,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.encoding</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.encoding</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;encoding&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">)</span>
 
     <span class="nd">@encoding</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;encoding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">field_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -120,11 +120,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.fieldName</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.fieldName</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fieldName&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fieldName&quot;</span><span class="p">)</span>
 
     <span class="nd">@field_name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">field_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;fieldName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;fieldName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">only_read_latest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -135,11 +135,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.onlyReadLatest</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.onlyReadLatest</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;onlyReadLatest&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;onlyReadLatest&quot;</span><span class="p">)</span>
 
     <span class="nd">@only_read_latest</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">only_read_latest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;onlyReadLatest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;onlyReadLatest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">qualifier_encoded</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -152,14 +152,14 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.qualifierEncoded</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.qualifierEncoded</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;qualifierEncoded&#39;</span><span class="p">)</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;qualifierEncoded&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">standard_b64decode</span><span class="p">(</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">prop</span><span class="p">))</span>
 
     <span class="nd">@qualifier_encoded</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">qualifier_encoded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;qualifierEncoded&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_bytes_to_json</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;qualifierEncoded&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_bytes_to_json</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">qualifier_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -169,11 +169,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.qualifierEncoded</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.qualifierEncoded</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;qualifierString&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;qualifierString&quot;</span><span class="p">)</span>
 
     <span class="nd">@qualifier_string</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">qualifier_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;qualifierString&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;qualifierString&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">type_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -183,11 +183,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.type</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.type</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
 
     <span class="nd">@type_</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">type_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="BigtableColumn.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumn.html#google.cloud.bigquery.external_config.BigtableColumn.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
@@ -232,11 +232,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.encoding</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.encoding</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;encoding&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">)</span>
 
     <span class="nd">@encoding</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;encoding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">family_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -246,11 +246,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.familyId</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.familyId</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;familyId&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;familyId&quot;</span><span class="p">)</span>
 
     <span class="nd">@family_id</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">family_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;familyId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;familyId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">only_read_latest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -261,11 +261,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.onlyReadLatest</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.onlyReadLatest</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;onlyReadLatest&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;onlyReadLatest&quot;</span><span class="p">)</span>
 
     <span class="nd">@only_read_latest</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">only_read_latest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;onlyReadLatest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;onlyReadLatest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">type_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -275,11 +275,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.type</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.type</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
 
     <span class="nd">@type_</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">type_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -290,12 +290,12 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;columns&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;columns&quot;</span><span class="p">,</span> <span class="p">[])</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">BigtableColumn</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">prop</span><span class="p">]</span>
 
     <span class="nd">@columns</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
 
 <div class="viewcode-block" id="BigtableColumnFamily.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableColumnFamily.html#google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
@@ -330,8 +330,8 @@
     <span class="sd">&quot;&quot;&quot;Options that describe how to treat Bigtable tables as BigQuery tables.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;BIGTABLE&#39;</span>
-    <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s1">&#39;bigtableOptions&#39;</span>
+    <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;BIGTABLE&quot;</span>
+    <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s2">&quot;bigtableOptions&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
@@ -345,11 +345,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.ignoreUnspecifiedColumnFamilies</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.ignoreUnspecifiedColumnFamilies</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ignoreUnspecifiedColumnFamilies&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ignoreUnspecifiedColumnFamilies&quot;</span><span class="p">)</span>
 
     <span class="nd">@ignore_unspecified_column_families</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">ignore_unspecified_column_families</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;ignoreUnspecifiedColumnFamilies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;ignoreUnspecifiedColumnFamilies&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">read_rowkey_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -360,11 +360,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.readRowkeyAsString</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.readRowkeyAsString</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;readRowkeyAsString&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;readRowkeyAsString&quot;</span><span class="p">)</span>
 
     <span class="nd">@read_rowkey_as_string</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">read_rowkey_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;readRowkeyAsString&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;readRowkeyAsString&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">column_families</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -375,12 +375,12 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;columnFamilies&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;columnFamilies&quot;</span><span class="p">,</span> <span class="p">[])</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">BigtableColumnFamily</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span> <span class="k">for</span> <span class="n">cf</span> <span class="ow">in</span> <span class="n">prop</span><span class="p">]</span>
 
     <span class="nd">@column_families</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">column_families</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;columnFamilies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">cf</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">cf</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;columnFamilies&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">cf</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">cf</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
 
 <div class="viewcode-block" id="BigtableOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.BigtableOptions.html#google.cloud.bigquery.external_config.BigtableOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
@@ -414,8 +414,8 @@
 <div class="viewcode-block" id="CSVOptions"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.CSVOptions.html#google.cloud.bigquery.external_config.CSVOptions">[docs]</a><span class="k">class</span> <span class="nc">CSVOptions</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Options that describe how to treat CSV files as BigQuery tables.&quot;&quot;&quot;</span>
 
-    <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
-    <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s1">&#39;csvOptions&#39;</span>
+    <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;CSV&quot;</span>
+    <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s2">&quot;csvOptions&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
@@ -429,11 +429,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowJaggedRows</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.allowJaggedRows</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;allowJaggedRows&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allowJaggedRows&quot;</span><span class="p">)</span>
 
     <span class="nd">@allow_jagged_rows</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">allow_jagged_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;allowJaggedRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;allowJaggedRows&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">allow_quoted_newlines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -444,11 +444,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowQuotedNewlines</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.allowQuotedNewlines</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;allowQuotedNewlines&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allowQuotedNewlines&quot;</span><span class="p">)</span>
 
     <span class="nd">@allow_quoted_newlines</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">allow_quoted_newlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;allowQuotedNewlines&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;allowQuotedNewlines&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -458,11 +458,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.encoding</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.encoding</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;encoding&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">)</span>
 
     <span class="nd">@encoding</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;encoding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">field_delimiter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -472,11 +472,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.fieldDelimiter</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.fieldDelimiter</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fieldDelimiter&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fieldDelimiter&quot;</span><span class="p">)</span>
 
     <span class="nd">@field_delimiter</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">field_delimiter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;fieldDelimiter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;fieldDelimiter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">quote_character</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -486,11 +486,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.quote</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.quote</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;quote&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;quote&quot;</span><span class="p">)</span>
 
     <span class="nd">@quote_character</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">quote_character</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;quote&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;quote&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">skip_leading_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -500,11 +500,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.skipLeadingRows</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.skipLeadingRows</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;skipLeadingRows&quot;</span><span class="p">))</span>
 
     <span class="nd">@skip_leading_rows</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">skip_leading_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;skipLeadingRows&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CSVOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.CSVOptions.html#google.cloud.bigquery.external_config.CSVOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
@@ -538,8 +538,8 @@
 <div class="viewcode-block" id="GoogleSheetsOptions"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.GoogleSheetsOptions.html#google.cloud.bigquery.external_config.GoogleSheetsOptions">[docs]</a><span class="k">class</span> <span class="nc">GoogleSheetsOptions</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Options that describe how to treat Google Sheets as BigQuery tables.&quot;&quot;&quot;</span>
 
-    <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;GOOGLE_SHEETS&#39;</span>
-    <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s1">&#39;googleSheetsOptions&#39;</span>
+    <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;GOOGLE_SHEETS&quot;</span>
+    <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s2">&quot;googleSheetsOptions&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
@@ -553,11 +553,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).googleSheetsOptions.skipLeadingRows</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.googleSheetsOptions.skipLeadingRows</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;skipLeadingRows&quot;</span><span class="p">))</span>
 
     <span class="nd">@skip_leading_rows</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">skip_leading_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;skipLeadingRows&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GoogleSheetsOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.GoogleSheetsOptions.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
@@ -600,7 +600,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_format</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sourceFormat&#39;</span><span class="p">:</span> <span class="n">source_format</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;sourceFormat&quot;</span><span class="p">:</span> <span class="n">source_format</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">optcls</span> <span class="ow">in</span> <span class="n">_OPTION_CLASSES</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">source_format</span> <span class="o">==</span> <span class="n">optcls</span><span class="o">.</span><span class="n">_SOURCE_FORMAT</span><span class="p">:</span>
@@ -615,7 +615,7 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceFormat</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;sourceFormat&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;sourceFormat&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -631,11 +631,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).autodetect</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.autodetect</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;autodetect&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;autodetect&quot;</span><span class="p">)</span>
 
     <span class="nd">@autodetect</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">autodetect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;autodetect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;autodetect&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">compression</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -645,11 +645,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).compression</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.compression</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;compression&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">)</span>
 
     <span class="nd">@compression</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">compression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;compression&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;compression&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ignore_unknown_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -660,11 +660,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).ignoreUnknownValues</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.ignoreUnknownValues</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ignoreUnknownValues&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ignoreUnknownValues&quot;</span><span class="p">)</span>
 
     <span class="nd">@ignore_unknown_values</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">ignore_unknown_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;ignoreUnknownValues&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;ignoreUnknownValues&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">max_bad_records</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -675,11 +675,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).maxBadRecords</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.maxBadRecords</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;maxBadRecords&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;maxBadRecords&quot;</span><span class="p">)</span>
 
     <span class="nd">@max_bad_records</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">max_bad_records</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;maxBadRecords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;maxBadRecords&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">source_uris</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -689,11 +689,11 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceUris</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceUris</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sourceUris&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sourceUris&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
     <span class="nd">@source_uris</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">source_uris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;sourceUris&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;sourceUris&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -704,16 +704,15 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).schema</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.schema</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">SchemaField</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">,</span> <span class="p">[])]</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">SchemaField</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fields&quot;</span><span class="p">,</span> <span class="p">[])]</span>
 
     <span class="nd">@schema</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="n">prop</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">prop</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prop</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prop</span>
 
 <div class="viewcode-block" id="ExternalConfig.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.external_config.ExternalConfig.html#google.cloud.bigquery.external_config.ExternalConfig.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
@@ -744,7 +743,7 @@
 <span class="sd">            :class:`~.external_config.ExternalConfig`:</span>
 <span class="sd">                Configuration parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;sourceFormat&#39;</span><span class="p">])</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;sourceFormat&quot;</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">optcls</span> <span class="ow">in</span> <span class="n">_OPTION_CLASSES</span><span class="p">:</span>
             <span class="n">opts</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">optcls</span><span class="o">.</span><span class="n">_RESOURCE_NAME</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">opts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -57,6 +57,7 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
+
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">pandas</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
@@ -73,8 +74,8 @@
 
 
 <span class="n">_NO_PANDAS_ERROR</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;The pandas library is not installed, please install &#39;</span>
-    <span class="s1">&#39;pandas to use the to_dataframe() function.&#39;</span>
+    <span class="s2">&quot;The pandas library is not installed, please install &quot;</span>
+    <span class="s2">&quot;pandas to use the to_dataframe() function.&quot;</span>
 <span class="p">)</span>
 <span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s1">&#39;Table has no schema:  call &quot;client.get_table()&quot;&#39;</span>
 <span class="n">_MARKER</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
@@ -104,13 +105,13 @@
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: For invalid value types.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">view</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span>
+    <span class="n">view</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;view&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">view</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># The server-side default for useLegacySql is True.</span>
-        <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;useLegacySql&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
     <span class="c1"># In some cases, such as in a table list no view object is present, but the</span>
     <span class="c1"># resource still represents a view. Use the type as a fallback.</span>
-    <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">table_type</span> <span class="o">==</span> <span class="s1">&#39;VIEW&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">table_type</span> <span class="o">==</span> <span class="s2">&quot;VIEW&quot;</span><span class="p">:</span>
         <span class="c1"># The server-side default for useLegacySql is True.</span>
         <span class="k">return</span> <span class="kc">True</span>
 
@@ -125,7 +126,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kms_key_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">kms_key_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kms_key_name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;kmsKeyName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kms_key_name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">kms_key_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -134,11 +135,11 @@
 <span class="sd">        Resource ID of Cloud KMS key or :data:`None` if using default</span>
 <span class="sd">        encryption.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;kmsKeyName&quot;</span><span class="p">)</span>
 
     <span class="nd">@kms_key_name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">kms_key_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;kmsKeyName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="EncryptionConfiguration.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.EncryptionConfiguration.html#google.cloud.bigquery.table.EncryptionConfiguration.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
@@ -179,7 +180,7 @@
         <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;EncryptionConfiguration(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">&quot;EncryptionConfiguration(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TableReference"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference">[docs]</a><span class="k">class</span> <span class="nc">TableReference</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -217,8 +218,11 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: URL path for the table&#39;s APIs.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">/tables/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;/projects/</span><span class="si">%s</span><span class="s2">/datasets/</span><span class="si">%s</span><span class="s2">/tables/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">,</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="TableReference.from_string"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">table_id</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -250,32 +254,33 @@
         <span class="n">output_project_id</span> <span class="o">=</span> <span class="n">default_project</span>
         <span class="n">output_dataset_id</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">output_table_id</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">parts</span> <span class="o">=</span> <span class="n">table_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">table_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;table_id must be a fully-qualified table ID in &#39;</span>
+                <span class="s2">&quot;table_id must be a fully-qualified table ID in &quot;</span>
                 <span class="s1">&#39;standard SQL format. e.g. &quot;project.dataset.table&quot;, got &#39;</span>
-                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_id</span><span class="p">))</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">default_project</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">&#39;When default_project is not set, table_id must be a &#39;</span>
-                    <span class="s1">&#39;fully-qualified table ID in standard SQL format. &#39;</span>
-                    <span class="s1">&#39;e.g. &quot;project.dataset_id.table_id&quot;, got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">table_id</span><span class="p">))</span>
+                    <span class="s2">&quot;When default_project is not set, table_id must be a &quot;</span>
+                    <span class="s2">&quot;fully-qualified table ID in standard SQL format. &quot;</span>
+                    <span class="s1">&#39;e.g. &quot;project.dataset_id.table_id&quot;, got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+                <span class="p">)</span>
             <span class="n">output_dataset_id</span><span class="p">,</span> <span class="n">output_table_id</span> <span class="o">=</span> <span class="n">parts</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">output_project_id</span><span class="p">,</span> <span class="n">output_dataset_id</span><span class="p">,</span> <span class="n">output_table_id</span> <span class="o">=</span> <span class="n">parts</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;Too many parts in table_id. Must be a fully-qualified table &#39;</span>
+                <span class="s2">&quot;Too many parts in table_id. Must be a fully-qualified table &quot;</span>
                 <span class="s1">&#39;ID in standard SQL format. e.g. &quot;project.dataset.table&quot;, &#39;</span>
-                <span class="s1">&#39;got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_id</span><span class="p">))</span>
+                <span class="s2">&quot;got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">DatasetReference</span><span class="p">(</span><span class="n">output_project_id</span><span class="p">,</span> <span class="n">output_dataset_id</span><span class="p">),</span>
-            <span class="n">output_table_id</span><span class="p">,</span>
+            <span class="n">DatasetReference</span><span class="p">(</span><span class="n">output_project_id</span><span class="p">,</span> <span class="n">output_dataset_id</span><span class="p">),</span> <span class="n">output_table_id</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="TableReference.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
@@ -292,9 +297,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetReference</span>
 
-        <span class="n">project</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>
-        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
-        <span class="n">table_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;projectId&quot;</span><span class="p">]</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;datasetId&quot;</span><span class="p">]</span>
+        <span class="n">table_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;tableId&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">DatasetReference</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">),</span> <span class="n">table_id</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TableReference.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -304,9 +309,9 @@
 <span class="sd">            Dict[str, object]: Table reference represented as an API resource</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span>
-            <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
-            <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">,</span>
+            <span class="s2">&quot;projectId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span>
+            <span class="s2">&quot;datasetId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
+            <span class="s2">&quot;tableId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">,</span>
         <span class="p">}</span></div>
 
     <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -317,11 +322,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple[str]: The contents of this :class:`DatasetReference`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">):</span>
@@ -336,9 +337,9 @@
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetReference</span>
+
         <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">DatasetReference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;TableReference(</span><span class="si">{}</span><span class="s2">, &#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="nb">repr</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">&quot;TableReference(</span><span class="si">{}</span><span class="s2">, &#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table">[docs]</a><span class="k">class</span> <span class="nc">Table</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -355,22 +356,19 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_PROPERTY_TO_API_FIELD</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;friendly_name&#39;</span><span class="p">:</span> <span class="s1">&#39;friendlyName&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;expires&#39;</span><span class="p">:</span> <span class="s1">&#39;expirationTime&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;time_partitioning&#39;</span><span class="p">:</span> <span class="s1">&#39;timePartitioning&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;partitioning_type&#39;</span><span class="p">:</span> <span class="s1">&#39;timePartitioning&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;partition_expiration&#39;</span><span class="p">:</span> <span class="s1">&#39;timePartitioning&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;view_use_legacy_sql&#39;</span><span class="p">:</span> <span class="s1">&#39;view&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;view_query&#39;</span><span class="p">:</span> <span class="s1">&#39;view&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;external_data_configuration&#39;</span><span class="p">:</span> <span class="s1">&#39;externalDataConfiguration&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;encryption_configuration&#39;</span><span class="p">:</span> <span class="s1">&#39;encryptionConfiguration&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;friendlyName&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expires&quot;</span><span class="p">:</span> <span class="s2">&quot;expirationTime&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;time_partitioning&quot;</span><span class="p">:</span> <span class="s2">&quot;timePartitioning&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;partitioning_type&quot;</span><span class="p">:</span> <span class="s2">&quot;timePartitioning&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;partition_expiration&quot;</span><span class="p">:</span> <span class="s2">&quot;timePartitioning&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;view_use_legacy_sql&quot;</span><span class="p">:</span> <span class="s2">&quot;view&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;view_query&quot;</span><span class="p">:</span> <span class="s2">&quot;view&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;external_data_configuration&quot;</span><span class="p">:</span> <span class="s2">&quot;externalDataConfiguration&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;encryption_configuration&quot;</span><span class="p">:</span> <span class="s2">&quot;encryptionConfiguration&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;tableReference&#39;</span><span class="p">:</span> <span class="n">table_ref</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">(),</span>
-            <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;tableReference&quot;</span><span class="p">:</span> <span class="n">table_ref</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">(),</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">{}}</span>
         <span class="c1"># Let the @property do validation.</span>
         <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
@@ -378,25 +376,28 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: Project bound to the table.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">][</span><span class="s2">&quot;projectId&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: ID of dataset containing the table.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">][</span><span class="s2">&quot;datasetId&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: ID of the table.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">][</span><span class="s2">&quot;tableId&quot;</span><span class="p">]</span>
 
     <span class="n">reference</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_reference_getter</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: URL path for the table&#39;s APIs.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">/tables/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;/projects/</span><span class="si">%s</span><span class="s2">/datasets/</span><span class="si">%s</span><span class="s2">/tables/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -408,7 +409,7 @@
 <span class="sd">                If any item in the sequence is not a</span>
 <span class="sd">                :class:`~google.cloud.bigquery.schema.SchemaField`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">)</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">prop</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -417,13 +418,11 @@
     <span class="nd">@schema</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">SchemaField</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema items must be fields&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Schema items must be fields&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-            <span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">value</span><span class="p">)}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -436,13 +435,13 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: If ``value`` type is invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="p">{})</span>
 
     <span class="nd">@labels</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a dict&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -456,7 +455,7 @@
 <span class="sd">        &lt;https://cloud.google.com/bigquery/docs/customer-managed-encryption&gt;`_</span>
 <span class="sd">        in the BigQuery documentation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;encryptionConfiguration&#39;</span><span class="p">)</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encryptionConfiguration&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">prop</span> <span class="o">=</span> <span class="n">EncryptionConfiguration</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">prop</span>
@@ -466,57 +465,59 @@
         <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;encryptionConfiguration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_repr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;encryptionConfiguration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_repr</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[datetime.datetime, None]: Datetime at which the table was</span>
 <span class="sd">        created (:data:`None` until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">creation_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;creationTime&#39;</span><span class="p">)</span>
+        <span class="n">creation_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;creationTime&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">creation_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># creation_time will be in milliseconds.</span>
             <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
-                <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">creation_time</span><span class="p">))</span>
+                <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">creation_time</span><span class="p">)</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[str, None]: ETag for the table resource (:data:`None` until</span>
 <span class="sd">        set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;etag&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">modified</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[datetime.datetime, None]: Datetime at which the table was last</span>
 <span class="sd">        modified (:data:`None` until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">modified_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lastModifiedTime&#39;</span><span class="p">)</span>
+        <span class="n">modified_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lastModifiedTime&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">modified_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># modified_time will be in milliseconds.</span>
             <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
-                <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">modified_time</span><span class="p">))</span>
+                <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">modified_time</span><span class="p">)</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">num_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: The size of the table in bytes (:data:`None` until</span>
 <span class="sd">        set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;numBytes&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;numBytes&quot;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">num_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: The number of rows in the table (:data:`None`</span>
 <span class="sd">        until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;numRows&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;numRows&quot;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[str, None]: URL for the table resource (:data:`None` until set</span>
 <span class="sd">        from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selfLink&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;selfLink&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">full_table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -525,7 +526,7 @@
 
 <span class="sd">        In the format ``project_id:dataset_id.table_id``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -534,7 +535,7 @@
 
 <span class="sd">        Possible values are ``&#39;TABLE&#39;``, ``&#39;VIEW&#39;``, or ``&#39;EXTERNAL&#39;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time_partitioning</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -545,7 +546,7 @@
 <span class="sd">            ValueError:</span>
 <span class="sd">                If the value is not :class:`TimePartitioning` or :data:`None`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">)</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timePartitioning&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">TimePartitioning</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
 
@@ -556,9 +557,9 @@
             <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;value must be google.cloud.bigquery.table.TimePartitioning &quot;</span>
-                <span class="s2">&quot;or None&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_repr</span>
+                <span class="s2">&quot;value must be google.cloud.bigquery.table.TimePartitioning &quot;</span> <span class="s2">&quot;or None&quot;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;timePartitioning&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_repr</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">partitioning_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -571,7 +572,9 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;This method will be deprecated in future versions. Please use &quot;</span>
             <span class="s2">&quot;Table.time_partitioning.type_ instead.&quot;</span><span class="p">,</span>
-            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_partitioning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_partitioning</span><span class="o">.</span><span class="n">type_</span>
 
@@ -580,10 +583,12 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;This method will be deprecated in future versions. Please use &quot;</span>
             <span class="s2">&quot;Table.time_partitioning.type_ instead.&quot;</span><span class="p">,</span>
-            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_partitioning</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;timePartitioning&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;timePartitioning&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">partition_expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -596,7 +601,9 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;This method will be deprecated in future versions. Please use &quot;</span>
             <span class="s2">&quot;Table.time_partitioning.expiration_ms instead.&quot;</span><span class="p">,</span>
-            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_partitioning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_partitioning</span><span class="o">.</span><span class="n">expiration_ms</span>
 
@@ -605,11 +612,12 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;This method will be deprecated in future versions. Please use &quot;</span>
             <span class="s2">&quot;Table.time_partitioning.expiration_ms instead.&quot;</span><span class="p">,</span>
-            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_partitioning</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">TimePartitioningType</span><span class="o">.</span><span class="n">DAY</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">][</span><span class="s1">&#39;expirationMs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;timePartitioning&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">TimePartitioningType</span><span class="o">.</span><span class="n">DAY</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;timePartitioning&quot;</span><span class="p">][</span><span class="s2">&quot;expirationMs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">clustering_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -624,9 +632,9 @@
 <span class="sd">           As of 2018-06-29, clustering fields cannot be set on a table</span>
 <span class="sd">           which does not also have time partioning defined.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;clustering&#39;</span><span class="p">)</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;clustering&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">,</span> <span class="p">()))</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fields&quot;</span><span class="p">,</span> <span class="p">()))</span>
 
     <span class="nd">@clustering_fields</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">clustering_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -635,11 +643,11 @@
 <span class="sd">        (Defaults to :data:`None`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;clustering&#39;</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="n">prop</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;clustering&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">prop</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;clustering&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span>
-                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;clustering&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;clustering&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;clustering&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -649,13 +657,13 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: For invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">)</span>
 
     <span class="nd">@description</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string, or None&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">expires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -665,18 +673,19 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: For invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">expiration_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">)</span>
+        <span class="n">expiration_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expirationTime&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">expiration_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># expiration_time will be in milliseconds.</span>
             <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
-                <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">expiration_time</span><span class="p">))</span>
+                <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">expiration_time</span><span class="p">)</span>
+            <span class="p">)</span>
 
     <span class="nd">@expires</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">expires</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a datetime, or None&quot;</span><span class="p">)</span>
         <span class="n">value_ms</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_millis_from_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_str_or_none</span><span class="p">(</span><span class="n">value_ms</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;expirationTime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_str_or_none</span><span class="p">(</span><span class="n">value_ms</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -685,13 +694,13 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: For invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;friendlyName&quot;</span><span class="p">)</span>
 
     <span class="nd">@friendly_name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string, or None&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;friendlyName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -699,7 +708,7 @@
 
 <span class="sd">        Defaults to :data:`None`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">view_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -712,27 +721,27 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: For invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;view&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">view</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;query&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">)</span>
 
     <span class="nd">@view_query</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">view_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string&quot;</span><span class="p">)</span>
-        <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;view&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">view</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">view</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;view&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">view</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="c1"># The service defaults useLegacySql to True, but this</span>
         <span class="c1"># client uses Standard SQL by default.</span>
-        <span class="k">if</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">view</span><span class="p">[</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;useLegacySql&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">view</span><span class="p">[</span><span class="s2">&quot;useLegacySql&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="nd">@view_query</span><span class="o">.</span><span class="n">deleter</span>
     <span class="k">def</span> <span class="nf">view_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete SQL query defining the table as a view.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;view&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="n">view_use_legacy_sql</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_view_use_legacy_sql_getter</span><span class="p">)</span>
 
@@ -740,16 +749,16 @@
     <span class="k">def</span> <span class="nf">view_use_legacy_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a boolean&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">][</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;view&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;view&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;view&quot;</span><span class="p">][</span><span class="s2">&quot;useLegacySql&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">streaming_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.StreamingBuffer: Information about a table&#39;s</span>
 <span class="sd">        streaming buffer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;streamingBuffer&#39;</span><span class="p">)</span>
+        <span class="n">sb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;streamingBuffer&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">sb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">StreamingBuffer</span><span class="p">(</span><span class="n">sb</span><span class="p">)</span>
 
@@ -761,7 +770,7 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: For invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;externalDataConfiguration&#39;</span><span class="p">)</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;externalDataConfiguration&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">prop</span> <span class="o">=</span> <span class="n">ExternalConfig</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">prop</span>
@@ -773,7 +782,7 @@
         <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;externalDataConfiguration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_repr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;externalDataConfiguration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_repr</span>
 
 <div class="viewcode-block" id="Table.from_string"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table.from_string">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">full_table_id</span><span class="p">):</span>
@@ -820,12 +829,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">dataset</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;tableReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span> <span class="s1">&#39;tableId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]):</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required identity information:&#39;</span>
-                           <span class="s1">&#39;[&quot;tableReference&quot;][&quot;tableId&quot;]&#39;</span><span class="p">)</span>
-        <span class="n">project_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>
-        <span class="n">table_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
-        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s2">&quot;tableReference&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span>
+            <span class="ow">or</span> <span class="s2">&quot;tableId&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="s2">&quot;Resource lacks required identity information:&quot;</span>
+                <span class="s1">&#39;[&quot;tableReference&quot;][&quot;tableId&quot;]&#39;</span>
+            <span class="p">)</span>
+        <span class="n">project_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">][</span><span class="s2">&quot;projectId&quot;</span><span class="p">]</span>
+        <span class="n">table_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">][</span><span class="s2">&quot;tableId&quot;</span><span class="p">]</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">][</span><span class="s2">&quot;datasetId&quot;</span><span class="p">]</span>
         <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">DatasetReference</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span>
 
         <span class="n">table</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">))</span>
@@ -847,7 +861,7 @@
         <span class="k">for</span> <span class="n">filter_field</span> <span class="ow">in</span> <span class="n">filter_fields</span><span class="p">:</span>
             <span class="n">api_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PROPERTY_TO_API_FIELD</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filter_field</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">api_field</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">filter_field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No Table property </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">filter_field</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No Table property </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filter_field</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">api_field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">partial</span><span class="p">[</span><span class="n">api_field</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_field</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -858,7 +872,7 @@
         <span class="k">return</span> <span class="n">partial</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;Table(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="s2">&quot;Table(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="TableListItem"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableListItem.html#google.cloud.bigquery.table.TableListItem">[docs]</a><span class="k">class</span> <span class="nc">TableListItem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -886,34 +900,35 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="k">if</span> <span class="s1">&#39;tableReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;resource must contain a tableReference value&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;projectId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s2">&quot;tableReference&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;resource must contain a tableReference value&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;projectId&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a projectId value&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;datasetId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]:</span>
+                <span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a projectId value&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;datasetId&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a datasetId value&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;tableId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a tableId value&quot;</span><span class="p">)</span>
+                <span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a datasetId value&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;tableId&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a tableId value&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">resource</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: Project bound to the table.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">][</span><span class="s2">&quot;projectId&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: ID of dataset containing the table.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">][</span><span class="s2">&quot;datasetId&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: ID of the table.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;tableReference&quot;</span><span class="p">][</span><span class="s2">&quot;tableId&quot;</span><span class="p">]</span>
 
     <span class="n">reference</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_reference_getter</span><span class="p">)</span>
 
@@ -925,7 +940,7 @@
 <span class="sd">        modify the dict, then call ``Client.update_table``. To delete a</span>
 <span class="sd">        label, set its value to :data:`None` before updating.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="p">{})</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">full_table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -934,7 +949,7 @@
 
 <span class="sd">        In the format ``project_id:dataset_id.table_id``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -943,14 +958,14 @@
 
 <span class="sd">        Possible values are ``&#39;TABLE&#39;``, ``&#39;VIEW&#39;``, or ``&#39;EXTERNAL&#39;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time_partitioning</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.TimePartitioning: Configures time-based</span>
 <span class="sd">        partitioning for a table.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">)</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timePartitioning&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">TimePartitioning</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
 
@@ -962,7 +977,9 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;This method will be deprecated in future versions. Please use &quot;</span>
             <span class="s2">&quot;TableListItem.time_partitioning.type_ instead.&quot;</span><span class="p">,</span>
-            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_partitioning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_partitioning</span><span class="o">.</span><span class="n">type_</span>
 
@@ -976,14 +993,16 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;This method will be deprecated in future versions. Please use &quot;</span>
             <span class="s2">&quot;TableListItem.time_partitioning.expiration_ms instead.&quot;</span><span class="p">,</span>
-            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_partitioning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_partitioning</span><span class="o">.</span><span class="n">expiration_ms</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[str, None]: Title of the table (defaults to :data:`None`).&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;friendlyName&quot;</span><span class="p">)</span>
 
     <span class="n">view_use_legacy_sql</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_view_use_legacy_sql_getter</span><span class="p">)</span></div>
 
@@ -1011,15 +1030,14 @@
 
     <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;REQUIRED&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;REQUIRED&quot;</span><span class="p">:</span>
             <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
-        <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;REPEATED&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;REPEATED&quot;</span><span class="p">:</span>
             <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">()))</span>
-        <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;NULLABLE&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;NULLABLE&quot;</span><span class="p">:</span>
             <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Unknown field mode: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown field mode: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">))</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
 
@@ -1034,12 +1052,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">estimated_bytes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;estimatedBytes&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">estimated_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;estimatedRows&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimated_bytes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;estimatedBytes&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimated_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;estimatedRows&quot;</span><span class="p">])</span>
         <span class="c1"># time is in milliseconds since the epoch.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oldest_entry_time</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
-                <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;oldestEntryTime&#39;</span><span class="p">])))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oldest_entry_time</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
+            <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s2">&quot;oldestEntryTime&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
 
 
 <div class="viewcode-block" id="Row"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Row.html#google.cloud.bigquery.table.Row">[docs]</a><span class="k">class</span> <span class="nc">Row</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -1055,7 +1073,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Choose unusual field names to try to avoid conflict with schema fields.</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_xxx_values&#39;</span><span class="p">,</span> <span class="s1">&#39;_xxx_field_to_index&#39;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_xxx_values&quot;</span><span class="p">,</span> <span class="s2">&quot;_xxx_field_to_index&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">field_to_index</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="o">=</span> <span class="n">values</span>
@@ -1137,7 +1155,7 @@
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;no row field </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;no row field </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1147,26 +1165,26 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;no row field </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;no row field </span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Row</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span><span class="p">(</span>
+        <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_values</span>
-            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_field_to_index</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># sort field dict by value, for determinism</span>
-        <span class="n">items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
-                       <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-        <span class="n">f2i</span> <span class="o">=</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1">: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span>
-        <span class="k">return</span> <span class="s1">&#39;Row(</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">,</span> <span class="n">f2i</span><span class="p">)</span></div>
+        <span class="n">items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">f2i</span> <span class="o">=</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2">: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Row(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">,</span> <span class="n">f2i</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RowIterator"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.RowIterator.html#google.cloud.bigquery.table.RowIterator">[docs]</a><span class="k">class</span> <span class="nc">RowIterator</span><span class="p">(</span><span class="n">HTTPIterator</span><span class="p">):</span>
@@ -1185,13 +1203,29 @@
 <span class="sd">            Extra query string parameters for the API call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">,</span>
+        <span class="n">api_request</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">,</span>
+        <span class="n">schema</span><span class="p">,</span>
+        <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RowIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span>
-            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
-            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">page_start</span><span class="o">=</span><span class="n">_rows_page_start</span><span class="p">,</span>
-            <span class="n">next_token</span><span class="o">=</span><span class="s1">&#39;pageToken&#39;</span><span class="p">)</span>
+            <span class="n">client</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="p">,</span>
+            <span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span>
+            <span class="n">items_key</span><span class="o">=</span><span class="s2">&quot;rows&quot;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span>
+            <span class="n">page_start</span><span class="o">=</span><span class="n">_rows_page_start</span><span class="p">,</span>
+            <span class="n">next_token</span><span class="o">=</span><span class="s2">&quot;pageToken&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="n">schema</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_field_to_index</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_field_to_index_mapping</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_total_rows</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1206,11 +1240,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_query_params</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_size</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;maxResults&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_size</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1252,6 +1285,7 @@
 <span class="sd">    are impossible to fetch, such as with query results for DDL CREATE VIEW</span>
 <span class="sd">    statements.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">schema</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">pages</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">total_rows</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1268,7 +1302,7 @@
 <div class="viewcode-block" id="TimePartitioningType"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TimePartitioningType.html#google.cloud.bigquery.table.TimePartitioningType">[docs]</a><span class="k">class</span> <span class="nc">TimePartitioningType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the type of time partitioning to perform.&quot;&quot;&quot;</span>
 
-    <span class="n">DAY</span> <span class="o">=</span> <span class="s1">&#39;DAY&#39;</span>
+    <span class="n">DAY</span> <span class="o">=</span> <span class="s2">&quot;DAY&quot;</span>
     <span class="sd">&quot;&quot;&quot;str: Generates one partition per day.&quot;&quot;&quot;</span></div>
 
 
@@ -1293,8 +1327,10 @@
 <span class="sd">            partition filter that can be used for partition elimination to be</span>
 <span class="sd">            specified.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">expiration_ms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">require_partition_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">expiration_ms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">require_partition_filter</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">type_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">TimePartitioningType</span><span class="o">.</span><span class="n">DAY</span>
@@ -1312,39 +1348,39 @@
         <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.TimePartitioningType: The type of time</span>
 <span class="sd">        partitioning to use.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
 
     <span class="nd">@type_</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">type_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: Field in the table to use for partitioning&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">)</span>
 
     <span class="nd">@field</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;field&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">expiration_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;int: Number of milliseconds to keep the storage for a partition.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;expirationMs&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expirationMs&quot;</span><span class="p">))</span>
 
     <span class="nd">@expiration_ms</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">expiration_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;expirationMs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;expirationMs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">require_partition_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;bool: Specifies whether partition filters are required for queries</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;requirePartitionFilter&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requirePartitionFilter&quot;</span><span class="p">)</span>
 
     <span class="nd">@require_partition_filter</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">require_partition_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;requirePartitionFilter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;requirePartitionFilter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="TimePartitioning.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TimePartitioning.html#google.cloud.bigquery.table.TimePartitioning.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">api_repr</span><span class="p">):</span>
@@ -1371,7 +1407,7 @@
 <span class="sd">            google.cloud.bigquery.table.TimePartitioning:</span>
 <span class="sd">                The ``TimePartitioning`` object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">api_repr</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">api_repr</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">])</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">api_repr</span>
         <span class="k">return</span> <span class="n">instance</span></div>
 
@@ -1405,8 +1441,8 @@
         <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">key_vals</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="s1">&#39;TimePartitioning(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">key_vals</span><span class="p">))</span></div>
+        <span class="n">key_vals</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="s2">&quot;TimePartitioning(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">key_vals</span><span class="p">))</span></div>
 
 
 <span class="k">def</span> <span class="nf">_item_to_row</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
@@ -1427,8 +1463,10 @@
 <span class="sd">    :rtype: :class:`~google.cloud.bigquery.table.Row`</span>
 <span class="sd">    :returns: The next row in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">Row</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_row_tuple_from_json</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">schema</span><span class="p">),</span>
-               <span class="n">iterator</span><span class="o">.</span><span class="n">_field_to_index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Row</span><span class="p">(</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_row_tuple_from_json</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">schema</span><span class="p">),</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">_field_to_index</span><span class="p">,</span>
+    <span class="p">)</span>
 
 
 <span class="c1"># pylint: disable=unused-argument</span>
@@ -1444,10 +1482,12 @@
 <span class="sd">    :type response: dict</span>
 <span class="sd">    :param response: The JSON API response for a page of rows in a table.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">total_rows</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalRows&#39;</span><span class="p">)</span>
+    <span class="n">total_rows</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;totalRows&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">total_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">total_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_rows</span><span class="p">)</span>
     <span class="n">iterator</span><span class="o">.</span><span class="n">_total_rows</span> <span class="o">=</span> <span class="n">total_rows</span>
+
+
 <span class="c1"># pylint: enable=unused-argument</span>
 </pre></div>
 

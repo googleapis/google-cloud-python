@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.blob &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.storage.blob &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -94,40 +94,43 @@
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">ObjectACL</span>
 
 
-<span class="n">_API_ACCESS_ENDPOINT</span> <span class="o">=</span> <span class="s1">&#39;https://storage.googleapis.com&#39;</span>
-<span class="n">_DEFAULT_CONTENT_TYPE</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;application/octet-stream&#39;</span>
+<span class="n">_API_ACCESS_ENDPOINT</span> <span class="o">=</span> <span class="s2">&quot;https://storage.googleapis.com&quot;</span>
+<span class="n">_DEFAULT_CONTENT_TYPE</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;application/octet-stream&quot;</span>
 <span class="n">_DOWNLOAD_URL_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/download/storage/v1</span><span class="si">{path}</span><span class="s1">?alt=media&#39;</span><span class="p">)</span>
+    <span class="sa">u</span><span class="s2">&quot;https://www.googleapis.com/download/storage/v1</span><span class="si">{path}</span><span class="s2">?alt=media&quot;</span>
+<span class="p">)</span>
 <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1</span><span class="si">{bucket_path}</span><span class="s1">/o?uploadType=&#39;</span><span class="p">)</span>
-<span class="n">_MULTIPART_URL_TEMPLATE</span> <span class="o">=</span> <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;multipart&#39;</span>
-<span class="n">_RESUMABLE_URL_TEMPLATE</span> <span class="o">=</span> <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;resumable&#39;</span>
+    <span class="sa">u</span><span class="s2">&quot;https://www.googleapis.com/upload/storage/v1</span><span class="si">{bucket_path}</span><span class="s2">/o?uploadType=&quot;</span>
+<span class="p">)</span>
+<span class="n">_MULTIPART_URL_TEMPLATE</span> <span class="o">=</span> <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">+</span> <span class="sa">u</span><span class="s2">&quot;multipart&quot;</span>
+<span class="n">_RESUMABLE_URL_TEMPLATE</span> <span class="o">=</span> <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">+</span> <span class="sa">u</span><span class="s2">&quot;resumable&quot;</span>
 <span class="c1"># NOTE: &quot;acl&quot; is also writeable but we defer ACL management to</span>
 <span class="c1">#       the classes in the google.cloud.storage.acl module.</span>
-<span class="n">_CONTENT_TYPE_FIELD</span> <span class="o">=</span> <span class="s1">&#39;contentType&#39;</span>
+<span class="n">_CONTENT_TYPE_FIELD</span> <span class="o">=</span> <span class="s2">&quot;contentType&quot;</span>
 <span class="n">_WRITABLE_FIELDS</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;cacheControl&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;contentDisposition&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;contentEncoding&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;contentLanguage&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;cacheControl&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;contentDisposition&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;contentEncoding&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;contentLanguage&quot;</span><span class="p">,</span>
     <span class="n">_CONTENT_TYPE_FIELD</span><span class="p">,</span>
-    <span class="s1">&#39;crc32c&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;md5Hash&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;metadata&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;name&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;storageClass&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;crc32c&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;md5Hash&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;storageClass&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_NUM_RETRIES_MESSAGE</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;`num_retries` has been deprecated and will be removed in a future &#39;</span>
-    <span class="s1">&#39;release. The default behavior (when `num_retries` is not specified) when &#39;</span>
-    <span class="s1">&#39;a transient error (e.g. 429 Too Many Requests or 500 Internal Server &#39;</span>
-    <span class="s1">&#39;Error) occurs will be as follows: upload requests will be automatically &#39;</span>
-    <span class="s1">&#39;retried. Subsequent retries will be sent after waiting 1, 2, 4, 8, etc. &#39;</span>
-    <span class="s1">&#39;seconds (exponential backoff) until 10 minutes of wait time have &#39;</span>
-    <span class="s1">&#39;elapsed. At that point, there will be no more attempts to retry.&#39;</span><span class="p">)</span>
+    <span class="s2">&quot;`num_retries` has been deprecated and will be removed in a future &quot;</span>
+    <span class="s2">&quot;release. The default behavior (when `num_retries` is not specified) when &quot;</span>
+    <span class="s2">&quot;a transient error (e.g. 429 Too Many Requests or 500 Internal Server &quot;</span>
+    <span class="s2">&quot;Error) occurs will be as follows: upload requests will be automatically &quot;</span>
+    <span class="s2">&quot;retried. Subsequent retries will be sent after waiting 1, 2, 4, 8, etc. &quot;</span>
+    <span class="s2">&quot;seconds (exponential backoff) until 10 minutes of wait time have &quot;</span>
+    <span class="s2">&quot;elapsed. At that point, there will be no more attempts to retry.&quot;</span>
+<span class="p">)</span>
 <span class="n">_READ_LESS_THAN_SIZE</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;Size </span><span class="si">{:d}</span><span class="s1"> was specified but the file-like object only had &#39;</span>
-    <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1"> bytes remaining.&#39;</span><span class="p">)</span>
+    <span class="s2">&quot;Size </span><span class="si">{:d}</span><span class="s2"> was specified but the file-like object only had &quot;</span> <span class="s2">&quot;</span><span class="si">{:d}</span><span class="s2"> bytes remaining.&quot;</span>
+<span class="p">)</span>
 
 <span class="n">_DEFAULT_CHUNKSIZE</span> <span class="o">=</span> <span class="mi">104857600</span>  <span class="c1"># 1024 * 1024 B * 100 = 100 MB</span>
 <span class="n">_MAX_MULTIPART_SIZE</span> <span class="o">=</span> <span class="mi">8388608</span>  <span class="c1"># 8 MB</span>
@@ -168,11 +171,11 @@
     <span class="sd">&quot;&quot;&quot;Number (256 KB, in bytes) that must divide the chunk size.&quot;&quot;&quot;</span>
 
     <span class="n">_STORAGE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;NEARLINE&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;MULTI_REGIONAL&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;REGIONAL&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;COLDLINE&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;STANDARD&#39;</span><span class="p">,</span>  <span class="c1"># alias for MULTI_REGIONAL/REGIONAL, based on location</span>
+        <span class="s2">&quot;NEARLINE&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;MULTI_REGIONAL&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;REGIONAL&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;COLDLINE&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;STANDARD&quot;</span><span class="p">,</span>  <span class="c1"># alias for MULTI_REGIONAL/REGIONAL, based on location</span>
     <span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Allowed values for :attr:`storage_class`.</span>
 
@@ -190,8 +193,9 @@
 <span class="sd">       set as their &#39;storage_class&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kms_key_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kms_key_name</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Blob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
@@ -200,13 +204,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="o">=</span> <span class="n">ObjectACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">encryption_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">kms_key_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Pass at most one of &#39;encryption_key&#39; &quot;</span>
-                <span class="s2">&quot;and &#39;kms_key_name&#39;&quot;</span><span class="p">)</span>
+                <span class="s2">&quot;Pass at most one of &#39;encryption_key&#39; &quot;</span> <span class="s2">&quot;and &#39;kms_key_name&#39;&quot;</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span> <span class="o">=</span> <span class="n">encryption_key</span>
 
         <span class="k">if</span> <span class="n">kms_key_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kms_key_name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;kmsKeyName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kms_key_name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">chunk_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -227,11 +231,10 @@
 <span class="sd">        :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a</span>
 <span class="sd">                 multiple of 256 KB.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> \
-                <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> \
-                <span class="n">value</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Chunk size must be a multiple of </span><span class="si">%d</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">,))</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Chunk size must be a multiple of </span><span class="si">%d</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">,)</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="Blob.path_helper"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.path_helper">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -247,7 +250,7 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The relative URL path for ``blob_name``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">bucket_path</span> <span class="o">+</span> <span class="s1">&#39;/o/&#39;</span> <span class="o">+</span> <span class="n">_quote</span><span class="p">(</span><span class="n">blob_name</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">bucket_path</span> <span class="o">+</span> <span class="s2">&quot;/o/&quot;</span> <span class="o">+</span> <span class="n">_quote</span><span class="p">(</span><span class="n">blob_name</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -260,7 +263,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">bucket_name</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="s1">&#39;&lt;Blob: </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;Blob: </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -270,7 +273,7 @@
 <span class="sd">        :returns: The URL path to this Blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot determine path without a blob name.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot determine path without a blob name.&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
@@ -299,15 +302,23 @@
 <span class="sd">        :rtype: `string`</span>
 <span class="sd">        :returns: The public URL for this blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{storage_base_url}</span><span class="s1">/</span><span class="si">{bucket_name}</span><span class="s1">/</span><span class="si">{quoted_name}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{storage_base_url}</span><span class="s2">/</span><span class="si">{bucket_name}</span><span class="s2">/</span><span class="si">{quoted_name}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">storage_base_url</span><span class="o">=</span><span class="n">_API_ACCESS_ENDPOINT</span><span class="p">,</span>
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">quoted_name</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+            <span class="n">quoted_name</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)),</span>
+        <span class="p">)</span>
 
-<div class="viewcode-block" id="Blob.generate_signed_url"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-                            <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                            <span class="n">generation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_disposition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                            <span class="n">response_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.generate_signed_url"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">expiration</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+        <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">generation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">response_disposition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">response_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a signed URL for this blob.</span>
 
 <span class="sd">        .. note::</span>
@@ -372,9 +383,9 @@
 <span class="sd">        :returns: A signed URL you can use to access the resource</span>
 <span class="sd">                  until expiration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">resource</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">{bucket_name}</span><span class="s1">/</span><span class="si">{quoted_name}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">quoted_name</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="s2">&quot;/</span><span class="si">{bucket_name}</span><span class="s2">/</span><span class="si">{quoted_name}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">quoted_name</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
@@ -389,7 +400,8 @@
             <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
             <span class="n">response_type</span><span class="o">=</span><span class="n">response_type</span><span class="p">,</span>
             <span class="n">response_disposition</span><span class="o">=</span><span class="n">response_disposition</span><span class="p">,</span>
-            <span class="n">generation</span><span class="o">=</span><span class="n">generation</span><span class="p">)</span></div>
+            <span class="n">generation</span><span class="o">=</span><span class="n">generation</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.exists"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this blob exists.</span>
@@ -408,17 +420,20 @@
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="c1"># We only need the status code (200 or not) so we seek to</span>
         <span class="c1"># minimize the returned payload.</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span><span class="p">}</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># We intentionally pass `_target_object=None` since fields=name</span>
             <span class="c1"># would limit the local properties.</span>
             <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+                <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
+                <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="c1"># NOTE: This will not fail immediately in a batch. However, when</span>
             <span class="c1">#       Batch.finish() is called, the resulting `NotFound` will be</span>
             <span class="c1">#       raised.</span>
@@ -474,18 +489,18 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">base_url</span> <span class="o">=</span> <span class="n">_DOWNLOAD_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="p">(</span><span class="s1">&#39;generation&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generation</span><span class="p">)))</span>
+                <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;generation&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generation</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;userProject&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span><span class="p">))</span>
+            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;userProject&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">_add_query_parameters</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">name_value_pairs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_do_download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span>
-                     <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_do_download</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a download without any error handling.</span>
 
 <span class="sd">        This is intended to be called by :meth:`download_to_file` so it can</span>
@@ -513,13 +528,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">download</span> <span class="o">=</span> <span class="n">Download</span><span class="p">(</span>
-                <span class="n">download_url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-                <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+                <span class="n">download_url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span>
+            <span class="p">)</span>
             <span class="n">download</span><span class="o">.</span><span class="n">consume</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">download</span> <span class="o">=</span> <span class="n">ChunkedDownload</span><span class="p">(</span>
-                <span class="n">download_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-                <span class="n">start</span><span class="o">=</span><span class="n">start</span> <span class="k">if</span> <span class="n">start</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+                <span class="n">download_url</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">,</span>
+                <span class="n">file_obj</span><span class="p">,</span>
+                <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                <span class="n">start</span><span class="o">=</span><span class="n">start</span> <span class="k">if</span> <span class="n">start</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
+            <span class="p">)</span>
 
             <span class="k">while</span> <span class="ow">not</span> <span class="n">download</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
                 <span class="n">download</span><span class="o">.</span><span class="n">consume_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
@@ -568,17 +588,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_download_url</span><span class="p">()</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">)</span>
-        <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;accept-encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gzip&#39;</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;accept-encoding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;gzip&quot;</span>
 
         <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_do_download</span><span class="p">(</span>
-                <span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_do_download</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
 
 <span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
@@ -601,9 +619,8 @@
 <span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span>
-                    <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">DataCorruption</span><span class="p">:</span>
             <span class="c1"># Delete the corrupt downloaded file.</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -636,8 +653,7 @@
 <span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span>
-            <span class="n">string_buffer</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_get_content_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -694,7 +710,7 @@
 <span class="sd">        managed directly through :class:`ObjectACL` methods.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># NOTE: This assumes `self.name` is unicode.</span>
-        <span class="n">object_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+        <span class="n">object_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_changes</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_WRITABLE_FIELDS</span><span class="p">:</span>
                 <span class="n">object_metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
@@ -725,8 +741,9 @@
         <span class="n">content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_content_type</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">headers</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span>
 
-    <span class="k">def</span> <span class="nf">_do_multipart_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-                             <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_do_multipart_upload</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a multipart upload.</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
@@ -776,35 +793,41 @@
         <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_upload_arguments</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
         <span class="n">headers</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span> <span class="o">=</span> <span class="n">info</span>
 
-        <span class="n">base_url</span> <span class="o">=</span> <span class="n">_MULTIPART_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">bucket_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">_MULTIPART_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="n">name_value_pairs</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;userProject&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span><span class="p">))</span>
+            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;userProject&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span><span class="p">))</span>
+            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;kmsKeyName&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">predefined_acl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;predefinedAcl&#39;</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">))</span>
+            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;predefinedAcl&quot;</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">))</span>
 
         <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_add_query_parameters</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">name_value_pairs</span><span class="p">)</span>
         <span class="n">upload</span> <span class="o">=</span> <span class="n">MultipartUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">upload</span><span class="o">.</span><span class="n">_retry_strategy</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">RetryStrategy</span><span class="p">(</span>
-                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span>
+            <span class="p">)</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span>
-            <span class="n">transport</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response</span>
 
-    <span class="k">def</span> <span class="nf">_initiate_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-                                   <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span>
-                                   <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                   <span class="n">extra_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_initiate_resumable_upload</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">,</span>
+        <span class="n">stream</span><span class="p">,</span>
+        <span class="n">content_type</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">,</span>
+        <span class="n">num_retries</span><span class="p">,</span>
+        <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">extra_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initiate a resumable upload.</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
@@ -866,34 +889,40 @@
         <span class="k">if</span> <span class="n">extra_headers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extra_headers</span><span class="p">)</span>
 
-        <span class="n">base_url</span> <span class="o">=</span> <span class="n">_RESUMABLE_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">bucket_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">_RESUMABLE_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="n">name_value_pairs</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;userProject&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span><span class="p">))</span>
+            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;userProject&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span><span class="p">))</span>
+            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;kmsKeyName&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">predefined_acl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;predefinedAcl&#39;</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">))</span>
+            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;predefinedAcl&quot;</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">))</span>
 
         <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_add_query_parameters</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">name_value_pairs</span><span class="p">)</span>
         <span class="n">upload</span> <span class="o">=</span> <span class="n">ResumableUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">upload</span><span class="o">.</span><span class="n">_retry_strategy</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">RetryStrategy</span><span class="p">(</span>
-                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span>
+            <span class="p">)</span>
 
         <span class="n">upload</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span>
-            <span class="n">transport</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-            <span class="n">total_bytes</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">stream_final</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">transport</span><span class="p">,</span>
+            <span class="n">stream</span><span class="p">,</span>
+            <span class="n">object_metadata</span><span class="p">,</span>
+            <span class="n">content_type</span><span class="p">,</span>
+            <span class="n">total_bytes</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+            <span class="n">stream_final</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span>
 
-    <span class="k">def</span> <span class="nf">_do_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-                             <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_do_resumable_upload</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a resumable upload.</span>
 
 <span class="sd">        Assumes ``chunk_size`` is not :data:`None` on the current blob.</span>
@@ -932,16 +961,22 @@
 <span class="sd">                  is uploaded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initiate_resumable_upload</span><span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span>
-            <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">)</span>
+            <span class="n">client</span><span class="p">,</span>
+            <span class="n">stream</span><span class="p">,</span>
+            <span class="n">content_type</span><span class="p">,</span>
+            <span class="n">size</span><span class="p">,</span>
+            <span class="n">num_retries</span><span class="p">,</span>
+            <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">while</span> <span class="ow">not</span> <span class="n">upload</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response</span>
 
-    <span class="k">def</span> <span class="nf">_do_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-                   <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_do_upload</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine an upload strategy and then perform the upload.</span>
 
 <span class="sd">        If the size of the data to be uploaded exceeds 5 MB a resumable media</span>
@@ -984,18 +1019,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="n">_MAX_MULTIPART_SIZE</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_multipart_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-                <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">)</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_resumable_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span>
-                <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">)</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">file_obj</span><span class="p">,</span>
+        <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">num_retries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this blob from a file-like object.</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
@@ -1064,22 +1106,22 @@
 <span class="sd">        .. _lifecycle: https://cloud.google.com/storage/docs/lifecycle</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="n">_NUM_RETRIES_MESSAGE</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">_NUM_RETRIES_MESSAGE</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="n">_maybe_rewind</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="n">rewind</span><span class="p">)</span>
         <span class="n">predefined_acl</span> <span class="o">=</span> <span class="n">ACL</span><span class="o">.</span><span class="n">validate_predefined</span><span class="p">(</span><span class="n">predefined_acl</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">created_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-                <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">)</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">created_json</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload this blob&#39;s contents from the content of a named file.</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
@@ -1119,14 +1161,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_content_type</span><span class="p">(</span><span class="n">content_type</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
             <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fstat</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span><span class="o">.</span><span class="n">st_size</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span>
-                <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
-                <span class="n">size</span><span class="o">=</span><span class="n">total_bytes</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">)</span></div>
+                <span class="n">file_obj</span><span class="p">,</span>
+                <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
+                <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+                <span class="n">size</span><span class="o">=</span><span class="n">total_bytes</span><span class="p">,</span>
+                <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">,</span>
+            <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                           <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/plain&quot;</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload contents of this blob from the provided string.</span>
 
 <span class="sd">        .. note::</span>
@@ -1159,19 +1206,19 @@
 <span class="sd">        :type predefined_acl: str</span>
 <span class="sd">        :param predefined_acl: (Optional) predefined access control list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span>
-            <span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
-            <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
-            <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">)</span></div>
+            <span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
+            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+            <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.create_resumable_upload_session"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.create_resumable_upload_session">[docs]</a>    <span class="k">def</span> <span class="nf">create_resumable_upload_session</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a resumable upload session.</span>
 
 <span class="sd">        Resumable upload sessions allow you to start an upload session from</span>
@@ -1240,18 +1287,23 @@
         <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># This header is specifically for client-side uploads, it</span>
             <span class="c1"># determines the origins allowed for CORS.</span>
-            <span class="n">extra_headers</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span>
+            <span class="n">extra_headers</span><span class="p">[</span><span class="s2">&quot;Origin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">dummy_stream</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">dummy_stream</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
             <span class="c1"># Send a fake the chunk size which we **know** will be acceptable</span>
             <span class="c1"># to the `ResumableUpload` constructor. The chunk size only</span>
             <span class="c1"># matters when **sending** bytes to an upload.</span>
             <span class="n">upload</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initiate_resumable_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">dummy_stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">client</span><span class="p">,</span>
+                <span class="n">dummy_stream</span><span class="p">,</span>
+                <span class="n">content_type</span><span class="p">,</span>
+                <span class="n">size</span><span class="p">,</span>
+                <span class="kc">None</span><span class="p">,</span>
                 <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">extra_headers</span><span class="o">=</span><span class="n">extra_headers</span><span class="p">,</span>
-                <span class="n">chunk_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">)</span>
+                <span class="n">chunk_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">,</span>
+            <span class="p">)</span>
 
             <span class="k">return</span> <span class="n">upload</span><span class="o">.</span><span class="n">resumable_url</span>
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
@@ -1285,13 +1337,14 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="n">info</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/iam&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.set_iam_policy"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1325,16 +1378,17 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="n">resource</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;resourceId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;resourceId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;PUT&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/iam&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.test_iam_permissions"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1364,18 +1418,17 @@
 <span class="sd">                  request.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="n">permissions</span><span class="p">}</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;permissions&quot;</span><span class="p">:</span> <span class="n">permissions</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam/testPermissions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/iam/testPermissions&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span>
+        <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span></div>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;permissions&quot;</span><span class="p">,</span> <span class="p">[])</span></div>
 
 <div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update blob&#39;s ACL, granting read access to anonymous users.</span>
@@ -1417,18 +1470,19 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;sourceObjects&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">}</span> <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">],</span>
-            <span class="s1">&#39;destination&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="s2">&quot;sourceObjects&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">}</span> <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">],</span>
+            <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
         <span class="p">}</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/compose&#39;</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/compose&quot;</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.rewrite"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.rewrite">[docs]</a>    <span class="k">def</span> <span class="nf">rewrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1459,38 +1513,38 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">)</span>
-        <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_encryption_headers</span><span class="p">(</span>
-            <span class="n">source</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_encryption_headers</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="n">token</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;rewriteToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">token</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;rewriteToken&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">token</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;destinationKmsKeyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;destinationKmsKeyName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span>
 
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/rewriteTo&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/rewriteTo&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span>
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">rewritten</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;totalBytesRewritten&#39;</span><span class="p">])</span>
-        <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;objectSize&#39;</span><span class="p">])</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">rewritten</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s2">&quot;totalBytesRewritten&quot;</span><span class="p">])</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s2">&quot;objectSize&quot;</span><span class="p">])</span>
 
         <span class="c1"># The resource key is set if and only if the API response is</span>
         <span class="c1"># completely done. Additionally, there is no rewrite token to return</span>
         <span class="c1"># in this case.</span>
-        <span class="k">if</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;done&#39;</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">api_response</span><span class="p">[</span><span class="s2">&quot;done&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s2">&quot;resource&quot;</span><span class="p">])</span>
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span>
 
-        <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;rewriteToken&#39;</span><span class="p">],</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span></div>
+        <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s2">&quot;rewriteToken&quot;</span><span class="p">],</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span></div>
 
 <div class="viewcode-block" id="Blob.update_storage_class"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.update_storage_class">[docs]</a>    <span class="k">def</span> <span class="nf">update_storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_class</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update blob&#39;s storage class via a rewrite-in-place.</span>
@@ -1516,22 +1570,22 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">)</span>
-        <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_encryption_headers</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/rewriteTo&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/rewriteTo&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;storageClass&#39;</span><span class="p">:</span> <span class="n">new_class</span><span class="p">},</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;storageClass&quot;</span><span class="p">:</span> <span class="n">new_class</span><span class="p">},</span>
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">])</span></div>
+            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s2">&quot;resource&quot;</span><span class="p">])</span></div>
 
-    <span class="n">cache_control</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;cacheControl&#39;</span><span class="p">)</span>
+    <span class="n">cache_control</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;cacheControl&quot;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Cache-Control&#39; header for this object.</span>
 
 <span class="sd">    See `RFC 7234`_ and `API reference docs`_.</span>
@@ -1541,7 +1595,7 @@
 <span class="sd">    .. _RFC 7234: https://tools.ietf.org/html/rfc7234#section-5.2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">content_disposition</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentDisposition&#39;</span><span class="p">)</span>
+    <span class="n">content_disposition</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;contentDisposition&quot;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Disposition&#39; header for this object.</span>
 
 <span class="sd">    See `RFC 6266`_ and `API reference docs`_.</span>
@@ -1551,7 +1605,7 @@
 <span class="sd">    .. _RFC 6266: https://tools.ietf.org/html/rfc7234#section-5.2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">content_encoding</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentEncoding&#39;</span><span class="p">)</span>
+    <span class="n">content_encoding</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;contentEncoding&quot;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Encoding&#39; header for this object.</span>
 
 <span class="sd">    See `RFC 7231`_ and `API reference docs`_.</span>
@@ -1561,7 +1615,7 @@
 <span class="sd">    .. _RFC 7231: https://tools.ietf.org/html/rfc7231#section-3.1.2.2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">content_language</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentLanguage&#39;</span><span class="p">)</span>
+    <span class="n">content_language</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;contentLanguage&quot;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Language&#39; header for this object.</span>
 
 <span class="sd">    See `BCP47`_ and `API reference docs`_.</span>
@@ -1581,7 +1635,7 @@
 <span class="sd">    .. _RFC 2616: https://tools.ietf.org/html/rfc2616#section-14.17</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">crc32c</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;crc32c&#39;</span><span class="p">)</span>
+    <span class="n">crc32c</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;crc32c&quot;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;CRC32C checksum for this object.</span>
 
 <span class="sd">    See `RFC 4960`_ and `API reference docs`_.</span>
@@ -1605,7 +1659,7 @@
 <span class="sd">                  the server.  This property will not be set on objects</span>
 <span class="sd">                  not created via ``compose``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">component_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;componentCount&#39;</span><span class="p">)</span>
+        <span class="n">component_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;componentCount&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">component_count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">component_count</span><span class="p">)</span>
 
@@ -1621,9 +1675,9 @@
 
 <span class="sd">        .. _RFC 2616 (etags): https://tools.ietf.org/html/rfc2616#section-3.11</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;etag&quot;</span><span class="p">)</span>
 
-    <span class="n">event_based_hold</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;eventBasedHold&#39;</span><span class="p">)</span>
+    <span class="n">event_based_hold</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;eventBasedHold&quot;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Is an event-based hold active on the object?</span>
 
 <span class="sd">    See `API reference docs`_.</span>
@@ -1643,7 +1697,7 @@
 <span class="sd">        :returns: The generation of the blob or ``None`` if the blob&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">generation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;generation&#39;</span><span class="p">)</span>
+        <span class="n">generation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;generation&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">generation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">generation</span><span class="p">)</span>
 
@@ -1659,9 +1713,9 @@
 <span class="sd">        :returns: The ID of the blob or ``None`` if the blob&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
 
-    <span class="n">md5_hash</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;md5Hash&#39;</span><span class="p">)</span>
+    <span class="n">md5_hash</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;md5Hash&quot;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;MD5 hash for this object.</span>
 
 <span class="sd">    See `RFC 1321`_ and `API reference docs`_.</span>
@@ -1683,7 +1737,7 @@
 <span class="sd">        :returns: The media link for the blob or ``None`` if the blob&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mediaLink&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mediaLink&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1700,7 +1754,7 @@
 <span class="sd">        :returns: The metadata associated with the blob or ``None`` if the</span>
 <span class="sd">                  property is not set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metadata&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">))</span>
 
     <span class="nd">@metadata</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -1711,7 +1765,7 @@
 <span class="sd">        :type value: dict</span>
 <span class="sd">        :param value: (Optional) The blob metadata to set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1723,7 +1777,7 @@
 <span class="sd">        :returns: The metageneration of the blob or ``None`` if the blob&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">metageneration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metageneration&#39;</span><span class="p">)</span>
+        <span class="n">metageneration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metageneration&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">metageneration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">metageneration</span><span class="p">)</span>
 
@@ -1737,7 +1791,7 @@
 <span class="sd">        :returns: Mapping of owner&#39;s role/ID, or ``None`` if the blob&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;owner&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;owner&quot;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">retention_expiration_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1749,7 +1803,7 @@
 <span class="sd">        :returns: Datetime object parsed from RFC3339 valid timestamp, or</span>
 <span class="sd">                  ``None`` if the property is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retentionExpirationTime&#39;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retentionExpirationTime&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -1763,7 +1817,7 @@
 <span class="sd">        :returns: The self link for the blob or ``None`` if the blob&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selfLink&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;selfLink&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1775,7 +1829,7 @@
 <span class="sd">        :returns: The size of the blob or ``None`` if the blob&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;size&#39;</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 
@@ -1788,9 +1842,9 @@
 <span class="sd">            The resource name or ``None`` if no Cloud KMS key was used,</span>
 <span class="sd">            or the blob&#39;s resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;kmsKeyName&quot;</span><span class="p">)</span>
 
-    <span class="n">storage_class</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;storageClass&#39;</span><span class="p">)</span>
+    <span class="n">storage_class</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;storageClass&quot;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Retrieve the storage class for the object.</span>
 
 <span class="sd">    This can only be set at blob / object **creation** time. If you&#39;d</span>
@@ -1806,7 +1860,7 @@
 <span class="sd">              &quot;DURABLE_REDUCED_AVAILABILITY&quot;, else ``None``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">temporary_hold</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;temporaryHold&#39;</span><span class="p">)</span>
+    <span class="n">temporary_hold</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;temporaryHold&quot;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Is a temporary hold active on the object?</span>
 
 <span class="sd">    See `API reference docs`_.</span>
@@ -1828,7 +1882,7 @@
 <span class="sd">                  the server (see :meth:`reload`). If the blob has</span>
 <span class="sd">                  not been deleted, this will never be set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timeDeleted&#39;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timeDeleted&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -1843,7 +1897,7 @@
 <span class="sd">                  ``None`` if the blob&#39;s resource has not been loaded from</span>
 <span class="sd">                  the server (see :meth:`reload`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timeCreated&#39;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timeCreated&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -1858,7 +1912,7 @@
 <span class="sd">                  ``None`` if the blob&#39;s resource has not been loaded from</span>
 <span class="sd">                  the server (see :meth:`reload`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;updated&#39;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;updated&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
@@ -1885,14 +1939,14 @@
     <span class="n">key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
-        <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;X-Goog-Copy-Source-Encryption-&#39;</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;X-Goog-Copy-Source-Encryption-&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;X-Goog-Encryption-&#39;</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;X-Goog-Encryption-&quot;</span>
 
     <span class="k">return</span> <span class="p">{</span>
-        <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;Algorithm&#39;</span><span class="p">:</span> <span class="s1">&#39;AES256&#39;</span><span class="p">,</span>
-        <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-        <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;Key-Sha256&#39;</span><span class="p">:</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key_hash</span><span class="p">),</span>
+        <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;AES256&quot;</span><span class="p">,</span>
+        <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Key&quot;</span><span class="p">:</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+        <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Key-Sha256&quot;</span><span class="p">:</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key_hash</span><span class="p">),</span>
     <span class="p">}</span>
 
 
@@ -1910,8 +1964,8 @@
 <span class="sd">    :rtype: str</span>
 <span class="sd">    :returns: The encoded value (bytes in Python 2, unicode in Python 3).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">quote</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">quote</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_maybe_rewind</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -1940,13 +1994,11 @@
     <span class="n">response</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">response</span>
     <span class="n">error_message</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 
-    <span class="n">message</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;</span><span class="si">{method}</span><span class="s1"> </span><span class="si">{url}</span><span class="s1">: </span><span class="si">{error}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">method</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
-        <span class="n">url</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
-        <span class="n">error</span><span class="o">=</span><span class="n">error_message</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;</span><span class="si">{method}</span><span class="s2"> </span><span class="si">{url}</span><span class="s2">: </span><span class="si">{error}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">error_message</span>
+    <span class="p">)</span>
 
-    <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_http_status</span><span class="p">(</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_http_status</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_add_query_parameters</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">name_value_pairs</span><span class="p">):</span>

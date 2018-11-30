@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.transaction &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.firestore_v1beta1.transaction &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -62,21 +62,19 @@
 
 <span class="n">MAX_ATTEMPTS</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="sd">&quot;&quot;&quot;int: Default number of transaction attempts (with retries).&quot;&quot;&quot;</span>
-<span class="n">_CANT_BEGIN</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;The transaction has already begun. Current transaction ID: </span><span class="si">{!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
-<span class="n">_MISSING_ID_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;The transaction has no transaction ID, so it cannot be </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="p">)</span>
-<span class="n">_CANT_ROLLBACK</span> <span class="o">=</span> <span class="n">_MISSING_ID_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;rolled back&#39;</span><span class="p">)</span>
-<span class="n">_CANT_COMMIT</span> <span class="o">=</span> <span class="n">_MISSING_ID_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;committed&#39;</span><span class="p">)</span>
-<span class="n">_WRITE_READ_ONLY</span> <span class="o">=</span> <span class="s1">&#39;Cannot perform write operation in read-only transaction.&#39;</span>
+<span class="n">_CANT_BEGIN</span> <span class="o">=</span> <span class="s2">&quot;The transaction has already begun. Current transaction ID: </span><span class="si">{!r}</span><span class="s2">.&quot;</span>
+<span class="n">_MISSING_ID_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;The transaction has no transaction ID, so it cannot be </span><span class="si">{}</span><span class="s2">.&quot;</span>
+<span class="n">_CANT_ROLLBACK</span> <span class="o">=</span> <span class="n">_MISSING_ID_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;rolled back&quot;</span><span class="p">)</span>
+<span class="n">_CANT_COMMIT</span> <span class="o">=</span> <span class="n">_MISSING_ID_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;committed&quot;</span><span class="p">)</span>
+<span class="n">_WRITE_READ_ONLY</span> <span class="o">=</span> <span class="s2">&quot;Cannot perform write operation in read-only transaction.&quot;</span>
 <span class="n">_INITIAL_SLEEP</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="sd">&quot;&quot;&quot;float: Initial &quot;max&quot; for sleep interval. To be used in :func:`_sleep`.&quot;&quot;&quot;</span>
 <span class="n">_MAX_SLEEP</span> <span class="o">=</span> <span class="mf">30.0</span>
 <span class="sd">&quot;&quot;&quot;float: Eventual &quot;max&quot; sleep time. To be used in :func:`_sleep`.&quot;&quot;&quot;</span>
 <span class="n">_MULTIPLIER</span> <span class="o">=</span> <span class="mf">2.0</span>
 <span class="sd">&quot;&quot;&quot;float: Multiplier for exponential backoff. To be used in :func:`_sleep`.&quot;&quot;&quot;</span>
-<span class="n">_EXCEED_ATTEMPTS_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;Failed to commit transaction in </span><span class="si">{:d}</span><span class="s1"> attempts.&#39;</span>
-<span class="n">_CANT_RETRY_READ_ONLY</span> <span class="o">=</span> <span class="s1">&#39;Only read-write transactions can be retried.&#39;</span>
+<span class="n">_EXCEED_ATTEMPTS_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;Failed to commit transaction in </span><span class="si">{:d}</span><span class="s2"> attempts.&quot;</span>
+<span class="n">_CANT_RETRY_READ_ONLY</span> <span class="o">=</span> <span class="s2">&quot;Only read-write transactions can be retried.&quot;</span>
 
 
 <div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../../firestore/transaction.html#google.cloud.firestore_v1beta1.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">WriteBatch</span><span class="p">):</span>
@@ -140,12 +138,13 @@
 
             <span class="k">return</span> <span class="n">types</span><span class="o">.</span><span class="n">TransactionOptions</span><span class="p">(</span>
                 <span class="n">read_write</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadWrite</span><span class="p">(</span>
-                    <span class="n">retry_transaction</span><span class="o">=</span><span class="n">retry_id</span><span class="p">,</span>
-                <span class="p">),</span>
+                    <span class="n">retry_transaction</span><span class="o">=</span><span class="n">retry_id</span>
+                <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">types</span><span class="o">.</span><span class="n">TransactionOptions</span><span class="p">(</span>
-                <span class="n">read_only</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadOnly</span><span class="p">())</span>
+                <span class="n">read_only</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadOnly</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
@@ -185,7 +184,7 @@
         <span class="n">transaction_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">begin_transaction</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span>
             <span class="n">options_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options_protobuf</span><span class="p">(</span><span class="n">retry_id</span><span class="p">),</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_rpc_metadata</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">transaction_response</span><span class="o">.</span><span class="n">transaction</span>
 
@@ -209,8 +208,10 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># NOTE: The response is just ``google.protobuf.Empty``.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">rollback</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span>
-                <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_clean_up</span><span class="p">()</span>
 
@@ -230,8 +231,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_progress</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_CANT_COMMIT</span><span class="p">)</span>
 
-        <span class="n">commit_response</span> <span class="o">=</span> <span class="n">_commit_with_retry</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_pbs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
+        <span class="n">commit_response</span> <span class="o">=</span> <span class="n">_commit_with_retry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_pbs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_clean_up</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">commit_response</span><span class="o">.</span><span class="n">write_results</span><span class="p">)</span></div>
@@ -407,9 +407,11 @@
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span>
-                <span class="n">client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="n">write_pbs</span><span class="p">,</span>
+                <span class="n">client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span>
+                <span class="n">write_pbs</span><span class="p">,</span>
                 <span class="n">transaction</span><span class="o">=</span><span class="n">transaction_id</span><span class="p">,</span>
-                <span class="n">metadata</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">)</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">:</span>
             <span class="c1"># Retry</span>
             <span class="k">pass</span>

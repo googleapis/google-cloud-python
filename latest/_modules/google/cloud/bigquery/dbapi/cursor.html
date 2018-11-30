@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.dbapi.cursor &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.bigquery.dbapi.cursor &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -68,11 +68,17 @@
 <span class="c1"># five are optional and are set to None if no meaningful values can be</span>
 <span class="c1"># provided.</span>
 <span class="n">Column</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
-    <span class="s1">&#39;Column&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;Column&quot;</span><span class="p">,</span>
     <span class="p">[</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type_code&#39;</span><span class="p">,</span> <span class="s1">&#39;display_size&#39;</span><span class="p">,</span> <span class="s1">&#39;internal_size&#39;</span><span class="p">,</span> <span class="s1">&#39;precision&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="s1">&#39;null_ok&#39;</span><span class="p">,</span>
-    <span class="p">])</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;display_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;internal_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;precision&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;scale&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;null_ok&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="Cursor"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor">[docs]</a><span class="k">class</span> <span class="nc">Cursor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -81,6 +87,7 @@
 <span class="sd">    :type connection: :class:`~google.cloud.bigquery.dbapi.Connection`</span>
 <span class="sd">    :param connection: A DB-API connection to Google BigQuery.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="kc">None</span>
@@ -107,16 +114,20 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">return</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span>
-            <span class="n">Column</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">type_code</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">,</span>
-                <span class="n">display_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">internal_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">null_ok</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">is_nullable</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">Column</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">type_code</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">,</span>
+                    <span class="n">display_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">internal_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">null_ok</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">is_nullable</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_rowcount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_results</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the rowcount from query results.</span>
@@ -132,8 +143,7 @@
         <span class="n">total_rows</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">num_dml_affected_rows</span> <span class="o">=</span> <span class="n">query_results</span><span class="o">.</span><span class="n">num_dml_affected_rows</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">query_results</span><span class="o">.</span><span class="n">total_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="ow">and</span> <span class="n">query_results</span><span class="o">.</span><span class="n">total_rows</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">query_results</span><span class="o">.</span><span class="n">total_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">query_results</span><span class="o">.</span><span class="n">total_rows</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">total_rows</span> <span class="o">=</span> <span class="n">query_results</span><span class="o">.</span><span class="n">total_rows</span>
         <span class="k">if</span> <span class="n">num_dml_affected_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">num_dml_affected_rows</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">total_rows</span> <span class="o">=</span> <span class="n">num_dml_affected_rows</span>
@@ -180,15 +190,15 @@
         <span class="c1"># query parameters was not one of the standard options. Convert both</span>
         <span class="c1"># the query and the parameters to the format expected by the client</span>
         <span class="c1"># libraries.</span>
-        <span class="n">formatted_operation</span> <span class="o">=</span> <span class="n">_format_operation</span><span class="p">(</span>
-            <span class="n">operation</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="n">formatted_operation</span> <span class="o">=</span> <span class="n">_format_operation</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
         <span class="n">query_parameters</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">to_query_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
 
         <span class="n">config</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
         <span class="n">config</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="n">query_parameters</span>
         <span class="n">config</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-            <span class="n">formatted_operation</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">)</span>
+            <span class="n">formatted_operation</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span>
+        <span class="p">)</span>
 
         <span class="c1"># Wait for the query to finish.</span>
         <span class="k">try</span><span class="p">:</span>
@@ -219,11 +229,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">InterfaceError</span><span class="p">(</span>
-                <span class="s1">&#39;No query results: execute() must be called before fetch.&#39;</span><span class="p">)</span>
+                <span class="s2">&quot;No query results: execute() must be called before fetch.&quot;</span>
+            <span class="p">)</span>
 
         <span class="n">is_dml</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">statement_type</span>
-            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">statement_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;SELECT&#39;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">statement_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;SELECT&quot;</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">is_dml</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">([])</span>
             <span class="k">return</span>
@@ -233,7 +245,7 @@
             <span class="n">rows_iter</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span>
                 <span class="n">selected_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">_query_results</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span>
-                <span class="n">page_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arraysize</span>
+                <span class="n">page_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arraysize</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">rows_iter</span><span class="p">)</span>
 
@@ -320,7 +332,7 @@
 <span class="sd">        if a parameter used in the operation is not found in the</span>
 <span class="sd">        ``parameters`` argument.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">formatted_params</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;?&#39;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">]</span>
+    <span class="n">formatted_params</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;?&quot;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">]</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">operation</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">formatted_params</span><span class="p">)</span>
@@ -348,8 +360,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">formatted_params</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>
-        <span class="n">escaped_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;`&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\`&#39;</span><span class="p">)</span>
-        <span class="n">formatted_params</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;@`</span><span class="si">{}</span><span class="s1">`&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">escaped_name</span><span class="p">)</span>
+        <span class="n">escaped_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;`&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\`&quot;</span><span class="p">)</span>
+        <span class="n">formatted_params</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;@`</span><span class="si">{}</span><span class="s2">`&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">escaped_name</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">operation</span> <span class="o">%</span> <span class="n">formatted_params</span>

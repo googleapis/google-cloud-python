@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.client &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.firestore_v1beta1.client &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -70,16 +70,16 @@
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.transaction</span> <span class="k">import</span> <span class="n">Transaction</span>
 
 
-<span class="n">DEFAULT_DATABASE</span> <span class="o">=</span> <span class="s1">&#39;(default)&#39;</span>
+<span class="n">DEFAULT_DATABASE</span> <span class="o">=</span> <span class="s2">&quot;(default)&quot;</span>
 <span class="sd">&quot;&quot;&quot;str: The default database used in a :class:`~.firestore.client.Client`.&quot;&quot;&quot;</span>
 <span class="n">_BAD_OPTION_ERR</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;Exactly one of ``last_update_time`` or ``exists`` &#39;</span>
-    <span class="s1">&#39;must be provided.&#39;</span>
+    <span class="s2">&quot;Exactly one of ``last_update_time`` or ``exists`` &quot;</span> <span class="s2">&quot;must be provided.&quot;</span>
 <span class="p">)</span>
 <span class="n">_BAD_DOC_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;Document </span><span class="si">{!r}</span><span class="s1"> appeared in response but was not present among references&#39;</span><span class="p">)</span>
-<span class="n">_ACTIVE_TXN</span> <span class="o">=</span> <span class="s1">&#39;There is already an active transaction.&#39;</span>
-<span class="n">_INACTIVE_TXN</span> <span class="o">=</span> <span class="s1">&#39;There is no active transaction.&#39;</span>
+    <span class="s2">&quot;Document </span><span class="si">{!r}</span><span class="s2"> appeared in response but was not present among references&quot;</span>
+<span class="p">)</span>
+<span class="n">_ACTIVE_TXN</span> <span class="o">=</span> <span class="s2">&quot;There is already an active transaction.&quot;</span>
+<span class="n">_INACTIVE_TXN</span> <span class="o">=</span> <span class="s2">&quot;There is no active transaction.&quot;</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
@@ -103,8 +103,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;https://www.googleapis.com/auth/datastore&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;https://www.googleapis.com/auth/cloud-platform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://www.googleapis.com/auth/datastore&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating with the Firestore service.&quot;&quot;&quot;</span>
 
@@ -112,13 +112,13 @@
     <span class="n">_database_string_internal</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_rpc_metadata_internal</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">database</span><span class="o">=</span><span class="n">DEFAULT_DATABASE</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="n">DEFAULT_DATABASE</span><span class="p">):</span>
         <span class="c1"># NOTE: This API has no use for the _http argument, but sending it</span>
         <span class="c1">#       will have no impact since the _http() @property only lazily</span>
         <span class="c1">#       creates a working HTTP object.</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="n">database</span>
 
     <span class="nd">@property</span>
@@ -131,7 +131,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_firestore_api_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_firestore_api_internal</span> <span class="o">=</span> <span class="n">firestore_client</span><span class="o">.</span><span class="n">FirestoreClient</span><span class="p">(</span>
-                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_firestore_api_internal</span>
 
@@ -155,7 +156,8 @@
             <span class="c1"># NOTE: database_root_path() is a classmethod, so we don&#39;t use</span>
             <span class="c1">#       self._firestore_api (it isn&#39;t necessary).</span>
             <span class="n">db_str</span> <span class="o">=</span> <span class="n">firestore_client</span><span class="o">.</span><span class="n">FirestoreClient</span><span class="o">.</span><span class="n">database_root_path</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_database_string_internal</span> <span class="o">=</span> <span class="n">db_str</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_string_internal</span>
@@ -170,7 +172,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc_metadata_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rpc_metadata_internal</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">metadata_with_prefix</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_database_string</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_database_string</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc_metadata_internal</span>
 
@@ -314,12 +317,12 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">_BAD_OPTION_ERR</span><span class="p">)</span>
 
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;last_update_time&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;last_update_time&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">LastUpdateOption</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;exists&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;exists&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">ExistsOption</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{!r}</span><span class="s1"> was provided&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{!r}</span><span class="s2"> was provided&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">_BAD_OPTION_ERR</span><span class="p">,</span> <span class="n">extra</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.get_all"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.get_all">[docs]</a>    <span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">field_paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -360,9 +363,12 @@
         <span class="n">document_paths</span><span class="p">,</span> <span class="n">reference_map</span> <span class="o">=</span> <span class="n">_reference_info</span><span class="p">(</span><span class="n">references</span><span class="p">)</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">_get_doc_mask</span><span class="p">(</span><span class="n">field_paths</span><span class="p">)</span>
         <span class="n">response_iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">batch_get_documents</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="n">document_paths</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span>
+            <span class="n">document_paths</span><span class="p">,</span>
+            <span class="n">mask</span><span class="p">,</span>
             <span class="n">transaction</span><span class="o">=</span><span class="n">_helpers</span><span class="o">.</span><span class="n">get_transaction_id</span><span class="p">(</span><span class="n">transaction</span><span class="p">),</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">get_doc_response</span> <span class="ow">in</span> <span class="n">response_iterator</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">_parse_batch_get</span><span class="p">(</span><span class="n">get_doc_response</span><span class="p">,</span> <span class="n">reference_map</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
@@ -375,7 +381,8 @@
 <span class="sd">                iterator of subcollections of the current document.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">list_collection_ids</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_rpc_metadata</span>
+        <span class="p">)</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="n">_item_to_collection_ref</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
@@ -482,10 +489,9 @@
 <span class="sd">        ValueError: If the response has a ``result`` field (a oneof) other</span>
 <span class="sd">            than ``found`` or ``missing``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">result_type</span> <span class="o">=</span> <span class="n">get_doc_response</span><span class="o">.</span><span class="n">WhichOneof</span><span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">result_type</span> <span class="o">==</span> <span class="s1">&#39;found&#39;</span><span class="p">:</span>
-        <span class="n">reference</span> <span class="o">=</span> <span class="n">_get_reference</span><span class="p">(</span>
-            <span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">reference_map</span><span class="p">)</span>
+    <span class="n">result_type</span> <span class="o">=</span> <span class="n">get_doc_response</span><span class="o">.</span><span class="n">WhichOneof</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result_type</span> <span class="o">==</span> <span class="s2">&quot;found&quot;</span><span class="p">:</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">_get_reference</span><span class="p">(</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">reference_map</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">decode_dict</span><span class="p">(</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">fields</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="n">snapshot</span> <span class="o">=</span> <span class="n">DocumentSnapshot</span><span class="p">(</span>
             <span class="n">reference</span><span class="p">,</span>
@@ -493,19 +499,22 @@
             <span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">read_time</span><span class="o">=</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">read_time</span><span class="p">,</span>
             <span class="n">create_time</span><span class="o">=</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">create_time</span><span class="p">,</span>
-            <span class="n">update_time</span><span class="o">=</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">update_time</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">result_type</span> <span class="o">==</span> <span class="s1">&#39;missing&#39;</span><span class="p">:</span>
+            <span class="n">update_time</span><span class="o">=</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">update_time</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">result_type</span> <span class="o">==</span> <span class="s2">&quot;missing&quot;</span><span class="p">:</span>
         <span class="n">snapshot</span> <span class="o">=</span> <span class="n">DocumentSnapshot</span><span class="p">(</span>
             <span class="kc">None</span><span class="p">,</span>
             <span class="kc">None</span><span class="p">,</span>
             <span class="n">exists</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">read_time</span><span class="o">=</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">read_time</span><span class="p">,</span>
             <span class="n">create_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">update_time</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">update_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s1">&#39;`BatchGetDocumentsResponse.result` (a oneof) had a field other &#39;</span>
-            <span class="s1">&#39;than `found` or `missing` set, or was unset&#39;</span><span class="p">)</span>
+            <span class="s2">&quot;`BatchGetDocumentsResponse.result` (a oneof) had a field other &quot;</span>
+            <span class="s2">&quot;than `found` or `missing` set, or was unset&quot;</span>
+        <span class="p">)</span>
     <span class="k">return</span> <span class="n">snapshot</span>
 
 

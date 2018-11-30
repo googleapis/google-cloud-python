@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -79,7 +79,8 @@
 <span class="n">_LOCATION_SETTER_MESSAGE</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s2">&quot;Assignment to &#39;Bucket.location&#39; is deprecated, as it is only &quot;</span>
     <span class="s2">&quot;valid before the bucket is created. Instead, pass the location &quot;</span>
-    <span class="s2">&quot;to `Bucket.create`.&quot;</span><span class="p">)</span>
+    <span class="s2">&quot;to `Bucket.create`.&quot;</span>
+<span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_blobs_page_start</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
@@ -94,7 +95,7 @@
 <span class="sd">    :type response: dict</span>
 <span class="sd">    :param response: The JSON API response for a page of blobs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">page</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prefixes&#39;</span><span class="p">,</span> <span class="p">()))</span>
+    <span class="n">page</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;prefixes&quot;</span><span class="p">,</span> <span class="p">()))</span>
     <span class="n">iterator</span><span class="o">.</span><span class="n">prefixes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">prefixes</span><span class="p">)</span>
 
 
@@ -115,7 +116,7 @@
 <span class="sd">    :rtype: :class:`.Blob`</span>
 <span class="sd">    :returns: The next blob in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
     <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span>
     <span class="n">blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">blob</span>
@@ -171,25 +172,32 @@
 
 <span class="sd">    :raises ValueError: if no arguments are passed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_before</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_live</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">matches_storage_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">number_of_newer_versions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">_factory</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">age</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_before</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_live</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">matches_storage_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">number_of_newer_versions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">_factory</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="n">conditions</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="n">age</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">conditions</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">age</span>
+            <span class="n">conditions</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">age</span>
 
         <span class="k">if</span> <span class="n">created_before</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">conditions</span><span class="p">[</span><span class="s1">&#39;createdBefore&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_before</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+            <span class="n">conditions</span><span class="p">[</span><span class="s2">&quot;createdBefore&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_before</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">is_live</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">conditions</span><span class="p">[</span><span class="s1">&#39;isLive&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_live</span>
+            <span class="n">conditions</span><span class="p">[</span><span class="s2">&quot;isLive&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_live</span>
 
         <span class="k">if</span> <span class="n">matches_storage_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">conditions</span><span class="p">[</span><span class="s1">&#39;matchesStorageClass&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matches_storage_class</span>
+            <span class="n">conditions</span><span class="p">[</span><span class="s2">&quot;matchesStorageClass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matches_storage_class</span>
 
         <span class="k">if</span> <span class="n">number_of_newer_versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">conditions</span><span class="p">[</span><span class="s1">&#39;numNewerVersions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_of_newer_versions</span>
+            <span class="n">conditions</span><span class="p">[</span><span class="s2">&quot;numNewerVersions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_of_newer_versions</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_factory</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">conditions</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Supply at least one condition&quot;</span><span class="p">)</span>
@@ -213,29 +221,29 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">age</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Conditon&#39;s age value.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">created_before</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Conditon&#39;s created_before value.&quot;&quot;&quot;</span>
-        <span class="n">before</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;createdBefore&#39;</span><span class="p">)</span>
+        <span class="n">before</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;createdBefore&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">before</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">datetime_helpers</span><span class="o">.</span><span class="n">from_iso8601_date</span><span class="p">(</span><span class="n">before</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_live</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Conditon&#39;s &#39;is_live&#39; value.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;isLive&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;isLive&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">matches_storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Conditon&#39;s &#39;matches_storage_class&#39; value.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;matchesStorageClass&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;matchesStorageClass&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">number_of_newer_versions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Conditon&#39;s &#39;number_of_newer_versions&#39; value.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;numNewerVersions&#39;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;numNewerVersions&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="LifecycleRuleDelete"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.LifecycleRuleDelete">[docs]</a><span class="k">class</span> <span class="nc">LifecycleRuleDelete</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -244,14 +252,10 @@
 <span class="sd">    :type kw: dict</span>
 <span class="sd">    :params kw: arguments passed to :class:`LifecycleRuleConditions`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">conditions</span> <span class="o">=</span> <span class="n">LifecycleRuleConditions</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
-        <span class="n">rule</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Delete&#39;</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="s1">&#39;condition&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">conditions</span><span class="p">),</span>
-        <span class="p">}</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Delete&quot;</span><span class="p">},</span> <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">conditions</span><span class="p">)}</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LifecycleRuleDelete</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LifecycleRuleDelete.from_api_repr"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.LifecycleRuleDelete.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
@@ -278,14 +282,12 @@
 <span class="sd">    :type kw: dict</span>
 <span class="sd">    :params kw: arguments passed to :class:`LifecycleRuleConditions`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage_class</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">conditions</span> <span class="o">=</span> <span class="n">LifecycleRuleConditions</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
         <span class="n">rule</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;SetStorageClass&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;storageClass&#39;</span><span class="p">:</span> <span class="n">storage_class</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="s1">&#39;condition&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">conditions</span><span class="p">),</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;SetStorageClass&quot;</span><span class="p">,</span> <span class="s2">&quot;storageClass&quot;</span><span class="p">:</span> <span class="n">storage_class</span><span class="p">},</span>
+            <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">conditions</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LifecycleRuleSetStorageClass</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
 
@@ -299,8 +301,8 @@
 <span class="sd">        :rtype: :class:`LifecycleRuleDelete`</span>
 <span class="sd">        :returns: Instance created from resource.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">action</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="s1">&#39;storageClass&#39;</span><span class="p">],</span> <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="s2">&quot;storageClass&quot;</span><span class="p">],</span> <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">instance</span></div></div>
 
@@ -328,12 +330,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_STORAGE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;MULTI_REGIONAL&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;REGIONAL&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;NEARLINE&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;COLDLINE&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;STANDARD&#39;</span><span class="p">,</span>  <span class="c1"># alias for MULTI_REGIONAL/REGIONAL, based on location</span>
-        <span class="s1">&#39;DURABLE_REDUCED_AVAILABILITY&#39;</span><span class="p">,</span>  <span class="c1"># deprecated</span>
+        <span class="s2">&quot;MULTI_REGIONAL&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;REGIONAL&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;NEARLINE&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;COLDLINE&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;STANDARD&quot;</span><span class="p">,</span>  <span class="c1"># alias for MULTI_REGIONAL/REGIONAL, based on location</span>
+        <span class="s2">&quot;DURABLE_REDUCED_AVAILABILITY&quot;</span><span class="p">,</span>  <span class="c1"># deprecated</span>
     <span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Allowed values for :attr:`storage_class`.</span>
 
@@ -352,7 +354,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_project</span> <span class="o">=</span> <span class="n">user_project</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;&lt;Bucket: </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;Bucket: </span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -378,8 +380,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_project</span>
 
-<div class="viewcode-block" id="Bucket.blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.blob">[docs]</a>    <span class="k">def</span> <span class="nf">blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-             <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kms_key_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.blob">[docs]</a>    <span class="k">def</span> <span class="nf">blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kms_key_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory constructor for blob object.</span>
 
 <span class="sd">        .. note::</span>
@@ -405,15 +406,23 @@
 <span class="sd">        :rtype: :class:`google.cloud.storage.blob.Blob`</span>
 <span class="sd">        :returns: The blob object created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
-                    <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">kms_key_name</span><span class="o">=</span><span class="n">kms_key_name</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Blob</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span>
+            <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
+            <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span>
+            <span class="n">kms_key_name</span><span class="o">=</span><span class="n">kms_key_name</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bucket.notification"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.notification">[docs]</a>    <span class="k">def</span> <span class="nf">notification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_name</span><span class="p">,</span>
-                     <span class="n">topic_project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">custom_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">event_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">blob_name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">payload_format</span><span class="o">=</span><span class="n">NONE_PAYLOAD_FORMAT</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.notification"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.notification">[docs]</a>    <span class="k">def</span> <span class="nf">notification</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">topic_name</span><span class="p">,</span>
+        <span class="n">topic_project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">custom_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">blob_name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">payload_format</span><span class="o">=</span><span class="n">NONE_PAYLOAD_FORMAT</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  create a notification resource for the bucket.</span>
 
 <span class="sd">        See: :class:`.BucketNotification` for parameters.</span>
@@ -421,7 +430,8 @@
 <span class="sd">        :rtype: :class:`.BucketNotification`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">BucketNotification</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">topic_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">topic_name</span><span class="p">,</span>
             <span class="n">topic_project</span><span class="o">=</span><span class="n">topic_project</span><span class="p">,</span>
             <span class="n">custom_attributes</span><span class="o">=</span><span class="n">custom_attributes</span><span class="p">,</span>
             <span class="n">event_types</span><span class="o">=</span><span class="n">event_types</span><span class="p">,</span>
@@ -445,17 +455,20 @@
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="c1"># We only need the status code (200 or not) so we seek to</span>
         <span class="c1"># minimize the returned payload.</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span><span class="p">}</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># We intentionally pass `_target_object=None` since fields=name</span>
             <span class="c1"># would limit the local properties.</span>
             <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+                <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
+                <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="c1"># NOTE: This will not fail immediately in a batch. However, when</span>
             <span class="c1">#       Batch.finish() is called, the resulting `NotFound` will be</span>
             <span class="c1">#       raised.</span>
@@ -500,19 +513,22 @@
             <span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span>
 
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Client project not set:  pass an explicit project.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Client project not set:  pass an explicit project.&quot;</span><span class="p">)</span>
 
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
         <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_changes</span><span class="p">}</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
         <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">properties</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
+            <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
 
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/b&#39;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">data</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/b&quot;</span><span class="p">,</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Bucket.patch"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.patch">[docs]</a>    <span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -530,10 +546,10 @@
         <span class="c1"># Special case: For buckets, it is possible that labels are being</span>
         <span class="c1"># removed; this requires special handling.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_removals</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_changes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_changes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="p">{})</span>
             <span class="k">for</span> <span class="n">removed_label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_removals</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">][</span><span class="n">removed_label</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">][</span><span class="n">removed_label</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Call the superclass method.</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Bucket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
@@ -558,13 +574,13 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The relative URL path for ``bucket_name``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;/b/&#39;</span> <span class="o">+</span> <span class="n">bucket_name</span></div>
+        <span class="k">return</span> <span class="s2">&quot;/b/&quot;</span> <span class="o">+</span> <span class="n">bucket_name</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The URL path to this bucket.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot determine path without bucket name.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot determine path without bucket name.&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
@@ -604,13 +620,14 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
-        <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span>
-                    <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+        <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span>
+            <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="n">encryption_key</span><span class="p">)</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
                 <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
                 <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
                 <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
@@ -625,9 +642,17 @@
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Bucket.list_blobs"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.list_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.list_blobs"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.list_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_blobs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">versions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;noAcl&quot;</span><span class="p">,</span>
+        <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an iterator used to find blobs in the bucket.</span>
 
 <span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
@@ -671,25 +696,25 @@
 <span class="sd">        :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`</span>
 <span class="sd">                  in this bucket matching the arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">projection</span><span class="p">}</span>
+        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;projection&quot;</span><span class="p">:</span> <span class="n">projection</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
 
         <span class="k">if</span> <span class="n">delimiter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;delimiter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">delimiter</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s2">&quot;delimiter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">delimiter</span>
 
         <span class="k">if</span> <span class="n">versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;versions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">versions</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s2">&quot;versions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">versions</span>
 
         <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/o&#39;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/o&quot;</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
             <span class="n">api_request</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
@@ -698,7 +723,8 @@
             <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span>
-            <span class="n">page_start</span><span class="o">=</span><span class="n">_blobs_page_start</span><span class="p">)</span>
+            <span class="n">page_start</span><span class="o">=</span><span class="n">_blobs_page_start</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
@@ -720,12 +746,13 @@
 <span class="sd">        :returns: notification instances</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/notificationConfigs&#39;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/notificationConfigs&quot;</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
             <span class="n">api_request</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_notification</span><span class="p">)</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_notification</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
 
@@ -763,33 +790,35 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
-            <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
-                <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">))</span>
+            <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
+                    <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="s1">&#39;Refusing to delete bucket with more than &#39;</span>
-                    <span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> objects. If you actually want to delete &#39;</span>
-                    <span class="s1">&#39;this bucket, please delete the objects &#39;</span>
-                    <span class="s1">&#39;yourself before calling Bucket.delete().&#39;</span>
+                    <span class="s2">&quot;Refusing to delete bucket with more than &quot;</span>
+                    <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> objects. If you actually want to delete &quot;</span>
+                    <span class="s2">&quot;this bucket, please delete the objects &quot;</span>
+                    <span class="s2">&quot;yourself before calling Bucket.delete().&quot;</span>
                 <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span><span class="p">,)</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
             <span class="c1"># Ignore 404 errors on delete.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
         <span class="c1"># We intentionally pass `_target_object=None` since a DELETE</span>
         <span class="c1"># request has no response value (whether in a standard request or</span>
         <span class="c1"># in a batch request).</span>
         <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;DELETE&quot;</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Bucket.delete_blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.delete_blob">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from the current bucket.</span>
@@ -826,17 +855,18 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="n">blob_path</span> <span class="o">=</span> <span class="n">Blob</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">)</span>
         <span class="c1"># We intentionally pass `_target_object=None` since a DELETE</span>
         <span class="c1"># request has no response value (whether in a standard request or</span>
         <span class="c1"># in a batch request).</span>
         <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;DELETE&quot;</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="n">blob_path</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Bucket.delete_blobs"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.delete_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a list of blobs from the current bucket.</span>
@@ -874,8 +904,15 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span></div>
 
-<div class="viewcode-block" id="Bucket.copy_blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.copy_blob">[docs]</a>    <span class="k">def</span> <span class="nf">copy_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">destination_bucket</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preserve_acl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">source_generation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.copy_blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.copy_blob">[docs]</a>    <span class="k">def</span> <span class="nf">copy_blob</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">blob</span><span class="p">,</span>
+        <span class="n">destination_bucket</span><span class="p">,</span>
+        <span class="n">new_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">preserve_acl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">source_generation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Copy the given blob to the given bucket, optionally with a new name.</span>
 
 <span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
@@ -910,18 +947,18 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="k">if</span> <span class="n">source_generation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;sourceGeneration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_generation</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;sourceGeneration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_generation</span>
 
         <span class="k">if</span> <span class="n">new_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">new_name</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span>
 
         <span class="n">new_blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">destination_bucket</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">new_name</span><span class="p">)</span>
-        <span class="n">api_path</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/copyTo&#39;</span> <span class="o">+</span> <span class="n">new_blob</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">api_path</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/copyTo&quot;</span> <span class="o">+</span> <span class="n">new_blob</span><span class="o">.</span><span class="n">path</span>
         <span class="n">copy_result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="n">api_path</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">_target_object</span><span class="o">=</span><span class="n">new_blob</span><span class="p">,</span>
@@ -997,8 +1034,7 @@
 <span class="sd">        :rtype: list of dictionaries</span>
 <span class="sd">        :returns: A sequence of mappings describing each CORS policy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">policy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">,</span> <span class="p">())]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="k">for</span> <span class="n">policy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cors&quot;</span><span class="p">,</span> <span class="p">())]</span>
 
     <span class="nd">@cors</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">cors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="p">):</span>
@@ -1010,9 +1046,9 @@
 <span class="sd">        :type entries: list of dictionaries</span>
 <span class="sd">        :param entries: A sequence of mappings describing each CORS policy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">,</span> <span class="n">entries</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;cors&quot;</span><span class="p">,</span> <span class="n">entries</span><span class="p">)</span>
 
-    <span class="n">default_event_based_hold</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;defaultEventBasedHold&#39;</span><span class="p">)</span>
+    <span class="n">default_event_based_hold</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;defaultEventBasedHold&quot;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Are uploaded objects automatically placed under an even-based hold?</span>
 
 <span class="sd">    If True, uploaded objects will be placed under an event-based hold to</span>
@@ -1039,8 +1075,8 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: Default KMS encryption key, or ``None`` if not set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">encryption_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;encryption&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="k">return</span> <span class="n">encryption_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;defaultKmsKeyName&#39;</span><span class="p">)</span>
+        <span class="n">encryption_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encryption&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="n">encryption_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;defaultKmsKeyName&quot;</span><span class="p">)</span>
 
     <span class="nd">@default_kms_key_name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">default_kms_key_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -1049,9 +1085,9 @@
 <span class="sd">        :type value: str or None</span>
 <span class="sd">        :param value: new KMS key name (None to clear any existing key).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">encryption_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;encryption&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="n">encryption_config</span><span class="p">[</span><span class="s1">&#39;defaultKmsKeyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;encryption&#39;</span><span class="p">,</span> <span class="n">encryption_config</span><span class="p">)</span>
+        <span class="n">encryption_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encryption&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">encryption_config</span><span class="p">[</span><span class="s2">&quot;defaultKmsKeyName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;encryption&quot;</span><span class="p">,</span> <span class="n">encryption_config</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1078,7 +1114,7 @@
 <span class="sd">        :rtype: :class:`dict`</span>
 <span class="sd">        :returns: Name-value pairs (string-&gt;string) labelling the bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{}</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
@@ -1097,12 +1133,10 @@
         <span class="c1"># so that a future .patch() call can do the correct thing.</span>
         <span class="n">existing</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
         <span class="n">incoming</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_label_removals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_removals</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
-            <span class="n">existing</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">incoming</span><span class="p">),</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label_removals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_removals</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">existing</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">incoming</span><span class="p">))</span>
 
         <span class="c1"># Actually update the labels on the object.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">mapping</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">mapping</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1115,7 +1149,7 @@
 <span class="sd">        :returns: The bucket etag or ``None`` if the bucket&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;etag&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1127,7 +1161,7 @@
 <span class="sd">        :returns: The ID of the bucket or ``None`` if the bucket&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">lifecycle_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1156,12 +1190,12 @@
 <span class="sd">        :rtype: generator(dict)</span>
 <span class="sd">        :returns: A sequence of mappings describing each lifecycle rule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lifecycle&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rule&#39;</span><span class="p">,</span> <span class="p">()):</span>
-            <span class="n">action_type</span> <span class="o">=</span> <span class="n">rule</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">action_type</span> <span class="o">==</span> <span class="s1">&#39;Delete&#39;</span><span class="p">:</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lifecycle&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rule&quot;</span><span class="p">,</span> <span class="p">()):</span>
+            <span class="n">action_type</span> <span class="o">=</span> <span class="n">rule</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">action_type</span> <span class="o">==</span> <span class="s2">&quot;Delete&quot;</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">LifecycleRuleDelete</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">action_type</span> <span class="o">==</span> <span class="s1">&#39;SetStorageClass&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">action_type</span> <span class="o">==</span> <span class="s2">&quot;SetStorageClass&quot;</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">LifecycleRuleSetStorageClass</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown lifecycle rule: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rule</span><span class="p">))</span>
@@ -1177,7 +1211,7 @@
 <span class="sd">        :param entries: A sequence of mappings describing each lifecycle rule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rules</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">]</span>  <span class="c1"># Convert helpers if needed</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;lifecycle&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="n">rules</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;lifecycle&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">rules</span><span class="p">})</span>
 
 <div class="viewcode-block" id="Bucket.clear_lifecyle_rules"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.clear_lifecyle_rules">[docs]</a>    <span class="k">def</span> <span class="nf">clear_lifecyle_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set lifestyle rules configured for this bucket.</span>
@@ -1224,7 +1258,7 @@
         <span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LifecycleRuleSetStorageClass</span><span class="p">(</span><span class="n">storage_class</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle_rules</span> <span class="o">=</span> <span class="n">rules</span></div>
 
-    <span class="n">_location</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
+    <span class="n">_location</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1254,8 +1288,7 @@
 <span class="sd">            valid before the bucket is created. Instead, pass the location</span>
 <span class="sd">            to `Bucket.create`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="n">_LOCATION_SETTER_MESSAGE</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">_LOCATION_SETTER_MESSAGE</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="Bucket.get_logging"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.get_logging">[docs]</a>    <span class="k">def</span> <span class="nf">get_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1267,10 +1300,10 @@
 <span class="sd">        :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``</span>
 <span class="sd">                  (if logging is enabled), or None (if not).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">)</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;logging&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bucket.enable_logging"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.enable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">enable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">object_prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.enable_logging"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.enable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">enable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">object_prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable access logging for this bucket.</span>
 
 <span class="sd">        See https://cloud.google.com/storage/docs/access-logs</span>
@@ -1281,15 +1314,15 @@
 <span class="sd">        :type object_prefix: str</span>
 <span class="sd">        :param object_prefix: prefix for access log filenames</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;logBucket&#39;</span><span class="p">:</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="s1">&#39;logObjectPrefix&#39;</span><span class="p">:</span> <span class="n">object_prefix</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span></div>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;logBucket&quot;</span><span class="p">:</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="s2">&quot;logObjectPrefix&quot;</span><span class="p">:</span> <span class="n">object_prefix</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;logging&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Bucket.disable_logging"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.disable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">disable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disable access logging for this bucket.</span>
 
 <span class="sd">        See https://cloud.google.com/storage/docs/access-logs#disabling</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;logging&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1301,7 +1334,7 @@
 <span class="sd">        :returns: The metageneration of the bucket or ``None`` if the bucket&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">metageneration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metageneration&#39;</span><span class="p">)</span>
+        <span class="n">metageneration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metageneration&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">metageneration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">metageneration</span><span class="p">)</span>
 
@@ -1315,7 +1348,7 @@
 <span class="sd">        :returns: Mapping of owner&#39;s role/ID. Returns ``None`` if the bucket&#39;s</span>
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;owner&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;owner&quot;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1327,7 +1360,7 @@
 <span class="sd">        :returns: The project number that owns the bucket or ``None`` if</span>
 <span class="sd">                  the bucket&#39;s resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">project_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;projectNumber&#39;</span><span class="p">)</span>
+        <span class="n">project_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projectNumber&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">project_number</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">project_number</span><span class="p">)</span>
 
@@ -1340,9 +1373,9 @@
 <span class="sd">                  effective, or ``None`` if the property is not</span>
 <span class="sd">                  set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retentionPolicy&#39;</span><span class="p">)</span>
+        <span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retentionPolicy&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">policy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;effectiveTime&#39;</span><span class="p">)</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;effectiveTime&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
 
@@ -1355,9 +1388,9 @@
 <span class="sd">                  if the policy is not locked, or the property is not</span>
 <span class="sd">                  set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retentionPolicy&#39;</span><span class="p">)</span>
+        <span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retentionPolicy&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">policy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">policy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;isLocked&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">policy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;isLocked&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">retention_period</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1368,9 +1401,9 @@
 <span class="sd">                  from event-based lock, or ``None`` if the property is not</span>
 <span class="sd">                  set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retentionPolicy&#39;</span><span class="p">)</span>
+        <span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retentionPolicy&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">policy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">period</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retentionPeriod&#39;</span><span class="p">)</span>
+            <span class="n">period</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retentionPeriod&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
 
@@ -1385,12 +1418,12 @@
 
 <span class="sd">        :raises ValueError: if the bucket&#39;s retention policy is locked.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;retentionPolicy&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;retentionPolicy&quot;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">policy</span><span class="p">[</span><span class="s1">&#39;retentionPeriod&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;retentionPeriod&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">policy</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;retentionPolicy&#39;</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;retentionPolicy&quot;</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1402,7 +1435,7 @@
 <span class="sd">        :returns: The self link for the bucket or ``None`` if</span>
 <span class="sd">                  the bucket&#39;s resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selfLink&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;selfLink&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1418,7 +1451,7 @@
 <span class="sd">                  &quot;NEARLINE&quot;, &quot;COLDLINE&quot;, &quot;STANDARD&quot;, or</span>
 <span class="sd">                  &quot;DURABLE_REDUCED_AVAILABILITY&quot;, else ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;storageClass&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storageClass&quot;</span><span class="p">)</span>
 
     <span class="nd">@storage_class</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -1431,8 +1464,8 @@
 <span class="sd">                      &quot;COLDLINE&quot;, &quot;STANDARD&quot;, or &quot;DURABLE_REDUCED_AVAILABILITY&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_STORAGE_CLASSES</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid storage class: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">value</span><span class="p">,))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;storageClass&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid storage class: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">value</span><span class="p">,))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;storageClass&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time_created</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1445,7 +1478,7 @@
 <span class="sd">                  ``None`` if the bucket&#39;s resource has not been loaded</span>
 <span class="sd">                  from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timeCreated&#39;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timeCreated&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -1462,8 +1495,8 @@
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True if enabled, else False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">versioning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;versioning&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="k">return</span> <span class="n">versioning</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;enabled&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">versioning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;versioning&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="n">versioning</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;enabled&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
     <span class="nd">@versioning_enabled</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">versioning_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -1475,7 +1508,7 @@
 <span class="sd">        :type value: convertible to boolean</span>
 <span class="sd">        :param value: should versioning be enabled for the bucket?</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;versioning&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;enabled&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;versioning&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)})</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">requester_pays</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1491,8 +1524,8 @@
 <span class="sd">        :returns: True if requester pays for API requests for the bucket,</span>
 <span class="sd">                  else False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">versioning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;billing&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="k">return</span> <span class="n">versioning</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;requesterPays&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">versioning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;billing&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="n">versioning</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requesterPays&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
     <span class="nd">@requester_pays</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">requester_pays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -1504,7 +1537,7 @@
 <span class="sd">        :type value: convertible to boolean</span>
 <span class="sd">        :param value: should requester pay for API requests for the bucket?</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;billing&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;requesterPays&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;billing&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;requesterPays&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)})</span>
 
 <div class="viewcode-block" id="Bucket.configure_website"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.configure_website">[docs]</a>    <span class="k">def</span> <span class="nf">configure_website</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_page_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">not_found_page</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure website-related properties.</span>
@@ -1541,11 +1574,8 @@
 <span class="sd">        :type not_found_page: str</span>
 <span class="sd">        :param not_found_page: The file to use when a page isn&#39;t found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;mainPageSuffix&#39;</span><span class="p">:</span> <span class="n">main_page_suffix</span><span class="p">,</span>
-            <span class="s1">&#39;notFoundPage&#39;</span><span class="p">:</span> <span class="n">not_found_page</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;website&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mainPageSuffix&quot;</span><span class="p">:</span> <span class="n">main_page_suffix</span><span class="p">,</span> <span class="s2">&quot;notFoundPage&quot;</span><span class="p">:</span> <span class="n">not_found_page</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;website&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Bucket.disable_website"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.disable_website">[docs]</a>    <span class="k">def</span> <span class="nf">disable_website</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disable the website configuration for this bucket.</span>
@@ -1576,13 +1606,14 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="n">info</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/iam&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Bucket.set_iam_policy"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1609,16 +1640,17 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
         <span class="n">resource</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;resourceId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;resourceId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;PUT&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/iam&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Bucket.test_iam_permissions"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1642,17 +1674,16 @@
 <span class="sd">                  request.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="n">permissions</span><span class="p">}</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;permissions&quot;</span><span class="p">:</span> <span class="n">permissions</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam/testPermissions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/iam/testPermissions&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span></div>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;permissions&quot;</span><span class="p">,</span> <span class="p">[])</span></div>
 
 <div class="viewcode-block" id="Bucket.make_public"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update bucket&#39;s ACL, granting read access to anonymous users.</span>
@@ -1689,10 +1720,13 @@
             <span class="n">doa</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">recursive</span><span class="p">:</span>
-            <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
-                <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span>
-                <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">))</span>
+            <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
+                    <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;full&quot;</span><span class="p">,</span>
+                    <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s2">&quot;Refusing to make public recursively with more than &quot;</span>
@@ -1742,14 +1776,17 @@
             <span class="n">doa</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">recursive</span><span class="p">:</span>
-            <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
-                <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span>
-                <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">))</span>
+            <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
+                    <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;full&quot;</span><span class="p">,</span>
+                    <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="s1">&#39;Refusing to make private recursively with more than &#39;</span>
-                    <span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> objects. If you actually want to make every object &#39;</span>
+                    <span class="s2">&quot;Refusing to make private recursively with more than &quot;</span>
+                    <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> objects. If you actually want to make every object &quot;</span>
                     <span class="s2">&quot;in this bucket private, iterate through the blobs &quot;</span>
                     <span class="s2">&quot;returned by &#39;Bucket.list_blobs()&#39; and call &quot;</span>
                     <span class="s2">&quot;&#39;make_private&#39; on each one.&quot;</span>
@@ -1760,8 +1797,7 @@
                 <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">revoke_read</span><span class="p">()</span>
                 <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bucket.generate_upload_policy"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.generate_upload_policy">[docs]</a>    <span class="k">def</span> <span class="nf">generate_upload_policy</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="p">,</span> <span class="n">expiration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.generate_upload_policy"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.generate_upload_policy">[docs]</a>    <span class="k">def</span> <span class="nf">generate_upload_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="p">,</span> <span class="n">expiration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a signed upload policy for uploading objects.</span>
 
 <span class="sd">        This method generates and signs a policy document. You can use</span>
@@ -1802,25 +1838,23 @@
         <span class="k">if</span> <span class="n">expiration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">expiration</span> <span class="o">=</span> <span class="n">_NOW</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="n">conditions</span> <span class="o">=</span> <span class="n">conditions</span> <span class="o">+</span> <span class="p">[</span>
-            <span class="p">{</span><span class="s1">&#39;bucket&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
-        <span class="p">]</span>
+        <span class="n">conditions</span> <span class="o">=</span> <span class="n">conditions</span> <span class="o">+</span> <span class="p">[{</span><span class="s2">&quot;bucket&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}]</span>
 
         <span class="n">policy_document</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;expiration&#39;</span><span class="p">:</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
-            <span class="s1">&#39;conditions&#39;</span><span class="p">:</span> <span class="n">conditions</span><span class="p">,</span>
+            <span class="s2">&quot;expiration&quot;</span><span class="p">:</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
+            <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="n">conditions</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="n">encoded_policy_document</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">policy_document</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
-        <span class="n">signature</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span>
-            <span class="n">credentials</span><span class="o">.</span><span class="n">sign_bytes</span><span class="p">(</span><span class="n">encoded_policy_document</span><span class="p">))</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">policy_document</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">sign_bytes</span><span class="p">(</span><span class="n">encoded_policy_document</span><span class="p">))</span>
 
         <span class="n">fields</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;bucket&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s1">&#39;GoogleAccessId&#39;</span><span class="p">:</span> <span class="n">credentials</span><span class="o">.</span><span class="n">signer_email</span><span class="p">,</span>
-            <span class="s1">&#39;policy&#39;</span><span class="p">:</span> <span class="n">encoded_policy_document</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-            <span class="s1">&#39;signature&#39;</span><span class="p">:</span> <span class="n">signature</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;bucket&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;GoogleAccessId&quot;</span><span class="p">:</span> <span class="n">credentials</span><span class="o">.</span><span class="n">signer_email</span><span class="p">,</span>
+            <span class="s2">&quot;policy&quot;</span><span class="p">:</span> <span class="n">encoded_policy_document</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;signature&quot;</span><span class="p">:</span> <span class="n">signature</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="n">fields</span></div>
@@ -1833,30 +1867,28 @@
 <span class="sd">            if the bucket has no retention policy assigned;</span>
 <span class="sd">            if the bucket&#39;s retention policy is already locked.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s1">&#39;metageneration&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Bucket has no retention policy assigned: try &#39;reload&#39;?&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;metageneration&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Bucket has no retention policy assigned: try &#39;reload&#39;?&quot;</span><span class="p">)</span>
 
-        <span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retentionPolicy&#39;</span><span class="p">)</span>
+        <span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retentionPolicy&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">policy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Bucket has no retention policy assigned: try &#39;reload&#39;?&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Bucket has no retention policy assigned: try &#39;reload&#39;?&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">policy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;isLocked&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">policy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;isLocked&quot;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Bucket&#39;s retention policy is already locked.&quot;</span><span class="p">)</span>
 
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ifMetagenerationMatch&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metageneration</span><span class="p">}</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ifMetagenerationMatch&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metageneration</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;userProject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/b/</span><span class="si">{}</span><span class="s1">/lockRetentionPolicy&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/b/</span><span class="si">{}</span><span class="s2">/lockRetentionPolicy&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div></div>
 </pre></div>
 

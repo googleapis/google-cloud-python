@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.schema &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.bigquery.schema &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -67,8 +67,8 @@
 <span class="sd">        fields (Tuple[:class:`~google.cloud.bigquery.schema.SchemaField`]):</span>
 <span class="sd">            subfields (requires ``field_type`` of &#39;RECORD&#39;).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;NULLABLE&#39;</span><span class="p">,</span>
-                 <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">()):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;NULLABLE&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">()):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_field_type</span> <span class="o">=</span> <span class="n">field_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">mode</span>
@@ -89,15 +89,15 @@
 <span class="sd">                The ``SchemaField`` object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Handle optional properties with default values</span>
-        <span class="n">mode</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;NULLABLE&#39;</span><span class="p">)</span>
-        <span class="n">description</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">,</span> <span class="p">())</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span> <span class="s2">&quot;NULLABLE&quot;</span><span class="p">)</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">)</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fields&quot;</span><span class="p">,</span> <span class="p">())</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">field_type</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="n">field_type</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
             <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">],</span>
             <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
             <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
         <span class="p">)</span></div>
 
     <span class="nd">@property</span>
@@ -126,7 +126,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_nullable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;bool: whether &#39;mode&#39; is &#39;nullable&#39;.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s1">&#39;NULLABLE&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;NULLABLE&quot;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -150,16 +150,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Put together the basic representation. See http://bit.ly/2hOAT5u.</span>
         <span class="n">answer</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
-            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
-            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="c1"># If this is a RECORD type, then sub-fields are also included,</span>
         <span class="c1"># add this to the serialized representation.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;RECORD&#39;</span><span class="p">:</span>
-            <span class="n">answer</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;RECORD&quot;</span><span class="p">:</span>
+            <span class="n">answer</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">]</span>
 
         <span class="c1"># Done; return the serialized dictionary.</span>
         <span class="k">return</span> <span class="n">answer</span></div>
@@ -193,7 +193,7 @@
         <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;SchemaField</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="s2">&quot;SchemaField</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span></div>
 
 
 <span class="k">def</span> <span class="nf">_parse_schema_resource</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
@@ -206,18 +206,17 @@
 <span class="sd">        (Union[Sequence[:class:`google.cloud.bigquery.schema.SchemaField`],None])</span>
 <span class="sd">            a list of parsed fields, or ``None`` if no &quot;fields&quot; key found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s1">&#39;fields&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;fields&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">()</span>
 
     <span class="n">schema</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">r_field</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-        <span class="n">field_type</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="n">mode</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;NULLABLE&#39;</span><span class="p">)</span>
-        <span class="n">description</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">r_field</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">field_type</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span> <span class="s2">&quot;NULLABLE&quot;</span><span class="p">)</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">)</span>
         <span class="n">sub_fields</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">r_field</span><span class="p">)</span>
-        <span class="n">schema</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">SchemaField</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">sub_fields</span><span class="p">))</span>
+        <span class="n">schema</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SchemaField</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">sub_fields</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">schema</span>
 
 

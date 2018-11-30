@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Running Queries &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>Running Queries &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -43,17 +43,19 @@
 <span class="c1"># client = bigquery.Client()</span>
 
 <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
+    <span class="s2">&quot;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &quot;</span>
     <span class="s1">&#39;WHERE state = &quot;TX&quot; &#39;</span>
-    <span class="s1">&#39;LIMIT 100&#39;</span><span class="p">)</span>
+    <span class="s2">&quot;LIMIT 100&quot;</span>
+<span class="p">)</span>
 <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
     <span class="n">query</span><span class="p">,</span>
     <span class="c1"># Location must match that of the dataset(s) referenced in the query.</span>
-    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;US&quot;</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># API request - starts the query</span>
 
 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">query_job</span><span class="p">:</span>  <span class="c1"># API request - fetches results</span>
     <span class="c1"># Row values can be accessed by field name or index</span>
-    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
     <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -67,20 +69,22 @@
 <span class="n">job_config</span><span class="o">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="n">job_config</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="o">=</span> <span class="bp">False</span>
 <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;SELECT name, COUNT(*) as name_count &#39;</span>
-     <span class="s1">&#39;FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
-     <span class="s2">&quot;WHERE state = &#39;WA&#39; &quot;</span>
-     <span class="s1">&#39;GROUP BY name&#39;</span><span class="p">),</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;SELECT name, COUNT(*) as name_count &quot;</span>
+        <span class="s2">&quot;FROM `bigquery-public-data.usa_names.usa_1910_2013` &quot;</span>
+        <span class="s2">&quot;WHERE state = &#39;WA&#39; &quot;</span>
+        <span class="s2">&quot;GROUP BY name&quot;</span>
+    <span class="p">),</span>
     <span class="c1"># Location must match that of the dataset(s) referenced in the query.</span>
-    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>
-    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;US&quot;</span><span class="p">,</span>
+    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># API request</span>
 
 <span class="c1"># A dry run query completes immediately.</span>
-<span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+<span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;DONE&quot;</span>
 <span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">dry_run</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;This query will process {} bytes.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="n">query_job</span><span class="o">.</span><span class="n">total_bytes_processed</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;This query will process {} bytes.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query_job</span><span class="o">.</span><span class="n">total_bytes_processed</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -94,7 +98,7 @@
 
 <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
 <span class="c1"># Set the destination table</span>
-<span class="n">table_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;your_table_id&#39;</span><span class="p">)</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;your_table_id&quot;</span><span class="p">)</span>
 <span class="n">job_config</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">table_ref</span>
 <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    SELECT corpus</span>
@@ -107,11 +111,12 @@
     <span class="n">sql</span><span class="p">,</span>
     <span class="c1"># Location must match that of the dataset(s) referenced in the query</span>
     <span class="c1"># and of the destination table.</span>
-    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>
-    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;US&quot;</span><span class="p">,</span>
+    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># API request - starts the query</span>
 
 <span class="n">query_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for the query to finish</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Query results loaded to table {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_ref</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Query results loaded to table {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_ref</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -130,22 +135,23 @@
 <span class="s2">    ORDER BY word_count DESC;</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">query_params</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">bigquery</span><span class="o">.</span><span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s1">&#39;corpus&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="s1">&#39;romeoandjuliet&#39;</span><span class="p">),</span>
-    <span class="n">bigquery</span><span class="o">.</span><span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s1">&#39;min_word_count&#39;</span><span class="p">,</span> <span class="s1">&#39;INT64&#39;</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s2">&quot;corpus&quot;</span><span class="p">,</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span> <span class="s2">&quot;romeoandjuliet&quot;</span><span class="p">),</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s2">&quot;min_word_count&quot;</span><span class="p">,</span> <span class="s2">&quot;INT64&quot;</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span>
 <span class="p">]</span>
 <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
 <span class="n">job_config</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="n">query_params</span>
 <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
     <span class="n">query</span><span class="p">,</span>
     <span class="c1"># Location must match that of the dataset(s) referenced in the query.</span>
-    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>
-    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;US&quot;</span><span class="p">,</span>
+    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># API request - starts the query</span>
 
 <span class="c1"># Print the results</span>
 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">query_job</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{}: </span><span class="se">\t</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">word_count</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{}: </span><span class="se">\t</span><span class="s2">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">word_count</span><span class="p">))</span>
 
-<span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+<span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;DONE&quot;</span>
 </pre></div>
 </div>
 </div>

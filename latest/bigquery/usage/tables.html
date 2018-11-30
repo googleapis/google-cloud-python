@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Managing Tables &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>Managing Tables &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -49,13 +49,13 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
 
-<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;my_table&quot;</span><span class="p">)</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>                  <span class="c1"># API request</span>
+<span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
 <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
 
 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-<span class="k">assert</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s1">&#39;my_table&#39;</span>
+<span class="k">assert</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s2">&quot;my_table&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -83,8 +83,8 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
 <span class="c1"># client = bigquery.Client()</span>
 
-<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;samples&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">)</span>
-<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s2">&quot;samples&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s2">&quot;bigquery-public-data&quot;</span><span class="p">)</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;shakespeare&quot;</span><span class="p">)</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>  <span class="c1"># API call</span>
 
 <span class="c1"># Load all rows from a table</span>
@@ -105,11 +105,11 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <span class="n">rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">start_index</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="c1"># Print row data in tabular format</span>
-<span class="n">format_string</span> <span class="o">=</span> <span class="s1">&#39;{!s:&lt;16} &#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+<span class="n">format_string</span> <span class="o">=</span> <span class="s2">&quot;{!s:&lt;16} &quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
 <span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">rows</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span>
 <span class="k">print</span><span class="p">(</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">field_names</span><span class="p">))</span>  <span class="c1"># prints column headers</span>
 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">row</span><span class="p">))</span>      <span class="c1"># prints row data</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">row</span><span class="p">))</span>  <span class="c1"># prints row data</span>
 </pre></div>
 </div>
 </div>
@@ -122,14 +122,14 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <span class="c1"># dataset_ref = client.dataset(&#39;my_dataset&#39;)</span>
 
 <span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;full_name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;REQUIRED&#39;</span><span class="p">),</span>
-    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;REQUIRED&#39;</span><span class="p">),</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s2">&quot;full_name&quot;</span><span class="p">,</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;REQUIRED&quot;</span><span class="p">),</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;INTEGER&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;REQUIRED&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;my_table&quot;</span><span class="p">)</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
 
-<span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s1">&#39;my_table&#39;</span>
+<span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s2">&quot;my_table&quot;</span>
 </pre></div>
 </div>
 <p>Load table data from a file with the
@@ -147,17 +147,17 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <span class="n">job_config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">job_config</span><span class="o">.</span><span class="n">autodetect</span> <span class="o">=</span> <span class="bp">True</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">source_file</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">source_file</span><span class="p">:</span>
     <span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>
         <span class="n">source_file</span><span class="p">,</span>
         <span class="n">table_ref</span><span class="p">,</span>
-        <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>  <span class="c1"># Must match the destination dataset location.</span>
-        <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+        <span class="n">location</span><span class="o">=</span><span class="s2">&quot;US&quot;</span><span class="p">,</span>  <span class="c1"># Must match the destination dataset location.</span>
+        <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span>
+    <span class="p">)</span>  <span class="c1"># API request</span>
 
 <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows into {}:{}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="n">job</span><span class="o">.</span><span class="n">output_rows</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Loaded {} rows into {}:{}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">output_rows</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Load a CSV file from Cloud Storage with the
@@ -169,25 +169,24 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
 <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
 <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">),</span>
-    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;post_abbr&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">)</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;STRING&quot;</span><span class="p">),</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s2">&quot;post_abbr&quot;</span><span class="p">,</span> <span class="s2">&quot;STRING&quot;</span><span class="p">),</span>
 <span class="p">]</span>
 <span class="n">job_config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1"># The source format defaults to CSV, so the line below is optional.</span>
 <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">CSV</span>
-<span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.csv&#39;</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;gs://cloud-samples-data/bigquery/us-states/us-states.csv&quot;</span>
 
 <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
-    <span class="n">uri</span><span class="p">,</span>
-    <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
-    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting job {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
+    <span class="n">uri</span><span class="p">,</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;us_states&quot;</span><span class="p">),</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span>
+<span class="p">)</span>  <span class="c1"># API request</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Starting job {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
 
 <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Job finished.&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Job finished.&quot;</span><span class="p">)</span>
 
-<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
+<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;us_states&quot;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Loaded {} rows.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>See also: <a class="reference external" href="https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv">Loading CSV data from Cloud Storage</a>.</p>
@@ -199,24 +198,25 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
 <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
 <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">),</span>
-    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;post_abbr&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">)</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;STRING&quot;</span><span class="p">),</span>
+    <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s2">&quot;post_abbr&quot;</span><span class="p">,</span> <span class="s2">&quot;STRING&quot;</span><span class="p">),</span>
 <span class="p">]</span>
 <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">NEWLINE_DELIMITED_JSON</span>
-<span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.json&#39;</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;gs://cloud-samples-data/bigquery/us-states/us-states.json&quot;</span>
 
 <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
     <span class="n">uri</span><span class="p">,</span>
-    <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
-    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>  <span class="c1"># Location must match that of the destination dataset.</span>
-    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting job {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
+    <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;us_states&quot;</span><span class="p">),</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;US&quot;</span><span class="p">,</span>  <span class="c1"># Location must match that of the destination dataset.</span>
+    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># API request</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Starting job {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
 
 <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Job finished.&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Job finished.&quot;</span><span class="p">)</span>
 
-<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
+<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;us_states&quot;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Loaded {} rows.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>See also: <a class="reference external" href="https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json">Loading JSON data from Cloud Storage</a>.</p>
@@ -228,19 +228,18 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
 <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
 <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">PARQUET</span>
-<span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.parquet&#39;</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;gs://cloud-samples-data/bigquery/us-states/us-states.parquet&quot;</span>
 
 <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
-    <span class="n">uri</span><span class="p">,</span>
-    <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
-    <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting job {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
+    <span class="n">uri</span><span class="p">,</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;us_states&quot;</span><span class="p">),</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span>
+<span class="p">)</span>  <span class="c1"># API request</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Starting job {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
 
 <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Job finished.&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Job finished.&quot;</span><span class="p">)</span>
 
-<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
+<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;us_states&quot;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Loaded {} rows.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>See also: <a class="reference external" href="https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet">Loading Parquet data from Cloud Storage</a>.</p>
@@ -254,12 +253,12 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;my_table&#39;)</span>
 <span class="c1"># table = client.get_table(table_ref)  # API request</span>
 
-<span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;Original description.&#39;</span>
-<span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Updated description.&#39;</span>
+<span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s2">&quot;Original description.&quot;</span>
+<span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Updated description.&quot;</span>
 
-<span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">])</span>  <span class="c1"># API request</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">])</span>  <span class="c1"># API request</span>
 
-<span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;Updated description.&#39;</span>
+<span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s2">&quot;Updated description.&quot;</span>
 </pre></div>
 </div>
 <p>Insert rows into a table’s data with the
@@ -273,10 +272,7 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <span class="c1"># table_ref = client.dataset(dataset_id).table(table_id)</span>
 <span class="c1"># table = client.get_table(table_ref)  # API request</span>
 
-<span class="n">rows_to_insert</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Phred Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
-    <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Wylma Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">),</span>
-<span class="p">]</span>
+<span class="n">rows_to_insert</span> <span class="o">=</span> <span class="p">[(</span><span class="sa">u</span><span class="s2">&quot;Phred Phlyntstone&quot;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="p">(</span><span class="sa">u</span><span class="s2">&quot;Wylma Phlyntstone&quot;</span><span class="p">,</span> <span class="mi">29</span><span class="p">)]</span>
 
 <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">insert_rows</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">rows_to_insert</span><span class="p">)</span>  <span class="c1"># API request</span>
 
@@ -291,21 +287,22 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
 <span class="c1"># client = bigquery.Client()</span>
 
-<span class="n">source_dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;samples&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">)</span>
-<span class="n">source_table_ref</span> <span class="o">=</span> <span class="n">source_dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
+<span class="n">source_dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s2">&quot;samples&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s2">&quot;bigquery-public-data&quot;</span><span class="p">)</span>
+<span class="n">source_table_ref</span> <span class="o">=</span> <span class="n">source_dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;shakespeare&quot;</span><span class="p">)</span>
 
 <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
-<span class="n">dest_table_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;destination_table&#39;</span><span class="p">)</span>
+<span class="n">dest_table_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;destination_table&quot;</span><span class="p">)</span>
 
 <span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">copy_table</span><span class="p">(</span>
     <span class="n">source_table_ref</span><span class="p">,</span>
     <span class="n">dest_table_ref</span><span class="p">,</span>
     <span class="c1"># Location must match that of the source and destination tables.</span>
-    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;US&quot;</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># API request</span>
 
 <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for job to complete.</span>
 
-<span class="k">assert</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+<span class="k">assert</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;DONE&quot;</span>
 <span class="n">dest_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dest_table_ref</span><span class="p">)</span>  <span class="c1"># API request</span>
 <span class="k">assert</span> <span class="n">dest_table</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">&gt;</span> <span class="mi">0</span>
 </pre></div>
@@ -315,11 +312,11 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
 <span class="c1"># client = bigquery.Client()</span>
 <span class="c1"># bucket_name = &#39;my-bucket&#39;</span>
-<span class="n">project</span> <span class="o">=</span> <span class="s1">&#39;bigquery-public-data&#39;</span>
-<span class="n">dataset_id</span> <span class="o">=</span> <span class="s1">&#39;samples&#39;</span>
-<span class="n">table_id</span> <span class="o">=</span> <span class="s1">&#39;shakespeare&#39;</span>
+<span class="n">project</span> <span class="o">=</span> <span class="s2">&quot;bigquery-public-data&quot;</span>
+<span class="n">dataset_id</span> <span class="o">=</span> <span class="s2">&quot;samples&quot;</span>
+<span class="n">table_id</span> <span class="o">=</span> <span class="s2">&quot;shakespeare&quot;</span>
 
-<span class="n">destination_uri</span> <span class="o">=</span> <span class="s1">&#39;gs://{}/{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="s1">&#39;shakespeare.csv&#39;</span><span class="p">)</span>
+<span class="n">destination_uri</span> <span class="o">=</span> <span class="s2">&quot;gs://{}/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="s2">&quot;shakespeare.csv&quot;</span><span class="p">)</span>
 <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
 <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
 
@@ -327,11 +324,13 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
     <span class="n">table_ref</span><span class="p">,</span>
     <span class="n">destination_uri</span><span class="p">,</span>
     <span class="c1"># Location must match that of the source table.</span>
-    <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;US&quot;</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># API request</span>
 <span class="n">extract_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for job to complete.</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Exported {}:{}.{} to {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">,</span> <span class="n">destination_uri</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span>
+    <span class="s2">&quot;Exported {}:{}.{} to {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">,</span> <span class="n">destination_uri</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -347,7 +346,7 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <span class="n">table_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">delete_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>  <span class="c1"># API request</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Table {}:{} deleted.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Table {}:{} deleted.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>

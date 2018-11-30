@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>Buckets &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -72,7 +72,7 @@ requests made via this instance.</li>
 <dt>See <a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">https://cloud.google.com/storage/docs/lifecycle</a> and</dt>
 <dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
     <span class="n">bucket</span><span class="o">.</span><span class="n">add_lifecycle_rule_delete</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">bucket</span><span class="o">.</span><span class="n">patch</span><span class="p">()</span>
 </pre></div>
@@ -95,9 +95,10 @@ requests made via this instance.</li>
 <dt>See <a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">https://cloud.google.com/storage/docs/lifecycle</a> and</dt>
 <dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
     <span class="n">bucket</span><span class="o">.</span><span class="n">add_lifecycle_rule_set_storage_class</span><span class="p">(</span>
-        <span class="s1">&#39;COLD_LINE&#39;</span><span class="p">,</span> <span class="n">matches_storage_class</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;NEARLINE&#39;</span><span class="p">])</span>
+        <span class="s2">&quot;COLD_LINE&quot;</span><span class="p">,</span> <span class="n">matches_storage_class</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;NEARLINE&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
     <span class="n">bucket</span><span class="o">.</span><span class="n">patch</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -177,7 +178,7 @@ if your bucket name is a domain name
 of an index page and a page to use when a blob isn’t found:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
     <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-    <span class="n">bucket</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="s1">&#39;404.html&#39;</span><span class="p">)</span>
+    <span class="n">bucket</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">,</span> <span class="s2">&quot;404.html&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You probably should also make the whole bucket public:</p>
@@ -403,14 +404,15 @@ contains more than 256 objects / blobs.</p>
 <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.exceptions.NotFound</span></code>.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+
     <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
     <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">())</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
     <span class="c1"># [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
-    <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s1">&#39;my-file.txt&#39;</span><span class="p">)</span>
+    <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s2">&quot;my-file.txt&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s1">&#39;doesnt-exist&#39;</span><span class="p">)</span>
+        <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s2">&quot;doesnt-exist&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
         <span class="k">pass</span>
 </pre></div>
@@ -554,17 +556,16 @@ to the <code class="docutils literal notranslate"><span class="pre">client</span
 <a class="reference external" href="https://cloud.google.com/storage/docs/xml-api/post-object#policydocument">policy documents</a> to allow visitors to a website to upload files to
 Google Cloud Storage without giving them direct write access.</p>
 <p>For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
-    <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">[</span><span class="s1">&#39;starts-with&#39;</span><span class="p">,</span> <span class="s1">&#39;$key&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">],</span>
-        <span class="p">{</span><span class="s1">&#39;acl&#39;</span><span class="p">:</span> <span class="s1">&#39;public-read&#39;</span><span class="p">}]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
+    <span class="n">conditions</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;starts-with&quot;</span><span class="p">,</span> <span class="s2">&quot;$key&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span> <span class="p">{</span><span class="s2">&quot;acl&quot;</span><span class="p">:</span> <span class="s2">&quot;public-read&quot;</span><span class="p">}]</span>
 
     <span class="n">policy</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">generate_upload_policy</span><span class="p">(</span><span class="n">conditions</span><span class="p">)</span>
 
     <span class="c1"># Generate an upload form using the form fields.</span>
-    <span class="n">policy_fields</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">policy_fields</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
         <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;</span><span class="si">{key}</span><span class="s1">&quot; value=&quot;</span><span class="si">{value}</span><span class="s1">&quot;&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span>
+        <span class="p">)</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">policy</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="p">)</span>
 
@@ -576,8 +577,9 @@ Google Cloud Storage without giving them direct write access.</p>
         <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;acl&quot; value=&quot;public-read&quot;&gt;&#39;</span>
         <span class="s1">&#39;&lt;input name=&quot;file&quot; type=&quot;file&quot;&gt;&#39;</span>
         <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;&#39;</span>
-        <span class="s1">&#39;</span><span class="si">{policy_fields}</span><span class="s1">&#39;</span>
-        <span class="s1">&#39;&lt;/form&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">policy_fields</span><span class="o">=</span><span class="n">policy_fields</span><span class="p">)</span>
+        <span class="s2">&quot;</span><span class="si">{policy_fields}</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;&lt;/form&gt;&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">policy_fields</span><span class="o">=</span><span class="n">policy_fields</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">upload_form</span><span class="p">)</span>
 </pre></div>
@@ -614,10 +616,10 @@ to attach the signature.</p>
 <dd><p>Get a blob object by name.</p>
 <p>This will return None if the blob doesn’t exist:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s1">&#39;/path/to/blob.txt&#39;</span><span class="p">),</span> <span class="n">Blob</span><span class="p">)</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s2">&quot;/path/to/blob.txt&quot;</span><span class="p">),</span> <span class="n">Blob</span><span class="p">)</span>
     <span class="c1"># &lt;Blob: my-bucket, /path/to/blob.txt&gt;</span>
-    <span class="k">assert</span> <span class="ow">not</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s1">&#39;/does-not-exist.txt&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s2">&quot;/does-not-exist.txt&quot;</span><span class="p">)</span>
     <span class="c1"># None</span>
 </pre></div>
 </div>

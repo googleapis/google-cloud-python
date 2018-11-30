@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.client &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>google.cloud.storage.client &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -88,22 +88,25 @@
 <span class="sd">                  change in the future.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/devstorage.full_control&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;https://www.googleapis.com/auth/devstorage.read_only&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;https://www.googleapis.com/auth/devstorage.read_write&#39;</span><span class="p">)</span>
+    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;https://www.googleapis.com/auth/devstorage.full_control&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://www.googleapis.com/auth/devstorage.read_only&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://www.googleapis.com/auth/devstorage.read_write&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Storage consumer.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">_marker</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_base_connection</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">no_project</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">project</span> <span class="o">=</span> <span class="s1">&#39;&lt;none&gt;&#39;</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="s2">&quot;&lt;none&gt;&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">no_project</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="n">_marker</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-                                     <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">no_project</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -121,7 +124,7 @@
 <span class="sd">        :rtype: :class:`google.cloud.storage.client.Client`</span>
 <span class="sd">        :returns: Instance w/ anonymous credentials and no project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;&lt;none&gt;&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">AnonymousCredentials</span><span class="p">())</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;&lt;none&gt;&quot;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">AnonymousCredentials</span><span class="p">())</span>
         <span class="n">client</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">client</span></div>
 
@@ -152,7 +155,7 @@
 <span class="sd">        :raises: :class:`ValueError` if connection has already been set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_connection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Connection already set on client&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Connection already set on client&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_base_connection</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">_push_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
@@ -199,10 +202,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/serviceAccount&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,)</span>
-        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;email_address&#39;</span><span class="p">]</span></div>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/projects/</span><span class="si">%s</span><span class="s2">/serviceAccount&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s2">&quot;email_address&quot;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Client.bucket"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.bucket">[docs]</a>    <span class="k">def</span> <span class="nf">bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">user_project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory constructor for bucket object.</span>
@@ -320,8 +322,15 @@
         <span class="n">bucket</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">bucket</span></div>
 
-<div class="viewcode-block" id="Client.list_buckets"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.list_buckets">[docs]</a>    <span class="k">def</span> <span class="nf">list_buckets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_buckets"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.list_buckets">[docs]</a>    <span class="k">def</span> <span class="nf">list_buckets</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;noAcl&quot;</span><span class="p">,</span>
+        <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all buckets in the project associated to the client.</span>
 
 <span class="sd">        This will not populate the list of blobs available in each</span>
@@ -371,27 +380,27 @@
             <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
 
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Client project not set:  pass an explicit project.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Client project not set:  pass an explicit project.&quot;</span><span class="p">)</span>
 
-        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
+        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
 
-        <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">projection</span>
+        <span class="n">extra_params</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">projection</span>
 
         <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
 
         <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">api_request</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/b&#39;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/b&quot;</span><span class="p">,</span>
             <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_bucket</span><span class="p">,</span>
             <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
-            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div></div>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_item_to_bucket</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
@@ -406,7 +415,7 @@
 <span class="sd">    :rtype: :class:`.Bucket`</span>
 <span class="sd">    :returns: The next bucket in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
     <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="n">bucket</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">bucket</span>

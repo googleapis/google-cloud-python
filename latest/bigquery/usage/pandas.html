@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Using BigQuery with Pandas &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>Using BigQuery with Pandas &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -69,8 +69,8 @@ retrieve query results or table rows as a <a class="reference external" href="ht
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
 <span class="c1"># client = bigquery.Client()</span>
 
-<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;samples&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">)</span>
-<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
+<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s2">&quot;samples&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s2">&quot;bigquery-public-data&quot;</span><span class="p">)</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;shakespeare&quot;</span><span class="p">)</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
@@ -97,28 +97,24 @@ and load it into a new table:</p>
 <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
 
 <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
-<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;monty_python&#39;</span><span class="p">)</span>
+<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;monty_python&quot;</span><span class="p">)</span>
 <span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;The Meaning of Life&#39;</span><span class="p">,</span> <span class="s1">&#39;release_year&#39;</span><span class="p">:</span> <span class="mi">1983</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Monty Python and the Holy Grail&#39;</span><span class="p">,</span> <span class="s1">&#39;release_year&#39;</span><span class="p">:</span> <span class="mi">1975</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Life of Brian&#39;</span><span class="p">,</span> <span class="s1">&#39;release_year&#39;</span><span class="p">:</span> <span class="mi">1979</span><span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;And Now for Something Completely Different&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;release_year&#39;</span><span class="p">:</span> <span class="mi">1971</span>
-    <span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;The Meaning of Life&quot;</span><span class="p">,</span> <span class="s2">&quot;release_year&quot;</span><span class="p">:</span> <span class="mi">1983</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Monty Python and the Holy Grail&quot;</span><span class="p">,</span> <span class="s2">&quot;release_year&quot;</span><span class="p">:</span> <span class="mi">1975</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Life of Brian&quot;</span><span class="p">,</span> <span class="s2">&quot;release_year&quot;</span><span class="p">:</span> <span class="mi">1979</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;And Now for Something Completely Different&quot;</span><span class="p">,</span> <span class="s2">&quot;release_year&quot;</span><span class="p">:</span> <span class="mi">1971</span><span class="p">},</span>
 <span class="p">]</span>
 <span class="c1"># Optionally set explicit indices.</span>
 <span class="c1"># If indices are not specified, a column will be created for the default</span>
 <span class="c1"># indices created by pandas.</span>
-<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Q24980&#39;</span><span class="p">,</span> <span class="s1">&#39;Q25043&#39;</span><span class="p">,</span> <span class="s1">&#39;Q24953&#39;</span><span class="p">,</span> <span class="s1">&#39;Q16403&#39;</span><span class="p">]</span>
-<span class="n">dataframe</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="n">records</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">pandas</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;wikidata_id&#39;</span><span class="p">))</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Q24980&quot;</span><span class="p">,</span> <span class="s2">&quot;Q25043&quot;</span><span class="p">,</span> <span class="s2">&quot;Q24953&quot;</span><span class="p">,</span> <span class="s2">&quot;Q16403&quot;</span><span class="p">]</span>
+<span class="n">dataframe</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">pandas</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;wikidata_id&quot;</span><span class="p">))</span>
 
-<span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_dataframe</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">)</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_dataframe</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;US&quot;</span><span class="p">)</span>
 
 <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
 
-<span class="k">assert</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+<span class="k">assert</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;DONE&quot;</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">==</span> <span class="mi">4</span>
 </pre></div>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Blobs / Objects &#8212; google-cloud 4fe89c9 documentation</title>
+    <title>Blobs / Objects &#8212; google-cloud 8b3559a documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -364,12 +364,12 @@ encryption key:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.storage</span> <span class="k">import</span> <span class="n">Blob</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">)</span>
-<span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="n">encryption_key</span> <span class="o">=</span> <span class="s1">&#39;c7f32af42e45e85b9848a6a14dd2a8f6&#39;</span>
-<span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="s1">&#39;secure-data&#39;</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span>
-<span class="n">blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="s1">&#39;my secret message.&#39;</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/tmp/my-secure-file&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;my-project&quot;</span><span class="p">)</span>
+<span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
+<span class="n">encryption_key</span> <span class="o">=</span> <span class="s2">&quot;c7f32af42e45e85b9848a6a14dd2a8f6&quot;</span>
+<span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="s2">&quot;secure-data&quot;</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span>
+<span class="n">blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="s2">&quot;my secret message.&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/tmp/my-secure-file&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
     <span class="n">blob</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1148,11 +1148,11 @@ for details.</p>
 <p>Uploading a file with a <a class="reference external" href="https://cloud.google.com/storage/docs/encryption#customer-supplied">customer-supplied</a> encryption key:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.storage</span> <span class="k">import</span> <span class="n">Blob</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">)</span>
-<span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="n">encryption_key</span> <span class="o">=</span> <span class="s1">&#39;aa426195405adee2c8081bb9e7e74b19&#39;</span>
-<span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="s1">&#39;secure-data&#39;</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;my-file&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">my_file</span><span class="p">:</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;my-project&quot;</span><span class="p">)</span>
+<span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
+<span class="n">encryption_key</span> <span class="o">=</span> <span class="s2">&quot;aa426195405adee2c8081bb9e7e74b19&quot;</span>
+<span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="s2">&quot;secure-data&quot;</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;my-file&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">my_file</span><span class="p">:</span>
     <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
 </pre></div>
 </div>
