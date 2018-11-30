@@ -70,7 +70,7 @@ for module in _shared_modules:
         names.append(name)
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = "google.cloud.securitycenter_v1beta1.types"
+        message.__module__ = 'google.cloud.securitycenter_v1beta1.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 
