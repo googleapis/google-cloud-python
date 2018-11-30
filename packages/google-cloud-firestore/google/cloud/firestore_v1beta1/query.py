@@ -548,6 +548,23 @@ class Query(object):
                 composite_filter=composite_filter)
 
     @staticmethod
+    def _normalize_projection(projection):
+        """Helper:  convert field paths to message."""
+        if projection is not None:
+
+            fields = list(projection.fields)
+
+            if not fields:
+                field_ref = query_pb2.StructuredQuery.FieldReference(
+                    field_path='__name__',
+                )
+                return query_pb2.StructuredQuery.Projection(
+                    fields=[field_ref],
+                )
+
+        return projection
+
+    @staticmethod
     def _normalize_cursor(cursor, orders):
         """Helper: convert cursor to a list of values based on orders."""
         if cursor is None:
@@ -592,11 +609,12 @@ class Query(object):
             google.cloud.firestore_v1beta1.types.StructuredQuery: The
             query protobuf.
         """
+        projection = self._normalize_projection(self._projection)
         start_at = self._normalize_cursor(self._start_at, self._orders)
         end_at = self._normalize_cursor(self._end_at, self._orders)
 
         query_kwargs = {
-            'select': self._projection,
+            'select': projection,
             'from': [
                 query_pb2.StructuredQuery.CollectionSelector(
                     collection_id=self._parent.id,
