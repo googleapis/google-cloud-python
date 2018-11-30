@@ -476,6 +476,23 @@ class TestQuery(unittest.TestCase):
         )
         self.assertEqual(filter_pb, expected_pb)
 
+    def test__normalize_projection_none(self):
+        query = self._make_one(mock.sentinel.parent)
+        self.assertIsNone(query._normalize_projection(None))
+
+    def test__normalize_projection_empty(self):
+        projection = self._make_projection_for_select([])
+        query = self._make_one(mock.sentinel.parent)
+        normalized = query._normalize_projection(projection)
+        field_paths = [
+            field_ref.field_path for field_ref in normalized.fields]
+        self.assertEqual(field_paths, ['__name__'])
+
+    def test__normalize_projection_non_empty(self):
+        projection = self._make_projection_for_select(['a', 'b'])
+        query = self._make_one(mock.sentinel.parent)
+        self.assertIs(query._normalize_projection(projection), projection)
+
     def test__normalize_cursor_none(self):
         query = self._make_one(mock.sentinel.parent)
         self.assertIsNone(query._normalize_cursor(None, query._orders))
