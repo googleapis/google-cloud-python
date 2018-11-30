@@ -16,8 +16,6 @@
 - Move google.cloud.iam (core) to google.api_core.iam ([#6740](https://github.com/googleapis/google-cloud-python/pull/6740))
 - Add bidi support to api_core. ([#6191](https://github.com/googleapis/google-cloud-python/pull/6191))
 
-### Dependencies
-
 ### Documentation
 - Fix typo ([#6532](https://github.com/googleapis/google-cloud-python/pull/6532))
 
