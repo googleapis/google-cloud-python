@@ -101,6 +101,12 @@ class TestQuery(unittest.TestCase):
             ],
         )
 
+    def test_select_invalid_path(self):
+        query = self._make_one(mock.sentinel.parent)
+
+        with self.assertRaises(ValueError):
+            query.select(['*'])
+
     def test_select(self):
         query1 = self._make_one_all_fields()
 
@@ -122,6 +128,12 @@ class TestQuery(unittest.TestCase):
             query3._projection,
             self._make_projection_for_select(field_paths3))
         self._compare_queries(query2, query3, '_projection')
+
+    def test_where_invalid_path(self):
+        query = self._make_one(mock.sentinel.parent)
+
+        with self.assertRaises(ValueError):
+            query.where('*', '==', 1)
 
     def test_where(self):
         from google.cloud.firestore_v1beta1.gapic import enums
@@ -186,6 +198,12 @@ class TestQuery(unittest.TestCase):
     def test_where_le_nan(self):
         with self.assertRaises(ValueError):
             self._where_unary_helper(float('nan'), 0, op_string='<=')
+
+    def test_order_by_invalid_path(self):
+        query = self._make_one(mock.sentinel.parent)
+
+        with self.assertRaises(ValueError):
+            query.order_by('*')
 
     def test_order_by(self):
         from google.cloud.firestore_v1beta1.gapic import enums
