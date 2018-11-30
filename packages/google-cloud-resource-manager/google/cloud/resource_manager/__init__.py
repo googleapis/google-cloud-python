@@ -16,7 +16,8 @@
 
 
 from pkg_resources import get_distribution
-__version__ = get_distribution('google-cloud-resource-manager').version
+
+__version__ = get_distribution("google-cloud-resource-manager").version
 
 from google.cloud.resource_manager.client import Client
 from google.cloud.resource_manager.project import Project
@@ -24,4 +25,4 @@ from google.cloud.resource_manager.project import Project
 
 SCOPE = Client.SCOPE
 
-__all__ = ['__version__', 'Client', 'Project', 'SCOPE']
+__all__ = ["__version__", "Client", "Project", "SCOPE"]

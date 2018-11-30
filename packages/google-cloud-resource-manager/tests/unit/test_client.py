@@ -24,7 +24,6 @@ def _make_credentials():
 
 
 class TestClient(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.resource_manager.client import Client
@@ -49,7 +48,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
-        project_id = 'project_id'
+        project_id = "project_id"
         name = object()
         labels = object()
         project = client.new_project(project_id, name=name, labels=labels)
@@ -63,16 +62,16 @@ class TestClient(unittest.TestCase):
     def test_fetch_project(self):
         from google.cloud.resource_manager.project import Project
 
-        project_id = 'project-id'
+        project_id = "project-id"
         project_number = 123
-        project_name = 'Project Name'
-        labels = {'env': 'prod'}
+        project_name = "Project Name"
+        labels = {"env": "prod"}
         project_resource = {
-            'projectId': project_id,
-            'projectNumber': project_number,
-            'name': project_name,
-            'labels': labels,
-            'lifecycleState': 'ACTIVE',
+            "projectId": project_id,
+            "projectNumber": project_number,
+            "name": project_name,
+            "labels": labels,
+            "lifecycleState": "ACTIVE",
         }
 
         credentials = _make_credentials()
@@ -102,22 +101,22 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
 
-        PROJECT_ID = 'project-id'
+        PROJECT_ID = "project-id"
         PROJECT_NUMBER = 1
-        STATUS = 'ACTIVE'
+        STATUS = "ACTIVE"
         PROJECTS_RESOURCE = {
-            'projects': [
+            "projects": [
                 {
-                    'projectId': PROJECT_ID,
-                    'projectNumber': PROJECT_NUMBER,
-                    'lifecycleState': STATUS,
-                },
-            ],
+                    "projectId": PROJECT_ID,
+                    "projectNumber": PROJECT_NUMBER,
+                    "lifecycleState": STATUS,
+                }
+            ]
         }
         # Patch the connection with one we can easily control.
         client._connection = _Connection(PROJECTS_RESOURCE)
         # Make sure there will be no paging.
-        self.assertFalse('nextPageToken' in PROJECTS_RESOURCE)
+        self.assertFalse("nextPageToken" in PROJECTS_RESOURCE)
 
         results = list(client.list_projects())
 
@@ -130,34 +129,35 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
 
-        PROJECT_ID1 = 'project-id'
+        PROJECT_ID1 = "project-id"
         PROJECT_NUMBER1 = 1
-        STATUS = 'ACTIVE'
-        TOKEN = 'next-page-token'
+        STATUS = "ACTIVE"
+        TOKEN = "next-page-token"
         FIRST_PROJECTS_RESOURCE = {
-            'projects': [
+            "projects": [
                 {
-                    'projectId': PROJECT_ID1,
-                    'projectNumber': PROJECT_NUMBER1,
-                    'lifecycleState': STATUS,
-                },
+                    "projectId": PROJECT_ID1,
+                    "projectNumber": PROJECT_NUMBER1,
+                    "lifecycleState": STATUS,
+                }
             ],
-            'nextPageToken': TOKEN,
+            "nextPageToken": TOKEN,
         }
-        PROJECT_ID2 = 'project-id-2'
+        PROJECT_ID2 = "project-id-2"
         PROJECT_NUMBER2 = 42
         SECOND_PROJECTS_RESOURCE = {
-            'projects': [
+            "projects": [
                 {
-                    'projectId': PROJECT_ID2,
-                    'projectNumber': PROJECT_NUMBER2,
-                    'lifecycleState': STATUS,
-                },
-            ],
+                    "projectId": PROJECT_ID2,
+                    "projectNumber": PROJECT_NUMBER2,
+                    "lifecycleState": STATUS,
+                }
+            ]
         }
         # Patch the connection with one we can easily control.
-        client._connection = _Connection(FIRST_PROJECTS_RESOURCE,
-                                         SECOND_PROJECTS_RESOURCE)
+        client._connection = _Connection(
+            FIRST_PROJECTS_RESOURCE, SECOND_PROJECTS_RESOURCE
+        )
 
         # Page size = 1 with two response means we'll have two requests.
         results = list(client.list_projects(page_size=1))
@@ -173,42 +173,39 @@ class TestClient(unittest.TestCase):
 
         # Check that two requests were required since page_size=1.
         request1, request2 = client._connection._requested
-        self.assertEqual(request1, {
-            'path': '/projects',
-            'method': 'GET',
-            'query_params': {
-                'pageSize': 1,
+        self.assertEqual(
+            request1,
+            {"path": "/projects", "method": "GET", "query_params": {"pageSize": 1}},
+        )
+        self.assertEqual(
+            request2,
+            {
+                "path": "/projects",
+                "method": "GET",
+                "query_params": {"pageSize": 1, "pageToken": TOKEN},
             },
-        })
-        self.assertEqual(request2, {
-            'path': '/projects',
-            'method': 'GET',
-            'query_params': {
-                'pageSize': 1,
-                'pageToken': TOKEN,
-            },
-        })
+        )
 
     def test_list_projects_with_filter(self):
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
 
-        PROJECT_ID = 'project-id'
+        PROJECT_ID = "project-id"
         PROJECT_NUMBER = 1
-        STATUS = 'ACTIVE'
+        STATUS = "ACTIVE"
         PROJECTS_RESOURCE = {
-            'projects': [
+            "projects": [
                 {
-                    'projectId': PROJECT_ID,
-                    'projectNumber': PROJECT_NUMBER,
-                    'lifecycleState': STATUS,
-                },
-            ],
+                    "projectId": PROJECT_ID,
+                    "projectNumber": PROJECT_NUMBER,
+                    "lifecycleState": STATUS,
+                }
+            ]
         }
         # Patch the connection with one we can easily control.
         client._connection = _Connection(PROJECTS_RESOURCE)
 
-        FILTER_PARAMS = {'id': 'project-id'}
+        FILTER_PARAMS = {"id": "project-id"}
         results = list(client.list_projects(filter_params=FILTER_PARAMS))
 
         project, = results
@@ -217,15 +214,16 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project.status, STATUS)
 
         # Check that the filter made it in the request.
-        FLATTENED_FILTER_PARAMS = ['id:project-id']
+        FLATTENED_FILTER_PARAMS = ["id:project-id"]
         request, = client._connection._requested
-        self.assertEqual(request, {
-            'path': '/projects',
-            'method': 'GET',
-            'query_params': {
-                'filter': FLATTENED_FILTER_PARAMS,
+        self.assertEqual(
+            request,
+            {
+                "path": "/projects",
+                "method": "GET",
+                "query_params": {"filter": FLATTENED_FILTER_PARAMS},
             },
-        })
+        )
 
     def test_page_empty_response(self):
         from google.api_core import page_iterator
@@ -243,19 +241,19 @@ class TestClient(unittest.TestCase):
         import six
         from google.cloud.resource_manager.project import Project
 
-        project_id = 'project-id'
-        project_name = 'My Project Name'
+        project_id = "project-id"
+        project_name = "My Project Name"
         project_number = 12345678
-        project_labels = {'env': 'prod'}
-        project_lifecycle_state = 'ACTIVE'
+        project_labels = {"env": "prod"}
+        project_lifecycle_state = "ACTIVE"
         api_resource = {
-            'projectId': project_id,
-            'name': project_name,
-            'projectNumber': project_number,
-            'labels': project_labels,
-            'lifecycleState': project_lifecycle_state,
+            "projectId": project_id,
+            "name": project_name,
+            "projectNumber": project_number,
+            "labels": project_labels,
+            "lifecycleState": project_lifecycle_state,
         }
-        response = {'projects': [api_resource]}
+        response = {"projects": [api_resource]}
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
 
@@ -279,7 +277,6 @@ class TestClient(unittest.TestCase):
 
 
 class _Connection(object):
-
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
