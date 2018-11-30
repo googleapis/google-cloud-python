@@ -27,19 +27,19 @@ class UptimeCheckServiceGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
-
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/monitoring",
-        "https://www.googleapis.com/auth/monitoring.read",
-        "https://www.googleapis.com/auth/monitoring.write",
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/monitoring',
+        'https://www.googleapis.com/auth/monitoring.read',
+        'https://www.googleapis.com/auth/monitoring.write',
     )
 
-    def __init__(
-        self, channel=None, credentials=None, address="monitoring.googleapis.com:443"
-    ):
+    def __init__(self,
+                 channel=None,
+                 credentials=None,
+                 address='monitoring.googleapis.com:443'):
         """Instantiate the transport class.
 
         Args:
@@ -57,25 +57,29 @@ class UptimeCheckServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
-            )
+                'The `channel` and `credentials` arguments are mutually '
+                'exclusive.', )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+            )
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "uptime_check_service_stub": uptime_service_pb2_grpc.UptimeCheckServiceStub(
-                channel
-            )
+            'uptime_check_service_stub':
+            uptime_service_pb2_grpc.UptimeCheckServiceStub(channel),
         }
 
     @classmethod
-    def create_channel(cls, address="monitoring.googleapis.com:443", credentials=None):
+    def create_channel(cls,
+                       address='monitoring.googleapis.com:443',
+                       credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -94,8 +98,8 @@ class UptimeCheckServiceGrpcTransport(object):
             credentials=credentials,
             scopes=cls._OAUTH_SCOPES,
             options={
-                "grpc.max_send_message_length": -1,
-                "grpc.max_receive_message_length": -1,
+                'grpc.max_send_message_length': -1,
+                'grpc.max_receive_message_length': -1,
             }.items(),
         )
 
@@ -120,7 +124,7 @@ class UptimeCheckServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["uptime_check_service_stub"].ListUptimeCheckConfigs
+        return self._stubs['uptime_check_service_stub'].ListUptimeCheckConfigs
 
     @property
     def get_uptime_check_config(self):
@@ -133,7 +137,7 @@ class UptimeCheckServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["uptime_check_service_stub"].GetUptimeCheckConfig
+        return self._stubs['uptime_check_service_stub'].GetUptimeCheckConfig
 
     @property
     def create_uptime_check_config(self):
@@ -146,7 +150,7 @@ class UptimeCheckServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["uptime_check_service_stub"].CreateUptimeCheckConfig
+        return self._stubs['uptime_check_service_stub'].CreateUptimeCheckConfig
 
     @property
     def update_uptime_check_config(self):
@@ -162,7 +166,7 @@ class UptimeCheckServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["uptime_check_service_stub"].UpdateUptimeCheckConfig
+        return self._stubs['uptime_check_service_stub'].UpdateUptimeCheckConfig
 
     @property
     def delete_uptime_check_config(self):
@@ -177,7 +181,7 @@ class UptimeCheckServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["uptime_check_service_stub"].DeleteUptimeCheckConfig
+        return self._stubs['uptime_check_service_stub'].DeleteUptimeCheckConfig
 
     @property
     def list_uptime_check_ips(self):
@@ -190,4 +194,4 @@ class UptimeCheckServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["uptime_check_service_stub"].ListUptimeCheckIps
+        return self._stubs['uptime_check_service_stub'].ListUptimeCheckIps
