@@ -24,25 +24,25 @@ from google.cloud.errorreporting_v1beta1.proto import report_errors_service_pb2
 
 class TestSystemReportErrorsService(object):
     def test_report_error_event(self):
-        project_id = os.environ["PROJECT_ID"]
+        project_id = os.environ['PROJECT_ID']
 
         client = errorreporting_v1beta1.ReportErrorsServiceClient()
         project_name = client.project_path(project_id)
-        message = "[MESSAGE]"
-        service = "[SERVICE]"
-        service_context = {"service": service}
-        file_path = "path/to/file.lang"
+        message = '[MESSAGE]'
+        service = '[SERVICE]'
+        service_context = {'service': service}
+        file_path = 'path/to/file.lang'
         line_number = 42
-        function_name = "meaningOfLife"
+        function_name = 'meaningOfLife'
         report_location = {
-            "file_path": file_path,
-            "line_number": line_number,
-            "function_name": function_name,
+            'file_path': file_path,
+            'line_number': line_number,
+            'function_name': function_name
         }
-        context = {"report_location": report_location}
+        context = {'report_location': report_location}
         event = {
-            "message": message,
-            "service_context": service_context,
-            "context": context,
+            'message': message,
+            'service_context': service_context,
+            'context': context
         }
         response = client.report_error_event(project_name, event)
