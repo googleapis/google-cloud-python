@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud 92a907a documentation</title>
+    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud 4fe89c9 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -81,6 +81,7 @@
 <span class="n">_BAD_OP_STRING</span> <span class="o">=</span> <span class="s1">&#39;Operator string </span><span class="si">{!r}</span><span class="s1"> is invalid. Valid choices are: </span><span class="si">{}</span><span class="s1">.&#39;</span>
 <span class="n">_BAD_OP_NAN_NULL</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s1">&#39;Only an equality filter (&quot;==&quot;) can be used with None or NaN values&#39;</span><span class="p">)</span>
+<span class="n">_INVALID_WHERE_TRANSFORM</span> <span class="o">=</span> <span class="s1">&#39;Transforms cannot be used as where values.&#39;</span>
 <span class="n">_BAD_DIR_STRING</span> <span class="o">=</span> <span class="s1">&#39;Invalid direction </span><span class="si">{!r}</span><span class="s1">. Must be one of </span><span class="si">{!r}</span><span class="s1"> or </span><span class="si">{!r}</span><span class="s1">.&#39;</span>
 <span class="n">_INVALID_CURSOR_TRANSFORM</span> <span class="o">=</span> <span class="s1">&#39;Transforms cannot be used as cursor values.&#39;</span>
 <span class="n">_MISSING_ORDER_BY</span> <span class="o">=</span> <span class="p">(</span>
@@ -269,6 +270,8 @@
                 <span class="p">),</span>
                 <span class="n">op</span><span class="o">=</span><span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">UnaryFilter</span><span class="o">.</span><span class="n">Operator</span><span class="o">.</span><span class="n">IS_NAN</span><span class="p">,</span>
             <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">transforms</span><span class="o">.</span><span class="n">Sentinel</span><span class="p">,</span> <span class="n">transforms</span><span class="o">.</span><span class="n">_ValueList</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_INVALID_WHERE_TRANSFORM</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">filter_pb</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldFilter</span><span class="p">(</span>
                 <span class="n">field</span><span class="o">=</span><span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldReference</span><span class="p">(</span>
@@ -583,6 +586,23 @@
                 <span class="n">composite_filter</span><span class="o">=</span><span class="n">composite_filter</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_normalize_projection</span><span class="p">(</span><span class="n">projection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper:  convert field paths to message.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">fields</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">fields</span><span class="p">:</span>
+                <span class="n">field_ref</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldReference</span><span class="p">(</span>
+                    <span class="n">field_path</span><span class="o">=</span><span class="s1">&#39;__name__&#39;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span>
+                    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="n">field_ref</span><span class="p">],</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">projection</span>
+
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_normalize_cursor</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">orders</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper: convert cursor to a list of values based on orders.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">cursor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -627,11 +647,12 @@
 <span class="sd">            google.cloud.firestore_v1beta1.types.StructuredQuery: The</span>
 <span class="sd">            query protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">projection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_projection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">)</span>
         <span class="n">start_at</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_cursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">)</span>
         <span class="n">end_at</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_cursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">)</span>
 
         <span class="n">query_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;select&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">,</span>
+            <span class="s1">&#39;select&#39;</span><span class="p">:</span> <span class="n">projection</span><span class="p">,</span>
             <span class="s1">&#39;from&#39;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">CollectionSelector</span><span class="p">(</span>
                     <span class="n">collection_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
