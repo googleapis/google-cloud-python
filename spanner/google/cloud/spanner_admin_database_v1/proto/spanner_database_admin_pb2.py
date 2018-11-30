@@ -2,12 +2,14 @@
 # source: google/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -16,481 +18,691 @@ _sym_db = _symbol_database.Default()
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
-from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
+from google.longrunning import (
+    operations_pb2 as google_dot_longrunning_dot_operations__pb2,
+)
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto',
-  package='google.spanner.admin.database.v1',
-  syntax='proto3',
-  serialized_pb=_b('\nIgoogle/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto\x12 google.spanner.admin.database.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x92\x01\n\x08\x44\x61tabase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12?\n\x05state\x18\x02 \x01(\x0e\x32\x30.google.spanner.admin.database.v1.Database.State\"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\"M\n\x14ListDatabasesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"o\n\x15ListDatabasesResponse\x12=\n\tdatabases\x18\x01 \x03(\x0b\x32*.google.spanner.admin.database.v1.Database\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"[\n\x15\x43reateDatabaseRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x18\n\x10\x63reate_statement\x18\x02 \x01(\t\x12\x18\n\x10\x65xtra_statements\x18\x03 \x03(\t\"*\n\x16\x43reateDatabaseMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\"\"\n\x12GetDatabaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"V\n\x18UpdateDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x14\n\x0coperation_id\x18\x03 \x01(\t\"x\n\x19UpdateDatabaseDdlMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x35\n\x11\x63ommit_timestamps\x18\x03 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\"\'\n\x13\x44ropDatabaseRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\")\n\x15GetDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\",\n\x16GetDatabaseDdlResponse\x12\x12\n\nstatements\x18\x01 \x03(\t2\x95\x0c\n\rDatabaseAdmin\x12\xb7\x01\n\rListDatabases\x12\x36.google.spanner.admin.database.v1.ListDatabasesRequest\x1a\x37.google.spanner.admin.database.v1.ListDatabasesResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{parent=projects/*/instances/*}/databases\x12\xa2\x01\n\x0e\x43reateDatabase\x12\x37.google.spanner.admin.database.v1.CreateDatabaseRequest\x1a\x1d.google.longrunning.Operation\"8\x82\xd3\xe4\x93\x02\x32\"-/v1/{parent=projects/*/instances/*}/databases:\x01*\x12\xa6\x01\n\x0bGetDatabase\x12\x34.google.spanner.admin.database.v1.GetDatabaseRequest\x1a*.google.spanner.admin.database.v1.Database\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{name=projects/*/instances/*/databases/*}\x12\xb0\x01\n\x11UpdateDatabaseDdl\x12:.google.spanner.admin.database.v1.UpdateDatabaseDdlRequest\x1a\x1d.google.longrunning.Operation\"@\x82\xd3\xe4\x93\x02:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\x01*\x12\x98\x01\n\x0c\x44ropDatabase\x12\x35.google.spanner.admin.database.v1.DropDatabaseRequest\x1a\x16.google.protobuf.Empty\"9\x82\xd3\xe4\x93\x02\x33*1/v1/{database=projects/*/instances/*/databases/*}\x12\xc2\x01\n\x0eGetDatabaseDdl\x12\x37.google.spanner.admin.database.v1.GetDatabaseDdlRequest\x1a\x38.google.spanner.admin.database.v1.GetDatabaseDdlResponse\"=\x82\xd3\xe4\x93\x02\x37\x12\x35/v1/{database=projects/*/instances/*/databases/*}/ddl\x12\x94\x01\n\x0cSetIamPolicy\x12\".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"I\x82\xd3\xe4\x93\x02\x43\">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\x01*\x12\x94\x01\n\x0cGetIamPolicy\x12\".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"I\x82\xd3\xe4\x93\x02\x43\">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\x01*\x12\xba\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse\"O\x82\xd3\xe4\x93\x02I\"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\x01*B\xdf\x01\n$com.google.spanner.admin.database.v1B\x19SpannerDatabaseAdminProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\xaa\x02&Google.Cloud.Spanner.Admin.Database.V1\xca\x02&Google\\Cloud\\Spanner\\Admin\\Database\\V1b\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
-
+    name="google/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto",
+    package="google.spanner.admin.database.v1",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\nIgoogle/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto\x12 google.spanner.admin.database.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x92\x01\n\x08\x44\x61tabase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12?\n\x05state\x18\x02 \x01(\x0e\x32\x30.google.spanner.admin.database.v1.Database.State"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02"M\n\x14ListDatabasesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"o\n\x15ListDatabasesResponse\x12=\n\tdatabases\x18\x01 \x03(\x0b\x32*.google.spanner.admin.database.v1.Database\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"[\n\x15\x43reateDatabaseRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x18\n\x10\x63reate_statement\x18\x02 \x01(\t\x12\x18\n\x10\x65xtra_statements\x18\x03 \x03(\t"*\n\x16\x43reateDatabaseMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t""\n\x12GetDatabaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"V\n\x18UpdateDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x14\n\x0coperation_id\x18\x03 \x01(\t"x\n\x19UpdateDatabaseDdlMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x35\n\x11\x63ommit_timestamps\x18\x03 \x03(\x0b\x32\x1a.google.protobuf.Timestamp"\'\n\x13\x44ropDatabaseRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t")\n\x15GetDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t",\n\x16GetDatabaseDdlResponse\x12\x12\n\nstatements\x18\x01 \x03(\t2\x95\x0c\n\rDatabaseAdmin\x12\xb7\x01\n\rListDatabases\x12\x36.google.spanner.admin.database.v1.ListDatabasesRequest\x1a\x37.google.spanner.admin.database.v1.ListDatabasesResponse"5\x82\xd3\xe4\x93\x02/\x12-/v1/{parent=projects/*/instances/*}/databases\x12\xa2\x01\n\x0e\x43reateDatabase\x12\x37.google.spanner.admin.database.v1.CreateDatabaseRequest\x1a\x1d.google.longrunning.Operation"8\x82\xd3\xe4\x93\x02\x32"-/v1/{parent=projects/*/instances/*}/databases:\x01*\x12\xa6\x01\n\x0bGetDatabase\x12\x34.google.spanner.admin.database.v1.GetDatabaseRequest\x1a*.google.spanner.admin.database.v1.Database"5\x82\xd3\xe4\x93\x02/\x12-/v1/{name=projects/*/instances/*/databases/*}\x12\xb0\x01\n\x11UpdateDatabaseDdl\x12:.google.spanner.admin.database.v1.UpdateDatabaseDdlRequest\x1a\x1d.google.longrunning.Operation"@\x82\xd3\xe4\x93\x02:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\x01*\x12\x98\x01\n\x0c\x44ropDatabase\x12\x35.google.spanner.admin.database.v1.DropDatabaseRequest\x1a\x16.google.protobuf.Empty"9\x82\xd3\xe4\x93\x02\x33*1/v1/{database=projects/*/instances/*/databases/*}\x12\xc2\x01\n\x0eGetDatabaseDdl\x12\x37.google.spanner.admin.database.v1.GetDatabaseDdlRequest\x1a\x38.google.spanner.admin.database.v1.GetDatabaseDdlResponse"=\x82\xd3\xe4\x93\x02\x37\x12\x35/v1/{database=projects/*/instances/*/databases/*}/ddl\x12\x94\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"I\x82\xd3\xe4\x93\x02\x43">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\x01*\x12\x94\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"I\x82\xd3\xe4\x93\x02\x43">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\x01*\x12\xba\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"O\x82\xd3\xe4\x93\x02I"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\x01*B\xdf\x01\n$com.google.spanner.admin.database.v1B\x19SpannerDatabaseAdminProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\xaa\x02&Google.Cloud.Spanner.Admin.Database.V1\xca\x02&Google\\Cloud\\Spanner\\Admin\\Database\\V1b\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,
+        google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
+        google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _DATABASE_STATE = _descriptor.EnumDescriptor(
-  name='State',
-  full_name='google.spanner.admin.database.v1.Database.State',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='STATE_UNSPECIFIED', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CREATING', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='READY', index=2, number=2,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=392,
-  serialized_end=447,
+    name="State",
+    full_name="google.spanner.admin.database.v1.Database.State",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CREATING", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="READY", index=2, number=2, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=392,
+    serialized_end=447,
 )
 _sym_db.RegisterEnumDescriptor(_DATABASE_STATE)
 
 
 _DATABASE = _descriptor.Descriptor(
-  name='Database',
-  full_name='google.spanner.admin.database.v1.Database',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.spanner.admin.database.v1.Database.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='state', full_name='google.spanner.admin.database.v1.Database.state', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _DATABASE_STATE,
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=301,
-  serialized_end=447,
+    name="Database",
+    full_name="google.spanner.admin.database.v1.Database",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.spanner.admin.database.v1.Database.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="state",
+            full_name="google.spanner.admin.database.v1.Database.state",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_DATABASE_STATE],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=301,
+    serialized_end=447,
 )
 
 
 _LISTDATABASESREQUEST = _descriptor.Descriptor(
-  name='ListDatabasesRequest',
-  full_name='google.spanner.admin.database.v1.ListDatabasesRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.spanner.admin.database.v1.ListDatabasesRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.spanner.admin.database.v1.ListDatabasesRequest.page_size', index=1,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.spanner.admin.database.v1.ListDatabasesRequest.page_token', index=2,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=449,
-  serialized_end=526,
+    name="ListDatabasesRequest",
+    full_name="google.spanner.admin.database.v1.ListDatabasesRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.spanner.admin.database.v1.ListDatabasesRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.spanner.admin.database.v1.ListDatabasesRequest.page_size",
+            index=1,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.spanner.admin.database.v1.ListDatabasesRequest.page_token",
+            index=2,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=449,
+    serialized_end=526,
 )
 
 
 _LISTDATABASESRESPONSE = _descriptor.Descriptor(
-  name='ListDatabasesResponse',
-  full_name='google.spanner.admin.database.v1.ListDatabasesResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='databases', full_name='google.spanner.admin.database.v1.ListDatabasesResponse.databases', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.spanner.admin.database.v1.ListDatabasesResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=528,
-  serialized_end=639,
+    name="ListDatabasesResponse",
+    full_name="google.spanner.admin.database.v1.ListDatabasesResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="databases",
+            full_name="google.spanner.admin.database.v1.ListDatabasesResponse.databases",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.spanner.admin.database.v1.ListDatabasesResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=528,
+    serialized_end=639,
 )
 
 
 _CREATEDATABASEREQUEST = _descriptor.Descriptor(
-  name='CreateDatabaseRequest',
-  full_name='google.spanner.admin.database.v1.CreateDatabaseRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.spanner.admin.database.v1.CreateDatabaseRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='create_statement', full_name='google.spanner.admin.database.v1.CreateDatabaseRequest.create_statement', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='extra_statements', full_name='google.spanner.admin.database.v1.CreateDatabaseRequest.extra_statements', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=641,
-  serialized_end=732,
+    name="CreateDatabaseRequest",
+    full_name="google.spanner.admin.database.v1.CreateDatabaseRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.spanner.admin.database.v1.CreateDatabaseRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="create_statement",
+            full_name="google.spanner.admin.database.v1.CreateDatabaseRequest.create_statement",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="extra_statements",
+            full_name="google.spanner.admin.database.v1.CreateDatabaseRequest.extra_statements",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=641,
+    serialized_end=732,
 )
 
 
 _CREATEDATABASEMETADATA = _descriptor.Descriptor(
-  name='CreateDatabaseMetadata',
-  full_name='google.spanner.admin.database.v1.CreateDatabaseMetadata',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='database', full_name='google.spanner.admin.database.v1.CreateDatabaseMetadata.database', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=734,
-  serialized_end=776,
+    name="CreateDatabaseMetadata",
+    full_name="google.spanner.admin.database.v1.CreateDatabaseMetadata",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="database",
+            full_name="google.spanner.admin.database.v1.CreateDatabaseMetadata.database",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=734,
+    serialized_end=776,
 )
 
 
 _GETDATABASEREQUEST = _descriptor.Descriptor(
-  name='GetDatabaseRequest',
-  full_name='google.spanner.admin.database.v1.GetDatabaseRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.spanner.admin.database.v1.GetDatabaseRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=778,
-  serialized_end=812,
+    name="GetDatabaseRequest",
+    full_name="google.spanner.admin.database.v1.GetDatabaseRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.spanner.admin.database.v1.GetDatabaseRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=778,
+    serialized_end=812,
 )
 
 
 _UPDATEDATABASEDDLREQUEST = _descriptor.Descriptor(
-  name='UpdateDatabaseDdlRequest',
-  full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='database', full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.database', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='statements', full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.statements', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='operation_id', full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.operation_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=814,
-  serialized_end=900,
+    name="UpdateDatabaseDdlRequest",
+    full_name="google.spanner.admin.database.v1.UpdateDatabaseDdlRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="database",
+            full_name="google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.database",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="statements",
+            full_name="google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.statements",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="operation_id",
+            full_name="google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.operation_id",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=814,
+    serialized_end=900,
 )
 
 
 _UPDATEDATABASEDDLMETADATA = _descriptor.Descriptor(
-  name='UpdateDatabaseDdlMetadata',
-  full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='database', full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata.database', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='statements', full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata.statements', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='commit_timestamps', full_name='google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata.commit_timestamps', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=902,
-  serialized_end=1022,
+    name="UpdateDatabaseDdlMetadata",
+    full_name="google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="database",
+            full_name="google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata.database",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="statements",
+            full_name="google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata.statements",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="commit_timestamps",
+            full_name="google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata.commit_timestamps",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=902,
+    serialized_end=1022,
 )
 
 
 _DROPDATABASEREQUEST = _descriptor.Descriptor(
-  name='DropDatabaseRequest',
-  full_name='google.spanner.admin.database.v1.DropDatabaseRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='database', full_name='google.spanner.admin.database.v1.DropDatabaseRequest.database', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1024,
-  serialized_end=1063,
+    name="DropDatabaseRequest",
+    full_name="google.spanner.admin.database.v1.DropDatabaseRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="database",
+            full_name="google.spanner.admin.database.v1.DropDatabaseRequest.database",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1024,
+    serialized_end=1063,
 )
 
 
 _GETDATABASEDDLREQUEST = _descriptor.Descriptor(
-  name='GetDatabaseDdlRequest',
-  full_name='google.spanner.admin.database.v1.GetDatabaseDdlRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='database', full_name='google.spanner.admin.database.v1.GetDatabaseDdlRequest.database', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1065,
-  serialized_end=1106,
+    name="GetDatabaseDdlRequest",
+    full_name="google.spanner.admin.database.v1.GetDatabaseDdlRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="database",
+            full_name="google.spanner.admin.database.v1.GetDatabaseDdlRequest.database",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1065,
+    serialized_end=1106,
 )
 
 
 _GETDATABASEDDLRESPONSE = _descriptor.Descriptor(
-  name='GetDatabaseDdlResponse',
-  full_name='google.spanner.admin.database.v1.GetDatabaseDdlResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='statements', full_name='google.spanner.admin.database.v1.GetDatabaseDdlResponse.statements', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1108,
-  serialized_end=1152,
+    name="GetDatabaseDdlResponse",
+    full_name="google.spanner.admin.database.v1.GetDatabaseDdlResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="statements",
+            full_name="google.spanner.admin.database.v1.GetDatabaseDdlResponse.statements",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1108,
+    serialized_end=1152,
 )
 
-_DATABASE.fields_by_name['state'].enum_type = _DATABASE_STATE
+_DATABASE.fields_by_name["state"].enum_type = _DATABASE_STATE
 _DATABASE_STATE.containing_type = _DATABASE
-_LISTDATABASESRESPONSE.fields_by_name['databases'].message_type = _DATABASE
-_UPDATEDATABASEDDLMETADATA.fields_by_name['commit_timestamps'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-DESCRIPTOR.message_types_by_name['Database'] = _DATABASE
-DESCRIPTOR.message_types_by_name['ListDatabasesRequest'] = _LISTDATABASESREQUEST
-DESCRIPTOR.message_types_by_name['ListDatabasesResponse'] = _LISTDATABASESRESPONSE
-DESCRIPTOR.message_types_by_name['CreateDatabaseRequest'] = _CREATEDATABASEREQUEST
-DESCRIPTOR.message_types_by_name['CreateDatabaseMetadata'] = _CREATEDATABASEMETADATA
-DESCRIPTOR.message_types_by_name['GetDatabaseRequest'] = _GETDATABASEREQUEST
-DESCRIPTOR.message_types_by_name['UpdateDatabaseDdlRequest'] = _UPDATEDATABASEDDLREQUEST
-DESCRIPTOR.message_types_by_name['UpdateDatabaseDdlMetadata'] = _UPDATEDATABASEDDLMETADATA
-DESCRIPTOR.message_types_by_name['DropDatabaseRequest'] = _DROPDATABASEREQUEST
-DESCRIPTOR.message_types_by_name['GetDatabaseDdlRequest'] = _GETDATABASEDDLREQUEST
-DESCRIPTOR.message_types_by_name['GetDatabaseDdlResponse'] = _GETDATABASEDDLRESPONSE
+_LISTDATABASESRESPONSE.fields_by_name["databases"].message_type = _DATABASE
+_UPDATEDATABASEDDLMETADATA.fields_by_name[
+    "commit_timestamps"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+DESCRIPTOR.message_types_by_name["Database"] = _DATABASE
+DESCRIPTOR.message_types_by_name["ListDatabasesRequest"] = _LISTDATABASESREQUEST
+DESCRIPTOR.message_types_by_name["ListDatabasesResponse"] = _LISTDATABASESRESPONSE
+DESCRIPTOR.message_types_by_name["CreateDatabaseRequest"] = _CREATEDATABASEREQUEST
+DESCRIPTOR.message_types_by_name["CreateDatabaseMetadata"] = _CREATEDATABASEMETADATA
+DESCRIPTOR.message_types_by_name["GetDatabaseRequest"] = _GETDATABASEREQUEST
+DESCRIPTOR.message_types_by_name["UpdateDatabaseDdlRequest"] = _UPDATEDATABASEDDLREQUEST
+DESCRIPTOR.message_types_by_name[
+    "UpdateDatabaseDdlMetadata"
+] = _UPDATEDATABASEDDLMETADATA
+DESCRIPTOR.message_types_by_name["DropDatabaseRequest"] = _DROPDATABASEREQUEST
+DESCRIPTOR.message_types_by_name["GetDatabaseDdlRequest"] = _GETDATABASEDDLREQUEST
+DESCRIPTOR.message_types_by_name["GetDatabaseDdlResponse"] = _GETDATABASEDDLRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Database = _reflection.GeneratedProtocolMessageType('Database', (_message.Message,), dict(
-  DESCRIPTOR = _DATABASE,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """A Cloud Spanner database.
+Database = _reflection.GeneratedProtocolMessageType(
+    "Database",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DATABASE,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""A Cloud Spanner database.
   
   
   Attributes:
@@ -503,15 +715,18 @@ Database = _reflection.GeneratedProtocolMessageType('Database', (_message.Messag
       state:
           Output only. The current database state.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.Database)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.Database)
+    ),
+)
 _sym_db.RegisterMessage(Database)
 
-ListDatabasesRequest = _reflection.GeneratedProtocolMessageType('ListDatabasesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTDATABASESREQUEST,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """The request for
+ListDatabasesRequest = _reflection.GeneratedProtocolMessageType(
+    "ListDatabasesRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTDATABASESREQUEST,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""The request for
   [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
   
   
@@ -529,15 +744,18 @@ ListDatabasesRequest = _reflection.GeneratedProtocolMessageType('ListDatabasesRe
           t\_page\_token] from a previous [ListDatabasesResponse][google
           .spanner.admin.database.v1.ListDatabasesResponse].
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.ListDatabasesRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.ListDatabasesRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListDatabasesRequest)
 
-ListDatabasesResponse = _reflection.GeneratedProtocolMessageType('ListDatabasesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTDATABASESRESPONSE,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """The response for
+ListDatabasesResponse = _reflection.GeneratedProtocolMessageType(
+    "ListDatabasesResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTDATABASESRESPONSE,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""The response for
   [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
   
   
@@ -549,15 +767,18 @@ ListDatabasesResponse = _reflection.GeneratedProtocolMessageType('ListDatabasesR
           ][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases
           ] call to fetch more of the matching databases.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.ListDatabasesResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.ListDatabasesResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListDatabasesResponse)
 
-CreateDatabaseRequest = _reflection.GeneratedProtocolMessageType('CreateDatabaseRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEDATABASEREQUEST,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """The request for
+CreateDatabaseRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateDatabaseRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEDATABASEREQUEST,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""The request for
   [CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].
   
   
@@ -580,15 +801,18 @@ CreateDatabaseRequest = _reflection.GeneratedProtocolMessageType('CreateDatabase
           database: if there is an error in any statement, the database
           is not created.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.CreateDatabaseRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.CreateDatabaseRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateDatabaseRequest)
 
-CreateDatabaseMetadata = _reflection.GeneratedProtocolMessageType('CreateDatabaseMetadata', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEDATABASEMETADATA,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """Metadata type for the operation returned by
+CreateDatabaseMetadata = _reflection.GeneratedProtocolMessageType(
+    "CreateDatabaseMetadata",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEDATABASEMETADATA,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""Metadata type for the operation returned by
   [CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].
   
   
@@ -596,15 +820,18 @@ CreateDatabaseMetadata = _reflection.GeneratedProtocolMessageType('CreateDatabas
       database:
           The database being created.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.CreateDatabaseMetadata)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.CreateDatabaseMetadata)
+    ),
+)
 _sym_db.RegisterMessage(CreateDatabaseMetadata)
 
-GetDatabaseRequest = _reflection.GeneratedProtocolMessageType('GetDatabaseRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETDATABASEREQUEST,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """The request for
+GetDatabaseRequest = _reflection.GeneratedProtocolMessageType(
+    "GetDatabaseRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETDATABASEREQUEST,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""The request for
   [GetDatabase][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase].
   
   
@@ -614,15 +841,18 @@ GetDatabaseRequest = _reflection.GeneratedProtocolMessageType('GetDatabaseReques
           the form ``projects/<project>/instances/<instance>/databases/<
           database>``.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.GetDatabaseRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.GetDatabaseRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetDatabaseRequest)
 
-UpdateDatabaseDdlRequest = _reflection.GeneratedProtocolMessageType('UpdateDatabaseDdlRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATEDATABASEDDLREQUEST,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """Enqueues the given DDL statements to be applied, in order but not
+UpdateDatabaseDdlRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateDatabaseDdlRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEDATABASEDDLREQUEST,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""Enqueues the given DDL statements to be applied, in order but not
   necessarily all at once, to the database schema at some point (or
   points) in the future. The server checks that the statements are
   executable (syntactically valid, name tables that exist, etc.) before
@@ -667,15 +897,18 @@ UpdateDatabaseDdlRequest = _reflection.GeneratedProtocolMessageType('UpdateDatab
           .spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl]
           returns ``ALREADY_EXISTS``.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.UpdateDatabaseDdlRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.UpdateDatabaseDdlRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateDatabaseDdlRequest)
 
-UpdateDatabaseDdlMetadata = _reflection.GeneratedProtocolMessageType('UpdateDatabaseDdlMetadata', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATEDATABASEDDLMETADATA,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """Metadata type for the operation returned by
+UpdateDatabaseDdlMetadata = _reflection.GeneratedProtocolMessageType(
+    "UpdateDatabaseDdlMetadata",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEDATABASEDDLMETADATA,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""Metadata type for the operation returned by
   [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl].
   
   
@@ -690,15 +923,18 @@ UpdateDatabaseDdlMetadata = _reflection.GeneratedProtocolMessageType('UpdateData
           succeeded so far, where ``commit_timestamps[i]`` is the commit
           timestamp for the statement ``statements[i]``.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata)
+    ),
+)
 _sym_db.RegisterMessage(UpdateDatabaseDdlMetadata)
 
-DropDatabaseRequest = _reflection.GeneratedProtocolMessageType('DropDatabaseRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DROPDATABASEREQUEST,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """The request for
+DropDatabaseRequest = _reflection.GeneratedProtocolMessageType(
+    "DropDatabaseRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DROPDATABASEREQUEST,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""The request for
   [DropDatabase][google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase].
   
   
@@ -706,15 +942,18 @@ DropDatabaseRequest = _reflection.GeneratedProtocolMessageType('DropDatabaseRequ
       database:
           Required. The database to be dropped.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.DropDatabaseRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.DropDatabaseRequest)
+    ),
+)
 _sym_db.RegisterMessage(DropDatabaseRequest)
 
-GetDatabaseDdlRequest = _reflection.GeneratedProtocolMessageType('GetDatabaseDdlRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETDATABASEDDLREQUEST,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """The request for
+GetDatabaseDdlRequest = _reflection.GeneratedProtocolMessageType(
+    "GetDatabaseDdlRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETDATABASEDDLREQUEST,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""The request for
   [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
   
   
@@ -722,15 +961,18 @@ GetDatabaseDdlRequest = _reflection.GeneratedProtocolMessageType('GetDatabaseDdl
       database:
           Required. The database whose schema we wish to get.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.GetDatabaseDdlRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.GetDatabaseDdlRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetDatabaseDdlRequest)
 
-GetDatabaseDdlResponse = _reflection.GeneratedProtocolMessageType('GetDatabaseDdlResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETDATABASEDDLRESPONSE,
-  __module__ = 'google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2'
-  ,
-  __doc__ = """The response for
+GetDatabaseDdlResponse = _reflection.GeneratedProtocolMessageType(
+    "GetDatabaseDdlResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETDATABASEDDLRESPONSE,
+        __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
+        __doc__="""The response for
   [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
   
   
@@ -739,107 +981,159 @@ GetDatabaseDdlResponse = _reflection.GeneratedProtocolMessageType('GetDatabaseDd
           A list of formatted DDL statements defining the schema of the
           database specified in the request.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.GetDatabaseDdlResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.GetDatabaseDdlResponse)
+    ),
+)
 _sym_db.RegisterMessage(GetDatabaseDdlResponse)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n$com.google.spanner.admin.database.v1B\031SpannerDatabaseAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\252\002&Google.Cloud.Spanner.Admin.Database.V1\312\002&Google\\Cloud\\Spanner\\Admin\\Database\\V1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n$com.google.spanner.admin.database.v1B\031SpannerDatabaseAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\252\002&Google.Cloud.Spanner.Admin.Database.V1\312\002&Google\\Cloud\\Spanner\\Admin\\Database\\V1"
+    ),
+)
 
 _DATABASEADMIN = _descriptor.ServiceDescriptor(
-  name='DatabaseAdmin',
-  full_name='google.spanner.admin.database.v1.DatabaseAdmin',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=1155,
-  serialized_end=2712,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='ListDatabases',
-    full_name='google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases',
+    name="DatabaseAdmin",
+    full_name="google.spanner.admin.database.v1.DatabaseAdmin",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_LISTDATABASESREQUEST,
-    output_type=_LISTDATABASESRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/\022-/v1/{parent=projects/*/instances/*}/databases')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateDatabase',
-    full_name='google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase',
-    index=1,
-    containing_service=None,
-    input_type=_CREATEDATABASEREQUEST,
-    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0022\"-/v1/{parent=projects/*/instances/*}/databases:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetDatabase',
-    full_name='google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase',
-    index=2,
-    containing_service=None,
-    input_type=_GETDATABASEREQUEST,
-    output_type=_DATABASE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/\022-/v1/{name=projects/*/instances/*/databases/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateDatabaseDdl',
-    full_name='google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl',
-    index=3,
-    containing_service=None,
-    input_type=_UPDATEDATABASEDDLREQUEST,
-    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DropDatabase',
-    full_name='google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase',
-    index=4,
-    containing_service=None,
-    input_type=_DROPDATABASEREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0023*1/v1/{database=projects/*/instances/*/databases/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetDatabaseDdl',
-    full_name='google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl',
-    index=5,
-    containing_service=None,
-    input_type=_GETDATABASEDDLREQUEST,
-    output_type=_GETDATABASEDDLRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0027\0225/v1/{database=projects/*/instances/*/databases/*}/ddl')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='SetIamPolicy',
-    full_name='google.spanner.admin.database.v1.DatabaseAdmin.SetIamPolicy',
-    index=6,
-    containing_service=None,
-    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
-    output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002C\">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetIamPolicy',
-    full_name='google.spanner.admin.database.v1.DatabaseAdmin.GetIamPolicy',
-    index=7,
-    containing_service=None,
-    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
-    output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002C\">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='TestIamPermissions',
-    full_name='google.spanner.admin.database.v1.DatabaseAdmin.TestIamPermissions',
-    index=8,
-    containing_service=None,
-    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
-    output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002I\"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\001*')),
-  ),
-])
+    options=None,
+    serialized_start=1155,
+    serialized_end=2712,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="ListDatabases",
+            full_name="google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases",
+            index=0,
+            containing_service=None,
+            input_type=_LISTDATABASESREQUEST,
+            output_type=_LISTDATABASESRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002/\022-/v1/{parent=projects/*/instances/*}/databases"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateDatabase",
+            full_name="google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase",
+            index=1,
+            containing_service=None,
+            input_type=_CREATEDATABASEREQUEST,
+            output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\0022"-/v1/{parent=projects/*/instances/*}/databases:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetDatabase",
+            full_name="google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase",
+            index=2,
+            containing_service=None,
+            input_type=_GETDATABASEREQUEST,
+            output_type=_DATABASE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002/\022-/v1/{name=projects/*/instances/*/databases/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateDatabaseDdl",
+            full_name="google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl",
+            index=3,
+            containing_service=None,
+            input_type=_UPDATEDATABASEDDLREQUEST,
+            output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\001*"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DropDatabase",
+            full_name="google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase",
+            index=4,
+            containing_service=None,
+            input_type=_DROPDATABASEREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0023*1/v1/{database=projects/*/instances/*/databases/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetDatabaseDdl",
+            full_name="google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl",
+            index=5,
+            containing_service=None,
+            input_type=_GETDATABASEDDLREQUEST,
+            output_type=_GETDATABASEDDLRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0027\0225/v1/{database=projects/*/instances/*/databases/*}/ddl"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="SetIamPolicy",
+            full_name="google.spanner.admin.database.v1.DatabaseAdmin.SetIamPolicy",
+            index=6,
+            containing_service=None,
+            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
+            output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002C">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetIamPolicy",
+            full_name="google.spanner.admin.database.v1.DatabaseAdmin.GetIamPolicy",
+            index=7,
+            containing_service=None,
+            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
+            output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002C">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="TestIamPermissions",
+            full_name="google.spanner.admin.database.v1.DatabaseAdmin.TestIamPermissions",
+            index=8,
+            containing_service=None,
+            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
+            output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002I"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\001*'
+                ),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_DATABASEADMIN)
 
-DESCRIPTOR.services_by_name['DatabaseAdmin'] = _DATABASEADMIN
+DESCRIPTOR.services_by_name["DatabaseAdmin"] = _DATABASEADMIN
 
 # @@protoc_insertion_point(module_scope)

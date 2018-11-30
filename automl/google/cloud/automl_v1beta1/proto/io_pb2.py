@@ -2,12 +2,14 @@
 # source: google/cloud/automl_v1beta1/proto/io.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -17,164 +19,214 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/automl_v1beta1/proto/io.proto',
-  package='google.cloud.automl.v1beta1',
-  syntax='proto3',
-  serialized_pb=_b('\n*google/cloud/automl_v1beta1/proto/io.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\"U\n\x0bInputConfig\x12<\n\ngcs_source\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1beta1.GcsSourceH\x00\x42\x08\n\x06source\"e\n\x0cOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32+.google.cloud.automl.v1beta1.GcsDestinationH\x00\x42\r\n\x0b\x64\x65stination\"\x1f\n\tGcsSource\x12\x12\n\ninput_uris\x18\x01 \x03(\t\"+\n\x0eGcsDestination\x12\x19\n\x11output_uri_prefix\x18\x01 \x01(\tBf\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
-
-
+    name="google/cloud/automl_v1beta1/proto/io.proto",
+    package="google.cloud.automl.v1beta1",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n*google/cloud/automl_v1beta1/proto/io.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto"U\n\x0bInputConfig\x12<\n\ngcs_source\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1beta1.GcsSourceH\x00\x42\x08\n\x06source"e\n\x0cOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32+.google.cloud.automl.v1beta1.GcsDestinationH\x00\x42\r\n\x0b\x64\x65stination"\x1f\n\tGcsSource\x12\x12\n\ninput_uris\x18\x01 \x03(\t"+\n\x0eGcsDestination\x12\x19\n\x11output_uri_prefix\x18\x01 \x01(\tBf\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb\x06proto3'
+    ),
+    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+)
 
 
 _INPUTCONFIG = _descriptor.Descriptor(
-  name='InputConfig',
-  full_name='google.cloud.automl.v1beta1.InputConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='gcs_source', full_name='google.cloud.automl.v1beta1.InputConfig.gcs_source', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='source', full_name='google.cloud.automl.v1beta1.InputConfig.source',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=105,
-  serialized_end=190,
+    name="InputConfig",
+    full_name="google.cloud.automl.v1beta1.InputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="gcs_source",
+            full_name="google.cloud.automl.v1beta1.InputConfig.gcs_source",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="source",
+            full_name="google.cloud.automl.v1beta1.InputConfig.source",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=105,
+    serialized_end=190,
 )
 
 
 _OUTPUTCONFIG = _descriptor.Descriptor(
-  name='OutputConfig',
-  full_name='google.cloud.automl.v1beta1.OutputConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='gcs_destination', full_name='google.cloud.automl.v1beta1.OutputConfig.gcs_destination', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='destination', full_name='google.cloud.automl.v1beta1.OutputConfig.destination',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=192,
-  serialized_end=293,
+    name="OutputConfig",
+    full_name="google.cloud.automl.v1beta1.OutputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="gcs_destination",
+            full_name="google.cloud.automl.v1beta1.OutputConfig.gcs_destination",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="destination",
+            full_name="google.cloud.automl.v1beta1.OutputConfig.destination",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=192,
+    serialized_end=293,
 )
 
 
 _GCSSOURCE = _descriptor.Descriptor(
-  name='GcsSource',
-  full_name='google.cloud.automl.v1beta1.GcsSource',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='input_uris', full_name='google.cloud.automl.v1beta1.GcsSource.input_uris', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=295,
-  serialized_end=326,
+    name="GcsSource",
+    full_name="google.cloud.automl.v1beta1.GcsSource",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="input_uris",
+            full_name="google.cloud.automl.v1beta1.GcsSource.input_uris",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=295,
+    serialized_end=326,
 )
 
 
 _GCSDESTINATION = _descriptor.Descriptor(
-  name='GcsDestination',
-  full_name='google.cloud.automl.v1beta1.GcsDestination',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='output_uri_prefix', full_name='google.cloud.automl.v1beta1.GcsDestination.output_uri_prefix', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=328,
-  serialized_end=371,
+    name="GcsDestination",
+    full_name="google.cloud.automl.v1beta1.GcsDestination",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="output_uri_prefix",
+            full_name="google.cloud.automl.v1beta1.GcsDestination.output_uri_prefix",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=328,
+    serialized_end=371,
 )
 
-_INPUTCONFIG.fields_by_name['gcs_source'].message_type = _GCSSOURCE
-_INPUTCONFIG.oneofs_by_name['source'].fields.append(
-  _INPUTCONFIG.fields_by_name['gcs_source'])
-_INPUTCONFIG.fields_by_name['gcs_source'].containing_oneof = _INPUTCONFIG.oneofs_by_name['source']
-_OUTPUTCONFIG.fields_by_name['gcs_destination'].message_type = _GCSDESTINATION
-_OUTPUTCONFIG.oneofs_by_name['destination'].fields.append(
-  _OUTPUTCONFIG.fields_by_name['gcs_destination'])
-_OUTPUTCONFIG.fields_by_name['gcs_destination'].containing_oneof = _OUTPUTCONFIG.oneofs_by_name['destination']
-DESCRIPTOR.message_types_by_name['InputConfig'] = _INPUTCONFIG
-DESCRIPTOR.message_types_by_name['OutputConfig'] = _OUTPUTCONFIG
-DESCRIPTOR.message_types_by_name['GcsSource'] = _GCSSOURCE
-DESCRIPTOR.message_types_by_name['GcsDestination'] = _GCSDESTINATION
+_INPUTCONFIG.fields_by_name["gcs_source"].message_type = _GCSSOURCE
+_INPUTCONFIG.oneofs_by_name["source"].fields.append(
+    _INPUTCONFIG.fields_by_name["gcs_source"]
+)
+_INPUTCONFIG.fields_by_name[
+    "gcs_source"
+].containing_oneof = _INPUTCONFIG.oneofs_by_name["source"]
+_OUTPUTCONFIG.fields_by_name["gcs_destination"].message_type = _GCSDESTINATION
+_OUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
+    _OUTPUTCONFIG.fields_by_name["gcs_destination"]
+)
+_OUTPUTCONFIG.fields_by_name[
+    "gcs_destination"
+].containing_oneof = _OUTPUTCONFIG.oneofs_by_name["destination"]
+DESCRIPTOR.message_types_by_name["InputConfig"] = _INPUTCONFIG
+DESCRIPTOR.message_types_by_name["OutputConfig"] = _OUTPUTCONFIG
+DESCRIPTOR.message_types_by_name["GcsSource"] = _GCSSOURCE
+DESCRIPTOR.message_types_by_name["GcsDestination"] = _GCSDESTINATION
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-InputConfig = _reflection.GeneratedProtocolMessageType('InputConfig', (_message.Message,), dict(
-  DESCRIPTOR = _INPUTCONFIG,
-  __module__ = 'google.cloud.automl_v1beta1.proto.io_pb2'
-  ,
-  __doc__ = """Input configuration.
+InputConfig = _reflection.GeneratedProtocolMessageType(
+    "InputConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_INPUTCONFIG,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""Input configuration.
   
   
   Attributes:
@@ -183,15 +235,18 @@ InputConfig = _reflection.GeneratedProtocolMessageType('InputConfig', (_message.
       gcs_source:
           The GCS location for the input content.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.InputConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.InputConfig)
+    ),
+)
 _sym_db.RegisterMessage(InputConfig)
 
-OutputConfig = _reflection.GeneratedProtocolMessageType('OutputConfig', (_message.Message,), dict(
-  DESCRIPTOR = _OUTPUTCONFIG,
-  __module__ = 'google.cloud.automl_v1beta1.proto.io_pb2'
-  ,
-  __doc__ = """Output configuration.
+OutputConfig = _reflection.GeneratedProtocolMessageType(
+    "OutputConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_OUTPUTCONFIG,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""Output configuration.
   
   
   Attributes:
@@ -200,15 +255,18 @@ OutputConfig = _reflection.GeneratedProtocolMessageType('OutputConfig', (_messag
       gcs_destination:
           The GCS location where the output must be written to.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.OutputConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.OutputConfig)
+    ),
+)
 _sym_db.RegisterMessage(OutputConfig)
 
-GcsSource = _reflection.GeneratedProtocolMessageType('GcsSource', (_message.Message,), dict(
-  DESCRIPTOR = _GCSSOURCE,
-  __module__ = 'google.cloud.automl_v1beta1.proto.io_pb2'
-  ,
-  __doc__ = """The GCS location for the input content.
+GcsSource = _reflection.GeneratedProtocolMessageType(
+    "GcsSource",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GCSSOURCE,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""The GCS location for the input content.
   
   
   Attributes:
@@ -217,15 +275,18 @@ GcsSource = _reflection.GeneratedProtocolMessageType('GcsSource', (_message.Mess
           characters long. Accepted forms: \* Full object path:
           gs://bucket/directory/object.csv
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.GcsSource)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.GcsSource)
+    ),
+)
 _sym_db.RegisterMessage(GcsSource)
 
-GcsDestination = _reflection.GeneratedProtocolMessageType('GcsDestination', (_message.Message,), dict(
-  DESCRIPTOR = _GCSDESTINATION,
-  __module__ = 'google.cloud.automl_v1beta1.proto.io_pb2'
-  ,
-  __doc__ = """The GCS location where the output must be written to
+GcsDestination = _reflection.GeneratedProtocolMessageType(
+    "GcsDestination",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GCSDESTINATION,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""The GCS location where the output must be written to
   
   
   Attributes:
@@ -236,11 +297,17 @@ GcsDestination = _reflection.GeneratedProtocolMessageType('GcsDestination', (_me
           permission to the bucket. The directory is created if it
           doesn't exist.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.GcsDestination)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.GcsDestination)
+    ),
+)
 _sym_db.RegisterMessage(GcsDestination)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl"
+    ),
+)
 # @@protoc_insertion_point(module_scope)

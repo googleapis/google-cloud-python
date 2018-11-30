@@ -28,14 +28,14 @@ class ClusterControllerGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='dataproc.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="dataproc.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -53,35 +53,30 @@ class ClusterControllerGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'cluster_controller_stub':
-            clusters_pb2_grpc.ClusterControllerStub(channel),
+            "cluster_controller_stub": clusters_pb2_grpc.ClusterControllerStub(channel)
         }
 
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
         # instantiate an LRO client.
         self._operations_client = google.api_core.operations_v1.OperationsClient(
-            channel)
+            channel
+        )
 
     @classmethod
-    def create_channel(cls,
-                       address='dataproc.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="dataproc.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -96,9 +91,7 @@ class ClusterControllerGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -121,7 +114,7 @@ class ClusterControllerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_controller_stub'].CreateCluster
+        return self._stubs["cluster_controller_stub"].CreateCluster
 
     @property
     def update_cluster(self):
@@ -134,7 +127,7 @@ class ClusterControllerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_controller_stub'].UpdateCluster
+        return self._stubs["cluster_controller_stub"].UpdateCluster
 
     @property
     def delete_cluster(self):
@@ -147,7 +140,7 @@ class ClusterControllerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_controller_stub'].DeleteCluster
+        return self._stubs["cluster_controller_stub"].DeleteCluster
 
     @property
     def get_cluster(self):
@@ -160,7 +153,7 @@ class ClusterControllerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_controller_stub'].GetCluster
+        return self._stubs["cluster_controller_stub"].GetCluster
 
     @property
     def list_clusters(self):
@@ -173,7 +166,7 @@ class ClusterControllerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_controller_stub'].ListClusters
+        return self._stubs["cluster_controller_stub"].ListClusters
 
     @property
     def diagnose_cluster(self):
@@ -187,4 +180,4 @@ class ClusterControllerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cluster_controller_stub'].DiagnoseCluster
+        return self._stubs["cluster_controller_stub"].DiagnoseCluster

@@ -24,7 +24,7 @@ from google.cloud import bigquery_storage_v1beta1
 
 @pytest.fixture()
 def project_id():
-    return os.environ['PROJECT_ID']
+    return os.environ["PROJECT_ID"]
 
 
 @pytest.fixture()
@@ -35,30 +35,29 @@ def client():
 @pytest.fixture()
 def table_reference():
     table_ref = bigquery_storage_v1beta1.types.TableReference()
-    table_ref.project_id = 'bigquery-public-data'
-    table_ref.dataset_id = 'usa_names'
-    table_ref.table_id = 'usa_1910_2013'
+    table_ref.project_id = "bigquery-public-data"
+    table_ref.dataset_id = "usa_names"
+    table_ref.table_id = "usa_1910_2013"
     return table_ref
 
 
 @pytest.fixture()
 def small_table_reference():
     table_ref = bigquery_storage_v1beta1.types.TableReference()
-    table_ref.project_id = 'bigquery-public-data'
-    table_ref.dataset_id = 'utility_us'
-    table_ref.table_id = 'country_code_iso'
+    table_ref.project_id = "bigquery-public-data"
+    table_ref.dataset_id = "utility_us"
+    table_ref.table_id = "country_code_iso"
     return table_ref
 
 
 def test_read_rows_full_table(client, project_id, small_table_reference):
     session = client.create_read_session(
-        small_table_reference,
-        'projects/{}'.format(project_id),
-        requested_streams=1,
+        small_table_reference, "projects/{}".format(project_id), requested_streams=1
     )
 
     stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
-        stream=session.streams[0])
+        stream=session.streams[0]
+    )
     blocks = list(client.read_rows(stream_pos))
 
     assert len(blocks) > 0
@@ -69,29 +68,27 @@ def test_read_rows_full_table(client, project_id, small_table_reference):
 
 def test_read_rows_to_dataframe(client, project_id):
     table_ref = bigquery_storage_v1beta1.types.TableReference()
-    table_ref.project_id = 'bigquery-public-data'
-    table_ref.dataset_id = 'new_york_citibike'
-    table_ref.table_id = 'citibike_stations'
+    table_ref.project_id = "bigquery-public-data"
+    table_ref.dataset_id = "new_york_citibike"
+    table_ref.table_id = "citibike_stations"
     session = client.create_read_session(
-        table_ref,
-        'projects/{}'.format(project_id),
-        requested_streams=1,
+        table_ref, "projects/{}".format(project_id), requested_streams=1
     )
     stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
-        stream=session.streams[0])
+        stream=session.streams[0]
+    )
 
     frame = client.read_rows(stream_pos).to_dataframe(session)
 
     # Station ID is a required field (no nulls), so the datatype should always
     # be integer.
-    assert frame.station_id.dtype.name == 'int64'
-    assert frame['name'].str.startswith('Central Park').any()
+    assert frame.station_id.dtype.name == "int64"
+    assert frame["name"].str.startswith("Central Park").any()
 
 
 def test_split_read_stream(client, project_id, table_reference):
     session = client.create_read_session(
-        table_reference,
-        parent='projects/{}'.format(project_id),
+        table_reference, parent="projects/{}".format(project_id)
     )
 
     split = client.split_read_stream(session.streams[0])
