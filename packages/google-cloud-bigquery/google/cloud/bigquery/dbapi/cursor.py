@@ -33,11 +33,17 @@ import google.cloud.exceptions
 # five are optional and are set to None if no meaningful values can be
 # provided.
 Column = collections.namedtuple(
-    'Column',
+    "Column",
     [
-        'name', 'type_code', 'display_size', 'internal_size', 'precision',
-        'scale', 'null_ok',
-    ])
+        "name",
+        "type_code",
+        "display_size",
+        "internal_size",
+        "precision",
+        "scale",
+        "null_ok",
+    ],
+)
 
 
 class Cursor(object):
@@ -46,6 +52,7 @@ class Cursor(object):
     :type connection: :class:`~google.cloud.bigquery.dbapi.Connection`
     :param connection: A DB-API connection to Google BigQuery.
     """
+
     def __init__(self, connection):
         self.connection = connection
         self.description = None
@@ -72,16 +79,20 @@ class Cursor(object):
             self.description = None
             return
 
-        self.description = tuple([
-            Column(
-                name=field.name,
-                type_code=field.field_type,
-                display_size=None,
-                internal_size=None,
-                precision=None,
-                scale=None,
-                null_ok=field.is_nullable)
-            for field in schema])
+        self.description = tuple(
+            [
+                Column(
+                    name=field.name,
+                    type_code=field.field_type,
+                    display_size=None,
+                    internal_size=None,
+                    precision=None,
+                    scale=None,
+                    null_ok=field.is_nullable,
+                )
+                for field in schema
+            ]
+        )
 
     def _set_rowcount(self, query_results):
         """Set the rowcount from query results.
@@ -97,8 +108,7 @@ class Cursor(object):
         total_rows = 0
         num_dml_affected_rows = query_results.num_dml_affected_rows
 
-        if (query_results.total_rows is not None
-                and query_results.total_rows > 0):
+        if query_results.total_rows is not None and query_results.total_rows > 0:
             total_rows = query_results.total_rows
         if num_dml_affected_rows is not None and num_dml_affected_rows > 0:
             total_rows = num_dml_affected_rows
@@ -145,15 +155,15 @@ class Cursor(object):
         # query parameters was not one of the standard options. Convert both
         # the query and the parameters to the format expected by the client
         # libraries.
-        formatted_operation = _format_operation(
-            operation, parameters=parameters)
+        formatted_operation = _format_operation(operation, parameters=parameters)
         query_parameters = _helpers.to_query_parameters(parameters)
 
         config = job.QueryJobConfig()
         config.query_parameters = query_parameters
         config.use_legacy_sql = False
         self._query_job = client.query(
-            formatted_operation, job_config=config, job_id=job_id)
+            formatted_operation, job_config=config, job_id=job_id
+        )
 
         # Wait for the query to finish.
         try:
@@ -184,11 +194,13 @@ class Cursor(object):
         """
         if self._query_job is None:
             raise exceptions.InterfaceError(
-                'No query results: execute() must be called before fetch.')
+                "No query results: execute() must be called before fetch."
+            )
 
         is_dml = (
             self._query_job.statement_type
-            and self._query_job.statement_type.upper() != 'SELECT')
+            and self._query_job.statement_type.upper() != "SELECT"
+        )
         if is_dml:
             self._query_data = iter([])
             return
@@ -198,7 +210,7 @@ class Cursor(object):
             rows_iter = client.list_rows(
                 self._query_job.destination,
                 selected_fields=self._query_job._query_results.schema,
-                page_size=self.arraysize
+                page_size=self.arraysize,
             )
             self._query_data = iter(rows_iter)
 
@@ -285,7 +297,7 @@ def _format_operation_list(operation, parameters):
         if a parameter used in the operation is not found in the
         ``parameters`` argument.
     """
-    formatted_params = ['?' for _ in parameters]
+    formatted_params = ["?" for _ in parameters]
 
     try:
         return operation % tuple(formatted_params)
@@ -313,8 +325,8 @@ def _format_operation_dict(operation, parameters):
     """
     formatted_params = {}
     for name in parameters:
-        escaped_name = name.replace('`', r'\`')
-        formatted_params[name] = '@`{}`'.format(escaped_name)
+        escaped_name = name.replace("`", r"\`")
+        formatted_params[name] = "@`{}`".format(escaped_name)
 
     try:
         return operation % formatted_params
