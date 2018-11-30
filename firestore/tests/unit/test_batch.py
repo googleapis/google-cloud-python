@@ -18,7 +18,6 @@ import mock
 
 
 class TestWriteBatch(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.firestore_v1beta1.batch import WriteBatch
@@ -38,8 +37,7 @@ class TestWriteBatch(unittest.TestCase):
         batch = self._make_one(mock.sentinel.client)
         self.assertEqual(batch._write_pbs, [])
         batch._add_write_pbs([mock.sentinel.write1, mock.sentinel.write2])
-        self.assertEqual(
-            batch._write_pbs, [mock.sentinel.write1, mock.sentinel.write2])
+        self.assertEqual(batch._write_pbs, [mock.sentinel.write1, mock.sentinel.write2])
 
     def test_create(self):
         from google.cloud.firestore_v1beta1.proto import common_pb2
@@ -50,16 +48,16 @@ class TestWriteBatch(unittest.TestCase):
         batch = self._make_one(client)
         self.assertEqual(batch._write_pbs, [])
 
-        reference = client.document('this', 'one')
-        document_data = {'a': 10, 'b': 2.5}
+        reference = client.document("this", "one")
+        document_data = {"a": 10, "b": 2.5}
         ret_val = batch.create(reference, document_data)
         self.assertIsNone(ret_val)
         new_write_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=reference._document_path,
                 fields={
-                    'a': _value_pb(integer_value=document_data['a']),
-                    'b': _value_pb(double_value=document_data['b']),
+                    "a": _value_pb(integer_value=document_data["a"]),
+                    "b": _value_pb(double_value=document_data["b"]),
                 },
             ),
             current_document=common_pb2.Precondition(exists=False),
@@ -74,19 +72,17 @@ class TestWriteBatch(unittest.TestCase):
         batch = self._make_one(client)
         self.assertEqual(batch._write_pbs, [])
 
-        reference = client.document('another', 'one')
-        field = 'zapzap'
-        value = u'meadows and flowers'
+        reference = client.document("another", "one")
+        field = "zapzap"
+        value = u"meadows and flowers"
         document_data = {field: value}
         ret_val = batch.set(reference, document_data)
         self.assertIsNone(ret_val)
         new_write_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=reference._document_path,
-                fields={
-                    field: _value_pb(string_value=value),
-                },
-            ),
+                fields={field: _value_pb(string_value=value)},
+            )
         )
         self.assertEqual(batch._write_pbs, [new_write_pb])
 
@@ -98,20 +94,18 @@ class TestWriteBatch(unittest.TestCase):
         batch = self._make_one(client)
         self.assertEqual(batch._write_pbs, [])
 
-        reference = client.document('another', 'one')
-        field = 'zapzap'
-        value = u'meadows and flowers'
+        reference = client.document("another", "one")
+        field = "zapzap"
+        value = u"meadows and flowers"
         document_data = {field: value}
         ret_val = batch.set(reference, document_data, merge=True)
         self.assertIsNone(ret_val)
         new_write_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=reference._document_path,
-                fields={
-                    field: _value_pb(string_value=value),
-                },
+                fields={field: _value_pb(string_value=value)},
             ),
-            update_mask={'field_paths': [field]}
+            update_mask={"field_paths": [field]},
         )
         self.assertEqual(batch._write_pbs, [new_write_pb])
 
@@ -124,21 +118,19 @@ class TestWriteBatch(unittest.TestCase):
         batch = self._make_one(client)
         self.assertEqual(batch._write_pbs, [])
 
-        reference = client.document('cats', 'cradle')
-        field_path = 'head.foot'
-        value = u'knees toes shoulders'
+        reference = client.document("cats", "cradle")
+        field_path = "head.foot"
+        value = u"knees toes shoulders"
         field_updates = {field_path: value}
 
         ret_val = batch.update(reference, field_updates)
         self.assertIsNone(ret_val)
 
-        map_pb = document_pb2.MapValue(fields={
-            'foot': _value_pb(string_value=value),
-        })
+        map_pb = document_pb2.MapValue(fields={"foot": _value_pb(string_value=value)})
         new_write_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=reference._document_path,
-                fields={'head': _value_pb(map_value=map_pb)},
+                fields={"head": _value_pb(map_value=map_pb)},
             ),
             update_mask=common_pb2.DocumentMask(field_paths=[field_path]),
             current_document=common_pb2.Precondition(exists=True),
@@ -152,7 +144,7 @@ class TestWriteBatch(unittest.TestCase):
         batch = self._make_one(client)
         self.assertEqual(batch._write_pbs, [])
 
-        reference = client.document('early', 'mornin', 'dawn', 'now')
+        reference = client.document("early", "mornin", "dawn", "now")
         ret_val = batch.delete(reference)
         self.assertIsNone(ret_val)
         new_write_pb = write_pb2.Write(delete=reference._document_path)
@@ -163,24 +155,21 @@ class TestWriteBatch(unittest.TestCase):
         from google.cloud.firestore_v1beta1.proto import write_pb2
 
         # Create a minimal fake GAPIC with a dummy result.
-        firestore_api = mock.Mock(spec=['commit'])
+        firestore_api = mock.Mock(spec=["commit"])
         commit_response = firestore_pb2.CommitResponse(
-            write_results=[
-                write_pb2.WriteResult(),
-                write_pb2.WriteResult(),
-            ],
+            write_results=[write_pb2.WriteResult(), write_pb2.WriteResult()]
         )
         firestore_api.commit.return_value = commit_response
 
         # Attach the fake GAPIC to a real client.
-        client = _make_client('grand')
+        client = _make_client("grand")
         client._firestore_api_internal = firestore_api
 
         # Actually make a batch with some mutations and call commit().
         batch = self._make_one(client)
-        document1 = client.document('a', 'b')
-        batch.create(document1, {'ten': 10, 'buck': u'ets'})
-        document2 = client.document('c', 'd', 'e', 'f')
+        document1 = client.document("a", "b")
+        batch.create(document1, {"ten": 10, "buck": u"ets"})
+        document2 = client.document("c", "d", "e", "f")
         batch.delete(document2)
         write_pbs = batch._write_pbs[::]
 
@@ -191,8 +180,11 @@ class TestWriteBatch(unittest.TestCase):
 
         # Verify the mocks.
         firestore_api.commit.assert_called_once_with(
-            client._database_string, write_pbs, transaction=None,
-            metadata=client._rpc_metadata)
+            client._database_string,
+            write_pbs,
+            transaction=None,
+            metadata=client._rpc_metadata,
+        )
 
 
 def _value_pb(**kwargs):
@@ -207,7 +199,7 @@ def _make_credentials():
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
-def _make_client(project='seventy-nine'):
+def _make_client(project="seventy-nine"):
     from google.cloud.firestore_v1beta1.client import Client
 
     credentials = _make_credentials()

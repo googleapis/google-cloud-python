@@ -48,18 +48,40 @@ from google.cloud.bigquery.dbapi.types import ROWID
 from google.cloud.bigquery.dbapi.types import STRING
 
 
-apilevel = '2.0'
+apilevel = "2.0"
 
 # Threads may share the module and connections, but not cursors.
 threadsafety = 2
 
-paramstyle = 'pyformat'
+paramstyle = "pyformat"
 
 __all__ = [
-    'apilevel', 'threadsafety', 'paramstyle', 'connect', 'Connection',
-    'Cursor', 'Warning', 'Error', 'InterfaceError', 'DatabaseError',
-    'DataError', 'OperationalError', 'IntegrityError', 'InternalError',
-    'ProgrammingError', 'NotSupportedError', 'Binary', 'Date', 'DateFromTicks',
-    'Time', 'TimeFromTicks', 'Timestamp', 'TimestampFromTicks', 'BINARY',
-    'DATETIME', 'NUMBER', 'ROWID', 'STRING',
+    "apilevel",
+    "threadsafety",
+    "paramstyle",
+    "connect",
+    "Connection",
+    "Cursor",
+    "Warning",
+    "Error",
+    "InterfaceError",
+    "DatabaseError",
+    "DataError",
+    "OperationalError",
+    "IntegrityError",
+    "InternalError",
+    "ProgrammingError",
+    "NotSupportedError",
+    "Binary",
+    "Date",
+    "DateFromTicks",
+    "Time",
+    "TimeFromTicks",
+    "Timestamp",
+    "TimestampFromTicks",
+    "BINARY",
+    "DATETIME",
+    "NUMBER",
+    "ROWID",
+    "STRING",
 ]

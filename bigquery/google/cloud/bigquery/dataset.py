@@ -72,23 +72,28 @@ class AccessEntry(object):
         >>> entry = AccessEntry(None, 'view', view)
     """
 
-    ENTITY_TYPES = frozenset(['userByEmail', 'groupByEmail', 'domain',
-                              'specialGroup', 'view'])
+    ENTITY_TYPES = frozenset(
+        ["userByEmail", "groupByEmail", "domain", "specialGroup", "view"]
+    )
     """Allowed entity types."""
 
     def __init__(self, role, entity_type, entity_id):
         if entity_type not in self.ENTITY_TYPES:
-            message = 'Entity type %r not among: %s' % (
-                entity_type, ', '.join(self.ENTITY_TYPES))
+            message = "Entity type %r not among: %s" % (
+                entity_type,
+                ", ".join(self.ENTITY_TYPES),
+            )
             raise ValueError(message)
-        if entity_type == 'view':
+        if entity_type == "view":
             if role is not None:
-                raise ValueError('Role must be None for a view. Received '
-                                 'role: %r' % (role,))
+                raise ValueError(
+                    "Role must be None for a view. Received " "role: %r" % (role,)
+                )
         else:
             if role is None:
-                raise ValueError('Role must be set for entity '
-                                 'type %r' % (entity_type,))
+                raise ValueError(
+                    "Role must be set for entity " "type %r" % (entity_type,)
+                )
 
         self.role = role
         self.entity_type = entity_type
@@ -100,14 +105,18 @@ class AccessEntry(object):
         return (
             self.role == other.role
             and self.entity_type == other.entity_type
-            and self.entity_id == other.entity_id)
+            and self.entity_id == other.entity_id
+        )
 
     def __ne__(self, other):
         return not self == other
 
     def __repr__(self):
-        return '<AccessEntry: role=%s, %s=%s>' % (
-            self.role, self.entity_type, self.entity_id)
+        return "<AccessEntry: role=%s, %s=%s>" % (
+            self.role,
+            self.entity_type,
+            self.entity_id,
+        )
 
     def to_api_repr(self):
         """Construct the API resource representation of this access entry
@@ -117,7 +126,7 @@ class AccessEntry(object):
         """
         resource = {self.entity_type: self.entity_id}
         if self.role is not None:
-            resource['role'] = self.role
+            resource["role"] = self.role
         return resource
 
     @classmethod
@@ -138,10 +147,10 @@ class AccessEntry(object):
                 key.
         """
         entry = resource.copy()
-        role = entry.pop('role', None)
+        role = entry.pop("role", None)
         entity_type, entity_id = entry.popitem()
         if len(entry) != 0:
-            raise ValueError('Entry has unexpected keys remaining.', entry)
+            raise ValueError("Entry has unexpected keys remaining.", entry)
         return cls(role, entity_type, entity_id)
 
 
@@ -180,7 +189,7 @@ class DatasetReference(object):
     @property
     def path(self):
         """str: URL path for the dataset based on project and dataset ID."""
-        return '/projects/%s/datasets/%s' % (self.project, self.dataset_id)
+        return "/projects/%s/datasets/%s" % (self.project, self.dataset_id)
 
     def table(self, table_id):
         """Constructs a TableReference.
@@ -206,8 +215,8 @@ class DatasetReference(object):
             google.cloud.bigquery.dataset.DatasetReference:
                 Dataset reference parsed from ``resource``.
         """
-        project = resource['projectId']
-        dataset_id = resource['datasetId']
+        project = resource["projectId"]
+        dataset_id = resource["datasetId"]
         return cls(project, dataset_id)
 
     @classmethod
@@ -238,20 +247,22 @@ class DatasetReference(object):
         """
         output_dataset_id = dataset_id
         output_project_id = default_project
-        parts = dataset_id.split('.')
+        parts = dataset_id.split(".")
 
         if len(parts) == 1 and not default_project:
             raise ValueError(
-                'When default_project is not set, dataset_id must be a '
-                'fully-qualified dataset ID in standard SQL format. '
-                'e.g. "project.dataset_id", got {}'.format(dataset_id))
+                "When default_project is not set, dataset_id must be a "
+                "fully-qualified dataset ID in standard SQL format. "
+                'e.g. "project.dataset_id", got {}'.format(dataset_id)
+            )
         elif len(parts) == 2:
             output_project_id, output_dataset_id = parts
         elif len(parts) > 2:
             raise ValueError(
-                'Too many parts in dataset_id. Expected a fully-qualified '
-                'dataset ID in standard SQL format. e.g. '
-                '"project.dataset_id", got {}'.format(dataset_id))
+                "Too many parts in dataset_id. Expected a fully-qualified "
+                "dataset ID in standard SQL format. e.g. "
+                '"project.dataset_id", got {}'.format(dataset_id)
+            )
 
         return cls(output_project_id, output_dataset_id)
 
@@ -261,10 +272,7 @@ class DatasetReference(object):
         Returns:
             Dict[str, str]: dataset reference represented as an API resource
         """
-        return {
-            'projectId': self._project,
-            'datasetId': self._dataset_id,
-        }
+        return {"projectId": self._project, "datasetId": self._dataset_id}
 
     def _key(self):
         """A tuple key that uniquely describes this field.
@@ -274,10 +282,7 @@ class DatasetReference(object):
         Returns:
             Tuple[str]: The contents of this :class:`.DatasetReference`.
         """
-        return (
-            self._project,
-            self._dataset_id,
-        )
+        return (self._project, self._dataset_id)
 
     def __eq__(self, other):
         if not isinstance(other, DatasetReference):
@@ -291,7 +296,7 @@ class DatasetReference(object):
         return hash(self._key())
 
     def __repr__(self):
-        return 'DatasetReference{}'.format(self._key())
+        return "DatasetReference{}".format(self._key())
 
 
 class Dataset(object):
@@ -306,27 +311,24 @@ class Dataset(object):
     """
 
     _PROPERTY_TO_API_FIELD = {
-        'access_entries': 'access',
-        'created': 'creationTime',
-        'default_table_expiration_ms': 'defaultTableExpirationMs',
-        'friendly_name': 'friendlyName',
+        "access_entries": "access",
+        "created": "creationTime",
+        "default_table_expiration_ms": "defaultTableExpirationMs",
+        "friendly_name": "friendlyName",
     }
 
     def __init__(self, dataset_ref):
-        self._properties = {
-            'datasetReference': dataset_ref.to_api_repr(),
-            'labels': {},
-        }
+        self._properties = {"datasetReference": dataset_ref.to_api_repr(), "labels": {}}
 
     @property
     def project(self):
         """str: Project ID of the project bound to the dataset."""
-        return self._properties['datasetReference']['projectId']
+        return self._properties["datasetReference"]["projectId"]
 
     @property
     def path(self):
         """str: URL path for the dataset based on project and dataset ID."""
-        return '/projects/%s/datasets/%s' % (self.project, self.dataset_id)
+        return "/projects/%s/datasets/%s" % (self.project, self.dataset_id)
 
     @property
     def access_entries(self):
@@ -342,31 +344,32 @@ class Dataset(object):
                 If any item in the sequence is not an
                 :class:`~google.cloud.bigquery.dataset.AccessEntry`.
         """
-        entries = self._properties.get('access', [])
+        entries = self._properties.get("access", [])
         return [AccessEntry.from_api_repr(entry) for entry in entries]
 
     @access_entries.setter
     def access_entries(self, value):
         if not all(isinstance(field, AccessEntry) for field in value):
-            raise ValueError('Values must be AccessEntry instances')
+            raise ValueError("Values must be AccessEntry instances")
         entries = [entry.to_api_repr() for entry in value]
-        self._properties['access'] = entries
+        self._properties["access"] = entries
 
     @property
     def created(self):
         """Union[datetime.datetime, None]: Datetime at which the dataset was
         created (:data:`None` until set from the server).
         """
-        creation_time = self._properties.get('creationTime')
+        creation_time = self._properties.get("creationTime")
         if creation_time is not None:
             # creation_time will be in milliseconds.
             return google.cloud._helpers._datetime_from_microseconds(
-                1000.0 * float(creation_time))
+                1000.0 * float(creation_time)
+            )
 
     @property
     def dataset_id(self):
         """str: Dataset ID."""
-        return self._properties['datasetReference']['datasetId']
+        return self._properties["datasetReference"]["datasetId"]
 
     @property
     def full_dataset_id(self):
@@ -375,7 +378,7 @@ class Dataset(object):
 
         In the format ``project_id:dataset_id``.
         """
-        return self._properties.get('id')
+        return self._properties.get("id")
 
     @property
     def reference(self):
@@ -389,25 +392,26 @@ class Dataset(object):
         """Union[str, None]: ETag for the dataset resource (:data:`None` until
         set from the server).
         """
-        return self._properties.get('etag')
+        return self._properties.get("etag")
 
     @property
     def modified(self):
         """Union[datetime.datetime, None]: Datetime at which the dataset was
         last modified (:data:`None` until set from the server).
         """
-        modified_time = self._properties.get('lastModifiedTime')
+        modified_time = self._properties.get("lastModifiedTime")
         if modified_time is not None:
             # modified_time will be in milliseconds.
             return google.cloud._helpers._datetime_from_microseconds(
-                1000.0 * float(modified_time))
+                1000.0 * float(modified_time)
+            )
 
     @property
     def self_link(self):
         """Union[str, None]: URL for the dataset resource (:data:`None` until
         set from the server).
         """
-        return self._properties.get('selfLink')
+        return self._properties.get("selfLink")
 
     @property
     def default_table_expiration_ms(self):
@@ -417,15 +421,13 @@ class Dataset(object):
         Raises:
             ValueError: For invalid value types.
         """
-        return _helpers._int_or_none(
-            self._properties.get('defaultTableExpirationMs'))
+        return _helpers._int_or_none(self._properties.get("defaultTableExpirationMs"))
 
     @default_table_expiration_ms.setter
     def default_table_expiration_ms(self, value):
         if not isinstance(value, six.integer_types) and value is not None:
             raise ValueError("Pass an integer, or None")
-        self._properties['defaultTableExpirationMs'] = _helpers._str_or_none(
-            value)
+        self._properties["defaultTableExpirationMs"] = _helpers._str_or_none(value)
 
     @property
     def description(self):
@@ -435,13 +437,13 @@ class Dataset(object):
         Raises:
             ValueError: for invalid value types.
         """
-        return self._properties.get('description')
+        return self._properties.get("description")
 
     @description.setter
     def description(self, value):
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
-        self._properties['description'] = value
+        self._properties["description"] = value
 
     @property
     def friendly_name(self):
@@ -451,13 +453,13 @@ class Dataset(object):
         Raises:
             ValueError: for invalid value types.
         """
-        return self._properties.get('friendlyName')
+        return self._properties.get("friendlyName")
 
     @friendly_name.setter
     def friendly_name(self, value):
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
-        self._properties['friendlyName'] = value
+        self._properties["friendlyName"] = value
 
     @property
     def location(self):
@@ -467,13 +469,13 @@ class Dataset(object):
         Raises:
             ValueError: for invalid value types.
         """
-        return self._properties.get('location')
+        return self._properties.get("location")
 
     @location.setter
     def location(self, value):
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
-        self._properties['location'] = value
+        self._properties["location"] = value
 
     @property
     def labels(self):
@@ -487,13 +489,13 @@ class Dataset(object):
         Raises:
             ValueError: for invalid value types.
         """
-        return self._properties.setdefault('labels', {})
+        return self._properties.setdefault("labels", {})
 
     @labels.setter
     def labels(self, value):
         if not isinstance(value, dict):
             raise ValueError("Pass a dict")
-        self._properties['labels'] = value
+        self._properties["labels"] = value
 
     @classmethod
     def from_string(cls, full_dataset_id):
@@ -531,12 +533,16 @@ class Dataset(object):
             google.cloud.bigquery.dataset.Dataset:
                 Dataset parsed from ``resource``.
         """
-        if ('datasetReference' not in resource
-                or 'datasetId' not in resource['datasetReference']):
-            raise KeyError('Resource lacks required identity information:'
-                           '["datasetReference"]["datasetId"]')
-        project_id = resource['datasetReference']['projectId']
-        dataset_id = resource['datasetReference']['datasetId']
+        if (
+            "datasetReference" not in resource
+            or "datasetId" not in resource["datasetReference"]
+        ):
+            raise KeyError(
+                "Resource lacks required identity information:"
+                '["datasetReference"]["datasetId"]'
+            )
+        project_id = resource["datasetReference"]["projectId"]
+        dataset_id = resource["datasetReference"]["datasetId"]
         dataset = cls(DatasetReference(project_id, dataset_id))
         dataset._properties = copy.deepcopy(resource)
         return dataset
@@ -555,7 +561,7 @@ class Dataset(object):
         for filter_field in filter_fields:
             api_field = self._PROPERTY_TO_API_FIELD.get(filter_field)
             if api_field is None and filter_field not in self._properties:
-                raise ValueError('No Dataset property %s' % filter_field)
+                raise ValueError("No Dataset property %s" % filter_field)
             elif api_field is not None:
                 partial[api_field] = self._properties.get(api_field)
             else:
@@ -578,7 +584,7 @@ class Dataset(object):
         return TableReference(self.reference, table_id)
 
     def __repr__(self):
-        return 'Dataset({})'.format(repr(self.reference))
+        return "Dataset({})".format(repr(self.reference))
 
 
 class DatasetListItem(object):
@@ -605,25 +611,27 @@ class DatasetListItem(object):
     """
 
     def __init__(self, resource):
-        if 'datasetReference' not in resource:
-            raise ValueError('resource must contain a datasetReference value')
-        if 'projectId' not in resource['datasetReference']:
+        if "datasetReference" not in resource:
+            raise ValueError("resource must contain a datasetReference value")
+        if "projectId" not in resource["datasetReference"]:
             raise ValueError(
-                "resource['datasetReference'] must contain a projectId value")
-        if 'datasetId' not in resource['datasetReference']:
+                "resource['datasetReference'] must contain a projectId value"
+            )
+        if "datasetId" not in resource["datasetReference"]:
             raise ValueError(
-                "resource['datasetReference'] must contain a datasetId value")
+                "resource['datasetReference'] must contain a datasetId value"
+            )
         self._properties = resource
 
     @property
     def project(self):
         """str: Project bound to the dataset."""
-        return self._properties['datasetReference']['projectId']
+        return self._properties["datasetReference"]["projectId"]
 
     @property
     def dataset_id(self):
         """str: Dataset ID."""
-        return self._properties['datasetReference']['datasetId']
+        return self._properties["datasetReference"]["datasetId"]
 
     @property
     def full_dataset_id(self):
@@ -632,19 +640,19 @@ class DatasetListItem(object):
 
         In the format ``project_id:dataset_id``.
         """
-        return self._properties.get('id')
+        return self._properties.get("id")
 
     @property
     def friendly_name(self):
         """Union[str, None]: Title of the dataset as set by the user
         (defaults to :data:`None`).
         """
-        return self._properties.get('friendlyName')
+        return self._properties.get("friendlyName")
 
     @property
     def labels(self):
         """Dict[str, str]: Labels for the dataset."""
-        return self._properties.setdefault('labels', {})
+        return self._properties.setdefault("labels", {})
 
     @property
     def reference(self):

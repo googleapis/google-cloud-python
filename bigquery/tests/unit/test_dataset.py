@@ -18,7 +18,6 @@ import mock
 
 
 class TestAccessEntry(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.dataset import AccessEntry
@@ -29,24 +28,24 @@ class TestAccessEntry(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        entry = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
-        self.assertEqual(entry.role, 'OWNER')
-        self.assertEqual(entry.entity_type, 'userByEmail')
-        self.assertEqual(entry.entity_id, 'phred@example.com')
+        entry = self._make_one("OWNER", "userByEmail", "phred@example.com")
+        self.assertEqual(entry.role, "OWNER")
+        self.assertEqual(entry.entity_type, "userByEmail")
+        self.assertEqual(entry.entity_id, "phred@example.com")
 
     def test_ctor_bad_entity_type(self):
         with self.assertRaises(ValueError):
-            self._make_one(None, 'unknown', None)
+            self._make_one(None, "unknown", None)
 
     def test_ctor_view_with_role(self):
-        role = 'READER'
-        entity_type = 'view'
+        role = "READER"
+        entity_type = "view"
         with self.assertRaises(ValueError):
             self._make_one(role, entity_type, None)
 
     def test_ctor_view_success(self):
         role = None
-        entity_type = 'view'
+        entity_type = "view"
         entity_id = object()
         entry = self._make_one(role, entity_type, entity_id)
         self.assertEqual(entry.role, role)
@@ -55,76 +54,75 @@ class TestAccessEntry(unittest.TestCase):
 
     def test_ctor_nonview_without_role(self):
         role = None
-        entity_type = 'userByEmail'
+        entity_type = "userByEmail"
         with self.assertRaises(ValueError):
             self._make_one(role, entity_type, None)
 
     def test___eq___role_mismatch(self):
-        entry = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
-        other = self._make_one('WRITER', 'userByEmail', 'phred@example.com')
+        entry = self._make_one("OWNER", "userByEmail", "phred@example.com")
+        other = self._make_one("WRITER", "userByEmail", "phred@example.com")
         self.assertNotEqual(entry, other)
 
     def test___eq___entity_type_mismatch(self):
-        entry = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
-        other = self._make_one('OWNER', 'groupByEmail', 'phred@example.com')
+        entry = self._make_one("OWNER", "userByEmail", "phred@example.com")
+        other = self._make_one("OWNER", "groupByEmail", "phred@example.com")
         self.assertNotEqual(entry, other)
 
     def test___eq___entity_id_mismatch(self):
-        entry = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
-        other = self._make_one('OWNER', 'userByEmail', 'bharney@example.com')
+        entry = self._make_one("OWNER", "userByEmail", "phred@example.com")
+        other = self._make_one("OWNER", "userByEmail", "bharney@example.com")
         self.assertNotEqual(entry, other)
 
     def test___eq___hit(self):
-        entry = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
-        other = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
+        entry = self._make_one("OWNER", "userByEmail", "phred@example.com")
+        other = self._make_one("OWNER", "userByEmail", "phred@example.com")
         self.assertEqual(entry, other)
 
     def test__eq___type_mismatch(self):
-        entry = self._make_one('OWNER', 'userByEmail', 'silly@example.com')
+        entry = self._make_one("OWNER", "userByEmail", "silly@example.com")
         self.assertNotEqual(entry, object())
         self.assertEqual(entry, mock.ANY)
 
     def test_to_api_repr(self):
-        entry = self._make_one('OWNER', 'userByEmail', 'salmon@example.com')
+        entry = self._make_one("OWNER", "userByEmail", "salmon@example.com")
         resource = entry.to_api_repr()
-        exp_resource = {'role': 'OWNER', 'userByEmail': 'salmon@example.com'}
+        exp_resource = {"role": "OWNER", "userByEmail": "salmon@example.com"}
         self.assertEqual(resource, exp_resource)
 
     def test_to_api_repr_view(self):
         view = {
-            'projectId': 'my-project',
-            'datasetId': 'my_dataset',
-            'tableId': 'my_table'
+            "projectId": "my-project",
+            "datasetId": "my_dataset",
+            "tableId": "my_table",
         }
-        entry = self._make_one(None, 'view', view)
+        entry = self._make_one(None, "view", view)
         resource = entry.to_api_repr()
-        exp_resource = {'view': view}
+        exp_resource = {"view": view}
         self.assertEqual(resource, exp_resource)
 
     def test_from_api_repr(self):
-        resource = {'role': 'OWNER', 'userByEmail': 'salmon@example.com'}
+        resource = {"role": "OWNER", "userByEmail": "salmon@example.com"}
         entry = self._get_target_class().from_api_repr(resource)
-        self.assertEqual(entry.role, 'OWNER')
-        self.assertEqual(entry.entity_type, 'userByEmail')
-        self.assertEqual(entry.entity_id, 'salmon@example.com')
+        self.assertEqual(entry.role, "OWNER")
+        self.assertEqual(entry.entity_type, "userByEmail")
+        self.assertEqual(entry.entity_id, "salmon@example.com")
 
     def test_from_api_repr_w_unknown_entity_type(self):
-        resource = {'role': 'READER', 'unknown': 'UNKNOWN'}
+        resource = {"role": "READER", "unknown": "UNKNOWN"}
         with self.assertRaises(ValueError):
             self._get_target_class().from_api_repr(resource)
 
     def test_from_api_repr_entries_w_extra_keys(self):
         resource = {
-            'role': 'READER',
-            'specialGroup': 'projectReaders',
-            'userByEmail': 'salmon@example.com',
+            "role": "READER",
+            "specialGroup": "projectReaders",
+            "userByEmail": "salmon@example.com",
         }
         with self.assertRaises(ValueError):
             self._get_target_class().from_api_repr(resource)
 
 
 class TestDatasetReference(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.dataset import DatasetReference
@@ -135,116 +133,107 @@ class TestDatasetReference(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        dataset_ref = self._make_one('some-project-1', 'dataset_1')
-        self.assertEqual(dataset_ref.project, 'some-project-1')
-        self.assertEqual(dataset_ref.dataset_id, 'dataset_1')
+        dataset_ref = self._make_one("some-project-1", "dataset_1")
+        self.assertEqual(dataset_ref.project, "some-project-1")
+        self.assertEqual(dataset_ref.dataset_id, "dataset_1")
 
     def test_ctor_bad_args(self):
         with self.assertRaises(ValueError):
-            self._make_one(1, 'd')
+            self._make_one(1, "d")
         with self.assertRaises(ValueError):
-            self._make_one('p', 2)
+            self._make_one("p", 2)
 
     def test_table(self):
-        dataset_ref = self._make_one('some-project-1', 'dataset_1')
-        table_ref = dataset_ref.table('table_1')
-        self.assertEqual(table_ref.dataset_id, 'dataset_1')
-        self.assertEqual(table_ref.project, 'some-project-1')
-        self.assertEqual(table_ref.table_id, 'table_1')
+        dataset_ref = self._make_one("some-project-1", "dataset_1")
+        table_ref = dataset_ref.table("table_1")
+        self.assertEqual(table_ref.dataset_id, "dataset_1")
+        self.assertEqual(table_ref.project, "some-project-1")
+        self.assertEqual(table_ref.table_id, "table_1")
 
     def test_to_api_repr(self):
-        dataset = self._make_one('project_1', 'dataset_1')
+        dataset = self._make_one("project_1", "dataset_1")
 
         resource = dataset.to_api_repr()
 
-        self.assertEqual(
-            resource,
-            {
-                'projectId': 'project_1',
-                'datasetId': 'dataset_1',
-            })
+        self.assertEqual(resource, {"projectId": "project_1", "datasetId": "dataset_1"})
 
     def test_from_api_repr(self):
         cls = self._get_target_class()
-        expected = self._make_one('project_1', 'dataset_1')
+        expected = self._make_one("project_1", "dataset_1")
 
-        got = cls.from_api_repr(
-            {
-                'projectId': 'project_1',
-                'datasetId': 'dataset_1',
-            })
+        got = cls.from_api_repr({"projectId": "project_1", "datasetId": "dataset_1"})
 
         self.assertEqual(expected, got)
 
     def test_from_string(self):
         cls = self._get_target_class()
-        got = cls.from_string('string-project.string_dataset')
-        self.assertEqual(got.project, 'string-project')
-        self.assertEqual(got.dataset_id, 'string_dataset')
+        got = cls.from_string("string-project.string_dataset")
+        self.assertEqual(got.project, "string-project")
+        self.assertEqual(got.dataset_id, "string_dataset")
 
     def test_from_string_legacy_string(self):
         cls = self._get_target_class()
         with self.assertRaises(ValueError):
-            cls.from_string('string-project:string_dataset')
+            cls.from_string("string-project:string_dataset")
 
     def test_from_string_not_fully_qualified(self):
         cls = self._get_target_class()
         with self.assertRaises(ValueError):
-            cls.from_string('string_dataset')
+            cls.from_string("string_dataset")
         with self.assertRaises(ValueError):
-            cls.from_string('a.b.c')
+            cls.from_string("a.b.c")
 
     def test_from_string_with_default_project(self):
         cls = self._get_target_class()
-        got = cls.from_string(
-            'string_dataset', default_project='default-project')
-        self.assertEqual(got.project, 'default-project')
-        self.assertEqual(got.dataset_id, 'string_dataset')
+        got = cls.from_string("string_dataset", default_project="default-project")
+        self.assertEqual(got.project, "default-project")
+        self.assertEqual(got.dataset_id, "string_dataset")
 
     def test_from_string_ignores_default_project(self):
         cls = self._get_target_class()
         got = cls.from_string(
-            'string-project.string_dataset', default_project='default-project')
-        self.assertEqual(got.project, 'string-project')
-        self.assertEqual(got.dataset_id, 'string_dataset')
+            "string-project.string_dataset", default_project="default-project"
+        )
+        self.assertEqual(got.project, "string-project")
+        self.assertEqual(got.dataset_id, "string_dataset")
 
     def test___eq___wrong_type(self):
-        dataset = self._make_one('project_1', 'dataset_1')
+        dataset = self._make_one("project_1", "dataset_1")
         other = object()
         self.assertNotEqual(dataset, other)
         self.assertEqual(dataset, mock.ANY)
 
     def test___eq___project_mismatch(self):
-        dataset = self._make_one('project_1', 'dataset_1')
-        other = self._make_one('project_2', 'dataset_1')
+        dataset = self._make_one("project_1", "dataset_1")
+        other = self._make_one("project_2", "dataset_1")
         self.assertNotEqual(dataset, other)
 
     def test___eq___dataset_mismatch(self):
-        dataset = self._make_one('project_1', 'dataset_1')
-        other = self._make_one('project_1', 'dataset_2')
+        dataset = self._make_one("project_1", "dataset_1")
+        other = self._make_one("project_1", "dataset_2")
         self.assertNotEqual(dataset, other)
 
     def test___eq___equality(self):
-        dataset = self._make_one('project_1', 'dataset_1')
-        other = self._make_one('project_1', 'dataset_1')
+        dataset = self._make_one("project_1", "dataset_1")
+        other = self._make_one("project_1", "dataset_1")
         self.assertEqual(dataset, other)
 
     def test___hash__set_equality(self):
-        dataset1 = self._make_one('project_1', 'dataset_1')
-        dataset2 = self._make_one('project_1', 'dataset_2')
+        dataset1 = self._make_one("project_1", "dataset_1")
+        dataset2 = self._make_one("project_1", "dataset_2")
         set_one = {dataset1, dataset2}
         set_two = {dataset1, dataset2}
         self.assertEqual(set_one, set_two)
 
     def test___hash__not_equals(self):
-        dataset1 = self._make_one('project_1', 'dataset_1')
-        dataset2 = self._make_one('project_1', 'dataset_2')
+        dataset1 = self._make_one("project_1", "dataset_1")
+        dataset2 = self._make_one("project_1", "dataset_2")
         set_one = {dataset1}
         set_two = {dataset2}
         self.assertNotEqual(set_one, set_two)
 
     def test___repr__(self):
-        dataset = self._make_one('project1', 'dataset1')
+        dataset = self._make_one("project1", "dataset1")
         expected = "DatasetReference('project1', 'dataset1')"
         self.assertEqual(repr(dataset), expected)
 
@@ -252,8 +241,8 @@ class TestDatasetReference(unittest.TestCase):
 class TestDataset(unittest.TestCase):
     from google.cloud.bigquery.dataset import DatasetReference
 
-    PROJECT = 'project'
-    DS_ID = 'dataset-id'
+    PROJECT = "project"
+    DS_ID = "dataset-id"
     DS_REF = DatasetReference(PROJECT, DS_ID)
 
     @staticmethod
@@ -270,48 +259,46 @@ class TestDataset(unittest.TestCase):
         from google.cloud._helpers import UTC
 
         self.WHEN_TS = 1437767599.006
-        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
-            tzinfo=UTC)
-        self.ETAG = 'ETAG'
-        self.DS_FULL_ID = '%s:%s' % (self.PROJECT, self.DS_ID)
-        self.RESOURCE_URL = 'http://example.com/path/to/resource'
+        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
+        self.ETAG = "ETAG"
+        self.DS_FULL_ID = "%s:%s" % (self.PROJECT, self.DS_ID)
+        self.RESOURCE_URL = "http://example.com/path/to/resource"
 
     def _make_resource(self):
         self._setUpConstants()
-        USER_EMAIL = 'phred@example.com'
-        GROUP_EMAIL = 'group-name@lists.example.com'
+        USER_EMAIL = "phred@example.com"
+        GROUP_EMAIL = "group-name@lists.example.com"
         return {
-            'creationTime': self.WHEN_TS * 1000,
-            'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
-            'etag': self.ETAG,
-            'id': self.DS_FULL_ID,
-            'lastModifiedTime': self.WHEN_TS * 1000,
-            'location': 'US',
-            'selfLink': self.RESOURCE_URL,
-            'defaultTableExpirationMs': 3600,
-            'access': [
-                {'role': 'OWNER', 'userByEmail': USER_EMAIL},
-                {'role': 'OWNER', 'groupByEmail': GROUP_EMAIL},
-                {'role': 'WRITER', 'specialGroup': 'projectWriters'},
-                {'role': 'READER', 'specialGroup': 'projectReaders'}],
+            "creationTime": self.WHEN_TS * 1000,
+            "datasetReference": {"projectId": self.PROJECT, "datasetId": self.DS_ID},
+            "etag": self.ETAG,
+            "id": self.DS_FULL_ID,
+            "lastModifiedTime": self.WHEN_TS * 1000,
+            "location": "US",
+            "selfLink": self.RESOURCE_URL,
+            "defaultTableExpirationMs": 3600,
+            "access": [
+                {"role": "OWNER", "userByEmail": USER_EMAIL},
+                {"role": "OWNER", "groupByEmail": GROUP_EMAIL},
+                {"role": "WRITER", "specialGroup": "projectWriters"},
+                {"role": "READER", "specialGroup": "projectReaders"},
+            ],
         }
 
     def _verify_access_entry(self, access_entries, resource):
         r_entries = []
-        for r_entry in resource['access']:
-            role = r_entry.pop('role')
+        for r_entry in resource["access"]:
+            role = r_entry.pop("role")
             for entity_type, entity_id in sorted(r_entry.items()):
-                r_entries.append({
-                    'role': role,
-                    'entity_type': entity_type,
-                    'entity_id': entity_id})
+                r_entries.append(
+                    {"role": role, "entity_type": entity_type, "entity_id": entity_id}
+                )
 
         self.assertEqual(len(access_entries), len(r_entries))
         for a_entry, r_entry in zip(access_entries, r_entries):
-            self.assertEqual(a_entry.role, r_entry['role'])
-            self.assertEqual(a_entry.entity_type, r_entry['entity_type'])
-            self.assertEqual(a_entry.entity_id, r_entry['entity_id'])
+            self.assertEqual(a_entry.role, r_entry["role"])
+            self.assertEqual(a_entry.entity_type, r_entry["entity_type"])
+            self.assertEqual(a_entry.entity_id, r_entry["entity_id"])
 
     def _verify_readonly_resource_properties(self, dataset, resource):
 
@@ -320,19 +307,19 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(dataset.reference.project, self.PROJECT)
         self.assertEqual(dataset.reference.dataset_id, self.DS_ID)
 
-        if 'creationTime' in resource:
+        if "creationTime" in resource:
             self.assertEqual(dataset.created, self.WHEN)
         else:
             self.assertIsNone(dataset.created)
-        if 'etag' in resource:
+        if "etag" in resource:
             self.assertEqual(dataset.etag, self.ETAG)
         else:
             self.assertIsNone(dataset.etag)
-        if 'lastModifiedTime' in resource:
+        if "lastModifiedTime" in resource:
             self.assertEqual(dataset.modified, self.WHEN)
         else:
             self.assertIsNone(dataset.modified)
-        if 'selfLink' in resource:
+        if "selfLink" in resource:
             self.assertEqual(dataset.self_link, self.RESOURCE_URL)
         else:
             self.assertIsNone(dataset.self_link)
@@ -341,16 +328,18 @@ class TestDataset(unittest.TestCase):
 
         self._verify_readonly_resource_properties(dataset, resource)
 
-        if 'defaultTableExpirationMs' in resource:
-            self.assertEqual(dataset.default_table_expiration_ms,
-                             int(resource.get('defaultTableExpirationMs')))
+        if "defaultTableExpirationMs" in resource:
+            self.assertEqual(
+                dataset.default_table_expiration_ms,
+                int(resource.get("defaultTableExpirationMs")),
+            )
         else:
             self.assertIsNone(dataset.default_table_expiration_ms)
-        self.assertEqual(dataset.description, resource.get('description'))
-        self.assertEqual(dataset.friendly_name, resource.get('friendlyName'))
-        self.assertEqual(dataset.location, resource.get('location'))
+        self.assertEqual(dataset.description, resource.get("description"))
+        self.assertEqual(dataset.friendly_name, resource.get("friendlyName"))
+        self.assertEqual(dataset.location, resource.get("location"))
 
-        if 'access' in resource:
+        if "access" in resource:
             self._verify_access_entry(dataset.access_entries, resource)
         else:
             self.assertEqual(dataset.access_entries, [])
@@ -360,8 +349,8 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(dataset.dataset_id, self.DS_ID)
         self.assertEqual(dataset.project, self.PROJECT)
         self.assertEqual(
-            dataset.path,
-            '/projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID))
+            dataset.path, "/projects/%s/datasets/%s" % (self.PROJECT, self.DS_ID)
+        )
         self.assertEqual(dataset.access_entries, [])
 
         self.assertIsNone(dataset.created)
@@ -378,17 +367,17 @@ class TestDataset(unittest.TestCase):
     def test_ctor_explicit(self):
         from google.cloud.bigquery.dataset import DatasetReference, AccessEntry
 
-        phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
-        bharney = AccessEntry('OWNER', 'userByEmail', 'bharney@example.com')
+        phred = AccessEntry("OWNER", "userByEmail", "phred@example.com")
+        bharney = AccessEntry("OWNER", "userByEmail", "bharney@example.com")
         entries = [phred, bharney]
-        OTHER_PROJECT = 'foo-bar-123'
+        OTHER_PROJECT = "foo-bar-123"
         dataset = self._make_one(DatasetReference(OTHER_PROJECT, self.DS_ID))
         dataset.access_entries = entries
         self.assertEqual(dataset.dataset_id, self.DS_ID)
         self.assertEqual(dataset.project, OTHER_PROJECT)
         self.assertEqual(
-            dataset.path,
-            '/projects/%s/datasets/%s' % (OTHER_PROJECT, self.DS_ID))
+            dataset.path, "/projects/%s/datasets/%s" % (OTHER_PROJECT, self.DS_ID)
+        )
         self.assertEqual(dataset.access_entries, entries)
 
         self.assertIsNone(dataset.created)
@@ -411,7 +400,7 @@ class TestDataset(unittest.TestCase):
         from google.cloud.bigquery.dataset import AccessEntry
 
         dataset = self._make_one(self.DS_REF)
-        phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
+        phred = AccessEntry("OWNER", "userByEmail", "phred@example.com")
         with self.assertRaises(ValueError):
             dataset.access_entries = [phred, object()]
 
@@ -419,15 +408,15 @@ class TestDataset(unittest.TestCase):
         from google.cloud.bigquery.dataset import AccessEntry
 
         dataset = self._make_one(self.DS_REF)
-        phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
-        bharney = AccessEntry('OWNER', 'userByEmail', 'bharney@example.com')
+        phred = AccessEntry("OWNER", "userByEmail", "phred@example.com")
+        bharney = AccessEntry("OWNER", "userByEmail", "bharney@example.com")
         dataset.access_entries = [phred, bharney]
         self.assertEqual(dataset.access_entries, [phred, bharney])
 
     def test_default_table_expiration_ms_setter_bad_value(self):
         dataset = self._make_one(self.DS_REF)
         with self.assertRaises(ValueError):
-            dataset.default_table_expiration_ms = 'bogus'
+            dataset.default_table_expiration_ms = "bogus"
 
     def test_default_table_expiration_ms_setter(self):
         dataset = self._make_one(self.DS_REF)
@@ -441,8 +430,8 @@ class TestDataset(unittest.TestCase):
 
     def test_description_setter(self):
         dataset = self._make_one(self.DS_REF)
-        dataset.description = 'DESCRIPTION'
-        self.assertEqual(dataset.description, 'DESCRIPTION')
+        dataset.description = "DESCRIPTION"
+        self.assertEqual(dataset.description, "DESCRIPTION")
 
     def test_friendly_name_setter_bad_value(self):
         dataset = self._make_one(self.DS_REF)
@@ -451,8 +440,8 @@ class TestDataset(unittest.TestCase):
 
     def test_friendly_name_setter(self):
         dataset = self._make_one(self.DS_REF)
-        dataset.friendly_name = 'FRIENDLY'
-        self.assertEqual(dataset.friendly_name, 'FRIENDLY')
+        dataset.friendly_name = "FRIENDLY"
+        self.assertEqual(dataset.friendly_name, "FRIENDLY")
 
     def test_location_setter_bad_value(self):
         dataset = self._make_one(self.DS_REF)
@@ -461,20 +450,20 @@ class TestDataset(unittest.TestCase):
 
     def test_location_setter(self):
         dataset = self._make_one(self.DS_REF)
-        dataset.location = 'LOCATION'
-        self.assertEqual(dataset.location, 'LOCATION')
+        dataset.location = "LOCATION"
+        self.assertEqual(dataset.location, "LOCATION")
 
     def test_labels_update_in_place(self):
         dataset = self._make_one(self.DS_REF)
-        del dataset._properties['labels']  # don't start w/ existing dict
+        del dataset._properties["labels"]  # don't start w/ existing dict
         labels = dataset.labels
-        labels['foo'] = 'bar'  # update in place
-        self.assertEqual(dataset.labels, {'foo': 'bar'})
+        labels["foo"] = "bar"  # update in place
+        self.assertEqual(dataset.labels, {"foo": "bar"})
 
     def test_labels_setter(self):
         dataset = self._make_one(self.DS_REF)
-        dataset.labels = {'color': 'green'}
-        self.assertEqual(dataset.labels, {'color': 'green'})
+        dataset.labels = {"color": "green"}
+        self.assertEqual(dataset.labels, {"color": "green"})
 
     def test_labels_setter_bad_value(self):
         dataset = self._make_one(self.DS_REF)
@@ -495,11 +484,8 @@ class TestDataset(unittest.TestCase):
     def test_from_api_repr_bare(self):
         self._setUpConstants()
         RESOURCE = {
-            'id': '%s:%s' % (self.PROJECT, self.DS_ID),
-            'datasetReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-            }
+            "id": "%s:%s" % (self.PROJECT, self.DS_ID),
+            "datasetReference": {"projectId": self.PROJECT, "datasetId": self.DS_ID},
         }
         klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE)
@@ -513,62 +499,60 @@ class TestDataset(unittest.TestCase):
 
     def test_to_api_repr_w_custom_field(self):
         dataset = self._make_one(self.DS_REF)
-        dataset._properties['newAlphaProperty'] = 'unreleased property'
+        dataset._properties["newAlphaProperty"] = "unreleased property"
         resource = dataset.to_api_repr()
 
         exp_resource = {
-            'datasetReference': self.DS_REF.to_api_repr(),
-            'labels': {},
-            'newAlphaProperty': 'unreleased property',
+            "datasetReference": self.DS_REF.to_api_repr(),
+            "labels": {},
+            "newAlphaProperty": "unreleased property",
         }
         self.assertEqual(resource, exp_resource)
 
     def test_from_string(self):
         cls = self._get_target_class()
-        got = cls.from_string('string-project.string_dataset')
-        self.assertEqual(got.project, 'string-project')
-        self.assertEqual(got.dataset_id, 'string_dataset')
+        got = cls.from_string("string-project.string_dataset")
+        self.assertEqual(got.project, "string-project")
+        self.assertEqual(got.dataset_id, "string_dataset")
 
     def test_from_string_legacy_string(self):
         cls = self._get_target_class()
         with self.assertRaises(ValueError):
-            cls.from_string('string-project:string_dataset')
+            cls.from_string("string-project:string_dataset")
 
     def test__build_resource_w_custom_field(self):
         dataset = self._make_one(self.DS_REF)
-        dataset._properties['newAlphaProperty'] = 'unreleased property'
-        resource = dataset._build_resource(['newAlphaProperty'])
+        dataset._properties["newAlphaProperty"] = "unreleased property"
+        resource = dataset._build_resource(["newAlphaProperty"])
 
-        exp_resource = {
-            'newAlphaProperty': 'unreleased property'
-        }
+        exp_resource = {"newAlphaProperty": "unreleased property"}
         self.assertEqual(resource, exp_resource)
 
     def test__build_resource_w_custom_field_not_in__properties(self):
         dataset = self._make_one(self.DS_REF)
-        dataset.bad = 'value'
+        dataset.bad = "value"
         with self.assertRaises(ValueError):
-            dataset._build_resource(['bad'])
+            dataset._build_resource(["bad"])
 
     def test_table(self):
         from google.cloud.bigquery.table import TableReference
 
         dataset = self._make_one(self.DS_REF)
-        table = dataset.table('table_id')
+        table = dataset.table("table_id")
         self.assertIsInstance(table, TableReference)
-        self.assertEqual(table.table_id, 'table_id')
+        self.assertEqual(table.table_id, "table_id")
         self.assertEqual(table.dataset_id, self.DS_ID)
         self.assertEqual(table.project, self.PROJECT)
 
     def test___repr__(self):
         from google.cloud.bigquery.dataset import DatasetReference
-        dataset = self._make_one(DatasetReference('project1', 'dataset1'))
+
+        dataset = self._make_one(DatasetReference("project1", "dataset1"))
         expected = "Dataset(DatasetReference('project1', 'dataset1'))"
         self.assertEqual(repr(dataset), expected)
 
 
 class TestDatasetListItem(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.dataset import DatasetListItem
@@ -579,61 +563,43 @@ class TestDatasetListItem(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        project = 'test-project'
-        dataset_id = 'test_dataset'
+        project = "test-project"
+        dataset_id = "test_dataset"
         resource = {
-            'kind': 'bigquery#dataset',
-            'id': '{}:{}'.format(project, dataset_id),
-            'datasetReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-            },
-            'friendlyName': 'Data of the Test',
-            'labels': {
-                'some-stuff': 'this-is-a-label',
-            },
+            "kind": "bigquery#dataset",
+            "id": "{}:{}".format(project, dataset_id),
+            "datasetReference": {"projectId": project, "datasetId": dataset_id},
+            "friendlyName": "Data of the Test",
+            "labels": {"some-stuff": "this-is-a-label"},
         }
 
         dataset = self._make_one(resource)
         self.assertEqual(dataset.project, project)
         self.assertEqual(dataset.dataset_id, dataset_id)
-        self.assertEqual(
-            dataset.full_dataset_id,
-            '{}:{}'.format(project, dataset_id))
+        self.assertEqual(dataset.full_dataset_id, "{}:{}".format(project, dataset_id))
         self.assertEqual(dataset.reference.project, project)
         self.assertEqual(dataset.reference.dataset_id, dataset_id)
-        self.assertEqual(dataset.friendly_name, 'Data of the Test')
-        self.assertEqual(dataset.labels['some-stuff'], 'this-is-a-label')
+        self.assertEqual(dataset.friendly_name, "Data of the Test")
+        self.assertEqual(dataset.labels["some-stuff"], "this-is-a-label")
 
     def test_ctor_missing_properties(self):
         resource = {
-            'datasetReference': {
-                'projectId': 'testproject',
-                'datasetId': 'testdataset',
-            },
+            "datasetReference": {"projectId": "testproject", "datasetId": "testdataset"}
         }
         dataset = self._make_one(resource)
-        self.assertEqual(dataset.project, 'testproject')
-        self.assertEqual(dataset.dataset_id, 'testdataset')
+        self.assertEqual(dataset.project, "testproject")
+        self.assertEqual(dataset.dataset_id, "testdataset")
         self.assertIsNone(dataset.full_dataset_id)
         self.assertIsNone(dataset.friendly_name)
         self.assertEqual(dataset.labels, {})
 
     def test_ctor_wo_project(self):
-        resource = {
-            'datasetReference': {
-                'datasetId': 'testdataset',
-            },
-        }
+        resource = {"datasetReference": {"datasetId": "testdataset"}}
         with self.assertRaises(ValueError):
             self._make_one(resource)
 
     def test_ctor_wo_dataset(self):
-        resource = {
-            'datasetReference': {
-                'projectId': 'testproject',
-            },
-        }
+        resource = {"datasetReference": {"projectId": "testproject"}}
         with self.assertRaises(ValueError):
             self._make_one(resource)
 
@@ -643,30 +609,22 @@ class TestDatasetListItem(unittest.TestCase):
 
     def test_labels_update_in_place(self):
         resource = {
-            'datasetReference': {
-                'projectId': 'testproject',
-                'datasetId': 'testdataset',
-            },
+            "datasetReference": {"projectId": "testproject", "datasetId": "testdataset"}
         }
         dataset = self._make_one(resource)
         labels = dataset.labels
-        labels['foo'] = 'bar'  # update in place
-        self.assertEqual(dataset.labels, {'foo': 'bar'})
+        labels["foo"] = "bar"  # update in place
+        self.assertEqual(dataset.labels, {"foo": "bar"})
 
     def test_table(self):
         from google.cloud.bigquery.table import TableReference
 
-        project = 'test-project'
-        dataset_id = 'test_dataset'
-        resource = {
-            'datasetReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-            },
-        }
+        project = "test-project"
+        dataset_id = "test_dataset"
+        resource = {"datasetReference": {"projectId": project, "datasetId": dataset_id}}
         dataset = self._make_one(resource)
-        table = dataset.table('table_id')
+        table = dataset.table("table_id")
         self.assertIsInstance(table, TableReference)
-        self.assertEqual(table.table_id, 'table_id')
+        self.assertEqual(table.table_id, "table_id")
         self.assertEqual(table.dataset_id, dataset_id)
         self.assertEqual(table.project, project)
