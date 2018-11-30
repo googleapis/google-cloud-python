@@ -38,26 +38,25 @@ from google.cloud.firestore_v1beta1.proto import document_pb2
 from google.cloud.firestore_v1beta1.proto import write_pb2
 
 
-BAD_PATH_TEMPLATE = (
-    'A path element must be a string. Received {}, which is a {}.')
-FIELD_PATH_MISSING_TOP = '{!r} is not contained in the data'
-FIELD_PATH_MISSING_KEY = '{!r} is not contained in the data for the key {!r}'
+BAD_PATH_TEMPLATE = "A path element must be a string. Received {}, which is a {}."
+FIELD_PATH_MISSING_TOP = "{!r} is not contained in the data"
+FIELD_PATH_MISSING_KEY = "{!r} is not contained in the data for the key {!r}"
 FIELD_PATH_WRONG_TYPE = (
-    'The data at {!r} is not a dictionary, so it cannot contain the key {!r}')
-FIELD_PATH_DELIMITER = '.'
-DOCUMENT_PATH_DELIMITER = '/'
-INACTIVE_TXN = (
-    'Transaction not in progress, cannot be used in API requests.')
-READ_AFTER_WRITE_ERROR = 'Attempted read after write in a transaction.'
+    "The data at {!r} is not a dictionary, so it cannot contain the key {!r}"
+)
+FIELD_PATH_DELIMITER = "."
+DOCUMENT_PATH_DELIMITER = "/"
+INACTIVE_TXN = "Transaction not in progress, cannot be used in API requests."
+READ_AFTER_WRITE_ERROR = "Attempted read after write in a transaction."
 BAD_REFERENCE_ERROR = (
-    'Reference value {!r} in unexpected format, expected to be of the form '
-    '``projects/{{project}}/databases/{{database}}/'
-    'documents/{{document_path}}``.')
+    "Reference value {!r} in unexpected format, expected to be of the form "
+    "``projects/{{project}}/databases/{{database}}/"
+    "documents/{{document_path}}``."
+)
 WRONG_APP_REFERENCE = (
-    'Document {!r} does not correspond to the same database '
-    '({!r}) as the client.')
-REQUEST_TIME_ENUM = (
-    enums.DocumentTransform.FieldTransform.ServerValue.REQUEST_TIME)
+    "Document {!r} does not correspond to the same database " "({!r}) as the client."
+)
+REQUEST_TIME_ENUM = enums.DocumentTransform.FieldTransform.ServerValue.REQUEST_TIME
 _GRPC_ERROR_MAPPING = {
     grpc.StatusCode.ALREADY_EXISTS: exceptions.Conflict,
     grpc.StatusCode.NOT_FOUND: exceptions.NotFound,
@@ -82,8 +81,7 @@ class GeoPoint(object):
         Returns:
             google.type.latlng_pb2.LatLng: The current point as a protobuf.
         """
-        return latlng_pb2.LatLng(latitude=self.latitude,
-                                 longitude=self.longitude)
+        return latlng_pb2.LatLng(latitude=self.latitude, longitude=self.longitude)
 
     def __eq__(self, other):
         """Compare two geo points for equality.
@@ -96,8 +94,7 @@ class GeoPoint(object):
         if not isinstance(other, GeoPoint):
             return NotImplemented
 
-        return (self.latitude == other.latitude and
-                self.longitude == other.longitude)
+        return self.latitude == other.latitude and self.longitude == other.longitude
 
     def __ne__(self, other):
         """Compare two geo points for inequality.
@@ -121,10 +118,11 @@ class FieldPath(object):
         parts: (one or more strings)
             Indicating path of the key to be used.
     """
+
     def __init__(self, *parts):
         for part in parts:
             if not isinstance(part, six.string_types) or not part:
-                error = 'One or more components is not a string or is empty.'
+                error = "One or more components is not a string or is empty."
                 raise ValueError(error)
         self.parts = tuple(parts)
 
@@ -147,11 +145,11 @@ class FieldPath(object):
             as arguments to `FieldPath`.
         """
         # XXX this should just handle things with the invalid chars
-        invalid_characters = '~*/[]'
+        invalid_characters = "~*/[]"
         for invalid_character in invalid_characters:
             if invalid_character in string:
-                raise ValueError('Invalid characters in string.')
-        string = string.split('.')
+                raise ValueError("Invalid characters in string.")
+        string = string.split(".")
         return FieldPath(*string)
 
     def __repr__(self):
@@ -159,7 +157,7 @@ class FieldPath(object):
         for part in self.parts:
             paths += "'" + part + "',"
         paths = paths[:-1]
-        return 'FieldPath({})'.format(paths)
+        return "FieldPath({})".format(paths)
 
     def __hash__(self):
         return hash(self.to_api_repr())
@@ -191,7 +189,7 @@ class FieldPath(object):
             return NotImplemented
 
     def eq_or_parent(self, other):
-        return self.parts[:len(other.parts)] == other.parts[:len(self.parts)]
+        return self.parts[: len(other.parts)] == other.parts[: len(self.parts)]
 
     def to_api_repr(self):
         """ Returns quoted string representation of the FieldPath
@@ -239,16 +237,14 @@ def verify_path(path, is_collection):
     """
     num_elements = len(path)
     if num_elements == 0:
-        raise ValueError('Document or collection path cannot be empty')
+        raise ValueError("Document or collection path cannot be empty")
 
     if is_collection:
         if num_elements % 2 == 0:
-            raise ValueError(
-                'A collection must have an odd number of path elements')
+            raise ValueError("A collection must have an odd number of path elements")
     else:
         if num_elements % 2 == 1:
-            raise ValueError(
-                'A document must have an even number of path elements')
+            raise ValueError("A document must have an even number of path elements")
 
     for element in path:
         if not isinstance(element, six.string_types):
@@ -285,8 +281,7 @@ def encode_value(value):
         return document_pb2.Value(double_value=value)
 
     if isinstance(value, datetime.datetime):
-        return document_pb2.Value(
-            timestamp_value=_datetime_to_pb_timestamp(value))
+        return document_pb2.Value(timestamp_value=_datetime_to_pb_timestamp(value))
 
     if isinstance(value, six.text_type):
         return document_pb2.Value(string_value=value)
@@ -296,7 +291,7 @@ def encode_value(value):
 
     # NOTE: We avoid doing an isinstance() check for a Document
     #       here to avoid import cycles.
-    document_path = getattr(value, '_document_path', None)
+    document_path = getattr(value, "_document_path", None)
     if document_path is not None:
         return document_pb2.Value(reference_value=document_path)
 
@@ -314,8 +309,8 @@ def encode_value(value):
         return document_pb2.Value(map_value=value_pb)
 
     raise TypeError(
-        'Cannot convert to a Firestore Value', value,
-        'Invalid type', type(value))
+        "Cannot convert to a Firestore Value", value, "Invalid type", type(value)
+    )
 
 
 def encode_dict(values_dict):
@@ -329,10 +324,7 @@ def encode_dict(values_dict):
         dictionary of string keys and ``Value`` protobufs as dictionary
         values.
     """
-    return {
-        key: encode_value(value)
-        for key, value in six.iteritems(values_dict)
-    }
+    return {key: encode_value(value) for key, value in six.iteritems(values_dict)}
 
 
 def reference_value_to_document(reference_value, client):
@@ -363,8 +355,7 @@ def reference_value_to_document(reference_value, client):
     # The sixth part is `a/b/c/d` (i.e. the document path)
     document = client.document(parts[-1])
     if document._document_path != reference_value:
-        msg = WRONG_APP_REFERENCE.format(
-            reference_value, client._database_string)
+        msg = WRONG_APP_REFERENCE.format(reference_value, client._database_string)
         raise ValueError(msg)
 
     return document
@@ -388,38 +379,35 @@ def decode_value(value, client):
         NotImplementedError: If the ``value_type`` is ``reference_value``.
         ValueError: If the ``value_type`` is unknown.
     """
-    value_type = value.WhichOneof('value_type')
+    value_type = value.WhichOneof("value_type")
 
-    if value_type == 'null_value':
+    if value_type == "null_value":
         return None
-    elif value_type == 'boolean_value':
+    elif value_type == "boolean_value":
         return value.boolean_value
-    elif value_type == 'integer_value':
+    elif value_type == "integer_value":
         return value.integer_value
-    elif value_type == 'double_value':
+    elif value_type == "double_value":
         return value.double_value
-    elif value_type == 'timestamp_value':
+    elif value_type == "timestamp_value":
         # NOTE: This conversion is "lossy", Python ``datetime.datetime``
         #       has microsecond precision but ``timestamp_value`` has
         #       nanosecond precision.
         return _pb_timestamp_to_datetime(value.timestamp_value)
-    elif value_type == 'string_value':
+    elif value_type == "string_value":
         return value.string_value
-    elif value_type == 'bytes_value':
+    elif value_type == "bytes_value":
         return value.bytes_value
-    elif value_type == 'reference_value':
+    elif value_type == "reference_value":
         return reference_value_to_document(value.reference_value, client)
-    elif value_type == 'geo_point_value':
-        return GeoPoint(
-            value.geo_point_value.latitude,
-            value.geo_point_value.longitude)
-    elif value_type == 'array_value':
-        return [decode_value(element, client)
-                for element in value.array_value.values]
-    elif value_type == 'map_value':
+    elif value_type == "geo_point_value":
+        return GeoPoint(value.geo_point_value.latitude, value.geo_point_value.longitude)
+    elif value_type == "array_value":
+        return [decode_value(element, client) for element in value.array_value.values]
+    elif value_type == "map_value":
         return decode_dict(value.map_value.fields, client)
     else:
-        raise ValueError('Unknown ``value_type``', value_type)
+        raise ValueError("Unknown ``value_type``", value_type)
 
 
 def decode_dict(value_fields, client):
@@ -437,12 +425,11 @@ def decode_dict(value_fields, client):
         of native Python values converted from the ``value_fields``.
     """
     return {
-        key: decode_value(value, client)
-        for key, value in six.iteritems(value_fields)
+        key: decode_value(value, client) for key, value in six.iteritems(value_fields)
     }
 
 
-SIMPLE_FIELD_NAME = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
+SIMPLE_FIELD_NAME = re.compile("^[_a-zA-Z][_a-zA-Z0-9]*$")
 
 
 def get_field_path(field_names):
@@ -478,19 +465,18 @@ def get_field_path(field_names):
         if match and match.group(0) == field_name:
             result.append(field_name)
         else:
-            replaced = field_name.replace('\\', '\\\\').replace('`', '\\`')
-            result.append('`' + replaced + '`')
+            replaced = field_name.replace("\\", "\\\\").replace("`", "\\`")
+            result.append("`" + replaced + "`")
 
     return FIELD_PATH_DELIMITER.join(result)
 
 
 PATH_ELEMENT_TOKENS = [
-    ('SIMPLE', r'[_a-zA-Z][_a-zA-Z0-9]*'),  # unquoted elements
-    ('QUOTED', r'`(?:\\`|[^`])*?`'),          # quoted elements, unquoted
-    ('DOT', r'\.'),                         # separator
+    ("SIMPLE", r"[_a-zA-Z][_a-zA-Z0-9]*"),  # unquoted elements
+    ("QUOTED", r"`(?:\\`|[^`])*?`"),  # quoted elements, unquoted
+    ("DOT", r"\."),  # separator
 ]
-TOKENS_PATTERN = '|'.join(
-    '(?P<{}>{})'.format(*pair) for pair in PATH_ELEMENT_TOKENS)
+TOKENS_PATTERN = "|".join("(?P<{}>{})".format(*pair) for pair in PATH_ELEMENT_TOKENS)
 TOKENS_REGEX = re.compile(TOKENS_PATTERN)
 
 
@@ -532,12 +518,12 @@ def split_field_path(path):
 
     for element in _tokenize_field_path(path):
         if want_dot:
-            if element != '.':
+            if element != ".":
                 raise ValueError("Invalid path: {}".format(path))
             else:
                 want_dot = False
         else:
-            if element == '.':
+            if element == ".":
                 raise ValueError("Invalid path: {}".format(path))
             elements.append(element)
             want_dot = True
@@ -569,10 +555,10 @@ def parse_field_path(api_repr):
     field_names = []
     for field_name in split_field_path(api_repr):
         # non-simple field name
-        if field_name[0] == '`' and field_name[-1] == '`':
+        if field_name[0] == "`" and field_name[-1] == "`":
             field_name = field_name[1:-1]
-            field_name = field_name.replace('\\`', '`')
-            field_name = field_name.replace('\\\\', '\\')
+            field_name = field_name.replace("\\`", "`")
+            field_name = field_name.replace("\\\\", "\\")
         field_names.append(field_name)
     return field_names
 
@@ -670,12 +656,14 @@ def get_doc_id(document_pb, expected_prefix):
     Raises:
         ValueError: If the name does not begin with the prefix.
     """
-    prefix, document_id = document_pb.name.rsplit(
-        DOCUMENT_PATH_DELIMITER, 1)
+    prefix, document_id = document_pb.name.rsplit(DOCUMENT_PATH_DELIMITER, 1)
     if prefix != expected_prefix:
         raise ValueError(
-            'Unexpected document name', document_pb.name,
-            'Expected to begin with', expected_prefix)
+            "Unexpected document name",
+            document_pb.name,
+            "Expected to begin with",
+            expected_prefix,
+        )
 
     return document_id
 
@@ -734,6 +722,7 @@ class DocumentExtractor(object):
             Property names and values to use for sending a change to
             a document.
     """
+
     def __init__(self, document_data):
         self.document_data = document_data
         self.field_paths = []
@@ -773,24 +762,18 @@ class DocumentExtractor(object):
 
     @property
     def has_transforms(self):
-        return bool(
-            self.server_timestamps
-            or self.array_removes
-            or self.array_unions
-        )
+        return bool(self.server_timestamps or self.array_removes or self.array_unions)
 
     @property
     def transform_paths(self):
         return sorted(
-            self.server_timestamps
-            + list(self.array_removes)
-            + list(self.array_unions))
+            self.server_timestamps + list(self.array_removes) + list(self.array_unions)
+        )
 
     def _get_update_mask(self, allow_empty_mask=False):
         return None
 
-    def get_update_pb(
-            self, document_path, exists=None, allow_empty_mask=False):
+    def get_update_pb(self, document_path, exists=None, allow_empty_mask=False):
 
         if exists is not None:
             current_document = common_pb2.Precondition(exists=exists)
@@ -799,8 +782,7 @@ class DocumentExtractor(object):
 
         update_pb = write_pb2.Write(
             update=document_pb2.Document(
-                name=document_path,
-                fields=encode_dict(self.set_fields),
+                name=document_path, fields=encode_dict(self.set_fields)
             ),
             update_mask=self._get_update_mask(allow_empty_mask),
             current_document=current_document,
@@ -809,39 +791,54 @@ class DocumentExtractor(object):
         return update_pb
 
     def get_transform_pb(self, document_path, exists=None):
-
         def make_array_value(values):
             value_list = [encode_value(element) for element in values]
             return document_pb2.ArrayValue(values=value_list)
 
-        path_field_transforms = [
-            (path, write_pb2.DocumentTransform.FieldTransform(
-                field_path=path.to_api_repr(),
-                set_to_server_value=REQUEST_TIME_ENUM,
-            )) for path in self.server_timestamps
-        ] + [
-            (path, write_pb2.DocumentTransform.FieldTransform(
-                field_path=path.to_api_repr(),
-                remove_all_from_array=make_array_value(values),
-            )) for path, values in self.array_removes.items()
-        ] + [
-            (path, write_pb2.DocumentTransform.FieldTransform(
-                field_path=path.to_api_repr(),
-                append_missing_elements=make_array_value(values),
-            )) for path, values in self.array_unions.items()
-        ]
+        path_field_transforms = (
+            [
+                (
+                    path,
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(),
+                        set_to_server_value=REQUEST_TIME_ENUM,
+                    ),
+                )
+                for path in self.server_timestamps
+            ]
+            + [
+                (
+                    path,
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(),
+                        remove_all_from_array=make_array_value(values),
+                    ),
+                )
+                for path, values in self.array_removes.items()
+            ]
+            + [
+                (
+                    path,
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(),
+                        append_missing_elements=make_array_value(values),
+                    ),
+                )
+                for path, values in self.array_unions.items()
+            ]
+        )
         field_transforms = [
             transform for path, transform in sorted(path_field_transforms)
         ]
         transform_pb = write_pb2.Write(
             transform=write_pb2.DocumentTransform(
-                document=document_path,
-                field_transforms=field_transforms,
-            ),
+                document=document_path, field_transforms=field_transforms
+            )
         )
         if exists is not None:
             transform_pb.current_document.CopyFrom(
-                common_pb2.Precondition(exists=exists))
+                common_pb2.Precondition(exists=exists)
+            )
 
         return transform_pb
 
@@ -912,6 +909,7 @@ def pbs_for_set_no_merge(document_path, document_data):
 class DocumentExtractorForMerge(DocumentExtractor):
     """ Break document data up into actual data and transforms.
     """
+
     def __init__(self, document_data):
         super(DocumentExtractorForMerge, self).__init__(document_data)
         self.data_merge = []
@@ -953,8 +951,7 @@ class DocumentExtractorForMerge(DocumentExtractor):
         for index in range(len(merge_paths) - 1):
             lhs, rhs = merge_paths[index], merge_paths[index + 1]
             if lhs.eq_or_parent(rhs):
-                raise ValueError("Merge paths overlap: {}, {}".format(
-                    lhs, rhs))
+                raise ValueError("Merge paths overlap: {}, {}".format(lhs, rhs))
 
         for merge_path in merge_paths:
             if merge_path in self.deleted_fields:
@@ -969,8 +966,7 @@ class DocumentExtractorForMerge(DocumentExtractor):
     def _apply_merge_paths(self, merge):
 
         if self.empty_document:
-            raise ValueError(
-                "Cannot merge specific fields with empty document.")
+            raise ValueError("Cannot merge specific fields with empty document.")
 
         merge_paths = self._normalize_merge_paths(merge)
 
@@ -995,35 +991,39 @@ class DocumentExtractorForMerge(DocumentExtractor):
         self.set_fields = merged_set_fields
 
         unmerged_deleted_fields = [
-            field_path for field_path in self.deleted_fields
+            field_path
+            for field_path in self.deleted_fields
             if field_path not in self.merge
         ]
         if unmerged_deleted_fields:
-            raise ValueError("Cannot delete unmerged fields: {}".format(
-                unmerged_deleted_fields))
+            raise ValueError(
+                "Cannot delete unmerged fields: {}".format(unmerged_deleted_fields)
+            )
         self.data_merge = sorted(self.data_merge + self.deleted_fields)
 
         # Keep only transforms which are within merge.
         merged_transform_paths = set()
         for merge_path in self.merge:
             tranform_merge_paths = [
-                transform_path for transform_path in self.transform_paths
+                transform_path
+                for transform_path in self.transform_paths
                 if merge_path.eq_or_parent(transform_path)
             ]
             merged_transform_paths.update(tranform_merge_paths)
 
         self.server_timestamps = [
-            path for path in self.server_timestamps
-            if path in merged_transform_paths
+            path for path in self.server_timestamps if path in merged_transform_paths
         ]
 
         self.array_removes = {
-            path: values for path, values in self.array_removes.items()
+            path: values
+            for path, values in self.array_removes.items()
             if path in merged_transform_paths
         }
 
         self.array_unions = {
-            path: values for path, values in self.array_unions.items()
+            path: values
+            for path, values in self.array_unions.items()
             if path in merged_transform_paths
         }
 
@@ -1036,7 +1036,8 @@ class DocumentExtractorForMerge(DocumentExtractor):
     def _get_update_mask(self, allow_empty_mask=False):
         # Mask uses dotted / quoted paths.
         mask_paths = [
-            field_path.to_api_repr() for field_path in self.merge
+            field_path.to_api_repr()
+            for field_path in self.merge
             if field_path not in self.transform_merge
         ]
 
@@ -1067,8 +1068,8 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
 
     if extractor.has_updates or merge_empty:
         write_pbs.append(
-            extractor.get_update_pb(
-                document_path, allow_empty_mask=merge_empty))
+            extractor.get_update_pb(document_path, allow_empty_mask=merge_empty)
+        )
 
     if extractor.transform_paths:
         transform_pb = extractor.get_transform_pb(document_path)
@@ -1080,26 +1081,30 @@ def pbs_for_set_with_merge(document_path, document_data, merge):
 class DocumentExtractorForUpdate(DocumentExtractor):
     """ Break document data up into actual data and transforms.
     """
+
     def __init__(self, document_data):
         super(DocumentExtractorForUpdate, self).__init__(document_data)
-        self.top_level_paths = sorted([
-            FieldPath.from_string(key) for key in document_data
-        ])
+        self.top_level_paths = sorted(
+            [FieldPath.from_string(key) for key in document_data]
+        )
         tops = set(self.top_level_paths)
         for top_level_path in self.top_level_paths:
             for ancestor in top_level_path.lineage():
                 if ancestor in tops:
-                    raise ValueError("Conflicting field path: {}, {}".format(
-                        top_level_path, ancestor))
+                    raise ValueError(
+                        "Conflicting field path: {}, {}".format(
+                            top_level_path, ancestor
+                        )
+                    )
 
         for field_path in self.deleted_fields:
             if field_path not in tops:
-                raise ValueError("Cannot update with nest delete: {}".format(
-                    field_path))
+                raise ValueError(
+                    "Cannot update with nest delete: {}".format(field_path)
+                )
 
     def _get_document_iterator(self, prefix_path):
-        return extract_fields(
-            self.document_data, prefix_path, expand_dots=True)
+        return extract_fields(self.document_data, prefix_path, expand_dots=True)
 
     def _get_update_mask(self, allow_empty_mask=False):
         mask_paths = []
@@ -1132,7 +1137,7 @@ def pbs_for_update(document_path, field_updates, option):
     extractor = DocumentExtractorForUpdate(field_updates)
 
     if extractor.empty_document:
-        raise ValueError('Cannot update with an empty document.')
+        raise ValueError("Cannot update with an empty document.")
 
     if option is None:  # Default is to use ``exists=True``.
         option = ExistsOption(exists=True)
@@ -1221,7 +1226,7 @@ def metadata_with_prefix(prefix, **kw):
     Returns:
         List[Tuple[str, str]]: RPC metadata with supplied prefix
     """
-    return [('google-cloud-resource-prefix', prefix)]
+    return [("google-cloud-resource-prefix", prefix)]
 
 
 class WriteOption(object):
@@ -1276,8 +1281,7 @@ class LastUpdateOption(WriteOption):
             unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
                 other subclasses that are unused here.
         """
-        current_doc = types.Precondition(
-            update_time=self._last_update_time)
+        current_doc = types.Precondition(update_time=self._last_update_time)
         write_pb.current_document.CopyFrom(current_doc)
 
 

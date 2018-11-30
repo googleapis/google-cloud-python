@@ -44,7 +44,8 @@ from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 _LOCATION_SETTER_MESSAGE = (
     "Assignment to 'Bucket.location' is deprecated, as it is only "
     "valid before the bucket is created. Instead, pass the location "
-    "to `Bucket.create`.")
+    "to `Bucket.create`."
+)
 
 
 def _blobs_page_start(iterator, page, response):
@@ -59,7 +60,7 @@ def _blobs_page_start(iterator, page, response):
     :type response: dict
     :param response: The JSON API response for a page of blobs.
     """
-    page.prefixes = tuple(response.get('prefixes', ()))
+    page.prefixes = tuple(response.get("prefixes", ()))
     iterator.prefixes.update(page.prefixes)
 
 
@@ -80,7 +81,7 @@ def _item_to_blob(iterator, item):
     :rtype: :class:`.Blob`
     :returns: The next blob in the page.
     """
-    name = item.get('name')
+    name = item.get("name")
     blob = Blob(name, bucket=iterator.bucket)
     blob._set_properties(item)
     return blob
@@ -136,25 +137,32 @@ class LifecycleRuleConditions(dict):
 
     :raises ValueError: if no arguments are passed.
     """
-    def __init__(self, age=None, created_before=None, is_live=None,
-                 matches_storage_class=None, number_of_newer_versions=None,
-                 _factory=False):
+
+    def __init__(
+        self,
+        age=None,
+        created_before=None,
+        is_live=None,
+        matches_storage_class=None,
+        number_of_newer_versions=None,
+        _factory=False,
+    ):
         conditions = {}
 
         if age is not None:
-            conditions['age'] = age
+            conditions["age"] = age
 
         if created_before is not None:
-            conditions['createdBefore'] = created_before.isoformat()
+            conditions["createdBefore"] = created_before.isoformat()
 
         if is_live is not None:
-            conditions['isLive'] = is_live
+            conditions["isLive"] = is_live
 
         if matches_storage_class is not None:
-            conditions['matchesStorageClass'] = matches_storage_class
+            conditions["matchesStorageClass"] = matches_storage_class
 
         if number_of_newer_versions is not None:
-            conditions['numNewerVersions'] = number_of_newer_versions
+            conditions["numNewerVersions"] = number_of_newer_versions
 
         if not _factory and not conditions:
             raise ValueError("Supply at least one condition")
@@ -178,29 +186,29 @@ class LifecycleRuleConditions(dict):
     @property
     def age(self):
         """Conditon's age value."""
-        return self.get('age')
+        return self.get("age")
 
     @property
     def created_before(self):
         """Conditon's created_before value."""
-        before = self.get('createdBefore')
+        before = self.get("createdBefore")
         if before is not None:
             return datetime_helpers.from_iso8601_date(before)
 
     @property
     def is_live(self):
         """Conditon's 'is_live' value."""
-        return self.get('isLive')
+        return self.get("isLive")
 
     @property
     def matches_storage_class(self):
         """Conditon's 'matches_storage_class' value."""
-        return self.get('matchesStorageClass')
+        return self.get("matchesStorageClass")
 
     @property
     def number_of_newer_versions(self):
         """Conditon's 'number_of_newer_versions' value."""
-        return self.get('numNewerVersions')
+        return self.get("numNewerVersions")
 
 
 class LifecycleRuleDelete(dict):
@@ -209,14 +217,10 @@ class LifecycleRuleDelete(dict):
     :type kw: dict
     :params kw: arguments passed to :class:`LifecycleRuleConditions`.
     """
+
     def __init__(self, **kw):
         conditions = LifecycleRuleConditions(**kw)
-        rule = {
-            'action': {
-                'type': 'Delete',
-            },
-            'condition': dict(conditions),
-        }
+        rule = {"action": {"type": "Delete"}, "condition": dict(conditions)}
         super(LifecycleRuleDelete, self).__init__(rule)
 
     @classmethod
@@ -243,14 +247,12 @@ class LifecycleRuleSetStorageClass(dict):
     :type kw: dict
     :params kw: arguments passed to :class:`LifecycleRuleConditions`.
     """
+
     def __init__(self, storage_class, **kw):
         conditions = LifecycleRuleConditions(**kw)
         rule = {
-            'action': {
-                'type': 'SetStorageClass',
-                'storageClass': storage_class,
-            },
-            'condition': dict(conditions),
+            "action": {"type": "SetStorageClass", "storageClass": storage_class},
+            "condition": dict(conditions),
         }
         super(LifecycleRuleSetStorageClass, self).__init__(rule)
 
@@ -264,8 +266,8 @@ class LifecycleRuleSetStorageClass(dict):
         :rtype: :class:`LifecycleRuleDelete`
         :returns: Instance created from resource.
         """
-        action = resource['action']
-        instance = cls(action['storageClass'], _factory=True)
+        action = resource["action"]
+        instance = cls(action["storageClass"], _factory=True)
         instance.update(resource)
         return instance
 
@@ -293,12 +295,12 @@ class Bucket(_PropertyMixin):
     """
 
     _STORAGE_CLASSES = (
-        'MULTI_REGIONAL',
-        'REGIONAL',
-        'NEARLINE',
-        'COLDLINE',
-        'STANDARD',  # alias for MULTI_REGIONAL/REGIONAL, based on location
-        'DURABLE_REDUCED_AVAILABILITY',  # deprecated
+        "MULTI_REGIONAL",
+        "REGIONAL",
+        "NEARLINE",
+        "COLDLINE",
+        "STANDARD",  # alias for MULTI_REGIONAL/REGIONAL, based on location
+        "DURABLE_REDUCED_AVAILABILITY",  # deprecated
     )
     """Allowed values for :attr:`storage_class`.
 
@@ -317,7 +319,7 @@ class Bucket(_PropertyMixin):
         self._user_project = user_project
 
     def __repr__(self):
-        return '<Bucket: %s>' % (self.name,)
+        return "<Bucket: %s>" % (self.name,)
 
     @property
     def client(self):
@@ -343,8 +345,7 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
-    def blob(self, blob_name, chunk_size=None,
-             encryption_key=None, kms_key_name=None):
+    def blob(self, blob_name, chunk_size=None, encryption_key=None, kms_key_name=None):
         """Factory constructor for blob object.
 
         .. note::
@@ -370,15 +371,23 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
-        return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
-                    encryption_key=encryption_key, kms_key_name=kms_key_name)
+        return Blob(
+            name=blob_name,
+            bucket=self,
+            chunk_size=chunk_size,
+            encryption_key=encryption_key,
+            kms_key_name=kms_key_name,
+        )
 
-    def notification(self, topic_name,
-                     topic_project=None,
-                     custom_attributes=None,
-                     event_types=None,
-                     blob_name_prefix=None,
-                     payload_format=NONE_PAYLOAD_FORMAT):
+    def notification(
+        self,
+        topic_name,
+        topic_project=None,
+        custom_attributes=None,
+        event_types=None,
+        blob_name_prefix=None,
+        payload_format=NONE_PAYLOAD_FORMAT,
+    ):
         """Factory:  create a notification resource for the bucket.
 
         See: :class:`.BucketNotification` for parameters.
@@ -386,7 +395,8 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`.BucketNotification`
         """
         return BucketNotification(
-            self, topic_name,
+            self,
+            topic_name,
             topic_project=topic_project,
             custom_attributes=custom_attributes,
             event_types=event_types,
@@ -410,17 +420,20 @@ class Bucket(_PropertyMixin):
         client = self._require_client(client)
         # We only need the status code (200 or not) so we seek to
         # minimize the returned payload.
-        query_params = {'fields': 'name'}
+        query_params = {"fields": "name"}
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
 
         try:
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
             client._connection.api_request(
-                method='GET', path=self.path,
-                query_params=query_params, _target_object=None)
+                method="GET",
+                path=self.path,
+                query_params=query_params,
+                _target_object=None,
+            )
             # NOTE: This will not fail immediately in a batch. However, when
             #       Batch.finish() is called, the resulting `NotFound` will be
             #       raised.
@@ -465,19 +478,22 @@ class Bucket(_PropertyMixin):
             project = client.project
 
         if project is None:
-            raise ValueError(
-                "Client project not set:  pass an explicit project.")
+            raise ValueError("Client project not set:  pass an explicit project.")
 
-        query_params = {'project': project}
+        query_params = {"project": project}
         properties = {key: self._properties[key] for key in self._changes}
-        properties['name'] = self.name
+        properties["name"] = self.name
 
         if location is not None:
-            properties['location'] = location
+            properties["location"] = location
 
         api_response = client._connection.api_request(
-            method='POST', path='/b', query_params=query_params,
-            data=properties, _target_object=self)
+            method="POST",
+            path="/b",
+            query_params=query_params,
+            data=properties,
+            _target_object=self,
+        )
         self._set_properties(api_response)
 
     def patch(self, client=None):
@@ -495,10 +511,10 @@ class Bucket(_PropertyMixin):
         # Special case: For buckets, it is possible that labels are being
         # removed; this requires special handling.
         if self._label_removals:
-            self._changes.add('labels')
-            self._properties.setdefault('labels', {})
+            self._changes.add("labels")
+            self._properties.setdefault("labels", {})
             for removed_label in self._label_removals:
-                self._properties['labels'][removed_label] = None
+                self._properties["labels"][removed_label] = None
 
         # Call the superclass method.
         return super(Bucket, self).patch(client=client)
@@ -523,13 +539,13 @@ class Bucket(_PropertyMixin):
         :rtype: str
         :returns: The relative URL path for ``bucket_name``.
         """
-        return '/b/' + bucket_name
+        return "/b/" + bucket_name
 
     @property
     def path(self):
         """The URL path to this bucket."""
         if not self.name:
-            raise ValueError('Cannot determine path without bucket name.')
+            raise ValueError("Cannot determine path without bucket name.")
 
         return self.path_helper(self.name)
 
@@ -569,13 +585,14 @@ class Bucket(_PropertyMixin):
         query_params = {}
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
-        blob = Blob(bucket=self, name=blob_name, encryption_key=encryption_key,
-                    **kwargs)
+            query_params["userProject"] = self.user_project
+        blob = Blob(
+            bucket=self, name=blob_name, encryption_key=encryption_key, **kwargs
+        )
         try:
             headers = _get_encryption_headers(encryption_key)
             response = client._connection.api_request(
-                method='GET',
+                method="GET",
                 path=blob.path,
                 query_params=query_params,
                 headers=headers,
@@ -590,9 +607,17 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return None
 
-    def list_blobs(self, max_results=None, page_token=None, prefix=None,
-                   delimiter=None, versions=None,
-                   projection='noAcl', fields=None, client=None):
+    def list_blobs(
+        self,
+        max_results=None,
+        page_token=None,
+        prefix=None,
+        delimiter=None,
+        versions=None,
+        projection="noAcl",
+        fields=None,
+        client=None,
+    ):
         """Return an iterator used to find blobs in the bucket.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -636,25 +661,25 @@ class Bucket(_PropertyMixin):
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
-        extra_params = {'projection': projection}
+        extra_params = {"projection": projection}
 
         if prefix is not None:
-            extra_params['prefix'] = prefix
+            extra_params["prefix"] = prefix
 
         if delimiter is not None:
-            extra_params['delimiter'] = delimiter
+            extra_params["delimiter"] = delimiter
 
         if versions is not None:
-            extra_params['versions'] = versions
+            extra_params["versions"] = versions
 
         if fields is not None:
-            extra_params['fields'] = fields
+            extra_params["fields"] = fields
 
         if self.user_project is not None:
-            extra_params['userProject'] = self.user_project
+            extra_params["userProject"] = self.user_project
 
         client = self._require_client(client)
-        path = self.path + '/o'
+        path = self.path + "/o"
         iterator = page_iterator.HTTPIterator(
             client=client,
             api_request=client._connection.api_request,
@@ -663,7 +688,8 @@ class Bucket(_PropertyMixin):
             page_token=page_token,
             max_results=max_results,
             extra_params=extra_params,
-            page_start=_blobs_page_start)
+            page_start=_blobs_page_start,
+        )
         iterator.bucket = self
         iterator.prefixes = set()
         return iterator
@@ -685,12 +711,13 @@ class Bucket(_PropertyMixin):
         :returns: notification instances
         """
         client = self._require_client(client)
-        path = self.path + '/notificationConfigs'
+        path = self.path + "/notificationConfigs"
         iterator = page_iterator.HTTPIterator(
             client=client,
             api_request=client._connection.api_request,
             path=path,
-            item_to_value=_item_to_notification)
+            item_to_value=_item_to_notification,
+        )
         iterator.bucket = self
         return iterator
 
@@ -728,33 +755,35 @@ class Bucket(_PropertyMixin):
         query_params = {}
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
 
         if force:
-            blobs = list(self.list_blobs(
-                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
-                client=client))
+            blobs = list(
+                self.list_blobs(
+                    max_results=self._MAX_OBJECTS_FOR_ITERATION + 1, client=client
+                )
+            )
             if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                 message = (
-                    'Refusing to delete bucket with more than '
-                    '%d objects. If you actually want to delete '
-                    'this bucket, please delete the objects '
-                    'yourself before calling Bucket.delete().'
+                    "Refusing to delete bucket with more than "
+                    "%d objects. If you actually want to delete "
+                    "this bucket, please delete the objects "
+                    "yourself before calling Bucket.delete()."
                 ) % (self._MAX_OBJECTS_FOR_ITERATION,)
                 raise ValueError(message)
 
             # Ignore 404 errors on delete.
-            self.delete_blobs(blobs, on_error=lambda blob: None,
-                              client=client)
+            self.delete_blobs(blobs, on_error=lambda blob: None, client=client)
 
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
-            method='DELETE',
+            method="DELETE",
             path=self.path,
             query_params=query_params,
-            _target_object=None)
+            _target_object=None,
+        )
 
     def delete_blob(self, blob_name, client=None):
         """Deletes a blob from the current bucket.
@@ -791,17 +820,18 @@ class Bucket(_PropertyMixin):
         query_params = {}
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
 
         blob_path = Blob.path_helper(self.path, blob_name)
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
-            method='DELETE',
+            method="DELETE",
             path=blob_path,
             query_params=query_params,
-            _target_object=None)
+            _target_object=None,
+        )
 
     def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
@@ -839,8 +869,15 @@ class Bucket(_PropertyMixin):
                 else:
                     raise
 
-    def copy_blob(self, blob, destination_bucket, new_name=None,
-                  client=None, preserve_acl=True, source_generation=None):
+    def copy_blob(
+        self,
+        blob,
+        destination_bucket,
+        new_name=None,
+        client=None,
+        preserve_acl=True,
+        source_generation=None,
+    ):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -875,18 +912,18 @@ class Bucket(_PropertyMixin):
         query_params = {}
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
 
         if source_generation is not None:
-            query_params['sourceGeneration'] = source_generation
+            query_params["sourceGeneration"] = source_generation
 
         if new_name is None:
             new_name = blob.name
 
         new_blob = Blob(bucket=destination_bucket, name=new_name)
-        api_path = blob.path + '/copyTo' + new_blob.path
+        api_path = blob.path + "/copyTo" + new_blob.path
         copy_result = client._connection.api_request(
-            method='POST',
+            method="POST",
             path=api_path,
             query_params=query_params,
             _target_object=new_blob,
@@ -962,8 +999,7 @@ class Bucket(_PropertyMixin):
         :rtype: list of dictionaries
         :returns: A sequence of mappings describing each CORS policy.
         """
-        return [copy.deepcopy(policy)
-                for policy in self._properties.get('cors', ())]
+        return [copy.deepcopy(policy) for policy in self._properties.get("cors", ())]
 
     @cors.setter
     def cors(self, entries):
@@ -975,9 +1011,9 @@ class Bucket(_PropertyMixin):
         :type entries: list of dictionaries
         :param entries: A sequence of mappings describing each CORS policy.
         """
-        self._patch_property('cors', entries)
+        self._patch_property("cors", entries)
 
-    default_event_based_hold = _scalar_property('defaultEventBasedHold')
+    default_event_based_hold = _scalar_property("defaultEventBasedHold")
     """Are uploaded objects automatically placed under an even-based hold?
 
     If True, uploaded objects will be placed under an event-based hold to
@@ -1004,8 +1040,8 @@ class Bucket(_PropertyMixin):
         :rtype: str
         :returns: Default KMS encryption key, or ``None`` if not set.
         """
-        encryption_config = self._properties.get('encryption', {})
-        return encryption_config.get('defaultKmsKeyName')
+        encryption_config = self._properties.get("encryption", {})
+        return encryption_config.get("defaultKmsKeyName")
 
     @default_kms_key_name.setter
     def default_kms_key_name(self, value):
@@ -1014,9 +1050,9 @@ class Bucket(_PropertyMixin):
         :type value: str or None
         :param value: new KMS key name (None to clear any existing key).
         """
-        encryption_config = self._properties.get('encryption', {})
-        encryption_config['defaultKmsKeyName'] = value
-        self._patch_property('encryption', encryption_config)
+        encryption_config = self._properties.get("encryption", {})
+        encryption_config["defaultKmsKeyName"] = value
+        self._patch_property("encryption", encryption_config)
 
     @property
     def labels(self):
@@ -1043,7 +1079,7 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`dict`
         :returns: Name-value pairs (string->string) labelling the bucket.
         """
-        labels = self._properties.get('labels')
+        labels = self._properties.get("labels")
         if labels is None:
             return {}
         return copy.deepcopy(labels)
@@ -1062,12 +1098,10 @@ class Bucket(_PropertyMixin):
         # so that a future .patch() call can do the correct thing.
         existing = set([k for k in self.labels.keys()])
         incoming = set([k for k in mapping.keys()])
-        self._label_removals = self._label_removals.union(
-            existing.difference(incoming),
-        )
+        self._label_removals = self._label_removals.union(existing.difference(incoming))
 
         # Actually update the labels on the object.
-        self._patch_property('labels', copy.deepcopy(mapping))
+        self._patch_property("labels", copy.deepcopy(mapping))
 
     @property
     def etag(self):
@@ -1080,7 +1114,7 @@ class Bucket(_PropertyMixin):
         :returns: The bucket etag or ``None`` if the bucket's
                   resource has not been loaded from the server.
         """
-        return self._properties.get('etag')
+        return self._properties.get("etag")
 
     @property
     def id(self):
@@ -1092,7 +1126,7 @@ class Bucket(_PropertyMixin):
         :returns: The ID of the bucket or ``None`` if the bucket's
                   resource has not been loaded from the server.
         """
-        return self._properties.get('id')
+        return self._properties.get("id")
 
     @property
     def lifecycle_rules(self):
@@ -1121,12 +1155,12 @@ class Bucket(_PropertyMixin):
         :rtype: generator(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
         """
-        info = self._properties.get('lifecycle', {})
-        for rule in info.get('rule', ()):
-            action_type = rule['action']['type']
-            if action_type == 'Delete':
+        info = self._properties.get("lifecycle", {})
+        for rule in info.get("rule", ()):
+            action_type = rule["action"]["type"]
+            if action_type == "Delete":
                 yield LifecycleRuleDelete.from_api_repr(rule)
-            elif action_type == 'SetStorageClass':
+            elif action_type == "SetStorageClass":
                 yield LifecycleRuleSetStorageClass.from_api_repr(rule)
             else:
                 raise ValueError("Unknown lifecycle rule: {}".format(rule))
@@ -1142,7 +1176,7 @@ class Bucket(_PropertyMixin):
         :param entries: A sequence of mappings describing each lifecycle rule.
         """
         rules = [dict(rule) for rule in rules]  # Convert helpers if needed
-        self._patch_property('lifecycle', {'rule': rules})
+        self._patch_property("lifecycle", {"rule": rules})
 
     def clear_lifecyle_rules(self):
         """Set lifestyle rules configured for this bucket.
@@ -1189,7 +1223,7 @@ class Bucket(_PropertyMixin):
         rules.append(LifecycleRuleSetStorageClass(storage_class, **kw))
         self.lifecycle_rules = rules
 
-    _location = _scalar_property('location')
+    _location = _scalar_property("location")
 
     @property
     def location(self):
@@ -1219,8 +1253,7 @@ class Bucket(_PropertyMixin):
             valid before the bucket is created. Instead, pass the location
             to `Bucket.create`.
         """
-        warnings.warn(
-            _LOCATION_SETTER_MESSAGE, DeprecationWarning, stacklevel=2)
+        warnings.warn(_LOCATION_SETTER_MESSAGE, DeprecationWarning, stacklevel=2)
         self._location = value
 
     def get_logging(self):
@@ -1232,10 +1265,10 @@ class Bucket(_PropertyMixin):
         :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``
                   (if logging is enabled), or None (if not).
         """
-        info = self._properties.get('logging')
+        info = self._properties.get("logging")
         return copy.deepcopy(info)
 
-    def enable_logging(self, bucket_name, object_prefix=''):
+    def enable_logging(self, bucket_name, object_prefix=""):
         """Enable access logging for this bucket.
 
         See https://cloud.google.com/storage/docs/access-logs
@@ -1246,15 +1279,15 @@ class Bucket(_PropertyMixin):
         :type object_prefix: str
         :param object_prefix: prefix for access log filenames
         """
-        info = {'logBucket': bucket_name, 'logObjectPrefix': object_prefix}
-        self._patch_property('logging', info)
+        info = {"logBucket": bucket_name, "logObjectPrefix": object_prefix}
+        self._patch_property("logging", info)
 
     def disable_logging(self):
         """Disable access logging for this bucket.
 
         See https://cloud.google.com/storage/docs/access-logs#disabling
         """
-        self._patch_property('logging', None)
+        self._patch_property("logging", None)
 
     @property
     def metageneration(self):
@@ -1266,7 +1299,7 @@ class Bucket(_PropertyMixin):
         :returns: The metageneration of the bucket or ``None`` if the bucket's
                   resource has not been loaded from the server.
         """
-        metageneration = self._properties.get('metageneration')
+        metageneration = self._properties.get("metageneration")
         if metageneration is not None:
             return int(metageneration)
 
@@ -1280,7 +1313,7 @@ class Bucket(_PropertyMixin):
         :returns: Mapping of owner's role/ID. Returns ``None`` if the bucket's
                   resource has not been loaded from the server.
         """
-        return copy.deepcopy(self._properties.get('owner'))
+        return copy.deepcopy(self._properties.get("owner"))
 
     @property
     def project_number(self):
@@ -1292,7 +1325,7 @@ class Bucket(_PropertyMixin):
         :returns: The project number that owns the bucket or ``None`` if
                   the bucket's resource has not been loaded from the server.
         """
-        project_number = self._properties.get('projectNumber')
+        project_number = self._properties.get("projectNumber")
         if project_number is not None:
             return int(project_number)
 
@@ -1305,9 +1338,9 @@ class Bucket(_PropertyMixin):
                   effective, or ``None`` if the property is not
                   set locally.
         """
-        policy = self._properties.get('retentionPolicy')
+        policy = self._properties.get("retentionPolicy")
         if policy is not None:
-            timestamp = policy.get('effectiveTime')
+            timestamp = policy.get("effectiveTime")
             if timestamp is not None:
                 return _rfc3339_to_datetime(timestamp)
 
@@ -1320,9 +1353,9 @@ class Bucket(_PropertyMixin):
                   if the policy is not locked, or the property is not
                   set locally.
         """
-        policy = self._properties.get('retentionPolicy')
+        policy = self._properties.get("retentionPolicy")
         if policy is not None:
-            return policy.get('isLocked')
+            return policy.get("isLocked")
 
     @property
     def retention_period(self):
@@ -1333,9 +1366,9 @@ class Bucket(_PropertyMixin):
                   from event-based lock, or ``None`` if the property is not
                   set locally.
         """
-        policy = self._properties.get('retentionPolicy')
+        policy = self._properties.get("retentionPolicy")
         if policy is not None:
-            period = policy.get('retentionPeriod')
+            period = policy.get("retentionPeriod")
             if period is not None:
                 return int(period)
 
@@ -1350,12 +1383,12 @@ class Bucket(_PropertyMixin):
 
         :raises ValueError: if the bucket's retention policy is locked.
         """
-        policy = self._properties.setdefault('retentionPolicy', {})
+        policy = self._properties.setdefault("retentionPolicy", {})
         if value is not None:
-            policy['retentionPeriod'] = str(value)
+            policy["retentionPeriod"] = str(value)
         else:
             policy = None
-        self._patch_property('retentionPolicy', policy)
+        self._patch_property("retentionPolicy", policy)
 
     @property
     def self_link(self):
@@ -1367,7 +1400,7 @@ class Bucket(_PropertyMixin):
         :returns: The self link for the bucket or ``None`` if
                   the bucket's resource has not been loaded from the server.
         """
-        return self._properties.get('selfLink')
+        return self._properties.get("selfLink")
 
     @property
     def storage_class(self):
@@ -1383,7 +1416,7 @@ class Bucket(_PropertyMixin):
                   "NEARLINE", "COLDLINE", "STANDARD", or
                   "DURABLE_REDUCED_AVAILABILITY", else ``None``.
         """
-        return self._properties.get('storageClass')
+        return self._properties.get("storageClass")
 
     @storage_class.setter
     def storage_class(self, value):
@@ -1396,8 +1429,8 @@ class Bucket(_PropertyMixin):
                       "COLDLINE", "STANDARD", or "DURABLE_REDUCED_AVAILABILITY"
         """
         if value not in self._STORAGE_CLASSES:
-            raise ValueError('Invalid storage class: %s' % (value,))
-        self._patch_property('storageClass', value)
+            raise ValueError("Invalid storage class: %s" % (value,))
+        self._patch_property("storageClass", value)
 
     @property
     def time_created(self):
@@ -1410,7 +1443,7 @@ class Bucket(_PropertyMixin):
                   ``None`` if the bucket's resource has not been loaded
                   from the server.
         """
-        value = self._properties.get('timeCreated')
+        value = self._properties.get("timeCreated")
         if value is not None:
             return _rfc3339_to_datetime(value)
 
@@ -1427,8 +1460,8 @@ class Bucket(_PropertyMixin):
         :rtype: bool
         :returns: True if enabled, else False.
         """
-        versioning = self._properties.get('versioning', {})
-        return versioning.get('enabled', False)
+        versioning = self._properties.get("versioning", {})
+        return versioning.get("enabled", False)
 
     @versioning_enabled.setter
     def versioning_enabled(self, value):
@@ -1440,7 +1473,7 @@ class Bucket(_PropertyMixin):
         :type value: convertible to boolean
         :param value: should versioning be enabled for the bucket?
         """
-        self._patch_property('versioning', {'enabled': bool(value)})
+        self._patch_property("versioning", {"enabled": bool(value)})
 
     @property
     def requester_pays(self):
@@ -1456,8 +1489,8 @@ class Bucket(_PropertyMixin):
         :returns: True if requester pays for API requests for the bucket,
                   else False.
         """
-        versioning = self._properties.get('billing', {})
-        return versioning.get('requesterPays', False)
+        versioning = self._properties.get("billing", {})
+        return versioning.get("requesterPays", False)
 
     @requester_pays.setter
     def requester_pays(self, value):
@@ -1469,7 +1502,7 @@ class Bucket(_PropertyMixin):
         :type value: convertible to boolean
         :param value: should requester pay for API requests for the bucket?
         """
-        self._patch_property('billing', {'requesterPays': bool(value)})
+        self._patch_property("billing", {"requesterPays": bool(value)})
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
@@ -1506,11 +1539,8 @@ class Bucket(_PropertyMixin):
         :type not_found_page: str
         :param not_found_page: The file to use when a page isn't found.
         """
-        data = {
-            'mainPageSuffix': main_page_suffix,
-            'notFoundPage': not_found_page,
-        }
-        self._patch_property('website', data)
+        data = {"mainPageSuffix": main_page_suffix, "notFoundPage": not_found_page}
+        self._patch_property("website", data)
 
     def disable_website(self):
         """Disable the website configuration for this bucket.
@@ -1541,13 +1571,14 @@ class Bucket(_PropertyMixin):
         query_params = {}
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
 
         info = client._connection.api_request(
-            method='GET',
-            path='%s/iam' % (self.path,),
+            method="GET",
+            path="%s/iam" % (self.path,),
             query_params=query_params,
-            _target_object=None)
+            _target_object=None,
+        )
         return Policy.from_api_repr(info)
 
     def set_iam_policy(self, policy, client=None):
@@ -1574,16 +1605,17 @@ class Bucket(_PropertyMixin):
         query_params = {}
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
 
         resource = policy.to_api_repr()
-        resource['resourceId'] = self.path
+        resource["resourceId"] = self.path
         info = client._connection.api_request(
-            method='PUT',
-            path='%s/iam' % (self.path,),
+            method="PUT",
+            path="%s/iam" % (self.path,),
             query_params=query_params,
             data=resource,
-            _target_object=None)
+            _target_object=None,
+        )
         return Policy.from_api_repr(info)
 
     def test_iam_permissions(self, permissions, client=None):
@@ -1607,17 +1639,16 @@ class Bucket(_PropertyMixin):
                   request.
         """
         client = self._require_client(client)
-        query_params = {'permissions': permissions}
+        query_params = {"permissions": permissions}
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
 
-        path = '%s/iam/testPermissions' % (self.path,)
+        path = "%s/iam/testPermissions" % (self.path,)
         resp = client._connection.api_request(
-            method='GET',
-            path=path,
-            query_params=query_params)
-        return resp.get('permissions', [])
+            method="GET", path=path, query_params=query_params
+        )
+        return resp.get("permissions", [])
 
     def make_public(self, recursive=False, future=False, client=None):
         """Update bucket's ACL, granting read access to anonymous users.
@@ -1654,10 +1685,13 @@ class Bucket(_PropertyMixin):
             doa.save(client=client)
 
         if recursive:
-            blobs = list(self.list_blobs(
-                projection='full',
-                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
-                client=client))
+            blobs = list(
+                self.list_blobs(
+                    projection="full",
+                    max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
+                    client=client,
+                )
+            )
             if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                 message = (
                     "Refusing to make public recursively with more than "
@@ -1707,14 +1741,17 @@ class Bucket(_PropertyMixin):
             doa.save(client=client)
 
         if recursive:
-            blobs = list(self.list_blobs(
-                projection='full',
-                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
-                client=client))
+            blobs = list(
+                self.list_blobs(
+                    projection="full",
+                    max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
+                    client=client,
+                )
+            )
             if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                 message = (
-                    'Refusing to make private recursively with more than '
-                    '%d objects. If you actually want to make every object '
+                    "Refusing to make private recursively with more than "
+                    "%d objects. If you actually want to make every object "
                     "in this bucket private, iterate through the blobs "
                     "returned by 'Bucket.list_blobs()' and call "
                     "'make_private' on each one."
@@ -1725,8 +1762,7 @@ class Bucket(_PropertyMixin):
                 blob.acl.all().revoke_read()
                 blob.acl.save(client=client)
 
-    def generate_upload_policy(
-            self, conditions, expiration=None, client=None):
+    def generate_upload_policy(self, conditions, expiration=None, client=None):
         """Create a signed upload policy for uploading objects.
 
         This method generates and signs a policy document. You can use
@@ -1767,25 +1803,23 @@ class Bucket(_PropertyMixin):
         if expiration is None:
             expiration = _NOW() + datetime.timedelta(hours=1)
 
-        conditions = conditions + [
-            {'bucket': self.name},
-        ]
+        conditions = conditions + [{"bucket": self.name}]
 
         policy_document = {
-            'expiration': _datetime_to_rfc3339(expiration),
-            'conditions': conditions,
+            "expiration": _datetime_to_rfc3339(expiration),
+            "conditions": conditions,
         }
 
         encoded_policy_document = base64.b64encode(
-            json.dumps(policy_document).encode('utf-8'))
-        signature = base64.b64encode(
-            credentials.sign_bytes(encoded_policy_document))
+            json.dumps(policy_document).encode("utf-8")
+        )
+        signature = base64.b64encode(credentials.sign_bytes(encoded_policy_document))
 
         fields = {
-            'bucket': self.name,
-            'GoogleAccessId': credentials.signer_email,
-            'policy': encoded_policy_document.decode('utf-8'),
-            'signature': signature.decode('utf-8'),
+            "bucket": self.name,
+            "GoogleAccessId": credentials.signer_email,
+            "policy": encoded_policy_document.decode("utf-8"),
+            "signature": signature.decode("utf-8"),
         }
 
         return fields
@@ -1798,28 +1832,26 @@ class Bucket(_PropertyMixin):
             if the bucket has no retention policy assigned;
             if the bucket's retention policy is already locked.
         """
-        if 'metageneration' not in self._properties:
-            raise ValueError(
-                "Bucket has no retention policy assigned: try 'reload'?")
+        if "metageneration" not in self._properties:
+            raise ValueError("Bucket has no retention policy assigned: try 'reload'?")
 
-        policy = self._properties.get('retentionPolicy')
+        policy = self._properties.get("retentionPolicy")
 
         if policy is None:
-            raise ValueError(
-                "Bucket has no retention policy assigned: try 'reload'?")
+            raise ValueError("Bucket has no retention policy assigned: try 'reload'?")
 
-        if policy.get('isLocked'):
+        if policy.get("isLocked"):
             raise ValueError("Bucket's retention policy is already locked.")
 
         client = self._require_client(client)
 
-        query_params = {'ifMetagenerationMatch': self.metageneration}
+        query_params = {"ifMetagenerationMatch": self.metageneration}
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
 
-        path = '/b/{}/lockRetentionPolicy'.format(self.name)
+        path = "/b/{}/lockRetentionPolicy".format(self.name)
         api_response = client._connection.api_request(
-            method='POST', path=path, query_params=query_params,
-            _target_object=self)
+            method="POST", path=path, query_params=query_params, _target_object=self
+        )
         self._set_properties(api_response)

@@ -46,8 +46,8 @@ class TestOrder(unittest.TestCase):
         int_max_value = 2 ** 31 - 1
         int_min_value = -(2 ** 31)
         float_min_value = 1.175494351 ** -38
-        float_nan = float('nan')
-        inf = float('inf')
+        float_nan = float("nan")
+        inf = float("inf")
 
         groups = [None] * 65
 
@@ -66,8 +66,12 @@ class TestOrder(unittest.TestCase):
         groups[8] = [_int_value(-1), _double_value(-1.0)]
         groups[9] = [_double_value(-float_min_value)]
         # zeros all compare the same.
-        groups[10] = [_int_value(0), _double_value(-0.0),
-                      _double_value(0.0), _double_value(+0.0)]
+        groups[10] = [
+            _int_value(0),
+            _double_value(-0.0),
+            _double_value(0.0),
+            _double_value(+0.0),
+        ]
         groups[11] = [_double_value(float_min_value)]
         groups[12] = [_int_value(1), _double_value(1.0)]
         groups[13] = [_double_value(1.1)]
@@ -92,33 +96,26 @@ class TestOrder(unittest.TestCase):
         groups[27] = [_string_value("\u00e9a")]
 
         # blobs
-        groups[28] = [_blob_value(b'')]
-        groups[29] = [_blob_value(b'\x00')]
-        groups[30] = [_blob_value(b'\x00\x01\x02\x03\x04')]
-        groups[31] = [_blob_value(b'\x00\x01\x02\x04\x03')]
-        groups[32] = [_blob_value(b'\x7f')]
+        groups[28] = [_blob_value(b"")]
+        groups[29] = [_blob_value(b"\x00")]
+        groups[30] = [_blob_value(b"\x00\x01\x02\x03\x04")]
+        groups[31] = [_blob_value(b"\x00\x01\x02\x04\x03")]
+        groups[32] = [_blob_value(b"\x7f")]
 
         # resource names
-        groups[33] = [
-            _reference_value("projects/p1/databases/d1/documents/c1/doc1")]
-        groups[34] = [
-            _reference_value("projects/p1/databases/d1/documents/c1/doc2")]
+        groups[33] = [_reference_value("projects/p1/databases/d1/documents/c1/doc1")]
+        groups[34] = [_reference_value("projects/p1/databases/d1/documents/c1/doc2")]
         groups[35] = [
-            _reference_value(
-                "projects/p1/databases/d1/documents/c1/doc2/c2/doc1")]
+            _reference_value("projects/p1/databases/d1/documents/c1/doc2/c2/doc1")
+        ]
         groups[36] = [
-            _reference_value(
-                "projects/p1/databases/d1/documents/c1/doc2/c2/doc2")]
-        groups[37] = [
-            _reference_value("projects/p1/databases/d1/documents/c10/doc1")]
-        groups[38] = [
-            _reference_value("projects/p1/databases/d1/documents/c2/doc1")]
-        groups[39] = [
-            _reference_value("projects/p2/databases/d2/documents/c1/doc1")]
-        groups[40] = [
-            _reference_value("projects/p2/databases/d2/documents/c1-/doc1")]
-        groups[41] = [
-            _reference_value("projects/p2/databases/d3/documents/c1-/doc1")]
+            _reference_value("projects/p1/databases/d1/documents/c1/doc2/c2/doc2")
+        ]
+        groups[37] = [_reference_value("projects/p1/databases/d1/documents/c10/doc1")]
+        groups[38] = [_reference_value("projects/p1/databases/d1/documents/c2/doc1")]
+        groups[39] = [_reference_value("projects/p2/databases/d2/documents/c1/doc1")]
+        groups[40] = [_reference_value("projects/p2/databases/d2/documents/c1-/doc1")]
+        groups[41] = [_reference_value("projects/p2/databases/d3/documents/c1-/doc1")]
 
         # geo points
         groups[42] = [_geoPoint_value(-90, -180)]
@@ -144,10 +141,7 @@ class TestOrder(unittest.TestCase):
 
         # objects
         groups[60] = [_object_value({"bar": 0})]
-        groups[61] = [_object_value({
-            "bar": 0,
-            "foo": 1
-        })]
+        groups[61] = [_object_value({"bar": 0, "foo": 1})]
         groups[62] = [_object_value({"bar": 1})]
         groups[63] = [_object_value({"bar": 2})]
         groups[64] = [_object_value({"bar": "0"})]
@@ -161,17 +155,20 @@ class TestOrder(unittest.TestCase):
                         expected = Order._compare_to(i, j)
 
                         self.assertEqual(
-                            target.compare(left, right), expected,
+                            target.compare(left, right),
+                            expected,
                             "comparing L->R {} ({}) to {} ({})".format(
-                                i, left, j, right)
+                                i, left, j, right
+                            ),
                         )
 
                         expected = Order._compare_to(j, i)
                         self.assertEqual(
-                            target.compare(right, left), expected,
+                            target.compare(right, left),
+                            expected,
                             "comparing R->L {} ({}) to {} ({})".format(
-                                j, right, i, left)
-
+                                j, right, i, left
+                            ),
                         )
 
     def test_typeorder_type_failure(self):
@@ -189,11 +186,9 @@ class TestOrder(unittest.TestCase):
         right = mock.Mock()
         # Patch from value to get to the deep compare. Since left is a bad type
         # expect this to fail with value error.
-        with mock.patch.object(TypeOrder, 'from_value',) as to:
+        with mock.patch.object(TypeOrder, "from_value") as to:
             to.value = None
-            with self.assertRaisesRegex(
-                    ValueError, "'Unknown ``value_type``"
-            ):
+            with self.assertRaisesRegex(ValueError, "'Unknown ``value_type``"):
                 target.compare(left, right)
 
     def test_compare_objects_different_keys(self):
@@ -236,7 +231,8 @@ def nullValue():
 
 def _timestamp_value(seconds, nanos):
     return document_pb2.Value(
-        timestamp_value=timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos))
+        timestamp_value=timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
+    )
 
 
 def _geoPoint_value(latitude, longitude):
