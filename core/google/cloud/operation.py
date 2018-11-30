@@ -18,10 +18,9 @@ from google.longrunning import operations_pb2
 from google.protobuf import json_format
 
 
-_GOOGLE_APIS_PREFIX = 'type.googleapis.com'
+_GOOGLE_APIS_PREFIX = "type.googleapis.com"
 
-_TYPE_URL_MAP = {
-}
+_TYPE_URL_MAP = {}
 
 
 def _compute_type_url(klass, prefix=_GOOGLE_APIS_PREFIX):
@@ -37,7 +36,7 @@ def _compute_type_url(klass, prefix=_GOOGLE_APIS_PREFIX):
     :returns: the URL, prefixed as appropriate
     """
     name = klass.DESCRIPTOR.full_name
-    return '%s/%s' % (prefix, name)
+    return "%s/%s" % (prefix, name)
 
 
 def register_type(klass, type_url=None):
@@ -182,8 +181,7 @@ class Operation(object):
         :rtype: :class:`Operation`
         :returns: new instance, with attributes based on the protobuf.
         """
-        operation_pb = json_format.ParseDict(
-            operation, operations_pb2.Operation())
+        operation_pb = json_format.ParseDict(operation, operations_pb2.Operation())
         result = cls(operation_pb.name, client, **caller_metadata)
         result._update_state(operation_pb)
         result._from_grpc = False
@@ -217,11 +215,9 @@ class Operation(object):
         :rtype: :class:`~google.longrunning.operations_pb2.Operation`
         :returns: The latest status of the current operation.
         """
-        path = 'operations/%s' % (self.name,)
-        api_response = self.client._connection.api_request(
-            method='GET', path=path)
-        return json_format.ParseDict(
-            api_response, operations_pb2.Operation())
+        path = "operations/%s" % (self.name,)
+        api_response = self.client._connection.api_request(method="GET", path=path)
+        return json_format.ParseDict(api_response, operations_pb2.Operation())
 
     def _get_operation(self):
         """Checks the status of the current operation.
@@ -244,13 +240,13 @@ class Operation(object):
         if operation_pb.done:
             self._complete = True
 
-        if operation_pb.HasField('metadata'):
+        if operation_pb.HasField("metadata"):
             self.metadata = _from_any(operation_pb.metadata)
 
-        result_type = operation_pb.WhichOneof('result')
-        if result_type == 'error':
+        result_type = operation_pb.WhichOneof("result")
+        if result_type == "error":
             self.error = operation_pb.error
-        elif result_type == 'response':
+        elif result_type == "response":
             self.response = _from_any(operation_pb.response)
 
     def poll(self):
@@ -262,7 +258,7 @@ class Operation(object):
                  has already completed.
         """
         if self.complete:
-            raise ValueError('The operation has completed.')
+            raise ValueError("The operation has completed.")
 
         operation_pb = self._get_operation()
         self._update_state(operation_pb)

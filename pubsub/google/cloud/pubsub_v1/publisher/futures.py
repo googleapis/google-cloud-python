@@ -35,6 +35,7 @@ class Future(futures.Future):
             used. If this argument is not provided, then a new
             :class:`threading.Event` will be created and used.
     """
+
     # The publishing-side subclass does not need any special behavior
     # at this time.
     #
@@ -44,6 +45,4 @@ class Future(futures.Future):
     pass
 
 
-__all__ = (
-    'Future',
-)
+__all__ = ("Future",)

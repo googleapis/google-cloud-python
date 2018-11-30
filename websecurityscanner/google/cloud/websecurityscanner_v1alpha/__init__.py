@@ -16,18 +16,12 @@ from __future__ import absolute_import
 
 from google.cloud.websecurityscanner_v1alpha import types
 from google.cloud.websecurityscanner_v1alpha.gapic import enums
-from google.cloud.websecurityscanner_v1alpha.gapic import \
-    web_security_scanner_client
+from google.cloud.websecurityscanner_v1alpha.gapic import web_security_scanner_client
 
 
-class WebSecurityScannerClient(
-        web_security_scanner_client.WebSecurityScannerClient):
+class WebSecurityScannerClient(web_security_scanner_client.WebSecurityScannerClient):
     __doc__ = web_security_scanner_client.WebSecurityScannerClient.__doc__
     enums = enums
 
 
-__all__ = (
-    'enums',
-    'types',
-    'WebSecurityScannerClient',
-)
+__all__ = ("enums", "types", "WebSecurityScannerClient")

@@ -164,8 +164,7 @@ class Transaction(Batch):
         super(Transaction, self).__init__(client)
         self._id = None
         if read_only:
-            options = TransactionOptions(
-                read_only=TransactionOptions.ReadOnly())
+            options = TransactionOptions(read_only=TransactionOptions.ReadOnly())
         else:
             options = TransactionOptions()
         self._options = options
@@ -206,8 +205,7 @@ class Transaction(Batch):
         """
         super(Transaction, self).begin()
         try:
-            response_pb = self._client._datastore_api.begin_transaction(
-                self.project)
+            response_pb = self._client._datastore_api.begin_transaction(self.project)
             self._id = response_pb.transaction
         except:  # noqa: E722 do not use bare except, specify exception instead
             self._status = self._ABORTED
@@ -258,7 +256,7 @@ class Transaction(Batch):
         :raises: :class:`RuntimeError` if the transaction
                  is marked ReadOnly
         """
-        if self._options.HasField('read_only'):
+        if self._options.HasField("read_only"):
             raise RuntimeError("Transaction is read only")
         else:
             super(Transaction, self).put(entity)

@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import vision_v1p1beta1
@@ -49,10 +50,7 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -65,11 +63,15 @@ class TestImageAnnotatorClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = image_annotator_pb2.BatchAnnotateImagesResponse(
-            **expected_response)
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = vision_v1p1beta1.ImageAnnotatorClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p1beta1.ImageAnnotatorClient()
 
         # Setup Request
         requests = []
@@ -79,14 +81,18 @@ class TestImageAnnotatorClient(object):
 
         assert len(channel.requests) == 1
         expected_request = image_annotator_pb2.BatchAnnotateImagesRequest(
-            requests=requests)
+            requests=requests
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_batch_annotate_images_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = vision_v1p1beta1.ImageAnnotatorClient(channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p1beta1.ImageAnnotatorClient()
 
         # Setup request
         requests = []

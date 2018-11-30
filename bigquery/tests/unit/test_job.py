@@ -1514,7 +1514,7 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             'mode': 'REQUIRED',
             'name': 'foo',
             'type': 'INTEGER',
-            'description':  'Foo',
+            'description': 'Foo',
         }
         minimal_repr = {
             'name': 'bar',
@@ -3791,7 +3791,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             'id': '1234',
             'inputStages': ['88', '101'],
             'startMs': '1522540800000',
-            'endMs':   '1522540804000',
+            'endMs': '1522540804000',
             'parallelInputs': '1000',
             'completedParallelInputs': '5',
             'waitMsAvg': '33',
@@ -3838,8 +3838,8 @@ class TestQueryJob(unittest.TestCase, _Base):
             self.assertEqual(found.name, expected['name'])
             self.assertEqual(found.entry_id, expected['id'])
             self.assertEqual(
-                    len(found.input_stages),
-                    len(expected['inputStages']))
+                len(found.input_stages),
+                len(expected['inputStages']))
             for f_id in found.input_stages:
                 self.assertIn(f_id, [int(e) for e in expected['inputStages']])
             self.assertEqual(
@@ -3849,11 +3849,11 @@ class TestQueryJob(unittest.TestCase, _Base):
                 found.end.strftime(_RFC3339_MICROS),
                 '2018-04-01T00:00:04.000000Z')
             self.assertEqual(
-                    found.parallel_inputs,
-                    int(expected['parallelInputs']))
+                found.parallel_inputs,
+                int(expected['parallelInputs']))
             self.assertEqual(
-                    found.completed_parallel_inputs,
-                    int(expected['completedParallelInputs']))
+                found.completed_parallel_inputs,
+                int(expected['completedParallelInputs']))
             self.assertEqual(found.wait_ms_avg, int(expected['waitMsAvg']))
             self.assertEqual(found.wait_ms_max, int(expected['waitMsMax']))
             self.assertEqual(found.wait_ratio_avg, expected['waitRatioAvg'])
@@ -3882,11 +3882,11 @@ class TestQueryJob(unittest.TestCase, _Base):
                 found.records_written, int(expected['recordsWritten']))
             self.assertEqual(found.status, expected['status'])
             self.assertEqual(
-                    found.shuffle_output_bytes,
-                    int(expected['shuffleOutputBytes']))
+                found.shuffle_output_bytes,
+                int(expected['shuffleOutputBytes']))
             self.assertEqual(
-                    found.shuffle_output_bytes_spilled,
-                    int(expected['shuffleOutputBytesSpilled']))
+                found.shuffle_output_bytes_spilled,
+                int(expected['shuffleOutputBytesSpilled']))
 
             self.assertEqual(len(found.steps), len(expected['steps']))
             for f_step, e_step in zip(found.steps, expected['steps']):

@@ -27,12 +27,12 @@ from test_utils.system import unique_resource_id
 
 
 _SYS_TESTS_DIR = os.path.realpath(os.path.dirname(__file__))
-LOGO_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'logo.png')
-FACE_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'faces.jpg')
-LABEL_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'car.jpg')
-LANDMARK_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'landmark.jpg')
-TEXT_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'text.jpg')
-FULL_TEXT_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'full-text.jpg')
+LOGO_FILE = os.path.join(_SYS_TESTS_DIR, "data", "logo.png")
+FACE_FILE = os.path.join(_SYS_TESTS_DIR, "data", "faces.jpg")
+LABEL_FILE = os.path.join(_SYS_TESTS_DIR, "data", "car.jpg")
+LANDMARK_FILE = os.path.join(_SYS_TESTS_DIR, "data", "landmark.jpg")
+TEXT_FILE = os.path.join(_SYS_TESTS_DIR, "data", "text.jpg")
+FULL_TEXT_FILE = os.path.join(_SYS_TESTS_DIR, "data", "full-text.jpg")
 
 
 class VisionSystemTestBase(unittest.TestCase):
@@ -50,7 +50,7 @@ class VisionSystemTestBase(unittest.TestCase):
 def setUpModule():
     VisionSystemTestBase.client = vision.ImageAnnotatorClient()
     storage_client = storage.Client()
-    bucket_name = 'new' + unique_resource_id()
+    bucket_name = "new" + unique_resource_id()
     VisionSystemTestBase.test_bucket = storage_client.bucket(bucket_name)
 
     # 429 Too Many Requests in case API requests rate-limited.
@@ -61,62 +61,59 @@ def setUpModule():
 def tearDownModule():
     # 409 Conflict if the bucket is full.
     # 429 Too Many Requests in case API requests rate-limited.
-    bucket_retry = RetryErrors(
-        (exceptions.TooManyRequests, exceptions.Conflict),
-    )
+    bucket_retry = RetryErrors((exceptions.TooManyRequests, exceptions.Conflict))
     bucket_retry(VisionSystemTestBase.test_bucket.delete)(force=True)
 
 
 class TestVisionClientLogo(VisionSystemTestBase):
     def test_detect_logos_content(self):
         # Read the file.
-        with io.open(LOGO_FILE, 'rb') as image_file:
+        with io.open(LOGO_FILE, "rb") as image_file:
             content = image_file.read()
 
         # Make the request.
-        response = self.client.logo_detection({
-            'content': content,
-        })
+        response = self.client.logo_detection({"content": content})
 
         # Check to ensure we got what we expect.
         assert len(response.logo_annotations) == 1
-        assert response.logo_annotations[0].description == 'Google'
+        assert response.logo_annotations[0].description == "Google"
 
     def test_detect_logos_file_handler(self):
         # Get a file handler, and make the request using it.
-        with io.open(LOGO_FILE, 'rb') as image_file:
+        with io.open(LOGO_FILE, "rb") as image_file:
             response = self.client.logo_detection(image_file)
 
         # Check to ensure we got what we expect.
         assert len(response.logo_annotations) == 1
-        assert response.logo_annotations[0].description == 'Google'
+        assert response.logo_annotations[0].description == "Google"
 
     def test_detect_logos_filename(self):
         # Make the request with the filename directly.
-        response = self.client.logo_detection({
-            'source': {'filename': LOGO_FILE},
-        })
+        response = self.client.logo_detection({"source": {"filename": LOGO_FILE}})
 
         # Check to ensure we got what we expect.
         assert len(response.logo_annotations) == 1
-        assert response.logo_annotations[0].description == 'Google'
+        assert response.logo_annotations[0].description == "Google"
 
     def test_detect_logos_gcs(self):
         # Upload the image to Google Cloud Storage.
-        blob_name = 'logo.png'
+        blob_name = "logo.png"
         blob = self.test_bucket.blob(blob_name)
         self.to_delete_by_case.append(blob)
-        with io.open(LOGO_FILE, 'rb') as image_file:
+        with io.open(LOGO_FILE, "rb") as image_file:
             blob.upload_from_file(image_file)
 
         # Make the request.
-        response = self.client.logo_detection({
-            'source': {'image_uri': 'gs://{bucket}/{blob}'.format(
-                bucket=self.test_bucket.name,
-                blob=blob_name,
-            )},
-        })
+        response = self.client.logo_detection(
+            {
+                "source": {
+                    "image_uri": "gs://{bucket}/{blob}".format(
+                        bucket=self.test_bucket.name, blob=blob_name
+                    )
+                }
+            }
+        )
 
         # Check the response.
         assert len(response.logo_annotations) == 1
-        assert response.logo_annotations[0].description == 'Google'
+        assert response.logo_annotations[0].description == "Google"

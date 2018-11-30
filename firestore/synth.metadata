@@ -1,0 +1,27 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "36f292faa9a7bffae6abef4885a2ec7936dc47a6",
+        "internalRef": "222122496"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis-private",
+        "remote": "https://github.com/googleapis/googleapis-private.git",
+        "sha": "05e2ff6ef669808daed3c3b2f97eec514bd18d76",
+        "internalRef": "222154680"
+      }
+    },
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.0",
+        "dockerImage": "googleapis/artman@sha256:90f9d15e9bad675aeecd586725bce48f5667ffe7d5fc4d1e96d51ff34304815b"
+      }
+    }
+  ]
+}

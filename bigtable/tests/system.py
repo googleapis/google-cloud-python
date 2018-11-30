@@ -39,27 +39,29 @@ from test_utils.retry import RetryResult
 from test_utils.system import EmulatorCreds
 from test_utils.system import unique_resource_id
 
-LOCATION_ID = 'us-central1-c'
-INSTANCE_ID = 'g-c-p' + unique_resource_id('-')
-TABLE_ID = 'google-cloud-python-test-table'
-CLUSTER_ID = INSTANCE_ID+'-cluster'
+LOCATION_ID = "us-central1-c"
+INSTANCE_ID = "g-c-p" + unique_resource_id("-")
+TABLE_ID = "google-cloud-python-test-table"
+CLUSTER_ID = INSTANCE_ID + "-cluster"
 SERVE_NODES = 3
-COLUMN_FAMILY_ID1 = u'col-fam-id1'
-COLUMN_FAMILY_ID2 = u'col-fam-id2'
-COL_NAME1 = b'col-name1'
-COL_NAME2 = b'col-name2'
-COL_NAME3 = b'col-name3-but-other-fam'
-CELL_VAL1 = b'cell-val'
-CELL_VAL2 = b'cell-val-newer'
-CELL_VAL3 = b'altcol-cell-val'
-CELL_VAL4 = b'foo'
-ROW_KEY = b'row-key'
-ROW_KEY_ALT = b'row-key-alt'
+COLUMN_FAMILY_ID1 = u"col-fam-id1"
+COLUMN_FAMILY_ID2 = u"col-fam-id2"
+COL_NAME1 = b"col-name1"
+COL_NAME2 = b"col-name2"
+COL_NAME3 = b"col-name3-but-other-fam"
+CELL_VAL1 = b"cell-val"
+CELL_VAL2 = b"cell-val-newer"
+CELL_VAL3 = b"altcol-cell-val"
+CELL_VAL4 = b"foo"
+ROW_KEY = b"row-key"
+ROW_KEY_ALT = b"row-key-alt"
 EXISTING_INSTANCES = []
-LABEL_KEY = u'python-system'
-label_stamp = datetime.datetime.utcnow() \
-                               .replace(microsecond=0, tzinfo=UTC,) \
-                               .strftime("%Y-%m-%dt%H-%M-%S")
+LABEL_KEY = u"python-system"
+label_stamp = (
+    datetime.datetime.utcnow()
+    .replace(microsecond=0, tzinfo=UTC)
+    .strftime("%Y-%m-%dt%H-%M-%S")
+)
 LABELS = {LABEL_KEY: str(label_stamp)}
 
 
@@ -69,6 +71,7 @@ class Config(object):
     This is a mutable stand-in to allow test set-up to modify
     global state.
     """
+
     CLIENT = None
     INSTANCE = None
     CLUSTER = None
@@ -78,6 +81,7 @@ class Config(object):
 def _retry_on_unavailable(exc):
     """Retry only errors whose status code is 'UNAVAILABLE'."""
     from grpc import StatusCode
+
     return exc.code() == StatusCode.UNAVAILABLE
 
 
@@ -97,15 +101,15 @@ def setUpModule():
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, labels=LABELS)
     Config.CLUSTER = Config.INSTANCE.cluster(
-        CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES)
+        CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES
+    )
 
     if not Config.IN_EMULATOR:
-        retry = RetryErrors(GrpcRendezvous,
-                            error_predicate=_retry_on_unavailable)
+        retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
         instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
         if len(failed_locations) != 0:
-            raise ValueError('List instances failed in module set up.')
+            raise ValueError("List instances failed in module set up.")
 
         EXISTING_INSTANCES[:] = instances
 
@@ -120,11 +124,9 @@ def tearDownModule():
 
 
 class TestInstanceAdminAPI(unittest.TestCase):
-
     def setUp(self):
         if Config.IN_EMULATOR:
-            self.skipTest(
-                'Instance Admin API not supported in Bigtable emulator')
+            self.skipTest("Instance Admin API not supported in Bigtable emulator")
         self.instances_to_delete = []
 
     def tearDown(self):
@@ -141,6 +143,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
     def test_reload(self):
         from google.cloud.bigtable import enums
+
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
         alt_instance = Config.CLIENT.instance(INSTANCE_ID)
@@ -148,19 +151,19 @@ class TestInstanceAdminAPI(unittest.TestCase):
         alt_instance.display_name = None
 
         alt_instance.reload()
-        self.assertEqual(alt_instance.display_name,
-                         Config.INSTANCE.display_name)
+        self.assertEqual(alt_instance.display_name, Config.INSTANCE.display_name)
         self.assertEqual(alt_instance.labels, Config.INSTANCE.labels)
         self.assertEqual(alt_instance.type_, enums.Instance.Type.PRODUCTION)
 
     def test_create_instance_defaults(self):
         from google.cloud.bigtable import enums
 
-        ALT_INSTANCE_ID = 'ndef' + unique_resource_id('-')
+        ALT_INSTANCE_ID = "ndef" + unique_resource_id("-")
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID, labels=LABELS)
-        ALT_CLUSTER_ID = ALT_INSTANCE_ID+'-cluster'
+        ALT_CLUSTER_ID = ALT_INSTANCE_ID + "-cluster"
         cluster = instance.cluster(
-            ALT_CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES)
+            ALT_CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES
+        )
         operation = instance.create(clusters=[cluster])
         # We want to make sure the operation completes.
         operation.result(timeout=10)
@@ -180,14 +183,15 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
     def test_create_instance(self):
         from google.cloud.bigtable import enums
+
         _DEVELOPMENT = enums.Instance.Type.DEVELOPMENT
         _STATE = enums.Instance.State.READY
 
-        ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
-        instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
-                                          instance_type=_DEVELOPMENT,
-                                          labels=LABELS)
-        ALT_CLUSTER_ID = ALT_INSTANCE_ID+'-cluster'
+        ALT_INSTANCE_ID = "new" + unique_resource_id("-")
+        instance = Config.CLIENT.instance(
+            ALT_INSTANCE_ID, instance_type=_DEVELOPMENT, labels=LABELS
+        )
+        ALT_CLUSTER_ID = ALT_INSTANCE_ID + "-cluster"
         cluster = instance.cluster(ALT_CLUSTER_ID, location_id=LOCATION_ID)
         operation = instance.create(clusters=[cluster])
         # We want to make sure the operation completes.
@@ -207,7 +211,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(_STATE, instance_alt.state)
 
     def test_cluster_exists(self):
-        NONEXISTING_CLUSTER_ID = 'cluster-id'
+        NONEXISTING_CLUSTER_ID = "cluster-id"
 
         cluster = Config.INSTANCE.cluster(CLUSTER_ID)
         alt_cluster = Config.INSTANCE.cluster(NONEXISTING_CLUSTER_ID)
@@ -215,7 +219,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertFalse(alt_cluster.exists())
 
     def test_instance_exists(self):
-        NONEXISTING_INSTANCE_ID = 'instancer-id'
+        NONEXISTING_INSTANCE_ID = "instancer-id"
 
         alt_instance = Config.CLIENT.instance(NONEXISTING_INSTANCE_ID)
         self.assertTrue(Config.INSTANCE.exists())
@@ -224,22 +228,29 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_create_instance_w_two_clusters(self):
         from google.cloud.bigtable import enums
         from google.cloud.bigtable.table import ClusterState
-        _PRODUCTION = enums.Instance.Type.PRODUCTION
-        ALT_INSTANCE_ID = 'dif' + unique_resource_id('-')
-        instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
-                                          instance_type=_PRODUCTION,
-                                          labels=LABELS)
 
-        ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID + '-c1'
-        ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID + '-c2'
-        LOCATION_ID_2 = 'us-central1-f'
+        _PRODUCTION = enums.Instance.Type.PRODUCTION
+        ALT_INSTANCE_ID = "dif" + unique_resource_id("-")
+        instance = Config.CLIENT.instance(
+            ALT_INSTANCE_ID, instance_type=_PRODUCTION, labels=LABELS
+        )
+
+        ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID + "-c1"
+        ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID + "-c2"
+        LOCATION_ID_2 = "us-central1-f"
         STORAGE_TYPE = enums.StorageType.HDD
         cluster_1 = instance.cluster(
-            ALT_CLUSTER_ID_1, location_id=LOCATION_ID, serve_nodes=SERVE_NODES,
-            default_storage_type=STORAGE_TYPE)
+            ALT_CLUSTER_ID_1,
+            location_id=LOCATION_ID,
+            serve_nodes=SERVE_NODES,
+            default_storage_type=STORAGE_TYPE,
+        )
         cluster_2 = instance.cluster(
-            ALT_CLUSTER_ID_2, location_id=LOCATION_ID_2,
-            serve_nodes=SERVE_NODES, default_storage_type=STORAGE_TYPE)
+            ALT_CLUSTER_ID_2,
+            location_id=LOCATION_ID_2,
+            serve_nodes=SERVE_NODES,
+            default_storage_type=STORAGE_TYPE,
+        )
         operation = instance.create(clusters=[cluster_1, cluster_2])
         # We want to make sure the operation completes.
         operation.result(timeout=10)
@@ -264,23 +275,27 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(cluster_1.location_id, alt_cluster_1.location_id)
         self.assertEqual(alt_cluster_1.state, enums.Cluster.State.READY)
         self.assertEqual(cluster_1.serve_nodes, alt_cluster_1.serve_nodes)
-        self.assertEqual(cluster_1.default_storage_type,
-                         alt_cluster_1.default_storage_type)
+        self.assertEqual(
+            cluster_1.default_storage_type, alt_cluster_1.default_storage_type
+        )
         self.assertEqual(cluster_2.location_id, alt_cluster_2.location_id)
         self.assertEqual(alt_cluster_2.state, enums.Cluster.State.READY)
         self.assertEqual(cluster_2.serve_nodes, alt_cluster_2.serve_nodes)
-        self.assertEqual(cluster_2.default_storage_type,
-                         alt_cluster_2.default_storage_type)
+        self.assertEqual(
+            cluster_2.default_storage_type, alt_cluster_2.default_storage_type
+        )
 
         # Test list clusters in project via 'client.list_clusters'
         clusters, failed_locations = Config.CLIENT.list_clusters()
         self.assertFalse(failed_locations)
         found = set([cluster.name for cluster in clusters])
-        self.assertTrue({alt_cluster_1.name,
-                         alt_cluster_2.name,
-                         Config.CLUSTER.name}.issubset(found))
+        self.assertTrue(
+            {alt_cluster_1.name, alt_cluster_2.name, Config.CLUSTER.name}.issubset(
+                found
+            )
+        )
 
-        temp_table_id = 'test-get-cluster-states'
+        temp_table_id = "test-get-cluster-states"
         temp_table = instance.table(temp_table_id)
         temp_table.create()
         result = temp_table.get_cluster_states()
@@ -290,7 +305,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
             ClusterState(ReplicationState.INITIALIZING),
             ClusterState(ReplicationState.PLANNED_MAINTENANCE),
             ClusterState(ReplicationState.UNPLANNED_MAINTENANCE),
-            ClusterState(ReplicationState.READY)
+            ClusterState(ReplicationState.READY),
         ]
         cluster_id_list = result.keys()
         self.assertEqual(len(cluster_id_list), 2)
@@ -301,14 +316,15 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         # Test create app profile with multi_cluster_routing policy
         app_profiles_to_delete = []
-        description = 'routing policy-multy'
-        app_profile_id_1 = 'app_profile_id_1'
+        description = "routing policy-multy"
+        app_profile_id_1 = "app_profile_id_1"
         routing = enums.RoutingPolicyType.ANY
         self._test_create_app_profile_helper(
-            app_profile_id_1, instance,
+            app_profile_id_1,
+            instance,
             routing_policy_type=routing,
             description=description,
-            ignore_warnings=True
+            ignore_warnings=True,
         )
         app_profiles_to_delete.append(app_profile_id_1)
 
@@ -320,55 +336,66 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # cluster -> ALT_CLUSTER_ID_1,
         # allow_transactional_writes -> disallowed
         # modify description
-        description = 'to routing policy-single'
+        description = "to routing policy-single"
         routing = enums.RoutingPolicyType.SINGLE
         self._test_modify_app_profile_helper(
-            app_profile_id_1, instance,
+            app_profile_id_1,
+            instance,
             routing_policy_type=routing,
-            description=description, cluster_id=ALT_CLUSTER_ID_1,
-            allow_transactional_writes=False)
+            description=description,
+            cluster_id=ALT_CLUSTER_ID_1,
+            allow_transactional_writes=False,
+        )
 
         # Test modify app profile app_profile_id_1
         # cluster -> ALT_CLUSTER_ID_2,
         # allow_transactional_writes -> allowed
         self._test_modify_app_profile_helper(
-            app_profile_id_1, instance,
+            app_profile_id_1,
+            instance,
             routing_policy_type=routing,
             description=description,
             cluster_id=ALT_CLUSTER_ID_2,
             allow_transactional_writes=True,
-            ignore_warnings=True)
+            ignore_warnings=True,
+        )
 
         # Test create app profile with single cluster routing policy
-        description = 'routing policy-single'
-        app_profile_id_2 = 'app_profile_id_2'
+        description = "routing policy-single"
+        app_profile_id_2 = "app_profile_id_2"
         routing = enums.RoutingPolicyType.SINGLE
         self._test_create_app_profile_helper(
-            app_profile_id_2, instance,
+            app_profile_id_2,
+            instance,
             routing_policy_type=routing,
-            description=description, cluster_id=ALT_CLUSTER_ID_2,
-            allow_transactional_writes=False)
+            description=description,
+            cluster_id=ALT_CLUSTER_ID_2,
+            allow_transactional_writes=False,
+        )
         app_profiles_to_delete.append(app_profile_id_2)
 
         # Test list app profiles
         self._test_list_app_profiles_helper(
-            instance, [app_profile_id_1, app_profile_id_2])
+            instance, [app_profile_id_1, app_profile_id_2]
+        )
 
         # Test modify app profile app_profile_id_2 to
         # allow transactional writes
         # Note: no need to set ``ignore_warnings`` to True
         # since we are not restrictings anything with this modification.
         self._test_modify_app_profile_helper(
-            app_profile_id_2, instance,
+            app_profile_id_2,
+            instance,
             routing_policy_type=routing,
             description=description,
             cluster_id=ALT_CLUSTER_ID_2,
-            allow_transactional_writes=True)
+            allow_transactional_writes=True,
+        )
 
         # Test modify app profile app_profile_id_2 routing policy
         # to multi_cluster_routing policy
         # modify description
-        description = 'to routing policy-multy'
+        description = "to routing policy-multy"
         routing = enums.RoutingPolicyType.ANY
         self._test_modify_app_profile_helper(
             app_profile_id_2,
@@ -376,7 +403,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
             routing_policy_type=routing,
             description=description,
             allow_transactional_writes=False,
-            ignore_warnings=True)
+            ignore_warnings=True,
+        )
 
         # Test delete app profiles
         for app_profile_id in app_profiles_to_delete:
@@ -384,10 +412,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
     def test_update_display_name_and_labels(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
-        NEW_DISPLAY_NAME = 'Foo Bar Baz'
-        n_label_stamp = datetime.datetime.utcnow() \
-                                         .replace(microsecond=0, tzinfo=UTC) \
-                                         .strftime("%Y-%m-%dt%H-%M-%S")
+        NEW_DISPLAY_NAME = "Foo Bar Baz"
+        n_label_stamp = (
+            datetime.datetime.utcnow()
+            .replace(microsecond=0, tzinfo=UTC)
+            .strftime("%Y-%m-%dt%H-%M-%S")
+        )
 
         NEW_LABELS = {LABEL_KEY: str(n_label_stamp)}
         Config.INSTANCE.display_name = NEW_DISPLAY_NAME
@@ -419,10 +449,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         _DEVELOPMENT = Instance.Type.DEVELOPMENT
         _PRODUCTION = Instance.Type.PRODUCTION
-        ALT_INSTANCE_ID = 'ndif' + unique_resource_id('-')
-        instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
-                                          instance_type=_DEVELOPMENT,
-                                          labels=LABELS)
+        ALT_INSTANCE_ID = "ndif" + unique_resource_id("-")
+        instance = Config.CLIENT.instance(
+            ALT_INSTANCE_ID, instance_type=_DEVELOPMENT, labels=LABELS
+        )
         operation = instance.create(location_id=LOCATION_ID, serve_nodes=None)
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
@@ -470,15 +500,16 @@ class TestInstanceAdminAPI(unittest.TestCase):
         from google.cloud.bigtable.enums import StorageType
         from google.cloud.bigtable.enums import Cluster
 
-        ALT_CLUSTER_ID = INSTANCE_ID+'-c2'
-        ALT_LOCATION_ID = 'us-central1-f'
+        ALT_CLUSTER_ID = INSTANCE_ID + "-c2"
+        ALT_LOCATION_ID = "us-central1-f"
         ALT_SERVE_NODES = 4
 
-        cluster_2 = Config.INSTANCE.cluster(ALT_CLUSTER_ID,
-                                            location_id=ALT_LOCATION_ID,
-                                            serve_nodes=ALT_SERVE_NODES,
-                                            default_storage_type=(
-                                               StorageType.SSD))
+        cluster_2 = Config.INSTANCE.cluster(
+            ALT_CLUSTER_ID,
+            location_id=ALT_LOCATION_ID,
+            serve_nodes=ALT_SERVE_NODES,
+            default_storage_type=(StorageType.SSD),
+        )
         operation = cluster_2.create()
 
         # We want to make sure the operation completes.
@@ -492,8 +523,9 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(cluster_2.location_id, alt_cluster.location_id)
         self.assertEqual(alt_cluster.state, Cluster.State.READY)
         self.assertEqual(cluster_2.serve_nodes, alt_cluster.serve_nodes)
-        self.assertEqual(cluster_2.default_storage_type,
-                         alt_cluster.default_storage_type)
+        self.assertEqual(
+            cluster_2.default_storage_type, alt_cluster.default_storage_type
+        )
 
         # Delete the newly created cluster and confirm
         self.assertTrue(cluster_2.exists())
@@ -501,20 +533,26 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertFalse(cluster_2.exists())
 
     def _test_create_app_profile_helper(
-            self, app_profile_id, instance, routing_policy_type,
-            description=None, cluster_id=None,
-            allow_transactional_writes=None,
-            ignore_warnings=None):
+        self,
+        app_profile_id,
+        instance,
+        routing_policy_type,
+        description=None,
+        cluster_id=None,
+        allow_transactional_writes=None,
+        ignore_warnings=None,
+    ):
 
         app_profile = instance.app_profile(
             app_profile_id=app_profile_id,
             routing_policy_type=routing_policy_type,
             description=description,
             cluster_id=cluster_id,
-            allow_transactional_writes=allow_transactional_writes
+            allow_transactional_writes=allow_transactional_writes,
         )
-        self.assertEqual(app_profile.allow_transactional_writes,
-                         allow_transactional_writes)
+        self.assertEqual(
+            app_profile.allow_transactional_writes, allow_transactional_writes
+        )
 
         app_profile = app_profile.create(ignore_warnings=ignore_warnings)
 
@@ -523,14 +561,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
         alt_app_profile = instance.app_profile(app_profile_id)
         alt_app_profile.reload()
 
-        self.assertEqual(app_profile.app_profile_id,
-                         alt_app_profile.app_profile_id)
-        self.assertEqual(app_profile.routing_policy_type,
-                         routing_policy_type)
-        self.assertEqual(alt_app_profile.routing_policy_type,
-                         routing_policy_type)
-        self.assertEqual(app_profile.description,
-                         alt_app_profile.description)
+        self.assertEqual(app_profile.app_profile_id, alt_app_profile.app_profile_id)
+        self.assertEqual(app_profile.routing_policy_type, routing_policy_type)
+        self.assertEqual(alt_app_profile.routing_policy_type, routing_policy_type)
+        self.assertEqual(app_profile.description, alt_app_profile.description)
         self.assertFalse(app_profile.allow_transactional_writes)
         self.assertFalse(alt_app_profile.allow_transactional_writes)
 
@@ -541,16 +575,22 @@ class TestInstanceAdminAPI(unittest.TestCase):
             self.assertTrue(app_profile_id in found)
 
     def _test_modify_app_profile_helper(
-            self, app_profile_id, instance, routing_policy_type,
-            description=None, cluster_id=None,
-            allow_transactional_writes=None,
-            ignore_warnings=None):
+        self,
+        app_profile_id,
+        instance,
+        routing_policy_type,
+        description=None,
+        cluster_id=None,
+        allow_transactional_writes=None,
+        ignore_warnings=None,
+    ):
         app_profile = instance.app_profile(
             app_profile_id=app_profile_id,
             routing_policy_type=routing_policy_type,
             description=description,
             cluster_id=cluster_id,
-            allow_transactional_writes=allow_transactional_writes)
+            allow_transactional_writes=allow_transactional_writes,
+        )
 
         operation = app_profile.update(ignore_warnings)
         operation.result(timeout=10)
@@ -558,11 +598,11 @@ class TestInstanceAdminAPI(unittest.TestCase):
         alt_app_profile = instance.app_profile(app_profile_id)
         alt_app_profile.reload()
         self.assertEqual(alt_app_profile.description, description)
-        self.assertEqual(alt_app_profile.routing_policy_type,
-                         routing_policy_type)
+        self.assertEqual(alt_app_profile.routing_policy_type, routing_policy_type)
         self.assertEqual(alt_app_profile.cluster_id, cluster_id)
-        self.assertEqual(alt_app_profile.allow_transactional_writes,
-                         allow_transactional_writes)
+        self.assertEqual(
+            alt_app_profile.allow_transactional_writes, allow_transactional_writes
+        )
 
     def _test_delete_app_profile_helper(self, app_profile_id, instance):
         app_profile = instance.app_profile(app_profile_id)
@@ -572,7 +612,6 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
 
 class TestTableAdminAPI(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls._table = Config.INSTANCE.table(TABLE_ID)
@@ -598,7 +637,7 @@ class TestTableAdminAPI(unittest.TestCase):
     def test_exists(self):
         retry_until_true = RetryResult(lambda result: result)
         retry_until_false = RetryResult(lambda result: not result)
-        temp_table_id = 'test-table_existence'
+        temp_table_id = "test-table_existence"
         temp_table = Config.INSTANCE.table(temp_table_id)
         self.assertFalse(temp_table.exists())
         temp_table.create()
@@ -607,13 +646,13 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertFalse(retry_until_false(temp_table.exists)())
 
     def test_create_table(self):
-        temp_table_id = 'test-create-table'
+        temp_table_id = "test-create-table"
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
         # First, create a sorted version of our expected result.
-        name_attr = operator.attrgetter('name')
+        name_attr = operator.attrgetter("name")
         expected_tables = sorted([temp_table, self._table], key=name_attr)
 
         # Then query for the tables in the instance and sort them by
@@ -623,7 +662,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(sorted_tables, expected_tables)
 
     def test_create_table_with_families(self):
-        temp_table_id = 'test-create-table-with-failies'
+        temp_table_id = "test-create-table-with-failies"
         temp_table = Config.INSTANCE.table(temp_table_id)
         gc_rule = MaxVersionsGCRule(1)
         temp_table.create(column_families={COLUMN_FAMILY_ID1: gc_rule})
@@ -634,14 +673,12 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(len(col_fams), 1)
         retrieved_col_fam = col_fams[COLUMN_FAMILY_ID1]
         self.assertIs(retrieved_col_fam._table, temp_table)
-        self.assertEqual(retrieved_col_fam.column_family_id,
-                         COLUMN_FAMILY_ID1)
+        self.assertEqual(retrieved_col_fam.column_family_id, COLUMN_FAMILY_ID1)
         self.assertEqual(retrieved_col_fam.gc_rule, gc_rule)
 
     def test_create_table_with_split_keys(self):
-        temp_table_id = 'foo-bar-baz-split-table'
-        initial_split_keys = [b'split_key_1', b'split_key_10',
-                              b'split_key_20']
+        temp_table_id = "foo-bar-baz-split-table"
+        initial_split_keys = [b"split_key_1", b"split_key_10", b"split_key_20"]
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create(initial_split_keys=initial_split_keys)
         self.tables_to_delete.append(temp_table)
@@ -651,20 +688,19 @@ class TestTableAdminAPI(unittest.TestCase):
         actual_keys = [srk.row_key for srk in sample_row_keys]
 
         expected_keys = initial_split_keys
-        expected_keys.append(b'')
+        expected_keys.append(b"")
 
         self.assertEqual(actual_keys, expected_keys)
 
     def test_create_column_family(self):
-        temp_table_id = 'test-create-column-family'
+        temp_table_id = "test-create-column-family"
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
         self.assertEqual(temp_table.list_column_families(), {})
         gc_rule = MaxVersionsGCRule(1)
-        column_family = temp_table.column_family(COLUMN_FAMILY_ID1,
-                                                 gc_rule=gc_rule)
+        column_family = temp_table.column_family(COLUMN_FAMILY_ID1, gc_rule=gc_rule)
         column_family.create()
 
         col_fams = temp_table.list_column_families()
@@ -672,19 +708,19 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(len(col_fams), 1)
         retrieved_col_fam = col_fams[COLUMN_FAMILY_ID1]
         self.assertIs(retrieved_col_fam._table, column_family._table)
-        self.assertEqual(retrieved_col_fam.column_family_id,
-                         column_family.column_family_id)
+        self.assertEqual(
+            retrieved_col_fam.column_family_id, column_family.column_family_id
+        )
         self.assertEqual(retrieved_col_fam.gc_rule, gc_rule)
 
     def test_update_column_family(self):
-        temp_table_id = 'test-update-column-family'
+        temp_table_id = "test-update-column-family"
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
         gc_rule = MaxVersionsGCRule(1)
-        column_family = temp_table.column_family(COLUMN_FAMILY_ID1,
-                                                 gc_rule=gc_rule)
+        column_family = temp_table.column_family(COLUMN_FAMILY_ID1, gc_rule=gc_rule)
         column_family.create()
 
         # Check that our created table is as expected.
@@ -700,7 +736,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertIsNone(col_fams[COLUMN_FAMILY_ID1].gc_rule)
 
     def test_delete_column_family(self):
-        temp_table_id = 'test-delete-column-family'
+        temp_table_id = "test-delete-column-family"
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -719,10 +755,9 @@ class TestTableAdminAPI(unittest.TestCase):
 
 
 class TestDataAPI(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
-        cls._table = table = Config.INSTANCE.table('test-data-api')
+        cls._table = table = Config.INSTANCE.table("test-data-api")
         table.create()
         table.column_family(COLUMN_FAMILY_ID1).create()
         table.column_family(COLUMN_FAMILY_ID2).create()
@@ -752,7 +787,7 @@ class TestDataAPI(unittest.TestCase):
         timestamp1 = datetime.datetime.utcnow().replace(tzinfo=UTC)
         timestamp1_micros = _microseconds_from_datetime(timestamp1)
         # Truncate to millisecond granularity.
-        timestamp1_micros -= (timestamp1_micros % 1000)
+        timestamp1_micros -= timestamp1_micros % 1000
         timestamp1 = _datetime_from_microseconds(timestamp1_micros)
         # 1000 microseconds is a millisecond
         timestamp2 = timestamp1 + datetime.timedelta(microseconds=1000)
@@ -763,17 +798,13 @@ class TestDataAPI(unittest.TestCase):
         timestamp4_micros = _microseconds_from_datetime(timestamp4)
 
         if row1 is not None:
-            row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1,
-                          timestamp=timestamp1)
+            row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1, timestamp=timestamp1)
         if row2 is not None:
-            row2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL2,
-                          timestamp=timestamp2)
+            row2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL2, timestamp=timestamp2)
         if row3 is not None:
-            row3.set_cell(COLUMN_FAMILY_ID1, COL_NAME2, CELL_VAL3,
-                          timestamp=timestamp3)
+            row3.set_cell(COLUMN_FAMILY_ID1, COL_NAME2, CELL_VAL3, timestamp=timestamp3)
         if row4 is not None:
-            row4.set_cell(COLUMN_FAMILY_ID2, COL_NAME3, CELL_VAL4,
-                          timestamp=timestamp4)
+            row4.set_cell(COLUMN_FAMILY_ID2, COL_NAME3, CELL_VAL4, timestamp=timestamp4)
 
         # Create the cells we will check.
         cell1 = Cell(CELL_VAL1, timestamp1_micros)
@@ -814,16 +845,26 @@ class TestDataAPI(unittest.TestCase):
         # Check the contents
         row1_data = self._table.read_row(ROW_KEY)
         self.assertEqual(
-            row1_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL3)
+            row1_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL3
+        )
         row2_data = self._table.read_row(ROW_KEY_ALT)
         self.assertEqual(
-            row2_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL4)
+            row2_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL4
+        )
 
     def test_truncate_table(self):
         row_keys = [
-            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
-            b'row_key_5', b'row_key_pr_1', b'row_key_pr_2', b'row_key_pr_3',
-            b'row_key_pr_4', b'row_key_pr_5']
+            b"row_key_1",
+            b"row_key_2",
+            b"row_key_3",
+            b"row_key_4",
+            b"row_key_5",
+            b"row_key_pr_1",
+            b"row_key_pr_2",
+            b"row_key_pr_3",
+            b"row_key_pr_4",
+            b"row_key_pr_5",
+        ]
 
         for row_key in row_keys:
             row = self._table.row(row_key)
@@ -836,13 +877,21 @@ class TestDataAPI(unittest.TestCase):
         read_rows = self._table.yield_rows()
 
         for row in read_rows:
-            self.assertNotIn(row.row_key.decode('utf-8'), row_keys)
+            self.assertNotIn(row.row_key.decode("utf-8"), row_keys)
 
     def test_drop_by_prefix_table(self):
         row_keys = [
-            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
-            b'row_key_5', b'row_key_pr_1', b'row_key_pr_2', b'row_key_pr_3',
-            b'row_key_pr_4', b'row_key_pr_5']
+            b"row_key_1",
+            b"row_key_2",
+            b"row_key_3",
+            b"row_key_4",
+            b"row_key_5",
+            b"row_key_pr_1",
+            b"row_key_pr_2",
+            b"row_key_pr_3",
+            b"row_key_pr_4",
+            b"row_key_pr_5",
+        ]
 
         for row_key in row_keys:
             row = self._table.row(row_key)
@@ -850,7 +899,7 @@ class TestDataAPI(unittest.TestCase):
             row.commit()
             self.rows_to_delete.append(row)
 
-        self._table.drop_by_prefix(row_key_prefix='row_key_pr', timeout=200)
+        self._table.drop_by_prefix(row_key_prefix="row_key_pr", timeout=200)
 
         read_rows = self._table.yield_rows()
         expected_rows_count = 5
@@ -864,9 +913,16 @@ class TestDataAPI(unittest.TestCase):
 
     def test_yield_rows_with_row_set(self):
         row_keys = [
-            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
-            b'row_key_5', b'row_key_6', b'row_key_7', b'row_key_8',
-            b'row_key_9']
+            b"row_key_1",
+            b"row_key_2",
+            b"row_key_3",
+            b"row_key_4",
+            b"row_key_5",
+            b"row_key_6",
+            b"row_key_7",
+            b"row_key_8",
+            b"row_key_9",
+        ]
 
         rows = []
         for row_key in row_keys:
@@ -877,14 +933,18 @@ class TestDataAPI(unittest.TestCase):
         self._table.mutate_rows(rows)
 
         row_set = RowSet()
-        row_set.add_row_range(RowRange(start_key=b'row_key_3',
-                                       end_key=b'row_key_7'))
-        row_set.add_row_key(b'row_key_1')
+        row_set.add_row_range(RowRange(start_key=b"row_key_3", end_key=b"row_key_7"))
+        row_set.add_row_key(b"row_key_1")
 
         read_rows = self._table.yield_rows(row_set=row_set)
 
-        expected_row_keys = [b'row_key_1', b'row_key_3', b'row_key_4',
-                             b'row_key_5', b'row_key_6']
+        expected_row_keys = [
+            b"row_key_1",
+            b"row_key_3",
+            b"row_key_4",
+            b"row_key_5",
+            b"row_key_6",
+        ]
         found_row_keys = [row.row_key for row in read_rows]
         self.assertEqual(found_row_keys, expected_row_keys)
 
@@ -893,7 +953,7 @@ class TestDataAPI(unittest.TestCase):
         self.rows_to_delete.append(row)
 
         number_of_bytes = 10 * 1024 * 1024
-        data = b'1' * number_of_bytes  # 10MB of 1's.
+        data = b"1" * number_of_bytes  # 10MB of 1's.
         row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, data)
         row.commit()
 
@@ -917,15 +977,13 @@ class TestDataAPI(unittest.TestCase):
         self.assertEqual(partial_row_data.row_key, ROW_KEY)
 
         # Check the cells match.
-        ts_attr = operator.attrgetter('timestamp')
+        ts_attr = operator.attrgetter("timestamp")
         expected_row_contents = {
             COLUMN_FAMILY_ID1: {
                 COL_NAME1: sorted([cell1, cell2], key=ts_attr, reverse=True),
                 COL_NAME2: [cell3],
             },
-            COLUMN_FAMILY_ID2: {
-                COL_NAME3: [cell4],
-            },
+            COLUMN_FAMILY_ID2: {COL_NAME3: [cell4]},
         }
         self.assertEqual(partial_row_data.cells, expected_row_contents)
 
@@ -934,8 +992,7 @@ class TestDataAPI(unittest.TestCase):
         row_alt = self._table.row(ROW_KEY_ALT)
         self.rows_to_delete.extend([row, row_alt])
 
-        cell1, cell2, cell3, cell4 = self._write_to_row(row, row_alt,
-                                                        row, row_alt)
+        cell1, cell2, cell3, cell4 = self._write_to_row(row, row_alt, row, row_alt)
         row.commit()
         row_alt.commit()
 
@@ -949,33 +1006,21 @@ class TestDataAPI(unittest.TestCase):
         row_data = PartialRowData(ROW_KEY)
         row_data._chunks_encountered = True
         row_data._committed = True
-        row_data._cells = {
-            COLUMN_FAMILY_ID1: {
-                COL_NAME1: [cell1],
-                COL_NAME2: [cell3],
-            },
-        }
+        row_data._cells = {COLUMN_FAMILY_ID1: {COL_NAME1: [cell1], COL_NAME2: [cell3]}}
 
         row_alt_data = PartialRowData(ROW_KEY_ALT)
         row_alt_data._chunks_encountered = True
         row_alt_data._committed = True
         row_alt_data._cells = {
-            COLUMN_FAMILY_ID1: {
-                COL_NAME1: [cell2],
-            },
-            COLUMN_FAMILY_ID2: {
-                COL_NAME3: [cell4],
-            },
+            COLUMN_FAMILY_ID1: {COL_NAME1: [cell2]},
+            COLUMN_FAMILY_ID2: {COL_NAME3: [cell4]},
         }
 
-        expected_rows = {
-            ROW_KEY: row_data,
-            ROW_KEY_ALT: row_alt_data,
-        }
+        expected_rows = {ROW_KEY: row_data, ROW_KEY_ALT: row_alt_data}
         self.assertEqual(rows_data.rows, expected_rows)
 
     def test_read_with_label_applied(self):
-        self._maybe_emulator_skip('Labels not supported by Bigtable emulator')
+        self._maybe_emulator_skip("Labels not supported by Bigtable emulator")
         row = self._table.row(ROW_KEY)
         self.rows_to_delete.append(row)
 
@@ -983,13 +1028,13 @@ class TestDataAPI(unittest.TestCase):
         row.commit()
 
         # Combine a label with column 1.
-        label1 = u'label-red'
+        label1 = u"label-red"
         label1_filter = ApplyLabelFilter(label1)
         col1_filter = ColumnQualifierRegexFilter(COL_NAME1)
         chain1 = RowFilterChain(filters=[col1_filter, label1_filter])
 
         # Combine a label with column 2.
-        label2 = u'label-blue'
+        label2 = u"label-blue"
         label2_filter = ApplyLabelFilter(label2)
         col2_filter = ColumnQualifierRegexFilter(COL_NAME2)
         chain2 = RowFilterChain(filters=[col2_filter, label2_filter])
@@ -1025,4 +1070,4 @@ class TestDataAPI(unittest.TestCase):
         client = Client(admin=False)
         instance = client.instance(INSTANCE_ID)
         table = instance.table(self._table.table_id)
-        self.assertIsNone(table.read_row('nonesuch'))
+        self.assertIsNone(table.read_row("nonesuch"))

@@ -22,29 +22,28 @@ else:
 import unittest
 
 
-PROJECT = 'my-project'
+PROJECT = "my-project"
 
-INSTANCE_NAMES = ['instance-1', 'instance-2']
-INSTANCE_ZONES = ['us-east1-a', 'us-east1-b']
-INSTANCE_IDS = ['1234567890123456789', '9876543210987654321']
+INSTANCE_NAMES = ["instance-1", "instance-2"]
+INSTANCE_ZONES = ["us-east1-a", "us-east1-b"]
+INSTANCE_IDS = ["1234567890123456789", "9876543210987654321"]
 
-METRIC_TYPE = 'compute.googleapis.com/instance/cpu/utilization'
-METRIC_LABELS = list({'instance_name': name} for name in INSTANCE_NAMES)
+METRIC_TYPE = "compute.googleapis.com/instance/cpu/utilization"
+METRIC_LABELS = list({"instance_name": name} for name in INSTANCE_NAMES)
 
-RESOURCE_TYPE = 'gce_instance'
-RESOURCE_LABELS = list({
-    'project_id': PROJECT,
-    'zone': zone,
-    'instance_id': instance_id,
-} for zone, instance_id in zip(INSTANCE_ZONES, INSTANCE_IDS))
+RESOURCE_TYPE = "gce_instance"
+RESOURCE_LABELS = list(
+    {"project_id": PROJECT, "zone": zone, "instance_id": instance_id}
+    for zone, instance_id in zip(INSTANCE_ZONES, INSTANCE_IDS)
+)
 
-METRIC_KIND = 'GAUGE'
-VALUE_TYPE = 'DOUBLE'
+METRIC_KIND = "GAUGE"
+VALUE_TYPE = "DOUBLE"
 
 TIMESTAMPS = [
-    '2016-04-06T22:05:00.042Z',
-    '2016-04-06T22:05:01.042Z',
-    '2016-04-06T22:05:02.042Z',
+    "2016-04-06T22:05:00.042Z",
+    "2016-04-06T22:05:01.042Z",
+    "2016-04-06T22:05:02.042Z",
 ]
 
 DIMENSIONS = len(TIMESTAMPS), len(INSTANCE_NAMES)
@@ -55,9 +54,7 @@ ARRAY = [VALUES] * DIMENSIONS[0]
 def parse_timestamps():
     from google.api_core import datetime_helpers
 
-    return [
-        datetime_helpers.from_rfc3339(t).replace(tzinfo=None)
-        for t in TIMESTAMPS]
+    return [datetime_helpers.from_rfc3339(t).replace(tzinfo=None) for t in TIMESTAMPS]
 
 
 def generate_query_results():
@@ -67,23 +64,24 @@ def generate_query_results():
         interval = types.TimeInterval()
         interval.start_time.FromJsonString(timestamp)
         interval.end_time.FromJsonString(timestamp)
-        return types.Point(interval=interval, value={'double_value': value})
+        return types.Point(interval=interval, value={"double_value": value})
 
     for metric_labels, resource_labels, value in zip(
-            METRIC_LABELS, RESOURCE_LABELS, VALUES):
+        METRIC_LABELS, RESOURCE_LABELS, VALUES
+    ):
         yield types.TimeSeries(
             metric=types.Metric(type=METRIC_TYPE, labels=metric_labels),
             resource=types.MonitoredResource(
-                type=RESOURCE_TYPE, labels=resource_labels),
+                type=RESOURCE_TYPE, labels=resource_labels
+            ),
             metric_kind=METRIC_KIND,
             value_type=VALUE_TYPE,
             points=[P(t, value) for t in TIMESTAMPS],
         )
 
 
-@unittest.skipUnless(HAVE_PANDAS, 'No pandas')
+@unittest.skipUnless(HAVE_PANDAS, "No pandas")
 class Test__build_dataframe(unittest.TestCase):
-
     def _call_fut(self, *args, **kwargs):
         from google.cloud.monitoring_v3._dataframe import _build_dataframe
 
@@ -91,7 +89,7 @@ class Test__build_dataframe(unittest.TestCase):
 
     def test_both_label_and_labels_illegal(self):
         with self.assertRaises(ValueError):
-            self._call_fut([], label='instance_name', labels=['zone'])
+            self._call_fut([], label="instance_name", labels=["zone"])
 
     def test_empty_labels_illegal(self):
         with self.assertRaises(ValueError):
@@ -99,13 +97,12 @@ class Test__build_dataframe(unittest.TestCase):
 
     def test_simple_label(self):
         iterable = generate_query_results()
-        dataframe = self._call_fut(iterable, label='instance_name')
+        dataframe = self._call_fut(iterable, label="instance_name")
 
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
 
-        expected_headers = [(instance_name,)
-                            for instance_name in INSTANCE_NAMES]
+        expected_headers = [(instance_name,) for instance_name in INSTANCE_NAMES]
         self.assertEqual(list(dataframe.columns), expected_headers)
         self.assertIsNone(dataframe.columns.name)
 
@@ -113,7 +110,7 @@ class Test__build_dataframe(unittest.TestCase):
         self.assertIsNone(dataframe.index.name)
 
     def test_multiple_labels(self):
-        NAMES = ['resource_type', 'instance_id']
+        NAMES = ["resource_type", "instance_id"]
 
         iterable = generate_query_results()
         dataframe = self._call_fut(iterable, labels=NAMES)
@@ -121,8 +118,9 @@ class Test__build_dataframe(unittest.TestCase):
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
 
-        expected_headers = [(RESOURCE_TYPE, instance_id)
-                            for instance_id in INSTANCE_IDS]
+        expected_headers = [
+            (RESOURCE_TYPE, instance_id) for instance_id in INSTANCE_IDS
+        ]
         self.assertEqual(list(dataframe.columns), expected_headers)
         self.assertEqual(dataframe.columns.names, NAMES)
         self.assertIsNone(dataframe.columns.name)
@@ -131,7 +129,7 @@ class Test__build_dataframe(unittest.TestCase):
         self.assertIsNone(dataframe.index.name)
 
     def test_multiple_labels_with_just_one(self):
-        NAME = 'instance_id'
+        NAME = "instance_id"
         NAMES = [NAME]
 
         iterable = generate_query_results()
@@ -149,9 +147,7 @@ class Test__build_dataframe(unittest.TestCase):
         self.assertIsNone(dataframe.index.name)
 
     def test_smart_labels(self):
-        NAMES = ['resource_type', 'project_id',
-                 'zone', 'instance_id',
-                 'instance_name']
+        NAMES = ["resource_type", "project_id", "zone", "instance_id", "instance_name"]
 
         iterable = generate_query_results()
         dataframe = self._call_fut(iterable)
@@ -161,8 +157,10 @@ class Test__build_dataframe(unittest.TestCase):
 
         expected_headers = [
             (RESOURCE_TYPE, PROJECT, zone, instance_id, instance_name)
-            for zone, instance_id, instance_name
-            in zip(INSTANCE_ZONES, INSTANCE_IDS, INSTANCE_NAMES)]
+            for zone, instance_id, instance_name in zip(
+                INSTANCE_ZONES, INSTANCE_IDS, INSTANCE_NAMES
+            )
+        ]
         self.assertEqual(list(dataframe.columns), expected_headers)
         self.assertEqual(dataframe.columns.names, NAMES)
         self.assertIsNone(dataframe.columns.name)
@@ -171,14 +169,14 @@ class Test__build_dataframe(unittest.TestCase):
         self.assertIsNone(dataframe.index.name)
 
     def test_empty_table_simple_label(self):
-        dataframe = self._call_fut([], label='instance_name')
+        dataframe = self._call_fut([], label="instance_name")
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertIsNone(dataframe.columns.name)
         self.assertIsNone(dataframe.index.name)
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
     def test_empty_table_multiple_labels(self):
-        NAMES = ['resource_type', 'instance_id']
+        NAMES = ["resource_type", "instance_id"]
         dataframe = self._call_fut([], labels=NAMES)
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertEqual(dataframe.columns.names, NAMES)
@@ -187,7 +185,7 @@ class Test__build_dataframe(unittest.TestCase):
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
     def test_empty_table_multiple_labels_with_just_one(self):
-        NAME = 'instance_id'
+        NAME = "instance_id"
         NAMES = [NAME]
         dataframe = self._call_fut([], labels=NAMES)
         self.assertEqual(dataframe.shape, (0, 0))
@@ -197,7 +195,7 @@ class Test__build_dataframe(unittest.TestCase):
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
     def test_empty_table_smart_labels(self):
-        NAME = 'resource_type'
+        NAME = "resource_type"
         NAMES = [NAME]
         dataframe = self._call_fut([])
         self.assertEqual(dataframe.shape, (0, 0))
@@ -208,10 +206,8 @@ class Test__build_dataframe(unittest.TestCase):
 
 
 class Test__sorted_resource_labels(unittest.TestCase):
-
     def _call_fut(self, labels):
-        from google.cloud.monitoring_v3._dataframe import (
-            _sorted_resource_labels)
+        from google.cloud.monitoring_v3._dataframe import _sorted_resource_labels
 
         return _sorted_resource_labels(labels)
 
@@ -221,12 +217,12 @@ class Test__sorted_resource_labels(unittest.TestCase):
     def test_sorted(self):
         from google.cloud.monitoring_v3._dataframe import TOP_RESOURCE_LABELS
 
-        EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
+        EXPECTED = TOP_RESOURCE_LABELS + ("other-1", "other-2")
         self.assertSequenceEqual(self._call_fut(EXPECTED), EXPECTED)
 
     def test_reversed(self):
         from google.cloud.monitoring_v3._dataframe import TOP_RESOURCE_LABELS
 
-        EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
+        EXPECTED = TOP_RESOURCE_LABELS + ("other-1", "other-2")
         INPUT = list(reversed(EXPECTED))
         self.assertSequenceEqual(self._call_fut(INPUT), EXPECTED)

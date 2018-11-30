@@ -61,34 +61,38 @@ class OperationsClient(object):
         # Create all wrapped methods using the interface configuration.
         # The interface config contains all of the default settings for retry
         # and timeout for each RPC method.
-        interfaces = client_config['interfaces']
-        interface_config = interfaces['google.longrunning.Operations']
+        interfaces = client_config["interfaces"]
+        interface_config = interfaces["google.longrunning.Operations"]
         method_configs = gapic_v1.config.parse_method_configs(interface_config)
 
         self._get_operation = gapic_v1.method.wrap_method(
             self.operations_stub.GetOperation,
-            default_retry=method_configs['GetOperation'].retry,
-            default_timeout=method_configs['GetOperation'].timeout)
+            default_retry=method_configs["GetOperation"].retry,
+            default_timeout=method_configs["GetOperation"].timeout,
+        )
 
         self._list_operations = gapic_v1.method.wrap_method(
             self.operations_stub.ListOperations,
-            default_retry=method_configs['ListOperations'].retry,
-            default_timeout=method_configs['ListOperations'].timeout)
+            default_retry=method_configs["ListOperations"].retry,
+            default_timeout=method_configs["ListOperations"].timeout,
+        )
 
         self._cancel_operation = gapic_v1.method.wrap_method(
             self.operations_stub.CancelOperation,
-            default_retry=method_configs['CancelOperation'].retry,
-            default_timeout=method_configs['CancelOperation'].timeout)
+            default_retry=method_configs["CancelOperation"].retry,
+            default_timeout=method_configs["CancelOperation"].timeout,
+        )
 
         self._delete_operation = gapic_v1.method.wrap_method(
             self.operations_stub.DeleteOperation,
-            default_retry=method_configs['DeleteOperation'].retry,
-            default_timeout=method_configs['DeleteOperation'].timeout)
+            default_retry=method_configs["DeleteOperation"].retry,
+            default_timeout=method_configs["DeleteOperation"].timeout,
+        )
 
     # Service calls
     def get_operation(
-            self, name,
-            retry=gapic_v1.method.DEFAULT, timeout=gapic_v1.method.DEFAULT):
+        self, name, retry=gapic_v1.method.DEFAULT, timeout=gapic_v1.method.DEFAULT
+    ):
         """Gets the latest state of a long-running operation.
 
         Clients can use this method to poll the operation result at intervals
@@ -127,8 +131,12 @@ class OperationsClient(object):
         return self._get_operation(request, retry=retry, timeout=timeout)
 
     def list_operations(
-            self, name, filter_,
-            retry=gapic_v1.method.DEFAULT, timeout=gapic_v1.method.DEFAULT):
+        self,
+        name,
+        filter_,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
+    ):
         """
         Lists operations that match the specified filter in the request.
 
@@ -177,26 +185,25 @@ class OperationsClient(object):
                 subclass will be raised.
         """
         # Create the request object.
-        request = operations_pb2.ListOperationsRequest(
-            name=name, filter=filter_)
+        request = operations_pb2.ListOperationsRequest(name=name, filter=filter_)
 
         # Create the method used to fetch pages
-        method = functools.partial(
-            self._list_operations, retry=retry, timeout=timeout)
+        method = functools.partial(self._list_operations, retry=retry, timeout=timeout)
 
         iterator = page_iterator.GRPCIterator(
             client=None,
             method=method,
             request=request,
-            items_field='operations',
-            request_token_field='page_token',
-            response_token_field='next_page_token')
+            items_field="operations",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
 
         return iterator
 
     def cancel_operation(
-            self, name,
-            retry=gapic_v1.method.DEFAULT, timeout=gapic_v1.method.DEFAULT):
+        self, name, retry=gapic_v1.method.DEFAULT, timeout=gapic_v1.method.DEFAULT
+    ):
         """Starts asynchronous cancellation on a long-running operation.
 
         The server makes a best effort to cancel the operation, but success is
@@ -241,8 +248,8 @@ class OperationsClient(object):
         self._cancel_operation(request, retry=retry, timeout=timeout)
 
     def delete_operation(
-            self, name,
-            retry=gapic_v1.method.DEFAULT, timeout=gapic_v1.method.DEFAULT):
+        self, name, retry=gapic_v1.method.DEFAULT, timeout=gapic_v1.method.DEFAULT
+    ):
         """Deletes a long-running operation.
 
         This method indicates that the client is no longer interested in the

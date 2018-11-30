@@ -202,8 +202,7 @@ def test_document_integer_field(client, cleanup):
     document.create(data1)
 
     data2 = {'1a.ab': '4d', '6f.7g': '9h'}
-    option2 = client.write_option(exists=True)
-    document.update(data2, option=option2)
+    document.update(data2)
     snapshot = document.get()
     expected = {
         '1a': {
@@ -311,9 +310,8 @@ def test_update_document(client, cleanup):
     assert document_id in exc_info.value.message
 
     # 1. Try to update before the document exists (now with an option).
-    option1 = client.write_option(exists=True)
     with pytest.raises(NotFound) as exc_info:
-        document.update({'still': 'not-there'}, option=option1)
+        document.update({'still': 'not-there'})
     assert exc_info.value.message.startswith(MISSING_DOCUMENT)
     assert document_id in exc_info.value.message
 
@@ -327,8 +325,7 @@ def test_update_document(client, cleanup):
         },
         'other': True,
     }
-    option2 = client.write_option(exists=False)
-    write_result2 = document.update(data, option=option2)
+    write_result2 = document.create(data)
 
     # 3. Send an update without a field path (no option).
     field_updates3 = {'foo': {'quux': 800}}
@@ -416,7 +413,6 @@ def test_document_get(client, cleanup):
     write_result = document.create(data)
     snapshot = document.get()
     check_snapshot(snapshot, document, data, write_result)
-    assert_timestamp_less(snapshot.create_time, snapshot.read_time)
 
 
 def test_document_delete(client, cleanup):
@@ -569,9 +565,8 @@ def test_query_get(client, cleanup):
     assert expected_ab_pairs == ab_pairs2
 
     # 3. Use a start and end cursor.
-    query3 = collection.start_at({'a': num_vals - 2})
-    query3 = query3.order_by('a')
-    query3 = query3.end_before({'a': num_vals - 1})
+    query3 = collection.order_by(
+        'a').start_at({'a': num_vals - 2}).end_before({'a': num_vals - 1})
     values3 = [
         (snapshot.id, snapshot.to_dict())
         for snapshot in query3.get()

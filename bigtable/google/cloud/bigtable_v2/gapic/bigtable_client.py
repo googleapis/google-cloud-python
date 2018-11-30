@@ -33,19 +33,18 @@ from google.cloud.bigtable_v2.proto import bigtable_pb2
 from google.cloud.bigtable_v2.proto import bigtable_pb2_grpc
 from google.cloud.bigtable_v2.proto import data_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-bigtable', ).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-bigtable").version
 
 
 class BigtableClient(object):
     """Service for reading from and writing to existing Bigtable tables."""
 
-    SERVICE_ADDRESS = 'bigtable.googleapis.com:443'
+    SERVICE_ADDRESS = "bigtable.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.bigtable.v2.Bigtable'
+    _INTERFACE_NAME = "google.bigtable.v2.Bigtable"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -61,9 +60,8 @@ class BigtableClient(object):
         Returns:
             BigtableClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -72,18 +70,20 @@ class BigtableClient(object):
     def table_path(cls, project, instance, table):
         """Return a fully-qualified table string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/instances/{instance}/tables/{table}',
+            "projects/{project}/instances/{instance}/tables/{table}",
             project=project,
             instance=instance,
             table=table,
         )
 
-    def __init__(self,
-                 transport=None,
-                 channel=None,
-                 credentials=None,
-                 client_config=bigtable_client_config.config,
-                 client_info=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+    ):
         """Constructor.
 
         Args:
@@ -115,13 +115,21 @@ class BigtableClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
-            warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+        if client_config is not None:
+            warnings.warn(
+                "The `client_config` argument is deprecated.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
+        else:
+            client_config = bigtable_client_config.config
+
         if channel:
             warnings.warn(
-                'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                "The `channel` argument is deprecated; use " "`transport` instead.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -130,25 +138,24 @@ class BigtableClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=bigtable_grpc_transport.
-                    BigtableGrpcTransport,
+                    default_class=bigtable_grpc_transport.BigtableGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        'Received both a transport instance and '
-                        'credentials; these are mutually exclusive.')
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
+                    )
                 self.transport = transport
         else:
             self.transport = bigtable_grpc_transport.BigtableGrpcTransport(
-                address=self.SERVICE_ADDRESS,
-                channel=channel,
-                credentials=credentials,
+                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION, )
+                gapic_version=_GAPIC_LIBRARY_VERSION
+            )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -158,7 +165,8 @@ class BigtableClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME], )
+            client_config["interfaces"][self._INTERFACE_NAME]
+        )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -167,15 +175,17 @@ class BigtableClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def read_rows(self,
-                  table_name,
-                  app_profile_id=None,
-                  rows=None,
-                  filter_=None,
-                  rows_limit=None,
-                  retry=google.api_core.gapic_v1.method.DEFAULT,
-                  timeout=google.api_core.gapic_v1.method.DEFAULT,
-                  metadata=None):
+    def read_rows(
+        self,
+        table_name,
+        app_profile_id=None,
+        rows=None,
+        filter_=None,
+        rows_limit=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Streams back the contents of all requested rows in key order, optionally
         applying the same Reader filter to each. Depending on their size,
@@ -230,14 +240,15 @@ class BigtableClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'read_rows' not in self._inner_api_calls:
+        if "read_rows" not in self._inner_api_calls:
             self._inner_api_calls[
-                'read_rows'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.read_rows,
-                    default_retry=self._method_configs['ReadRows'].retry,
-                    default_timeout=self._method_configs['ReadRows'].timeout,
-                    client_info=self._client_info,
-                )
+                "read_rows"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.read_rows,
+                default_retry=self._method_configs["ReadRows"].retry,
+                default_timeout=self._method_configs["ReadRows"].timeout,
+                client_info=self._client_info,
+            )
 
         request = bigtable_pb2.ReadRowsRequest(
             table_name=table_name,
@@ -250,23 +261,27 @@ class BigtableClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('table_name', table_name)]
+            routing_header = [("table_name", table_name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['read_rows'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["read_rows"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def sample_row_keys(self,
-                        table_name,
-                        app_profile_id=None,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def sample_row_keys(
+        self,
+        table_name,
+        app_profile_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns a sample of row keys in the table. The returned row keys will
         delimit contiguous sections of the table of approximately equal size,
@@ -309,43 +324,46 @@ class BigtableClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'sample_row_keys' not in self._inner_api_calls:
+        if "sample_row_keys" not in self._inner_api_calls:
             self._inner_api_calls[
-                'sample_row_keys'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.sample_row_keys,
-                    default_retry=self._method_configs['SampleRowKeys'].retry,
-                    default_timeout=self._method_configs['SampleRowKeys'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "sample_row_keys"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.sample_row_keys,
+                default_retry=self._method_configs["SampleRowKeys"].retry,
+                default_timeout=self._method_configs["SampleRowKeys"].timeout,
+                client_info=self._client_info,
+            )
 
         request = bigtable_pb2.SampleRowKeysRequest(
-            table_name=table_name,
-            app_profile_id=app_profile_id,
+            table_name=table_name, app_profile_id=app_profile_id
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('table_name', table_name)]
+            routing_header = [("table_name", table_name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['sample_row_keys'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["sample_row_keys"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def mutate_row(self,
-                   table_name,
-                   row_key,
-                   mutations,
-                   app_profile_id=None,
-                   retry=google.api_core.gapic_v1.method.DEFAULT,
-                   timeout=google.api_core.gapic_v1.method.DEFAULT,
-                   metadata=None):
+    def mutate_row(
+        self,
+        table_name,
+        row_key,
+        mutations,
+        app_profile_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Mutates a row atomically. Cells already present in the row are left
         unchanged unless explicitly changed by ``mutation``.
@@ -398,14 +416,15 @@ class BigtableClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'mutate_row' not in self._inner_api_calls:
+        if "mutate_row" not in self._inner_api_calls:
             self._inner_api_calls[
-                'mutate_row'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.mutate_row,
-                    default_retry=self._method_configs['MutateRow'].retry,
-                    default_timeout=self._method_configs['MutateRow'].timeout,
-                    client_info=self._client_info,
-                )
+                "mutate_row"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.mutate_row,
+                default_retry=self._method_configs["MutateRow"].retry,
+                default_timeout=self._method_configs["MutateRow"].timeout,
+                client_info=self._client_info,
+            )
 
         request = bigtable_pb2.MutateRowRequest(
             table_name=table_name,
@@ -417,24 +436,28 @@ class BigtableClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('table_name', table_name)]
+            routing_header = [("table_name", table_name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['mutate_row'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["mutate_row"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def mutate_rows(self,
-                    table_name,
-                    entries,
-                    app_profile_id=None,
-                    retry=google.api_core.gapic_v1.method.DEFAULT,
-                    timeout=google.api_core.gapic_v1.method.DEFAULT,
-                    metadata=None):
+    def mutate_rows(
+        self,
+        table_name,
+        entries,
+        app_profile_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Mutates multiple rows in a batch. Each individual row is mutated
         atomically as in MutateRow, but the entire batch is not executed
@@ -486,45 +509,48 @@ class BigtableClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'mutate_rows' not in self._inner_api_calls:
+        if "mutate_rows" not in self._inner_api_calls:
             self._inner_api_calls[
-                'mutate_rows'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.mutate_rows,
-                    default_retry=self._method_configs['MutateRows'].retry,
-                    default_timeout=self._method_configs['MutateRows'].timeout,
-                    client_info=self._client_info,
-                )
+                "mutate_rows"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.mutate_rows,
+                default_retry=self._method_configs["MutateRows"].retry,
+                default_timeout=self._method_configs["MutateRows"].timeout,
+                client_info=self._client_info,
+            )
 
         request = bigtable_pb2.MutateRowsRequest(
-            table_name=table_name,
-            entries=entries,
-            app_profile_id=app_profile_id,
+            table_name=table_name, entries=entries, app_profile_id=app_profile_id
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('table_name', table_name)]
+            routing_header = [("table_name", table_name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['mutate_rows'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["mutate_rows"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def check_and_mutate_row(self,
-                             table_name,
-                             row_key,
-                             app_profile_id=None,
-                             predicate_filter=None,
-                             true_mutations=None,
-                             false_mutations=None,
-                             retry=google.api_core.gapic_v1.method.DEFAULT,
-                             timeout=google.api_core.gapic_v1.method.DEFAULT,
-                             metadata=None):
+    def check_and_mutate_row(
+        self,
+        table_name,
+        row_key,
+        app_profile_id=None,
+        predicate_filter=None,
+        true_mutations=None,
+        false_mutations=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Mutates a row atomically based on the output of a predicate Reader filter.
 
@@ -590,16 +616,15 @@ class BigtableClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'check_and_mutate_row' not in self._inner_api_calls:
+        if "check_and_mutate_row" not in self._inner_api_calls:
             self._inner_api_calls[
-                'check_and_mutate_row'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.check_and_mutate_row,
-                    default_retry=self._method_configs['CheckAndMutateRow'].
-                    retry,
-                    default_timeout=self._method_configs['CheckAndMutateRow'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "check_and_mutate_row"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.check_and_mutate_row,
+                default_retry=self._method_configs["CheckAndMutateRow"].retry,
+                default_timeout=self._method_configs["CheckAndMutateRow"].timeout,
+                client_info=self._client_info,
+            )
 
         request = bigtable_pb2.CheckAndMutateRowRequest(
             table_name=table_name,
@@ -613,25 +638,29 @@ class BigtableClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('table_name', table_name)]
+            routing_header = [("table_name", table_name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['check_and_mutate_row'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["check_and_mutate_row"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def read_modify_write_row(self,
-                              table_name,
-                              row_key,
-                              rules,
-                              app_profile_id=None,
-                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT,
-                              metadata=None):
+    def read_modify_write_row(
+        self,
+        table_name,
+        row_key,
+        rules,
+        app_profile_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Modifies a row atomically on the server. The method reads the latest
         existing timestamp and value from the specified columns and writes a new
@@ -687,16 +716,15 @@ class BigtableClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'read_modify_write_row' not in self._inner_api_calls:
+        if "read_modify_write_row" not in self._inner_api_calls:
             self._inner_api_calls[
-                'read_modify_write_row'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.read_modify_write_row,
-                    default_retry=self._method_configs['ReadModifyWriteRow'].
-                    retry,
-                    default_timeout=self._method_configs['ReadModifyWriteRow'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "read_modify_write_row"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.read_modify_write_row,
+                default_retry=self._method_configs["ReadModifyWriteRow"].retry,
+                default_timeout=self._method_configs["ReadModifyWriteRow"].timeout,
+                client_info=self._client_info,
+            )
 
         request = bigtable_pb2.ReadModifyWriteRowRequest(
             table_name=table_name,
@@ -708,13 +736,15 @@ class BigtableClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('table_name', table_name)]
+            routing_header = [("table_name", table_name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['read_modify_write_row'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["read_modify_write_row"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )

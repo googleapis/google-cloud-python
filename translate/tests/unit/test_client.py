@@ -16,10 +16,10 @@ import unittest
 
 
 class TestClient(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.translate import Client
+
         return Client
 
     def _make_one(self, *args, **kw):
@@ -40,7 +40,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.translate_v2._http import Connection
 
         http = object()
-        target = 'es'
+        target = "es"
         client = self._make_one(target_language=target, _http=http)
         self.assertIsInstance(client._connection, Connection)
         self.assertIsNone(client._connection.credentials)
@@ -52,15 +52,11 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(_http=object())
         supported = [
-            {'language': 'en', 'name': 'English'},
-            {'language': 'af', 'name': 'Afrikaans'},
-            {'language': 'am', 'name': 'Amharic'},
+            {"language": "en", "name": "English"},
+            {"language": "af", "name": "Afrikaans"},
+            {"language": "am", "name": "Amharic"},
         ]
-        data = {
-            'data': {
-                'languages': supported,
-            },
-        }
+        data = {"data": {"languages": supported}}
         conn = client._connection = _Connection(data)
 
         result = client.get_languages()
@@ -69,24 +65,14 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/languages')
-        self.assertEqual(req['query_params'],
-                         {'target': ENGLISH_ISO_639})
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/languages")
+        self.assertEqual(req["query_params"], {"target": ENGLISH_ISO_639})
 
     def test_get_languages_no_target(self):
-        client = self._make_one(
-            target_language=None, _http=object())
-        supported = [
-            {'language': 'en'},
-            {'language': 'af'},
-            {'language': 'am'},
-        ]
-        data = {
-            'data': {
-                'languages': supported,
-            },
-        }
+        client = self._make_one(target_language=None, _http=object())
+        supported = [{"language": "en"}, {"language": "af"}, {"language": "am"}]
+        data = {"data": {"languages": supported}}
         conn = client._connection = _Connection(data)
 
         result = client.get_languages()
@@ -96,23 +82,19 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(len(req), 3)
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/languages')
-        self.assertEqual(req['query_params'], {})
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/languages")
+        self.assertEqual(req["query_params"], {})
 
     def test_get_languages_explicit_target(self):
         client = self._make_one(_http=object())
-        target_language = 'en'
+        target_language = "en"
         supported = [
-            {'language': 'en', 'name': 'Spanish'},
-            {'language': 'af', 'name': 'Afrikaans'},
-            {'language': 'am', 'name': 'Amharic'},
+            {"language": "en", "name": "Spanish"},
+            {"language": "af", "name": "Afrikaans"},
+            {"language": "am", "name": "Amharic"},
         ]
-        data = {
-            'data': {
-                'languages': supported,
-            },
-        }
+        data = {"data": {"languages": supported}}
         conn = client._connection = _Connection(data)
 
         result = client.get_languages(target_language)
@@ -121,14 +103,13 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/languages')
-        self.assertEqual(req['query_params'],
-                         {'target': target_language})
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/languages")
+        self.assertEqual(req["query_params"], {"target": target_language})
 
     def test_detect_language_bad_result(self):
         client = self._make_one(_http=object())
-        value = 'takoy'
+        value = "takoy"
         conn = client._connection = _Connection({})
 
         with self.assertRaises(ValueError):
@@ -137,27 +118,21 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/detect')
-        expected_data = {
-            'q': [value],
-        }
-        self.assertEqual(req['data'], expected_data)
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], "/detect")
+        expected_data = {"q": [value]}
+        self.assertEqual(req["data"], expected_data)
 
     def test_detect_language_single_value(self):
         client = self._make_one(_http=object())
-        value = 'takoy'
+        value = "takoy"
         detection = {
-            'confidence': 1.0,
-            'input': value,
-            'language': 'ru',
-            'isReliable': False,
+            "confidence": 1.0,
+            "input": value,
+            "language": "ru",
+            "isReliable": False,
         }
-        data = {
-            'data': {
-                'detections': [[detection]],
-            },
-        }
+        data = {"data": {"detections": [[detection]]}}
         conn = client._connection = _Connection(data)
 
         result = client.detect_language(value)
@@ -166,37 +141,28 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/detect')
-        expected_data = {
-            'q': [value],
-        }
-        self.assertEqual(req['data'], expected_data)
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], "/detect")
+        expected_data = {"q": [value]}
+        self.assertEqual(req["data"], expected_data)
 
     def test_detect_language_multiple_values(self):
         client = self._make_one(_http=object())
-        value1 = u'fa\xe7ade'  # facade (with a cedilla)
+        value1 = u"fa\xe7ade"  # facade (with a cedilla)
         detection1 = {
-            'confidence': 0.6166008,
-            'input': value1,
-            'isReliable': False,
-            'language': 'en',
+            "confidence": 0.6166008,
+            "input": value1,
+            "isReliable": False,
+            "language": "en",
         }
-        value2 = 's\'il vous plait'
+        value2 = "s'il vous plait"
         detection2 = {
-            'confidence': 0.29728225,
-            'input': value2,
-            'isReliable': False,
-            'language': 'fr',
+            "confidence": 0.29728225,
+            "input": value2,
+            "isReliable": False,
+            "language": "fr",
         }
-        data = {
-            'data': {
-                'detections': [
-                    [detection1],
-                    [detection2],
-                ],
-            },
-        }
+        data = {"data": {"detections": [[detection1], [detection2]]}}
         conn = client._connection = _Connection(data)
 
         result = client.detect_language([value1, value2])
@@ -205,33 +171,27 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/detect')
-        expected_data = {
-            'q': [value1, value2],
-        }
-        self.assertEqual(req['data'], expected_data)
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], "/detect")
+        expected_data = {"q": [value1, value2]}
+        self.assertEqual(req["data"], expected_data)
 
     def test_detect_language_multiple_results(self):
         client = self._make_one(_http=object())
-        value = 'soy'
+        value = "soy"
         detection1 = {
-            'confidence': 0.81496066,
-            'input': value,
-            'language': 'es',
-            'isReliable': False,
+            "confidence": 0.81496066,
+            "input": value,
+            "language": "es",
+            "isReliable": False,
         }
         detection2 = {
-            'confidence': 0.222,
-            'input': value,
-            'language': 'en',
-            'isReliable': False,
+            "confidence": 0.222,
+            "input": value,
+            "language": "en",
+            "isReliable": False,
         }
-        data = {
-            'data': {
-                'detections': [[detection1, detection2]],
-            },
-        }
+        data = {"data": {"detections": [[detection1, detection2]]}}
         client._connection = _Connection(data)
 
         with self.assertRaises(ValueError):
@@ -239,7 +199,7 @@ class TestClient(unittest.TestCase):
 
     def test_translate_bad_result(self):
         client = self._make_one(_http=object())
-        value = 'hvala ti'
+        value = "hvala ti"
         conn = client._connection = _Connection({})
 
         with self.assertRaises(ValueError):
@@ -248,31 +208,27 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '')
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], "")
         expected_data = {
-            'target': 'en',
-            'q': [value],
-            'cid': (),
-            'source': None,
-            'model': None,
-            'format': None,
+            "target": "en",
+            "q": [value],
+            "cid": (),
+            "source": None,
+            "model": None,
+            "format": None,
         }
-        self.assertEqual(req['data'], expected_data)
+        self.assertEqual(req["data"], expected_data)
 
     def test_translate_defaults(self):
         client = self._make_one(_http=object())
-        value = 'hvala ti'
+        value = "hvala ti"
         translation = {
-            'detectedSourceLanguage': 'hr',
-            'translatedText': 'thank you',
-            'input': value,
+            "detectedSourceLanguage": "hr",
+            "translatedText": "thank you",
+            "input": value,
         }
-        data = {
-            'data': {
-                'translations': [translation],
-            },
-        }
+        data = {"data": {"translations": [translation]}}
         conn = client._connection = _Connection(data)
 
         result = client.translate(value)
@@ -281,38 +237,34 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '')
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], "")
 
         expected_data = {
-            'target': 'en',
-            'q': [value],
-            'cid': (),
-            'source': None,
-            'model': None,
-            'format': None,
+            "target": "en",
+            "q": [value],
+            "cid": (),
+            "source": None,
+            "model": None,
+            "format": None,
         }
-        self.assertEqual(req['data'], expected_data)
+        self.assertEqual(req["data"], expected_data)
 
     def test_translate_multiple(self):
         client = self._make_one(_http=object())
-        value1 = 'hvala ti'
+        value1 = "hvala ti"
         translation1 = {
-            'detectedSourceLanguage': 'hr',
-            'translatedText': 'thank you',
-            'input': value1,
+            "detectedSourceLanguage": "hr",
+            "translatedText": "thank you",
+            "input": value1,
         }
-        value2 = 'Dankon'
+        value2 = "Dankon"
         translation2 = {
-            'detectedSourceLanguage': 'eo',
-            'translatedText': 'thank you',
-            'input': value2,
+            "detectedSourceLanguage": "eo",
+            "translatedText": "thank you",
+            "input": value2,
         }
-        data = {
-            'data': {
-                'translations': [translation1, translation2],
-            },
-        }
+        data = {"data": {"translations": [translation1, translation2]}}
         conn = client._connection = _Connection(data)
 
         result = client.translate([value1, value2])
@@ -321,63 +273,59 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '')
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], "")
 
         expected_data = {
-            'target': 'en',
-            'q': [value1, value2],
-            'cid': (),
-            'source': None,
-            'model': None,
-            'format': None,
+            "target": "en",
+            "q": [value1, value2],
+            "cid": (),
+            "source": None,
+            "model": None,
+            "format": None,
         }
-        self.assertEqual(req['data'], expected_data)
+        self.assertEqual(req["data"], expected_data)
 
     def test_translate_explicit(self):
         client = self._make_one(_http=object())
-        value = 'thank you'
-        target_language = 'eo'
-        source_language = 'en'
-        translation = {
-            'translatedText': 'Dankon',
-            'input': value,
-        }
-        data = {
-            'data': {
-                'translations': [translation],
-            },
-        }
+        value = "thank you"
+        target_language = "eo"
+        source_language = "en"
+        translation = {"translatedText": "Dankon", "input": value}
+        data = {"data": {"translations": [translation]}}
         conn = client._connection = _Connection(data)
 
-        cid = '123'
-        format_ = 'text'
-        model = 'nmt'
-        result = client.translate(value, target_language=target_language,
-                                  source_language=source_language,
-                                  format_=format_, customization_ids=cid,
-                                  model=model)
+        cid = "123"
+        format_ = "text"
+        model = "nmt"
+        result = client.translate(
+            value,
+            target_language=target_language,
+            source_language=source_language,
+            format_=format_,
+            customization_ids=cid,
+            model=model,
+        )
         self.assertEqual(result, translation)
 
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '')
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], "")
 
         expected_data = {
-            'target': target_language,
-            'q': [value],
-            'cid': [cid],
-            'source': source_language,
-            'model': model,
-            'format': format_,
+            "target": target_language,
+            "q": [value],
+            "cid": [cid],
+            "source": source_language,
+            "model": model,
+            "format": format_,
         }
-        self.assertEqual(req['data'], expected_data)
+        self.assertEqual(req["data"], expected_data)
 
 
 class _Connection(object):
-
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []

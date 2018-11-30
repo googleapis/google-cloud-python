@@ -182,7 +182,7 @@ class Batch(object):
                  ``project`` does not match ours.
         """
         if self._status != self._IN_PROGRESS:
-            raise ValueError('Batch must be in progress to put()')
+            raise ValueError("Batch must be in progress to put()")
 
         if entity.key is None:
             raise ValueError("Entity must have a key")
@@ -209,7 +209,7 @@ class Batch(object):
                  ``project`` does not match ours.
         """
         if self._status != self._IN_PROGRESS:
-            raise ValueError('Batch must be in progress to delete()')
+            raise ValueError("Batch must be in progress to delete()")
 
         if key.is_partial:
             raise ValueError("Key must be complete")
@@ -232,7 +232,7 @@ class Batch(object):
         :raises: :class:`ValueError` if the batch has already begun.
         """
         if self._status != self._INITIAL:
-            raise ValueError('Batch already started previously.')
+            raise ValueError("Batch already started previously.")
         self._status = self._IN_PROGRESS
 
     def _commit(self):
@@ -246,13 +246,13 @@ class Batch(object):
             mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
 
         commit_response_pb = self._client._datastore_api.commit(
-            self.project, mode, self._mutations, transaction=self._id)
+            self.project, mode, self._mutations, transaction=self._id
+        )
         _, updated_keys = _parse_commit_response(commit_response_pb)
         # If the back-end returns without error, we are guaranteed that
         # ``commit`` will return keys that match (length and
         # order) directly ``_partial_key_entities``.
-        for new_key_pb, entity in zip(updated_keys,
-                                      self._partial_key_entities):
+        for new_key_pb, entity in zip(updated_keys, self._partial_key_entities):
             new_id = new_key_pb.path[-1].id
             entity.key = entity.key.completed_key(new_id)
 
@@ -267,7 +267,7 @@ class Batch(object):
                  in progress.
         """
         if self._status != self._IN_PROGRESS:
-            raise ValueError('Batch must be in progress to commit()')
+            raise ValueError("Batch must be in progress to commit()")
 
         try:
             self._commit()
@@ -285,7 +285,7 @@ class Batch(object):
                  in progress.
         """
         if self._status != self._IN_PROGRESS:
-            raise ValueError('Batch must be in progress to rollback()')
+            raise ValueError("Batch must be in progress to rollback()")
 
         self._status = self._ABORTED
 
@@ -334,6 +334,7 @@ def _parse_commit_response(commit_response_pb):
     """
     mut_results = commit_response_pb.mutation_results
     index_updates = commit_response_pb.index_updates
-    completed_keys = [mut_result.key for mut_result in mut_results
-                      if mut_result.HasField('key')]  # Message field (Key)
+    completed_keys = [
+        mut_result.key for mut_result in mut_results if mut_result.HasField("key")
+    ]  # Message field (Key)
     return index_updates, completed_keys

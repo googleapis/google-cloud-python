@@ -19,13 +19,9 @@ import logging
 from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
-DEFAULT_LOGGER_NAME = 'python'
+DEFAULT_LOGGER_NAME = "python"
 
-EXCLUDED_LOGGER_DEFAULTS = (
-    'google.cloud',
-    'google.auth',
-    'google_auth_httplib2',
-)
+EXCLUDED_LOGGER_DEFAULTS = ("google.cloud", "google.auth", "google_auth_httplib2")
 
 
 class CloudLoggingHandler(logging.StreamHandler):
@@ -81,11 +77,14 @@ class CloudLoggingHandler(logging.StreamHandler):
 
     """
 
-    def __init__(self, client,
-                 name=DEFAULT_LOGGER_NAME,
-                 transport=BackgroundThreadTransport,
-                 resource=_GLOBAL_RESOURCE,
-                 labels=None):
+    def __init__(
+        self,
+        client,
+        name=DEFAULT_LOGGER_NAME,
+        transport=BackgroundThreadTransport,
+        resource=_GLOBAL_RESOURCE,
+        labels=None,
+    ):
         super(CloudLoggingHandler, self).__init__()
         self.name = name
         self.client = client
@@ -104,15 +103,12 @@ class CloudLoggingHandler(logging.StreamHandler):
         :param record: The record to be logged.
         """
         message = super(CloudLoggingHandler, self).format(record)
-        self.transport.send(
-            record,
-            message,
-            resource=self.resource,
-            labels=self.labels)
+        self.transport.send(record, message, resource=self.resource, labels=self.labels)
 
 
-def setup_logging(handler, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS,
-                  log_level=logging.INFO):
+def setup_logging(
+    handler, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS, log_level=logging.INFO
+):
     """Attach a logging handler to the Python root logger
 
     Excludes loggers that this library itself uses to avoid

@@ -9,6 +9,10 @@ exclude_lines =
     pragma: NO COVER
     # Ignore debug-only repr
     def __repr__
+    # Ignore abstract methods
+    raise NotImplementedError
 omit =
-  */gapic/*
-  */proto/*
+  */gapic/*.py
+  */proto/*.py
+  */core/*.py
+  */site-packages/*.py

@@ -18,55 +18,67 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
+common = gcp.CommonTemplates()
+versions = ["v1", "v1p1beta1", "v1p2beta1", "v1p3beta1"]
 
-versions = ['v1', 'v1p1beta1', 'v1p2beta1', 'v1p3beta1']
 
-
+# ----------------------------------------------------------------------------
+# Generate vision GAPIC layer
+# ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library('vision', version)
+    library = gapic.py_library("vision", version)
 
-    s.move(library / f'google/cloud/vision_{version}/gapic')
-    s.move(library / f'google/cloud/vision_{version}/__init__.py')
-    s.move(library / f'google/cloud/vision_{version}/types.py')
-    s.move(library / f'google/cloud/vision_{version}/proto')
-    s.move(library / f'tests/unit/gapic/{version}')
+    s.move(library / f"google/cloud/vision_{version}/gapic")
+    s.move(library / f"google/cloud/vision_{version}/__init__.py")
+    s.move(library / f"google/cloud/vision_{version}/types.py")
+    s.move(library / f"google/cloud/vision_{version}/proto")
+    s.move(library / f"tests/unit/gapic/{version}")
     # don't publish docs for these versions
-    if version not in ['v1p1beta1']:
-        s.move(library / f'docs/gapic/{version}')
+    if version not in ["v1p1beta1"]:
+        s.move(library / f"docs/gapic/{version}")
 
     # Add vision helpers to each version
     s.replace(
-        f'google/cloud/vision_{version}/__init__.py',
-        f'from __future__ import absolute_import', f'\g<0>\n\n'
-        f'from google.cloud.vision_helpers.decorators import '
-        f'add_single_feature_methods\n'
-        f'from google.cloud.vision_helpers import VisionHelpers')
+        f"google/cloud/vision_{version}/__init__.py",
+        f"from __future__ import absolute_import",
+        f"\g<0>\n\n"
+        f"from google.cloud.vision_helpers.decorators import "
+        f"add_single_feature_methods\n"
+        f"from google.cloud.vision_helpers import VisionHelpers",
+    )
 
     s.replace(
-        f'google/cloud/vision_{version}/__init__.py',
-        f'image_annotator_client',
-        f'iac')
+        f"google/cloud/vision_{version}/__init__.py", f"image_annotator_client", f"iac"
+    )
 
     s.replace(
-        f'google/cloud/vision_{version}/__init__.py',
-        f'from google.cloud.vision_{version}.gapic import iac',
-        f'from google.cloud.vision_{version}.gapic import '
-        f'image_annotator_client as iac')
+        f"google/cloud/vision_{version}/__init__.py",
+        f"from google.cloud.vision_{version}.gapic import iac",
+        f"from google.cloud.vision_{version}.gapic import "
+        f"image_annotator_client as iac",
+    )
 
     s.replace(
-        f'google/cloud/vision_{version}/__init__.py',
-        f'class ImageAnnotatorClient\(iac.ImageAnnotatorClient\):',
-        f'@add_single_feature_methods\n'
-        f'class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):'
+        f"google/cloud/vision_{version}/__init__.py",
+        f"class ImageAnnotatorClient\(iac.ImageAnnotatorClient\):",
+        f"@add_single_feature_methods\n"
+        f"class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):",
     )
 
 # Fix import of operations
-targets = [
-    'google/cloud/vision_*/**/*.py',
-    'tests/system/gapic/*/**/*.py',
-]
+targets = ["google/cloud/vision_*/**/*.py", "tests/system/gapic/*/**/*.py"]
 s.replace(
     targets,
-    'import google.api_core.operations_v1',
-    'from google.api_core import operations_v1',
+    "import google.api_core.operations_v1",
+    "from google.api_core import operations_v1",
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100, system_test_dependencies=["../storage"]
+)
+s.move(templated_files)
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

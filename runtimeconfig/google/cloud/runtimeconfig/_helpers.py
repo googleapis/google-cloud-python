@@ -32,11 +32,13 @@ def config_name_from_full_name(full_name):
     :returns: The config's short name, given its full resource name.
     :raises: :class:`ValueError` if ``full_name`` is not the expected format
     """
-    projects, _, configs, result = full_name.split('/')
-    if projects != 'projects' or configs != 'configs':
+    projects, _, configs, result = full_name.split("/")
+    if projects != "projects" or configs != "configs":
         raise ValueError(
-            'Unexpected format of resource', full_name,
-            'Expected "projects/{proj}/configs/{cfg}"')
+            "Unexpected format of resource",
+            full_name,
+            'Expected "projects/{proj}/configs/{cfg}"',
+        )
     return result
 
 
@@ -61,10 +63,11 @@ def variable_name_from_full_name(full_name):
     :returns: The variable's short name, given its full resource name.
     :raises: :class:`ValueError` if ``full_name`` is not the expected format
     """
-    projects, _, configs, _, variables, result = full_name.split('/', 5)
-    if (projects != 'projects' or configs != 'configs' or
-            variables != 'variables'):
+    projects, _, configs, _, variables, result = full_name.split("/", 5)
+    if projects != "projects" or configs != "configs" or variables != "variables":
         raise ValueError(
-            'Unexpected format of resource', full_name,
-            'Expected "projects/{proj}/configs/{cfg}/variables/..."')
+            "Unexpected format of resource",
+            full_name,
+            'Expected "projects/{proj}/configs/{cfg}/variables/..."',
+        )
     return result

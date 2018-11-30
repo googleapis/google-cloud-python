@@ -20,21 +20,25 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-client_library_version = '0.1.0'
+client_library_version = "0.1.0"
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
+version = "v1beta1"
 
-version = 'v1beta1'
+# ----------------------------------------------------------------------------
+# Generate kms GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
-    'kms', version, config_path='artman_cloudkms.yaml',
-    artman_output_name='kms-v1')
+    "kms", version, config_path="artman_cloudkms.yaml", artman_output_name="kms-v1"
+)
 
-s.move(
-    library,
-    excludes=[
-        'README.rst',
-        'setup.py',
-        'nox*.py',
-        'docs/**/*',
-    ])
+s.move(library, excludes=["README.rst", "setup.py", "nox*.py", "docs/**/*"])
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(unit_cov_level=97, cov_level=100)
+s.move(templated_files)
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

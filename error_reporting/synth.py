@@ -17,24 +17,26 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
+common = gcp.CommonTemplates()
 
-
-#----------------------------------------------------------------------------
-# Generate error_reporting client
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Generate error_reporting GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
-    'error_reporting',
-    'v1beta1',
-    config_path='/google/devtools/clouderrorreporting'
-                '/artman_errorreporting.yaml',
-    artman_output_name='error-reporting-v1beta1')
+    "error_reporting",
+    "v1beta1",
+    config_path="/google/devtools/clouderrorreporting" "/artman_errorreporting.yaml",
+    artman_output_name="error-reporting-v1beta1",
+)
 
-s.move(library / 'google/cloud/errorreporting_v1beta1/proto')
-s.move(library / 'google/cloud/errorreporting_v1beta1/gapic')
+s.move(library / "google/cloud/errorreporting_v1beta1/proto")
+s.move(library / "google/cloud/errorreporting_v1beta1/gapic")
+s.move(library / "tests/unit/gapic/v1beta1")
+s.move(library / "tests/system/gapic/v1beta1")
 
 # Fix up imports
 s.replace(
-    'google/**/*.py',
+    "google/**/*.py",
     r"from google.devtools.clouderrorreporting_v1beta1.proto import ",
     r"from google.cloud.errorreporting_v1beta1.proto import ",
 )
@@ -50,12 +52,16 @@ DISCARD_AUTH_BOILERPLATE = r"""
 """
 
 targets = [
-    'google/cloud/errorreporting_v1beta1/gapic/*_client.py',
-    'google/cloud/errorreporting_v1beta1/gapic/transports/*_transport.py',
+    "google/cloud/errorreporting_v1beta1/gapic/*_client.py",
+    "google/cloud/errorreporting_v1beta1/gapic/transports/*_transport.py",
 ]
 
-s.replace(
-    targets,
-    DISCARD_AUTH_BOILERPLATE,
-    r"",
-)
+s.replace(targets, DISCARD_AUTH_BOILERPLATE, r"")
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(unit_cov_level=97, cov_level=100)
+s.move(templated_files)
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

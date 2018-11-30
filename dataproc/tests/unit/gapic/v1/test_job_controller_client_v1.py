@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import dataproc_v1
@@ -67,15 +68,20 @@ class TestJobControllerClient(object):
         # Setup Expected Response
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -94,7 +100,10 @@ class TestJobControllerClient(object):
     def test_submit_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -108,15 +117,20 @@ class TestJobControllerClient(object):
         # Setup Expected Response
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -135,7 +149,10 @@ class TestJobControllerClient(object):
     def test_get_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -155,7 +172,10 @@ class TestJobControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -175,7 +195,10 @@ class TestJobControllerClient(object):
 
     def test_list_jobs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -189,15 +212,20 @@ class TestJobControllerClient(object):
         # Setup Expected Response
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -223,7 +251,10 @@ class TestJobControllerClient(object):
     def test_update_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -239,15 +270,20 @@ class TestJobControllerClient(object):
         # Setup Expected Response
         driver_output_resource_uri = 'driverOutputResourceUri-542229086'
         driver_control_files_uri = 'driverControlFilesUri207057643'
+        job_uuid = 'jobUuid-1615012099'
         expected_response = {
             'driver_output_resource_uri': driver_output_resource_uri,
-            'driver_control_files_uri': driver_control_files_uri
+            'driver_control_files_uri': driver_control_files_uri,
+            'job_uuid': job_uuid
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -266,7 +302,10 @@ class TestJobControllerClient(object):
     def test_cancel_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -278,7 +317,10 @@ class TestJobControllerClient(object):
 
     def test_delete_job(self):
         channel = ChannelStub()
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -296,7 +338,10 @@ class TestJobControllerClient(object):
     def test_delete_job_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1.JobControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1.JobControllerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'

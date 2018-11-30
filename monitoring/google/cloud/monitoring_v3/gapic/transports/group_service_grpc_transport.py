@@ -27,19 +27,19 @@ class GroupServiceGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/monitoring',
-        'https://www.googleapis.com/auth/monitoring.read',
-        'https://www.googleapis.com/auth/monitoring.write',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/monitoring",
+        "https://www.googleapis.com/auth/monitoring.read",
+        "https://www.googleapis.com/auth/monitoring.write",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='monitoring.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="monitoring.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -57,27 +57,23 @@ class GroupServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'group_service_stub':
-            group_service_pb2_grpc.GroupServiceStub(channel),
+            "group_service_stub": group_service_pb2_grpc.GroupServiceStub(channel)
         }
 
     @classmethod
-    def create_channel(cls,
-                       address='monitoring.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="monitoring.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -96,10 +92,19 @@ class GroupServiceGrpcTransport(object):
             credentials=credentials,
             scopes=cls._OAUTH_SCOPES,
             options={
-                'grpc.max_send_message_length': -1,
-                'grpc.max_receive_message_length': -1,
+                "grpc.max_send_message_length": -1,
+                "grpc.max_receive_message_length": -1,
             }.items(),
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def list_groups(self):
@@ -112,7 +117,7 @@ class GroupServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['group_service_stub'].ListGroups
+        return self._stubs["group_service_stub"].ListGroups
 
     @property
     def get_group(self):
@@ -125,7 +130,7 @@ class GroupServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['group_service_stub'].GetGroup
+        return self._stubs["group_service_stub"].GetGroup
 
     @property
     def create_group(self):
@@ -138,7 +143,7 @@ class GroupServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['group_service_stub'].CreateGroup
+        return self._stubs["group_service_stub"].CreateGroup
 
     @property
     def update_group(self):
@@ -152,7 +157,7 @@ class GroupServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['group_service_stub'].UpdateGroup
+        return self._stubs["group_service_stub"].UpdateGroup
 
     @property
     def delete_group(self):
@@ -165,7 +170,7 @@ class GroupServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['group_service_stub'].DeleteGroup
+        return self._stubs["group_service_stub"].DeleteGroup
 
     @property
     def list_group_members(self):
@@ -178,4 +183,4 @@ class GroupServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['group_service_stub'].ListGroupMembers
+        return self._stubs["group_service_stub"].ListGroupMembers

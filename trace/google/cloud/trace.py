@@ -18,7 +18,4 @@ from google.cloud.trace_v2 import TraceServiceClient
 from google.cloud.trace_v2 import enums
 from google.cloud.trace_v2 import types
 
-__all__ = (
-    'enums',
-    'types',
-    'TraceServiceClient', )
+__all__ = ("enums", "types", "TraceServiceClient")

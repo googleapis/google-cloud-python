@@ -40,8 +40,7 @@ RUNNING_IN_VPCSC = os.getenv(
 def _bad_copy(bad_request):
     """Predicate: pass only exceptions for a failed copyTo."""
     err_msg = bad_request.message
-    return (err_msg.startswith('No file found in request. (POST') and
-            'copyTo' in err_msg)
+    return (err_msg.startswith('No file found in request. (POST') and 'copyTo' in err_msg)
 
 
 retry_429 = RetryErrors(exceptions.TooManyRequests)

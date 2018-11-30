@@ -277,9 +277,13 @@ class TestDocumentReference(unittest.TestCase):
             ),
         )
         if merge:
-            _, _, field_paths = _helpers.process_server_timestamp(
-                document_data)
-            field_paths = _helpers.canonicalize_field_paths(field_paths)
+            field_paths = [
+                field_path for field_path, value in _helpers.extract_fields(
+                    document_data, _helpers.FieldPath())
+            ]
+            field_paths = [
+                field_path.to_api_repr() for field_path in sorted(field_paths)
+            ]
             mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
             write_pbs.update_mask.CopyFrom(mask)
         return write_pbs
@@ -336,7 +340,7 @@ class TestDocumentReference(unittest.TestCase):
         )
 
     def _update_helper(self, **option_kwargs):
-        from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
+        from google.cloud.firestore_v1beta1.transforms import DELETE_FIELD
 
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=['commit'])
@@ -381,11 +385,21 @@ class TestDocumentReference(unittest.TestCase):
             client._database_string, [write_pb], transaction=None,
             metadata=client._rpc_metadata)
 
+    def test_update_with_exists(self):
+        with self.assertRaises(ValueError):
+            self._update_helper(exists=True)
+
     def test_update(self):
         self._update_helper()
 
-    def test_update_with_exists(self):
-        self._update_helper(exists=True)
+    def test_update_with_precondition(self):
+        from google.protobuf import timestamp_pb2
+
+        timestamp = timestamp_pb2.Timestamp(
+            seconds=1058655101,
+            nanos=100022244,
+        )
+        self._update_helper(last_update_time=timestamp)
 
     def test_empty_update(self):
         # Create a minimal fake GAPIC with a dummy response.
@@ -449,74 +463,90 @@ class TestDocumentReference(unittest.TestCase):
         )
         self._delete_helper(last_update_time=timestamp_pb)
 
-    def test_get_w_single_field_path(self):
-        client = mock.Mock(spec=[])
-
-        document = self._make_one('yellow', 'mellow', client=client)
-        with self.assertRaises(ValueError):
-            document.get('foo')
-
-    def test_get_success(self):
-        # Create a minimal fake client with a dummy response.
-        response_iterator = iter([mock.sentinel.snapshot])
-        client = mock.Mock(spec=['get_all'])
-        client.get_all.return_value = response_iterator
-
-        # Actually make a document and call get().
-        document = self._make_one('yellow', 'mellow', client=client)
-        snapshot = document.get()
-
-        # Verify the response and the mocks.
-        self.assertIs(snapshot, mock.sentinel.snapshot)
-        client.get_all.assert_called_once_with(
-            [document], field_paths=None, transaction=None)
-
-    def test_get_with_transaction(self):
-        from google.cloud.firestore_v1beta1.client import Client
+    def _get_helper(
+            self, field_paths=None, use_transaction=False, not_found=False):
+        from google.api_core.exceptions import NotFound
+        from google.cloud.firestore_v1beta1.proto import common_pb2
+        from google.cloud.firestore_v1beta1.proto import document_pb2
         from google.cloud.firestore_v1beta1.transaction import Transaction
 
-        # Create a minimal fake client with a dummy response.
-        response_iterator = iter([mock.sentinel.snapshot])
-        client = mock.create_autospec(Client, instance=True)
-        client.get_all.return_value = response_iterator
+        # Create a minimal fake GAPIC with a dummy response.
+        create_time = 123
+        update_time = 234
+        firestore_api = mock.Mock(spec=['get_document'])
+        response = mock.create_autospec(document_pb2.Document)
+        response.fields = {}
+        response.create_time = create_time
+        response.update_time = update_time
 
-        # Actually make a document and call get().
-        document = self._make_one('yellow', 'mellow', client=client)
-        transaction = Transaction(client)
-        transaction._id = b'asking-me-2'
-        snapshot = document.get(transaction=transaction)
+        if not_found:
+            firestore_api.get_document.side_effect = NotFound('testing')
+        else:
+            firestore_api.get_document.return_value = response
 
-        # Verify the response and the mocks.
-        self.assertIs(snapshot, mock.sentinel.snapshot)
-        client.get_all.assert_called_once_with(
-            [document], field_paths=None, transaction=transaction)
+        client = _make_client('donut-base')
+        client._firestore_api_internal = firestore_api
+
+        document = self._make_one('where', 'we-are', client=client)
+
+        if use_transaction:
+            transaction = Transaction(client)
+            transaction_id = transaction._id = b'asking-me-2'
+        else:
+            transaction = None
+
+        snapshot = document.get(
+            field_paths=field_paths, transaction=transaction)
+
+        self.assertIs(snapshot.reference, document)
+        if not_found:
+            self.assertIsNone(snapshot._data)
+            self.assertFalse(snapshot.exists)
+            self.assertIsNone(snapshot.read_time)
+            self.assertIsNone(snapshot.create_time)
+            self.assertIsNone(snapshot.update_time)
+        else:
+            self.assertEqual(snapshot.to_dict(), {})
+            self.assertTrue(snapshot.exists)
+            self.assertIsNone(snapshot.read_time)
+            self.assertIs(snapshot.create_time, create_time)
+            self.assertIs(snapshot.update_time, update_time)
+
+        # Verify the request made to the API
+        if field_paths is not None:
+            mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+        else:
+            mask = None
+
+        if use_transaction:
+            expected_transaction_id = transaction_id
+        else:
+            expected_transaction_id = None
+
+        firestore_api.get_document.assert_called_once_with(
+            document._document_path,
+            mask=mask,
+            transaction=expected_transaction_id,
+            metadata=client._rpc_metadata)
 
     def test_get_not_found(self):
-        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
+        self._get_helper(not_found=True)
 
-        # Create a minimal fake client with a dummy response.
-        read_time = 123
-        expected = DocumentSnapshot(None, None, False, read_time, None, None)
-        response_iterator = iter([expected])
-        client = mock.Mock(
-            _database_string='sprinklez',
-            spec=['_database_string', 'get_all'])
-        client.get_all.return_value = response_iterator
+    def test_get_default(self):
+        self._get_helper()
 
-        # Actually make a document and call get().
-        document = self._make_one('house', 'cowse', client=client)
-        field_paths = ['x.y', 'x.z', 't']
-        snapshot = document.get(field_paths=field_paths)
-        self.assertIsNone(snapshot.reference)
-        self.assertIsNone(snapshot._data)
-        self.assertFalse(snapshot.exists)
-        self.assertEqual(snapshot.read_time, expected.read_time)
-        self.assertIsNone(snapshot.create_time)
-        self.assertIsNone(snapshot.update_time)
+    def test_get_w_string_field_path(self):
+        with self.assertRaises(ValueError):
+            self._get_helper(field_paths='foo')
 
-        # Verify the response and the mocks.
-        client.get_all.assert_called_once_with(
-            [document], field_paths=field_paths, transaction=None)
+    def test_get_with_field_path(self):
+        self._get_helper(field_paths=['foo'])
+
+    def test_get_with_multiple_field_paths(self):
+        self._get_helper(field_paths=['foo', 'bar.baz'])
+
+    def test_get_with_transaction(self):
+        self._get_helper(use_transaction=True)
 
     def _collections_helper(self, page_size=None):
         from google.api_core.page_iterator import Iterator

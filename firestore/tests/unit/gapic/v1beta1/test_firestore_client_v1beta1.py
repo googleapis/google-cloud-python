@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud.firestore_v1beta1.gapic import firestore_client
@@ -82,7 +85,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         name = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -99,7 +105,10 @@ class TestFirestoreClient(object):
     def test_get_document_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         name = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -122,7 +131,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -143,7 +155,10 @@ class TestFirestoreClient(object):
 
     def test_list_documents_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -162,7 +177,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -187,7 +205,10 @@ class TestFirestoreClient(object):
     def test_create_document_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -208,7 +229,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         document = {}
@@ -226,7 +250,10 @@ class TestFirestoreClient(object):
     def test_update_document_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         document = {}
@@ -237,7 +264,10 @@ class TestFirestoreClient(object):
 
     def test_delete_document(self):
         channel = ChannelStub()
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         name = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -253,7 +283,10 @@ class TestFirestoreClient(object):
     def test_delete_document_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         name = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -272,7 +305,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -292,7 +328,10 @@ class TestFirestoreClient(object):
     def test_batch_get_documents_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -310,7 +349,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -327,7 +369,10 @@ class TestFirestoreClient(object):
     def test_begin_transaction_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -342,7 +387,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -360,7 +408,10 @@ class TestFirestoreClient(object):
     def test_commit_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -371,7 +422,10 @@ class TestFirestoreClient(object):
 
     def test_rollback(self):
         channel = ChannelStub()
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -388,7 +442,10 @@ class TestFirestoreClient(object):
     def test_rollback_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -409,7 +466,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -428,7 +488,10 @@ class TestFirestoreClient(object):
     def test_run_query_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -449,7 +512,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -471,7 +537,10 @@ class TestFirestoreClient(object):
     def test_write_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -490,7 +559,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -512,7 +584,10 @@ class TestFirestoreClient(object):
     def test_listen_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -538,7 +613,10 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup Request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -558,7 +636,10 @@ class TestFirestoreClient(object):
 
     def test_list_collection_ids_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_client.FirestoreClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = firestore_client.FirestoreClient()
 
         # Setup request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',

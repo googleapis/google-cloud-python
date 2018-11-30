@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -76,8 +77,10 @@ class TestWorkflowTemplateServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup Request
         parent = client.region_path('[PROJECT]', '[REGION]')
@@ -95,8 +98,10 @@ class TestWorkflowTemplateServiceClient(object):
     def test_create_workflow_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup request
         parent = client.region_path('[PROJECT]', '[REGION]')
@@ -116,8 +121,10 @@ class TestWorkflowTemplateServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup Request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',
@@ -135,8 +142,10 @@ class TestWorkflowTemplateServiceClient(object):
     def test_get_workflow_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',
@@ -155,8 +164,10 @@ class TestWorkflowTemplateServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup Request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',
@@ -182,14 +193,72 @@ class TestWorkflowTemplateServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup Request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',
                                              '[WORKFLOW_TEMPLATE]')
 
         response = client.instantiate_workflow_template(name)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
+    def test_instantiate_inline_workflow_template(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = empty_pb2.Empty(**expected_response)
+        operation = operations_pb2.Operation(
+            name='operations/test_instantiate_inline_workflow_template',
+            done=True)
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+
+        # Setup Request
+        parent = client.region_path('[PROJECT]', '[REGION]')
+        template = {}
+
+        response = client.instantiate_inline_workflow_template(
+            parent, template)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = workflow_templates_pb2.InstantiateInlineWorkflowTemplateRequest(
+            parent=parent, template=template)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_instantiate_inline_workflow_template_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name=
+            'operations/test_instantiate_inline_workflow_template_exception',
+            done=True)
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
+
+        # Setup Request
+        parent = client.region_path('[PROJECT]', '[REGION]')
+        template = {}
+
+        response = client.instantiate_inline_workflow_template(
+            parent, template)
         exception = response.exception()
         assert exception.errors[0] == error
 
@@ -204,8 +273,10 @@ class TestWorkflowTemplateServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup Request
         template = {}
@@ -222,8 +293,10 @@ class TestWorkflowTemplateServiceClient(object):
     def test_update_workflow_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup request
         template = {}
@@ -245,8 +318,10 @@ class TestWorkflowTemplateServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup Request
         parent = client.region_path('[PROJECT]', '[REGION]')
@@ -265,8 +340,10 @@ class TestWorkflowTemplateServiceClient(object):
 
     def test_list_workflow_templates_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup request
         parent = client.region_path('[PROJECT]', '[REGION]')
@@ -277,8 +354,10 @@ class TestWorkflowTemplateServiceClient(object):
 
     def test_delete_workflow_template(self):
         channel = ChannelStub()
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup Request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',
@@ -295,8 +374,10 @@ class TestWorkflowTemplateServiceClient(object):
     def test_delete_workflow_template_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1beta2.WorkflowTemplateServiceClient(
-            channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.WorkflowTemplateServiceClient()
 
         # Setup request
         name = client.workflow_template_path('[PROJECT]', '[REGION]',

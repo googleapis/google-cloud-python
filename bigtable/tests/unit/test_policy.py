@@ -16,7 +16,6 @@ import unittest
 
 
 class TestPolicy(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.policy import Policy
@@ -40,7 +39,7 @@ class TestPolicy(unittest.TestCase):
 
     def test_ctor_explicit(self):
         VERSION = 17
-        ETAG = b'ETAG'
+        ETAG = b"ETAG"
         empty = frozenset()
         policy = self._make_one(ETAG, VERSION)
         self.assertEqual(policy.etag, ETAG)
@@ -54,7 +53,8 @@ class TestPolicy(unittest.TestCase):
 
     def test_bigtable_admins_getter(self):
         from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
-        MEMBER = 'user:phred@example.com'
+
+        MEMBER = "user:phred@example.com"
         expected = frozenset([MEMBER])
         policy = self._make_one()
         policy[BIGTABLE_ADMIN_ROLE] = [MEMBER]
@@ -62,7 +62,8 @@ class TestPolicy(unittest.TestCase):
 
     def test_bigtable_readers_getter(self):
         from google.cloud.bigtable.policy import BIGTABLE_READER_ROLE
-        MEMBER = 'user:phred@example.com'
+
+        MEMBER = "user:phred@example.com"
         expected = frozenset([MEMBER])
         policy = self._make_one()
         policy[BIGTABLE_READER_ROLE] = [MEMBER]
@@ -70,7 +71,8 @@ class TestPolicy(unittest.TestCase):
 
     def test_bigtable_users_getter(self):
         from google.cloud.bigtable.policy import BIGTABLE_USER_ROLE
-        MEMBER = 'user:phred@example.com'
+
+        MEMBER = "user:phred@example.com"
         expected = frozenset([MEMBER])
         policy = self._make_one()
         policy[BIGTABLE_USER_ROLE] = [MEMBER]
@@ -78,7 +80,8 @@ class TestPolicy(unittest.TestCase):
 
     def test_bigtable_viewers_getter(self):
         from google.cloud.bigtable.policy import BIGTABLE_VIEWER_ROLE
-        MEMBER = 'user:phred@example.com'
+
+        MEMBER = "user:phred@example.com"
         expected = frozenset([MEMBER])
         policy = self._make_one()
         policy[BIGTABLE_VIEWER_ROLE] = [MEMBER]

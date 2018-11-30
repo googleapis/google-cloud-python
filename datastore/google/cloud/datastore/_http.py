@@ -23,14 +23,13 @@ from google.cloud.datastore_v1.proto import datastore_pb2 as _datastore_pb2
 from google.cloud.datastore import __version__
 
 
-DATASTORE_API_HOST = 'datastore.googleapis.com'
+DATASTORE_API_HOST = "datastore.googleapis.com"
 """Datastore API request host."""
-API_BASE_URL = 'https://' + DATASTORE_API_HOST
+API_BASE_URL = "https://" + DATASTORE_API_HOST
 """The base of the API call URL."""
-API_VERSION = 'v1'
+API_VERSION = "v1"
 """The version of the API, used in building the API call's URL."""
-API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
-                    '/{project}:{method}')
+API_URL_TEMPLATE = "{api_base}/{api_version}/projects" "/{project}:{method}"
 """A template for the URL of a particular API call."""
 
 _CLIENT_INFO = connection_module.CLIENT_INFO_TEMPLATE.format(__version__)
@@ -62,19 +61,19 @@ def _request(http, project, method, data, base_url):
              response code is not 200 OK.
     """
     headers = {
-        'Content-Type': 'application/x-protobuf',
-        'User-Agent': connection_module.DEFAULT_USER_AGENT,
+        "Content-Type": "application/x-protobuf",
+        "User-Agent": connection_module.DEFAULT_USER_AGENT,
         connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
     }
     api_url = build_api_url(project, method, base_url)
 
-    response = http.request(
-        url=api_url, method='POST', headers=headers, data=data)
+    response = http.request(url=api_url, method="POST", headers=headers, data=data)
 
     if response.status_code != 200:
         error_status = status_pb2.Status.FromString(response.content)
         raise exceptions.from_http_status(
-            response.status_code, error_status.message, errors=[error_status])
+            response.status_code, error_status.message, errors=[error_status]
+        )
 
     return response.content
 
@@ -107,8 +106,7 @@ def _rpc(http, project, method, base_url, request_pb, response_pb_cls):
     :returns: The RPC message parsed from the response.
     """
     req_data = request_pb.SerializeToString()
-    response = _request(
-        http, project, method, req_data, base_url)
+    response = _request(http, project, method, req_data, base_url)
     return response_pb_cls.FromString(response)
 
 
@@ -132,8 +130,8 @@ def build_api_url(project, method, base_url):
     :returns: The API URL created.
     """
     return API_URL_TEMPLATE.format(
-        api_base=base_url, api_version=API_VERSION,
-        project=project, method=method)
+        api_base=base_url, api_version=API_VERSION, project=project, method=method
+    )
 
 
 class HTTPDatastoreAPI(object):
@@ -167,16 +165,20 @@ class HTTPDatastoreAPI(object):
         :returns: The returned protobuf response object.
         """
         request_pb = _datastore_pb2.LookupRequest(
-            project_id=project_id,
-            read_options=read_options,
-            keys=keys,
+            project_id=project_id, read_options=read_options, keys=keys
         )
-        return _rpc(self.client._http, project_id, 'lookup',
-                    self.client._base_url,
-                    request_pb, _datastore_pb2.LookupResponse)
+        return _rpc(
+            self.client._http,
+            project_id,
+            "lookup",
+            self.client._base_url,
+            request_pb,
+            _datastore_pb2.LookupResponse,
+        )
 
-    def run_query(self, project_id, partition_id, read_options=None,
-                  query=None, gql_query=None):
+    def run_query(
+        self, project_id, partition_id, read_options=None, query=None, gql_query=None
+    ):
         """Perform a ``runQuery`` request.
 
         :type project_id: str
@@ -210,9 +212,14 @@ class HTTPDatastoreAPI(object):
             query=query,
             gql_query=gql_query,
         )
-        return _rpc(self.client._http, project_id, 'runQuery',
-                    self.client._base_url,
-                    request_pb, _datastore_pb2.RunQueryResponse)
+        return _rpc(
+            self.client._http,
+            project_id,
+            "runQuery",
+            self.client._base_url,
+            request_pb,
+            _datastore_pb2.RunQueryResponse,
+        )
 
     def begin_transaction(self, project_id, transaction_options=None):
         """Perform a ``beginTransaction`` request.
@@ -228,9 +235,14 @@ class HTTPDatastoreAPI(object):
         :returns: The returned protobuf response object.
         """
         request_pb = _datastore_pb2.BeginTransactionRequest()
-        return _rpc(self.client._http, project_id, 'beginTransaction',
-                    self.client._base_url,
-                    request_pb, _datastore_pb2.BeginTransactionResponse)
+        return _rpc(
+            self.client._http,
+            project_id,
+            "beginTransaction",
+            self.client._base_url,
+            request_pb,
+            _datastore_pb2.BeginTransactionResponse,
+        )
 
     def commit(self, project_id, mode, mutations, transaction=None):
         """Perform a ``commit`` request.
@@ -261,9 +273,14 @@ class HTTPDatastoreAPI(object):
             transaction=transaction,
             mutations=mutations,
         )
-        return _rpc(self.client._http, project_id, 'commit',
-                    self.client._base_url,
-                    request_pb, _datastore_pb2.CommitResponse)
+        return _rpc(
+            self.client._http,
+            project_id,
+            "commit",
+            self.client._base_url,
+            request_pb,
+            _datastore_pb2.CommitResponse,
+        )
 
     def rollback(self, project_id, transaction):
         """Perform a ``rollback`` request.
@@ -279,13 +296,17 @@ class HTTPDatastoreAPI(object):
         :returns: The returned protobuf response object.
         """
         request_pb = _datastore_pb2.RollbackRequest(
-            project_id=project_id,
-            transaction=transaction,
+            project_id=project_id, transaction=transaction
         )
         # Response is empty (i.e. no fields) but we return it anyway.
-        return _rpc(self.client._http, project_id, 'rollback',
-                    self.client._base_url,
-                    request_pb, _datastore_pb2.RollbackResponse)
+        return _rpc(
+            self.client._http,
+            project_id,
+            "rollback",
+            self.client._base_url,
+            request_pb,
+            _datastore_pb2.RollbackResponse,
+        )
 
     def allocate_ids(self, project_id, keys):
         """Perform an ``allocateIds`` request.
@@ -301,6 +322,11 @@ class HTTPDatastoreAPI(object):
         :returns: The returned protobuf response object.
         """
         request_pb = _datastore_pb2.AllocateIdsRequest(keys=keys)
-        return _rpc(self.client._http, project_id, 'allocateIds',
-                    self.client._base_url,
-                    request_pb, _datastore_pb2.AllocateIdsResponse)
+        return _rpc(
+            self.client._http,
+            project_id,
+            "allocateIds",
+            self.client._base_url,
+            request_pb,
+            _datastore_pb2.AllocateIdsResponse,
+        )

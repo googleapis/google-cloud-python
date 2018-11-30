@@ -20,7 +20,6 @@ from ._testing import _make_credentials
 
 
 class TestMaxVersionsGCRule(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.column_family import MaxVersionsGCRule
@@ -43,7 +42,7 @@ class TestMaxVersionsGCRule(unittest.TestCase):
     def test___ne__same_value(self):
         gc_rule1 = self._make_one(99)
         gc_rule2 = self._make_one(99)
-        comparison_val = (gc_rule1 != gc_rule2)
+        comparison_val = gc_rule1 != gc_rule2
         self.assertFalse(comparison_val)
 
     def test_to_pb(self):
@@ -55,7 +54,6 @@ class TestMaxVersionsGCRule(unittest.TestCase):
 
 
 class TestMaxAgeGCRule(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.column_family import MaxAgeGCRule
@@ -81,7 +79,7 @@ class TestMaxAgeGCRule(unittest.TestCase):
         max_age = object()
         gc_rule1 = self._make_one(max_age=max_age)
         gc_rule2 = self._make_one(max_age=max_age)
-        comparison_val = (gc_rule1 != gc_rule2)
+        comparison_val = gc_rule1 != gc_rule2
         self.assertFalse(comparison_val)
 
     def test_to_pb(self):
@@ -96,7 +94,6 @@ class TestMaxAgeGCRule(unittest.TestCase):
 
 
 class TestGCRuleUnion(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.column_family import GCRuleUnion
@@ -127,7 +124,7 @@ class TestGCRuleUnion(unittest.TestCase):
         rules = object()
         gc_rule1 = self._make_one(rules)
         gc_rule2 = self._make_one(rules)
-        comparison_val = (gc_rule1 != gc_rule2)
+        comparison_val = gc_rule1 != gc_rule2
         self.assertFalse(comparison_val)
 
     def test_to_pb(self):
@@ -142,12 +139,10 @@ class TestGCRuleUnion(unittest.TestCase):
 
         max_age = datetime.timedelta(seconds=1)
         rule2 = MaxAgeGCRule(max_age)
-        pb_rule2 = _GcRulePB(
-            max_age=duration_pb2.Duration(seconds=1))
+        pb_rule2 = _GcRulePB(max_age=duration_pb2.Duration(seconds=1))
 
         rule3 = self._make_one(rules=[rule1, rule2])
-        pb_rule3 = _GcRulePB(
-            union=_GcRuleUnionPB(rules=[pb_rule1, pb_rule2]))
+        pb_rule3 = _GcRulePB(union=_GcRuleUnionPB(rules=[pb_rule1, pb_rule2]))
 
         gc_rule_pb = rule3.to_pb()
         self.assertEqual(gc_rule_pb, pb_rule3)
@@ -164,27 +159,23 @@ class TestGCRuleUnion(unittest.TestCase):
 
         max_age = datetime.timedelta(seconds=1)
         rule2 = MaxAgeGCRule(max_age)
-        pb_rule2 = _GcRulePB(
-            max_age=duration_pb2.Duration(seconds=1))
+        pb_rule2 = _GcRulePB(max_age=duration_pb2.Duration(seconds=1))
 
         rule3 = self._make_one(rules=[rule1, rule2])
-        pb_rule3 = _GcRulePB(
-            union=_GcRuleUnionPB(rules=[pb_rule1, pb_rule2]))
+        pb_rule3 = _GcRulePB(union=_GcRuleUnionPB(rules=[pb_rule1, pb_rule2]))
 
         max_num_versions2 = 1337
         rule4 = MaxVersionsGCRule(max_num_versions2)
         pb_rule4 = _GcRulePB(max_num_versions=max_num_versions2)
 
         rule5 = self._make_one(rules=[rule3, rule4])
-        pb_rule5 = _GcRulePB(
-            union=_GcRuleUnionPB(rules=[pb_rule3, pb_rule4]))
+        pb_rule5 = _GcRulePB(union=_GcRuleUnionPB(rules=[pb_rule3, pb_rule4]))
 
         gc_rule_pb = rule5.to_pb()
         self.assertEqual(gc_rule_pb, pb_rule5)
 
 
 class TestGCRuleIntersection(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.column_family import GCRuleIntersection
@@ -215,7 +206,7 @@ class TestGCRuleIntersection(unittest.TestCase):
         rules = object()
         gc_rule1 = self._make_one(rules)
         gc_rule2 = self._make_one(rules)
-        comparison_val = (gc_rule1 != gc_rule2)
+        comparison_val = gc_rule1 != gc_rule2
         self.assertFalse(comparison_val)
 
     def test_to_pb(self):
@@ -230,13 +221,12 @@ class TestGCRuleIntersection(unittest.TestCase):
 
         max_age = datetime.timedelta(seconds=1)
         rule2 = MaxAgeGCRule(max_age)
-        pb_rule2 = _GcRulePB(
-            max_age=duration_pb2.Duration(seconds=1))
+        pb_rule2 = _GcRulePB(max_age=duration_pb2.Duration(seconds=1))
 
         rule3 = self._make_one(rules=[rule1, rule2])
         pb_rule3 = _GcRulePB(
-            intersection=_GcRuleIntersectionPB(
-                rules=[pb_rule1, pb_rule2]))
+            intersection=_GcRuleIntersectionPB(rules=[pb_rule1, pb_rule2])
+        )
 
         gc_rule_pb = rule3.to_pb()
         self.assertEqual(gc_rule_pb, pb_rule3)
@@ -253,13 +243,12 @@ class TestGCRuleIntersection(unittest.TestCase):
 
         max_age = datetime.timedelta(seconds=1)
         rule2 = MaxAgeGCRule(max_age)
-        pb_rule2 = _GcRulePB(
-            max_age=duration_pb2.Duration(seconds=1))
+        pb_rule2 = _GcRulePB(max_age=duration_pb2.Duration(seconds=1))
 
         rule3 = self._make_one(rules=[rule1, rule2])
         pb_rule3 = _GcRulePB(
-            intersection=_GcRuleIntersectionPB(
-                rules=[pb_rule1, pb_rule2]))
+            intersection=_GcRuleIntersectionPB(rules=[pb_rule1, pb_rule2])
+        )
 
         max_num_versions2 = 1337
         rule4 = MaxVersionsGCRule(max_num_versions2)
@@ -267,15 +256,14 @@ class TestGCRuleIntersection(unittest.TestCase):
 
         rule5 = self._make_one(rules=[rule3, rule4])
         pb_rule5 = _GcRulePB(
-            intersection=_GcRuleIntersectionPB(
-                rules=[pb_rule3, pb_rule4]))
+            intersection=_GcRuleIntersectionPB(rules=[pb_rule3, pb_rule4])
+        )
 
         gc_rule_pb = rule5.to_pb()
         self.assertEqual(gc_rule_pb, pb_rule5)
 
 
 class TestColumnFamily(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.column_family import ColumnFamily
@@ -295,58 +283,53 @@ class TestColumnFamily(unittest.TestCase):
         return self._get_target_client_class()(*args, **kwargs)
 
     def test_constructor(self):
-        column_family_id = u'column-family-id'
+        column_family_id = u"column-family-id"
         table = object()
         gc_rule = object()
-        column_family = self._make_one(
-            column_family_id, table, gc_rule=gc_rule)
+        column_family = self._make_one(column_family_id, table, gc_rule=gc_rule)
 
         self.assertEqual(column_family.column_family_id, column_family_id)
         self.assertIs(column_family._table, table)
         self.assertIs(column_family.gc_rule, gc_rule)
 
     def test_name_property(self):
-        column_family_id = u'column-family-id'
-        table_name = 'table_name'
+        column_family_id = u"column-family-id"
+        table_name = "table_name"
         table = _Table(table_name)
         column_family = self._make_one(column_family_id, table)
 
-        expected_name = table_name + '/columnFamilies/' + column_family_id
+        expected_name = table_name + "/columnFamilies/" + column_family_id
         self.assertEqual(column_family.name, expected_name)
 
     def test___eq__(self):
-        column_family_id = 'column_family_id'
+        column_family_id = "column_family_id"
         table = object()
         gc_rule = object()
-        column_family1 = self._make_one(column_family_id, table,
-                                        gc_rule=gc_rule)
-        column_family2 = self._make_one(column_family_id, table,
-                                        gc_rule=gc_rule)
+        column_family1 = self._make_one(column_family_id, table, gc_rule=gc_rule)
+        column_family2 = self._make_one(column_family_id, table, gc_rule=gc_rule)
         self.assertEqual(column_family1, column_family2)
 
     def test___eq__type_differ(self):
-        column_family1 = self._make_one('column_family_id', None)
+        column_family1 = self._make_one("column_family_id", None)
         column_family2 = object()
         self.assertNotEqual(column_family1, column_family2)
 
     def test___ne__same_value(self):
-        column_family_id = 'column_family_id'
+        column_family_id = "column_family_id"
         table = object()
         gc_rule = object()
-        column_family1 = self._make_one(column_family_id, table,
-                                        gc_rule=gc_rule)
-        column_family2 = self._make_one(column_family_id, table,
-                                        gc_rule=gc_rule)
-        comparison_val = (column_family1 != column_family2)
+        column_family1 = self._make_one(column_family_id, table, gc_rule=gc_rule)
+        column_family2 = self._make_one(column_family_id, table, gc_rule=gc_rule)
+        comparison_val = column_family1 != column_family2
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        column_family1 = self._make_one('column_family_id1', None)
-        column_family2 = self._make_one('column_family_id2', None)
+        column_family1 = self._make_one("column_family_id1", None)
+        column_family2 = self._make_one("column_family_id2", None)
         self.assertNotEqual(column_family1, column_family2)
 
     def test_to_pb_no_rules(self):
-        column_family = self._make_one('column_family_id', None)
+        column_family = self._make_one("column_family_id", None)
         pb_val = column_family.to_pb()
         expected = _ColumnFamilyPB()
         self.assertEqual(pb_val, expected)
@@ -355,46 +338,49 @@ class TestColumnFamily(unittest.TestCase):
         from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
         gc_rule = MaxVersionsGCRule(1)
-        column_family = self._make_one('column_family_id', None,
-                                       gc_rule=gc_rule)
+        column_family = self._make_one("column_family_id", None, gc_rule=gc_rule)
         pb_val = column_family.to_pb()
         expected = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
         self.assertEqual(pb_val, expected)
 
     def _create_test_helper(self, gc_rule=None):
         from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2 as table_admin_v2_pb2)
+            bigtable_table_admin_pb2 as table_admin_v2_pb2,
+        )
         from tests.unit._testing import _FakeStub
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
+        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
 
-        project_id = 'project-id'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        table_id = 'table-id'
-        column_family_id = 'column-family-id'
-        table_name = ('projects/' + project_id + '/zones/' + zone +
-                      '/clusters/' + cluster_id + '/tables/' + table_id)
+        project_id = "project-id"
+        zone = "zone"
+        cluster_id = "cluster-id"
+        table_id = "table-id"
+        column_family_id = "column-family-id"
+        table_name = (
+            "projects/"
+            + project_id
+            + "/zones/"
+            + zone
+            + "/clusters/"
+            + cluster_id
+            + "/tables/"
+            + table_id
+        )
 
         api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=project_id,
-                                   credentials=credentials, admin=True)
+        client = self._make_client(
+            project=project_id, credentials=credentials, admin=True
+        )
         table = _Table(table_name, client=client)
-        column_family = self._make_one(
-            column_family_id, table, gc_rule=gc_rule)
+        column_family = self._make_one(column_family_id, table, gc_rule=gc_rule)
 
         # Create request_pb
         if gc_rule is None:
             column_family_pb = _ColumnFamilyPB()
         else:
             column_family_pb = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
-        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
-            name=table_name)
-        request_pb.modifications.add(
-            id=column_family_id,
-            create=column_family_pb,
-        )
+        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(name=table_name)
+        request_pb.modifications.add(id=column_family_id, create=column_family_pb)
 
         # Create response_pb
         response_pb = _ColumnFamilyPB()
@@ -424,37 +410,41 @@ class TestColumnFamily(unittest.TestCase):
     def _update_test_helper(self, gc_rule=None):
         from tests.unit._testing import _FakeStub
         from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2 as table_admin_v2_pb2)
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
+            bigtable_table_admin_pb2 as table_admin_v2_pb2,
+        )
+        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
 
-        project_id = 'project-id'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        table_id = 'table-id'
-        column_family_id = 'column-family-id'
-        table_name = ('projects/' + project_id + '/zones/' + zone +
-                      '/clusters/' + cluster_id + '/tables/' + table_id)
+        project_id = "project-id"
+        zone = "zone"
+        cluster_id = "cluster-id"
+        table_id = "table-id"
+        column_family_id = "column-family-id"
+        table_name = (
+            "projects/"
+            + project_id
+            + "/zones/"
+            + zone
+            + "/clusters/"
+            + cluster_id
+            + "/tables/"
+            + table_id
+        )
 
         api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=project_id,
-                                   credentials=credentials, admin=True)
+        client = self._make_client(
+            project=project_id, credentials=credentials, admin=True
+        )
         table = _Table(table_name, client=client)
-        column_family = self._make_one(
-            column_family_id, table, gc_rule=gc_rule)
+        column_family = self._make_one(column_family_id, table, gc_rule=gc_rule)
 
         # Create request_pb
         if gc_rule is None:
             column_family_pb = _ColumnFamilyPB()
         else:
             column_family_pb = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
-        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
-            name=table_name)
-        request_pb.modifications.add(
-            id=column_family_id,
-            update=column_family_pb,
-        )
+        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(name=table_name)
+        request_pb.modifications.add(id=column_family_id, update=column_family_pb)
 
         # Create response_pb
         response_pb = _ColumnFamilyPB()
@@ -484,32 +474,38 @@ class TestColumnFamily(unittest.TestCase):
     def test_delete(self):
         from google.protobuf import empty_pb2
         from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2 as table_admin_v2_pb2)
+            bigtable_table_admin_pb2 as table_admin_v2_pb2,
+        )
         from tests.unit._testing import _FakeStub
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
+        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
 
-        project_id = 'project-id'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        table_id = 'table-id'
-        column_family_id = 'column-family-id'
-        table_name = ('projects/' + project_id + '/zones/' + zone +
-                      '/clusters/' + cluster_id + '/tables/' + table_id)
+        project_id = "project-id"
+        zone = "zone"
+        cluster_id = "cluster-id"
+        table_id = "table-id"
+        column_family_id = "column-family-id"
+        table_name = (
+            "projects/"
+            + project_id
+            + "/zones/"
+            + zone
+            + "/clusters/"
+            + cluster_id
+            + "/tables/"
+            + table_id
+        )
 
         api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=project_id,
-                                   credentials=credentials, admin=True)
+        client = self._make_client(
+            project=project_id, credentials=credentials, admin=True
+        )
         table = _Table(table_name, client=client)
         column_family = self._make_one(column_family_id, table)
 
         # Create request_pb
-        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
-            name=table_name)
-        request_pb.modifications.add(
-            id=column_family_id,
-            drop=True)
+        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(name=table_name)
+        request_pb.modifications.add(id=column_family_id, drop=True)
 
         # Create response_pb
         response_pb = empty_pb2.Empty()
@@ -529,7 +525,6 @@ class TestColumnFamily(unittest.TestCase):
 
 
 class Test__gc_rule_from_pb(unittest.TestCase):
-
     def _call_fut(self, *args, **kwargs):
         from google.cloud.bigtable.column_family import _gc_rule_from_pb
 
@@ -595,43 +590,38 @@ class Test__gc_rule_from_pb(unittest.TestCase):
             @classmethod
             def WhichOneof(cls, name):
                 cls.names.append(name)
-                return 'unknown'
+                return "unknown"
 
         self.assertEqual(MockProto.names, [])
         self.assertRaises(ValueError, self._call_fut, MockProto)
-        self.assertEqual(MockProto.names, ['rule'])
+        self.assertEqual(MockProto.names, ["rule"])
 
 
 def _GcRulePB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        table_pb2 as table_v2_pb2)
+    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
 
     return table_v2_pb2.GcRule(*args, **kw)
 
 
 def _GcRuleIntersectionPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        table_pb2 as table_v2_pb2)
+    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
 
     return table_v2_pb2.GcRule.Intersection(*args, **kw)
 
 
 def _GcRuleUnionPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        table_pb2 as table_v2_pb2)
+    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
 
     return table_v2_pb2.GcRule.Union(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        table_pb2 as table_v2_pb2)
+    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
 
     return table_v2_pb2.ColumnFamily(*args, **kw)
 
 
 class _Instance(object):
-
     def __init__(self, client=None):
         self._client = client
 
@@ -641,7 +631,6 @@ class _Client(object):
 
 
 class _Table(object):
-
     def __init__(self, name, client=None):
         self.name = name
         self._instance = _Instance(client)

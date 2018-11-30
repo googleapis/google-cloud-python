@@ -38,7 +38,10 @@ def build_flask_context(request):
     :returns: An HTTPContext object ready to be sent to the Stackdriver Error
               Reporting API.
     """
-    return HTTPContext(url=request.url, method=request.method,
-                       user_agent=request.user_agent.string,
-                       referrer=request.referrer,
-                       remote_ip=request.remote_addr)
+    return HTTPContext(
+        url=request.url,
+        method=request.method,
+        user_agent=request.user_agent.string,
+        referrer=request.referrer,
+        remote_ip=request.remote_addr,
+    )

@@ -2,8 +2,8 @@ config = {
     "interfaces": {
         "google.cloud.dataproc.v1.JobController": {
             "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": []
+                "idempotent": ["DEADLINE_EXCEEDED", "INTERNAL", "UNAVAILABLE"],
+                "non_idempotent": ["UNAVAILABLE"]
             },
             "retry_params": {
                 "default": {
@@ -13,7 +13,7 @@ config = {
                     "initial_rpc_timeout_millis": 30000,
                     "rpc_timeout_multiplier": 1.0,
                     "max_rpc_timeout_millis": 30000,
-                    "total_timeout_millis": 600000
+                    "total_timeout_millis": 900000
                 }
             },
             "methods": {
@@ -23,7 +23,7 @@ config = {
                     "retry_params_name": "default"
                 },
                 "GetJob": {
-                    "timeout_millis": 10000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
@@ -39,12 +39,12 @@ config = {
                 },
                 "CancelJob": {
                     "timeout_millis": 30000,
-                    "retry_codes_name": "non_idempotent",
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "DeleteJob": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 }
             }

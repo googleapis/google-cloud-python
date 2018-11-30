@@ -18,8 +18,4 @@ from google.cloud.iot_v1 import DeviceManagerClient
 from google.cloud.iot_v1 import enums
 from google.cloud.iot_v1 import types
 
-__all__ = (
-    'enums',
-    'types',
-    'DeviceManagerClient',
-)
+__all__ = ("enums", "types", "DeviceManagerClient")

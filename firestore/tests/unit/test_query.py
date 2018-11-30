@@ -17,9 +17,13 @@ import types
 import unittest
 
 import mock
+import six
 
 
 class TestQuery(unittest.TestCase):
+
+    if six.PY2:
+        assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
 
     @staticmethod
     def _get_target_class():
@@ -244,9 +248,89 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query3._offset, offset3)
         self._compare_queries(query2, query3, '_offset')
 
-    def test_start_at(self):
+    @staticmethod
+    def _make_snapshot(values):
         from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 
+        return DocumentSnapshot(None, values, True, None, None, None)
+
+    def test__cursor_helper_w_dict(self):
+        values = {'a': 7, 'b': 'foo'}
+        query1 = self._make_one(mock.sentinel.parent)
+        query2 = query1._cursor_helper(values, True, True)
+
+        self.assertIs(query2._parent, mock.sentinel.parent)
+        self.assertIsNone(query2._projection)
+        self.assertEqual(query2._field_filters, ())
+        self.assertEqual(query2._orders, query1._orders)
+        self.assertIsNone(query2._limit)
+        self.assertIsNone(query2._offset)
+        self.assertIsNone(query2._end_at)
+
+        cursor, before = query2._start_at
+
+        self.assertEqual(cursor, values)
+        self.assertTrue(before)
+
+    def test__cursor_helper_w_tuple(self):
+        values = (7, 'foo')
+        query1 = self._make_one(mock.sentinel.parent)
+        query2 = query1._cursor_helper(values, False, True)
+
+        self.assertIs(query2._parent, mock.sentinel.parent)
+        self.assertIsNone(query2._projection)
+        self.assertEqual(query2._field_filters, ())
+        self.assertEqual(query2._orders, query1._orders)
+        self.assertIsNone(query2._limit)
+        self.assertIsNone(query2._offset)
+        self.assertIsNone(query2._end_at)
+
+        cursor, before = query2._start_at
+
+        self.assertEqual(cursor, list(values))
+        self.assertFalse(before)
+
+    def test__cursor_helper_w_list(self):
+        values = [7, 'foo']
+        query1 = self._make_one(mock.sentinel.parent)
+        query2 = query1._cursor_helper(values, True, False)
+
+        self.assertIs(query2._parent, mock.sentinel.parent)
+        self.assertIsNone(query2._projection)
+        self.assertEqual(query2._field_filters, ())
+        self.assertEqual(query2._orders, query1._orders)
+        self.assertIsNone(query2._limit)
+        self.assertIsNone(query2._offset)
+        self.assertIsNone(query2._start_at)
+
+        cursor, before = query2._end_at
+
+        self.assertEqual(cursor, values)
+        self.assertIsNot(cursor, values)
+        self.assertTrue(before)
+
+    def test__cursor_helper_w_snapshot(self):
+
+        values = {'a': 7, 'b': 'foo'}
+        snapshot = self._make_snapshot(values)
+        query1 = self._make_one(mock.sentinel.parent)
+
+        query2 = query1._cursor_helper(snapshot, False, False)
+
+        self.assertIs(query2._parent, mock.sentinel.parent)
+        self.assertIsNone(query2._projection)
+        self.assertEqual(query2._field_filters, ())
+        self.assertEqual(query2._orders, ())
+        self.assertIsNone(query2._limit)
+        self.assertIsNone(query2._offset)
+        self.assertIsNone(query2._start_at)
+
+        cursor, before = query2._end_at
+
+        self.assertEqual(cursor, values)
+        self.assertFalse(before)
+
+    def test_start_at(self):
         query1 = self._make_one_all_fields(skip_fields=('orders',))
         query2 = query1.order_by('hi')
 
@@ -260,8 +344,7 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by('bye')
         values5 = {'hi': 'zap', 'bye': 88}
-        document_fields5 = DocumentSnapshot(
-            None, values5, True, None, None, None)
+        document_fields5 = self._make_snapshot(values5)
         query5 = query4.start_at(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
@@ -269,8 +352,6 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query4, query5, '_start_at')
 
     def test_start_after(self):
-        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
-
         query1 = self._make_one_all_fields(skip_fields=('orders',))
         query2 = query1.order_by('down')
 
@@ -284,8 +365,7 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by('out')
         values5 = {'down': 100.25, 'out': b'\x00\x01'}
-        document_fields5 = DocumentSnapshot(
-            None, values5, True, None, None, None)
+        document_fields5 = self._make_snapshot(values5)
         query5 = query4.start_after(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
@@ -293,8 +373,6 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query4, query5, '_start_at')
 
     def test_end_before(self):
-        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
-
         query1 = self._make_one_all_fields(skip_fields=('orders',))
         query2 = query1.order_by('down')
 
@@ -308,8 +386,7 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by('out')
         values5 = {'down': 100.25, 'out': b'\x00\x01'}
-        document_fields5 = DocumentSnapshot(
-            None, values5, True, None, None, None)
+        document_fields5 = self._make_snapshot(values5)
         query5 = query4.end_before(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
@@ -317,8 +394,6 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query4, query5, '_end_at')
 
     def test_end_at(self):
-        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
-
         query1 = self._make_one_all_fields(skip_fields=('orders',))
         query2 = query1.order_by('hi')
 
@@ -332,8 +407,7 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by('bye')
         values5 = {'hi': 'zap', 'bye': 88}
-        document_fields5 = DocumentSnapshot(
-            None, values5, True, None, None, None)
+        document_fields5 = self._make_snapshot(values5)
         query5 = query4.end_at(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
@@ -401,6 +475,89 @@ class TestQuery(unittest.TestCase):
             ),
         )
         self.assertEqual(filter_pb, expected_pb)
+
+    def test__normalize_cursor_none(self):
+        query = self._make_one(mock.sentinel.parent)
+        self.assertIsNone(query._normalize_cursor(None, query._orders))
+
+    def test__normalize_cursor_no_order(self):
+        cursor = ([1], True)
+        query = self._make_one(mock.sentinel.parent)
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
+    def test__normalize_cursor_as_list_mismatched_order(self):
+        cursor = ([1, 2], True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
+    def test__normalize_cursor_as_dict_mismatched_order(self):
+        cursor = ({'a': 1}, True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
+    def test__normalize_cursor_w_delete(self):
+        from google.cloud.firestore_v1beta1 import DELETE_FIELD
+
+        cursor = ([DELETE_FIELD], True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
+    def test__normalize_cursor_w_server_timestamp(self):
+        from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
+
+        cursor = ([SERVER_TIMESTAMP], True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
+    def test__normalize_cursor_w_array_remove(self):
+        from google.cloud.firestore_v1beta1 import ArrayRemove
+
+        cursor = ([ArrayRemove([1, 3, 5])], True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
+    def test__normalize_cursor_w_array_union(self):
+        from google.cloud.firestore_v1beta1 import ArrayUnion
+
+        cursor = ([ArrayUnion([2, 4, 8])], True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        with self.assertRaises(ValueError):
+            query._normalize_cursor(cursor, query._orders)
+
+    def test__normalize_cursor_as_list_hit(self):
+        cursor = ([1], True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        self.assertEqual(
+            query._normalize_cursor(cursor, query._orders), ([1], True))
+
+    def test__normalize_cursor_as_dict_hit(self):
+        cursor = ({'b': 1}, True)
+        query = self._make_one(
+            mock.sentinel.parent).order_by('b', 'ASCENDING')
+
+        self.assertEqual(
+            query._normalize_cursor(cursor, query._orders), ([1], True))
 
     def test__to_protobuf_all_fields(self):
         from google.protobuf import wrappers_pb2
@@ -553,11 +710,10 @@ class TestQuery(unittest.TestCase):
         from google.cloud.firestore_v1beta1.proto import query_pb2
 
         parent = mock.Mock(id='phish', spec=['id'])
-        query1 = self._make_one(parent)
-        query2 = query1.start_after({'X': {'Y': u'Z'}})
-        query3 = query2.order_by('X.Y')
+        query = self._make_one(
+            parent).order_by('X.Y').start_after({'X': {'Y': u'Z'}})
 
-        structured_query_pb = query3._to_protobuf()
+        structured_query_pb = query._to_protobuf()
         query_kwargs = {
             'from': [
                 query_pb2.StructuredQuery.CollectionSelector(
@@ -586,11 +742,10 @@ class TestQuery(unittest.TestCase):
         from google.cloud.firestore_v1beta1.proto import query_pb2
 
         parent = mock.Mock(id='ghoti', spec=['id'])
-        query1 = self._make_one(parent)
-        query2 = query1.end_at({'a': 88})
-        query3 = query2.order_by('a')
+        query = self._make_one(
+            parent).order_by('a').end_at({'a': 88})
 
-        structured_query_pb = query3._to_protobuf()
+        structured_query_pb = query._to_protobuf()
         query_kwargs = {
             'from': [
                 query_pb2.StructuredQuery.CollectionSelector(
@@ -943,8 +1098,7 @@ class TestQuery(unittest.TestCase):
         doc2._data = {'first': {'stringValue': 'Ada'},
                       'last': {'stringValue': 'lovelace'}}
 
-        with self.assertRaisesRegexp(ValueError,
-                                     "Can only compare fields "):
+        with self.assertRaisesRegex(ValueError, "Can only compare fields "):
             query._comparator(doc1, doc2)
 
 
@@ -965,6 +1119,8 @@ class Test__enum_from_op_string(unittest.TestCase):
         self.assertEqual(self._call_fut('=='), op_class.EQUAL)
         self.assertEqual(self._call_fut('>='), op_class.GREATER_THAN_OR_EQUAL)
         self.assertEqual(self._call_fut('>'), op_class.GREATER_THAN)
+        self.assertEqual(
+            self._call_fut('array_contains'), op_class.ARRAY_CONTAINS)
 
     def test_failure(self):
         with self.assertRaises(ValueError):
@@ -1061,67 +1217,26 @@ class Test__filter_pb(unittest.TestCase):
 class Test__cursor_pb(unittest.TestCase):
 
     @staticmethod
-    def _call_fut(cursor_pair, orders):
+    def _call_fut(cursor_pair):
         from google.cloud.firestore_v1beta1.query import _cursor_pb
 
-        return _cursor_pb(cursor_pair, orders)
+        return _cursor_pb(cursor_pair)
 
     def test_no_pair(self):
-        ret_val = self._call_fut(None, ())
-        self.assertIsNone(ret_val)
-
-    def test_no_orders(self):
-        from google.cloud.firestore_v1beta1.query import _NO_ORDERS_FOR_CURSOR
-
-        cursor_pair = {'a': 'b'}, True
-        with self.assertRaises(ValueError) as exc_info:
-            self._call_fut(cursor_pair, ())
-
-        self.assertEqual(exc_info.exception.args, (_NO_ORDERS_FOR_CURSOR,))
-
-    def test_missing_data(self):
-        from google.cloud.firestore_v1beta1.gapic import enums
-
-        order_pb = _make_order_pb(
-            'a.b', enums.StructuredQuery.Direction.ASCENDING)
-        orders = (order_pb,)
-        data = {}
-        cursor_pair = data, False
-
-        with self.assertRaises(ValueError):
-            self._call_fut(cursor_pair, orders)
+        self.assertIsNone(self._call_fut(None))
 
     def test_success(self):
-        from google.cloud.firestore_v1beta1.gapic import enums
         from google.cloud.firestore_v1beta1.proto import query_pb2
         from google.cloud.firestore_v1beta1 import _helpers
 
-        field_path1 = 'a'
-        field_path2 = 'a.b'
-        field_path3 = 'x'
-        direction1 = enums.StructuredQuery.Direction.DESCENDING
-        direction2 = enums.StructuredQuery.Direction.ASCENDING
-        direction3 = enums.StructuredQuery.Direction.ASCENDING
-        orders = (
-            _make_order_pb(field_path1, direction1),
-            _make_order_pb(field_path2, direction2),
-            _make_order_pb(field_path3, direction3),
-        )
-        data = {
-            'a': {
-                'b': 10,
-                'c': 1.5,
-            },
-            'x': True,
-        }
+        data = [1.5, 10, True]
         cursor_pair = data, True
 
-        cursor_pb = self._call_fut(cursor_pair, orders)
+        cursor_pb = self._call_fut(cursor_pair)
+
         expected_pb = query_pb2.Cursor(
             values=[
-                _helpers.encode_value(data['a']),
-                _helpers.encode_value(data['a']['b']),
-                _helpers.encode_value(data['x']),
+                _helpers.encode_value(value) for value in data
             ],
             before=True,
         )

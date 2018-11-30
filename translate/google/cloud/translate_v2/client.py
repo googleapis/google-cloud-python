@@ -22,13 +22,13 @@ from google.cloud.client import Client as BaseClient
 from google.cloud.translate_v2._http import Connection
 
 
-ENGLISH_ISO_639 = 'en'
+ENGLISH_ISO_639 = "en"
 """ISO 639-1 language code for English."""
 
-BASE = 'base'
+BASE = "base"
 """Base translation model."""
 
-NMT = 'nmt'
+NMT = "nmt"
 """Neural Machine Translation model."""
 
 
@@ -56,11 +56,10 @@ class Client(BaseClient):
                   change in the future.
     """
 
-    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    SCOPE = ("https://www.googleapis.com/auth/cloud-platform",)
     """The scopes required for authenticating."""
 
-    def __init__(self, target_language=ENGLISH_ISO_639,
-                 credentials=None, _http=None):
+    def __init__(self, target_language=ENGLISH_ISO_639, credentials=None, _http=None):
         self.target_language = target_language
         super(Client, self).__init__(credentials=credentials, _http=_http)
         self._connection = Connection(self)
@@ -89,10 +88,11 @@ class Client(BaseClient):
         if target_language is None:
             target_language = self.target_language
         if target_language is not None:
-            query_params['target'] = target_language
+            query_params["target"] = target_language
         response = self._connection.api_request(
-            method='GET', path='/languages', query_params=query_params)
-        return response.get('data', {}).get('languages', ())
+            method="GET", path="/languages", query_params=query_params
+        )
+        return response.get("data", {}).get("languages", ())
 
     def detect_language(self, values):
         """Detect the language of a string or list of strings.
@@ -128,18 +128,18 @@ class Client(BaseClient):
             single_value = True
             values = [values]
 
-        data = {
-            'q': values,
-        }
+        data = {"q": values}
 
         response = self._connection.api_request(
-            method='POST', path='/detect', data=data)
+            method="POST", path="/detect", data=data
+        )
 
-        detections = response.get('data', {}).get('detections', ())
+        detections = response.get("data", {}).get("detections", ())
 
         if len(values) != len(detections):
-            raise ValueError('Expected same number of values and detections',
-                             values, detections)
+            raise ValueError(
+                "Expected same number of values and detections", values, detections
+            )
 
         for index, value in enumerate(values):
             # Empirically, even clearly ambiguous text like "no" only returns
@@ -148,22 +148,29 @@ class Client(BaseClient):
             if len(detections[index]) == 1:
                 detections[index] = detections[index][0]
             else:
-                message = ('Expected a single detection per value, API '
-                           'returned %d') % (len(detections[index]),)
+                message = (
+                    "Expected a single detection per value, API " "returned %d"
+                ) % (len(detections[index]),)
                 raise ValueError(message, value, detections[index])
 
-            detections[index]['input'] = value
+            detections[index]["input"] = value
             # The ``isReliable`` field is deprecated.
-            detections[index].pop('isReliable', None)
+            detections[index].pop("isReliable", None)
 
         if single_value:
             return detections[0]
         else:
             return detections
 
-    def translate(self, values, target_language=None, format_=None,
-                  source_language=None, customization_ids=(),
-                  model=None):
+    def translate(
+        self,
+        values,
+        target_language=None,
+        format_=None,
+        source_language=None,
+        customization_ids=(),
+        model=None,
+    ):
         """Translate a string or list of strings.
 
         See https://cloud.google.com/translate/docs/translating-text
@@ -221,23 +228,23 @@ class Client(BaseClient):
             customization_ids = [customization_ids]
 
         data = {
-            'target': target_language,
-            'q': values,
-            'cid': customization_ids,
-            'format': format_,
-            'source': source_language,
-            'model': model
+            "target": target_language,
+            "q": values,
+            "cid": customization_ids,
+            "format": format_,
+            "source": source_language,
+            "model": model,
         }
 
-        response = self._connection.api_request(
-            method='POST', path='', data=data)
+        response = self._connection.api_request(method="POST", path="", data=data)
 
-        translations = response.get('data', {}).get('translations', ())
+        translations = response.get("data", {}).get("translations", ())
         if len(values) != len(translations):
-            raise ValueError('Expected iterations to have same length',
-                             values, translations)
+            raise ValueError(
+                "Expected iterations to have same length", values, translations
+            )
         for value, translation in six.moves.zip(values, translations):
-            translation['input'] = value
+            translation["input"] = value
 
         if single_value:
             return translations[0]

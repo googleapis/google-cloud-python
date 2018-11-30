@@ -22,7 +22,7 @@ from six.moves import queue
 from google.api_core import exceptions
 
 _LOGGER = logging.getLogger(__name__)
-_BIDIRECTIONAL_CONSUMER_NAME = 'Thread-ConsumeBidirectionalStream'
+_BIDIRECTIONAL_CONSUMER_NAME = "Thread-ConsumeBidirectionalStream"
 
 
 class _RequestQueueGenerator(object):
@@ -79,6 +79,7 @@ class _RequestQueueGenerator(object):
             easily restarting streams that require some initial configuration
             request.
     """
+
     def __init__(self, queue, period=1, initial_request=None):
         self._queue = queue
         self._period = period
@@ -107,8 +108,8 @@ class _RequestQueueGenerator(object):
             except queue.Empty:
                 if not self._is_active():
                     _LOGGER.debug(
-                        'Empty queue and inactive call, exiting request '
-                        'generator.')
+                        "Empty queue and inactive call, exiting request " "generator."
+                    )
                     return
                 else:
                     # call is still active, keep waiting for queue items.
@@ -117,7 +118,7 @@ class _RequestQueueGenerator(object):
             # The consumer explicitly sent "None", indicating that the request
             # should end.
             if item is None:
-                _LOGGER.debug('Cleanly exiting request generator.')
+                _LOGGER.debug("Cleanly exiting request generator.")
                 return
 
             if not self._is_active():
@@ -125,8 +126,9 @@ class _RequestQueueGenerator(object):
                 # item back on the queue so that the next call can consume it.
                 self._queue.put(item)
                 _LOGGER.debug(
-                    'Inactive call, replacing item on queue and exiting '
-                    'request generator.')
+                    "Inactive call, replacing item on queue and exiting "
+                    "request generator."
+                )
                 return
 
             yield item
@@ -164,6 +166,7 @@ class BidiRpc(object):
             yield. This is useful if an initial request is needed to start the
             stream.
     """
+
     def __init__(self, start_rpc, initial_request=None):
         self._start_rpc = start_rpc
         self._initial_request = initial_request
@@ -192,17 +195,18 @@ class BidiRpc(object):
     def open(self):
         """Opens the stream."""
         if self.is_active:
-            raise ValueError('Can not open an already open stream.')
+            raise ValueError("Can not open an already open stream.")
 
         request_generator = _RequestQueueGenerator(
-            self._request_queue, initial_request=self._initial_request)
+            self._request_queue, initial_request=self._initial_request
+        )
         call = self._start_rpc(iter(request_generator))
 
         request_generator.call = call
 
         # TODO: api_core should expose the future interface for wrapped
         # callables as well.
-        if hasattr(call, '_wrapped'):  # pragma: NO COVER
+        if hasattr(call, "_wrapped"):  # pragma: NO COVER
             call._wrapped.add_done_callback(self._on_call_done)
         else:
             call.add_done_callback(self._on_call_done)
@@ -232,8 +236,7 @@ class BidiRpc(object):
             request (protobuf.Message): The request to send.
         """
         if self.call is None:
-            raise ValueError(
-                'Can not send() on an RPC that has never been open()ed.')
+            raise ValueError("Can not send() on an RPC that has never been open()ed.")
 
         # Don't use self.is_active(), as ResumableBidiRpc will overload it
         # to mean something semantically different.
@@ -254,8 +257,7 @@ class BidiRpc(object):
             protobuf.Message: The received message.
         """
         if self.call is None:
-            raise ValueError(
-                'Can not recv() on an RPC that has never been open()ed.')
+            raise ValueError("Can not recv() on an RPC that has never been open()ed.")
 
         return next(self.call)
 
@@ -309,6 +311,7 @@ class ResumableBidiRpc(BidiRpc):
             True if the stream should be recovered. This will be called
             whenever an error is encountered on the stream.
     """
+
     def __init__(self, start_rpc, should_recover, initial_request=None):
         super(ResumableBidiRpc, self).__init__(start_rpc, initial_request)
         self._should_recover = should_recover
@@ -334,14 +337,14 @@ class ResumableBidiRpc(BidiRpc):
             if not self._should_recover(future):
                 self._finalize(future)
             else:
-                _LOGGER.debug('Re-opening stream from gRPC callback.')
+                _LOGGER.debug("Re-opening stream from gRPC callback.")
                 self._reopen()
 
     def _reopen(self):
         with self._operational_lock:
             # Another thread already managed to re-open this stream.
             if self.call is not None and self.call.is_active():
-                _LOGGER.debug('Stream was already re-established.')
+                _LOGGER.debug("Stream was already re-established.")
                 return
 
             self.call = None
@@ -362,11 +365,11 @@ class ResumableBidiRpc(BidiRpc):
             # If re-opening or re-calling the method fails for any reason,
             # consider it a terminal error and finalize the stream.
             except Exception as exc:
-                _LOGGER.debug('Failed to re-open stream due to %s', exc)
+                _LOGGER.debug("Failed to re-open stream due to %s", exc)
                 self._finalize(exc)
                 raise
 
-            _LOGGER.info('Re-established stream')
+            _LOGGER.info("Re-established stream")
 
     def _recoverable(self, method, *args, **kwargs):
         """Wraps a method to recover the stream and retry on error.
@@ -388,18 +391,15 @@ class ResumableBidiRpc(BidiRpc):
 
             except Exception as exc:
                 with self._operational_lock:
-                    _LOGGER.debug(
-                        'Call to retryable %r caused %s.', method, exc)
+                    _LOGGER.debug("Call to retryable %r caused %s.", method, exc)
 
                     if not self._should_recover(exc):
                         self.close()
-                        _LOGGER.debug(
-                            'Not retrying %r due to %s.', method, exc)
+                        _LOGGER.debug("Not retrying %r due to %s.", method, exc)
                         self._finalize(exc)
                         raise exc
 
-                    _LOGGER.debug(
-                        'Re-opening stream from retryable %r.', method)
+                    _LOGGER.debug("Re-opening stream from retryable %r.", method)
                     self._reopen()
 
     def _send(self, request):
@@ -414,8 +414,7 @@ class ResumableBidiRpc(BidiRpc):
             call = self.call
 
         if call is None:
-            raise ValueError(
-                'Can not send() on an RPC that has never been open()ed.')
+            raise ValueError("Can not send() on an RPC that has never been open()ed.")
 
         # Don't use self.is_active(), as ResumableBidiRpc will overload it
         # to mean something semantically different.
@@ -434,8 +433,7 @@ class ResumableBidiRpc(BidiRpc):
             call = self.call
 
         if call is None:
-            raise ValueError(
-                'Can not recv() on an RPC that has never been open()ed.')
+            raise ValueError("Can not recv() on an RPC that has never been open()ed.")
 
         return next(call)
 
@@ -493,6 +491,7 @@ class BackgroundConsumer(object):
         on_response (Callable[[protobuf.Message], None]): The callback to
             be called for every response on the stream.
     """
+
     def __init__(self, bidi_rpc, on_response):
         self._bidi_rpc = bidi_rpc
         self._on_response = on_response
@@ -522,43 +521,47 @@ class BackgroundConsumer(object):
                 # Python 2.7.
                 with self._wake:
                     if self._paused:
-                        _LOGGER.debug('paused, waiting for waking.')
+                        _LOGGER.debug("paused, waiting for waking.")
                         self._wake.wait()
-                        _LOGGER.debug('woken.')
+                        _LOGGER.debug("woken.")
 
-                _LOGGER.debug('waiting for recv.')
+                _LOGGER.debug("waiting for recv.")
                 response = self._bidi_rpc.recv()
-                _LOGGER.debug('recved response.')
+                _LOGGER.debug("recved response.")
                 self._on_response(response)
 
         except exceptions.GoogleAPICallError as exc:
             _LOGGER.debug(
-                '%s caught error %s and will exit. Generally this is due to '
-                'the RPC itself being cancelled and the error will be '
-                'surfaced to the calling code.',
-                _BIDIRECTIONAL_CONSUMER_NAME, exc, exc_info=True)
+                "%s caught error %s and will exit. Generally this is due to "
+                "the RPC itself being cancelled and the error will be "
+                "surfaced to the calling code.",
+                _BIDIRECTIONAL_CONSUMER_NAME,
+                exc,
+                exc_info=True,
+            )
 
         except Exception as exc:
             _LOGGER.exception(
-                '%s caught unexpected exception %s and will exit.',
-                _BIDIRECTIONAL_CONSUMER_NAME, exc)
+                "%s caught unexpected exception %s and will exit.",
+                _BIDIRECTIONAL_CONSUMER_NAME,
+                exc,
+            )
 
         else:
-            _LOGGER.error(
-                'The bidirectional RPC exited.')
+            _LOGGER.error("The bidirectional RPC exited.")
 
-        _LOGGER.info('%s exiting', _BIDIRECTIONAL_CONSUMER_NAME)
+        _LOGGER.info("%s exiting", _BIDIRECTIONAL_CONSUMER_NAME)
 
     def start(self):
         """Start the background thread and begin consuming the thread."""
         with self._operational_lock:
             thread = threading.Thread(
-                name=_BIDIRECTIONAL_CONSUMER_NAME,
-                target=self._thread_main)
+                name=_BIDIRECTIONAL_CONSUMER_NAME, target=self._thread_main
+            )
             thread.daemon = True
             thread.start()
             self._thread = thread
-            _LOGGER.debug('Started helper thread %s', thread.name)
+            _LOGGER.debug("Started helper thread %s", thread.name)
 
     def stop(self):
         """Stop consuming the stream and shutdown the background thread."""

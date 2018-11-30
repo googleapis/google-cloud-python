@@ -63,6 +63,8 @@ class WorkflowTemplateServiceGrpcTransport(object):
                 credentials=credentials,
             )
 
+        self._channel = channel
+
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
@@ -98,6 +100,15 @@ class WorkflowTemplateServiceGrpcTransport(object):
             credentials=credentials,
             scopes=cls._OAUTH_SCOPES,
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def create_workflow_template(self):
@@ -155,6 +166,36 @@ class WorkflowTemplateServiceGrpcTransport(object):
         """
         return self._stubs[
             'workflow_template_service_stub'].InstantiateWorkflowTemplate
+
+    @property
+    def instantiate_inline_workflow_template(self):
+        """Return the gRPC stub for {$apiMethod.name}.
+
+        Instantiates a template and begins execution.
+
+        This method is equivalent to executing the sequence
+        ``CreateWorkflowTemplate``, ``InstantiateWorkflowTemplate``,
+        ``DeleteWorkflowTemplate``.
+
+        The returned Operation can be used to track execution of workflow by
+        polling ``operations.get``. The Operation will complete when entire
+        workflow is finished.
+
+        The running workflow can be aborted via ``operations.cancel``. This will
+        cause any inflight jobs to be cancelled and workflow-owned clusters to
+        be deleted.
+
+        The ``Operation.metadata`` will be ``WorkflowMetadata``.
+
+        On successful completion, ``Operation.response`` will be ``Empty``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs[
+            'workflow_template_service_stub'].InstantiateInlineWorkflowTemplate
 
     @property
     def update_workflow_template(self):

@@ -22,6 +22,7 @@ from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+
 # pylint: enable=ungrouped-imports
 
 
@@ -31,6 +32,7 @@ class _BatchBase(_SessionWrapper):
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform the commit
     """
+
     def __init__(self, session):
         super(_BatchBase, self).__init__(session)
         self._mutations = []
@@ -57,8 +59,7 @@ class _BatchBase(_SessionWrapper):
         :type values: list of lists
         :param values: Values to be modified.
         """
-        self._mutations.append(Mutation(
-            insert=_make_write_pb(table, columns, values)))
+        self._mutations.append(Mutation(insert=_make_write_pb(table, columns, values)))
 
     def update(self, table, columns, values):
         """Update one or more existing table rows.
@@ -72,8 +73,7 @@ class _BatchBase(_SessionWrapper):
         :type values: list of lists
         :param values: Values to be modified.
         """
-        self._mutations.append(Mutation(
-            update=_make_write_pb(table, columns, values)))
+        self._mutations.append(Mutation(update=_make_write_pb(table, columns, values)))
 
     def insert_or_update(self, table, columns, values):
         """Insert/update one or more table rows.
@@ -87,8 +87,9 @@ class _BatchBase(_SessionWrapper):
         :type values: list of lists
         :param values: Values to be modified.
         """
-        self._mutations.append(Mutation(
-            insert_or_update=_make_write_pb(table, columns, values)))
+        self._mutations.append(
+            Mutation(insert_or_update=_make_write_pb(table, columns, values))
+        )
 
     def replace(self, table, columns, values):
         """Replace one or more table rows.
@@ -102,8 +103,7 @@ class _BatchBase(_SessionWrapper):
         :type values: list of lists
         :param values: Values to be modified.
         """
-        self._mutations.append(Mutation(
-            replace=_make_write_pb(table, columns, values)))
+        self._mutations.append(Mutation(replace=_make_write_pb(table, columns, values)))
 
     def delete(self, table, keyset):
         """Delete one or more table rows.
@@ -114,17 +114,14 @@ class _BatchBase(_SessionWrapper):
         :type keyset: :class:`~google.cloud.spanner_v1.keyset.Keyset`
         :param keyset: Keys/ranges identifying rows to delete.
         """
-        delete = Mutation.Delete(
-            table=table,
-            key_set=keyset._to_pb(),
-        )
-        self._mutations.append(Mutation(
-            delete=delete))
+        delete = Mutation.Delete(table=table, key_set=keyset._to_pb())
+        self._mutations.append(Mutation(delete=delete))
 
 
 class Batch(_BatchBase):
     """Accumulate mutations for transmission during :meth:`commit`.
     """
+
     committed = None
     """Timestamp at which the batch was successfully committed."""
 
@@ -149,13 +146,14 @@ class Batch(_BatchBase):
         database = self._session._database
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)
-        txn_options = TransactionOptions(
-            read_write=TransactionOptions.ReadWrite())
-        response = api.commit(self._session.name, self._mutations,
-                              single_use_transaction=txn_options,
-                              metadata=metadata)
-        self.committed = _pb_timestamp_to_datetime(
-            response.commit_timestamp)
+        txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
+        response = api.commit(
+            self._session.name,
+            self._mutations,
+            single_use_transaction=txn_options,
+            metadata=metadata,
+        )
+        self.committed = _pb_timestamp_to_datetime(response.commit_timestamp)
         return self.committed
 
     def __enter__(self):
@@ -186,7 +184,5 @@ def _make_write_pb(table, columns, values):
     :returns: Write protobuf
     """
     return Mutation.Write(
-        table=table,
-        columns=columns,
-        values=_make_list_value_pbs(values),
+        table=table, columns=columns, values=_make_list_value_pbs(values)
     )

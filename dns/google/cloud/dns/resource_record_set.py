@@ -59,8 +59,8 @@ class ResourceRecordSet(object):
         :rtype: :class:`google.cloud.dns.zone.ResourceRecordSet`
         :returns: RRS parsed from ``resource``.
         """
-        name = resource['name']
-        record_type = resource['type']
-        ttl = int(resource['ttl'])
-        rrdatas = resource['rrdatas']
+        name = resource["name"]
+        record_type = resource["type"]
+        ttl = int(resource["ttl"])
+        rrdatas = resource["rrdatas"]
         return cls(name, record_type, ttl, rrdatas, zone=zone)

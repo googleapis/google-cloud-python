@@ -22,14 +22,13 @@ from google.protobuf import struct_pb2
 from google.rpc import code_pb2
 from google.rpc import status_pb2
 
-TEST_OPERATION_NAME = 'test/operation'
+TEST_OPERATION_NAME = "test/operation"
 
 
 def make_operation_proto(
-        name=TEST_OPERATION_NAME, metadata=None, response=None,
-        error=None, **kwargs):
-    operation_proto = operations_pb2.Operation(
-        name=name, **kwargs)
+    name=TEST_OPERATION_NAME, metadata=None, response=None, error=None, **kwargs
+):
+    operation_proto = operations_pb2.Operation(name=name, **kwargs)
 
     if metadata is not None:
         operation_proto.metadata.Pack(metadata)
@@ -47,16 +46,16 @@ def make_operation_future(client_operations_responses=None):
     if client_operations_responses is None:
         client_operations_responses = [make_operation_proto()]
 
-    refresh = mock.Mock(
-        spec=['__call__'], side_effect=client_operations_responses)
+    refresh = mock.Mock(spec=["__call__"], side_effect=client_operations_responses)
     refresh.responses = client_operations_responses
-    cancel = mock.Mock(spec=['__call__'])
+    cancel = mock.Mock(spec=["__call__"])
     operation_future = operation.Operation(
         client_operations_responses[0],
         refresh,
         cancel,
         result_type=struct_pb2.Struct,
-        metadata_type=struct_pb2.Struct)
+        metadata_type=struct_pb2.Struct,
+    )
 
     return operation_future, refresh, cancel
 
@@ -74,7 +73,8 @@ def test_constructor():
 def test_metadata():
     expected_metadata = struct_pb2.Struct()
     future, _, _ = make_operation_future(
-        [make_operation_proto(metadata=expected_metadata)])
+        [make_operation_proto(metadata=expected_metadata)]
+    )
 
     assert future.metadata == expected_metadata
 
@@ -84,8 +84,9 @@ def test_cancellation():
         make_operation_proto(),
         # Second response indicates that the operation was cancelled.
         make_operation_proto(
-            done=True,
-            error=status_pb2.Status(code=code_pb2.CANCELLED))]
+            done=True, error=status_pb2.Status(code=code_pb2.CANCELLED)
+        ),
+    ]
     future, _, cancel = make_operation_future(responses)
 
     assert future.cancel()
@@ -102,7 +103,8 @@ def test_result():
     responses = [
         make_operation_proto(),
         # Second operation response includes the result.
-        make_operation_proto(done=True, response=expected_result)]
+        make_operation_proto(done=True, response=expected_result),
+    ]
     future, _, _ = make_operation_future(responses)
 
     result = future.result()
@@ -112,40 +114,42 @@ def test_result():
 
 
 def test_exception():
-    expected_exception = status_pb2.Status(message='meep')
+    expected_exception = status_pb2.Status(message="meep")
     responses = [
         make_operation_proto(),
         # Second operation response includes the error.
-        make_operation_proto(done=True, error=expected_exception)]
+        make_operation_proto(done=True, error=expected_exception),
+    ]
     future, _, _ = make_operation_future(responses)
 
     exception = future.exception()
 
-    assert expected_exception.message in '{!r}'.format(exception)
+    assert expected_exception.message in "{!r}".format(exception)
 
 
 def test_unexpected_result():
     responses = [
         make_operation_proto(),
         # Second operation response is done, but has not error or response.
-        make_operation_proto(done=True)]
+        make_operation_proto(done=True),
+    ]
     future, _, _ = make_operation_future(responses)
 
     exception = future.exception()
 
-    assert 'Unexpected state' in '{!r}'.format(exception)
+    assert "Unexpected state" in "{!r}".format(exception)
 
 
 def test__refresh_http():
-    api_request = mock.Mock(
-        return_value={'name': TEST_OPERATION_NAME, 'done': True})
+    api_request = mock.Mock(return_value={"name": TEST_OPERATION_NAME, "done": True})
 
     result = operation._refresh_http(api_request, TEST_OPERATION_NAME)
 
     assert result.name == TEST_OPERATION_NAME
     assert result.done is True
     api_request.assert_called_once_with(
-        method='GET', path='operations/{}'.format(TEST_OPERATION_NAME))
+        method="GET", path="operations/{}".format(TEST_OPERATION_NAME)
+    )
 
 
 def test__cancel_http():
@@ -154,16 +158,17 @@ def test__cancel_http():
     operation._cancel_http(api_request, TEST_OPERATION_NAME)
 
     api_request.assert_called_once_with(
-        method='POST', path='operations/{}:cancel'.format(TEST_OPERATION_NAME))
+        method="POST", path="operations/{}:cancel".format(TEST_OPERATION_NAME)
+    )
 
 
 def test_from_http_json():
-    operation_json = {'name': TEST_OPERATION_NAME, 'done': True}
+    operation_json = {"name": TEST_OPERATION_NAME, "done": True}
     api_request = mock.sentinel.api_request
 
     future = operation.from_http_json(
-        operation_json, api_request, struct_pb2.Struct,
-        metadata_type=struct_pb2.Struct)
+        operation_json, api_request, struct_pb2.Struct, metadata_type=struct_pb2.Struct
+    )
 
     assert future._result_type == struct_pb2.Struct
     assert future._metadata_type == struct_pb2.Struct
@@ -172,25 +177,23 @@ def test_from_http_json():
 
 
 def test__refresh_grpc():
-    operations_stub = mock.Mock(spec=['GetOperation'])
+    operations_stub = mock.Mock(spec=["GetOperation"])
     expected_result = make_operation_proto(done=True)
     operations_stub.GetOperation.return_value = expected_result
 
     result = operation._refresh_grpc(operations_stub, TEST_OPERATION_NAME)
 
     assert result == expected_result
-    expected_request = operations_pb2.GetOperationRequest(
-        name=TEST_OPERATION_NAME)
+    expected_request = operations_pb2.GetOperationRequest(name=TEST_OPERATION_NAME)
     operations_stub.GetOperation.assert_called_once_with(expected_request)
 
 
 def test__cancel_grpc():
-    operations_stub = mock.Mock(spec=['CancelOperation'])
+    operations_stub = mock.Mock(spec=["CancelOperation"])
 
     operation._cancel_grpc(operations_stub, TEST_OPERATION_NAME)
 
-    expected_request = operations_pb2.CancelOperationRequest(
-        name=TEST_OPERATION_NAME)
+    expected_request = operations_pb2.CancelOperationRequest(name=TEST_OPERATION_NAME)
     operations_stub.CancelOperation.assert_called_once_with(expected_request)
 
 
@@ -199,8 +202,11 @@ def test_from_grpc():
     operations_stub = mock.sentinel.operations_stub
 
     future = operation.from_grpc(
-        operation_proto, operations_stub, struct_pb2.Struct,
-        metadata_type=struct_pb2.Struct)
+        operation_proto,
+        operations_stub,
+        struct_pb2.Struct,
+        metadata_type=struct_pb2.Struct,
+    )
 
     assert future._result_type == struct_pb2.Struct
     assert future._metadata_type == struct_pb2.Struct
@@ -211,11 +217,15 @@ def test_from_grpc():
 def test_from_gapic():
     operation_proto = make_operation_proto(done=True)
     operations_client = mock.create_autospec(
-        operations_v1.OperationsClient, instance=True)
+        operations_v1.OperationsClient, instance=True
+    )
 
     future = operation.from_gapic(
-        operation_proto, operations_client, struct_pb2.Struct,
-        metadata_type=struct_pb2.Struct)
+        operation_proto,
+        operations_client,
+        struct_pb2.Struct,
+        metadata_type=struct_pb2.Struct,
+    )
 
     assert future._result_type == struct_pb2.Struct
     assert future._metadata_type == struct_pb2.Struct

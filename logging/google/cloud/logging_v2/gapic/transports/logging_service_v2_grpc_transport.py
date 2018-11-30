@@ -27,20 +27,20 @@ class LoggingServiceV2GrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/cloud-platform.read-only',
-        'https://www.googleapis.com/auth/logging.admin',
-        'https://www.googleapis.com/auth/logging.read',
-        'https://www.googleapis.com/auth/logging.write',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
+        "https://www.googleapis.com/auth/logging.admin",
+        "https://www.googleapis.com/auth/logging.read",
+        "https://www.googleapis.com/auth/logging.write",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='logging.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="logging.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -58,27 +58,23 @@ class LoggingServiceV2GrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'logging_service_v2_stub':
-            logging_pb2_grpc.LoggingServiceV2Stub(channel),
+            "logging_service_v2_stub": logging_pb2_grpc.LoggingServiceV2Stub(channel)
         }
 
     @classmethod
-    def create_channel(cls,
-                       address='logging.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="logging.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -93,10 +89,17 @@ class LoggingServiceV2GrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def delete_log(self):
@@ -112,7 +115,7 @@ class LoggingServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['logging_service_v2_stub'].DeleteLog
+        return self._stubs["logging_service_v2_stub"].DeleteLog
 
     @property
     def write_log_entries(self):
@@ -131,7 +134,7 @@ class LoggingServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['logging_service_v2_stub'].WriteLogEntries
+        return self._stubs["logging_service_v2_stub"].WriteLogEntries
 
     @property
     def list_log_entries(self):
@@ -146,7 +149,7 @@ class LoggingServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['logging_service_v2_stub'].ListLogEntries
+        return self._stubs["logging_service_v2_stub"].ListLogEntries
 
     @property
     def list_monitored_resource_descriptors(self):
@@ -159,8 +162,7 @@ class LoggingServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs[
-            'logging_service_v2_stub'].ListMonitoredResourceDescriptors
+        return self._stubs["logging_service_v2_stub"].ListMonitoredResourceDescriptors
 
     @property
     def list_logs(self):
@@ -174,4 +176,4 @@ class LoggingServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['logging_service_v2_stub'].ListLogs
+        return self._stubs["logging_service_v2_stub"].ListLogs

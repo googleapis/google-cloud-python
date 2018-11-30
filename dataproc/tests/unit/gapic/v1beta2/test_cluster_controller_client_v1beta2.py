@@ -15,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -83,7 +84,10 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -109,7 +113,10 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -137,7 +144,10 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -170,7 +180,10 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -194,7 +207,10 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -220,7 +236,10 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -245,7 +264,10 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -264,7 +286,10 @@ class TestClusterControllerClient(object):
     def test_get_cluster_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -288,7 +313,10 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -308,7 +336,10 @@ class TestClusterControllerClient(object):
 
     def test_list_clusters_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -328,7 +359,10 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -354,7 +388,10 @@ class TestClusterControllerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dataproc_v1beta2.ClusterControllerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.ClusterControllerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'

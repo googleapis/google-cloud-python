@@ -23,7 +23,6 @@ In the hierarchy of API concepts
 * a :class:`~.firestore_v1beta1.client.Client` owns a
   :class:`~.firestore_v1beta1.document.DocumentReference`
 """
-
 from google.cloud.client import ClientWithProject
 
 from google.cloud.firestore_v1beta1 import _helpers
@@ -39,7 +38,9 @@ from google.cloud.firestore_v1beta1.transaction import Transaction
 DEFAULT_DATABASE = '(default)'
 """str: The default database used in a :class:`~.firestore.client.Client`."""
 _BAD_OPTION_ERR = (
-    'Exactly one of ``last_update_time`` or ``exists`` must be provided.')
+    'Exactly one of ``last_update_time`` or ``exists`` '
+    'must be provided.'
+)
 _BAD_DOC_TEMPLATE = (
     'Document {!r} appeared in response but was not present among references')
 _ACTIVE_TXN = 'There is already an active transaction.'
@@ -279,9 +280,9 @@ class Client(ClientWithProject):
 
         name, value = kwargs.popitem()
         if name == 'last_update_time':
-            return LastUpdateOption(value)
+            return _helpers.LastUpdateOption(value)
         elif name == 'exists':
-            return ExistsOption(value)
+            return _helpers.ExistsOption(value)
         else:
             extra = '{!r} was provided'.format(name)
             raise TypeError(_BAD_OPTION_ERR, extra)
@@ -331,6 +332,19 @@ class Client(ClientWithProject):
         for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
 
+    def collections(self):
+        """List top-level collections of the client's database.
+
+        Returns:
+            Sequence[~.firestore_v1beta1.collection.CollectionReference]:
+                iterator of subcollections of the current document.
+        """
+        iterator = self._firestore_api.list_collection_ids(
+            self._database_string, metadata=self._rpc_metadata)
+        iterator.client = self
+        iterator.item_to_value = _item_to_collection_ref
+        return iterator
+
     def batch(self):
         """Get a batch instance from this client.
 
@@ -358,96 +372,6 @@ class Client(ClientWithProject):
             attached to this client.
         """
         return Transaction(self, **kwargs)
-
-
-class WriteOption(object):
-    """Option used to assert a condition on a write operation."""
-
-    def modify_write(self, write_pb, no_create_msg=None):
-        """Modify a ``Write`` protobuf based on the state of this write option.
-
-        This is a virtual method intended to be implemented by subclasses.
-
-        Args:
-            write_pb (google.cloud.firestore_v1beta1.types.Write): A
-                ``Write`` protobuf instance to be modified with a precondition
-                determined by the state of this option.
-            no_create_msg (Optional[str]): A message to use to indicate that
-                a create operation is not allowed.
-
-        Raises:
-            NotImplementedError: Always, this method is virtual.
-        """
-        raise NotImplementedError
-
-
-class LastUpdateOption(WriteOption):
-    """Option used to assert a "last update" condition on a write operation.
-
-    This will typically be created by
-    :meth:`~.firestore_v1beta1.client.Client.write_option`.
-
-    Args:
-        last_update_time (google.protobuf.timestamp_pb2.Timestamp): A
-            timestamp. When set, the target document must exist and have
-            been last updated at that time. Protobuf ``update_time`` timestamps
-            are typically returned from methods that perform write operations
-            as part of a "write result" protobuf or directly.
-    """
-
-    def __init__(self, last_update_time):
-        self._last_update_time = last_update_time
-
-    def modify_write(self, write_pb, **unused_kwargs):
-        """Modify a ``Write`` protobuf based on the state of this write option.
-
-        The ``last_update_time`` is added to ``write_pb`` as an "update time"
-        precondition. When set, the target document must exist and have been
-        last updated at that time.
-
-        Args:
-            write_pb (google.cloud.firestore_v1beta1.types.Write): A
-                ``Write`` protobuf instance to be modified with a precondition
-                determined by the state of this option.
-            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
-                other subclasses that are unused here.
-        """
-        current_doc = types.Precondition(
-            update_time=self._last_update_time)
-        write_pb.current_document.CopyFrom(current_doc)
-
-
-class ExistsOption(WriteOption):
-    """Option used to assert existence on a write operation.
-
-    This will typically be created by
-    :meth:`~.firestore_v1beta1.client.Client.write_option`.
-
-    Args:
-        exists (bool): Indicates if the document being modified
-            should already exist.
-    """
-
-    def __init__(self, exists):
-        self._exists = exists
-
-    def modify_write(self, write_pb, **unused_kwargs):
-        """Modify a ``Write`` protobuf based on the state of this write option.
-
-        If:
-
-        * ``exists=True``, adds a precondition that requires existence
-        * ``exists=False``, adds a precondition that requires non-existence
-
-        Args:
-            write_pb (google.cloud.firestore_v1beta1.types.Write): A
-                ``Write`` protobuf instance to be modified with a precondition
-                determined by the state of this option.
-            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
-                other subclasses that are unused here.
-        """
-        current_doc = types.Precondition(exists=self._exists)
-        write_pb.current_document.CopyFrom(current_doc)
 
 
 def _reference_info(references):
@@ -566,3 +490,14 @@ def _get_doc_mask(field_paths):
         return None
     else:
         return types.DocumentMask(field_paths=field_paths)
+
+
+def _item_to_collection_ref(iterator, item):
+    """Convert collection ID to collection ref.
+
+    Args:
+        iterator (google.api_core.page_iterator.GRPCIterator):
+            iterator response
+        item (str): ID of the collection
+    """
+    return iterator.client.collection(item)

@@ -22,6 +22,7 @@
   Redis <redis/index>
   Resource Manager <resource-manager/index>
   Runtime Configuration <runtimeconfig/index>
+  Scheduler <scheduler/index>
   Security Center <securitycenter/index>
   Security Scanner <websecurityscanner/index>
   Spanner <spanner/index>

@@ -20,8 +20,4 @@ from google.cloud.redis_v1 import CloudRedisClient
 from google.cloud.redis_v1 import enums
 from google.cloud.redis_v1 import types
 
-__all__ = (
-    'enums',
-    'types',
-    'CloudRedisClient',
-)
+__all__ = ("enums", "types", "CloudRedisClient")

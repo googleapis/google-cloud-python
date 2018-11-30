@@ -18,7 +18,6 @@ import mock
 
 
 class TestConnection(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.translate_v2._http import Connection
@@ -30,27 +29,21 @@ class TestConnection(unittest.TestCase):
 
     def test_build_api_url_no_extra_query_params(self):
         conn = self._make_one(object())
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'language',
-            'translate',
-            conn.API_VERSION,
-            'foo',
-        ])
-        self.assertEqual(conn.build_api_url('/foo'), URI)
+        URI = "/".join(
+            [conn.API_BASE_URL, "language", "translate", conn.API_VERSION, "foo"]
+        )
+        self.assertEqual(conn.build_api_url("/foo"), URI)
 
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
 
         conn = self._make_one(object())
-        query_params = [('q', 'val1'), ('q', 'val2')]
-        uri = conn.build_api_url('/foo', query_params=query_params)
+        query_params = [("q", "val1"), ("q", "val2")]
+        uri = conn.build_api_url("/foo", query_params=query_params)
         scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual('%s://%s' % (scheme, netloc),
-                         conn.API_BASE_URL)
-        expected_path = '/'.join(
-            ['', 'language', 'translate', conn.API_VERSION, 'foo'])
+        self.assertEqual("%s://%s" % (scheme, netloc), conn.API_BASE_URL)
+        expected_path = "/".join(["", "language", "translate", conn.API_VERSION, "foo"])
         self.assertEqual(path, expected_path)
         params = parse_qsl(qs)
         self.assertEqual(params, query_params)
@@ -64,26 +57,22 @@ class TestConnection(unittest.TestCase):
         http = mock.create_autospec(requests.Session, instance=True)
         response = requests.Response()
         response.status_code = 200
-        data = b'brent-spiner'
+        data = b"brent-spiner"
         response._content = data
         http.request.return_value = response
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(_http=http, spec=["_http"])
 
         conn = self._make_one(client)
-        req_data = 'req-data-boring'
-        result = conn.api_request(
-            'GET', '/rainbow', data=req_data, expect_json=False)
+        req_data = "req-data-boring"
+        result = conn.api_request("GET", "/rainbow", data=req_data, expect_json=False)
         self.assertEqual(result, data)
 
         expected_headers = {
-            'Accept-Encoding': 'gzip',
+            "Accept-Encoding": "gzip",
             base_http.CLIENT_INFO_HEADER: MUT._CLIENT_INFO,
-            'User-Agent': conn.USER_AGENT,
+            "User-Agent": conn.USER_AGENT,
         }
-        expected_uri = conn.build_api_url('/rainbow')
+        expected_uri = conn.build_api_url("/rainbow")
         http.request.assert_called_once_with(
-            data=req_data,
-            headers=expected_headers,
-            method='GET',
-            url=expected_uri,
+            data=req_data, headers=expected_headers, method="GET", url=expected_uri
         )

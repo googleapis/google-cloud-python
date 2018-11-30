@@ -28,14 +28,17 @@ class SecurityCenterGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='securitycenter.googleapis.com:443'):
+    def __init__(
+        self,
+        channel=None,
+        credentials=None,
+        address="securitycenter.googleapis.com:443",
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -53,33 +56,34 @@ class SecurityCenterGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'security_center_stub':
-            securitycenter_service_pb2_grpc.SecurityCenterStub(channel),
+            "security_center_stub": securitycenter_service_pb2_grpc.SecurityCenterStub(
+                channel
+            )
         }
 
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
         # instantiate an LRO client.
         self._operations_client = google.api_core.operations_v1.OperationsClient(
-            channel)
+            channel
+        )
 
     @classmethod
-    def create_channel(cls,
-                       address='securitycenter.googleapis.com:443',
-                       credentials=None):
+    def create_channel(
+        cls, address="securitycenter.googleapis.com:443", credentials=None
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -94,10 +98,17 @@ class SecurityCenterGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
+
+    @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
 
     @property
     def create_source(self):
@@ -110,7 +121,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].CreateSource
+        return self._stubs["security_center_stub"].CreateSource
 
     @property
     def create_finding(self):
@@ -124,7 +135,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].CreateFinding
+        return self._stubs["security_center_stub"].CreateFinding
 
     @property
     def get_iam_policy(self):
@@ -137,7 +148,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].GetIamPolicy
+        return self._stubs["security_center_stub"].GetIamPolicy
 
     @property
     def get_organization_settings(self):
@@ -150,7 +161,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].GetOrganizationSettings
+        return self._stubs["security_center_stub"].GetOrganizationSettings
 
     @property
     def get_source(self):
@@ -163,7 +174,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].GetSource
+        return self._stubs["security_center_stub"].GetSource
 
     @property
     def group_assets(self):
@@ -177,7 +188,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].GroupAssets
+        return self._stubs["security_center_stub"].GroupAssets
 
     @property
     def group_findings(self):
@@ -194,7 +205,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].GroupFindings
+        return self._stubs["security_center_stub"].GroupFindings
 
     @property
     def list_assets(self):
@@ -207,7 +218,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].ListAssets
+        return self._stubs["security_center_stub"].ListAssets
 
     @property
     def list_findings(self):
@@ -223,7 +234,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].ListFindings
+        return self._stubs["security_center_stub"].ListFindings
 
     @property
     def list_sources(self):
@@ -236,7 +247,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].ListSources
+        return self._stubs["security_center_stub"].ListSources
 
     @property
     def run_asset_discovery(self):
@@ -254,7 +265,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].RunAssetDiscovery
+        return self._stubs["security_center_stub"].RunAssetDiscovery
 
     @property
     def set_finding_state(self):
@@ -267,7 +278,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].SetFindingState
+        return self._stubs["security_center_stub"].SetFindingState
 
     @property
     def set_iam_policy(self):
@@ -280,7 +291,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].SetIamPolicy
+        return self._stubs["security_center_stub"].SetIamPolicy
 
     @property
     def test_iam_permissions(self):
@@ -293,7 +304,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].TestIamPermissions
+        return self._stubs["security_center_stub"].TestIamPermissions
 
     @property
     def update_finding(self):
@@ -307,7 +318,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].UpdateFinding
+        return self._stubs["security_center_stub"].UpdateFinding
 
     @property
     def update_organization_settings(self):
@@ -320,7 +331,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].UpdateOrganizationSettings
+        return self._stubs["security_center_stub"].UpdateOrganizationSettings
 
     @property
     def update_source(self):
@@ -333,7 +344,7 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].UpdateSource
+        return self._stubs["security_center_stub"].UpdateSource
 
     @property
     def update_security_marks(self):
@@ -346,4 +357,4 @@ class SecurityCenterGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['security_center_stub'].UpdateSecurityMarks
+        return self._stubs["security_center_stub"].UpdateSecurityMarks

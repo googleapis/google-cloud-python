@@ -1,10 +1,12 @@
-# Copyright 2017, Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.cloud import container_v1
@@ -69,7 +72,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -87,7 +93,10 @@ class TestClusterManagerClient(object):
     def test_list_clusters_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -120,6 +129,7 @@ class TestClusterManagerClient(object):
         services_ipv4_cidr = 'servicesIpv4Cidr1966438125'
         current_node_count = 178977560
         expire_time = 'expireTime-96179731'
+        location = 'location1901043637'
         expected_response = {
             'name': name,
             'description': description,
@@ -142,13 +152,17 @@ class TestClusterManagerClient(object):
             'node_ipv4_cidr_size': node_ipv4_cidr_size,
             'services_ipv4_cidr': services_ipv4_cidr,
             'current_node_count': current_node_count,
-            'expire_time': expire_time
+            'expire_time': expire_time,
+            'location': location
         }
         expected_response = cluster_service_pb2.Cluster(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -167,7 +181,10 @@ class TestClusterManagerClient(object):
     def test_get_cluster_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -185,6 +202,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -194,6 +212,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -201,7 +220,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -220,7 +242,10 @@ class TestClusterManagerClient(object):
     def test_create_cluster_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -238,6 +263,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -247,6 +273,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -254,7 +281,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -277,7 +307,10 @@ class TestClusterManagerClient(object):
     def test_update_cluster_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -296,6 +329,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -305,6 +339,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -312,7 +347,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -341,7 +379,10 @@ class TestClusterManagerClient(object):
     def test_update_node_pool_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -363,6 +404,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -372,6 +414,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -379,7 +422,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -405,7 +451,10 @@ class TestClusterManagerClient(object):
     def test_set_node_pool_autoscaling_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -426,6 +475,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -435,6 +485,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -442,7 +493,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -466,7 +520,10 @@ class TestClusterManagerClient(object):
     def test_set_logging_service_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -486,6 +543,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -495,6 +553,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -502,7 +561,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -526,7 +588,10 @@ class TestClusterManagerClient(object):
     def test_set_monitoring_service_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -546,6 +611,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -555,6 +621,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -562,7 +629,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -586,7 +656,10 @@ class TestClusterManagerClient(object):
     def test_set_addons_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -606,6 +679,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -615,6 +689,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -622,7 +697,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -646,7 +724,10 @@ class TestClusterManagerClient(object):
     def test_set_locations_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -665,6 +746,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -674,6 +756,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -681,7 +764,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -705,7 +791,10 @@ class TestClusterManagerClient(object):
     def test_update_master_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -724,6 +813,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -733,6 +823,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -740,7 +831,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -766,7 +860,10 @@ class TestClusterManagerClient(object):
     def test_set_master_auth_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -787,6 +884,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -796,6 +894,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -803,7 +902,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -822,7 +924,10 @@ class TestClusterManagerClient(object):
     def test_delete_cluster_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -840,7 +945,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -858,7 +966,10 @@ class TestClusterManagerClient(object):
     def test_list_operations_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -875,6 +986,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -884,6 +996,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -891,7 +1004,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -910,7 +1026,10 @@ class TestClusterManagerClient(object):
     def test_get_operation_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -922,7 +1041,10 @@ class TestClusterManagerClient(object):
 
     def test_cancel_operation(self):
         channel = ChannelStub()
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -940,7 +1062,10 @@ class TestClusterManagerClient(object):
     def test_cancel_operation_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -963,7 +1088,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -981,7 +1109,10 @@ class TestClusterManagerClient(object):
     def test_get_server_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -998,7 +1129,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1017,7 +1151,10 @@ class TestClusterManagerClient(object):
     def test_list_node_pools_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1045,7 +1182,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1069,7 +1209,10 @@ class TestClusterManagerClient(object):
     def test_get_node_pool_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1088,6 +1231,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1097,6 +1241,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1104,7 +1249,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1128,7 +1276,10 @@ class TestClusterManagerClient(object):
     def test_create_node_pool_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1147,6 +1298,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1156,6 +1308,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1163,7 +1316,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1187,7 +1343,10 @@ class TestClusterManagerClient(object):
     def test_delete_node_pool_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1206,6 +1365,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1215,6 +1375,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1222,7 +1383,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1246,7 +1410,10 @@ class TestClusterManagerClient(object):
     def test_rollback_node_pool_upgrade_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1266,6 +1433,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1275,6 +1443,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1282,7 +1451,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1308,7 +1480,10 @@ class TestClusterManagerClient(object):
     def test_set_node_pool_management_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1329,6 +1504,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1338,6 +1514,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1345,7 +1522,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1371,7 +1551,10 @@ class TestClusterManagerClient(object):
     def test_set_labels_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1392,6 +1575,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1401,6 +1585,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1408,7 +1593,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1432,7 +1620,10 @@ class TestClusterManagerClient(object):
     def test_set_legacy_abac_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1451,6 +1642,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1460,6 +1652,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1467,7 +1660,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1486,7 +1682,10 @@ class TestClusterManagerClient(object):
     def test_start_i_p_rotation_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1504,6 +1703,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1513,6 +1713,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1520,7 +1721,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1539,7 +1743,10 @@ class TestClusterManagerClient(object):
     def test_complete_i_p_rotation_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1557,6 +1764,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1566,6 +1774,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1573,7 +1782,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1599,7 +1811,10 @@ class TestClusterManagerClient(object):
     def test_set_node_pool_size_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1620,6 +1835,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1629,6 +1845,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1636,7 +1853,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1660,7 +1880,10 @@ class TestClusterManagerClient(object):
     def test_set_network_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'
@@ -1680,6 +1903,7 @@ class TestClusterManagerClient(object):
         status_message = 'statusMessage-239442758'
         self_link = 'selfLink-1691268851'
         target_link = 'targetLink-2084812312'
+        location = 'location1901043637'
         start_time = 'startTime-1573145462'
         end_time = 'endTime1725551537'
         expected_response = {
@@ -1689,6 +1913,7 @@ class TestClusterManagerClient(object):
             'status_message': status_message,
             'self_link': self_link,
             'target_link': target_link,
+            'location': location,
             'start_time': start_time,
             'end_time': end_time
         }
@@ -1696,7 +1921,10 @@ class TestClusterManagerClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup Request
         project_id = 'projectId-1969970175'
@@ -1720,7 +1948,10 @@ class TestClusterManagerClient(object):
     def test_set_maintenance_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = container_v1.ClusterManagerClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
 
         # Setup request
         project_id = 'projectId-1969970175'

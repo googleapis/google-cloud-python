@@ -1,10 +1,12 @@
-# Copyright 2017, Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,11 +15,13 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
 
 from google.cloud import videointelligence_v1
+from google.cloud.videointelligence_v1 import enums
 from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
 from google.longrunning import operations_pb2
 
@@ -50,10 +54,7 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
+    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -66,22 +67,33 @@ class TestVideoIntelligenceServiceClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = video_intelligence_pb2.AnnotateVideoResponse(
-            **expected_response)
+            **expected_response
+        )
         operation = operations_pb2.Operation(
-            name='operations/test_annotate_video', done=True)
+            name="operations/test_annotate_video", done=True
+        )
         operation.response.Pack(expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = videointelligence_v1.VideoIntelligenceServiceClient(
-            channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = videointelligence_v1.VideoIntelligenceServiceClient()
 
-        response = client.annotate_video()
+        # Setup Request
+        input_uri = "gs://demomaker/cat.mp4"
+        features_element = enums.Feature.LABEL_DETECTION
+        features = [features_element]
+
+        response = client.annotate_video(input_uri=input_uri, features=features)
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
-        expected_request = video_intelligence_pb2.AnnotateVideoRequest()
+        expected_request = video_intelligence_pb2.AnnotateVideoRequest(
+            input_uri=input_uri, features=features
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -89,14 +101,22 @@ class TestVideoIntelligenceServiceClient(object):
         # Setup Response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
-            name='operations/test_annotate_video_exception', done=True)
+            name="operations/test_annotate_video_exception", done=True
+        )
         operation.error.CopyFrom(error)
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = videointelligence_v1.VideoIntelligenceServiceClient(
-            channel=channel)
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = videointelligence_v1.VideoIntelligenceServiceClient()
 
-        response = client.annotate_video()
+        # Setup Request
+        input_uri = "gs://demomaker/cat.mp4"
+        features_element = enums.Feature.LABEL_DETECTION
+        features = [features_element]
+
+        response = client.annotate_video(input_uri=input_uri, features=features)
         exception = response.exception()
         assert exception.errors[0] == error

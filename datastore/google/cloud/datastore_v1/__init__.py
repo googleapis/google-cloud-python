@@ -24,8 +24,4 @@ class DatastoreClient(datastore_client.DatastoreClient):
     enums = enums
 
 
-__all__ = (
-    'enums',
-    'types',
-    'DatastoreClient',
-)
+__all__ = ("enums", "types", "DatastoreClient")

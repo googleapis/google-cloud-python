@@ -21,13 +21,12 @@ from google.cloud.dlp_v2.proto import dlp_pb2
 
 
 class TestSystemDlpService(object):
-
     def _get_project_id(self):
-        env_var_name = 'GOOGLE_APPLICATION_CREDENTIALS'
+        env_var_name = "GOOGLE_APPLICATION_CREDENTIALS"
         path = os.environ[env_var_name]
-        json_data=open(path).read()
+        json_data = open(path).read()
         data = json.loads(json_data)
-        return data['project_id']
+        return data["project_id"]
 
     def test_inspect_content(self):
         # get project id from json file
@@ -35,12 +34,8 @@ class TestSystemDlpService(object):
 
         client = dlp_v2.DlpServiceClient()
         min_likelihood = enums.Likelihood.POSSIBLE
-        info_types = [{'name': 'FIRST_NAME'}, {'name': 'LAST_NAME'}]
-        inspect_config = {
-            'info_types': info_types,
-            'min_likelihood': min_likelihood,
-        }
-        item = {'value': 'Robert Frost'}
+        info_types = [{"name": "FIRST_NAME"}, {"name": "LAST_NAME"}]
+        inspect_config = {"info_types": info_types, "min_likelihood": min_likelihood}
+        item = {"value": "Robert Frost"}
         parent = client.project_path(project_id)
         response = client.inspect_content(parent, inspect_config, item)
-

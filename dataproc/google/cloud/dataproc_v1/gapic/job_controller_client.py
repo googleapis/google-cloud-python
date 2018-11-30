@@ -36,6 +36,7 @@ from google.cloud.dataproc_v1.proto import jobs_pb2
 from google.cloud.dataproc_v1.proto import jobs_pb2_grpc
 from google.cloud.dataproc_v1.proto import operations_pb2 as proto_operations_pb2
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
+from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -78,7 +79,7 @@ class JobControllerClient(object):
                  transport=None,
                  channel=None,
                  credentials=None,
-                 client_config=job_controller_client_config.config,
+                 client_config=None,
                  client_info=None):
         """Constructor.
 
@@ -111,13 +112,20 @@ class JobControllerClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
-            warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+        if client_config is not None:
+            warnings.warn(
+                'The `client_config` argument is deprecated.',
+                PendingDeprecationWarning,
+                stacklevel=2)
+        else:
+            client_config = job_controller_client_config.config
+
         if channel:
             warnings.warn(
                 'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                '`transport` instead.',
+                PendingDeprecationWarning,
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -167,6 +175,7 @@ class JobControllerClient(object):
                    project_id,
                    region,
                    job,
+                   request_id=None,
                    retry=google.api_core.gapic_v1.method.DEFAULT,
                    timeout=google.api_core.gapic_v1.method.DEFAULT,
                    metadata=None):
@@ -197,6 +206,16 @@ class JobControllerClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1.types.Job`
+            request_id (str): Optional. A unique id used to identify the request. If the server
+                receives two ``SubmitJobRequest`` requests with the same id, then the
+                second request will be ignored and the first ``Job`` created and stored
+                in the backend is returned.
+
+                It is recommended to always set this value to a
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
+
+                The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+                (\_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -230,6 +249,7 @@ class JobControllerClient(object):
             project_id=project_id,
             region=region,
             job=job,
+            request_id=request_id,
         )
         return self._inner_api_calls['submit_job'](
             request, retry=retry, timeout=timeout, metadata=metadata)

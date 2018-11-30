@@ -17,22 +17,45 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
+common = gcp.CommonTemplates()
 
-
-#----------------------------------------------------------------------------
-# Generate container client
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Generate container GAPIC layer
+# ----------------------------------------------------------------------------
 library = gapic.py_library(
-    'container',
-    'v1',
-    config_path='/google/container/artman_container.yaml',
-    artman_output_name='container-v1')
+    "container",
+    "v1",
+    config_path="/google/container/artman_container_v1.yaml",
+    artman_output_name="container-v1",
+)
 
-s.move(library / 'google/cloud/container_v1')
+s.move(library / "google/cloud/container_v1")
+s.move(library / "tests/unit/gapic/v1")
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
 s.replace(
-    'google/**/proto/*_pb2.py',
+    "google/**/proto/*_pb2.py",
     r"(^.*$\n)*",
     r"# -*- coding: utf-8 -*-\n\g<0>")
+
+
+# Workaround https://github.com/googleapis/gapic-generator/issues/2449
+s.replace(
+    "google/cloud/container_v1/proto/cluster_service_pb2.py",
+    r"nodePool>\n",
+    r"nodePool>`__\n",
+)
+s.replace(
+    "google/cloud/container_v1/proto/cluster_service_pb2.py",
+    r"(\s+)`__ instead",
+    r"\g<1>instead",
+)
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(unit_cov_level=76, cov_level=77)
+s.move(templated_files)
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

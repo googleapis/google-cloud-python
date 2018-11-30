@@ -17,9 +17,4 @@ from google.api_core.gapic_v1 import config
 from google.api_core.gapic_v1 import method
 from google.api_core.gapic_v1 import routing_header
 
-__all__ = [
-    'client_info',
-    'config',
-    'method',
-    'routing_header',
-]
+__all__ = ["client_info", "config", "method", "routing_header"]

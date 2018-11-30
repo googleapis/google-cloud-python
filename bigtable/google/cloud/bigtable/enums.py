@@ -25,6 +25,7 @@ class StorageType(object):
       SSD (int): Flash (SSD) storage should be used.
       HDD (int): Magnetic drive (HDD) storage should be used.
     """
+
     UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
     SSD = enums.StorageType.SSD
     HDD = enums.StorageType.HDD
@@ -43,6 +44,7 @@ class Instance(object):
           CREATING (int): The instance is currently being created, and may be
           destroyed if the creation process encounters an error.
         """
+
         NOT_KNOWN = enums.Instance.State.STATE_NOT_KNOWN
         READY = enums.Instance.State.READY
         CREATING = enums.Instance.State.CREATING
@@ -67,6 +69,7 @@ class Instance(object):
           When creating a development instance, ``serve_nodes`` on the cluster
           must not be set.
         """
+
         UNSPECIFIED = enums.Instance.Type.TYPE_UNSPECIFIED
         PRODUCTION = enums.Instance.Type.PRODUCTION
         DEVELOPMENT = enums.Instance.Type.DEVELOPMENT
@@ -92,6 +95,7 @@ class Cluster(object):
           DISABLED (int): The cluster has no backing nodes. The data (tables)
           still exist, but no operations can be performed on the cluster.
         """
+
         NOT_KNOWN = enums.Cluster.State.STATE_NOT_KNOWN
         READY = enums.Cluster.State.READY
         CREATING = enums.Cluster.State.CREATING
@@ -119,6 +123,7 @@ class RoutingPolicyType(object):
       See
       https://cloud.google.com/bigtable/docs/reference/admin/rpc/google.bigtable.admin.v2#google.bigtable.admin.v2.AppProfile.SingleClusterRouting
     """
+
     ANY = 1
     SINGLE = 2
 
@@ -144,6 +149,7 @@ class Table(object):
           replication state.
           FULL (int): Populates all fields.
         """
+
         VIEW_UNSPECIFIED = enums.Table.View.VIEW_UNSPECIFIED
         NAME_ONLY = enums.Table.View.NAME_ONLY
         SCHEMA_VIEW = enums.Table.View.SCHEMA_VIEW
@@ -173,11 +179,13 @@ class Table(object):
           cluster. Depending on replication delay, reads may not immediately
           reflect the state of the table in other clusters.
         """
-        STATE_NOT_KNOWN = enums.Table.ClusterState.ReplicationState.\
-            STATE_NOT_KNOWN
+
+        STATE_NOT_KNOWN = enums.Table.ClusterState.ReplicationState.STATE_NOT_KNOWN
         INITIALIZING = enums.Table.ClusterState.ReplicationState.INITIALIZING
-        PLANNED_MAINTENANCE = enums.Table.ClusterState.ReplicationState.\
-            PLANNED_MAINTENANCE
-        UNPLANNED_MAINTENANCE = enums.Table.ClusterState.ReplicationState.\
-            UNPLANNED_MAINTENANCE
+        PLANNED_MAINTENANCE = (
+            enums.Table.ClusterState.ReplicationState.PLANNED_MAINTENANCE
+        )
+        UNPLANNED_MAINTENANCE = (
+            enums.Table.ClusterState.ReplicationState.UNPLANNED_MAINTENANCE
+        )
         READY = enums.Table.ClusterState.ReplicationState.READY

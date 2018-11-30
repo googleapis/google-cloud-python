@@ -39,9 +39,8 @@ Section %02d
 """
 
 
-@unittest.skipIf(six.PY2, 'Doctests run against Python 3 only.')
+@unittest.skipIf(six.PY2, "Doctests run against Python 3 only.")
 class TestDoctest(unittest.TestCase):
-
     def _submodules(self):
         pkg_iter = pkgutil.iter_modules(datastore.__path__)
         result = []
@@ -49,29 +48,29 @@ class TestDoctest(unittest.TestCase):
             self.assertFalse(ispkg)
             result.append(mod_name)
 
-        self.assertNotIn('__init__', result)
+        self.assertNotIn("__init__", result)
         return result
 
     @staticmethod
     def _add_section(index, mod_name, file_obj):
-        mod_part = 'datastore'
-        if mod_name != '__init__':
-            mod_part += '.' + mod_name
+        mod_part = "datastore"
+        if mod_name != "__init__":
+            mod_part += "." + mod_name
         content = SPHINX_SECTION_TEMPLATE % (index, mod_part)
         file_obj.write(content)
 
     def _make_temp_docs(self):
-        docs_dir = tempfile.mkdtemp(prefix='datastore-')
+        docs_dir = tempfile.mkdtemp(prefix="datastore-")
 
-        conf_file = os.path.join(docs_dir, 'conf.py')
+        conf_file = os.path.join(docs_dir, "conf.py")
 
-        with open(conf_file, 'w') as file_obj:
+        with open(conf_file, "w") as file_obj:
             file_obj.write(SPHINX_CONF)
 
-        index_file = os.path.join(docs_dir, 'contents.rst')
+        index_file = os.path.join(docs_dir, "contents.rst")
         datastore_modules = self._submodules()
-        with open(index_file, 'w') as file_obj:
-            self._add_section(0, '__init__', file_obj)
+        with open(index_file, "w") as file_obj:
+            self._add_section(0, "__init__", file_obj)
             for index, datastore_module in enumerate(datastore_modules):
                 self._add_section(index + 1, datastore_module, file_obj)
 
@@ -81,13 +80,18 @@ class TestDoctest(unittest.TestCase):
         from sphinx import application
 
         docs_dir = self._make_temp_docs()
-        outdir = os.path.join(docs_dir, 'doctest', 'out')
-        doctreedir = os.path.join(docs_dir, 'doctest', 'doctrees')
+        outdir = os.path.join(docs_dir, "doctest", "out")
+        doctreedir = os.path.join(docs_dir, "doctest", "doctrees")
 
         app = application.Sphinx(
-            srcdir=docs_dir, confdir=docs_dir,
-            outdir=outdir, doctreedir=doctreedir,
-            buildername='doctest', warningiserror=True, parallel=1)
+            srcdir=docs_dir,
+            confdir=docs_dir,
+            outdir=outdir,
+            doctreedir=doctreedir,
+            buildername="doctest",
+            warningiserror=True,
+            parallel=1,
+        )
 
         app.build()
         self.assertEqual(app.statuscode, 0)
