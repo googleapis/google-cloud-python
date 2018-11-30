@@ -36,13 +36,13 @@ def snippet(func):
 def storage_get_started(client, to_delete):
     # [START storage_get_started]
     client = storage.Client()
-    bucket = client.get_bucket('bucket-id-here')
+    bucket = client.get_bucket("bucket-id-here")
     # Then do other things...
-    blob = bucket.get_blob('/remote/path/to/file.txt')
-    assert blob.download_as_string() == 'My old contents!'
-    blob.upload_from_string('New contents!')
-    blob2 = bucket.blob('/remote/path/storage.txt')
-    blob2.upload_from_filename(filename='/local/path.txt')
+    blob = bucket.get_blob("/remote/path/to/file.txt")
+    assert blob.download_as_string() == "My old contents!"
+    blob.upload_from_string("New contents!")
+    blob2 = bucket.blob("/remote/path/storage.txt")
+    blob2.upload_from_filename(filename="/local/path.txt")
     # [END storage_get_started]
 
     to_delete.append(bucket)
@@ -50,7 +50,7 @@ def storage_get_started(client, to_delete):
 
 @snippet
 def client_bucket_acl(client, to_delete):
-    bucket_name = 'system-test-bucket'
+    bucket_name = "system-test-bucket"
     bucket = client.bucket(bucket_name)
     bucket.create()
 
@@ -62,7 +62,7 @@ def client_bucket_acl(client, to_delete):
     to_delete.append(bucket)
 
     # [START acl_user_settings]
-    acl.user('me@example.org').grant_read()
+    acl.user("me@example.org").grant_read()
     acl.all_authenticated().grant_write()
     # [END acl_user_settings]
 
@@ -90,12 +90,12 @@ def download_to_file(client, to_delete):
     # [START download_to_file]
     from google.cloud.storage import Blob
 
-    client = storage.Client(project='my-project')
-    bucket = client.get_bucket('my-bucket')
-    encryption_key = 'c7f32af42e45e85b9848a6a14dd2a8f6'
-    blob = Blob('secure-data', bucket, encryption_key=encryption_key)
-    blob.upload_from_string('my secret message.')
-    with open('/tmp/my-secure-file', 'wb') as file_obj:
+    client = storage.Client(project="my-project")
+    bucket = client.get_bucket("my-bucket")
+    encryption_key = "c7f32af42e45e85b9848a6a14dd2a8f6"
+    blob = Blob("secure-data", bucket, encryption_key=encryption_key)
+    blob.upload_from_string("my secret message.")
+    with open("/tmp/my-secure-file", "wb") as file_obj:
         blob.download_to_file(file_obj)
     # [END download_to_file]
 
@@ -107,11 +107,11 @@ def upload_from_file(client, to_delete):
     # [START upload_from_file]
     from google.cloud.storage import Blob
 
-    client = storage.Client(project='my-project')
-    bucket = client.get_bucket('my-bucket')
-    encryption_key = 'aa426195405adee2c8081bb9e7e74b19'
-    blob = Blob('secure-data', bucket, encryption_key=encryption_key)
-    with open('my-file', 'rb') as my_file:
+    client = storage.Client(project="my-project")
+    bucket = client.get_bucket("my-bucket")
+    encryption_key = "aa426195405adee2c8081bb9e7e74b19"
+    blob = Blob("secure-data", bucket, encryption_key=encryption_key)
+    with open("my-file", "rb") as my_file:
         blob.upload_from_file(my_file)
     # [END upload_from_file]
 
@@ -121,12 +121,13 @@ def upload_from_file(client, to_delete):
 @snippet
 def get_blob(client, to_delete):
     from google.cloud.storage.blob import Blob
+
     # [START get_blob]
     client = storage.Client()
-    bucket = client.get_bucket('my-bucket')
-    assert isinstance(bucket.get_blob('/path/to/blob.txt'), Blob)
+    bucket = client.get_bucket("my-bucket")
+    assert isinstance(bucket.get_blob("/path/to/blob.txt"), Blob)
     # <Blob: my-bucket, /path/to/blob.txt>
-    assert not bucket.get_blob('/does-not-exist.txt')
+    assert not bucket.get_blob("/does-not-exist.txt")
     # None
     # [END get_blob]
 
@@ -137,14 +138,15 @@ def get_blob(client, to_delete):
 def delete_blob(client, to_delete):
     # [START delete_blob]
     from google.cloud.exceptions import NotFound
+
     client = storage.Client()
-    bucket = client.get_bucket('my-bucket')
+    bucket = client.get_bucket("my-bucket")
     blobs = list(bucket.list_blobs())
     assert len(blobs) > 0
     # [<Blob: my-bucket, my-file.txt>]
-    bucket.delete_blob('my-file.txt')
+    bucket.delete_blob("my-file.txt")
     try:
-        bucket.delete_blob('doesnt-exist')
+        bucket.delete_blob("doesnt-exist")
     except NotFound:
         pass
     # [END delete_blob]
@@ -159,11 +161,11 @@ def delete_blob(client, to_delete):
 
 @snippet
 def configure_website(client, to_delete):
-    bucket_name = 'test-bucket'
+    bucket_name = "test-bucket"
     # [START configure_website]
     client = storage.Client()
     bucket = client.get_bucket(bucket_name)
-    bucket.configure_website('index.html', '404.html')
+    bucket.configure_website("index.html", "404.html")
     # [END configure_website]
 
     # [START make_public]
@@ -176,11 +178,12 @@ def configure_website(client, to_delete):
 @snippet
 def get_bucket(client, to_delete):
     import google
+
     # [START get_bucket]
     try:
-        bucket = client.get_bucket('my-bucket')
+        bucket = client.get_bucket("my-bucket")
     except google.cloud.exceptions.NotFound:
-        print('Sorry, that bucket does not exist!')
+        print("Sorry, that bucket does not exist!")
     # [END get_bucket]
     to_delete.append(bucket)
 
@@ -188,7 +191,7 @@ def get_bucket(client, to_delete):
 @snippet
 def add_lifecycle_delete_rule(client, to_delete):
     # [START add_lifecycle_delete_rule]
-    bucket = client.get_bucket('my-bucket')
+    bucket = client.get_bucket("my-bucket")
     bucket.add_lifecycle_rule_delete(age=2)
     bucket.patch()
     # [END add_lifecycle_delete_rule]
@@ -198,9 +201,10 @@ def add_lifecycle_delete_rule(client, to_delete):
 @snippet
 def add_lifecycle_set_storage_class_rule(client, to_delete):
     # [START add_lifecycle_set_storage_class_rule]
-    bucket = client.get_bucket('my-bucket')
+    bucket = client.get_bucket("my-bucket")
     bucket.add_lifecycle_rule_set_storage_class(
-        'COLD_LINE', matches_storage_class=['NEARLINE'])
+        "COLD_LINE", matches_storage_class=["NEARLINE"]
+    )
     bucket.patch()
     # [END add_lifecycle_set_storage_class_rule]
     to_delete.append(bucket)
@@ -209,11 +213,12 @@ def add_lifecycle_set_storage_class_rule(client, to_delete):
 @snippet
 def lookup_bucket(client, to_delete):
     from google.cloud.storage.bucket import Bucket
+
     # [START lookup_bucket]
-    bucket = client.lookup_bucket('doesnt-exist')
+    bucket = client.lookup_bucket("doesnt-exist")
     assert not bucket
     # None
-    bucket = client.lookup_bucket('my-bucket')
+    bucket = client.lookup_bucket("my-bucket")
     assert isinstance(bucket, Bucket)
     # <Bucket: my-bucket>
     # [END lookup_bucket]
@@ -224,8 +229,9 @@ def lookup_bucket(client, to_delete):
 @snippet
 def create_bucket(client, to_delete):
     from google.cloud.storage import Bucket
+
     # [START create_bucket]
-    bucket = client.create_bucket('my-bucket')
+    bucket = client.create_bucket("my-bucket")
     assert isinstance(bucket, Bucket)
     # <Bucket: my-bucket>
     # [END create_bucket]
@@ -248,17 +254,16 @@ def list_buckets(client, to_delete):
 def policy_document(client, to_delete):
     # pylint: disable=unused-argument
     # [START policy_document]
-    bucket = client.bucket('my-bucket')
-    conditions = [
-        ['starts-with', '$key', ''],
-        {'acl': 'public-read'}]
+    bucket = client.bucket("my-bucket")
+    conditions = [["starts-with", "$key", ""], {"acl": "public-read"}]
 
     policy = bucket.generate_upload_policy(conditions)
 
     # Generate an upload form using the form fields.
-    policy_fields = ''.join(
+    policy_fields = "".join(
         '<input type="hidden" name="{key}" value="{value}">'.format(
-            key=key, value=value)
+            key=key, value=value
+        )
         for key, value in policy.items()
     )
 
@@ -270,21 +275,21 @@ def policy_document(client, to_delete):
         '<input type="hidden" name="acl" value="public-read">'
         '<input name="file" type="file">'
         '<input type="submit" value="Upload">'
-        '{policy_fields}'
-        '</form>').format(bucket_name=bucket.name, policy_fields=policy_fields)
+        "{policy_fields}"
+        "</form>"
+    ).format(bucket_name=bucket.name, policy_fields=policy_fields)
 
     print(upload_form)
     # [END policy_document]
 
 
 def _line_no(func):
-    code = getattr(func, '__code__', None) or getattr(func, 'func_code')
+    code = getattr(func, "__code__", None) or getattr(func, "func_code")
     return code.co_firstlineno
 
 
 def _find_examples():
-    funcs = [obj for obj in globals().values()
-             if getattr(obj, '_snippet', False)]
+    funcs = [obj for obj in globals().values() if getattr(obj, "_snippet", False)]
     for func in sorted(funcs, key=_line_no):
         yield func
 
@@ -297,16 +302,16 @@ def main():
     client = storage.Client()
     for example in _find_examples():
         to_delete = []
-        print('%-25s: %s' % _name_and_doc(example))
+        print("%-25s: %s" % _name_and_doc(example))
         try:
             example(client, to_delete)
         except AssertionError as failure:
-            print('   FAIL: %s' % (failure,))
+            print("   FAIL: %s" % (failure,))
         except Exception as error:  # pylint: disable=broad-except
-            print('  ERROR: %r' % (error,))
+            print("  ERROR: %r" % (error,))
         for item in to_delete:
             item.delete()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

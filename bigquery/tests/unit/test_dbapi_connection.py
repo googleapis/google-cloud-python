@@ -18,10 +18,10 @@ import mock
 
 
 class TestConnection(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.dbapi import Connection
+
         return Connection
 
     def _make_one(self, *args, **kw):
@@ -29,20 +29,23 @@ class TestConnection(unittest.TestCase):
 
     def _mock_client(self, rows=None, schema=None):
         from google.cloud.bigquery import client
+
         mock_client = mock.create_autospec(client.Client)
         return mock_client
 
     def test_ctor(self):
         from google.cloud.bigquery.dbapi import Connection
+
         mock_client = self._mock_client()
         connection = self._make_one(client=mock_client)
         self.assertIsInstance(connection, Connection)
         self.assertIs(connection._client, mock_client)
 
-    @mock.patch('google.cloud.bigquery.Client', autospec=True)
+    @mock.patch("google.cloud.bigquery.Client", autospec=True)
     def test_connect_wo_client(self, mock_client):
         from google.cloud.bigquery.dbapi import connect
         from google.cloud.bigquery.dbapi import Connection
+
         connection = connect()
         self.assertIsInstance(connection, Connection)
         self.assertIsNotNone(connection._client)
@@ -50,6 +53,7 @@ class TestConnection(unittest.TestCase):
     def test_connect_w_client(self):
         from google.cloud.bigquery.dbapi import connect
         from google.cloud.bigquery.dbapi import Connection
+
         mock_client = self._mock_client()
         connection = connect(client=mock_client)
         self.assertIsInstance(connection, Connection)
@@ -67,6 +71,7 @@ class TestConnection(unittest.TestCase):
 
     def test_cursor(self):
         from google.cloud.bigquery.dbapi import Cursor
+
         connection = self._make_one(client=self._mock_client())
         cursor = connection.cursor()
         self.assertIsInstance(cursor, Cursor)

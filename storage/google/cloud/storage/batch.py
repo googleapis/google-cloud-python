@@ -49,26 +49,28 @@ class MIMEApplicationHTTP(MIMEApplication):
     :param body: (Optional) HTTP payload
 
     """
+
     def __init__(self, method, uri, headers, body):
         if isinstance(body, dict):
             body = json.dumps(body)
-            headers['Content-Type'] = 'application/json'
-            headers['Content-Length'] = len(body)
+            headers["Content-Type"] = "application/json"
+            headers["Content-Length"] = len(body)
         if body is None:
-            body = ''
-        lines = ['%s %s HTTP/1.1' % (method, uri)]
-        lines.extend(['%s: %s' % (key, value)
-                      for key, value in sorted(headers.items())])
-        lines.append('')
+            body = ""
+        lines = ["%s %s HTTP/1.1" % (method, uri)]
+        lines.extend(
+            ["%s: %s" % (key, value) for key, value in sorted(headers.items())]
+        )
+        lines.append("")
         lines.append(body)
-        payload = '\r\n'.join(lines)
+        payload = "\r\n".join(lines)
         if six.PY2:
             # email.message.Message is an old-style class, so we
             # cannot use 'super()'.
-            MIMEApplication.__init__(self, payload, 'http', encode_noop)
+            MIMEApplication.__init__(self, payload, "http", encode_noop)
         else:  # pragma: NO COVER  Python3
             super_init = super(MIMEApplicationHTTP, self).__init__
-            super_init(payload, 'http', encode_noop)
+            super_init(payload, "http", encode_noop)
 
 
 class _FutureDict(object):
@@ -90,8 +92,7 @@ class _FutureDict(object):
         :raises: :class:`KeyError` always since the future is intended to fail
                  as a dictionary.
         """
-        raise KeyError('Cannot get(%r, default=%r) on a future' % (
-            key, default))
+        raise KeyError("Cannot get(%r, default=%r) on a future" % (key, default))
 
     def __getitem__(self, key):
         """Stand-in for dict[key].
@@ -102,7 +103,7 @@ class _FutureDict(object):
         :raises: :class:`KeyError` always since the future is intended to fail
                  as a dictionary.
         """
-        raise KeyError('Cannot get item %r from a future' % (key,))
+        raise KeyError("Cannot get item %r from a future" % (key,))
 
     def __setitem__(self, key, value):
         """Stand-in for dict[key] = value.
@@ -116,11 +117,12 @@ class _FutureDict(object):
         :raises: :class:`KeyError` always since the future is intended to fail
                  as a dictionary.
         """
-        raise KeyError('Cannot set %r -> %r on a future' % (key, value))
+        raise KeyError("Cannot set %r -> %r on a future" % (key, value))
 
 
 class _FutureResponse(requests.Response):
     """Reponse that returns a placeholder dictionary for a batched requests."""
+
     def __init__(self, future_dict):
         super(_FutureResponse, self).__init__()
         self._future_dict = future_dict
@@ -140,6 +142,7 @@ class Batch(Connection):
     :type client: :class:`google.cloud.storage.client.Client`
     :param client: The client to use for making connections.
     """
+
     _MAX_BATCH_SIZE = 1000
 
     def __init__(self, client):
@@ -175,8 +178,9 @@ class Batch(Connection):
         :returns: The HTTP response object and the content of the response.
         """
         if len(self._requests) >= self._MAX_BATCH_SIZE:
-            raise ValueError("Too many deferred requests (max %d)" %
-                             self._MAX_BATCH_SIZE)
+            raise ValueError(
+                "Too many deferred requests (max %d)" % self._MAX_BATCH_SIZE
+            )
         self._requests.append((method, url, headers, data))
         result = _FutureDict()
         self._target_objects.append(target_object)
@@ -210,7 +214,7 @@ class Batch(Connection):
         payload = buf.getvalue()
 
         # Strip off redundant header text
-        _, body = payload.split('\n\n', 1)
+        _, body = payload.split("\n\n", 1)
         return dict(multi._headers), body
 
     def _finish_futures(self, responses):
@@ -227,10 +231,9 @@ class Batch(Connection):
         exception_args = None
 
         if len(self._target_objects) != len(responses):
-            raise ValueError('Expected a response for every request.')
+            raise ValueError("Expected a response for every request.")
 
-        for target_object, subresponse in zip(
-                self._target_objects, responses):
+        for target_object, subresponse in zip(self._target_objects, responses):
             if not 200 <= subresponse.status_code < 300:
                 exception_args = exception_args or subresponse
             elif target_object is not None:
@@ -250,13 +253,14 @@ class Batch(Connection):
         """
         headers, body = self._prepare_batch_request()
 
-        url = '%s/batch/storage/v1' % self.API_BASE_URL
+        url = "%s/batch/storage/v1" % self.API_BASE_URL
 
         # Use the private ``_base_connection`` rather than the property
         # ``_connection``, since the property may be this
         # current batch.
         response = self._client._base_connection._make_request(
-            'POST', url, data=body, headers=headers)
+            "POST", url, data=body, headers=headers
+        )
         responses = list(_unpack_batch_response(response))
         self._finish_futures(responses)
         return responses
@@ -285,20 +289,16 @@ def _generate_faux_mime_message(parser, response):
     # We coerce to bytes to get consistent concat across
     # Py2 and Py3. Percent formatting is insufficient since
     # it includes the b in Py3.
-    content_type = _helpers._to_bytes(
-        response.headers.get('content-type', ''))
+    content_type = _helpers._to_bytes(response.headers.get("content-type", ""))
 
-    faux_message = b''.join([
-        b'Content-Type: ',
-        content_type,
-        b'\nMIME-Version: 1.0\n\n',
-        response.content,
-    ])
+    faux_message = b"".join(
+        [b"Content-Type: ", content_type, b"\nMIME-Version: 1.0\n\n", response.content]
+    )
 
     if six.PY2:
         return parser.parsestr(faux_message)
     else:  # pragma: NO COVER  Python3
-        return parser.parsestr(faux_message.decode('utf-8'))
+        return parser.parsestr(faux_message.decode("utf-8"))
 
 
 def _unpack_batch_response(response):
@@ -314,22 +314,22 @@ def _unpack_batch_response(response):
     message = _generate_faux_mime_message(parser, response)
 
     if not isinstance(message._payload, list):
-        raise ValueError('Bad response:  not multi-part')
+        raise ValueError("Bad response:  not multi-part")
 
     for subrequest in message._payload:
-        status_line, rest = subrequest._payload.split('\n', 1)
-        _, status, _ = status_line.split(' ', 2)
+        status_line, rest = subrequest._payload.split("\n", 1)
+        _, status, _ = status_line.split(" ", 2)
         sub_message = parser.parsestr(rest)
         payload = sub_message._payload
         msg_headers = dict(sub_message._headers)
-        content_id = msg_headers.get('Content-ID')
+        content_id = msg_headers.get("Content-ID")
 
         subresponse = requests.Response()
         subresponse.request = requests.Request(
-            method='BATCH',
-            url='contentid://{}'.format(content_id)).prepare()
+            method="BATCH", url="contentid://{}".format(content_id)
+        ).prepare()
         subresponse.status_code = int(status)
         subresponse.headers.update(msg_headers)
-        subresponse._content = payload.encode('utf-8')
+        subresponse._content = payload.encode("utf-8")
 
         yield subresponse
