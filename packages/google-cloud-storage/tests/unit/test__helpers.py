@@ -16,7 +16,6 @@ import unittest
 
 
 class Test_PropertyMixin(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.storage._helpers import _PropertyMixin
@@ -27,7 +26,6 @@ class Test_PropertyMixin(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def _derivedClass(self, path=None, user_project=None):
-
         class Derived(self._get_target_class()):
 
             client = None
@@ -58,45 +56,48 @@ class Test_PropertyMixin(unittest.TestCase):
             mixin.user_project
 
     def test_reload(self):
-        connection = _Connection({'foo': 'Foo'})
+        connection = _Connection({"foo": "Foo"})
         client = _Client(connection)
-        derived = self._derivedClass('/path')()
+        derived = self._derivedClass("/path")()
         # Make sure changes is not a set instance before calling reload
         # (which will clear / replace it with an empty set), checked below.
         derived._changes = object()
         derived.reload(client=client)
-        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        self.assertEqual(derived._properties, {"foo": "Foo"})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0], {
-            'method': 'GET',
-            'path': '/path',
-            'query_params': {'projection': 'noAcl'},
-            '_target_object': derived,
-        })
+        self.assertEqual(
+            kw[0],
+            {
+                "method": "GET",
+                "path": "/path",
+                "query_params": {"projection": "noAcl"},
+                "_target_object": derived,
+            },
+        )
         self.assertEqual(derived._changes, set())
 
     def test_reload_w_user_project(self):
-        user_project = 'user-project-123'
-        connection = _Connection({'foo': 'Foo'})
+        user_project = "user-project-123"
+        connection = _Connection({"foo": "Foo"})
         client = _Client(connection)
-        derived = self._derivedClass('/path', user_project)()
+        derived = self._derivedClass("/path", user_project)()
         # Make sure changes is not a set instance before calling reload
         # (which will clear / replace it with an empty set), checked below.
         derived._changes = object()
         derived.reload(client=client)
-        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        self.assertEqual(derived._properties, {"foo": "Foo"})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0], {
-            'method': 'GET',
-            'path': '/path',
-            'query_params': {
-                'projection': 'noAcl',
-                'userProject': user_project,
+        self.assertEqual(
+            kw[0],
+            {
+                "method": "GET",
+                "path": "/path",
+                "query_params": {"projection": "noAcl", "userProject": user_project},
+                "_target_object": derived,
             },
-            '_target_object': derived,
-        })
+        )
         self.assertEqual(derived._changes, set())
 
     def test__set_properties(self):
@@ -108,138 +109,137 @@ class Test_PropertyMixin(unittest.TestCase):
 
     def test__patch_property(self):
         derived = self._derivedClass()()
-        derived._patch_property('foo', 'Foo')
-        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        derived._patch_property("foo", "Foo")
+        self.assertEqual(derived._properties, {"foo": "Foo"})
 
     def test_patch(self):
-        connection = _Connection({'foo': 'Foo'})
+        connection = _Connection({"foo": "Foo"})
         client = _Client(connection)
-        derived = self._derivedClass('/path')()
+        derived = self._derivedClass("/path")()
         # Make sure changes is non-empty, so we can observe a change.
         BAR = object()
         BAZ = object()
-        derived._properties = {'bar': BAR, 'baz': BAZ}
-        derived._changes = set(['bar'])  # Ignore baz.
+        derived._properties = {"bar": BAR, "baz": BAZ}
+        derived._changes = set(["bar"])  # Ignore baz.
         derived.patch(client=client)
-        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        self.assertEqual(derived._properties, {"foo": "Foo"})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0], {
-            'method': 'PATCH',
-            'path': '/path',
-            'query_params': {'projection': 'full'},
-            # Since changes does not include `baz`, we don't see it sent.
-            'data': {'bar': BAR},
-            '_target_object': derived,
-        })
+        self.assertEqual(
+            kw[0],
+            {
+                "method": "PATCH",
+                "path": "/path",
+                "query_params": {"projection": "full"},
+                # Since changes does not include `baz`, we don't see it sent.
+                "data": {"bar": BAR},
+                "_target_object": derived,
+            },
+        )
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
     def test_patch_w_user_project(self):
-        user_project = 'user-project-123'
-        connection = _Connection({'foo': 'Foo'})
+        user_project = "user-project-123"
+        connection = _Connection({"foo": "Foo"})
         client = _Client(connection)
-        derived = self._derivedClass('/path', user_project)()
+        derived = self._derivedClass("/path", user_project)()
         # Make sure changes is non-empty, so we can observe a change.
         BAR = object()
         BAZ = object()
-        derived._properties = {'bar': BAR, 'baz': BAZ}
-        derived._changes = set(['bar'])  # Ignore baz.
+        derived._properties = {"bar": BAR, "baz": BAZ}
+        derived._changes = set(["bar"])  # Ignore baz.
         derived.patch(client=client)
-        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        self.assertEqual(derived._properties, {"foo": "Foo"})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0], {
-            'method': 'PATCH',
-            'path': '/path',
-            'query_params': {
-                'projection': 'full',
-                'userProject': user_project,
+        self.assertEqual(
+            kw[0],
+            {
+                "method": "PATCH",
+                "path": "/path",
+                "query_params": {"projection": "full", "userProject": user_project},
+                # Since changes does not include `baz`, we don't see it sent.
+                "data": {"bar": BAR},
+                "_target_object": derived,
             },
-            # Since changes does not include `baz`, we don't see it sent.
-            'data': {'bar': BAR},
-            '_target_object': derived,
-        })
+        )
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
     def test_update(self):
-        connection = _Connection({'foo': 'Foo'})
+        connection = _Connection({"foo": "Foo"})
         client = _Client(connection)
-        derived = self._derivedClass('/path')()
+        derived = self._derivedClass("/path")()
         # Make sure changes is non-empty, so we can observe a change.
         BAR = object()
         BAZ = object()
-        derived._properties = {'bar': BAR, 'baz': BAZ}
-        derived._changes = set(['bar'])  # Update sends 'baz' anyway.
+        derived._properties = {"bar": BAR, "baz": BAZ}
+        derived._changes = set(["bar"])  # Update sends 'baz' anyway.
         derived.update(client=client)
-        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        self.assertEqual(derived._properties, {"foo": "Foo"})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PUT')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-        self.assertEqual(kw[0]['data'], {'bar': BAR, 'baz': BAZ})
+        self.assertEqual(kw[0]["method"], "PUT")
+        self.assertEqual(kw[0]["path"], "/path")
+        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
     def test_update_w_user_project(self):
-        user_project = 'user-project-123'
-        connection = _Connection({'foo': 'Foo'})
+        user_project = "user-project-123"
+        connection = _Connection({"foo": "Foo"})
         client = _Client(connection)
-        derived = self._derivedClass('/path', user_project)()
+        derived = self._derivedClass("/path", user_project)()
         # Make sure changes is non-empty, so we can observe a change.
         BAR = object()
         BAZ = object()
-        derived._properties = {'bar': BAR, 'baz': BAZ}
-        derived._changes = set(['bar'])  # Update sends 'baz' anyway.
+        derived._properties = {"bar": BAR, "baz": BAZ}
+        derived._changes = set(["bar"])  # Update sends 'baz' anyway.
         derived.update(client=client)
-        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        self.assertEqual(derived._properties, {"foo": "Foo"})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PUT')
-        self.assertEqual(kw[0]['path'], '/path')
+        self.assertEqual(kw[0]["method"], "PUT")
+        self.assertEqual(kw[0]["path"], "/path")
         self.assertEqual(
-            kw[0]['query_params'], {
-                'projection': 'full',
-                'userProject': user_project,
-            })
-        self.assertEqual(kw[0]['data'], {'bar': BAR, 'baz': BAZ})
+            kw[0]["query_params"], {"projection": "full", "userProject": user_project}
+        )
+        self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
 
 class Test__scalar_property(unittest.TestCase):
-
     def _call_fut(self, fieldName):
         from google.cloud.storage._helpers import _scalar_property
 
         return _scalar_property(fieldName)
 
     def test_getter(self):
-
         class Test(object):
             def __init__(self, **kw):
                 self._properties = kw.copy()
-            do_re_mi = self._call_fut('solfege')
 
-        test = Test(solfege='Latido')
-        self.assertEqual(test.do_re_mi, 'Latido')
+            do_re_mi = self._call_fut("solfege")
+
+        test = Test(solfege="Latido")
+        self.assertEqual(test.do_re_mi, "Latido")
 
     def test_setter(self):
-
         class Test(object):
             def _patch_property(self, name, value):
                 self._patched = (name, value)
-            do_re_mi = self._call_fut('solfege')
+
+            do_re_mi = self._call_fut("solfege")
 
         test = Test()
-        test.do_re_mi = 'Latido'
-        self.assertEqual(test._patched, ('solfege', 'Latido'))
+        test.do_re_mi = "Latido"
+        self.assertEqual(test._patched, ("solfege", "Latido"))
 
 
 class Test__base64_md5hash(unittest.TestCase):
-
     def _call_fut(self, bytes_to_sign):
         from google.cloud.storage._helpers import _base64_md5hash
 
@@ -248,19 +248,18 @@ class Test__base64_md5hash(unittest.TestCase):
     def test_it(self):
         from io import BytesIO
 
-        BYTES_TO_SIGN = b'FOO'
+        BYTES_TO_SIGN = b"FOO"
         BUFFER = BytesIO()
         BUFFER.write(BYTES_TO_SIGN)
         BUFFER.seek(0)
 
         SIGNED_CONTENT = self._call_fut(BUFFER)
-        self.assertEqual(SIGNED_CONTENT, b'kBiQqOnIz21aGlQrIp/r/w==')
+        self.assertEqual(SIGNED_CONTENT, b"kBiQqOnIz21aGlQrIp/r/w==")
 
     def test_it_with_stubs(self):
         import mock
 
         class _Buffer(object):
-
             def __init__(self, return_vals):
                 self.return_vals = return_vals
                 self._block_sizes = []
@@ -271,13 +270,13 @@ class Test__base64_md5hash(unittest.TestCase):
 
         BASE64 = _Base64()
         DIGEST_VAL = object()
-        BYTES_TO_SIGN = b'BYTES_TO_SIGN'
-        BUFFER = _Buffer([b'', BYTES_TO_SIGN])
+        BYTES_TO_SIGN = b"BYTES_TO_SIGN"
+        BUFFER = _Buffer([b"", BYTES_TO_SIGN])
         MD5 = _MD5(DIGEST_VAL)
 
         patch = mock.patch.multiple(
-            'google.cloud.storage._helpers',
-            base64=BASE64, md5=MD5)
+            "google.cloud.storage._helpers", base64=BASE64, md5=MD5
+        )
         with patch:
             SIGNED_CONTENT = self._call_fut(BUFFER)
 
@@ -290,7 +289,6 @@ class Test__base64_md5hash(unittest.TestCase):
 
 
 class _Connection(object):
-
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
@@ -302,7 +300,6 @@ class _Connection(object):
 
 
 class _MD5Hash(object):
-
     def __init__(self, digest_val):
         self.digest_val = digest_val
         self.num_digest_calls = 0
@@ -317,7 +314,6 @@ class _MD5Hash(object):
 
 
 class _MD5(object):
-
     def __init__(self, digest_val):
         self.hash_obj = _MD5Hash(digest_val)
         self._called = []
@@ -328,7 +324,6 @@ class _MD5(object):
 
 
 class _Base64(object):
-
     def __init__(self):
         self._called_b64encode = []
 
@@ -338,6 +333,5 @@ class _Base64(object):
 
 
 class _Client(object):
-
     def __init__(self, connection):
         self._connection = connection

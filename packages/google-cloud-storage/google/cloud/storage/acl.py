@@ -94,9 +94,9 @@ class _ACLEntity(object):
                        entity types (like 'allUsers') this is optional.
     """
 
-    READER_ROLE = 'READER'
-    WRITER_ROLE = 'WRITER'
-    OWNER_ROLE = 'OWNER'
+    READER_ROLE = "READER"
+    WRITER_ROLE = "WRITER"
+    OWNER_ROLE = "OWNER"
 
     def __init__(self, entity_type, identifier=None):
         self.identifier = identifier
@@ -107,11 +107,12 @@ class _ACLEntity(object):
         if not self.identifier:
             return str(self.type)
         else:
-            return '{acl.type}-{acl.identifier}'.format(acl=self)
+            return "{acl.type}-{acl.identifier}".format(acl=self)
 
     def __repr__(self):
-        return '<ACL Entity: {acl} ({roles})>'.format(
-            acl=self, roles=', '.join(self.roles))
+        return "<ACL Entity: {acl} ({roles})>".format(
+            acl=self, roles=", ".join(self.roles)
+        )
 
     def get_roles(self):
         """Get the list of roles permitted by this entity.
@@ -166,28 +167,30 @@ class _ACLEntity(object):
 class ACL(object):
     """Container class representing a list of access controls."""
 
-    _URL_PATH_ELEM = 'acl'
-    _PREDEFINED_QUERY_PARAM = 'predefinedAcl'
+    _URL_PATH_ELEM = "acl"
+    _PREDEFINED_QUERY_PARAM = "predefinedAcl"
 
     PREDEFINED_XML_ACLS = {
         # XML API name -> JSON API name
-        'project-private': 'projectPrivate',
-        'public-read': 'publicRead',
-        'public-read-write': 'publicReadWrite',
-        'authenticated-read': 'authenticatedRead',
-        'bucket-owner-read': 'bucketOwnerRead',
-        'bucket-owner-full-control': 'bucketOwnerFullControl',
+        "project-private": "projectPrivate",
+        "public-read": "publicRead",
+        "public-read-write": "publicReadWrite",
+        "authenticated-read": "authenticatedRead",
+        "bucket-owner-read": "bucketOwnerRead",
+        "bucket-owner-full-control": "bucketOwnerFullControl",
     }
 
-    PREDEFINED_JSON_ACLS = frozenset([
-        'private',
-        'projectPrivate',
-        'publicRead',
-        'publicReadWrite',
-        'authenticatedRead',
-        'bucketOwnerRead',
-        'bucketOwnerFullControl',
-    ])
+    PREDEFINED_JSON_ACLS = frozenset(
+        [
+            "private",
+            "projectPrivate",
+            "publicRead",
+            "publicReadWrite",
+            "authenticatedRead",
+            "bucketOwnerRead",
+            "bucketOwnerFullControl",
+        ]
+    )
     """See
     https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
     """
@@ -236,7 +239,7 @@ class ACL(object):
         for entity in self.entities.values():
             for role in entity.get_roles():
                 if role:
-                    yield {'entity': str(entity), 'role': role}
+                    yield {"entity": str(entity), "role": role}
 
     def entity_from_dict(self, entity_dict):
         """Build an _ACLEntity object from a dictionary of data.
@@ -251,22 +254,21 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An Entity constructed from the dictionary.
         """
-        entity = entity_dict['entity']
-        role = entity_dict['role']
+        entity = entity_dict["entity"]
+        role = entity_dict["role"]
 
-        if entity == 'allUsers':
+        if entity == "allUsers":
             entity = self.all()
 
-        elif entity == 'allAuthenticatedUsers':
+        elif entity == "allAuthenticatedUsers":
             entity = self.all_authenticated()
 
-        elif '-' in entity:
-            entity_type, identifier = entity.split('-', 1)
-            entity = self.entity(entity_type=entity_type,
-                                 identifier=identifier)
+        elif "-" in entity:
+            entity_type, identifier = entity.split("-", 1)
+            entity = self.entity(entity_type=entity_type, identifier=identifier)
 
         if not isinstance(entity, _ACLEntity):
-            raise ValueError('Invalid dictionary: %s' % entity_dict)
+            raise ValueError("Invalid dictionary: %s" % entity_dict)
 
         entity.grant(role)
         return entity
@@ -344,7 +346,7 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An Entity corresponding to this user.
         """
-        return self.entity('user', identifier=identifier)
+        return self.entity("user", identifier=identifier)
 
     def group(self, identifier):
         """Factory method for a group Entity.
@@ -355,7 +357,7 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An Entity corresponding to this group.
         """
-        return self.entity('group', identifier=identifier)
+        return self.entity("group", identifier=identifier)
 
     def domain(self, domain):
         """Factory method for a domain Entity.
@@ -366,7 +368,7 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An entity corresponding to this domain.
         """
-        return self.entity('domain', identifier=domain)
+        return self.entity("domain", identifier=domain)
 
     def all(self):
         """Factory method for an Entity representing all users.
@@ -374,7 +376,7 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An entity representing all users.
         """
-        return self.entity('allUsers')
+        return self.entity("allUsers")
 
     def all_authenticated(self):
         """Factory method for an Entity representing all authenticated users.
@@ -382,7 +384,7 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An entity representing all authenticated users.
         """
-        return self.entity('allAuthenticatedUsers')
+        return self.entity("allAuthenticatedUsers")
 
     def get_entities(self):
         """Get a list of all Entity objects.
@@ -428,17 +430,15 @@ class ACL(object):
         query_params = {}
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
 
         self.entities.clear()
 
         found = client._connection.api_request(
-            method='GET',
-            path=path,
-            query_params=query_params,
+            method="GET", path=path, query_params=query_params
         )
         self.loaded = True
-        for entry in found.get('items', ()):
+        for entry in found.get("items", ()):
             self.add_entity(self.entity_from_dict(entry))
 
     def _save(self, acl, predefined, client):
@@ -458,22 +458,23 @@ class ACL(object):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         """
-        query_params = {'projection': 'full'}
+        query_params = {"projection": "full"}
         if predefined is not None:
             acl = []
             query_params[self._PREDEFINED_QUERY_PARAM] = predefined
 
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
 
         path = self.save_path
         client = self._require_client(client)
 
         result = client._connection.api_request(
-            method='PATCH',
+            method="PATCH",
             path=path,
             data={self._URL_PATH_ELEM: list(acl)},
-            query_params=query_params)
+            query_params=query_params,
+        )
         self.entities.clear()
         for entry in result.get(self._URL_PATH_ELEM, ()):
             self.add_entity(self.entity_from_dict(entry))
@@ -559,7 +560,7 @@ class BucketACL(ACL):
     @property
     def reload_path(self):
         """Compute the path for GET API requests for this ACL."""
-        return '%s/%s' % (self.bucket.path, self._URL_PATH_ELEM)
+        return "%s/%s" % (self.bucket.path, self._URL_PATH_ELEM)
 
     @property
     def save_path(self):
@@ -575,8 +576,8 @@ class BucketACL(ACL):
 class DefaultObjectACL(BucketACL):
     """A class representing the default object ACL for a bucket."""
 
-    _URL_PATH_ELEM = 'defaultObjectAcl'
-    _PREDEFINED_QUERY_PARAM = 'predefinedDefaultObjectAcl'
+    _URL_PATH_ELEM = "defaultObjectAcl"
+    _PREDEFINED_QUERY_PARAM = "predefinedDefaultObjectAcl"
 
 
 class ObjectACL(ACL):
@@ -598,7 +599,7 @@ class ObjectACL(ACL):
     @property
     def reload_path(self):
         """Compute the path for GET API requests for this ACL."""
-        return '%s/acl' % self.blob.path
+        return "%s/acl" % self.blob.path
 
     @property
     def save_path(self):

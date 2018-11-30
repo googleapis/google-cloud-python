@@ -53,22 +53,25 @@ class Client(ClientWithProject):
                   change in the future.
     """
 
-    SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
-             'https://www.googleapis.com/auth/devstorage.read_only',
-             'https://www.googleapis.com/auth/devstorage.read_write')
+    SCOPE = (
+        "https://www.googleapis.com/auth/devstorage.full_control",
+        "https://www.googleapis.com/auth/devstorage.read_only",
+        "https://www.googleapis.com/auth/devstorage.read_write",
+    )
     """The scopes required for authenticating as a Cloud Storage consumer."""
 
     def __init__(self, project=_marker, credentials=None, _http=None):
         self._base_connection = None
         if project is None:
             no_project = True
-            project = '<none>'
+            project = "<none>"
         else:
             no_project = False
         if project is _marker:
             project = None
-        super(Client, self).__init__(project=project, credentials=credentials,
-                                     _http=_http)
+        super(Client, self).__init__(
+            project=project, credentials=credentials, _http=_http
+        )
         if no_project:
             self.project = None
         self._connection = Connection(self)
@@ -86,7 +89,7 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.storage.client.Client`
         :returns: Instance w/ anonymous credentials and no project.
         """
-        client = cls(project='<none>', credentials=AnonymousCredentials())
+        client = cls(project="<none>", credentials=AnonymousCredentials())
         client.project = None
         return client
 
@@ -117,7 +120,7 @@ class Client(ClientWithProject):
         :raises: :class:`ValueError` if connection has already been set.
         """
         if self._base_connection is not None:
-            raise ValueError('Connection already set on client')
+            raise ValueError("Connection already set on client")
         self._base_connection = value
 
     def _push_batch(self, batch):
@@ -164,10 +167,9 @@ class Client(ClientWithProject):
         """
         if project is None:
             project = self.project
-        path = '/projects/%s/serviceAccount' % (project,)
-        api_response = self._base_connection.api_request(
-            method='GET', path=path)
-        return api_response['email_address']
+        path = "/projects/%s/serviceAccount" % (project,)
+        api_response = self._base_connection.api_request(method="GET", path=path)
+        return api_response["email_address"]
 
     def bucket(self, bucket_name, user_project=None):
         """Factory constructor for bucket object.
@@ -285,8 +287,15 @@ class Client(ClientWithProject):
         bucket.create(client=self, project=project)
         return bucket
 
-    def list_buckets(self, max_results=None, page_token=None, prefix=None,
-                     projection='noAcl', fields=None, project=None):
+    def list_buckets(
+        self,
+        max_results=None,
+        page_token=None,
+        prefix=None,
+        projection="noAcl",
+        fields=None,
+        project=None,
+    ):
         """Get all buckets in the project associated to the client.
 
         This will not populate the list of blobs available in each
@@ -336,27 +345,27 @@ class Client(ClientWithProject):
             project = self.project
 
         if project is None:
-            raise ValueError(
-                "Client project not set:  pass an explicit project.")
+            raise ValueError("Client project not set:  pass an explicit project.")
 
-        extra_params = {'project': project}
+        extra_params = {"project": project}
 
         if prefix is not None:
-            extra_params['prefix'] = prefix
+            extra_params["prefix"] = prefix
 
-        extra_params['projection'] = projection
+        extra_params["projection"] = projection
 
         if fields is not None:
-            extra_params['fields'] = fields
+            extra_params["fields"] = fields
 
         return page_iterator.HTTPIterator(
             client=self,
             api_request=self._connection.api_request,
-            path='/b',
+            path="/b",
             item_to_value=_item_to_bucket,
             page_token=page_token,
             max_results=max_results,
-            extra_params=extra_params)
+            extra_params=extra_params,
+        )
 
 
 def _item_to_bucket(iterator, item):
@@ -371,7 +380,7 @@ def _item_to_bucket(iterator, item):
     :rtype: :class:`.Bucket`
     :returns: The next bucket in the page.
     """
-    name = item.get('name')
+    name = item.get("name")
     bucket = Bucket(iterator.client, name)
     bucket._set_properties(item)
     return bucket

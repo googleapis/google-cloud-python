@@ -33,13 +33,17 @@ def ensure_signed_credentials(credentials):
                         for signing text.
     """
     if not isinstance(credentials, google.auth.credentials.Signing):
-        auth_uri = ('https://google-cloud-python.readthedocs.io/en/latest/'
-                    'core/auth.html?highlight=authentication#setting-up-'
-                    'a-service-account')
-        raise AttributeError('you need a private key to sign credentials.'
-                             'the credentials you are currently using %s '
-                             'just contains a token. see %s for more '
-                             'details.' % (type(credentials), auth_uri))
+        auth_uri = (
+            "https://google-cloud-python.readthedocs.io/en/latest/"
+            "core/auth.html?highlight=authentication#setting-up-"
+            "a-service-account"
+        )
+        raise AttributeError(
+            "you need a private key to sign credentials."
+            "the credentials you are currently using %s "
+            "just contains a token. see %s for more "
+            "details." % (type(credentials), auth_uri)
+        )
 
 
 def get_signed_query_params(credentials, expiration, string_to_sign):
@@ -66,9 +70,9 @@ def get_signed_query_params(credentials, expiration, string_to_sign):
     signature = base64.b64encode(signature_bytes)
     service_account_name = credentials.signer_email
     return {
-        'GoogleAccessId': service_account_name,
-        'Expires': str(expiration),
-        'Signature': signature,
+        "GoogleAccessId": service_account_name,
+        "Expires": str(expiration),
+        "Signature": signature,
     }
 
 
@@ -91,19 +95,28 @@ def get_expiration_seconds(expiration):
     # If it's a datetime, convert to a timestamp.
     if isinstance(expiration, datetime.datetime):
         micros = _helpers._microseconds_from_datetime(expiration)
-        expiration = micros // 10**6
+        expiration = micros // 10 ** 6
 
     if not isinstance(expiration, six.integer_types):
-        raise TypeError('Expected an integer timestamp, datetime, or '
-                        'timedelta. Got %s' % type(expiration))
+        raise TypeError(
+            "Expected an integer timestamp, datetime, or "
+            "timedelta. Got %s" % type(expiration)
+        )
     return expiration
 
 
-def generate_signed_url(credentials, resource, expiration,
-                        api_access_endpoint='',
-                        method='GET', content_md5=None,
-                        content_type=None, response_type=None,
-                        response_disposition=None, generation=None):
+def generate_signed_url(
+    credentials,
+    resource,
+    expiration,
+    api_access_endpoint="",
+    method="GET",
+    content_md5=None,
+    content_type=None,
+    response_type=None,
+    response_disposition=None,
+    generation=None,
+):
     """Generate signed URL to provide query-string auth'n to a resource.
 
     .. note::
@@ -177,34 +190,36 @@ def generate_signed_url(credentials, resource, expiration,
     """
     expiration = get_expiration_seconds(expiration)
 
-    if method == 'RESUMABLE':
-        method = 'POST'
-        canonicalized_resource = \
-            'x-goog-resumable:start\n{0}'.format(resource)
+    if method == "RESUMABLE":
+        method = "POST"
+        canonicalized_resource = "x-goog-resumable:start\n{0}".format(resource)
     else:
-        canonicalized_resource = '{0}'.format(resource)
+        canonicalized_resource = "{0}".format(resource)
 
     # Generate the string to sign.
-    string_to_sign = '\n'.join([
-        method,
-        content_md5 or '',
-        content_type or '',
-        str(expiration),
-        canonicalized_resource,
-    ])
+    string_to_sign = "\n".join(
+        [
+            method,
+            content_md5 or "",
+            content_type or "",
+            str(expiration),
+            canonicalized_resource,
+        ]
+    )
 
     # Set the right query parameters.
-    query_params = get_signed_query_params(
-        credentials, expiration, string_to_sign)
+    query_params = get_signed_query_params(credentials, expiration, string_to_sign)
 
     if response_type is not None:
-        query_params['response-content-type'] = response_type
+        query_params["response-content-type"] = response_type
     if response_disposition is not None:
-        query_params['response-content-disposition'] = response_disposition
+        query_params["response-content-disposition"] = response_disposition
     if generation is not None:
-        query_params['generation'] = generation
+        query_params["generation"] = generation
 
     # Return the built URL.
-    return '{endpoint}{resource}?{querystring}'.format(
-        endpoint=api_access_endpoint, resource=resource,
-        querystring=six.moves.urllib.parse.urlencode(query_params))
+    return "{endpoint}{resource}?{querystring}".format(
+        endpoint=api_access_endpoint,
+        resource=resource,
+        querystring=six.moves.urllib.parse.urlencode(query_params),
+    )

@@ -90,6 +90,18 @@ def system(session):
 
 
 @nox.session(python='3.6')
+def cover(session):
+    """Run the final coverage report.
+
+    This outputs the coverage report aggregating coverage from the unit
+    test runs (not system test runs), and then erases coverage data.
+    """
+    session.install('coverage', 'pytest-cov')
+    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
+    session.run('coverage', 'erase')
+
+
+@nox.session(python='3.6')
 def lint(session):
     """Run linters.
 
@@ -109,13 +121,15 @@ def lint_setup_py(session):
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
 
 
-@nox.session(python='3.6')
-def cover(session):
-    """Run the final coverage report.
-
-    This outputs the coverage report aggregating coverage from the unit
-    test runs (not system test runs), and then erases coverage data.
+@nox.session(python="3.6")
+def blacken(session):
+    """Run black.
+    Format code to uniform standard.
     """
-    session.install('coverage', 'pytest-cov')
-    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
-    session.run('coverage', 'erase')
+    session.install("black")
+    session.run(
+        "black",
+        "google",
+        "tests",
+        "docs",
+    )

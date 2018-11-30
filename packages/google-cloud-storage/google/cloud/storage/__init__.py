@@ -32,7 +32,8 @@ The main concepts with this API are:
 
 
 from pkg_resources import get_distribution
-__version__ = get_distribution('google-cloud-storage').version
+
+__version__ = get_distribution("google-cloud-storage").version
 
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.blob import Blob
@@ -40,4 +41,4 @@ from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.client import Client
 
 
-__all__ = ['__version__', 'Batch', 'Blob', 'Bucket', 'Client']
+__all__ = ["__version__", "Batch", "Blob", "Bucket", "Client"]

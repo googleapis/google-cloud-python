@@ -19,24 +19,24 @@ import re
 from google.api_core.exceptions import NotFound
 
 
-OBJECT_FINALIZE_EVENT_TYPE = 'OBJECT_FINALIZE'
-OBJECT_METADATA_UPDATE_EVENT_TYPE = 'OBJECT_METADATA_UPDATE'
-OBJECT_DELETE_EVENT_TYPE = 'OBJECT_DELETE'
-OBJECT_ARCHIVE_EVENT_TYPE = 'OBJECT_ARCHIVE'
+OBJECT_FINALIZE_EVENT_TYPE = "OBJECT_FINALIZE"
+OBJECT_METADATA_UPDATE_EVENT_TYPE = "OBJECT_METADATA_UPDATE"
+OBJECT_DELETE_EVENT_TYPE = "OBJECT_DELETE"
+OBJECT_ARCHIVE_EVENT_TYPE = "OBJECT_ARCHIVE"
 
-JSON_API_V1_PAYLOAD_FORMAT = 'JSON_API_V1'
-NONE_PAYLOAD_FORMAT = 'NONE'
+JSON_API_V1_PAYLOAD_FORMAT = "JSON_API_V1"
+NONE_PAYLOAD_FORMAT = "NONE"
 
-_TOPIC_REF_FMT = '//pubsub.googleapis.com/projects/{}/topics/{}'
-_PROJECT_PATTERN = r'(?P<project>[a-z][a-z0-9-]{4,28}[a-z0-9])'
-_TOPIC_NAME_PATTERN = r'(?P<name>[A-Za-z](\w|[-_.~+%])+)'
-_TOPIC_REF_PATTERN = _TOPIC_REF_FMT.format(
-    _PROJECT_PATTERN, _TOPIC_NAME_PATTERN)
+_TOPIC_REF_FMT = "//pubsub.googleapis.com/projects/{}/topics/{}"
+_PROJECT_PATTERN = r"(?P<project>[a-z][a-z0-9-]{4,28}[a-z0-9])"
+_TOPIC_NAME_PATTERN = r"(?P<name>[A-Za-z](\w|[-_.~+%])+)"
+_TOPIC_REF_PATTERN = _TOPIC_REF_FMT.format(_PROJECT_PATTERN, _TOPIC_NAME_PATTERN)
 _TOPIC_REF_RE = re.compile(_TOPIC_REF_PATTERN)
 _BAD_TOPIC = (
-    'Resource has invalid topic: {}; see '
-    'https://cloud.google.com/storage/docs/json_api/v1/'
-    'notifications/insert#topic')
+    "Resource has invalid topic: {}; see "
+    "https://cloud.google.com/storage/docs/json_api/v1/"
+    "notifications/insert#topic"
+)
 
 
 class BucketNotification(object):
@@ -72,9 +72,17 @@ class BucketNotification(object):
     :param payload_format:
         (Optional) format of payload for notification events.
     """
-    def __init__(self, bucket, topic_name,
-                 topic_project=None, custom_attributes=None, event_types=None,
-                 blob_name_prefix=None, payload_format=NONE_PAYLOAD_FORMAT):
+
+    def __init__(
+        self,
+        bucket,
+        topic_name,
+        topic_project=None,
+        custom_attributes=None,
+        event_types=None,
+        blob_name_prefix=None,
+        payload_format=NONE_PAYLOAD_FORMAT,
+    ):
         self._bucket = bucket
         self._topic_name = topic_name
 
@@ -82,23 +90,22 @@ class BucketNotification(object):
             topic_project = bucket.client.project
 
         if topic_project is None:
-            raise ValueError(
-                "Client project not set:  pass an explicit topic_project.")
+            raise ValueError("Client project not set:  pass an explicit topic_project.")
 
         self._topic_project = topic_project
 
         self._properties = {}
 
         if custom_attributes is not None:
-            self._properties['custom_attributes'] = custom_attributes
+            self._properties["custom_attributes"] = custom_attributes
 
         if event_types is not None:
-            self._properties['event_types'] = event_types
+            self._properties["event_types"] = event_types
 
         if blob_name_prefix is not None:
-            self._properties['object_name_prefix'] = blob_name_prefix
+            self._properties["object_name_prefix"] = blob_name_prefix
 
-        self._properties['payload_format'] = payload_format
+        self._properties["payload_format"] = payload_format
 
     @classmethod
     def from_api_repr(cls, resource, bucket):
@@ -115,9 +122,9 @@ class BucketNotification(object):
         :rtype: :class:`BucketNotification`
         :returns: the new notification instance
         """
-        topic_path = resource.get('topic')
+        topic_path = resource.get("topic")
         if topic_path is None:
-            raise ValueError('Resource has no topic')
+            raise ValueError("Resource has no topic")
 
         name, project = _parse_topic_path(topic_path)
         instance = cls(bucket, name, topic_project=project)
@@ -145,39 +152,39 @@ class BucketNotification(object):
     def custom_attributes(self):
         """Custom attributes passed with notification events.
         """
-        return self._properties.get('custom_attributes')
+        return self._properties.get("custom_attributes")
 
     @property
     def event_types(self):
         """Event types for which notification events are published.
         """
-        return self._properties.get('event_types')
+        return self._properties.get("event_types")
 
     @property
     def blob_name_prefix(self):
         """Prefix of blob names for which notification events are published.
         """
-        return self._properties.get('object_name_prefix')
+        return self._properties.get("object_name_prefix")
 
     @property
     def payload_format(self):
         """Format of payload of notification events."""
-        return self._properties.get('payload_format')
+        return self._properties.get("payload_format")
 
     @property
     def notification_id(self):
         """Server-set ID of notification resource."""
-        return self._properties.get('id')
+        return self._properties.get("id")
 
     @property
     def etag(self):
         """Server-set ETag of notification resource."""
-        return self._properties.get('etag')
+        return self._properties.get("etag")
 
     @property
     def self_link(self):
         """Server-set ETag of notification resource."""
-        return self._properties.get('selfLink')
+        return self._properties.get("selfLink")
 
     @property
     def client(self):
@@ -187,8 +194,9 @@ class BucketNotification(object):
     @property
     def path(self):
         """The URL path for this notification."""
-        return '/b/{}/notificationConfigs/{}'.format(
-            self.bucket.name, self.notification_id)
+        return "/b/{}/notificationConfigs/{}".format(
+            self.bucket.name, self.notification_id
+        )
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -227,24 +235,21 @@ class BucketNotification(object):
                        to the ``client`` stored on the notification's bucket.
         """
         if self.notification_id is not None:
-            raise ValueError("Notification already exists w/ id: {}".format(
-                self.notification_id))
+            raise ValueError(
+                "Notification already exists w/ id: {}".format(self.notification_id)
+            )
 
         client = self._require_client(client)
 
         query_params = {}
         if self.bucket.user_project is not None:
-            query_params['userProject'] = self.bucket.user_project
+            query_params["userProject"] = self.bucket.user_project
 
-        path = '/b/{}/notificationConfigs'.format(self.bucket.name)
+        path = "/b/{}/notificationConfigs".format(self.bucket.name)
         properties = self._properties.copy()
-        properties['topic'] = _TOPIC_REF_FMT.format(
-            self.topic_project, self.topic_name)
+        properties["topic"] = _TOPIC_REF_FMT.format(self.topic_project, self.topic_name)
         self._properties = client._connection.api_request(
-            method='POST',
-            path=path,
-            query_params=query_params,
-            data=properties,
+            method="POST", path=path, query_params=query_params, data=properties
         )
 
     def exists(self, client=None):
@@ -272,13 +277,11 @@ class BucketNotification(object):
 
         query_params = {}
         if self.bucket.user_project is not None:
-            query_params['userProject'] = self.bucket.user_project
+            query_params["userProject"] = self.bucket.user_project
 
         try:
             client._connection.api_request(
-                method='GET',
-                path=self.path,
-                query_params=query_params,
+                method="GET", path=self.path, query_params=query_params
             )
         except NotFound:
             return False
@@ -310,12 +313,10 @@ class BucketNotification(object):
 
         query_params = {}
         if self.bucket.user_project is not None:
-            query_params['userProject'] = self.bucket.user_project
+            query_params["userProject"] = self.bucket.user_project
 
         response = client._connection.api_request(
-            method='GET',
-            path=self.path,
-            query_params=query_params,
+            method="GET", path=self.path, query_params=query_params
         )
         self._set_properties(response)
 
@@ -344,12 +345,10 @@ class BucketNotification(object):
 
         query_params = {}
         if self.bucket.user_project is not None:
-            query_params['userProject'] = self.bucket.user_project
+            query_params["userProject"] = self.bucket.user_project
 
         client._connection.api_request(
-            method='DELETE',
-            path=self.path,
-            query_params=query_params,
+            method="DELETE", path=self.path, query_params=query_params
         )
 
 
@@ -387,4 +386,4 @@ def _parse_topic_path(topic_path):
     if match is None:
         raise ValueError(_BAD_TOPIC.format(topic_path))
 
-    return match.group('name'), match.group('project')
+    return match.group("name"), match.group("project")
