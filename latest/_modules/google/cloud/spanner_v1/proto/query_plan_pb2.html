@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.proto.query_plan_pb2 &#8212; google-cloud 8b3559a documentation</title>
+    <title>google.cloud.spanner_v1.proto.query_plan_pb2 &#8212; google-cloud 91fcc6a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -37,12 +37,14 @@
 <span class="c1"># source: google/cloud/spanner_v1/proto/query_plan.proto</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">_b</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;latin1&#39;</span><span class="p">))</span>
+
+<span class="n">_b</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;latin1&quot;</span><span class="p">))</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor</span> <span class="k">as</span> <span class="n">_descriptor</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">message</span> <span class="k">as</span> <span class="n">_message</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">reflection</span> <span class="k">as</span> <span class="n">_reflection</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">symbol_database</span> <span class="k">as</span> <span class="n">_symbol_database</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor_pb2</span>
+
 <span class="c1"># @@protoc_insertion_point(imports)</span>
 
 <span class="n">_sym_db</span> <span class="o">=</span> <span class="n">_symbol_database</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
@@ -53,286 +55,450 @@
 
 
 <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">FileDescriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google/cloud/spanner_v1/proto/query_plan.proto&#39;</span><span class="p">,</span>
-  <span class="n">package</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1&#39;</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">.google/cloud/spanner_v1/proto/query_plan.proto</span><span class="se">\x12\x11</span><span class="s1">google.spanner.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1c</span><span class="s1">google/protobuf/struct.proto</span><span class="se">\&quot;\xf8\x04\n\x08</span><span class="s1">PlanNode</span><span class="se">\x12\r\n\x05</span><span class="s1">index</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">.</span><span class="se">\n\x04</span><span class="s1">kind</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1"> .google.spanner.v1.PlanNode.Kind</span><span class="se">\x12\x14\n\x0c\x64</span><span class="s1">isplay_name</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">:</span><span class="se">\n\x0b\x63</span><span class="s1">hild_links</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.PlanNode.ChildLink</span><span class="se">\x12</span><span class="s1">M</span><span class="se">\n\x14</span><span class="s1">short_representation</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.spanner.v1.PlanNode.ShortRepresentation</span><span class="se">\x12</span><span class="s1">)</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x12\x30\n\x0f\x65</span><span class="s1">xecution_stats</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x1a</span><span class="s1">@</span><span class="se">\n\t</span><span class="s1">ChildLink</span><span class="se">\x12\x13\n\x0b\x63</span><span class="s1">hild_index</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0c\n\x04</span><span class="s1">type</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x10\n\x08</span><span class="s1">variable</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x1a\xb2\x01\n\x13</span><span class="s1">ShortRepresentation</span><span class="se">\x12\x13\n\x0b\x64\x65</span><span class="s1">scription</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">S</span><span class="se">\n\n</span><span class="s1">subqueries</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">?.google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry</span><span class="se">\x1a\x31\n\x0f</span><span class="s1">SubqueriesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;</span><span class="s1">8</span><span class="se">\n\x04</span><span class="s1">Kind</span><span class="se">\x12\x14\n\x10</span><span class="s1">KIND_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0e\n\n</span><span class="s1">RELATIONAL</span><span class="se">\x10\x01\x12\n\n\x06</span><span class="s1">SCALAR</span><span class="se">\x10\x02\&quot;</span><span class="s1">&lt;</span><span class="se">\n\t</span><span class="s1">QueryPlan</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\n</span><span class="s1">plan_nodes</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1b</span><span class="s1">.google.spanner.v1.PlanNodeB</span><span class="se">\x97\x01\n\x15\x63</span><span class="s1">om.google.spanner.v1B</span><span class="se">\x0e</span><span class="s1">QueryPlanProtoP</span><span class="se">\x01</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\xaa\x02\x17</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\xca\x02\x17</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
-  <span class="p">,</span>
-  <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_struct__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
-
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/cloud/spanner_v1/proto/query_plan.proto&quot;</span><span class="p">,</span>
+    <span class="n">package</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1&quot;</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">.google/cloud/spanner_v1/proto/query_plan.proto</span><span class="se">\x12\x11</span><span class="s1">google.spanner.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1c</span><span class="s1">google/protobuf/struct.proto&quot;</span><span class="se">\xf8\x04\n\x08</span><span class="s1">PlanNode</span><span class="se">\x12\r\n\x05</span><span class="s1">index</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">.</span><span class="se">\n\x04</span><span class="s1">kind</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1"> .google.spanner.v1.PlanNode.Kind</span><span class="se">\x12\x14\n\x0c\x64</span><span class="s1">isplay_name</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">:</span><span class="se">\n\x0b\x63</span><span class="s1">hild_links</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.PlanNode.ChildLink</span><span class="se">\x12</span><span class="s1">M</span><span class="se">\n\x14</span><span class="s1">short_representation</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.spanner.v1.PlanNode.ShortRepresentation</span><span class="se">\x12</span><span class="s1">)</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x12\x30\n\x0f\x65</span><span class="s1">xecution_stats</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x1a</span><span class="s1">@</span><span class="se">\n\t</span><span class="s1">ChildLink</span><span class="se">\x12\x13\n\x0b\x63</span><span class="s1">hild_index</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0c\n\x04</span><span class="s1">type</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x10\n\x08</span><span class="s1">variable</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x1a\xb2\x01\n\x13</span><span class="s1">ShortRepresentation</span><span class="se">\x12\x13\n\x0b\x64\x65</span><span class="s1">scription</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">S</span><span class="se">\n\n</span><span class="s1">subqueries</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">?.google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry</span><span class="se">\x1a\x31\n\x0f</span><span class="s1">SubqueriesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05</span><span class="s1">:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;8</span><span class="se">\n\x04</span><span class="s1">Kind</span><span class="se">\x12\x14\n\x10</span><span class="s1">KIND_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0e\n\n</span><span class="s1">RELATIONAL</span><span class="se">\x10\x01\x12\n\n\x06</span><span class="s1">SCALAR</span><span class="se">\x10\x02</span><span class="s1">&quot;&lt;</span><span class="se">\n\t</span><span class="s1">QueryPlan</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\n</span><span class="s1">plan_nodes</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1b</span><span class="s1">.google.spanner.v1.PlanNodeB</span><span class="se">\x97\x01\n\x15\x63</span><span class="s1">om.google.spanner.v1B</span><span class="se">\x0e</span><span class="s1">QueryPlanProtoP</span><span class="se">\x01</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\xaa\x02\x17</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\xca\x02\x17</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
+    <span class="p">),</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_protobuf_dot_struct__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">)</span>
 
 
 <span class="n">_PLANNODE_KIND</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumDescriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Kind&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.Kind&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">values</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;KIND_UNSPECIFIED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RELATIONAL&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;SCALAR&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">706</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">762</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Kind&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.Kind&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;KIND_UNSPECIFIED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;RELATIONAL&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;SCALAR&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">706</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">762</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_PLANNODE_KIND</span><span class="p">)</span>
 
 
 <span class="n">_PLANNODE_CHILDLINK</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ChildLink&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.ChildLink&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;child_index&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.ChildLink.child_index&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.ChildLink.type&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;variable&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.ChildLink.variable&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">459</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">523</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ChildLink&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.ChildLink&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;child_index&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.ChildLink.child_index&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;type&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.ChildLink.type&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.ChildLink.variable&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">459</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">523</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;SubqueriesEntry&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry.key&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry.value&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;8</span><span class="se">\001</span><span class="s1">&#39;</span><span class="p">)),</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">655</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">704</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;SubqueriesEntry&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry.key&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry.value&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)),</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">655</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">704</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_PLANNODE_SHORTREPRESENTATION</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ShortRepresentation&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.ShortRepresentation&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.ShortRepresentation.description&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;subqueries&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.ShortRepresentation.subqueries&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="p">,</span> <span class="p">],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">526</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">704</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ShortRepresentation&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.ShortRepresentation&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;description&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.ShortRepresentation.description&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;subqueries&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.ShortRepresentation.subqueries&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="p">],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">526</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">704</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_PLANNODE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PlanNode&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.index&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;kind&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.kind&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;display_name&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.display_name&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;child_links&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.child_links&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;short_representation&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.short_representation&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.metadata&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;execution_stats&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.PlanNode.execution_stats&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_PLANNODE_CHILDLINK</span><span class="p">,</span> <span class="n">_PLANNODE_SHORTREPRESENTATION</span><span class="p">,</span> <span class="p">],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_PLANNODE_KIND</span><span class="p">,</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">130</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">762</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PlanNode&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.index&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;kind&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.kind&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;display_name&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.display_name&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;child_links&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.child_links&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;short_representation&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.short_representation&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;metadata&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.metadata&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;execution_stats&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.PlanNode.execution_stats&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_PLANNODE_CHILDLINK</span><span class="p">,</span> <span class="n">_PLANNODE_SHORTREPRESENTATION</span><span class="p">],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span><span class="n">_PLANNODE_KIND</span><span class="p">],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">130</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">762</span><span class="p">,</span>
 <span class="p">)</span>
 
 
 <span class="n">_QUERYPLAN</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;QueryPlan&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.QueryPlan&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;plan_nodes&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.QueryPlan.plan_nodes&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">764</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">824</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;QueryPlan&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.QueryPlan&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;plan_nodes&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.QueryPlan.plan_nodes&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">764</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">824</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_PLANNODE_CHILDLINK</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_PLANNODE</span>
-<span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_PLANNODE_SHORTREPRESENTATION</span>
-<span class="n">_PLANNODE_SHORTREPRESENTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;subqueries&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span>
+<span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">_PLANNODE_SHORTREPRESENTATION</span>
+<span class="p">)</span>
+<span class="n">_PLANNODE_SHORTREPRESENTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;subqueries&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span>
 <span class="n">_PLANNODE_SHORTREPRESENTATION</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_PLANNODE</span>
-<span class="n">_PLANNODE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;kind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_PLANNODE_KIND</span>
-<span class="n">_PLANNODE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;child_links&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PLANNODE_CHILDLINK</span>
-<span class="n">_PLANNODE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;short_representation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PLANNODE_SHORTREPRESENTATION</span>
-<span class="n">_PLANNODE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_struct__pb2</span><span class="o">.</span><span class="n">_STRUCT</span>
-<span class="n">_PLANNODE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;execution_stats&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_struct__pb2</span><span class="o">.</span><span class="n">_STRUCT</span>
+<span class="n">_PLANNODE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;kind&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_PLANNODE_KIND</span>
+<span class="n">_PLANNODE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;child_links&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PLANNODE_CHILDLINK</span>
+<span class="n">_PLANNODE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;short_representation&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PLANNODE_SHORTREPRESENTATION</span>
+<span class="n">_PLANNODE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;metadata&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_struct__pb2</span><span class="o">.</span><span class="n">_STRUCT</span>
+<span class="n">_PLANNODE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;execution_stats&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_struct__pb2</span><span class="o">.</span><span class="n">_STRUCT</span>
 <span class="n">_PLANNODE_KIND</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_PLANNODE</span>
-<span class="n">_QUERYPLAN</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;plan_nodes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PLANNODE</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;PlanNode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PLANNODE</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;QueryPlan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_QUERYPLAN</span>
+<span class="n">_QUERYPLAN</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;plan_nodes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PLANNODE</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;PlanNode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PLANNODE</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;QueryPlan&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_QUERYPLAN</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterFileDescriptor</span><span class="p">(</span><span class="n">DESCRIPTOR</span><span class="p">)</span>
 
-<span class="n">PlanNode</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;PlanNode&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-
-  <span class="n">ChildLink</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;ChildLink&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_PLANNODE_CHILDLINK</span><span class="p">,</span>
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.query_plan_pb2&#39;</span>
-    <span class="p">,</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Metadata associated with a parent-child relationship appearing in a</span>
+<span class="n">PlanNode</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;PlanNode&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">ChildLink</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+            <span class="s2">&quot;ChildLink&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_PLANNODE_CHILDLINK</span><span class="p">,</span>
+                <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.query_plan_pb2&quot;</span><span class="p">,</span>
+                <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Metadata associated with a parent-child relationship appearing in a</span>
 <span class="s2">    [PlanNode][google.spanner.v1.PlanNode].</span>
 <span class="s2">    </span>
 <span class="s2">    </span>
@@ -355,22 +521,25 @@
 <span class="s2">            operator. The corresponding ``variable`` fields will be set to</span>
 <span class="s2">            the variable names assigned to the columns.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
-    <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.PlanNode.ChildLink)</span>
-    <span class="p">))</span>
-  <span class="p">,</span>
-
-  <span class="n">ShortRepresentation</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;ShortRepresentation&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-
-    <span class="n">SubqueriesEntry</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;SubqueriesEntry&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-      <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="p">,</span>
-      <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.query_plan_pb2&#39;</span>
-      <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry)</span>
-      <span class="p">))</span>
-    <span class="p">,</span>
-    <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_PLANNODE_SHORTREPRESENTATION</span><span class="p">,</span>
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.query_plan_pb2&#39;</span>
-    <span class="p">,</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Condensed representation of a node and its subtree. Only present for</span>
+                <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.PlanNode.ChildLink)</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">ShortRepresentation</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+            <span class="s2">&quot;ShortRepresentation&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">SubqueriesEntry</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+                    <span class="s2">&quot;SubqueriesEntry&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+                    <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="p">,</span>
+                        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.query_plan_pb2&quot;</span>
+                        <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry)</span>
+                    <span class="p">),</span>
+                <span class="p">),</span>
+                <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_PLANNODE_SHORTREPRESENTATION</span><span class="p">,</span>
+                <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.query_plan_pb2&quot;</span><span class="p">,</span>
+                <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Condensed representation of a node and its subtree. Only present for</span>
 <span class="s2">    ``SCALAR`` [PlanNode(s)][google.spanner.v1.PlanNode].</span>
 <span class="s2">    </span>
 <span class="s2">    </span>
@@ -385,13 +554,12 @@
 <span class="s2">            subtree rooted at this node. The referenced ``SCALAR``</span>
 <span class="s2">            subquery may not necessarily be a direct child of this node.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
-    <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.PlanNode.ShortRepresentation)</span>
-    <span class="p">))</span>
-  <span class="p">,</span>
-  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_PLANNODE</span><span class="p">,</span>
-  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.query_plan_pb2&#39;</span>
-  <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Node information for nodes appearing in a</span>
+                <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.PlanNode.ShortRepresentation)</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_PLANNODE</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.query_plan_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Node information for nodes appearing in a</span>
 <span class="s2">  [QueryPlan.plan\_nodes][google.spanner.v1.QueryPlan.plan\_nodes].</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
@@ -426,18 +594,21 @@
 <span class="s2">          returned as a result of a profile query. For example, number</span>
 <span class="s2">          of executions, number of rows/time per execution etc.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-  <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.PlanNode)</span>
-  <span class="p">))</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.PlanNode)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">PlanNode</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">PlanNode</span><span class="o">.</span><span class="n">ChildLink</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">PlanNode</span><span class="o">.</span><span class="n">ShortRepresentation</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">PlanNode</span><span class="o">.</span><span class="n">ShortRepresentation</span><span class="o">.</span><span class="n">SubqueriesEntry</span><span class="p">)</span>
 
-<span class="n">QueryPlan</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;QueryPlan&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_QUERYPLAN</span><span class="p">,</span>
-  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.query_plan_pb2&#39;</span>
-  <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Contains an ordered list of nodes appearing in the query plan.</span>
+<span class="n">QueryPlan</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;QueryPlan&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_QUERYPLAN</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.query_plan_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Contains an ordered list of nodes appearing in the query plan.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
@@ -447,15 +618,23 @@
 <span class="s2">          [PlanNode][google.spanner.v1.PlanNode]&#39;s ``id`` corresponds to</span>
 <span class="s2">          its index in ``plan_nodes``.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-  <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.QueryPlan)</span>
-  <span class="p">))</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.QueryPlan)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">QueryPlan</span><span class="p">)</span>
 
 
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\025</span><span class="s1">com.google.spanner.v1B</span><span class="se">\016</span><span class="s1">QueryPlanProtoP</span><span class="se">\001</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\252\002\027</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\312\002\027</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1&#39;</span><span class="p">))</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
+    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span>
+    <span class="n">_b</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n\025</span><span class="s2">com.google.spanner.v1B</span><span class="se">\016</span><span class="s2">QueryPlanProtoP</span><span class="se">\001</span><span class="s2">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\252\002\027</span><span class="s2">Google.Cloud.Spanner.V1</span><span class="se">\312\002\027</span><span class="s2">Google</span><span class="se">\\</span><span class="s2">Cloud</span><span class="se">\\</span><span class="s2">Spanner</span><span class="se">\\</span><span class="s2">V1&quot;</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;8</span><span class="se">\001</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
+    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="c1"># @@protoc_insertion_point(module_scope)</span>
 </pre></div>
 

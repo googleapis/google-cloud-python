@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.proto.transaction_pb2 &#8212; google-cloud 8b3559a documentation</title>
+    <title>google.cloud.spanner_v1.proto.transaction_pb2 &#8212; google-cloud 91fcc6a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -37,12 +37,14 @@
 <span class="c1"># source: google/cloud/spanner_v1/proto/transaction.proto</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">_b</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;latin1&#39;</span><span class="p">))</span>
+
+<span class="n">_b</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;latin1&quot;</span><span class="p">))</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor</span> <span class="k">as</span> <span class="n">_descriptor</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">message</span> <span class="k">as</span> <span class="n">_message</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">reflection</span> <span class="k">as</span> <span class="n">_reflection</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">symbol_database</span> <span class="k">as</span> <span class="n">_symbol_database</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor_pb2</span>
+
 <span class="c1"># @@protoc_insertion_point(imports)</span>
 
 <span class="n">_sym_db</span> <span class="o">=</span> <span class="n">_symbol_database</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
@@ -54,342 +56,554 @@
 
 
 <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">FileDescriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google/cloud/spanner_v1/proto/transaction.proto&#39;</span><span class="p">,</span>
-  <span class="n">package</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1&#39;</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">/google/cloud/spanner_v1/proto/transaction.proto</span><span class="se">\x12\x11</span><span class="s1">google.spanner.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\&quot;\xc3\x04\n\x12</span><span class="s1">TransactionOptions</span><span class="se">\x12\x45\n\n</span><span class="s1">read_write</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.spanner.v1.TransactionOptions.ReadWriteH</span><span class="se">\x00\x12</span><span class="s1">O</span><span class="se">\n\x0f</span><span class="s1">partitioned_dml</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x34</span><span class="s1">.google.spanner.v1.TransactionOptions.PartitionedDmlH</span><span class="se">\x00\x12\x43\n\t</span><span class="s1">read_only</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.spanner.v1.TransactionOptions.ReadOnlyH</span><span class="se">\x00\x1a\x0b\n\t</span><span class="s1">ReadWrite</span><span class="se">\x1a\x10\n\x0e</span><span class="s1">PartitionedDml</span><span class="se">\x1a\xa8\x02\n\x08</span><span class="s1">ReadOnly</span><span class="se">\x12\x10\n\x06</span><span class="s1">strong</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08</span><span class="s1">H</span><span class="se">\x00\x12\x38\n\x12</span><span class="s1">min_read_timestamp</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.TimestampH</span><span class="se">\x00\x12\x32\n\r</span><span class="s1">max_staleness</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationH</span><span class="se">\x00\x12\x34\n\x0e</span><span class="s1">read_timestamp</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.TimestampH</span><span class="se">\x00\x12\x34\n\x0f\x65</span><span class="s1">xact_staleness</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationH</span><span class="se">\x00\x12\x1d\n\x15</span><span class="s1">return_read_timestamp</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x42\x11\n\x0f</span><span class="s1">timestamp_boundB</span><span class="se">\x06\n\x04</span><span class="s1">mode</span><span class="se">\&quot;</span><span class="s1">M</span><span class="se">\n\x0b</span><span class="s1">Transaction</span><span class="se">\x12\n\n\x02</span><span class="s1">id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\x32\n\x0e</span><span class="s1">read_timestamp</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\&quot;\xa4\x01\n\x13</span><span class="s1">TransactionSelector</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\n</span><span class="s1">single_use</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptionsH</span><span class="se">\x00\x12\x0c\n\x02</span><span class="s1">id</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">H</span><span class="se">\x00\x12\x36\n\x05\x62\x65</span><span class="s1">gin</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptionsH</span><span class="se">\x00\x42\n\n\x08</span><span class="s1">selectorB</span><span class="se">\x99\x01\n\x15\x63</span><span class="s1">om.google.spanner.v1B</span><span class="se">\x10</span><span class="s1">TransactionProtoP</span><span class="se">\x01</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\xaa\x02\x17</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\xca\x02\x17</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
-  <span class="p">,</span>
-  <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
-
-
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/cloud/spanner_v1/proto/transaction.proto&quot;</span><span class="p">,</span>
+    <span class="n">package</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1&quot;</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">/google/cloud/spanner_v1/proto/transaction.proto</span><span class="se">\x12\x11</span><span class="s1">google.spanner.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto&quot;</span><span class="se">\xc3\x04\n\x12</span><span class="s1">TransactionOptions</span><span class="se">\x12\x45\n\n</span><span class="s1">read_write</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.spanner.v1.TransactionOptions.ReadWriteH</span><span class="se">\x00\x12</span><span class="s1">O</span><span class="se">\n\x0f</span><span class="s1">partitioned_dml</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x34</span><span class="s1">.google.spanner.v1.TransactionOptions.PartitionedDmlH</span><span class="se">\x00\x12\x43\n\t</span><span class="s1">read_only</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.spanner.v1.TransactionOptions.ReadOnlyH</span><span class="se">\x00\x1a\x0b\n\t</span><span class="s1">ReadWrite</span><span class="se">\x1a\x10\n\x0e</span><span class="s1">PartitionedDml</span><span class="se">\x1a\xa8\x02\n\x08</span><span class="s1">ReadOnly</span><span class="se">\x12\x10\n\x06</span><span class="s1">strong</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08</span><span class="s1">H</span><span class="se">\x00\x12\x38\n\x12</span><span class="s1">min_read_timestamp</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.TimestampH</span><span class="se">\x00\x12\x32\n\r</span><span class="s1">max_staleness</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationH</span><span class="se">\x00\x12\x34\n\x0e</span><span class="s1">read_timestamp</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.TimestampH</span><span class="se">\x00\x12\x34\n\x0f\x65</span><span class="s1">xact_staleness</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationH</span><span class="se">\x00\x12\x1d\n\x15</span><span class="s1">return_read_timestamp</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x42\x11\n\x0f</span><span class="s1">timestamp_boundB</span><span class="se">\x06\n\x04</span><span class="s1">mode&quot;M</span><span class="se">\n\x0b</span><span class="s1">Transaction</span><span class="se">\x12\n\n\x02</span><span class="s1">id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\x32\n\x0e</span><span class="s1">read_timestamp</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp&quot;</span><span class="se">\xa4\x01\n\x13</span><span class="s1">TransactionSelector</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\n</span><span class="s1">single_use</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptionsH</span><span class="se">\x00\x12\x0c\n\x02</span><span class="s1">id</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">H</span><span class="se">\x00\x12\x36\n\x05\x62\x65</span><span class="s1">gin</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptionsH</span><span class="se">\x00\x42\n\n\x08</span><span class="s1">selectorB</span><span class="se">\x99\x01\n\x15\x63</span><span class="s1">om.google.spanner.v1B</span><span class="se">\x10</span><span class="s1">TransactionProtoP</span><span class="se">\x01</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\xaa\x02\x17</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\xca\x02\x17</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
+    <span class="p">),</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">)</span>
 
 
 <span class="n">_TRANSACTIONOPTIONS_READWRITE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ReadWrite&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.ReadWrite&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">409</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">420</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ReadWrite&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.ReadWrite&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">409</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">420</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_TRANSACTIONOPTIONS_PARTITIONEDDML</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PartitionedDml&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.PartitionedDml&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">422</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">438</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PartitionedDml&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.PartitionedDml&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">422</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">438</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_TRANSACTIONOPTIONS_READONLY</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ReadOnly&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.ReadOnly&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;strong&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.ReadOnly.strong&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;min_read_timestamp&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;max_staleness&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.ReadOnly.max_staleness&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;read_timestamp&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;exact_staleness&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;return_read_timestamp&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.ReadOnly.return_read_timestamp&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">OneofDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.ReadOnly.timestamp_bound&#39;</span><span class="p">,</span>
-      <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[]),</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">441</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">737</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ReadOnly&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.ReadOnly&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;strong&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.ReadOnly.strong&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;min_read_timestamp&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;max_staleness&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.ReadOnly.max_staleness&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;read_timestamp&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;exact_staleness&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;return_read_timestamp&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.ReadOnly.return_read_timestamp&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">OneofDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.ReadOnly.timestamp_bound&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">441</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">737</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_TRANSACTIONOPTIONS</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;TransactionOptions&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;read_write&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.read_write&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;partitioned_dml&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.partitioned_dml&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;read_only&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.read_only&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_TRANSACTIONOPTIONS_READWRITE</span><span class="p">,</span> <span class="n">_TRANSACTIONOPTIONS_PARTITIONEDDML</span><span class="p">,</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="p">,</span> <span class="p">],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">OneofDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionOptions.mode&#39;</span><span class="p">,</span>
-      <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[]),</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">166</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">745</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TransactionOptions&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;read_write&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.read_write&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;partitioned_dml&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.partitioned_dml&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;read_only&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.read_only&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_TRANSACTIONOPTIONS_READWRITE</span><span class="p">,</span>
+        <span class="n">_TRANSACTIONOPTIONS_PARTITIONEDDML</span><span class="p">,</span>
+        <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">OneofDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionOptions.mode&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">166</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">745</span><span class="p">,</span>
 <span class="p">)</span>
 
 
 <span class="n">_TRANSACTION</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Transaction&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.Transaction&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.Transaction.id&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;read_timestamp&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.Transaction.read_timestamp&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">747</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">824</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Transaction&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Transaction&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Transaction.id&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;read_timestamp&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Transaction.read_timestamp&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">747</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">824</span><span class="p">,</span>
 <span class="p">)</span>
 
 
 <span class="n">_TRANSACTIONSELECTOR</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;TransactionSelector&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionSelector&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;single_use&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionSelector.single_use&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionSelector.id&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;begin&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionSelector.begin&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">OneofDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;selector&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1.TransactionSelector.selector&#39;</span><span class="p">,</span>
-      <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[]),</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">827</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">991</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TransactionSelector&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionSelector&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;single_use&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionSelector.single_use&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionSelector.id&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;begin&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionSelector.begin&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">OneofDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;selector&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.TransactionSelector.selector&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">827</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">991</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_TRANSACTIONOPTIONS_READWRITE</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span>
 <span class="n">_TRANSACTIONOPTIONS_PARTITIONEDDML</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;min_read_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;max_staleness&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">_DURATION</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;read_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;exact_staleness&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">_DURATION</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;min_read_timestamp&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;max_staleness&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">_DURATION</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;read_timestamp&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;exact_staleness&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">_DURATION</span>
 <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;strong&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;strong&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">]</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;min_read_timestamp&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;min_read_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">]</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;max_staleness&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;max_staleness&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">]</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;read_timestamp&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;read_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">]</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;exact_staleness&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;exact_staleness&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;timestamp_bound&#39;</span><span class="p">]</span>
-<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;read_write&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READWRITE</span>
-<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;partitioned_dml&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_PARTITIONEDDML</span>
-<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;read_only&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span>
-<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;read_write&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;read_write&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span>
-<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;partitioned_dml&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;partitioned_dml&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span>
-<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;read_only&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;read_only&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span>
-<span class="n">_TRANSACTION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;read_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
-<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;single_use&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span>
-<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span>
-<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;selector&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;single_use&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;single_use&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;selector&#39;</span><span class="p">]</span>
-<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;selector&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;selector&#39;</span><span class="p">]</span>
-<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;selector&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-  <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">])</span>
-<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;begin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s1">&#39;selector&#39;</span><span class="p">]</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;TransactionOptions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;Transaction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_TRANSACTION</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;TransactionSelector&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_TRANSACTIONSELECTOR</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;strong&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;strong&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">]</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;min_read_timestamp&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;min_read_timestamp&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">]</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;max_staleness&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;max_staleness&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">]</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;read_timestamp&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;read_timestamp&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">]</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;exact_staleness&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;exact_staleness&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;timestamp_bound&quot;</span><span class="p">]</span>
+<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;read_write&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READWRITE</span>
+<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;partitioned_dml&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_PARTITIONEDDML</span>
+<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;read_only&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span>
+<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;read_write&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;read_write&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
+<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;partitioned_dml&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;partitioned_dml&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
+<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;read_only&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;read_only&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
+<span class="n">_TRANSACTION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;read_timestamp&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">_TIMESTAMP</span>
+<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;single_use&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span>
+<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;begin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span>
+<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;selector&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;single_use&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;single_use&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;selector&quot;</span><span class="p">]</span>
+<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;selector&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;id&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;selector&quot;</span><span class="p">]</span>
+<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;selector&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;begin&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;begin&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_TRANSACTIONSELECTOR</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;selector&quot;</span><span class="p">]</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;TransactionOptions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;Transaction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_TRANSACTION</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;TransactionSelector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_TRANSACTIONSELECTOR</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterFileDescriptor</span><span class="p">(</span><span class="n">DESCRIPTOR</span><span class="p">)</span>
 
-<span class="n">TransactionOptions</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;TransactionOptions&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-
-  <span class="n">ReadWrite</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;ReadWrite&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READWRITE</span><span class="p">,</span>
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.transaction_pb2&#39;</span>
-    <span class="p">,</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Message type to initiate a read-write transaction. Currently this</span>
+<span class="n">TransactionOptions</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;TransactionOptions&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">ReadWrite</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+            <span class="s2">&quot;ReadWrite&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_TRANSACTIONOPTIONS_READWRITE</span><span class="p">,</span>
+                <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.transaction_pb2&quot;</span><span class="p">,</span>
+                <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Message type to initiate a read-write transaction. Currently this</span>
 <span class="s2">    transaction type has no options.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
-    <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadWrite)</span>
-    <span class="p">))</span>
-  <span class="p">,</span>
-
-  <span class="n">PartitionedDml</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;PartitionedDml&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_PARTITIONEDDML</span><span class="p">,</span>
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.transaction_pb2&#39;</span>
-    <span class="p">,</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Message type to initiate a Partitioned DML transaction.</span>
+                <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadWrite)</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">PartitionedDml</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+            <span class="s2">&quot;PartitionedDml&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_TRANSACTIONOPTIONS_PARTITIONEDDML</span><span class="p">,</span>
+                <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.transaction_pb2&quot;</span><span class="p">,</span>
+                <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Message type to initiate a Partitioned DML transaction.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
-    <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.PartitionedDml)</span>
-    <span class="p">))</span>
-  <span class="p">,</span>
-
-  <span class="n">ReadOnly</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;ReadOnly&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="p">,</span>
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.transaction_pb2&#39;</span>
-    <span class="p">,</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Message type to initiate a read-only transaction.</span>
+                <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.PartitionedDml)</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">ReadOnly</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+            <span class="s2">&quot;ReadOnly&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="p">,</span>
+                <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.transaction_pb2&quot;</span><span class="p">,</span>
+                <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Message type to initiate a read-only transaction.</span>
 <span class="s2">    </span>
 <span class="s2">    </span>
 <span class="s2">    Attributes:</span>
@@ -443,13 +657,12 @@
 <span class="s2">            in the [Transaction][google.spanner.v1.Transaction] message</span>
 <span class="s2">            that describes the transaction.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
-    <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadOnly)</span>
-    <span class="p">))</span>
-  <span class="p">,</span>
-  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span><span class="p">,</span>
-  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.transaction_pb2&#39;</span>
-  <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Transactions</span>
+                <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadOnly)</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_TRANSACTIONOPTIONS</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.transaction_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Transactions</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Each session can have at most one active transaction at a time. After</span>
@@ -756,18 +969,21 @@
 <span class="s2">          ``spanner.databases.beginReadOnlyTransaction`` permission on</span>
 <span class="s2">          the ``session`` resource.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-  <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions)</span>
-  <span class="p">))</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">TransactionOptions</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadWrite</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">PartitionedDml</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadOnly</span><span class="p">)</span>
 
-<span class="n">Transaction</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;Transaction&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_TRANSACTION</span><span class="p">,</span>
-  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.transaction_pb2&#39;</span>
-  <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A transaction.</span>
+<span class="n">Transaction</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;Transaction&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_TRANSACTION</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.transaction_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A transaction.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
@@ -787,15 +1003,18 @@
 <span class="s2">          timestamp in RFC3339 UTC &quot;Zulu&quot; format, accurate to</span>
 <span class="s2">          nanoseconds. Example: ``&quot;2014-10-02T15:01:23.045123456Z&quot;``.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-  <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.Transaction)</span>
-  <span class="p">))</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.Transaction)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">Transaction</span><span class="p">)</span>
 
-<span class="n">TransactionSelector</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;TransactionSelector&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_TRANSACTIONSELECTOR</span><span class="p">,</span>
-  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.transaction_pb2&#39;</span>
-  <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;This message is used to select the transaction in which a</span>
+<span class="n">TransactionSelector</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;TransactionSelector&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_TRANSACTIONSELECTOR</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.transaction_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;This message is used to select the transaction in which a</span>
 <span class="s2">  [Read][google.spanner.v1.Spanner.Read] or</span>
 <span class="s2">  [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] call runs.</span>
 <span class="s2">  </span>
@@ -821,13 +1040,19 @@
 <span class="s2">          data.transaction], which is a</span>
 <span class="s2">          [Transaction][google.spanner.v1.Transaction].</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-  <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionSelector)</span>
-  <span class="p">))</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionSelector)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">TransactionSelector</span><span class="p">)</span>
 
 
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\025</span><span class="s1">com.google.spanner.v1B</span><span class="se">\020</span><span class="s1">TransactionProtoP</span><span class="se">\001</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\252\002\027</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\312\002\027</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1&#39;</span><span class="p">))</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
+    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span>
+    <span class="n">_b</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n\025</span><span class="s2">com.google.spanner.v1B</span><span class="se">\020</span><span class="s2">TransactionProtoP</span><span class="se">\001</span><span class="s2">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\252\002\027</span><span class="s2">Google.Cloud.Spanner.V1</span><span class="se">\312\002\027</span><span class="s2">Google</span><span class="se">\\</span><span class="s2">Cloud</span><span class="se">\\</span><span class="s2">Spanner</span><span class="se">\\</span><span class="s2">V1&quot;</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="c1"># @@protoc_insertion_point(module_scope)</span>
 </pre></div>
 

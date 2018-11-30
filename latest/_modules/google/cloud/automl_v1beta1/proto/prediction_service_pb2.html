@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.automl_v1beta1.proto.prediction_service_pb2 &#8212; google-cloud 8b3559a documentation</title>
+    <title>google.cloud.automl_v1beta1.proto.prediction_service_pb2 &#8212; google-cloud 91fcc6a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -37,211 +37,322 @@
 <span class="c1"># source: google/cloud/automl_v1beta1/proto/prediction_service.proto</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">_b</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;latin1&#39;</span><span class="p">))</span>
+
+<span class="n">_b</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;latin1&quot;</span><span class="p">))</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor</span> <span class="k">as</span> <span class="n">_descriptor</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">message</span> <span class="k">as</span> <span class="n">_message</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">reflection</span> <span class="k">as</span> <span class="n">_reflection</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">symbol_database</span> <span class="k">as</span> <span class="n">_symbol_database</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor_pb2</span>
+
 <span class="c1"># @@protoc_insertion_point(imports)</span>
 
 <span class="n">_sym_db</span> <span class="o">=</span> <span class="n">_symbol_database</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
 
 
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">annotations_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_annotations__pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">annotation_payload_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_annotation__payload__pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">data_items_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_data__items__pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">annotation_payload_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_annotation__payload__pb2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">data_items_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_data__items__pb2</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">FileDescriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google/cloud/automl_v1beta1/proto/prediction_service.proto&#39;</span><span class="p">,</span>
-  <span class="n">package</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1&#39;</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">:google/cloud/automl_v1beta1/proto/prediction_service.proto</span><span class="se">\x12\x1b</span><span class="s1">google.cloud.automl.v1beta1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">:google/cloud/automl_v1beta1/proto/annotation_payload.proto</span><span class="se">\x1a\x32</span><span class="s1">google/cloud/automl_v1beta1/proto/data_items.proto</span><span class="se">\&quot;\xd4\x01\n\x0e</span><span class="s1">PredictRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">&lt;</span><span class="se">\n\x07</span><span class="s1">payload</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">+.google.cloud.automl.v1beta1.ExamplePayload</span><span class="se">\x12</span><span class="s1">G</span><span class="se">\n\x06</span><span class="s1">params</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x37</span><span class="s1">.google.cloud.automl.v1beta1.PredictRequest.ParamsEntry</span><span class="se">\x1a</span><span class="s1">-</span><span class="se">\n\x0b</span><span class="s1">ParamsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;\xd1\x01\n\x0f</span><span class="s1">PredictResponse</span><span class="se">\x12</span><span class="s1">?</span><span class="se">\n\x07</span><span class="s1">payload</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.cloud.automl.v1beta1.AnnotationPayload</span><span class="se">\x12</span><span class="s1">L</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">:.google.cloud.automl.v1beta1.PredictResponse.MetadataEntry</span><span class="se">\x1a</span><span class="s1">/</span><span class="se">\n\r</span><span class="s1">MetadataEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\x32\xbe\x01\n\x11</span><span class="s1">PredictionService</span><span class="se">\x12\xa8\x01\n\x07</span><span class="s1">Predict</span><span class="se">\x12</span><span class="s1">+.google.cloud.automl.v1beta1.PredictRequest</span><span class="se">\x1a</span><span class="s1">,.google.cloud.automl.v1beta1.PredictResponse</span><span class="se">\&quot;</span><span class="s1">B</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&lt;</span><span class="se">\&quot;</span><span class="s1">7/v1beta1/{name=projects/*/locations/*/models/*}:predict:</span><span class="se">\x01</span><span class="s1">*B~</span><span class="se">\n\x1f\x63</span><span class="s1">om.google.cloud.automl.v1beta1B</span><span class="se">\x16</span><span class="s1">PredictionServiceProtoP</span><span class="se">\x01</span><span class="s1">ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
-  <span class="p">,</span>
-  <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_annotation__payload__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_data__items__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
-
-
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/cloud/automl_v1beta1/proto/prediction_service.proto&quot;</span><span class="p">,</span>
+    <span class="n">package</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1&quot;</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">:google/cloud/automl_v1beta1/proto/prediction_service.proto</span><span class="se">\x12\x1b</span><span class="s1">google.cloud.automl.v1beta1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">:google/cloud/automl_v1beta1/proto/annotation_payload.proto</span><span class="se">\x1a\x32</span><span class="s1">google/cloud/automl_v1beta1/proto/data_items.proto&quot;</span><span class="se">\xd4\x01\n\x0e</span><span class="s1">PredictRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">&lt;</span><span class="se">\n\x07</span><span class="s1">payload</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">+.google.cloud.automl.v1beta1.ExamplePayload</span><span class="se">\x12</span><span class="s1">G</span><span class="se">\n\x06</span><span class="s1">params</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x37</span><span class="s1">.google.cloud.automl.v1beta1.PredictRequest.ParamsEntry</span><span class="se">\x1a</span><span class="s1">-</span><span class="se">\n\x0b</span><span class="s1">ParamsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;</span><span class="se">\xd1\x01\n\x0f</span><span class="s1">PredictResponse</span><span class="se">\x12</span><span class="s1">?</span><span class="se">\n\x07</span><span class="s1">payload</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.cloud.automl.v1beta1.AnnotationPayload</span><span class="se">\x12</span><span class="s1">L</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">:.google.cloud.automl.v1beta1.PredictResponse.MetadataEntry</span><span class="se">\x1a</span><span class="s1">/</span><span class="se">\n\r</span><span class="s1">MetadataEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\x32\xbe\x01\n\x11</span><span class="s1">PredictionService</span><span class="se">\x12\xa8\x01\n\x07</span><span class="s1">Predict</span><span class="se">\x12</span><span class="s1">+.google.cloud.automl.v1beta1.PredictRequest</span><span class="se">\x1a</span><span class="s1">,.google.cloud.automl.v1beta1.PredictResponse&quot;B</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&lt;&quot;7/v1beta1/{name=projects/*/locations/*/models/*}:predict:</span><span class="se">\x01</span><span class="s1">*B~</span><span class="se">\n\x1f\x63</span><span class="s1">om.google.cloud.automl.v1beta1B</span><span class="se">\x16</span><span class="s1">PredictionServiceProtoP</span><span class="se">\x01</span><span class="s1">ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
+    <span class="p">),</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_annotation__payload__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_data__items__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">)</span>
 
 
 <span class="n">_PREDICTREQUEST_PARAMSENTRY</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ParamsEntry&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictRequest.ParamsEntry&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictRequest.ParamsEntry.key&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictRequest.ParamsEntry.value&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;8</span><span class="se">\001</span><span class="s1">&#39;</span><span class="p">)),</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">446</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ParamsEntry&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictRequest.ParamsEntry&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictRequest.ParamsEntry.key&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictRequest.ParamsEntry.value&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)),</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">446</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_PREDICTREQUEST</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PredictRequest&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictRequest&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictRequest.name&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;payload&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictRequest.payload&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictRequest.params&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_PREDICTREQUEST_PARAMSENTRY</span><span class="p">,</span> <span class="p">],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">234</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">446</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PredictRequest&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictRequest&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictRequest.name&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;payload&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictRequest.payload&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;params&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictRequest.params&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_PREDICTREQUEST_PARAMSENTRY</span><span class="p">],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">234</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">446</span><span class="p">,</span>
 <span class="p">)</span>
 
 
 <span class="n">_PREDICTRESPONSE_METADATAENTRY</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;MetadataEntry&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictResponse.MetadataEntry&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictResponse.MetadataEntry.key&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictResponse.MetadataEntry.value&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;8</span><span class="se">\001</span><span class="s1">&#39;</span><span class="p">)),</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">611</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">658</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MetadataEntry&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictResponse.MetadataEntry&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictResponse.MetadataEntry.key&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictResponse.MetadataEntry.value&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)),</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">611</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">658</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_PREDICTRESPONSE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PredictResponse&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictResponse&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;payload&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictResponse.payload&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictResponse.metadata&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_PREDICTRESPONSE_METADATAENTRY</span><span class="p">,</span> <span class="p">],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">449</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">658</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PredictResponse&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictResponse&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;payload&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictResponse.payload&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;metadata&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictResponse.metadata&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_PREDICTRESPONSE_METADATAENTRY</span><span class="p">],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">449</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">658</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_PREDICTREQUEST_PARAMSENTRY</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_PREDICTREQUEST</span>
-<span class="n">_PREDICTREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;payload&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_data__items__pb2</span><span class="o">.</span><span class="n">_EXAMPLEPAYLOAD</span>
-<span class="n">_PREDICTREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PREDICTREQUEST_PARAMSENTRY</span>
+<span class="n">_PREDICTREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;payload&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_data__items__pb2</span><span class="o">.</span><span class="n">_EXAMPLEPAYLOAD</span>
+<span class="p">)</span>
+<span class="n">_PREDICTREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PREDICTREQUEST_PARAMSENTRY</span>
 <span class="n">_PREDICTRESPONSE_METADATAENTRY</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_PREDICTRESPONSE</span>
-<span class="n">_PREDICTRESPONSE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;payload&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_annotation__payload__pb2</span><span class="o">.</span><span class="n">_ANNOTATIONPAYLOAD</span>
-<span class="n">_PREDICTRESPONSE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PREDICTRESPONSE_METADATAENTRY</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;PredictRequest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PREDICTREQUEST</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;PredictResponse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PREDICTRESPONSE</span>
+<span class="n">_PREDICTRESPONSE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;payload&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_annotation__payload__pb2</span><span class="o">.</span><span class="n">_ANNOTATIONPAYLOAD</span>
+<span class="p">)</span>
+<span class="n">_PREDICTRESPONSE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;metadata&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_PREDICTRESPONSE_METADATAENTRY</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;PredictRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PREDICTREQUEST</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;PredictResponse&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PREDICTRESPONSE</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterFileDescriptor</span><span class="p">(</span><span class="n">DESCRIPTOR</span><span class="p">)</span>
 
-<span class="n">PredictRequest</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;PredictRequest&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-
-  <span class="n">ParamsEntry</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;ParamsEntry&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_PREDICTREQUEST_PARAMSENTRY</span><span class="p">,</span>
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.automl_v1beta1.proto.prediction_service_pb2&#39;</span>
-    <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.PredictRequest.ParamsEntry)</span>
-    <span class="p">))</span>
-  <span class="p">,</span>
-  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_PREDICTREQUEST</span><span class="p">,</span>
-  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.automl_v1beta1.proto.prediction_service_pb2&#39;</span>
-  <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Request message for</span>
+<span class="n">PredictRequest</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;PredictRequest&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">ParamsEntry</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+            <span class="s2">&quot;ParamsEntry&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_PREDICTREQUEST_PARAMSENTRY</span><span class="p">,</span>
+                <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl_v1beta1.proto.prediction_service_pb2&quot;</span>
+                <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.PredictRequest.ParamsEntry)</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_PREDICTREQUEST</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl_v1beta1.proto.prediction_service_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Request message for</span>
 <span class="s2">  [PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
@@ -259,23 +370,28 @@
 <span class="s2">          results that have at least this confidence score threshold.</span>
 <span class="s2">          The default is 0.5.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-  <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.PredictRequest)</span>
-  <span class="p">))</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.PredictRequest)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">PredictRequest</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">PredictRequest</span><span class="o">.</span><span class="n">ParamsEntry</span><span class="p">)</span>
 
-<span class="n">PredictResponse</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;PredictResponse&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-
-  <span class="n">MetadataEntry</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;MetadataEntry&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_PREDICTRESPONSE_METADATAENTRY</span><span class="p">,</span>
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.automl_v1beta1.proto.prediction_service_pb2&#39;</span>
-    <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.PredictResponse.MetadataEntry)</span>
-    <span class="p">))</span>
-  <span class="p">,</span>
-  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_PREDICTRESPONSE</span><span class="p">,</span>
-  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.automl_v1beta1.proto.prediction_service_pb2&#39;</span>
-  <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Response message for</span>
+<span class="n">PredictResponse</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;PredictResponse&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">MetadataEntry</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+            <span class="s2">&quot;MetadataEntry&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_PREDICTRESPONSE_METADATAENTRY</span><span class="p">,</span>
+                <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl_v1beta1.proto.prediction_service_pb2&quot;</span>
+                <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.PredictResponse.MetadataEntry)</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_PREDICTRESPONSE</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl_v1beta1.proto.prediction_service_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Response message for</span>
 <span class="s2">  [PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].</span>
 <span class="s2">  </span>
 <span class="s2">  Currently, this is only used to return an image recognition prediction</span>
@@ -289,41 +405,57 @@
 <span class="s2">      metadata:</span>
 <span class="s2">          Additional domain-specific prediction response metadata.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-  <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.PredictResponse)</span>
-  <span class="p">))</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.PredictResponse)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">PredictResponse</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">PredictResponse</span><span class="o">.</span><span class="n">MetadataEntry</span><span class="p">)</span>
 
 
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\037</span><span class="s1">com.google.cloud.automl.v1beta1B</span><span class="se">\026</span><span class="s1">PredictionServiceProtoP</span><span class="se">\001</span><span class="s1">ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl&#39;</span><span class="p">))</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
+    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span>
+    <span class="n">_b</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n\037</span><span class="s2">com.google.cloud.automl.v1beta1B</span><span class="se">\026</span><span class="s2">PredictionServiceProtoP</span><span class="se">\001</span><span class="s2">ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl&quot;</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_PREDICTREQUEST_PARAMSENTRY</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">_PREDICTREQUEST_PARAMSENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;8</span><span class="se">\001</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">_PREDICTREQUEST_PARAMSENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
+    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">_PREDICTRESPONSE_METADATAENTRY</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">_PREDICTRESPONSE_METADATAENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;8</span><span class="se">\001</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">_PREDICTRESPONSE_METADATAENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
+    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="n">_PREDICTIONSERVICE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">ServiceDescriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PredictionService&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictionService&#39;</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">661</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">851</span><span class="p">,</span>
-  <span class="n">methods</span><span class="o">=</span><span class="p">[</span>
-  <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Predict&#39;</span><span class="p">,</span>
-    <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.automl.v1beta1.PredictionService.Predict&#39;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PredictionService&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictionService&quot;</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">input_type</span><span class="o">=</span><span class="n">_PREDICTREQUEST</span><span class="p">,</span>
-    <span class="n">output_type</span><span class="o">=</span><span class="n">_PREDICTRESPONSE</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MethodOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\202\323\344\223\002</span><span class="s1">&lt;</span><span class="se">\&quot;</span><span class="s1">7/v1beta1/{name=projects/*/locations/*/models/*}:predict:</span><span class="se">\001</span><span class="s1">*&#39;</span><span class="p">)),</span>
-  <span class="p">),</span>
-<span class="p">])</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">661</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">851</span><span class="p">,</span>
+    <span class="n">methods</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Predict&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.PredictionService.Predict&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">input_type</span><span class="o">=</span><span class="n">_PREDICTREQUEST</span><span class="p">,</span>
+            <span class="n">output_type</span><span class="o">=</span><span class="n">_PREDICTRESPONSE</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
+                <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MethodOptions</span><span class="p">(),</span>
+                <span class="n">_b</span><span class="p">(</span>
+                    <span class="s1">&#39;</span><span class="se">\202\323\344\223\002</span><span class="s1">&lt;&quot;7/v1beta1/{name=projects/*/locations/*/models/*}:predict:</span><span class="se">\001</span><span class="s1">*&#39;</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterServiceDescriptor</span><span class="p">(</span><span class="n">_PREDICTIONSERVICE</span><span class="p">)</span>
 
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">services_by_name</span><span class="p">[</span><span class="s1">&#39;PredictionService&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PREDICTIONSERVICE</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">services_by_name</span><span class="p">[</span><span class="s2">&quot;PredictionService&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PREDICTIONSERVICE</span>
 
 <span class="c1"># @@protoc_insertion_point(module_scope)</span>
 </pre></div>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.tasks_v2beta3.proto.target_pb2 &#8212; google-cloud 8b3559a documentation</title>
+    <title>google.cloud.tasks_v2beta3.proto.target_pb2 &#8212; google-cloud 91fcc6a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -37,13 +37,15 @@
 <span class="c1"># source: google/cloud/tasks_v2beta3/proto/target.proto</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">_b</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;latin1&#39;</span><span class="p">))</span>
+
+<span class="n">_b</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;latin1&quot;</span><span class="p">))</span>
 <span class="kn">from</span> <span class="nn">google.protobuf.internal</span> <span class="k">import</span> <span class="n">enum_type_wrapper</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor</span> <span class="k">as</span> <span class="n">_descriptor</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">message</span> <span class="k">as</span> <span class="n">_message</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">reflection</span> <span class="k">as</span> <span class="n">_reflection</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">symbol_database</span> <span class="k">as</span> <span class="n">_symbol_database</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor_pb2</span>
+
 <span class="c1"># @@protoc_insertion_point(imports)</span>
 
 <span class="n">_sym_db</span> <span class="o">=</span> <span class="n">_symbol_database</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
@@ -53,48 +55,44 @@
 
 
 <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">FileDescriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google/cloud/tasks_v2beta3/proto/target.proto&#39;</span><span class="p">,</span>
-  <span class="n">package</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3&#39;</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">-google/cloud/tasks_v2beta3/proto/target.proto</span><span class="se">\x12\x1a</span><span class="s1">google.cloud.tasks.v2beta3</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\&quot;</span><span class="s1">g</span><span class="se">\n\x12\x41</span><span class="s1">ppEngineHttpQueue</span><span class="se">\x12</span><span class="s1">Q</span><span class="se">\n\x1b\x61</span><span class="s1">pp_engine_routing_override</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.tasks.v2beta3.AppEngineRouting</span><span class="se">\&quot;\xc1\x02\n\x14\x41</span><span class="s1">ppEngineHttpRequest</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">http_method</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">&amp;.google.cloud.tasks.v2beta3.HttpMethod</span><span class="se">\x12</span><span class="s1">H</span><span class="se">\n\x12\x61</span><span class="s1">pp_engine_routing</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.tasks.v2beta3.AppEngineRouting</span><span class="se">\x12\x14\n\x0c</span><span class="s1">relative_uri</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\x07</span><span class="s1">headers</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">=.google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry</span><span class="se">\x12\x0c\n\x04\x62</span><span class="s1">ody</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x1a</span><span class="s1">.</span><span class="se">\n\x0c</span><span class="s1">HeadersEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;</span><span class="s1">T</span><span class="se">\n\x10\x41</span><span class="s1">ppEngineRouting</span><span class="se">\x12\x0f\n\x07</span><span class="s1">service</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07</span><span class="s1">version</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x10\n\x08</span><span class="s1">instance</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0c\n\x04</span><span class="s1">host</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">*[</span><span class="se">\n\n</span><span class="s1">HttpMethod</span><span class="se">\x12\x1b\n\x17</span><span class="s1">HTTP_METHOD_UNSPECIFIED</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">POST</span><span class="se">\x10\x01\x12\x07\n\x03</span><span class="s1">GET</span><span class="se">\x10\x02\x12\x08\n\x04</span><span class="s1">HEAD</span><span class="se">\x10\x03\x12\x07\n\x03</span><span class="s1">PUT</span><span class="se">\x10\x04\x12\n\n\x06\x44\x45</span><span class="s1">LETE</span><span class="se">\x10\x05\x42</span><span class="s1">p</span><span class="se">\n\x1e\x63</span><span class="s1">om.google.cloud.tasks.v2beta3B</span><span class="se">\x0b</span><span class="s1">TargetProtoP</span><span class="se">\x01</span><span class="s1">Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasksb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
-  <span class="p">,</span>
-  <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/cloud/tasks_v2beta3/proto/target.proto&quot;</span><span class="p">,</span>
+    <span class="n">package</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3&quot;</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">-google/cloud/tasks_v2beta3/proto/target.proto</span><span class="se">\x12\x1a</span><span class="s1">google.cloud.tasks.v2beta3</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto&quot;g</span><span class="se">\n\x12\x41</span><span class="s1">ppEngineHttpQueue</span><span class="se">\x12</span><span class="s1">Q</span><span class="se">\n\x1b\x61</span><span class="s1">pp_engine_routing_override</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.tasks.v2beta3.AppEngineRouting&quot;</span><span class="se">\xc1\x02\n\x14\x41</span><span class="s1">ppEngineHttpRequest</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">http_method</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">&amp;.google.cloud.tasks.v2beta3.HttpMethod</span><span class="se">\x12</span><span class="s1">H</span><span class="se">\n\x12\x61</span><span class="s1">pp_engine_routing</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.tasks.v2beta3.AppEngineRouting</span><span class="se">\x12\x14\n\x0c</span><span class="s1">relative_uri</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\x07</span><span class="s1">headers</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">=.google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry</span><span class="se">\x12\x0c\n\x04\x62</span><span class="s1">ody</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x1a</span><span class="s1">.</span><span class="se">\n\x0c</span><span class="s1">HeadersEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;T</span><span class="se">\n\x10\x41</span><span class="s1">ppEngineRouting</span><span class="se">\x12\x0f\n\x07</span><span class="s1">service</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07</span><span class="s1">version</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x10\n\x08</span><span class="s1">instance</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0c\n\x04</span><span class="s1">host</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">*[</span><span class="se">\n\n</span><span class="s1">HttpMethod</span><span class="se">\x12\x1b\n\x17</span><span class="s1">HTTP_METHOD_UNSPECIFIED</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">POST</span><span class="se">\x10\x01\x12\x07\n\x03</span><span class="s1">GET</span><span class="se">\x10\x02\x12\x08\n\x04</span><span class="s1">HEAD</span><span class="se">\x10\x03\x12\x07\n\x03</span><span class="s1">PUT</span><span class="se">\x10\x04\x12\n\n\x06\x44\x45</span><span class="s1">LETE</span><span class="se">\x10\x05\x42</span><span class="s1">p</span><span class="se">\n\x1e\x63</span><span class="s1">om.google.cloud.tasks.v2beta3B</span><span class="se">\x0b</span><span class="s1">TargetProtoP</span><span class="se">\x01</span><span class="s1">Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasksb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
+    <span class="p">),</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">],</span>
+<span class="p">)</span>
 
 <span class="n">_HTTPMETHOD</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumDescriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;HttpMethod&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.HttpMethod&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">values</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;HTTP_METHOD_UNSPECIFIED&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;HEAD&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">622</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">713</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HttpMethod&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.HttpMethod&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HTTP_METHOD_UNSPECIFIED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HEAD&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PUT&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DELETE&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">622</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">713</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_HTTPMETHOD</span><span class="p">)</span>
 
@@ -107,201 +105,328 @@
 <span class="n">DELETE</span> <span class="o">=</span> <span class="mi">5</span>
 
 
-
 <span class="n">_APPENGINEHTTPQUEUE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;AppEngineHttpQueue&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpQueue&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;app_engine_routing_override&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpQueue.app_engine_routing_override&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">107</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">210</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;AppEngineHttpQueue&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpQueue&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;app_engine_routing_override&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpQueue.app_engine_routing_override&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">107</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">210</span><span class="p">,</span>
 <span class="p">)</span>
 
 
 <span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;HeadersEntry&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry.key&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry.value&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;8</span><span class="se">\001</span><span class="s1">&#39;</span><span class="p">)),</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">488</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">534</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HeadersEntry&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry.key&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry.value&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)),</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">488</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">534</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_APPENGINEHTTPREQUEST</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;AppEngineHttpRequest&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpRequest&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;http_method&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpRequest.http_method&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;app_engine_routing&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;relative_uri&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpRequest.relative_uri&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;headers&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpRequest.headers&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;body&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineHttpRequest.body&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span><span class="p">,</span> <span class="p">],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">213</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">534</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;AppEngineHttpRequest&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpRequest&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;http_method&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpRequest.http_method&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;app_engine_routing&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relative_uri&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpRequest.relative_uri&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;headers&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpRequest.headers&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;body&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineHttpRequest.body&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span><span class="p">],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">213</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">534</span><span class="p">,</span>
 <span class="p">)</span>
 
 
 <span class="n">_APPENGINEROUTING</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;AppEngineRouting&#39;</span><span class="p">,</span>
-  <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineRouting&#39;</span><span class="p">,</span>
-  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-  <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;service&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineRouting.service&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineRouting.version&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;instance&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineRouting.instance&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.tasks.v2beta3.AppEngineRouting.host&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-      <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">),</span>
-  <span class="p">],</span>
-  <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">enum_types</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-  <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-  <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
-  <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">536</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">620</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;AppEngineRouting&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineRouting&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;service&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineRouting.service&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineRouting.version&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;instance&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineRouting.instance&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;host&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks.v2beta3.AppEngineRouting.host&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">536</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">620</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">_APPENGINEHTTPQUEUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;app_engine_routing_override&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_APPENGINEROUTING</span>
+<span class="n">_APPENGINEHTTPQUEUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;app_engine_routing_override&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_APPENGINEROUTING</span>
 <span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_APPENGINEHTTPREQUEST</span>
-<span class="n">_APPENGINEHTTPREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;http_method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_HTTPMETHOD</span>
-<span class="n">_APPENGINEHTTPREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;app_engine_routing&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_APPENGINEROUTING</span>
-<span class="n">_APPENGINEHTTPREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;AppEngineHttpQueue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_APPENGINEHTTPQUEUE</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;AppEngineHttpRequest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_APPENGINEHTTPREQUEST</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;AppEngineRouting&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_APPENGINEROUTING</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">enum_types_by_name</span><span class="p">[</span><span class="s1">&#39;HttpMethod&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_HTTPMETHOD</span>
+<span class="n">_APPENGINEHTTPREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;http_method&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_HTTPMETHOD</span>
+<span class="n">_APPENGINEHTTPREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;app_engine_routing&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_APPENGINEROUTING</span>
+<span class="n">_APPENGINEHTTPREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;headers&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;AppEngineHttpQueue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_APPENGINEHTTPQUEUE</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;AppEngineHttpRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_APPENGINEHTTPREQUEST</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;AppEngineRouting&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_APPENGINEROUTING</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">enum_types_by_name</span><span class="p">[</span><span class="s2">&quot;HttpMethod&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_HTTPMETHOD</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterFileDescriptor</span><span class="p">(</span><span class="n">DESCRIPTOR</span><span class="p">)</span>
 
-<span class="n">AppEngineHttpQueue</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;AppEngineHttpQueue&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_APPENGINEHTTPQUEUE</span><span class="p">,</span>
-  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.tasks_v2beta3.proto.target_pb2&#39;</span>
-  <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;App Engine HTTP queue.</span>
+<span class="n">AppEngineHttpQueue</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;AppEngineHttpQueue&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_APPENGINEHTTPQUEUE</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks_v2beta3.proto.target_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;App Engine HTTP queue.</span>
 <span class="s2">  </span>
 <span class="s2">  The task will be delivered to the App Engine application hostname</span>
 <span class="s2">  specified by its</span>
@@ -329,22 +454,27 @@
 <span class="s2">          level app\_engine\_routing][google.cloud.tasks.v2beta3.AppEngi</span>
 <span class="s2">          neHttpRequest.app\_engine\_routing].</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-  <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.AppEngineHttpQueue)</span>
-  <span class="p">))</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.AppEngineHttpQueue)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">AppEngineHttpQueue</span><span class="p">)</span>
 
-<span class="n">AppEngineHttpRequest</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;AppEngineHttpRequest&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-
-  <span class="n">HeadersEntry</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;HeadersEntry&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span><span class="p">,</span>
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.tasks_v2beta3.proto.target_pb2&#39;</span>
-    <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry)</span>
-    <span class="p">))</span>
-  <span class="p">,</span>
-  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_APPENGINEHTTPREQUEST</span><span class="p">,</span>
-  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.tasks_v2beta3.proto.target_pb2&#39;</span>
-  <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;App Engine HTTP request.</span>
+<span class="n">AppEngineHttpRequest</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;AppEngineHttpRequest&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">HeadersEntry</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+            <span class="s2">&quot;HeadersEntry&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span><span class="p">,</span>
+                <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks_v2beta3.proto.target_pb2&quot;</span>
+                <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry)</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_APPENGINEHTTPREQUEST</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks_v2beta3.proto.target_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;App Engine HTTP request.</span>
 <span class="s2">  </span>
 <span class="s2">  The message defines the HTTP request that is sent to an App Engine app</span>
 <span class="s2">  when the task is dispatched.</span>
@@ -460,16 +590,19 @@
 <span class="s2">          with an incompatible</span>
 <span class="s2">          [HttpMethod][google.cloud.tasks.v2beta3.HttpMethod].</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-  <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.AppEngineHttpRequest)</span>
-  <span class="p">))</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.AppEngineHttpRequest)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">AppEngineHttpRequest</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">AppEngineHttpRequest</span><span class="o">.</span><span class="n">HeadersEntry</span><span class="p">)</span>
 
-<span class="n">AppEngineRouting</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;AppEngineRouting&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
-  <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_APPENGINEROUTING</span><span class="p">,</span>
-  <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.tasks_v2beta3.proto.target_pb2&#39;</span>
-  <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;App Engine Routing.</span>
+<span class="n">AppEngineRouting</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;AppEngineRouting&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_APPENGINEROUTING</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks_v2beta3.proto.target_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;App Engine Routing.</span>
 <span class="s2">  </span>
 <span class="s2">  Specifies the target URI. Since this target type dispatches tasks to</span>
 <span class="s2">  secure app handlers, unsecure app handlers, and URIs restricted with</span>
@@ -552,15 +685,23 @@
 <span class="s2">          &lt;https://cloud.google.com/appengine/docs/standard/python/how-</span>
 <span class="s2">          requests-are-routed&gt;`_.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-  <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.AppEngineRouting)</span>
-  <span class="p">))</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.AppEngineRouting)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">AppEngineRouting</span><span class="p">)</span>
 
 
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\036</span><span class="s1">com.google.cloud.tasks.v2beta3B</span><span class="se">\013</span><span class="s1">TargetProtoP</span><span class="se">\001</span><span class="s1">Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks&#39;</span><span class="p">))</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
+    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span>
+    <span class="n">_b</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n\036</span><span class="s2">com.google.cloud.tasks.v2beta3B</span><span class="se">\013</span><span class="s2">TargetProtoP</span><span class="se">\001</span><span class="s2">Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks&quot;</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;8</span><span class="se">\001</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">_APPENGINEHTTPREQUEST_HEADERSENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
+    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="c1"># @@protoc_insertion_point(module_scope)</span>
 </pre></div>
 
