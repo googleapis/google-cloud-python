@@ -19,8 +19,8 @@ import os
 
 import setuptools
 
-name = 'google-cloud-iamcredentials'
-description = 'IAM Service Account Credentials API API client library'
+name = 'google-cloud-iam'
+description = 'IAM Service Account Credentials API client library'
 version = '0.1.0'
 release_status = '3 - Alpha'
 dependencies = [
@@ -63,6 +63,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Operating System :: OS Independent',
         'Topic :: Internet',
     ],
