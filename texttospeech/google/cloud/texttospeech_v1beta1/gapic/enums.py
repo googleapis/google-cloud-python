@@ -33,7 +33,6 @@ class SsmlVoiceGender(enum.IntEnum):
       FEMALE (int): A female voice.
       NEUTRAL (int): A gender-neutral voice.
     """
-
     SSML_VOICE_GENDER_UNSPECIFIED = 0
     MALE = 1
     FEMALE = 2
@@ -55,7 +54,6 @@ class AudioEncoding(enum.IntEnum):
       Chrome and Firefox). The quality of the encoding is considerably higher
       than MP3 while using approximately the same bitrate.
     """
-
     AUDIO_ENCODING_UNSPECIFIED = 0
     LINEAR16 = 1
     MP3 = 2

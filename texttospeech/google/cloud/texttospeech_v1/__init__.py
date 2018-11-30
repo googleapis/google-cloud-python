@@ -26,4 +26,8 @@ class TextToSpeechClient(text_to_speech_client.TextToSpeechClient):
     enums = enums
 
 
-__all__ = ("enums", "types", "TextToSpeechClient")
+__all__ = (
+    'enums',
+    'types',
+    'TextToSpeechClient',
+)
