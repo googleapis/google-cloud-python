@@ -18,6 +18,7 @@ import types
 import unittest.mock
 import zlib
 
+from google.cloud import datastore
 from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
 import pytest
@@ -267,13 +268,6 @@ class TestIndexState:
         assert index_state1 is not index_state2
         assert hash(index_state1) == hash(index_state2)
         assert hash(index_state1) == hash((self.INDEX, "error", 88))
-
-
-class TestModelAdapter:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.ModelAdapter()
 
 
 def test_make_connection():
@@ -1255,12 +1249,6 @@ class TestProperty:
             prop._serialize(None, None)
 
     @staticmethod
-    def test__deserialize():
-        prop = model.Property(name="prop")
-        with pytest.raises(NotImplementedError):
-            prop._deserialize(None, None)
-
-    @staticmethod
     def test__prepare_for_put():
         prop = model.Property(name="prop")
         assert prop._prepare_for_put(None) is None
@@ -1435,12 +1423,6 @@ class TestBooleanProperty:
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
 
-    @staticmethod
-    def test__db_get_value():
-        prop = model.BooleanProperty(name="certify")
-        with pytest.raises(NotImplementedError):
-            prop._db_get_value(None, None)
-
 
 class TestIntegerProperty:
     @staticmethod
@@ -1466,12 +1448,6 @@ class TestIntegerProperty:
         prop = model.IntegerProperty(name="count")
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
-
-    @staticmethod
-    def test__db_get_value():
-        prop = model.IntegerProperty(name="count")
-        with pytest.raises(NotImplementedError):
-            prop._db_get_value(None, None)
 
 
 class TestFloatProperty:
@@ -1504,12 +1480,6 @@ class TestFloatProperty:
         prop = model.FloatProperty(name="continuous")
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
-
-    @staticmethod
-    def test__db_get_value():
-        prop = model.FloatProperty(name="continuous")
-        with pytest.raises(NotImplementedError):
-            prop._db_get_value(None, None)
 
 
 class Test_CompressedValue:
@@ -1679,12 +1649,6 @@ class TestBlobProperty:
         with pytest.raises(NotImplementedError):
             prop._db_set_uncompressed_meaning(None)
 
-    @staticmethod
-    def test__db_get_value():
-        prop = model.BlobProperty(name="blob")
-        with pytest.raises(NotImplementedError):
-            prop._db_get_value(None, None)
-
 
 class TestTextProperty:
     @staticmethod
@@ -1811,12 +1775,6 @@ class TestGeoPtProperty:
         prop = model.GeoPtProperty(name="cartesian")
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
-
-    @staticmethod
-    def test__db_get_value():
-        prop = model.GeoPtProperty(name="cartesian")
-        with pytest.raises(NotImplementedError):
-            prop._db_get_value(None, None)
 
 
 class TestPickleProperty:
@@ -2147,12 +2105,6 @@ class TestUserProperty:
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
 
-    @staticmethod
-    def test__db_get_value():
-        prop = model.UserProperty(name="u")
-        with pytest.raises(NotImplementedError):
-            prop._db_get_value(None, None)
-
 
 class TestKeyProperty:
     @staticmethod
@@ -2286,12 +2238,6 @@ class TestKeyProperty:
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
 
-    @staticmethod
-    def test__db_get_value():
-        prop = model.KeyProperty("keyp", kind="Simple")
-        with pytest.raises(NotImplementedError):
-            prop._db_get_value(None, None)
-
 
 class TestBlobKeyProperty:
     @staticmethod
@@ -2311,12 +2257,6 @@ class TestBlobKeyProperty:
         prop = model.BlobKeyProperty(name="object-gcs")
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
-
-    @staticmethod
-    def test__db_get_value():
-        prop = model.BlobKeyProperty(name="object-gcs")
-        with pytest.raises(NotImplementedError):
-            prop._db_get_value(None, None)
 
 
 class TestDateTimeProperty:
@@ -2430,12 +2370,6 @@ class TestDateTimeProperty:
         prop = model.DateTimeProperty(name="dt_val")
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
-
-    @staticmethod
-    def test__db_get_value():
-        prop = model.DateTimeProperty(name="dt_val")
-        with pytest.raises(NotImplementedError):
-            prop._db_get_value(None, None)
 
 
 class TestDateProperty:
@@ -2804,6 +2738,55 @@ class TestModel:
         entity = model.Model()
         with pytest.raises(NotImplementedError):
             entity._put()
+
+    @staticmethod
+    def test__lookup_model():
+        class ThisKind(model.Model):
+            pass
+
+        sentinel = object()
+        assert model.Model._lookup_model("ThisKind")
+        assert model.Model._lookup_model("NoKind", sentinel) is sentinel
+
+        with pytest.raises(model.KindError):
+            model.Model._lookup_model("NoKind")
+
+
+def test__entity_from_protobuf():
+    class ThisKind(model.Model):
+        a = model.IntegerProperty()
+        b = model.BooleanProperty()
+        c = model.PickleProperty()
+        d = model.StringProperty(repeated=True)
+        e = model.PickleProperty(repeated=True)
+        notaproperty = True
+
+    dill = {"sandwiches": ["turkey", "reuben"], "not_sandwiches": "tacos"}
+    gherkin = [{"a": {"b": "c"}, "d": 0}, [1, 2, 3], "himom"]
+    key = datastore.Key("ThisKind", 123, project="testing")
+    datastore_entity = datastore.Entity(key=key)
+    datastore_entity.update(
+        {
+            "a": 42,
+            "b": None,
+            "c": pickle.dumps(gherkin, pickle.HIGHEST_PROTOCOL),
+            "d": ["foo", "bar", "baz"],
+            "e": [
+                pickle.dumps(gherkin, pickle.HIGHEST_PROTOCOL),
+                pickle.dumps(dill, pickle.HIGHEST_PROTOCOL),
+            ],
+            "notused": 32,
+            "notaproperty": None,
+        }
+    )
+    protobuf = helpers.entity_to_protobuf(datastore_entity)
+    entity = model._entity_from_protobuf(protobuf)
+    assert type(entity) is ThisKind
+    assert entity.a == 42
+    assert entity.b is None
+    assert entity.c == gherkin
+    assert entity.d == ["foo", "bar", "baz"]
+    assert entity.e == [gherkin, dill]
 
 
 class TestExpando:

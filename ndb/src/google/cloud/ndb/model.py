@@ -50,7 +50,6 @@ __all__ = [
     "IndexProperty",
     "Index",
     "IndexState",
-    "ModelAdapter",
     "make_connection",
     "ModelAttribute",
     "Property",
@@ -276,11 +275,32 @@ class IndexState:
         return hash((self.definition, self.state, self.id))
 
 
-class ModelAdapter:
-    __slots__ = ()
+def _entity_from_protobuf(protobuf):
+    """Deserialize an entity from a protobuffer.
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    Args:
+        protobuf (google.cloud.datastore_v1.proto.entity.Entity): An
+            entity protobuf to be deserialized.
+
+    Returns:
+        .Model: The deserialized entity.
+    """
+    ds_entity = helpers.entity_from_protobuf(protobuf)
+    model_class = Model._lookup_model(ds_entity.kind)
+    entity = model_class()
+    entity.key = key_module.Key._from_ds_key(ds_entity.key)
+    for name, value in ds_entity.items():
+        prop = getattr(model_class, name, None)
+        if not (prop and isinstance(prop, Property)):
+            continue
+        if value is not None:
+            if prop._repeated:
+                value = list(map(_BaseValue, value))
+            else:
+                value = _BaseValue(value)
+        prop._store_value(entity, value)
+
+    return entity
 
 
 def make_connection(*args, **kwargs):
@@ -1456,23 +1476,6 @@ class Property(ModelAttribute):
         """
         raise NotImplementedError
 
-    def _deserialize(self, entity, p, unused_depth=1):
-        """Deserialize this property to a protocol buffer.
-
-        Some subclasses may override this method.
-
-        Args:
-            entity (Model): The entity that owns this property.
-            p (google.cloud.datastore_v1.proto.entity_pb2.Value): A property
-                value protobuf to be deserialized.
-            depth (int): Optional nesting depth, default 1 (unused here, but
-                used by some subclasses that override this method).
-
-        Raises:
-            NotImplementedError: Always. This method is virtual.
-        """
-        raise NotImplementedError
-
     def _prepare_for_put(self, entity):
         """Allow this property to define a pre-put hook.
 
@@ -1694,14 +1697,6 @@ class BooleanProperty(Property):
         """
         raise NotImplementedError
 
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is virtual.
-        """
-        raise NotImplementedError
-
 
 class IntegerProperty(Property):
     """A property that contains values of type integer.
@@ -1737,14 +1732,6 @@ class IntegerProperty(Property):
 
     def _db_set_value(self, v, unused_p, value):
         """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is virtual.
-        """
-        raise NotImplementedError
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
 
         Raises:
             NotImplementedError: Always. This method is virtual.
@@ -1787,14 +1774,6 @@ class FloatProperty(Property):
 
     def _db_set_value(self, v, unused_p, value):
         """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is virtual.
-        """
-        raise NotImplementedError
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
 
         Raises:
             NotImplementedError: Always. This method is virtual.
@@ -1996,14 +1975,6 @@ class BlobProperty(Property):
         """
         raise NotImplementedError
 
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is virtual.
-        """
-        raise NotImplementedError
-
 
 class TextProperty(BlobProperty):
     """An unindexed property that contains UTF-8 encoded text values.
@@ -2199,14 +2170,6 @@ class GeoPtProperty(Property):
 
     def _db_set_value(self, v, p, value):
         """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is virtual.
-        """
-        raise NotImplementedError
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
 
         Raises:
             NotImplementedError: Always. This method is virtual.
@@ -2703,14 +2666,6 @@ class UserProperty(Property):
         """
         raise NotImplementedError
 
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is virtual.
-        """
-        raise NotImplementedError
-
 
 class KeyProperty(Property):
     """A property that contains :class:`.Key` values.
@@ -2938,14 +2893,6 @@ class KeyProperty(Property):
         """
         raise NotImplementedError
 
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is virtual.
-        """
-        raise NotImplementedError
-
 
 class BlobKeyProperty(Property):
     """A property containing :class:`~google.cloud.ndb.model.BlobKey` values.
@@ -2972,14 +2919,6 @@ class BlobKeyProperty(Property):
 
     def _db_set_value(self, v, p, value):
         """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is virtual.
-        """
-        raise NotImplementedError
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
 
         Raises:
             NotImplementedError: Always. This method is virtual.
@@ -3124,14 +3063,6 @@ class DateTimeProperty(Property):
 
     def _db_set_value(self, v, p, value):
         """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is virtual.
-        """
-        raise NotImplementedError
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
 
         Raises:
             NotImplementedError: Always. This method is virtual.
@@ -3716,6 +3647,32 @@ class Model(metaclass=MetaModel):
     def __ge__(self, value):
         """The ``>=`` comparison is not well-defined."""
         raise TypeError("Model instances are not orderable.")
+
+    @classmethod
+    def _lookup_model(cls, kind, default_model=None):
+        """Get the model class for  the given kind.
+
+        Args:
+            kind (str): The name of the kind to look up.
+            default_model: The model class to return if the kind can't be
+                found.
+
+        Returns:
+            class: The model class for the requested kind or the default model.
+
+        Raises:
+            .KindError: If the kind was not found and no default_model was
+                provided.
+        """
+        model_class = cls._kind_map.get(kind, default_model)
+        if model_class is None:
+            raise KindError(
+                (
+                    "No model class found for the kind '{}'. Did you forget to "
+                    "import it?"
+                ).format(kind)
+            )
+        return model_class
 
     def _set_projection(self, projection):
         """Set the projected properties for this instance.
