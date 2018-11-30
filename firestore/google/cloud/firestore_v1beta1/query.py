@@ -46,6 +46,7 @@ _COMPARISON_OPERATORS = {
 _BAD_OP_STRING = 'Operator string {!r} is invalid. Valid choices are: {}.'
 _BAD_OP_NAN_NULL = (
     'Only an equality filter ("==") can be used with None or NaN values')
+_INVALID_WHERE_TRANSFORM = 'Transforms cannot be used as where values.'
 _BAD_DIR_STRING = 'Invalid direction {!r}. Must be one of {!r} or {!r}.'
 _INVALID_CURSOR_TRANSFORM = 'Transforms cannot be used as cursor values.'
 _MISSING_ORDER_BY = (
@@ -234,6 +235,8 @@ class Query(object):
                 ),
                 op=enums.StructuredQuery.UnaryFilter.Operator.IS_NAN,
             )
+        elif isinstance(value, (transforms.Sentinel, transforms._ValueList)):
+            raise ValueError(_INVALID_WHERE_TRANSFORM)
         else:
             filter_pb = query_pb2.StructuredQuery.FieldFilter(
                 field=query_pb2.StructuredQuery.FieldReference(
