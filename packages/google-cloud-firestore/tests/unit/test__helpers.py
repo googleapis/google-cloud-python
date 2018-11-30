@@ -863,6 +863,86 @@ class Test_get_field_path(unittest.TestCase):
         self.assertEqual(self._call_fut(['a', 'b', 'c']), 'a.b.c')
 
 
+class Test__tokenize_field_path(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(path):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers._tokenize_field_path(path)
+
+    def _expect(self, path, split_path):
+        self.assertEqual(list(self._call_fut(path)), split_path)
+
+    def test_w_empty(self):
+        self._expect('', [])
+
+    def test_w_single_dot(self):
+        self._expect('.', ['.'])
+
+    def test_w_single_simple(self):
+        self._expect('abc', ['abc'])
+
+    def test_w_single_quoted(self):
+        self._expect('`c*de`', ['`c*de`'])
+
+    def test_w_quoted_embedded_dot(self):
+        self._expect('`c*.de`', ['`c*.de`'])
+
+    def test_w_quoted_escaped_backtick(self):
+        self._expect(r'`c*\`de`', [r'`c*\`de`'])
+
+    def test_w_dotted_quoted(self):
+        self._expect('`*`.`~`', ['`*`', '.', '`~`'])
+
+    def test_w_dotted(self):
+        self._expect('a.b.`c*de`', ['a', '.', 'b', '.', '`c*de`'])
+
+
+class Test_split_field_path(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(path):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        return _helpers.split_field_path(path)
+
+    def test_w_single_dot(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('.')
+
+    def test_w_leading_dot(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('.a.b.c')
+
+    def test_w_trailing_dot(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('a.b.')
+
+    def test_w_missing_dot(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('a`c*de`f')
+
+    def test_w_half_quoted_field(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('`c*de')
+
+    def test_w_empty(self):
+        self.assertEqual(self._call_fut(''), [])
+
+    def test_w_simple_field(self):
+        self.assertEqual(self._call_fut('a'), ['a'])
+
+    def test_w_dotted_field(self):
+        self.assertEqual(self._call_fut('a.b.cde'), ['a', 'b', 'cde'])
+
+    def test_w_quoted_field(self):
+        self.assertEqual(self._call_fut('a.b.`c*de`'), ['a', 'b', '`c*de`'])
+
+    def test_w_quoted_field_escaped_backtick(self):
+        self.assertEqual(self._call_fut(r'`c*\`de`'), [r'`c*\`de`'])
+
+
 class Test_parse_field_path(unittest.TestCase):
 
     @staticmethod
@@ -879,35 +959,6 @@ class Test_parse_field_path(unittest.TestCase):
 
     def test_w_escaped_backslash(self):
         self.assertEqual(self._call_fut('`a\\\\b`.c.d'), ['a\\b', 'c', 'd'])
-
-
-class Test__parse_field_name(unittest.TestCase):
-
-    @staticmethod
-    def _call_fut(field_path):
-        from google.cloud.firestore_v1beta1._helpers import _parse_field_name
-
-        return _parse_field_name(field_path)
-
-    def test_w_no_dots(self):
-        name, rest = self._call_fut('a')
-        self.assertEqual(name, 'a')
-        self.assertIsNone(rest)
-
-    def test_w_first_name_simple(self):
-        name, rest = self._call_fut('a.b.c')
-        self.assertEqual(name, 'a')
-        self.assertEqual(rest, 'b.c')
-
-    def test_w_first_name_escaped_no_escapse(self):
-        name, rest = self._call_fut('`3`.b.c')
-        self.assertEqual(name, '`3`')
-        self.assertEqual(rest, 'b.c')
-
-    def test_w_first_name_escaped_w_escaped_backtick(self):
-        name, rest = self._call_fut('`a\\`b`.c.d')
-        self.assertEqual(name, '`a\\`b`')
-        self.assertEqual(rest, 'c.d')
 
     def test_w_first_name_escaped_wo_closing_backtick(self):
         with self.assertRaises(ValueError):

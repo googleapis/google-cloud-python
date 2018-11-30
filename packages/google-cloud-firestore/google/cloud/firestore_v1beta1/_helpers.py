@@ -442,6 +442,9 @@ def decode_dict(value_fields, client):
     }
 
 
+SIMPLE_FIELD_NAME = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
+
+
 def get_field_path(field_names):
     """Create a **field path** from a list of nested field names.
 
@@ -468,11 +471,10 @@ def get_field_path(field_names):
     Returns:
         str: The ``.``-delimited field path.
     """
-    simple_field_name = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
     result = []
 
     for field_name in field_names:
-        match = re.match(simple_field_name, field_name)
+        match = SIMPLE_FIELD_NAME.match(field_name)
         if match and match.group(0) == field_name:
             result.append(field_name)
         else:
@@ -480,6 +482,70 @@ def get_field_path(field_names):
             result.append('`' + replaced + '`')
 
     return FIELD_PATH_DELIMITER.join(result)
+
+
+PATH_ELEMENT_TOKENS = [
+    ('SIMPLE', r'[_a-zA-Z][_a-zA-Z0-9]*'),  # unquoted elements
+    ('QUOTED', r'`(?:\\`|[^`])*?`'),          # quoted elements, unquoted
+    ('DOT', r'\.'),                         # separator
+]
+TOKENS_PATTERN = '|'.join(
+    '(?P<{}>{})'.format(*pair) for pair in PATH_ELEMENT_TOKENS)
+TOKENS_REGEX = re.compile(TOKENS_PATTERN)
+
+
+def _tokenize_field_path(path):
+    """Lex a field path into tokens (including dots).
+
+    Args:
+        path (str): field path to be lexed.
+    Returns:
+        List(str): tokens
+    """
+    pos = 0
+    get_token = TOKENS_REGEX.match
+    match = get_token(path)
+    while match is not None:
+        type_ = match.lastgroup
+        value = match.group(type_)
+        yield value
+        pos = match.end()
+        match = get_token(path, pos)
+
+
+def split_field_path(path):
+    """Split a field path into valid elements (without dots).
+
+    Args:
+        path (str): field path to be lexed.
+    Returns:
+        List(str): tokens
+    Raises:
+        ValueError: if the path does not match the elements-interspersed-
+                    with-dots pattern.
+    """
+    if not path:
+        return []
+
+    elements = []
+    want_dot = False
+
+    for element in _tokenize_field_path(path):
+        if want_dot:
+            if element != '.':
+                raise ValueError("Invalid path: {}".format(path))
+            else:
+                want_dot = False
+        else:
+            if element == '.':
+                raise ValueError("Invalid path: {}".format(path))
+            elements.append(element)
+            want_dot = True
+
+    if not want_dot or not elements:
+        raise ValueError("Invalid path: {}".format(path))
+
+    return elements
 
 
 def parse_field_path(api_repr):
@@ -501,8 +567,7 @@ def parse_field_path(api_repr):
     # code dredged back up from
     # https://github.com/googleapis/google-cloud-python/pull/5109/files
     field_names = []
-    while api_repr:
-        field_name, api_repr = _parse_field_name(api_repr)
+    for field_name in split_field_path(api_repr):
         # non-simple field name
         if field_name[0] == '`' and field_name[-1] == '`':
             field_name = field_name[1:-1]
@@ -510,45 +575,6 @@ def parse_field_path(api_repr):
             field_name = field_name.replace('\\\\', '\\')
         field_names.append(field_name)
     return field_names
-
-
-def _parse_field_name(api_repr):
-    """
-    Parses the api_repr into the first field name and the rest
-         Args:
-            api_repr (str): The unique Firestore api representation.
-         Returns:
-            Tuple[str, str]:
-                A tuple with the first field name and the api_repr
-                of the rest.
-    """
-    # XXX code dredged back up from
-    # https://github.com/googleapis/google-cloud-python/pull/5109/files;
-    # probably needs some speeding up
-
-    if '.' not in api_repr:
-        return api_repr, None
-
-    if api_repr[0] != '`':  # first field name is simple
-        index = api_repr.index('.')
-        return api_repr[:index], api_repr[index+1:]  # skips delimiter
-
-    # starts with backtick:  find next non-escaped backtick.
-    index = 1
-    while index < len(api_repr):
-
-        if api_repr[index] == '`':  # end of quoted field name
-            break
-
-        if api_repr[index] == '\\':  # escape character, skip next
-            index += 2
-        else:
-            index += 1
-
-    if index == len(api_repr):  # no closing backtick found
-        raise ValueError("No closing backtick: {}".format(api_repr))
-
-    return api_repr[:index+1], api_repr[index+2:]
 
 
 def get_nested_value(field_path, data):
