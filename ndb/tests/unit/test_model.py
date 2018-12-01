@@ -1370,7 +1370,7 @@ class TestModelKey:
     def test_compare_invalid():
         prop = model.ModelKey()
         with pytest.raises(exceptions.BadValueError):
-            prop == None
+            prop == None  # noqa: E711
 
     @staticmethod
     def test__validate():

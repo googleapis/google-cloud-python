@@ -51,13 +51,13 @@ class TestParameterizedThing:
     def test___eq__():
         thing = query.ParameterizedThing()
         with pytest.raises(NotImplementedError):
-            thing == None
+            thing == None  # noqa: E711
 
     @staticmethod
     def test___ne__():
         thing = query.ParameterizedThing()
         with pytest.raises(NotImplementedError):
-            thing != None
+            thing != None  # noqa: E711
 
 
 class TestParameter:
@@ -143,12 +143,12 @@ class TestNode:
     def test___eq__(self):
         node = self._make_one()
         with pytest.raises(NotImplementedError):
-            node == None
+            node == None  # noqa: E711
 
     def test___ne__(self):
         node = self._make_one()
         with pytest.raises(NotImplementedError):
-            node != None
+            node != None  # noqa: E711
 
     def test___le__(self):
         node = self._make_one()
