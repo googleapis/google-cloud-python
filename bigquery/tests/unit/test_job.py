@@ -789,13 +789,27 @@ class Test_AsyncJob(unittest.TestCase):
 
     @mock.patch("google.api_core.future.polling.PollingFuture.result")
     def test_result_default_wo_state(self, result):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)
         begin = job._begin = mock.Mock()
 
         self.assertIs(job.result(), result.return_value)
 
-        begin.assert_called_once()
+        begin.assert_called_once_with(retry=DEFAULT_RETRY)
+        result.assert_called_once_with(timeout=None)
+
+    @mock.patch('google.api_core.future.polling.PollingFuture.result')
+    def test_result_w_retry_wo_state(self, result):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        begin = job._begin = mock.Mock()
+        retry = mock.Mock()
+
+        self.assertIs(job.result(retry=retry), result.return_value)
+
+        begin.assert_called_once_with(retry=retry)
         result.assert_called_once_with(timeout=None)
 
     @mock.patch("google.api_core.future.polling.PollingFuture.result")
