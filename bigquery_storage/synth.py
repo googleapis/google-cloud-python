@@ -18,7 +18,11 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
+common = gcp.CommonTemplates()
 
+# ----------------------------------------------------------------------------
+# Generate bigquery_storage GAPIC layer
+# ----------------------------------------------------------------------------
 version = 'v1'
 
 library = gapic.py_library(
@@ -111,3 +115,11 @@ s.replace(
     'google.api_core.grpc_helpers.create_channel(  # pragma: no cover',
 )
 # END: Ignore lint and coverage
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(unit_cov_level=97, cov_level=100)
+s.move(templated_files)
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)
