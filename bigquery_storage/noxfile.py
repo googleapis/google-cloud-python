@@ -68,6 +68,8 @@ def default(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", ".")
+    session.install("-e", "pandas")
+    session.install("-e", "fastavro")
 
     # Run py.test against the unit tests.
     session.run(
@@ -114,6 +116,8 @@ def system(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", "../test_utils/")
+    session.install("-e", "pandas")
+    session.install("-e", "fastavro")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
@@ -134,3 +138,22 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
+
+
+@nox.session(python='3.6')
+def docs(session):
+    """Build the docs."""
+    session.install('sphinx', 'sphinx_rtd_theme')
+    session.install('-e', '.[pandas,fastavro]')
+    shutil.rmtree(os.path.join('docs', '_build'), ignore_errors=True)
+    session.run(
+        'sphinx-build',
+        '-W',  # warnings as errors
+        '-T',  # show full traceback on exception
+        '-N',  # no colors
+        '-b', 'html',
+        '-d', os.path.join('docs', '_build', 'doctrees', ''),
+        os.path.join('docs', ''),
+        os.path.join('docs', '_build', 'html', ''),
+    )
+

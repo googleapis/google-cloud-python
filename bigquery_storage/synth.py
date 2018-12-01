@@ -119,7 +119,34 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=97, cov_level=100)
+templated_files = common.py_library(
+    unit_cov_level=97, cov_level=100,
+    system_test_dependencies=["pandas", "fastavro"],
+    unit_test_dependencies=["pandas", "fastavro"],
+)
 s.move(templated_files)
+
+s.replace(
+    'noxfile.py',
+    "session.run\(\"coverage\", \"erase\"\)",
+    "\g<0>\n\n"
+    '''
+@nox.session(python='3.6')
+def docs(session):
+    """Build the docs."""
+    session.install('sphinx', 'sphinx_rtd_theme')
+    session.install('-e', '.[pandas,fastavro]')
+    shutil.rmtree(os.path.join('docs', '_build'), ignore_errors=True)
+    session.run(
+        'sphinx-build',
+        '-W',  # warnings as errors
+        '-T',  # show full traceback on exception
+        '-N',  # no colors
+        '-b', 'html',
+        '-d', os.path.join('docs', '_build', 'doctrees', ''),
+        os.path.join('docs', ''),
+        os.path.join('docs', '_build', 'html', ''),
+    )
+''')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
