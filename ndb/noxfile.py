@@ -69,6 +69,25 @@ def cover(session):
 
 
 @nox.session(py=DEFAULT_INTERPRETER)
+def lint(session):
+    """Run linters.
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install("flake8", "black")
+    session.run(
+        "black",
+        "--check",
+        "--line-length=79",
+        get_path("docs"),
+        get_path("noxfile.py"),
+        get_path("src"),
+        get_path("tests"),
+    )
+    session.run("flake8", "google", "tests")
+
+
+@nox.session(py=DEFAULT_INTERPRETER)
 def blacken(session):
     # Install all dependencies.
     session.install("black")
