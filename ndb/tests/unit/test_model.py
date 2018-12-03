@@ -2789,6 +2789,22 @@ def test__entity_from_protobuf():
     assert entity.e == [gherkin, dill]
 
 
+def test__entity_from_protobuf_model_has_constructor():
+    class ThisKind(model.Model):
+        a = model.IntegerProperty()
+
+        def __init__(self, somearg):
+            pass
+
+    key = datastore.Key("ThisKind", 123, project="testing")
+    datastore_entity = datastore.Entity(key=key)
+    datastore_entity.update({"a": 43})
+    protobuf = helpers.entity_to_protobuf(datastore_entity)
+    entity = model._entity_from_protobuf(protobuf)
+    assert isinstance(entity, ThisKind)
+    assert entity.a == 43
+
+
 class TestExpando:
     @staticmethod
     def test_constructor():
