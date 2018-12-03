@@ -592,20 +592,17 @@ class Query(object):
             raise ValueError(msg)
 
         _transform_bases = (transforms.Sentinel, transforms._ValueList)
-        for field in document_fields:
+
+        for index, key_field in enumerate(zip(order_keys, document_fields)):
+            key, field = key_field
+
             if isinstance(field, _transform_bases):
                 msg = _INVALID_CURSOR_TRANSFORM
                 raise ValueError(msg)
 
-        try:
-            name_index = order_keys.index("__name__")
-        except ValueError:
-            pass
-        else:
-            name = document_fields[name_index]
-            if "/" not in name:
-                document_fields[name_index] = "{}/{}/{}".format(
-                    self._client._database_string, "/".join(self._parent._path), name
+            if key == "__name__" and "/" not in field:
+                document_fields[index] = "{}/{}/{}".format(
+                    self._client._database_string, "/".join(self._parent._path), field
                 )
 
         return document_fields, before
