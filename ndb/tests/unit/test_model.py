@@ -2745,10 +2745,17 @@ class TestModel:
         class ThisKind(model.Model):
             pass
 
+        assert model.Model._lookup_model("ThisKind") is ThisKind
+
+    @pytest.mark.usefixtures("property_clean_cache")
+    @staticmethod
+    def test__lookup_model_use_default():
         sentinel = object()
-        assert model.Model._lookup_model("ThisKind")
         assert model.Model._lookup_model("NoKind", sentinel) is sentinel
 
+    @pytest.mark.usefixtures("property_clean_cache")
+    @staticmethod
+    def test__lookup_model_not_found():
         with pytest.raises(model.KindError):
             model.Model._lookup_model("NoKind")
 
