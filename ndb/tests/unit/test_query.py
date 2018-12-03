@@ -51,7 +51,7 @@ class TestParameterizedThing:
     def test___eq__():
         thing = query.ParameterizedThing()
         with pytest.raises(NotImplementedError):
-            thing == None  # noqa: E711
+            thing == unittest.mock.sentinel.other
 
     @staticmethod
     def test___ne__():
