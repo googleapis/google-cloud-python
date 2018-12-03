@@ -59,6 +59,7 @@ def main():
         version="0.0.1",
         description="A python wrapper of the C library 'Google CRC32C'",
         long_description=readme,
+        long_description_content_type="text/markdown",
         author="Google LLC",
         author_email="googleapis-packages@oogle.com",
         scripts=(),
