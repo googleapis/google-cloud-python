@@ -10,7 +10,6 @@ Core
     retry
     timeout
     page_iterator
-    iam
     operation
     operations_client
     path_template
