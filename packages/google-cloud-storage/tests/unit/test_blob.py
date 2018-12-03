@@ -1884,7 +1884,7 @@ class Test_Blob(unittest.TestCase):
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
         from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
         from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
-        from google.cloud.iam import Policy
+        from google.api_core.iam import Policy
 
         BLOB_NAME = "blob-name"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
@@ -1935,7 +1935,7 @@ class Test_Blob(unittest.TestCase):
         )
 
     def test_get_iam_policy_w_user_project(self):
-        from google.cloud.iam import Policy
+        from google.api_core.iam import Policy
 
         BLOB_NAME = "blob-name"
         USER_PROJECT = "user-project-123"
@@ -1979,7 +1979,7 @@ class Test_Blob(unittest.TestCase):
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
         from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
         from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
-        from google.cloud.iam import Policy
+        from google.api_core.iam import Policy
 
         BLOB_NAME = "blob-name"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
@@ -2029,7 +2029,7 @@ class Test_Blob(unittest.TestCase):
             self.assertEqual(sorted(found["members"]), sorted(expected["members"]))
 
     def test_set_iam_policy_w_user_project(self):
-        from google.cloud.iam import Policy
+        from google.api_core.iam import Policy
 
         BLOB_NAME = "blob-name"
         USER_PROJECT = "user-project-123"
