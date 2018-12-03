@@ -1588,6 +1588,15 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.time_partitioning)
         self.assertNotIn("timePartitioning", config._properties["load"])
 
+    def test_use_avro_logical_types(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.use_avro_logical_types)
+
+    def test_use_avro_logical_types_setter(self):
+        config = self._get_target_class()()
+        config.use_avro_logical_types = True
+        self.assertTrue(config._properties["load"]["useAvroLogicalTypes"])
+
     def test_write_disposition_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.write_disposition)
