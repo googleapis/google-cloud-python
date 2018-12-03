@@ -1588,6 +1588,15 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.time_partitioning)
         self.assertNotIn("timePartitioning", config._properties["load"])
 
+    def test_use_avro_logical_types(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.use_avro_logical_types)
+
+    def test_use_avro_logical_types_setter(self):
+        config = self._get_target_class()()
+        config.use_avro_logical_types = True
+        self.assertTrue(config._properties["load"]["useAvroLogicalTypes"])
+
     def test_write_disposition_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.write_disposition)
@@ -1663,6 +1672,10 @@ class TestLoadJob(unittest.TestCase, _Base):
             self.assertEqual(job.ignore_unknown_values, config["ignoreUnknownValues"])
         else:
             self.assertIsNone(job.ignore_unknown_values)
+        if "useAvroLogicalTypes" in config:
+            self.assertEqual(job.use_avro_logical_types, config["useAvroLogicalTypes"])
+        else:
+            self.assertIsNone(job.use_avro_logical_types)
 
     def _verifyEnumConfigProperties(self, job, config):
         if "createDisposition" in config:
@@ -1765,6 +1778,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.destination_encryption_configuration)
         self.assertIsNone(job.time_partitioning)
+        self.assertIsNone(job.use_avro_logical_types)
         self.assertIsNone(job.clustering_fields)
         self.assertIsNone(job.schema_update_options)
 
@@ -2097,6 +2111,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             "quote": "'",
             "skipLeadingRows": "1",
             "sourceFormat": "CSV",
+            "useAvroLogicalTypes": True,
             "writeDisposition": WriteDisposition.WRITE_TRUNCATE,
             "schema": {
                 "fields": [
@@ -2139,6 +2154,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         config.quote_character = "'"
         config.skip_leading_rows = 1
         config.source_format = "CSV"
+        config.use_avro_logical_types = True
         config.write_disposition = WriteDisposition.WRITE_TRUNCATE
         config.schema_update_options = [SchemaUpdateOption.ALLOW_FIELD_ADDITION]
 
