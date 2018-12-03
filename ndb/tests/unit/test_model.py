@@ -1370,7 +1370,7 @@ class TestModelKey:
     def test_compare_invalid():
         prop = model.ModelKey()
         with pytest.raises(exceptions.BadValueError):
-            prop == None  # noqa: E711
+            prop == unittest.mock.sentinel.other
 
     @staticmethod
     def test__validate():
