@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 5907c7c documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 2842fa8 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -63,7 +63,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_NOW</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iam</span> <span class="k">import</span> <span class="n">Policy</span>
+<span class="kn">from</span> <span class="nn">google.api_core.iam</span> <span class="k">import</span> <span class="n">Policy</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage</span> <span class="k">import</span> <span class="n">_signing</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_scalar_property</span>
@@ -1598,7 +1598,7 @@
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.iam.Policy`</span>
+<span class="sd">        :rtype: :class:`google.api_core.iam.Policy`</span>
 <span class="sd">        :returns: the policy instance, based on the resource returned from</span>
 <span class="sd">                  the ``getIamPolicy`` API request.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1624,7 +1624,7 @@
 
 <span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
 
-<span class="sd">        :type policy: :class:`google.cloud.iam.Policy`</span>
+<span class="sd">        :type policy: :class:`google.api_core.iam.Policy`</span>
 <span class="sd">        :param policy: policy instance used to update bucket&#39;s IAM policy.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
@@ -1632,7 +1632,7 @@
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.iam.Policy`</span>
+<span class="sd">        :rtype: :class:`google.api_core.iam.Policy`</span>
 <span class="sd">        :returns: the policy instance, based on the resource returned from</span>
 <span class="sd">                  the ``setIamPolicy`` API request.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
