@@ -45,6 +45,7 @@ google.cloud.bigquery.job.LoadJobConfig
    ~LoadJobConfig.skip_leading_rows
    ~LoadJobConfig.source_format
    ~LoadJobConfig.time_partitioning
+   ~LoadJobConfig.use_avro_logical_types
    ~LoadJobConfig.write_disposition
 
 

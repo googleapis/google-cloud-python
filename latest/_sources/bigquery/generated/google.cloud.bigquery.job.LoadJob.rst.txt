@@ -93,6 +93,7 @@ google.cloud.bigquery.job.LoadJob
    ~LoadJob.started
    ~LoadJob.state
    ~LoadJob.time_partitioning
+   ~LoadJob.use_avro_logical_types
    ~LoadJob.user_email
    ~LoadJob.write_disposition
 
