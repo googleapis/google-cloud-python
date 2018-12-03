@@ -1621,6 +1621,8 @@ def test_load_table_from_uri_truncate(client, to_delete, capsys):
     table_ref = dataset.table("us_states")
     body = six.BytesIO(b"Washington,WA")
     client.load_table_from_file(body, table_ref, job_config=job_config).result()
+    previous_rows = client.get_table(table_ref).num_rows
+    assert previous_rows > 0
 
     # Shared code
     # [START bigquery_load_table_gcs_avro_truncate]
@@ -1631,9 +1633,6 @@ def test_load_table_from_uri_truncate(client, to_delete, capsys):
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('existing_table')
-
-    previous_rows = client.get_table(table_ref).num_rows
-    assert previous_rows > 0
 
     job_config = bigquery.LoadJobConfig()
     job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
