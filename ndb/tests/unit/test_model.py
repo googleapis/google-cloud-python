@@ -2739,6 +2739,7 @@ class TestModel:
         with pytest.raises(NotImplementedError):
             entity._put()
 
+    @pytest.mark.usefixtures("property_clean_cache")
     @staticmethod
     def test__lookup_model():
         class ThisKind(model.Model):
