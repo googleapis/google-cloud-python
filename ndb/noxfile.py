@@ -68,6 +68,24 @@ def cover(session):
     session.run("coverage", "erase")
 
 
+def run_black(session, use_check=False):
+    args = ["black"]
+    if use_check:
+        args.append("--check")
+
+    args.extend(
+        [
+            "--line-length=79",
+            get_path("docs"),
+            get_path("noxfile.py"),
+            get_path("src"),
+            get_path("tests"),
+        ]
+    )
+
+    session.run(*args)
+
+
 @nox.session(py=DEFAULT_INTERPRETER)
 def lint(session):
     """Run linters.
@@ -75,15 +93,7 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", "black")
-    session.run(
-        "black",
-        "--check",
-        "--line-length=79",
-        get_path("docs"),
-        get_path("noxfile.py"),
-        get_path("src"),
-        get_path("tests"),
-    )
+    run_black(session, use_check=True)
     session.run("flake8", "google", "tests")
 
 
@@ -92,14 +102,7 @@ def blacken(session):
     # Install all dependencies.
     session.install("black")
     # Run ``black``.
-    session.run(
-        "black",
-        "--line-length=79",
-        get_path("docs"),
-        get_path("noxfile.py"),
-        get_path("src"),
-        get_path("tests"),
-    )
+    run_black(session)
 
 
 @nox.session(py=DEFAULT_INTERPRETER)
