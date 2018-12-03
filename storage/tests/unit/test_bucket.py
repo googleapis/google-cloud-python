@@ -1613,7 +1613,7 @@ class Test_Bucket(unittest.TestCase):
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
         from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
         from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
-        from google.cloud.iam import Policy
+        from google.api_core.iam import Policy
 
         NAME = "name"
         PATH = "/b/%s" % (NAME,)
@@ -1656,7 +1656,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["query_params"], {})
 
     def test_get_iam_policy_w_user_project(self):
-        from google.cloud.iam import Policy
+        from google.api_core.iam import Policy
 
         NAME = "name"
         USER_PROJECT = "user-project-123"
@@ -1692,7 +1692,7 @@ class Test_Bucket(unittest.TestCase):
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
         from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
         from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
-        from google.cloud.iam import Policy
+        from google.api_core.iam import Policy
 
         NAME = "name"
         PATH = "/b/%s" % (NAME,)
@@ -1744,7 +1744,7 @@ class Test_Bucket(unittest.TestCase):
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
         from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
         from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
-        from google.cloud.iam import Policy
+        from google.api_core.iam import Policy
 
         NAME = "name"
         USER_PROJECT = "user-project-123"
