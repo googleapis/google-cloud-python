@@ -261,6 +261,14 @@ class Query(object):
             end_at=self._end_at,
         )
 
+    @staticmethod
+    def _make_order(field_path, direction):
+        """Helper for :meth:`order_by`."""
+        return query_pb2.StructuredQuery.Order(
+            field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
+            direction=_enum_from_direction(direction),
+        )
+
     def order_by(self, field_path, direction=ASCENDING):
         """Modify the query to add an order clause on a specific field.
 
@@ -290,10 +298,7 @@ class Query(object):
         """
         _helpers.split_field_path(field_path)  # raises
 
-        order_pb = query_pb2.StructuredQuery.Order(
-            field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
-            direction=_enum_from_direction(direction),
-        )
+        order_pb = self._make_order(field_path, direction)
 
         new_orders = self._orders + (order_pb,)
         return self.__class__(
@@ -387,7 +392,10 @@ class Query(object):
         if isinstance(document_fields, tuple):
             document_fields = list(document_fields)
         elif isinstance(document_fields, document.DocumentSnapshot):
-            document_fields = document_fields.to_dict()
+            if document_fields.reference._path[:-1] != self._parent._path:
+                raise ValueError(
+                    "Cannot use snapshot from another collection as a cursor."
+                )
         else:
             # NOTE: We copy so that the caller can't modify after calling.
             document_fields = copy.deepcopy(document_fields)
@@ -563,6 +571,40 @@ class Query(object):
 
         return projection
 
+    def _normalize_orders(self):
+        """Helper:  adjust orders based on cursors, where clauses."""
+        orders = list(self._orders)
+        _has_snapshot_cursor = False
+
+        if self._start_at:
+            if isinstance(self._start_at[0], document.DocumentSnapshot):
+                _has_snapshot_cursor = True
+
+        if self._end_at:
+            if isinstance(self._end_at[0], document.DocumentSnapshot):
+                _has_snapshot_cursor = True
+
+        if _has_snapshot_cursor:
+            should_order = [
+                _enum_from_op_string(key)
+                for key in _COMPARISON_OPERATORS
+                if key not in (_EQ_OP, "array_contains")
+            ]
+            order_keys = [order.field.field_path for order in orders]
+            for filter_ in self._field_filters:
+                field = filter_.field.field_path
+                if filter_.op in should_order and field not in order_keys:
+                    orders.append(self._make_order(field, "ASCENDING"))
+            if not orders:
+                orders.append(self._make_order("__name__", "ASCENDING"))
+            else:
+                order_keys = [order.field.field_path for order in orders]
+                if "__name__" not in order_keys:
+                    direction = orders[-1].direction  # enum?
+                    orders.append(self._make_order("__name__", direction))
+
+        return orders
+
     def _normalize_cursor(self, cursor, orders):
         """Helper: convert cursor to a list of values based on orders."""
         if cursor is None:
@@ -574,6 +616,11 @@ class Query(object):
         document_fields, before = cursor
 
         order_keys = [order.field.field_path for order in orders]
+
+        if isinstance(document_fields, document.DocumentSnapshot):
+            snapshot = document_fields
+            document_fields = snapshot.to_dict()
+            document_fields["__name__"] = snapshot.reference
 
         if isinstance(document_fields, dict):
             # Transform to list using orders
@@ -615,8 +662,9 @@ class Query(object):
             query protobuf.
         """
         projection = self._normalize_projection(self._projection)
-        start_at = self._normalize_cursor(self._start_at, self._orders)
-        end_at = self._normalize_cursor(self._end_at, self._orders)
+        orders = self._normalize_orders()
+        start_at = self._normalize_cursor(self._start_at, orders)
+        end_at = self._normalize_cursor(self._end_at, orders)
 
         query_kwargs = {
             "select": projection,
@@ -626,7 +674,7 @@ class Query(object):
                 )
             ],
             "where": self._filters_pb(),
-            "order_by": self._orders,
+            "order_by": orders,
             "start_at": _cursor_pb(start_at),
             "end_at": _cursor_pb(end_at),
         }
@@ -824,6 +872,9 @@ def _enum_from_direction(direction):
     Raises:
         ValueError: If ``direction`` is not a valid direction.
     """
+    if isinstance(direction, int):
+        return direction
+
     if direction == Query.ASCENDING:
         return enums.StructuredQuery.Direction.ASCENDING
     elif direction == Query.DESCENDING:
