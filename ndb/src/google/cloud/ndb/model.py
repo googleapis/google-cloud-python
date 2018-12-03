@@ -3654,8 +3654,8 @@ class Model(metaclass=MetaModel):
 
         Args:
             kind (str): The name of the kind to look up.
-            default_model: The model class to return if the kind can't be
-                found.
+            default_model (Optional[type]): The model class to return if the
+                kind can't be found.
 
         Returns:
             type: The model class for the requested kind or the default model.
