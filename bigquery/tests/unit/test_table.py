@@ -1683,3 +1683,8 @@ class TestTimePartitioning(unittest.TestCase):
             "type=DAY)"
         )
         self.assertEqual(repr(time_partitioning), expected)
+
+    def test_set_expiration_w_none(self):
+        time_partitioning = self._make_one()
+        time_partitioning.expiration_ms = None
+        assert time_partitioning._properties["expirationMs"] is None
