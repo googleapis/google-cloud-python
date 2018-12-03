@@ -28,7 +28,7 @@ from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
-from google.cloud.iam import Policy
+from google.api_core.iam import Policy
 from google.cloud.storage import _signing
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
@@ -1563,7 +1563,7 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`google.cloud.iam.Policy`
+        :rtype: :class:`google.api_core.iam.Policy`
         :returns: the policy instance, based on the resource returned from
                   the ``getIamPolicy`` API request.
         """
@@ -1589,7 +1589,7 @@ class Bucket(_PropertyMixin):
 
         If :attr:`user_project` is set, bills the API request to that project.
 
-        :type policy: :class:`google.cloud.iam.Policy`
+        :type policy: :class:`google.api_core.iam.Policy`
         :param policy: policy instance used to update bucket's IAM policy.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -1597,7 +1597,7 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`google.cloud.iam.Policy`
+        :rtype: :class:`google.api_core.iam.Policy`
         :returns: the policy instance, based on the resource returned from
                   the ``setIamPolicy`` API request.
         """
