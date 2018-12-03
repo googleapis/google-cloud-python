@@ -1335,7 +1335,10 @@ class TimePartitioning(object):
 
     @expiration_ms.setter
     def expiration_ms(self, value):
-        self._properties["expirationMs"] = str(value)
+        if value is not None:
+            # Allow explicitly setting the expiration to None.
+            value = str(value)
+        self._properties["expirationMs"] = value
 
     @property
     def require_partition_filter(self):
