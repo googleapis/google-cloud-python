@@ -288,7 +288,7 @@ def _entity_from_protobuf(protobuf):
     ds_entity = helpers.entity_from_protobuf(protobuf)
     model_class = Model._lookup_model(ds_entity.kind)
     entity = model_class()
-    entity.key = key_module.Key._from_ds_key(ds_entity.key)
+    entity._key = key_module.Key._from_ds_key(ds_entity.key)
     for name, value in ds_entity.items():
         prop = getattr(model_class, name, None)
         if not (prop and isinstance(prop, Property)):

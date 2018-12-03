@@ -2787,6 +2787,8 @@ def test__entity_from_protobuf():
     assert entity.c == gherkin
     assert entity.d == ["foo", "bar", "baz"]
     assert entity.e == [gherkin, dill]
+    assert entity._key.kind() == "ThisKind"
+    assert entity._key.id() == 123
 
 
 def test__entity_from_protobuf_model_has_constructor():
@@ -2803,6 +2805,21 @@ def test__entity_from_protobuf_model_has_constructor():
     entity = model._entity_from_protobuf(protobuf)
     assert isinstance(entity, ThisKind)
     assert entity.a == 43
+
+
+def test__entity_from_protobuf_w_property_named_key():
+    class ThisKind(model.Model):
+        key = model.StringProperty()
+
+    key = datastore.Key("ThisKind", 123, project="testing")
+    datastore_entity = datastore.Entity(key=key)
+    datastore_entity.update({"key": "luck"})
+    protobuf = helpers.entity_to_protobuf(datastore_entity)
+    entity = model._entity_from_protobuf(protobuf)
+    assert isinstance(entity, ThisKind)
+    assert entity.key == "luck"
+    assert entity._key.kind() == "ThisKind"
+    assert entity._key.id() == 123
 
 
 class TestExpando:
