@@ -22,7 +22,7 @@ description = 'Cloud Vision API API client library'
 version = '0.35.1'
 release_status = 'Development Status :: 4 - Beta'
 dependencies = [
-    'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
+    'google-api-core[grpc] >= 1.6.0, < 2.0.0dev',
     'enum34; python_version < "3.4"',
 ]
 
