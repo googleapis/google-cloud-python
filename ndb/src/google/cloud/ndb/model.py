@@ -3650,7 +3650,7 @@ class Model(metaclass=MetaModel):
 
     @classmethod
     def _lookup_model(cls, kind, default_model=None):
-        """Get the model class for  the given kind.
+        """Get the model class for the given kind.
 
         Args:
             kind (str): The name of the kind to look up.
@@ -3658,10 +3658,10 @@ class Model(metaclass=MetaModel):
                 found.
 
         Returns:
-            class: The model class for the requested kind or the default model.
+            type: The model class for the requested kind or the default model.
 
         Raises:
-            .KindError: If the kind was not found and no default_model was
+            .KindError: If the kind was not found and no ``default_model`` was
                 provided.
         """
         model_class = cls._kind_map.get(kind, default_model)

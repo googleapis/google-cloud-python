@@ -128,9 +128,9 @@ The primary differences come from:
 One of the largest classes of differences comes from the use of the current
 Datastore API, rather than the legacy App Engine Datastore. In general, for
 users coding to the public interface, this won't be an issue, but users relying
-on pieces of the onstensibly private API that are exposed to the bare metal of
+on pieces of the ostensibly private API that are exposed to the bare metal of
 the original datastore implementation will have to rewrite those pieces.
-Specifically, any function or method that dealt directly with protobuffers will
+Specifically, any function or method that dealt directly with protocol buffers will
 no longer work. Datastore, itself, has moved to gRPC and protobuffers
 themselves are significantly different from legacy Datastore.  Additionally,
 this version of NDB makes less direct use of protobuffers and relies more
@@ -145,7 +145,7 @@ significant internal refactoring.
   protobuffers, work which is now delegated to Datastore.
 - `Model._deserialize` is no longer used. It worked directly with protobuffers,
   so wasn't really salvageable. Unfortunately, there were comments indicating
-  was overridden by subclasses. Hopefully this isn't broadly the case.
+  it was overridden by subclasses. Hopefully this isn't broadly the case.
 
 ## Comments
 

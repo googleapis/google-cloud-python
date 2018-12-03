@@ -2781,7 +2781,7 @@ def test__entity_from_protobuf():
     )
     protobuf = helpers.entity_to_protobuf(datastore_entity)
     entity = model._entity_from_protobuf(protobuf)
-    assert type(entity) is ThisKind
+    assert isinstance(entity, ThisKind)
     assert entity.a == 42
     assert entity.b is None
     assert entity.c == gherkin
