@@ -12,11 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import itertools
 import unittest
 
 import mock
+import pytest
 import six
 
+try:
+    from google.cloud import bigquery_storage_v1beta1
+except ImportError:  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
 try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
@@ -1688,3 +1694,102 @@ class TestTimePartitioning(unittest.TestCase):
         time_partitioning = self._make_one()
         time_partitioning.expiration_ms = None
         assert time_partitioning._properties["expirationMs"] is None
+
+
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+def test_table_reference_to_bqstorage():
+    from google.protobuf import timestamp_pb2
+    from google.cloud.bigquery import table as mut
+
+    # Can't use parametrized pytest because bigquery_storage_v1beta1 may not be
+    # available.
+    ts1234567890 = timestamp_pb2.Timestamp()
+    ts1234567890.FromMilliseconds(1234567890)
+    cases = (
+        (
+            "my-project.my_dataset.my_table",
+            None,
+            (
+                bigquery_storage_v1beta1.types.TableReference(
+                    project_id="my-project",
+                    dataset_id="my_dataset",
+                    table_id="my_table",
+                ),
+                bigquery_storage_v1beta1.types.TableModifiers(),
+                bigquery_storage_v1beta1.types.TableReadOptions(),
+            ),
+        ),
+        (
+            "my-project.my_dataset.my_table",
+            (mut.SchemaField("col_name", "IGNORED"),),
+            (
+                bigquery_storage_v1beta1.types.TableReference(
+                    project_id="my-project",
+                    dataset_id="my_dataset",
+                    table_id="my_table",
+                ),
+                bigquery_storage_v1beta1.types.TableModifiers(),
+                bigquery_storage_v1beta1.types.TableReadOptions(
+                    selected_fields=["col_name"]
+                ),
+            ),
+        ),
+        (
+            "my-project.my_dataset.my_table$20181225",
+            None,
+            (
+                bigquery_storage_v1beta1.types.TableReference(
+                    project_id="my-project",
+                    dataset_id="my_dataset",
+                    table_id="my_table",
+                ),
+                bigquery_storage_v1beta1.types.TableModifiers(),
+                bigquery_storage_v1beta1.types.TableReadOptions(
+                    row_restriction="_PARTITIONTIME = TIMESTAMP('2018-12-25')"
+                ),
+            ),
+        ),
+        (
+            "my-project.my_dataset.my_table@1234567890",
+            None,
+            (
+                bigquery_storage_v1beta1.types.TableReference(
+                    project_id="my-project",
+                    dataset_id="my_dataset",
+                    table_id="my_table",
+                ),
+                bigquery_storage_v1beta1.types.TableModifiers(
+                    snapshot_time=ts1234567890
+                ),
+                bigquery_storage_v1beta1.types.TableReadOptions(),
+            ),
+        ),
+        (
+            "my-project.my_dataset.my_table$20181225@1234567890",
+            None,
+            (
+                bigquery_storage_v1beta1.types.TableReference(
+                    project_id="my-project",
+                    dataset_id="my_dataset",
+                    table_id="my_table",
+                ),
+                bigquery_storage_v1beta1.types.TableModifiers(
+                    snapshot_time=ts1234567890
+                ),
+                bigquery_storage_v1beta1.types.TableReadOptions(
+                    row_restriction="_PARTITIONTIME = TIMESTAMP('2018-12-25')"
+                ),
+            ),
+        ),
+    )
+
+    classes = (mut.TableReference, mut.Table, mut.TableListItem)
+
+    for case, cls in itertools.product(cases, classes):
+        table_string, selected_fields, expected = case
+        got = cls.from_string(table_string).to_bqstorage(
+            selected_fields=selected_fields
+        )
+        assert got == expected
