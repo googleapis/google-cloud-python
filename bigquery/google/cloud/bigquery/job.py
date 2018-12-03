@@ -1196,6 +1196,18 @@ class LoadJobConfig(_JobConfig):
             self._del_sub_prop("timePartitioning")
 
     @property
+    def use_avro_logical_types(self):
+        """bool: For loads of Avro data, governs whether Avro logical types are
+        converted to their corresponding BigQuery types(e.g. TIMESTAMP) rather than
+        raw types (e.g. INTEGER).
+        """
+        return self._get_sub_prop("useAvroLogicalTypes")
+
+    @use_avro_logical_types.setter
+    def use_avro_logical_types(self, value):
+        self._set_sub_prop("useAvroLogicalTypes", bool(value))
+
+    @property
     def write_disposition(self):
         """google.cloud.bigquery.job.WriteDisposition: Action that occurs if
         the destination table already exists.
@@ -1361,6 +1373,13 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.time_partitioning`.
         """
         return self._configuration.time_partitioning
+
+    @property
+    def use_avro_logical_types(self):
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.use_avro_logical_types`.
+        """
+        return self._configuration.use_avro_logical_types
 
     @property
     def clustering_fields(self):
