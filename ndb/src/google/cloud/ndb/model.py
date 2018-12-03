@@ -3682,7 +3682,7 @@ class Model(metaclass=MetaModel):
         Raises:
             TypeError: Always, to emphasize that entities are mutable.
         """
-        raise TypeError("Model is not immutable")
+        raise TypeError("Model is mutable, so cannot be hashed.")
 
     def __eq__(self, other):
         """Compare two entities of the same class for equality."""
