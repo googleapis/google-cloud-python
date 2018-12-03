@@ -143,7 +143,7 @@ class TestNode:
     def test___eq__(self):
         node = self._make_one()
         with pytest.raises(NotImplementedError):
-            node == None  # noqa: E711
+            node == unittest.mock.sentinel.other
 
     def test___ne__(self):
         node = self._make_one()
