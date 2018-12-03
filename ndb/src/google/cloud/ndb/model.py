@@ -172,10 +172,6 @@ class IndexProperty:
             return NotImplemented
         return self.name == other.name and self.direction == other.direction
 
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
-
     def __hash__(self):
         return hash((self.name, self.direction))
 
@@ -223,10 +219,6 @@ class Index:
             and self.properties == other.properties
             and self.ancestor == other.ancestor
         )
-
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
 
     def __hash__(self):
         return hash((self.kind, self.properties, self.ancestor))
@@ -279,10 +271,6 @@ class IndexState:
             and self.state == other.state
             and self.id == other.id
         )
-
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
 
     def __hash__(self):
         return hash((self.definition, self.state, self.id))
@@ -348,10 +336,6 @@ class _BaseValue:
             return NotImplemented
 
         return self.b_val == other.b_val
-
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
 
     def __hash__(self):
         raise TypeError("_BaseValue is not immutable")
@@ -1839,10 +1823,6 @@ class _CompressedValue:
             return NotImplemented
 
         return self.z_val == other.z_val
-
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
 
     def __hash__(self):
         raise TypeError("_CompressedValue is not immutable")
@@ -3729,10 +3709,6 @@ class Model(metaclass=MetaModel):
                 return False
 
         return True
-
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
 
     def __lt__(self, value):
         """The ``<`` comparison is not well-defined."""
