@@ -57,7 +57,7 @@ class TestParameterizedThing:
     def test___ne__():
         thing = query.ParameterizedThing()
         with pytest.raises(NotImplementedError):
-            thing != None  # noqa: E711
+            thing != unittest.mock.sentinel.other
 
 
 class TestParameter:
