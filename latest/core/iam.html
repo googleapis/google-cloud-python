@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Identity and Access Management &#8212; google-cloud b69461c documentation</title>
+    <title>Identity and Access Management &#8212; google-cloud 689486f documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -34,26 +34,26 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-google.cloud.iam">
-<span id="identity-and-access-management"></span><h1>Identity and Access Management<a class="headerlink" href="#module-google.cloud.iam" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="module-google.api_core.iam">
+<span id="identity-and-access-management"></span><h1>Identity and Access Management<a class="headerlink" href="#module-google.api_core.iam" title="Permalink to this headline">#</a></h1>
 <p>Non-API-specific IAM policy definitions</p>
 <p>For allowed roles / permissions, see:
 <a class="reference external" href="https://cloud.google.com/iam/docs/understanding-roles">https://cloud.google.com/iam/docs/understanding-roles</a></p>
 <dl class="data">
-<dt id="google.cloud.iam.EDITOR_ROLE">
-<code class="descclassname">google.cloud.iam.</code><code class="descname">EDITOR_ROLE</code><em class="property"> = 'roles/editor'</em><a class="headerlink" href="#google.cloud.iam.EDITOR_ROLE" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.EDITOR_ROLE">
+<code class="descclassname">google.api_core.iam.</code><code class="descname">EDITOR_ROLE</code><em class="property"> = 'roles/editor'</em><a class="headerlink" href="#google.api_core.iam.EDITOR_ROLE" title="Permalink to this definition">#</a></dt>
 <dd><p>Generic role implying rights to modify an object.</p>
 </dd></dl>
 
 <dl class="data">
-<dt id="google.cloud.iam.OWNER_ROLE">
-<code class="descclassname">google.cloud.iam.</code><code class="descname">OWNER_ROLE</code><em class="property"> = 'roles/owner'</em><a class="headerlink" href="#google.cloud.iam.OWNER_ROLE" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.OWNER_ROLE">
+<code class="descclassname">google.api_core.iam.</code><code class="descname">OWNER_ROLE</code><em class="property"> = 'roles/owner'</em><a class="headerlink" href="#google.api_core.iam.OWNER_ROLE" title="Permalink to this definition">#</a></dt>
 <dd><p>Generic role implying all rights to an object.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.iam.Policy">
-<em class="property">class </em><code class="descclassname">google.cloud.iam.</code><code class="descname">Policy</code><span class="sig-paren">(</span><em>etag=None</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy">
+<em class="property">class </em><code class="descclassname">google.api_core.iam.</code><code class="descname">Policy</code><span class="sig-paren">(</span><em>etag=None</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableMapping" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableMapping</span></code></a></p>
 <p>IAM Policy</p>
 <p>See
@@ -71,8 +71,8 @@
 </tbody>
 </table>
 <dl class="staticmethod">
-<dt id="google.cloud.iam.Policy.all_users">
-<em class="property">static </em><code class="descname">all_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.all_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.all_users" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.all_users">
+<em class="property">static </em><code class="descname">all_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.all_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.all_users" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory method for a member representing all users.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -87,8 +87,8 @@
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="google.cloud.iam.Policy.authenticated_users">
-<em class="property">static </em><code class="descname">authenticated_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.authenticated_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.authenticated_users" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.authenticated_users">
+<em class="property">static </em><code class="descname">authenticated_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.authenticated_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.authenticated_users" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory method for a member representing all authenticated users.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -103,8 +103,8 @@
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="google.cloud.iam.Policy.domain">
-<em class="property">static </em><code class="descname">domain</code><span class="sig-paren">(</span><em>domain</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.domain" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.domain">
+<em class="property">static </em><code class="descname">domain</code><span class="sig-paren">(</span><em>domain</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory method for a domain member.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -121,14 +121,14 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.iam.Policy.editors">
-<code class="descname">editors</code><a class="headerlink" href="#google.cloud.iam.Policy.editors" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.editors">
+<code class="descname">editors</code><a class="headerlink" href="#google.api_core.iam.Policy.editors" title="Permalink to this definition">#</a></dt>
 <dd><p>Legacy access to editor role.</p>
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="google.cloud.iam.Policy.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a policy from the resource returned from the API.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -136,7 +136,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – resource returned from the <code class="docutils literal notranslate"><span class="pre">getIamPolicy</span></code> API.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.api_core.iam.Policy" title="google.api_core.iam.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the parsed policy</td>
 </tr>
@@ -145,8 +145,8 @@
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="google.cloud.iam.Policy.group">
-<em class="property">static </em><code class="descname">group</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.group" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.group">
+<em class="property">static </em><code class="descname">group</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.group" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory method for a group member.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -163,14 +163,14 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.iam.Policy.owners">
-<code class="descname">owners</code><a class="headerlink" href="#google.cloud.iam.Policy.owners" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.owners">
+<code class="descname">owners</code><a class="headerlink" href="#google.api_core.iam.Policy.owners" title="Permalink to this definition">#</a></dt>
 <dd><p>Legacy access to owner role.</p>
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="google.cloud.iam.Policy.service_account">
-<em class="property">static </em><code class="descname">service_account</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.service_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.service_account" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.service_account">
+<em class="property">static </em><code class="descname">service_account</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.service_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.service_account" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory method for a service account member.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -187,8 +187,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.iam.Policy.to_api_repr">
-<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.to_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a Policy resource.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -203,8 +203,8 @@
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="google.cloud.iam.Policy.user">
-<em class="property">static </em><code class="descname">user</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.user" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.user">
+<em class="property">static </em><code class="descname">user</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.user" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory method for a user member.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -221,16 +221,16 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.iam.Policy.viewers">
-<code class="descname">viewers</code><a class="headerlink" href="#google.cloud.iam.Policy.viewers" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.Policy.viewers">
+<code class="descname">viewers</code><a class="headerlink" href="#google.api_core.iam.Policy.viewers" title="Permalink to this definition">#</a></dt>
 <dd><p>Legacy access to viewer role.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="data">
-<dt id="google.cloud.iam.VIEWER_ROLE">
-<code class="descclassname">google.cloud.iam.</code><code class="descname">VIEWER_ROLE</code><em class="property"> = 'roles/viewer'</em><a class="headerlink" href="#google.cloud.iam.VIEWER_ROLE" title="Permalink to this definition">#</a></dt>
+<dt id="google.api_core.iam.VIEWER_ROLE">
+<code class="descclassname">google.api_core.iam.</code><code class="descname">VIEWER_ROLE</code><em class="property"> = 'roles/viewer'</em><a class="headerlink" href="#google.api_core.iam.VIEWER_ROLE" title="Permalink to this definition">#</a></dt>
 <dd><p>Generic role implying rights to access an object.</p>
 </dd></dl>
 

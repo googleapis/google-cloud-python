@@ -1,6 +1,6 @@
 Identity and Access Management
 ==============================
 
-.. automodule:: google.cloud.iam
+.. automodule:: google.api_core.iam
   :members:
   :show-inheritance:
