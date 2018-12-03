@@ -1313,6 +1313,39 @@ def test_load_table_from_file(client, to_delete):
     assert row2 in rows
 
 
+def test_load_table_from_uri_avro(client, to_delete, capsys):
+    dataset_id = 'load_table_from_uri_avro_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_gcs_avro]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    dataset_ref = client.dataset(dataset_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = bigquery.SourceFormat.AVRO
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.avro'
+
+    load_job = client.load_table_from_uri(
+        uri,
+        dataset_ref.table('us_states'),
+        job_config=job_config)  # API request
+    print('Starting job {}'.format(load_job.job_id))
+
+    load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
+
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
+    # [END bigquery_load_table_gcs_avro]
+
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
+
+
 def test_load_table_from_uri_csv(client, to_delete, capsys):
     dataset_id = "load_table_from_uri_csv_{}".format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -1590,6 +1623,7 @@ def test_load_table_from_uri_truncate(client, to_delete, capsys):
     client.load_table_from_file(body, table_ref, job_config=job_config).result()
 
     # Shared code
+    # [START bigquery_load_table_gcs_avro_truncate]
     # [START bigquery_load_table_gcs_csv_truncate]
     # [START bigquery_load_table_gcs_json_truncate]
     # [START bigquery_load_table_gcs_parquet_truncate]
@@ -1603,12 +1637,18 @@ def test_load_table_from_uri_truncate(client, to_delete, capsys):
 
     job_config = bigquery.LoadJobConfig()
     job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
+    # [END bigquery_load_table_gcs_avro_truncate]
     # [END bigquery_load_table_gcs_csv_truncate]
     # [END bigquery_load_table_gcs_json_truncate]
     # [END bigquery_load_table_gcs_parquet_truncate]
     # [END bigquery_load_table_gcs_orc_truncate]
 
     # Format-specific code
+    # [START bigquery_load_table_gcs_avro_truncate]
+    job_config.source_format = bigquery.SourceFormat.AVRO
+    uri = "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
+    # [END bigquery_load_table_gcs_avro_truncate]
+
     # [START bigquery_load_table_gcs_csv_truncate]
     job_config.skip_leading_rows = 1
     # The source format defaults to CSV, so the line below is optional.
@@ -1634,6 +1674,7 @@ def test_load_table_from_uri_truncate(client, to_delete, capsys):
     # [END bigquery_load_table_gcs_orc_truncate]
 
     # Shared code
+    # [START bigquery_load_table_gcs_avro_truncate]
     # [START bigquery_load_table_gcs_csv_truncate]
     # [START bigquery_load_table_gcs_json_truncate]
     # [START bigquery_load_table_gcs_parquet_truncate]
@@ -1648,6 +1689,7 @@ def test_load_table_from_uri_truncate(client, to_delete, capsys):
 
     destination_table = client.get_table(table_ref)
     print("Loaded {} rows.".format(destination_table.num_rows))
+    # [END bigquery_load_table_gcs_avro_truncate]
     # [END bigquery_load_table_gcs_csv_truncate]
     # [END bigquery_load_table_gcs_json_truncate]
     # [END bigquery_load_table_gcs_parquet_truncate]
