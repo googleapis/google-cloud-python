@@ -2,20 +2,26 @@
 # source: google/cloud/tasks_v2beta3/proto/cloudtasks.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.tasks_v2beta3.proto import queue_pb2 as google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2
-from google.cloud.tasks_v2beta3.proto import task_pb2 as google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2
+from google.cloud.tasks_v2beta3.proto import (
+    queue_pb2 as google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2,
+)
+from google.cloud.tasks_v2beta3.proto import (
+    task_pb2 as google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2,
+)
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
@@ -24,610 +30,915 @@ from google.rpc import code_pb2 as google_dot_rpc_dot_code__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/tasks_v2beta3/proto/cloudtasks.proto',
-  package='google.cloud.tasks.v2beta3',
-  syntax='proto3',
-  serialized_pb=_b('\n1google/cloud/tasks_v2beta3/proto/cloudtasks.proto\x12\x1agoogle.cloud.tasks.v2beta3\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/tasks_v2beta3/proto/queue.proto\x1a+google/cloud/tasks_v2beta3/proto/task.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x15google/rpc/code.proto\"Z\n\x11ListQueuesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"`\n\x12ListQueuesResponse\x12\x31\n\x06queues\x18\x01 \x03(\x0b\x32!.google.cloud.tasks.v2beta3.Queue\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x1f\n\x0fGetQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"V\n\x12\x43reateQueueRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x30\n\x05queue\x18\x02 \x01(\x0b\x32!.google.cloud.tasks.v2beta3.Queue\"w\n\x12UpdateQueueRequest\x12\x30\n\x05queue\x18\x01 \x01(\x0b\x32!.google.cloud.tasks.v2beta3.Queue\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"\"\n\x12\x44\x65leteQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x11PurgeQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x11PauseQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\"\n\x12ResumeQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x87\x01\n\x10ListTasksRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta3.Task.View\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"]\n\x11ListTasksResponse\x12/\n\x05tasks\x18\x01 \x03(\x0b\x32 .google.cloud.tasks.v2beta3.Task\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\\\n\x0eGetTaskRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta3.Task.View\"\x91\x01\n\x11\x43reateTaskRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12.\n\x04task\x18\x02 \x01(\x0b\x32 .google.cloud.tasks.v2beta3.Task\x12<\n\rresponse_view\x18\x03 \x01(\x0e\x32%.google.cloud.tasks.v2beta3.Task.View\"!\n\x11\x44\x65leteTaskRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\\\n\x0eRunTaskRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta3.Task.View2\xa7\x14\n\nCloudTasks\x12\xa4\x01\n\nListQueues\x12-.google.cloud.tasks.v2beta3.ListQueuesRequest\x1a..google.cloud.tasks.v2beta3.ListQueuesResponse\"7\x82\xd3\xe4\x93\x02\x31\x12//v2beta3/{parent=projects/*/locations/*}/queues\x12\x93\x01\n\x08GetQueue\x12+.google.cloud.tasks.v2beta3.GetQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue\"7\x82\xd3\xe4\x93\x02\x31\x12//v2beta3/{name=projects/*/locations/*/queues/*}\x12\xa0\x01\n\x0b\x43reateQueue\x12..google.cloud.tasks.v2beta3.CreateQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue\">\x82\xd3\xe4\x93\x02\x38\"//v2beta3/{parent=projects/*/locations/*}/queues:\x05queue\x12\xa6\x01\n\x0bUpdateQueue\x12..google.cloud.tasks.v2beta3.UpdateQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue\"D\x82\xd3\xe4\x93\x02>25/v2beta3/{queue.name=projects/*/locations/*/queues/*}:\x05queue\x12\x8e\x01\n\x0b\x44\x65leteQueue\x12..google.cloud.tasks.v2beta3.DeleteQueueRequest\x1a\x16.google.protobuf.Empty\"7\x82\xd3\xe4\x93\x02\x31*//v2beta3/{name=projects/*/locations/*/queues/*}\x12\xa0\x01\n\nPurgeQueue\x12-.google.cloud.tasks.v2beta3.PurgeQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue\"@\x82\xd3\xe4\x93\x02:\"5/v2beta3/{name=projects/*/locations/*/queues/*}:purge:\x01*\x12\xa0\x01\n\nPauseQueue\x12-.google.cloud.tasks.v2beta3.PauseQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue\"@\x82\xd3\xe4\x93\x02:\"5/v2beta3/{name=projects/*/locations/*/queues/*}:pause:\x01*\x12\xa3\x01\n\x0bResumeQueue\x12..google.cloud.tasks.v2beta3.ResumeQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue\"A\x82\xd3\xe4\x93\x02;\"6/v2beta3/{name=projects/*/locations/*/queues/*}:resume:\x01*\x12\x96\x01\n\x0cGetIamPolicy\x12\".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"K\x82\xd3\xe4\x93\x02\x45\"@/v2beta3/{resource=projects/*/locations/*/queues/*}:getIamPolicy:\x01*\x12\x96\x01\n\x0cSetIamPolicy\x12\".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"K\x82\xd3\xe4\x93\x02\x45\"@/v2beta3/{resource=projects/*/locations/*/queues/*}:setIamPolicy:\x01*\x12\xbc\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse\"Q\x82\xd3\xe4\x93\x02K\"F/v2beta3/{resource=projects/*/locations/*/queues/*}:testIamPermissions:\x01*\x12\xa9\x01\n\tListTasks\x12,.google.cloud.tasks.v2beta3.ListTasksRequest\x1a-.google.cloud.tasks.v2beta3.ListTasksResponse\"?\x82\xd3\xe4\x93\x02\x39\x12\x37/v2beta3/{parent=projects/*/locations/*/queues/*}/tasks\x12\x98\x01\n\x07GetTask\x12*.google.cloud.tasks.v2beta3.GetTaskRequest\x1a .google.cloud.tasks.v2beta3.Task\"?\x82\xd3\xe4\x93\x02\x39\x12\x37/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}\x12\xa1\x01\n\nCreateTask\x12-.google.cloud.tasks.v2beta3.CreateTaskRequest\x1a .google.cloud.tasks.v2beta3.Task\"B\x82\xd3\xe4\x93\x02<\"7/v2beta3/{parent=projects/*/locations/*/queues/*}/tasks:\x01*\x12\x94\x01\n\nDeleteTask\x12-.google.cloud.tasks.v2beta3.DeleteTaskRequest\x1a\x16.google.protobuf.Empty\"?\x82\xd3\xe4\x93\x02\x39*7/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}\x12\x9f\x01\n\x07RunTask\x12*.google.cloud.tasks.v2beta3.RunTaskRequest\x1a .google.cloud.tasks.v2beta3.Task\"F\x82\xd3\xe4\x93\x02@\";/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}:run:\x01*B|\n\x1e\x63om.google.cloud.tasks.v2beta3B\x0f\x43loudTasksProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks\xa2\x02\x05TASKSb\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2.DESCRIPTOR,google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_rpc_dot_code__pb2.DESCRIPTOR,])
-
-
+    name="google/cloud/tasks_v2beta3/proto/cloudtasks.proto",
+    package="google.cloud.tasks.v2beta3",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n1google/cloud/tasks_v2beta3/proto/cloudtasks.proto\x12\x1agoogle.cloud.tasks.v2beta3\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/tasks_v2beta3/proto/queue.proto\x1a+google/cloud/tasks_v2beta3/proto/task.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x15google/rpc/code.proto"Z\n\x11ListQueuesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"`\n\x12ListQueuesResponse\x12\x31\n\x06queues\x18\x01 \x03(\x0b\x32!.google.cloud.tasks.v2beta3.Queue\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1f\n\x0fGetQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"V\n\x12\x43reateQueueRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x30\n\x05queue\x18\x02 \x01(\x0b\x32!.google.cloud.tasks.v2beta3.Queue"w\n\x12UpdateQueueRequest\x12\x30\n\x05queue\x18\x01 \x01(\x0b\x32!.google.cloud.tasks.v2beta3.Queue\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask""\n\x12\x44\x65leteQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"!\n\x11PurgeQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"!\n\x11PauseQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t""\n\x12ResumeQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x87\x01\n\x10ListTasksRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta3.Task.View\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"]\n\x11ListTasksResponse\x12/\n\x05tasks\x18\x01 \x03(\x0b\x32 .google.cloud.tasks.v2beta3.Task\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\\\n\x0eGetTaskRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta3.Task.View"\x91\x01\n\x11\x43reateTaskRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12.\n\x04task\x18\x02 \x01(\x0b\x32 .google.cloud.tasks.v2beta3.Task\x12<\n\rresponse_view\x18\x03 \x01(\x0e\x32%.google.cloud.tasks.v2beta3.Task.View"!\n\x11\x44\x65leteTaskRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\\\n\x0eRunTaskRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta3.Task.View2\xa7\x14\n\nCloudTasks\x12\xa4\x01\n\nListQueues\x12-.google.cloud.tasks.v2beta3.ListQueuesRequest\x1a..google.cloud.tasks.v2beta3.ListQueuesResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v2beta3/{parent=projects/*/locations/*}/queues\x12\x93\x01\n\x08GetQueue\x12+.google.cloud.tasks.v2beta3.GetQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue"7\x82\xd3\xe4\x93\x02\x31\x12//v2beta3/{name=projects/*/locations/*/queues/*}\x12\xa0\x01\n\x0b\x43reateQueue\x12..google.cloud.tasks.v2beta3.CreateQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue">\x82\xd3\xe4\x93\x02\x38"//v2beta3/{parent=projects/*/locations/*}/queues:\x05queue\x12\xa6\x01\n\x0bUpdateQueue\x12..google.cloud.tasks.v2beta3.UpdateQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue"D\x82\xd3\xe4\x93\x02>25/v2beta3/{queue.name=projects/*/locations/*/queues/*}:\x05queue\x12\x8e\x01\n\x0b\x44\x65leteQueue\x12..google.cloud.tasks.v2beta3.DeleteQueueRequest\x1a\x16.google.protobuf.Empty"7\x82\xd3\xe4\x93\x02\x31*//v2beta3/{name=projects/*/locations/*/queues/*}\x12\xa0\x01\n\nPurgeQueue\x12-.google.cloud.tasks.v2beta3.PurgeQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue"@\x82\xd3\xe4\x93\x02:"5/v2beta3/{name=projects/*/locations/*/queues/*}:purge:\x01*\x12\xa0\x01\n\nPauseQueue\x12-.google.cloud.tasks.v2beta3.PauseQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue"@\x82\xd3\xe4\x93\x02:"5/v2beta3/{name=projects/*/locations/*/queues/*}:pause:\x01*\x12\xa3\x01\n\x0bResumeQueue\x12..google.cloud.tasks.v2beta3.ResumeQueueRequest\x1a!.google.cloud.tasks.v2beta3.Queue"A\x82\xd3\xe4\x93\x02;"6/v2beta3/{name=projects/*/locations/*/queues/*}:resume:\x01*\x12\x96\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"K\x82\xd3\xe4\x93\x02\x45"@/v2beta3/{resource=projects/*/locations/*/queues/*}:getIamPolicy:\x01*\x12\x96\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"K\x82\xd3\xe4\x93\x02\x45"@/v2beta3/{resource=projects/*/locations/*/queues/*}:setIamPolicy:\x01*\x12\xbc\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"Q\x82\xd3\xe4\x93\x02K"F/v2beta3/{resource=projects/*/locations/*/queues/*}:testIamPermissions:\x01*\x12\xa9\x01\n\tListTasks\x12,.google.cloud.tasks.v2beta3.ListTasksRequest\x1a-.google.cloud.tasks.v2beta3.ListTasksResponse"?\x82\xd3\xe4\x93\x02\x39\x12\x37/v2beta3/{parent=projects/*/locations/*/queues/*}/tasks\x12\x98\x01\n\x07GetTask\x12*.google.cloud.tasks.v2beta3.GetTaskRequest\x1a .google.cloud.tasks.v2beta3.Task"?\x82\xd3\xe4\x93\x02\x39\x12\x37/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}\x12\xa1\x01\n\nCreateTask\x12-.google.cloud.tasks.v2beta3.CreateTaskRequest\x1a .google.cloud.tasks.v2beta3.Task"B\x82\xd3\xe4\x93\x02<"7/v2beta3/{parent=projects/*/locations/*/queues/*}/tasks:\x01*\x12\x94\x01\n\nDeleteTask\x12-.google.cloud.tasks.v2beta3.DeleteTaskRequest\x1a\x16.google.protobuf.Empty"?\x82\xd3\xe4\x93\x02\x39*7/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}\x12\x9f\x01\n\x07RunTask\x12*.google.cloud.tasks.v2beta3.RunTaskRequest\x1a .google.cloud.tasks.v2beta3.Task"F\x82\xd3\xe4\x93\x02@";/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}:run:\x01*B|\n\x1e\x63om.google.cloud.tasks.v2beta3B\x0f\x43loudTasksProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks\xa2\x02\x05TASKSb\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2.DESCRIPTOR,
+        google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,
+        google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
+        google_dot_rpc_dot_code__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _LISTQUEUESREQUEST = _descriptor.Descriptor(
-  name='ListQueuesRequest',
-  full_name='google.cloud.tasks.v2beta3.ListQueuesRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.tasks.v2beta3.ListQueuesRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filter', full_name='google.cloud.tasks.v2beta3.ListQueuesRequest.filter', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.tasks.v2beta3.ListQueuesRequest.page_size', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.tasks.v2beta3.ListQueuesRequest.page_token', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=348,
-  serialized_end=438,
+    name="ListQueuesRequest",
+    full_name="google.cloud.tasks.v2beta3.ListQueuesRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.tasks.v2beta3.ListQueuesRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="google.cloud.tasks.v2beta3.ListQueuesRequest.filter",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.tasks.v2beta3.ListQueuesRequest.page_size",
+            index=2,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.tasks.v2beta3.ListQueuesRequest.page_token",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=348,
+    serialized_end=438,
 )
 
 
 _LISTQUEUESRESPONSE = _descriptor.Descriptor(
-  name='ListQueuesResponse',
-  full_name='google.cloud.tasks.v2beta3.ListQueuesResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='queues', full_name='google.cloud.tasks.v2beta3.ListQueuesResponse.queues', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.tasks.v2beta3.ListQueuesResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=440,
-  serialized_end=536,
+    name="ListQueuesResponse",
+    full_name="google.cloud.tasks.v2beta3.ListQueuesResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="queues",
+            full_name="google.cloud.tasks.v2beta3.ListQueuesResponse.queues",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.tasks.v2beta3.ListQueuesResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=440,
+    serialized_end=536,
 )
 
 
 _GETQUEUEREQUEST = _descriptor.Descriptor(
-  name='GetQueueRequest',
-  full_name='google.cloud.tasks.v2beta3.GetQueueRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.tasks.v2beta3.GetQueueRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=538,
-  serialized_end=569,
+    name="GetQueueRequest",
+    full_name="google.cloud.tasks.v2beta3.GetQueueRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.tasks.v2beta3.GetQueueRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=538,
+    serialized_end=569,
 )
 
 
 _CREATEQUEUEREQUEST = _descriptor.Descriptor(
-  name='CreateQueueRequest',
-  full_name='google.cloud.tasks.v2beta3.CreateQueueRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.tasks.v2beta3.CreateQueueRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='queue', full_name='google.cloud.tasks.v2beta3.CreateQueueRequest.queue', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=571,
-  serialized_end=657,
+    name="CreateQueueRequest",
+    full_name="google.cloud.tasks.v2beta3.CreateQueueRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.tasks.v2beta3.CreateQueueRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="queue",
+            full_name="google.cloud.tasks.v2beta3.CreateQueueRequest.queue",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=571,
+    serialized_end=657,
 )
 
 
 _UPDATEQUEUEREQUEST = _descriptor.Descriptor(
-  name='UpdateQueueRequest',
-  full_name='google.cloud.tasks.v2beta3.UpdateQueueRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='queue', full_name='google.cloud.tasks.v2beta3.UpdateQueueRequest.queue', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='update_mask', full_name='google.cloud.tasks.v2beta3.UpdateQueueRequest.update_mask', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=659,
-  serialized_end=778,
+    name="UpdateQueueRequest",
+    full_name="google.cloud.tasks.v2beta3.UpdateQueueRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="queue",
+            full_name="google.cloud.tasks.v2beta3.UpdateQueueRequest.queue",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="google.cloud.tasks.v2beta3.UpdateQueueRequest.update_mask",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=659,
+    serialized_end=778,
 )
 
 
 _DELETEQUEUEREQUEST = _descriptor.Descriptor(
-  name='DeleteQueueRequest',
-  full_name='google.cloud.tasks.v2beta3.DeleteQueueRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.tasks.v2beta3.DeleteQueueRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=780,
-  serialized_end=814,
+    name="DeleteQueueRequest",
+    full_name="google.cloud.tasks.v2beta3.DeleteQueueRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.tasks.v2beta3.DeleteQueueRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=780,
+    serialized_end=814,
 )
 
 
 _PURGEQUEUEREQUEST = _descriptor.Descriptor(
-  name='PurgeQueueRequest',
-  full_name='google.cloud.tasks.v2beta3.PurgeQueueRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.tasks.v2beta3.PurgeQueueRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=816,
-  serialized_end=849,
+    name="PurgeQueueRequest",
+    full_name="google.cloud.tasks.v2beta3.PurgeQueueRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.tasks.v2beta3.PurgeQueueRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=816,
+    serialized_end=849,
 )
 
 
 _PAUSEQUEUEREQUEST = _descriptor.Descriptor(
-  name='PauseQueueRequest',
-  full_name='google.cloud.tasks.v2beta3.PauseQueueRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.tasks.v2beta3.PauseQueueRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=851,
-  serialized_end=884,
+    name="PauseQueueRequest",
+    full_name="google.cloud.tasks.v2beta3.PauseQueueRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.tasks.v2beta3.PauseQueueRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=851,
+    serialized_end=884,
 )
 
 
 _RESUMEQUEUEREQUEST = _descriptor.Descriptor(
-  name='ResumeQueueRequest',
-  full_name='google.cloud.tasks.v2beta3.ResumeQueueRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.tasks.v2beta3.ResumeQueueRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=886,
-  serialized_end=920,
+    name="ResumeQueueRequest",
+    full_name="google.cloud.tasks.v2beta3.ResumeQueueRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.tasks.v2beta3.ResumeQueueRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=886,
+    serialized_end=920,
 )
 
 
 _LISTTASKSREQUEST = _descriptor.Descriptor(
-  name='ListTasksRequest',
-  full_name='google.cloud.tasks.v2beta3.ListTasksRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.tasks.v2beta3.ListTasksRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='response_view', full_name='google.cloud.tasks.v2beta3.ListTasksRequest.response_view', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.tasks.v2beta3.ListTasksRequest.page_size', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.tasks.v2beta3.ListTasksRequest.page_token', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=923,
-  serialized_end=1058,
+    name="ListTasksRequest",
+    full_name="google.cloud.tasks.v2beta3.ListTasksRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.tasks.v2beta3.ListTasksRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="response_view",
+            full_name="google.cloud.tasks.v2beta3.ListTasksRequest.response_view",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.tasks.v2beta3.ListTasksRequest.page_size",
+            index=2,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.tasks.v2beta3.ListTasksRequest.page_token",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=923,
+    serialized_end=1058,
 )
 
 
 _LISTTASKSRESPONSE = _descriptor.Descriptor(
-  name='ListTasksResponse',
-  full_name='google.cloud.tasks.v2beta3.ListTasksResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='tasks', full_name='google.cloud.tasks.v2beta3.ListTasksResponse.tasks', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.tasks.v2beta3.ListTasksResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1060,
-  serialized_end=1153,
+    name="ListTasksResponse",
+    full_name="google.cloud.tasks.v2beta3.ListTasksResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="tasks",
+            full_name="google.cloud.tasks.v2beta3.ListTasksResponse.tasks",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.tasks.v2beta3.ListTasksResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1060,
+    serialized_end=1153,
 )
 
 
 _GETTASKREQUEST = _descriptor.Descriptor(
-  name='GetTaskRequest',
-  full_name='google.cloud.tasks.v2beta3.GetTaskRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.tasks.v2beta3.GetTaskRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='response_view', full_name='google.cloud.tasks.v2beta3.GetTaskRequest.response_view', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1155,
-  serialized_end=1247,
+    name="GetTaskRequest",
+    full_name="google.cloud.tasks.v2beta3.GetTaskRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.tasks.v2beta3.GetTaskRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="response_view",
+            full_name="google.cloud.tasks.v2beta3.GetTaskRequest.response_view",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1155,
+    serialized_end=1247,
 )
 
 
 _CREATETASKREQUEST = _descriptor.Descriptor(
-  name='CreateTaskRequest',
-  full_name='google.cloud.tasks.v2beta3.CreateTaskRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.tasks.v2beta3.CreateTaskRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='task', full_name='google.cloud.tasks.v2beta3.CreateTaskRequest.task', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='response_view', full_name='google.cloud.tasks.v2beta3.CreateTaskRequest.response_view', index=2,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1250,
-  serialized_end=1395,
+    name="CreateTaskRequest",
+    full_name="google.cloud.tasks.v2beta3.CreateTaskRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.tasks.v2beta3.CreateTaskRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="task",
+            full_name="google.cloud.tasks.v2beta3.CreateTaskRequest.task",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="response_view",
+            full_name="google.cloud.tasks.v2beta3.CreateTaskRequest.response_view",
+            index=2,
+            number=3,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1250,
+    serialized_end=1395,
 )
 
 
 _DELETETASKREQUEST = _descriptor.Descriptor(
-  name='DeleteTaskRequest',
-  full_name='google.cloud.tasks.v2beta3.DeleteTaskRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.tasks.v2beta3.DeleteTaskRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1397,
-  serialized_end=1430,
+    name="DeleteTaskRequest",
+    full_name="google.cloud.tasks.v2beta3.DeleteTaskRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.tasks.v2beta3.DeleteTaskRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1397,
+    serialized_end=1430,
 )
 
 
 _RUNTASKREQUEST = _descriptor.Descriptor(
-  name='RunTaskRequest',
-  full_name='google.cloud.tasks.v2beta3.RunTaskRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.tasks.v2beta3.RunTaskRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='response_view', full_name='google.cloud.tasks.v2beta3.RunTaskRequest.response_view', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1432,
-  serialized_end=1524,
+    name="RunTaskRequest",
+    full_name="google.cloud.tasks.v2beta3.RunTaskRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.tasks.v2beta3.RunTaskRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="response_view",
+            full_name="google.cloud.tasks.v2beta3.RunTaskRequest.response_view",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1432,
+    serialized_end=1524,
 )
 
-_LISTQUEUESRESPONSE.fields_by_name['queues'].message_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE
-_CREATEQUEUEREQUEST.fields_by_name['queue'].message_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE
-_UPDATEQUEUEREQUEST.fields_by_name['queue'].message_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE
-_UPDATEQUEUEREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_LISTTASKSREQUEST.fields_by_name['response_view'].enum_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK_VIEW
-_LISTTASKSRESPONSE.fields_by_name['tasks'].message_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK
-_GETTASKREQUEST.fields_by_name['response_view'].enum_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK_VIEW
-_CREATETASKREQUEST.fields_by_name['task'].message_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK
-_CREATETASKREQUEST.fields_by_name['response_view'].enum_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK_VIEW
-_RUNTASKREQUEST.fields_by_name['response_view'].enum_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK_VIEW
-DESCRIPTOR.message_types_by_name['ListQueuesRequest'] = _LISTQUEUESREQUEST
-DESCRIPTOR.message_types_by_name['ListQueuesResponse'] = _LISTQUEUESRESPONSE
-DESCRIPTOR.message_types_by_name['GetQueueRequest'] = _GETQUEUEREQUEST
-DESCRIPTOR.message_types_by_name['CreateQueueRequest'] = _CREATEQUEUEREQUEST
-DESCRIPTOR.message_types_by_name['UpdateQueueRequest'] = _UPDATEQUEUEREQUEST
-DESCRIPTOR.message_types_by_name['DeleteQueueRequest'] = _DELETEQUEUEREQUEST
-DESCRIPTOR.message_types_by_name['PurgeQueueRequest'] = _PURGEQUEUEREQUEST
-DESCRIPTOR.message_types_by_name['PauseQueueRequest'] = _PAUSEQUEUEREQUEST
-DESCRIPTOR.message_types_by_name['ResumeQueueRequest'] = _RESUMEQUEUEREQUEST
-DESCRIPTOR.message_types_by_name['ListTasksRequest'] = _LISTTASKSREQUEST
-DESCRIPTOR.message_types_by_name['ListTasksResponse'] = _LISTTASKSRESPONSE
-DESCRIPTOR.message_types_by_name['GetTaskRequest'] = _GETTASKREQUEST
-DESCRIPTOR.message_types_by_name['CreateTaskRequest'] = _CREATETASKREQUEST
-DESCRIPTOR.message_types_by_name['DeleteTaskRequest'] = _DELETETASKREQUEST
-DESCRIPTOR.message_types_by_name['RunTaskRequest'] = _RUNTASKREQUEST
+_LISTQUEUESRESPONSE.fields_by_name[
+    "queues"
+].message_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE
+_CREATEQUEUEREQUEST.fields_by_name[
+    "queue"
+].message_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE
+_UPDATEQUEUEREQUEST.fields_by_name[
+    "queue"
+].message_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE
+_UPDATEQUEUEREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_LISTTASKSREQUEST.fields_by_name[
+    "response_view"
+].enum_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK_VIEW
+_LISTTASKSRESPONSE.fields_by_name[
+    "tasks"
+].message_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK
+_GETTASKREQUEST.fields_by_name[
+    "response_view"
+].enum_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK_VIEW
+_CREATETASKREQUEST.fields_by_name[
+    "task"
+].message_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK
+_CREATETASKREQUEST.fields_by_name[
+    "response_view"
+].enum_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK_VIEW
+_RUNTASKREQUEST.fields_by_name[
+    "response_view"
+].enum_type = google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK_VIEW
+DESCRIPTOR.message_types_by_name["ListQueuesRequest"] = _LISTQUEUESREQUEST
+DESCRIPTOR.message_types_by_name["ListQueuesResponse"] = _LISTQUEUESRESPONSE
+DESCRIPTOR.message_types_by_name["GetQueueRequest"] = _GETQUEUEREQUEST
+DESCRIPTOR.message_types_by_name["CreateQueueRequest"] = _CREATEQUEUEREQUEST
+DESCRIPTOR.message_types_by_name["UpdateQueueRequest"] = _UPDATEQUEUEREQUEST
+DESCRIPTOR.message_types_by_name["DeleteQueueRequest"] = _DELETEQUEUEREQUEST
+DESCRIPTOR.message_types_by_name["PurgeQueueRequest"] = _PURGEQUEUEREQUEST
+DESCRIPTOR.message_types_by_name["PauseQueueRequest"] = _PAUSEQUEUEREQUEST
+DESCRIPTOR.message_types_by_name["ResumeQueueRequest"] = _RESUMEQUEUEREQUEST
+DESCRIPTOR.message_types_by_name["ListTasksRequest"] = _LISTTASKSREQUEST
+DESCRIPTOR.message_types_by_name["ListTasksResponse"] = _LISTTASKSRESPONSE
+DESCRIPTOR.message_types_by_name["GetTaskRequest"] = _GETTASKREQUEST
+DESCRIPTOR.message_types_by_name["CreateTaskRequest"] = _CREATETASKREQUEST
+DESCRIPTOR.message_types_by_name["DeleteTaskRequest"] = _DELETETASKREQUEST
+DESCRIPTOR.message_types_by_name["RunTaskRequest"] = _RUNTASKREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-ListQueuesRequest = _reflection.GeneratedProtocolMessageType('ListQueuesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTQUEUESREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for
+ListQueuesRequest = _reflection.GeneratedProtocolMessageType(
+    "ListQueuesRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTQUEUESREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for
   [ListQueues][google.cloud.tasks.v2beta3.CloudTasks.ListQueues].
   
   
@@ -662,15 +973,18 @@ ListQueuesRequest = _reflection.GeneratedProtocolMessageType('ListQueuesRequest'
           [filter][google.cloud.tasks.v2beta3.ListQueuesRequest.filter]
           while iterating through pages.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.ListQueuesRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.ListQueuesRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListQueuesRequest)
 
-ListQueuesResponse = _reflection.GeneratedProtocolMessageType('ListQueuesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTQUEUESRESPONSE,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Response message for
+ListQueuesResponse = _reflection.GeneratedProtocolMessageType(
+    "ListQueuesResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTQUEUESRESPONSE,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Response message for
   [ListQueues][google.cloud.tasks.v2beta3.CloudTasks.ListQueues].
   
   
@@ -686,15 +1000,18 @@ ListQueuesResponse = _reflection.GeneratedProtocolMessageType('ListQueuesRespons
           empty, there are no more results.  The page token is valid for
           only 2 hours.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.ListQueuesResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.ListQueuesResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListQueuesResponse)
 
-GetQueueRequest = _reflection.GeneratedProtocolMessageType('GetQueueRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETQUEUEREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for
+GetQueueRequest = _reflection.GeneratedProtocolMessageType(
+    "GetQueueRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETQUEUEREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for
   [GetQueue][google.cloud.tasks.v2beta3.CloudTasks.GetQueue].
   
   
@@ -703,15 +1020,18 @@ GetQueueRequest = _reflection.GeneratedProtocolMessageType('GetQueueRequest', (_
           Required.  The resource name of the queue. For example:
           ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.GetQueueRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.GetQueueRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetQueueRequest)
 
-CreateQueueRequest = _reflection.GeneratedProtocolMessageType('CreateQueueRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEQUEUEREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for
+CreateQueueRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateQueueRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEQUEUEREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for
   [CreateQueue][google.cloud.tasks.v2beta3.CloudTasks.CreateQueue].
   
   
@@ -728,15 +1048,18 @@ CreateQueueRequest = _reflection.GeneratedProtocolMessageType('CreateQueueReques
           name][google.cloud.tasks.v2beta3.Queue.name] cannot be the
           same as an existing queue.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.CreateQueueRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.CreateQueueRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateQueueRequest)
 
-UpdateQueueRequest = _reflection.GeneratedProtocolMessageType('UpdateQueueRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATEQUEUEREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for
+UpdateQueueRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateQueueRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEQUEUEREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for
   [UpdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue].
   
   
@@ -753,15 +1076,18 @@ UpdateQueueRequest = _reflection.GeneratedProtocolMessageType('UpdateQueueReques
           A mask used to specify which fields of the queue are being
           updated.  If empty, then all fields will be updated.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.UpdateQueueRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.UpdateQueueRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateQueueRequest)
 
-DeleteQueueRequest = _reflection.GeneratedProtocolMessageType('DeleteQueueRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETEQUEUEREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for
+DeleteQueueRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteQueueRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETEQUEUEREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for
   [DeleteQueue][google.cloud.tasks.v2beta3.CloudTasks.DeleteQueue].
   
   
@@ -770,15 +1096,18 @@ DeleteQueueRequest = _reflection.GeneratedProtocolMessageType('DeleteQueueReques
           Required.  The queue name. For example:
           ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.DeleteQueueRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.DeleteQueueRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteQueueRequest)
 
-PurgeQueueRequest = _reflection.GeneratedProtocolMessageType('PurgeQueueRequest', (_message.Message,), dict(
-  DESCRIPTOR = _PURGEQUEUEREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for
+PurgeQueueRequest = _reflection.GeneratedProtocolMessageType(
+    "PurgeQueueRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PURGEQUEUEREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for
   [PurgeQueue][google.cloud.tasks.v2beta3.CloudTasks.PurgeQueue].
   
   
@@ -787,15 +1116,18 @@ PurgeQueueRequest = _reflection.GeneratedProtocolMessageType('PurgeQueueRequest'
           Required.  The queue name. For example:
           ``projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.PurgeQueueRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.PurgeQueueRequest)
+    ),
+)
 _sym_db.RegisterMessage(PurgeQueueRequest)
 
-PauseQueueRequest = _reflection.GeneratedProtocolMessageType('PauseQueueRequest', (_message.Message,), dict(
-  DESCRIPTOR = _PAUSEQUEUEREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for
+PauseQueueRequest = _reflection.GeneratedProtocolMessageType(
+    "PauseQueueRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PAUSEQUEUEREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for
   [PauseQueue][google.cloud.tasks.v2beta3.CloudTasks.PauseQueue].
   
   
@@ -804,15 +1136,18 @@ PauseQueueRequest = _reflection.GeneratedProtocolMessageType('PauseQueueRequest'
           Required.  The queue name. For example:
           ``projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.PauseQueueRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.PauseQueueRequest)
+    ),
+)
 _sym_db.RegisterMessage(PauseQueueRequest)
 
-ResumeQueueRequest = _reflection.GeneratedProtocolMessageType('ResumeQueueRequest', (_message.Message,), dict(
-  DESCRIPTOR = _RESUMEQUEUEREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for
+ResumeQueueRequest = _reflection.GeneratedProtocolMessageType(
+    "ResumeQueueRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_RESUMEQUEUEREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for
   [ResumeQueue][google.cloud.tasks.v2beta3.CloudTasks.ResumeQueue].
   
   
@@ -821,15 +1156,18 @@ ResumeQueueRequest = _reflection.GeneratedProtocolMessageType('ResumeQueueReques
           Required.  The queue name. For example:
           ``projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.ResumeQueueRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.ResumeQueueRequest)
+    ),
+)
 _sym_db.RegisterMessage(ResumeQueueRequest)
 
-ListTasksRequest = _reflection.GeneratedProtocolMessageType('ListTasksRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTTASKSREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for listing tasks using
+ListTasksRequest = _reflection.GeneratedProtocolMessageType(
+    "ListTasksRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTTASKSREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for listing tasks using
   [ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks].
   
   
@@ -866,15 +1204,18 @@ ListTasksRequest = _reflection.GeneratedProtocolMessageType('ListTasksRequest', 
           [ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks]
           method.  The page token is valid for only 2 hours.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.ListTasksRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.ListTasksRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListTasksRequest)
 
-ListTasksResponse = _reflection.GeneratedProtocolMessageType('ListTasksResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTTASKSRESPONSE,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Response message for listing tasks using
+ListTasksResponse = _reflection.GeneratedProtocolMessageType(
+    "ListTasksResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTTASKSRESPONSE,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Response message for listing tasks using
   [ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks].
   
   
@@ -889,15 +1230,18 @@ ListTasksResponse = _reflection.GeneratedProtocolMessageType('ListTasksResponse'
           3.ListTasksRequest.page\_token].  If the next\_page\_token is
           empty, there are no more results.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.ListTasksResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.ListTasksResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListTasksResponse)
 
-GetTaskRequest = _reflection.GeneratedProtocolMessageType('GetTaskRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETTASKREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for getting a task using
+GetTaskRequest = _reflection.GeneratedProtocolMessageType(
+    "GetTaskRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETTASKREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for getting a task using
   [GetTask][google.cloud.tasks.v2beta3.CloudTasks.GetTask].
   
   
@@ -919,15 +1263,18 @@ GetTaskRequest = _reflection.GeneratedProtocolMessageType('GetTaskRequest', (_me
           <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta3.Task] resource.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.GetTaskRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.GetTaskRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetTaskRequest)
 
-CreateTaskRequest = _reflection.GeneratedProtocolMessageType('CreateTaskRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATETASKREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for
+CreateTaskRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateTaskRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATETASKREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for
   [CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
   
   
@@ -980,15 +1327,18 @@ CreateTaskRequest = _reflection.GeneratedProtocolMessageType('CreateTaskRequest'
           <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta3.Task] resource.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.CreateTaskRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.CreateTaskRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateTaskRequest)
 
-DeleteTaskRequest = _reflection.GeneratedProtocolMessageType('DeleteTaskRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETETASKREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for deleting a task using
+DeleteTaskRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteTaskRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETETASKREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for deleting a task using
   [DeleteTask][google.cloud.tasks.v2beta3.CloudTasks.DeleteTask].
   
   
@@ -997,15 +1347,18 @@ DeleteTaskRequest = _reflection.GeneratedProtocolMessageType('DeleteTaskRequest'
           Required.  The task name. For example: ``projects/PROJECT_ID/l
           ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.DeleteTaskRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.DeleteTaskRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteTaskRequest)
 
-RunTaskRequest = _reflection.GeneratedProtocolMessageType('RunTaskRequest', (_message.Message,), dict(
-  DESCRIPTOR = _RUNTASKREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta3.proto.cloudtasks_pb2'
-  ,
-  __doc__ = """Request message for forcing a task to run now using
+RunTaskRequest = _reflection.GeneratedProtocolMessageType(
+    "RunTaskRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_RUNTASKREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.cloudtasks_pb2",
+        __doc__="""Request message for forcing a task to run now using
   [RunTask][google.cloud.tasks.v2beta3.CloudTasks.RunTask].
   
   
@@ -1027,170 +1380,257 @@ RunTaskRequest = _reflection.GeneratedProtocolMessageType('RunTaskRequest', (_me
           <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta3.Task] resource.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.RunTaskRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.RunTaskRequest)
+    ),
+)
 _sym_db.RegisterMessage(RunTaskRequest)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\036com.google.cloud.tasks.v2beta3B\017CloudTasksProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks\242\002\005TASKS'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\036com.google.cloud.tasks.v2beta3B\017CloudTasksProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks\242\002\005TASKS"
+    ),
+)
 
 _CLOUDTASKS = _descriptor.ServiceDescriptor(
-  name='CloudTasks',
-  full_name='google.cloud.tasks.v2beta3.CloudTasks',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=1527,
-  serialized_end=4126,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='ListQueues',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.ListQueues',
+    name="CloudTasks",
+    full_name="google.cloud.tasks.v2beta3.CloudTasks",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_LISTQUEUESREQUEST,
-    output_type=_LISTQUEUESRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0021\022//v2beta3/{parent=projects/*/locations/*}/queues')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetQueue',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.GetQueue',
-    index=1,
-    containing_service=None,
-    input_type=_GETQUEUEREQUEST,
-    output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0021\022//v2beta3/{name=projects/*/locations/*/queues/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateQueue',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.CreateQueue',
-    index=2,
-    containing_service=None,
-    input_type=_CREATEQUEUEREQUEST,
-    output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0028\"//v2beta3/{parent=projects/*/locations/*}/queues:\005queue')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateQueue',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue',
-    index=3,
-    containing_service=None,
-    input_type=_UPDATEQUEUEREQUEST,
-    output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002>25/v2beta3/{queue.name=projects/*/locations/*/queues/*}:\005queue')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteQueue',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.DeleteQueue',
-    index=4,
-    containing_service=None,
-    input_type=_DELETEQUEUEREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0021*//v2beta3/{name=projects/*/locations/*/queues/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='PurgeQueue',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.PurgeQueue',
-    index=5,
-    containing_service=None,
-    input_type=_PURGEQUEUEREQUEST,
-    output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002:\"5/v2beta3/{name=projects/*/locations/*/queues/*}:purge:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='PauseQueue',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.PauseQueue',
-    index=6,
-    containing_service=None,
-    input_type=_PAUSEQUEUEREQUEST,
-    output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002:\"5/v2beta3/{name=projects/*/locations/*/queues/*}:pause:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ResumeQueue',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.ResumeQueue',
-    index=7,
-    containing_service=None,
-    input_type=_RESUMEQUEUEREQUEST,
-    output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002;\"6/v2beta3/{name=projects/*/locations/*/queues/*}:resume:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetIamPolicy',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.GetIamPolicy',
-    index=8,
-    containing_service=None,
-    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
-    output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002E\"@/v2beta3/{resource=projects/*/locations/*/queues/*}:getIamPolicy:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='SetIamPolicy',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.SetIamPolicy',
-    index=9,
-    containing_service=None,
-    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
-    output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002E\"@/v2beta3/{resource=projects/*/locations/*/queues/*}:setIamPolicy:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='TestIamPermissions',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.TestIamPermissions',
-    index=10,
-    containing_service=None,
-    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
-    output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002K\"F/v2beta3/{resource=projects/*/locations/*/queues/*}:testIamPermissions:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListTasks',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.ListTasks',
-    index=11,
-    containing_service=None,
-    input_type=_LISTTASKSREQUEST,
-    output_type=_LISTTASKSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0029\0227/v2beta3/{parent=projects/*/locations/*/queues/*}/tasks')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetTask',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.GetTask',
-    index=12,
-    containing_service=None,
-    input_type=_GETTASKREQUEST,
-    output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0029\0227/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateTask',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.CreateTask',
-    index=13,
-    containing_service=None,
-    input_type=_CREATETASKREQUEST,
-    output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002<\"7/v2beta3/{parent=projects/*/locations/*/queues/*}/tasks:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteTask',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.DeleteTask',
-    index=14,
-    containing_service=None,
-    input_type=_DELETETASKREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0029*7/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='RunTask',
-    full_name='google.cloud.tasks.v2beta3.CloudTasks.RunTask',
-    index=15,
-    containing_service=None,
-    input_type=_RUNTASKREQUEST,
-    output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002@\";/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}:run:\001*')),
-  ),
-])
+    options=None,
+    serialized_start=1527,
+    serialized_end=4126,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="ListQueues",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.ListQueues",
+            index=0,
+            containing_service=None,
+            input_type=_LISTQUEUESREQUEST,
+            output_type=_LISTQUEUESRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0021\022//v2beta3/{parent=projects/*/locations/*}/queues"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetQueue",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.GetQueue",
+            index=1,
+            containing_service=None,
+            input_type=_GETQUEUEREQUEST,
+            output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0021\022//v2beta3/{name=projects/*/locations/*/queues/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateQueue",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.CreateQueue",
+            index=2,
+            containing_service=None,
+            input_type=_CREATEQUEUEREQUEST,
+            output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\0028"//v2beta3/{parent=projects/*/locations/*}/queues:\005queue'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateQueue",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue",
+            index=3,
+            containing_service=None,
+            input_type=_UPDATEQUEUEREQUEST,
+            output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002>25/v2beta3/{queue.name=projects/*/locations/*/queues/*}:\005queue"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteQueue",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.DeleteQueue",
+            index=4,
+            containing_service=None,
+            input_type=_DELETEQUEUEREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0021*//v2beta3/{name=projects/*/locations/*/queues/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="PurgeQueue",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.PurgeQueue",
+            index=5,
+            containing_service=None,
+            input_type=_PURGEQUEUEREQUEST,
+            output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002:"5/v2beta3/{name=projects/*/locations/*/queues/*}:purge:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="PauseQueue",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.PauseQueue",
+            index=6,
+            containing_service=None,
+            input_type=_PAUSEQUEUEREQUEST,
+            output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002:"5/v2beta3/{name=projects/*/locations/*/queues/*}:pause:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ResumeQueue",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.ResumeQueue",
+            index=7,
+            containing_service=None,
+            input_type=_RESUMEQUEUEREQUEST,
+            output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_queue__pb2._QUEUE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002;"6/v2beta3/{name=projects/*/locations/*/queues/*}:resume:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetIamPolicy",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.GetIamPolicy",
+            index=8,
+            containing_service=None,
+            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
+            output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002E"@/v2beta3/{resource=projects/*/locations/*/queues/*}:getIamPolicy:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="SetIamPolicy",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.SetIamPolicy",
+            index=9,
+            containing_service=None,
+            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
+            output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002E"@/v2beta3/{resource=projects/*/locations/*/queues/*}:setIamPolicy:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="TestIamPermissions",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.TestIamPermissions",
+            index=10,
+            containing_service=None,
+            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
+            output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002K"F/v2beta3/{resource=projects/*/locations/*/queues/*}:testIamPermissions:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListTasks",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.ListTasks",
+            index=11,
+            containing_service=None,
+            input_type=_LISTTASKSREQUEST,
+            output_type=_LISTTASKSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0029\0227/v2beta3/{parent=projects/*/locations/*/queues/*}/tasks"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetTask",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.GetTask",
+            index=12,
+            containing_service=None,
+            input_type=_GETTASKREQUEST,
+            output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0029\0227/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateTask",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.CreateTask",
+            index=13,
+            containing_service=None,
+            input_type=_CREATETASKREQUEST,
+            output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002<"7/v2beta3/{parent=projects/*/locations/*/queues/*}/tasks:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteTask",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.DeleteTask",
+            index=14,
+            containing_service=None,
+            input_type=_DELETETASKREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0029*7/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="RunTask",
+            full_name="google.cloud.tasks.v2beta3.CloudTasks.RunTask",
+            index=15,
+            containing_service=None,
+            input_type=_RUNTASKREQUEST,
+            output_type=google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_task__pb2._TASK,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002@";/v2beta3/{name=projects/*/locations/*/queues/*/tasks/*}:run:\001*'
+                ),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_CLOUDTASKS)
 
-DESCRIPTOR.services_by_name['CloudTasks'] = _CLOUDTASKS
+DESCRIPTOR.services_by_name["CloudTasks"] = _CLOUDTASKS
 
 # @@protoc_insertion_point(module_scope)

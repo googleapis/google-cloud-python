@@ -2,12 +2,14 @@
 # source: google/cloud/spanner_v1/proto/spanner.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -17,1045 +19,1786 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
-from google.cloud.spanner_v1.proto import keys_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2
-from google.cloud.spanner_v1.proto import mutation_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_mutation__pb2
-from google.cloud.spanner_v1.proto import result_set_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2
-from google.cloud.spanner_v1.proto import transaction_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2
-from google.cloud.spanner_v1.proto import type_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2
+from google.cloud.spanner_v1.proto import (
+    keys_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2,
+)
+from google.cloud.spanner_v1.proto import (
+    mutation_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_mutation__pb2,
+)
+from google.cloud.spanner_v1.proto import (
+    result_set_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2,
+)
+from google.cloud.spanner_v1.proto import (
+    transaction_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2,
+)
+from google.cloud.spanner_v1.proto import (
+    type_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2,
+)
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/spanner_v1/proto/spanner.proto',
-  package='google.spanner.v1',
-  syntax='proto3',
-  serialized_pb=_b('\n+google/cloud/spanner_v1/proto/spanner.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a(google/cloud/spanner_v1/proto/keys.proto\x1a,google/cloud/spanner_v1/proto/mutation.proto\x1a.google/cloud/spanner_v1/proto/result_set.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto\"U\n\x14\x43reateSessionRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12+\n\x07session\x18\x02 \x01(\x0b\x32\x1a.google.spanner.v1.Session\"\xee\x01\n\x07Session\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x06labels\x18\x02 \x03(\x0b\x32&.google.spanner.v1.Session.LabelsEntry\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12=\n\x19\x61pproximate_last_use_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"!\n\x11GetSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"^\n\x13ListSessionsRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t\"]\n\x14ListSessionsResponse\x12,\n\x08sessions\x18\x01 \x03(\x0b\x32\x1a.google.spanner.v1.Session\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"$\n\x14\x44\x65leteSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xe0\x03\n\x11\x45xecuteSqlRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12I\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x34.google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry\x12\x14\n\x0cresume_token\x18\x06 \x01(\x0c\x12\x42\n\nquery_mode\x18\x07 \x01(\x0e\x32..google.spanner.v1.ExecuteSqlRequest.QueryMode\x12\x17\n\x0fpartition_token\x18\x08 \x01(\x0c\x12\r\n\x05seqno\x18\t \x01(\x03\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01\".\n\tQueryMode\x12\n\n\x06NORMAL\x10\x00\x12\x08\n\x04PLAN\x10\x01\x12\x0b\n\x07PROFILE\x10\x02\"H\n\x10PartitionOptions\x12\x1c\n\x14partition_size_bytes\x18\x01 \x01(\x03\x12\x16\n\x0emax_partitions\x18\x02 \x01(\x03\"\xf6\x02\n\x15PartitionQueryRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12M\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x38.google.spanner.v1.PartitionQueryRequest.ParamTypesEntry\x12>\n\x11partition_options\x18\x06 \x01(\x0b\x32#.google.spanner.v1.PartitionOptions\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01\"\xff\x01\n\x14PartitionReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12>\n\x11partition_options\x18\t \x01(\x0b\x32#.google.spanner.v1.PartitionOptions\"$\n\tPartition\x12\x17\n\x0fpartition_token\x18\x01 \x01(\x0c\"z\n\x11PartitionResponse\x12\x30\n\npartitions\x18\x01 \x03(\x0b\x32\x1c.google.spanner.v1.Partition\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction\"\xf4\x01\n\x0bReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12\r\n\x05limit\x18\x08 \x01(\x03\x12\x14\n\x0cresume_token\x18\t \x01(\x0c\x12\x17\n\x0fpartition_token\x18\n \x01(\x0c\"b\n\x17\x42\x65ginTransactionRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x36\n\x07options\x18\x02 \x01(\x0b\x32%.google.spanner.v1.TransactionOptions\"\xc2\x01\n\rCommitRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x18\n\x0etransaction_id\x18\x02 \x01(\x0cH\x00\x12G\n\x16single_use_transaction\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12.\n\tmutations\x18\x04 \x03(\x0b\x32\x1b.google.spanner.v1.MutationB\r\n\x0btransaction\"F\n\x0e\x43ommitResponse\x12\x34\n\x10\x63ommit_timestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\":\n\x0fRollbackRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x16\n\x0etransaction_id\x18\x02 \x01(\x0c\x32\x83\x11\n\x07Spanner\x12\x9b\x01\n\rCreateSession\x12\'.google.spanner.v1.CreateSessionRequest\x1a\x1a.google.spanner.v1.Session\"E\x82\xd3\xe4\x93\x02?\":/v1/{database=projects/*/instances/*/databases/*}/sessions:\x01*\x12\x90\x01\n\nGetSession\x12$.google.spanner.v1.GetSessionRequest\x1a\x1a.google.spanner.v1.Session\"@\x82\xd3\xe4\x93\x02:\x12\x38/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\x0cListSessions\x12&.google.spanner.v1.ListSessionsRequest\x1a\'.google.spanner.v1.ListSessionsResponse\"B\x82\xd3\xe4\x93\x02<\x12:/v1/{database=projects/*/instances/*/databases/*}/sessions\x12\x92\x01\n\rDeleteSession\x12\'.google.spanner.v1.DeleteSessionRequest\x1a\x16.google.protobuf.Empty\"@\x82\xd3\xe4\x93\x02:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\nExecuteSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a\x1c.google.spanner.v1.ResultSet\"Q\x82\xd3\xe4\x93\x02K\"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\x01*\x12\xbe\x01\n\x13\x45xecuteStreamingSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a#.google.spanner.v1.PartialResultSet\"Z\x82\xd3\xe4\x93\x02T\"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\x01*0\x01\x12\x91\x01\n\x04Read\x12\x1e.google.spanner.v1.ReadRequest\x1a\x1c.google.spanner.v1.ResultSet\"K\x82\xd3\xe4\x93\x02\x45\"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\x01*\x12\xac\x01\n\rStreamingRead\x12\x1e.google.spanner.v1.ReadRequest\x1a#.google.spanner.v1.PartialResultSet\"T\x82\xd3\xe4\x93\x02N\"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\x01*0\x01\x12\xb7\x01\n\x10\x42\x65ginTransaction\x12*.google.spanner.v1.BeginTransactionRequest\x1a\x1e.google.spanner.v1.Transaction\"W\x82\xd3\xe4\x93\x02Q\"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\x01*\x12\x9c\x01\n\x06\x43ommit\x12 .google.spanner.v1.CommitRequest\x1a!.google.spanner.v1.CommitResponse\"M\x82\xd3\xe4\x93\x02G\"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\x01*\x12\x97\x01\n\x08Rollback\x12\".google.spanner.v1.RollbackRequest\x1a\x16.google.protobuf.Empty\"O\x82\xd3\xe4\x93\x02I\"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\x01*\x12\xb7\x01\n\x0ePartitionQuery\x12(.google.spanner.v1.PartitionQueryRequest\x1a$.google.spanner.v1.PartitionResponse\"U\x82\xd3\xe4\x93\x02O\"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\x01*\x12\xb4\x01\n\rPartitionRead\x12\'.google.spanner.v1.PartitionReadRequest\x1a$.google.spanner.v1.PartitionResponse\"T\x82\xd3\xe4\x93\x02N\"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\x01*B\x95\x01\n\x15\x63om.google.spanner.v1B\x0cSpannerProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_mutation__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2.DESCRIPTOR,google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2.DESCRIPTOR,])
-
+    name="google/cloud/spanner_v1/proto/spanner.proto",
+    package="google.spanner.v1",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n+google/cloud/spanner_v1/proto/spanner.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a(google/cloud/spanner_v1/proto/keys.proto\x1a,google/cloud/spanner_v1/proto/mutation.proto\x1a.google/cloud/spanner_v1/proto/result_set.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto"U\n\x14\x43reateSessionRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12+\n\x07session\x18\x02 \x01(\x0b\x32\x1a.google.spanner.v1.Session"\xee\x01\n\x07Session\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x06labels\x18\x02 \x03(\x0b\x32&.google.spanner.v1.Session.LabelsEntry\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12=\n\x19\x61pproximate_last_use_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"!\n\x11GetSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"^\n\x13ListSessionsRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t"]\n\x14ListSessionsResponse\x12,\n\x08sessions\x18\x01 \x03(\x0b\x32\x1a.google.spanner.v1.Session\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14\x44\x65leteSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xe0\x03\n\x11\x45xecuteSqlRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12I\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x34.google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry\x12\x14\n\x0cresume_token\x18\x06 \x01(\x0c\x12\x42\n\nquery_mode\x18\x07 \x01(\x0e\x32..google.spanner.v1.ExecuteSqlRequest.QueryMode\x12\x17\n\x0fpartition_token\x18\x08 \x01(\x0c\x12\r\n\x05seqno\x18\t \x01(\x03\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01".\n\tQueryMode\x12\n\n\x06NORMAL\x10\x00\x12\x08\n\x04PLAN\x10\x01\x12\x0b\n\x07PROFILE\x10\x02"H\n\x10PartitionOptions\x12\x1c\n\x14partition_size_bytes\x18\x01 \x01(\x03\x12\x16\n\x0emax_partitions\x18\x02 \x01(\x03"\xf6\x02\n\x15PartitionQueryRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12M\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x38.google.spanner.v1.PartitionQueryRequest.ParamTypesEntry\x12>\n\x11partition_options\x18\x06 \x01(\x0b\x32#.google.spanner.v1.PartitionOptions\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01"\xff\x01\n\x14PartitionReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12>\n\x11partition_options\x18\t \x01(\x0b\x32#.google.spanner.v1.PartitionOptions"$\n\tPartition\x12\x17\n\x0fpartition_token\x18\x01 \x01(\x0c"z\n\x11PartitionResponse\x12\x30\n\npartitions\x18\x01 \x03(\x0b\x32\x1c.google.spanner.v1.Partition\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction"\xf4\x01\n\x0bReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12\r\n\x05limit\x18\x08 \x01(\x03\x12\x14\n\x0cresume_token\x18\t \x01(\x0c\x12\x17\n\x0fpartition_token\x18\n \x01(\x0c"b\n\x17\x42\x65ginTransactionRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x36\n\x07options\x18\x02 \x01(\x0b\x32%.google.spanner.v1.TransactionOptions"\xc2\x01\n\rCommitRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x18\n\x0etransaction_id\x18\x02 \x01(\x0cH\x00\x12G\n\x16single_use_transaction\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12.\n\tmutations\x18\x04 \x03(\x0b\x32\x1b.google.spanner.v1.MutationB\r\n\x0btransaction"F\n\x0e\x43ommitResponse\x12\x34\n\x10\x63ommit_timestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp":\n\x0fRollbackRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x16\n\x0etransaction_id\x18\x02 \x01(\x0c\x32\x83\x11\n\x07Spanner\x12\x9b\x01\n\rCreateSession\x12\'.google.spanner.v1.CreateSessionRequest\x1a\x1a.google.spanner.v1.Session"E\x82\xd3\xe4\x93\x02?":/v1/{database=projects/*/instances/*/databases/*}/sessions:\x01*\x12\x90\x01\n\nGetSession\x12$.google.spanner.v1.GetSessionRequest\x1a\x1a.google.spanner.v1.Session"@\x82\xd3\xe4\x93\x02:\x12\x38/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\x0cListSessions\x12&.google.spanner.v1.ListSessionsRequest\x1a\'.google.spanner.v1.ListSessionsResponse"B\x82\xd3\xe4\x93\x02<\x12:/v1/{database=projects/*/instances/*/databases/*}/sessions\x12\x92\x01\n\rDeleteSession\x12\'.google.spanner.v1.DeleteSessionRequest\x1a\x16.google.protobuf.Empty"@\x82\xd3\xe4\x93\x02:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\nExecuteSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a\x1c.google.spanner.v1.ResultSet"Q\x82\xd3\xe4\x93\x02K"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\x01*\x12\xbe\x01\n\x13\x45xecuteStreamingSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a#.google.spanner.v1.PartialResultSet"Z\x82\xd3\xe4\x93\x02T"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\x01*0\x01\x12\x91\x01\n\x04Read\x12\x1e.google.spanner.v1.ReadRequest\x1a\x1c.google.spanner.v1.ResultSet"K\x82\xd3\xe4\x93\x02\x45"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\x01*\x12\xac\x01\n\rStreamingRead\x12\x1e.google.spanner.v1.ReadRequest\x1a#.google.spanner.v1.PartialResultSet"T\x82\xd3\xe4\x93\x02N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\x01*0\x01\x12\xb7\x01\n\x10\x42\x65ginTransaction\x12*.google.spanner.v1.BeginTransactionRequest\x1a\x1e.google.spanner.v1.Transaction"W\x82\xd3\xe4\x93\x02Q"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\x01*\x12\x9c\x01\n\x06\x43ommit\x12 .google.spanner.v1.CommitRequest\x1a!.google.spanner.v1.CommitResponse"M\x82\xd3\xe4\x93\x02G"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\x01*\x12\x97\x01\n\x08Rollback\x12".google.spanner.v1.RollbackRequest\x1a\x16.google.protobuf.Empty"O\x82\xd3\xe4\x93\x02I"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\x01*\x12\xb7\x01\n\x0ePartitionQuery\x12(.google.spanner.v1.PartitionQueryRequest\x1a$.google.spanner.v1.PartitionResponse"U\x82\xd3\xe4\x93\x02O"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\x01*\x12\xb4\x01\n\rPartitionRead\x12\'.google.spanner.v1.PartitionReadRequest\x1a$.google.spanner.v1.PartitionResponse"T\x82\xd3\xe4\x93\x02N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\x01*B\x95\x01\n\x15\x63om.google.spanner.v1B\x0cSpannerProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_spanner__v1_dot_proto_dot_mutation__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _EXECUTESQLREQUEST_QUERYMODE = _descriptor.EnumDescriptor(
-  name='QueryMode',
-  full_name='google.spanner.v1.ExecuteSqlRequest.QueryMode',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='NORMAL', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PLAN', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PROFILE', index=2, number=2,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=1442,
-  serialized_end=1488,
+    name="QueryMode",
+    full_name="google.spanner.v1.ExecuteSqlRequest.QueryMode",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="NORMAL", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PLAN", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PROFILE", index=2, number=2, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=1442,
+    serialized_end=1488,
 )
 _sym_db.RegisterEnumDescriptor(_EXECUTESQLREQUEST_QUERYMODE)
 
 
 _CREATESESSIONREQUEST = _descriptor.Descriptor(
-  name='CreateSessionRequest',
-  full_name='google.spanner.v1.CreateSessionRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='database', full_name='google.spanner.v1.CreateSessionRequest.database', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='session', full_name='google.spanner.v1.CreateSessionRequest.session', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=415,
-  serialized_end=500,
+    name="CreateSessionRequest",
+    full_name="google.spanner.v1.CreateSessionRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="database",
+            full_name="google.spanner.v1.CreateSessionRequest.database",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="session",
+            full_name="google.spanner.v1.CreateSessionRequest.session",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=415,
+    serialized_end=500,
 )
 
 
 _SESSION_LABELSENTRY = _descriptor.Descriptor(
-  name='LabelsEntry',
-  full_name='google.spanner.v1.Session.LabelsEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.spanner.v1.Session.LabelsEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.spanner.v1.Session.LabelsEntry.value', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=696,
-  serialized_end=741,
+    name="LabelsEntry",
+    full_name="google.spanner.v1.Session.LabelsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.spanner.v1.Session.LabelsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.spanner.v1.Session.LabelsEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=696,
+    serialized_end=741,
 )
 
 _SESSION = _descriptor.Descriptor(
-  name='Session',
-  full_name='google.spanner.v1.Session',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.spanner.v1.Session.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='labels', full_name='google.spanner.v1.Session.labels', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='create_time', full_name='google.spanner.v1.Session.create_time', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='approximate_last_use_time', full_name='google.spanner.v1.Session.approximate_last_use_time', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_SESSION_LABELSENTRY, ],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=503,
-  serialized_end=741,
+    name="Session",
+    full_name="google.spanner.v1.Session",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.spanner.v1.Session.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="labels",
+            full_name="google.spanner.v1.Session.labels",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="create_time",
+            full_name="google.spanner.v1.Session.create_time",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="approximate_last_use_time",
+            full_name="google.spanner.v1.Session.approximate_last_use_time",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_SESSION_LABELSENTRY],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=503,
+    serialized_end=741,
 )
 
 
 _GETSESSIONREQUEST = _descriptor.Descriptor(
-  name='GetSessionRequest',
-  full_name='google.spanner.v1.GetSessionRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.spanner.v1.GetSessionRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=743,
-  serialized_end=776,
+    name="GetSessionRequest",
+    full_name="google.spanner.v1.GetSessionRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.spanner.v1.GetSessionRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=743,
+    serialized_end=776,
 )
 
 
 _LISTSESSIONSREQUEST = _descriptor.Descriptor(
-  name='ListSessionsRequest',
-  full_name='google.spanner.v1.ListSessionsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='database', full_name='google.spanner.v1.ListSessionsRequest.database', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.spanner.v1.ListSessionsRequest.page_size', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.spanner.v1.ListSessionsRequest.page_token', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filter', full_name='google.spanner.v1.ListSessionsRequest.filter', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=778,
-  serialized_end=872,
+    name="ListSessionsRequest",
+    full_name="google.spanner.v1.ListSessionsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="database",
+            full_name="google.spanner.v1.ListSessionsRequest.database",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.spanner.v1.ListSessionsRequest.page_size",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.spanner.v1.ListSessionsRequest.page_token",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="google.spanner.v1.ListSessionsRequest.filter",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=778,
+    serialized_end=872,
 )
 
 
 _LISTSESSIONSRESPONSE = _descriptor.Descriptor(
-  name='ListSessionsResponse',
-  full_name='google.spanner.v1.ListSessionsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='sessions', full_name='google.spanner.v1.ListSessionsResponse.sessions', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.spanner.v1.ListSessionsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=874,
-  serialized_end=967,
+    name="ListSessionsResponse",
+    full_name="google.spanner.v1.ListSessionsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="sessions",
+            full_name="google.spanner.v1.ListSessionsResponse.sessions",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.spanner.v1.ListSessionsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=874,
+    serialized_end=967,
 )
 
 
 _DELETESESSIONREQUEST = _descriptor.Descriptor(
-  name='DeleteSessionRequest',
-  full_name='google.spanner.v1.DeleteSessionRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.spanner.v1.DeleteSessionRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=969,
-  serialized_end=1005,
+    name="DeleteSessionRequest",
+    full_name="google.spanner.v1.DeleteSessionRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.spanner.v1.DeleteSessionRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=969,
+    serialized_end=1005,
 )
 
 
 _EXECUTESQLREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
-  name='ParamTypesEntry',
-  full_name='google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry.value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1366,
-  serialized_end=1440,
+    name="ParamTypesEntry",
+    full_name="google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry.value",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1366,
+    serialized_end=1440,
 )
 
 _EXECUTESQLREQUEST = _descriptor.Descriptor(
-  name='ExecuteSqlRequest',
-  full_name='google.spanner.v1.ExecuteSqlRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='session', full_name='google.spanner.v1.ExecuteSqlRequest.session', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='transaction', full_name='google.spanner.v1.ExecuteSqlRequest.transaction', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sql', full_name='google.spanner.v1.ExecuteSqlRequest.sql', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='params', full_name='google.spanner.v1.ExecuteSqlRequest.params', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='param_types', full_name='google.spanner.v1.ExecuteSqlRequest.param_types', index=4,
-      number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='resume_token', full_name='google.spanner.v1.ExecuteSqlRequest.resume_token', index=5,
-      number=6, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='query_mode', full_name='google.spanner.v1.ExecuteSqlRequest.query_mode', index=6,
-      number=7, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='partition_token', full_name='google.spanner.v1.ExecuteSqlRequest.partition_token', index=7,
-      number=8, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='seqno', full_name='google.spanner.v1.ExecuteSqlRequest.seqno', index=8,
-      number=9, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_EXECUTESQLREQUEST_PARAMTYPESENTRY, ],
-  enum_types=[
-    _EXECUTESQLREQUEST_QUERYMODE,
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1008,
-  serialized_end=1488,
+    name="ExecuteSqlRequest",
+    full_name="google.spanner.v1.ExecuteSqlRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="session",
+            full_name="google.spanner.v1.ExecuteSqlRequest.session",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="transaction",
+            full_name="google.spanner.v1.ExecuteSqlRequest.transaction",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="sql",
+            full_name="google.spanner.v1.ExecuteSqlRequest.sql",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="params",
+            full_name="google.spanner.v1.ExecuteSqlRequest.params",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="param_types",
+            full_name="google.spanner.v1.ExecuteSqlRequest.param_types",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="resume_token",
+            full_name="google.spanner.v1.ExecuteSqlRequest.resume_token",
+            index=5,
+            number=6,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="query_mode",
+            full_name="google.spanner.v1.ExecuteSqlRequest.query_mode",
+            index=6,
+            number=7,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="partition_token",
+            full_name="google.spanner.v1.ExecuteSqlRequest.partition_token",
+            index=7,
+            number=8,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="seqno",
+            full_name="google.spanner.v1.ExecuteSqlRequest.seqno",
+            index=8,
+            number=9,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_EXECUTESQLREQUEST_PARAMTYPESENTRY],
+    enum_types=[_EXECUTESQLREQUEST_QUERYMODE],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1008,
+    serialized_end=1488,
 )
 
 
 _PARTITIONOPTIONS = _descriptor.Descriptor(
-  name='PartitionOptions',
-  full_name='google.spanner.v1.PartitionOptions',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='partition_size_bytes', full_name='google.spanner.v1.PartitionOptions.partition_size_bytes', index=0,
-      number=1, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='max_partitions', full_name='google.spanner.v1.PartitionOptions.max_partitions', index=1,
-      number=2, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1490,
-  serialized_end=1562,
+    name="PartitionOptions",
+    full_name="google.spanner.v1.PartitionOptions",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="partition_size_bytes",
+            full_name="google.spanner.v1.PartitionOptions.partition_size_bytes",
+            index=0,
+            number=1,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="max_partitions",
+            full_name="google.spanner.v1.PartitionOptions.max_partitions",
+            index=1,
+            number=2,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1490,
+    serialized_end=1562,
 )
 
 
 _PARTITIONQUERYREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
-  name='ParamTypesEntry',
-  full_name='google.spanner.v1.PartitionQueryRequest.ParamTypesEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.spanner.v1.PartitionQueryRequest.ParamTypesEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.spanner.v1.PartitionQueryRequest.ParamTypesEntry.value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1366,
-  serialized_end=1440,
+    name="ParamTypesEntry",
+    full_name="google.spanner.v1.PartitionQueryRequest.ParamTypesEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.spanner.v1.PartitionQueryRequest.ParamTypesEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.spanner.v1.PartitionQueryRequest.ParamTypesEntry.value",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1366,
+    serialized_end=1440,
 )
 
 _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
-  name='PartitionQueryRequest',
-  full_name='google.spanner.v1.PartitionQueryRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='session', full_name='google.spanner.v1.PartitionQueryRequest.session', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='transaction', full_name='google.spanner.v1.PartitionQueryRequest.transaction', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sql', full_name='google.spanner.v1.PartitionQueryRequest.sql', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='params', full_name='google.spanner.v1.PartitionQueryRequest.params', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='param_types', full_name='google.spanner.v1.PartitionQueryRequest.param_types', index=4,
-      number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='partition_options', full_name='google.spanner.v1.PartitionQueryRequest.partition_options', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_PARTITIONQUERYREQUEST_PARAMTYPESENTRY, ],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1565,
-  serialized_end=1939,
+    name="PartitionQueryRequest",
+    full_name="google.spanner.v1.PartitionQueryRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="session",
+            full_name="google.spanner.v1.PartitionQueryRequest.session",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="transaction",
+            full_name="google.spanner.v1.PartitionQueryRequest.transaction",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="sql",
+            full_name="google.spanner.v1.PartitionQueryRequest.sql",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="params",
+            full_name="google.spanner.v1.PartitionQueryRequest.params",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="param_types",
+            full_name="google.spanner.v1.PartitionQueryRequest.param_types",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="partition_options",
+            full_name="google.spanner.v1.PartitionQueryRequest.partition_options",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_PARTITIONQUERYREQUEST_PARAMTYPESENTRY],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1565,
+    serialized_end=1939,
 )
 
 
 _PARTITIONREADREQUEST = _descriptor.Descriptor(
-  name='PartitionReadRequest',
-  full_name='google.spanner.v1.PartitionReadRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='session', full_name='google.spanner.v1.PartitionReadRequest.session', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='transaction', full_name='google.spanner.v1.PartitionReadRequest.transaction', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='table', full_name='google.spanner.v1.PartitionReadRequest.table', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='index', full_name='google.spanner.v1.PartitionReadRequest.index', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='columns', full_name='google.spanner.v1.PartitionReadRequest.columns', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='key_set', full_name='google.spanner.v1.PartitionReadRequest.key_set', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='partition_options', full_name='google.spanner.v1.PartitionReadRequest.partition_options', index=6,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1942,
-  serialized_end=2197,
+    name="PartitionReadRequest",
+    full_name="google.spanner.v1.PartitionReadRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="session",
+            full_name="google.spanner.v1.PartitionReadRequest.session",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="transaction",
+            full_name="google.spanner.v1.PartitionReadRequest.transaction",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="table",
+            full_name="google.spanner.v1.PartitionReadRequest.table",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="index",
+            full_name="google.spanner.v1.PartitionReadRequest.index",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="columns",
+            full_name="google.spanner.v1.PartitionReadRequest.columns",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="key_set",
+            full_name="google.spanner.v1.PartitionReadRequest.key_set",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="partition_options",
+            full_name="google.spanner.v1.PartitionReadRequest.partition_options",
+            index=6,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1942,
+    serialized_end=2197,
 )
 
 
 _PARTITION = _descriptor.Descriptor(
-  name='Partition',
-  full_name='google.spanner.v1.Partition',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='partition_token', full_name='google.spanner.v1.Partition.partition_token', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2199,
-  serialized_end=2235,
+    name="Partition",
+    full_name="google.spanner.v1.Partition",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="partition_token",
+            full_name="google.spanner.v1.Partition.partition_token",
+            index=0,
+            number=1,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2199,
+    serialized_end=2235,
 )
 
 
 _PARTITIONRESPONSE = _descriptor.Descriptor(
-  name='PartitionResponse',
-  full_name='google.spanner.v1.PartitionResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='partitions', full_name='google.spanner.v1.PartitionResponse.partitions', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='transaction', full_name='google.spanner.v1.PartitionResponse.transaction', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2237,
-  serialized_end=2359,
+    name="PartitionResponse",
+    full_name="google.spanner.v1.PartitionResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="partitions",
+            full_name="google.spanner.v1.PartitionResponse.partitions",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="transaction",
+            full_name="google.spanner.v1.PartitionResponse.transaction",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2237,
+    serialized_end=2359,
 )
 
 
 _READREQUEST = _descriptor.Descriptor(
-  name='ReadRequest',
-  full_name='google.spanner.v1.ReadRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='session', full_name='google.spanner.v1.ReadRequest.session', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='transaction', full_name='google.spanner.v1.ReadRequest.transaction', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='table', full_name='google.spanner.v1.ReadRequest.table', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='index', full_name='google.spanner.v1.ReadRequest.index', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='columns', full_name='google.spanner.v1.ReadRequest.columns', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='key_set', full_name='google.spanner.v1.ReadRequest.key_set', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='limit', full_name='google.spanner.v1.ReadRequest.limit', index=6,
-      number=8, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='resume_token', full_name='google.spanner.v1.ReadRequest.resume_token', index=7,
-      number=9, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='partition_token', full_name='google.spanner.v1.ReadRequest.partition_token', index=8,
-      number=10, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2362,
-  serialized_end=2606,
+    name="ReadRequest",
+    full_name="google.spanner.v1.ReadRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="session",
+            full_name="google.spanner.v1.ReadRequest.session",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="transaction",
+            full_name="google.spanner.v1.ReadRequest.transaction",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="table",
+            full_name="google.spanner.v1.ReadRequest.table",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="index",
+            full_name="google.spanner.v1.ReadRequest.index",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="columns",
+            full_name="google.spanner.v1.ReadRequest.columns",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="key_set",
+            full_name="google.spanner.v1.ReadRequest.key_set",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="limit",
+            full_name="google.spanner.v1.ReadRequest.limit",
+            index=6,
+            number=8,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="resume_token",
+            full_name="google.spanner.v1.ReadRequest.resume_token",
+            index=7,
+            number=9,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="partition_token",
+            full_name="google.spanner.v1.ReadRequest.partition_token",
+            index=8,
+            number=10,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2362,
+    serialized_end=2606,
 )
 
 
 _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
-  name='BeginTransactionRequest',
-  full_name='google.spanner.v1.BeginTransactionRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='session', full_name='google.spanner.v1.BeginTransactionRequest.session', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='options', full_name='google.spanner.v1.BeginTransactionRequest.options', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2608,
-  serialized_end=2706,
+    name="BeginTransactionRequest",
+    full_name="google.spanner.v1.BeginTransactionRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="session",
+            full_name="google.spanner.v1.BeginTransactionRequest.session",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="options",
+            full_name="google.spanner.v1.BeginTransactionRequest.options",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2608,
+    serialized_end=2706,
 )
 
 
 _COMMITREQUEST = _descriptor.Descriptor(
-  name='CommitRequest',
-  full_name='google.spanner.v1.CommitRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='session', full_name='google.spanner.v1.CommitRequest.session', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='transaction_id', full_name='google.spanner.v1.CommitRequest.transaction_id', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='single_use_transaction', full_name='google.spanner.v1.CommitRequest.single_use_transaction', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mutations', full_name='google.spanner.v1.CommitRequest.mutations', index=3,
-      number=4, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='transaction', full_name='google.spanner.v1.CommitRequest.transaction',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=2709,
-  serialized_end=2903,
+    name="CommitRequest",
+    full_name="google.spanner.v1.CommitRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="session",
+            full_name="google.spanner.v1.CommitRequest.session",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="transaction_id",
+            full_name="google.spanner.v1.CommitRequest.transaction_id",
+            index=1,
+            number=2,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="single_use_transaction",
+            full_name="google.spanner.v1.CommitRequest.single_use_transaction",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mutations",
+            full_name="google.spanner.v1.CommitRequest.mutations",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="transaction",
+            full_name="google.spanner.v1.CommitRequest.transaction",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=2709,
+    serialized_end=2903,
 )
 
 
 _COMMITRESPONSE = _descriptor.Descriptor(
-  name='CommitResponse',
-  full_name='google.spanner.v1.CommitResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='commit_timestamp', full_name='google.spanner.v1.CommitResponse.commit_timestamp', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2905,
-  serialized_end=2975,
+    name="CommitResponse",
+    full_name="google.spanner.v1.CommitResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="commit_timestamp",
+            full_name="google.spanner.v1.CommitResponse.commit_timestamp",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2905,
+    serialized_end=2975,
 )
 
 
 _ROLLBACKREQUEST = _descriptor.Descriptor(
-  name='RollbackRequest',
-  full_name='google.spanner.v1.RollbackRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='session', full_name='google.spanner.v1.RollbackRequest.session', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='transaction_id', full_name='google.spanner.v1.RollbackRequest.transaction_id', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2977,
-  serialized_end=3035,
+    name="RollbackRequest",
+    full_name="google.spanner.v1.RollbackRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="session",
+            full_name="google.spanner.v1.RollbackRequest.session",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="transaction_id",
+            full_name="google.spanner.v1.RollbackRequest.transaction_id",
+            index=1,
+            number=2,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2977,
+    serialized_end=3035,
 )
 
-_CREATESESSIONREQUEST.fields_by_name['session'].message_type = _SESSION
+_CREATESESSIONREQUEST.fields_by_name["session"].message_type = _SESSION
 _SESSION_LABELSENTRY.containing_type = _SESSION
-_SESSION.fields_by_name['labels'].message_type = _SESSION_LABELSENTRY
-_SESSION.fields_by_name['create_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_SESSION.fields_by_name['approximate_last_use_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_LISTSESSIONSRESPONSE.fields_by_name['sessions'].message_type = _SESSION
-_EXECUTESQLREQUEST_PARAMTYPESENTRY.fields_by_name['value'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2._TYPE
+_SESSION.fields_by_name["labels"].message_type = _SESSION_LABELSENTRY
+_SESSION.fields_by_name[
+    "create_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_SESSION.fields_by_name[
+    "approximate_last_use_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_LISTSESSIONSRESPONSE.fields_by_name["sessions"].message_type = _SESSION
+_EXECUTESQLREQUEST_PARAMTYPESENTRY.fields_by_name[
+    "value"
+].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2._TYPE
 _EXECUTESQLREQUEST_PARAMTYPESENTRY.containing_type = _EXECUTESQLREQUEST
-_EXECUTESQLREQUEST.fields_by_name['transaction'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONSELECTOR
-_EXECUTESQLREQUEST.fields_by_name['params'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
-_EXECUTESQLREQUEST.fields_by_name['param_types'].message_type = _EXECUTESQLREQUEST_PARAMTYPESENTRY
-_EXECUTESQLREQUEST.fields_by_name['query_mode'].enum_type = _EXECUTESQLREQUEST_QUERYMODE
+_EXECUTESQLREQUEST.fields_by_name[
+    "transaction"
+].message_type = (
+    google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONSELECTOR
+)
+_EXECUTESQLREQUEST.fields_by_name[
+    "params"
+].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_EXECUTESQLREQUEST.fields_by_name[
+    "param_types"
+].message_type = _EXECUTESQLREQUEST_PARAMTYPESENTRY
+_EXECUTESQLREQUEST.fields_by_name["query_mode"].enum_type = _EXECUTESQLREQUEST_QUERYMODE
 _EXECUTESQLREQUEST_QUERYMODE.containing_type = _EXECUTESQLREQUEST
-_PARTITIONQUERYREQUEST_PARAMTYPESENTRY.fields_by_name['value'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2._TYPE
+_PARTITIONQUERYREQUEST_PARAMTYPESENTRY.fields_by_name[
+    "value"
+].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2._TYPE
 _PARTITIONQUERYREQUEST_PARAMTYPESENTRY.containing_type = _PARTITIONQUERYREQUEST
-_PARTITIONQUERYREQUEST.fields_by_name['transaction'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONSELECTOR
-_PARTITIONQUERYREQUEST.fields_by_name['params'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
-_PARTITIONQUERYREQUEST.fields_by_name['param_types'].message_type = _PARTITIONQUERYREQUEST_PARAMTYPESENTRY
-_PARTITIONQUERYREQUEST.fields_by_name['partition_options'].message_type = _PARTITIONOPTIONS
-_PARTITIONREADREQUEST.fields_by_name['transaction'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONSELECTOR
-_PARTITIONREADREQUEST.fields_by_name['key_set'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2._KEYSET
-_PARTITIONREADREQUEST.fields_by_name['partition_options'].message_type = _PARTITIONOPTIONS
-_PARTITIONRESPONSE.fields_by_name['partitions'].message_type = _PARTITION
-_PARTITIONRESPONSE.fields_by_name['transaction'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTION
-_READREQUEST.fields_by_name['transaction'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONSELECTOR
-_READREQUEST.fields_by_name['key_set'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2._KEYSET
-_BEGINTRANSACTIONREQUEST.fields_by_name['options'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONOPTIONS
-_COMMITREQUEST.fields_by_name['single_use_transaction'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONOPTIONS
-_COMMITREQUEST.fields_by_name['mutations'].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_mutation__pb2._MUTATION
-_COMMITREQUEST.oneofs_by_name['transaction'].fields.append(
-  _COMMITREQUEST.fields_by_name['transaction_id'])
-_COMMITREQUEST.fields_by_name['transaction_id'].containing_oneof = _COMMITREQUEST.oneofs_by_name['transaction']
-_COMMITREQUEST.oneofs_by_name['transaction'].fields.append(
-  _COMMITREQUEST.fields_by_name['single_use_transaction'])
-_COMMITREQUEST.fields_by_name['single_use_transaction'].containing_oneof = _COMMITREQUEST.oneofs_by_name['transaction']
-_COMMITRESPONSE.fields_by_name['commit_timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-DESCRIPTOR.message_types_by_name['CreateSessionRequest'] = _CREATESESSIONREQUEST
-DESCRIPTOR.message_types_by_name['Session'] = _SESSION
-DESCRIPTOR.message_types_by_name['GetSessionRequest'] = _GETSESSIONREQUEST
-DESCRIPTOR.message_types_by_name['ListSessionsRequest'] = _LISTSESSIONSREQUEST
-DESCRIPTOR.message_types_by_name['ListSessionsResponse'] = _LISTSESSIONSRESPONSE
-DESCRIPTOR.message_types_by_name['DeleteSessionRequest'] = _DELETESESSIONREQUEST
-DESCRIPTOR.message_types_by_name['ExecuteSqlRequest'] = _EXECUTESQLREQUEST
-DESCRIPTOR.message_types_by_name['PartitionOptions'] = _PARTITIONOPTIONS
-DESCRIPTOR.message_types_by_name['PartitionQueryRequest'] = _PARTITIONQUERYREQUEST
-DESCRIPTOR.message_types_by_name['PartitionReadRequest'] = _PARTITIONREADREQUEST
-DESCRIPTOR.message_types_by_name['Partition'] = _PARTITION
-DESCRIPTOR.message_types_by_name['PartitionResponse'] = _PARTITIONRESPONSE
-DESCRIPTOR.message_types_by_name['ReadRequest'] = _READREQUEST
-DESCRIPTOR.message_types_by_name['BeginTransactionRequest'] = _BEGINTRANSACTIONREQUEST
-DESCRIPTOR.message_types_by_name['CommitRequest'] = _COMMITREQUEST
-DESCRIPTOR.message_types_by_name['CommitResponse'] = _COMMITRESPONSE
-DESCRIPTOR.message_types_by_name['RollbackRequest'] = _ROLLBACKREQUEST
+_PARTITIONQUERYREQUEST.fields_by_name[
+    "transaction"
+].message_type = (
+    google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONSELECTOR
+)
+_PARTITIONQUERYREQUEST.fields_by_name[
+    "params"
+].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_PARTITIONQUERYREQUEST.fields_by_name[
+    "param_types"
+].message_type = _PARTITIONQUERYREQUEST_PARAMTYPESENTRY
+_PARTITIONQUERYREQUEST.fields_by_name[
+    "partition_options"
+].message_type = _PARTITIONOPTIONS
+_PARTITIONREADREQUEST.fields_by_name[
+    "transaction"
+].message_type = (
+    google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONSELECTOR
+)
+_PARTITIONREADREQUEST.fields_by_name[
+    "key_set"
+].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2._KEYSET
+_PARTITIONREADREQUEST.fields_by_name[
+    "partition_options"
+].message_type = _PARTITIONOPTIONS
+_PARTITIONRESPONSE.fields_by_name["partitions"].message_type = _PARTITION
+_PARTITIONRESPONSE.fields_by_name[
+    "transaction"
+].message_type = (
+    google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTION
+)
+_READREQUEST.fields_by_name[
+    "transaction"
+].message_type = (
+    google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONSELECTOR
+)
+_READREQUEST.fields_by_name[
+    "key_set"
+].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2._KEYSET
+_BEGINTRANSACTIONREQUEST.fields_by_name[
+    "options"
+].message_type = (
+    google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONOPTIONS
+)
+_COMMITREQUEST.fields_by_name[
+    "single_use_transaction"
+].message_type = (
+    google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTIONOPTIONS
+)
+_COMMITREQUEST.fields_by_name[
+    "mutations"
+].message_type = google_dot_cloud_dot_spanner__v1_dot_proto_dot_mutation__pb2._MUTATION
+_COMMITREQUEST.oneofs_by_name["transaction"].fields.append(
+    _COMMITREQUEST.fields_by_name["transaction_id"]
+)
+_COMMITREQUEST.fields_by_name[
+    "transaction_id"
+].containing_oneof = _COMMITREQUEST.oneofs_by_name["transaction"]
+_COMMITREQUEST.oneofs_by_name["transaction"].fields.append(
+    _COMMITREQUEST.fields_by_name["single_use_transaction"]
+)
+_COMMITREQUEST.fields_by_name[
+    "single_use_transaction"
+].containing_oneof = _COMMITREQUEST.oneofs_by_name["transaction"]
+_COMMITRESPONSE.fields_by_name[
+    "commit_timestamp"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+DESCRIPTOR.message_types_by_name["CreateSessionRequest"] = _CREATESESSIONREQUEST
+DESCRIPTOR.message_types_by_name["Session"] = _SESSION
+DESCRIPTOR.message_types_by_name["GetSessionRequest"] = _GETSESSIONREQUEST
+DESCRIPTOR.message_types_by_name["ListSessionsRequest"] = _LISTSESSIONSREQUEST
+DESCRIPTOR.message_types_by_name["ListSessionsResponse"] = _LISTSESSIONSRESPONSE
+DESCRIPTOR.message_types_by_name["DeleteSessionRequest"] = _DELETESESSIONREQUEST
+DESCRIPTOR.message_types_by_name["ExecuteSqlRequest"] = _EXECUTESQLREQUEST
+DESCRIPTOR.message_types_by_name["PartitionOptions"] = _PARTITIONOPTIONS
+DESCRIPTOR.message_types_by_name["PartitionQueryRequest"] = _PARTITIONQUERYREQUEST
+DESCRIPTOR.message_types_by_name["PartitionReadRequest"] = _PARTITIONREADREQUEST
+DESCRIPTOR.message_types_by_name["Partition"] = _PARTITION
+DESCRIPTOR.message_types_by_name["PartitionResponse"] = _PARTITIONRESPONSE
+DESCRIPTOR.message_types_by_name["ReadRequest"] = _READREQUEST
+DESCRIPTOR.message_types_by_name["BeginTransactionRequest"] = _BEGINTRANSACTIONREQUEST
+DESCRIPTOR.message_types_by_name["CommitRequest"] = _COMMITREQUEST
+DESCRIPTOR.message_types_by_name["CommitResponse"] = _COMMITRESPONSE
+DESCRIPTOR.message_types_by_name["RollbackRequest"] = _ROLLBACKREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-CreateSessionRequest = _reflection.GeneratedProtocolMessageType('CreateSessionRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATESESSIONREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for
+CreateSessionRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateSessionRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATESESSIONREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for
   [CreateSession][google.spanner.v1.Spanner.CreateSession].
   
   
@@ -1065,22 +1808,27 @@ CreateSessionRequest = _reflection.GeneratedProtocolMessageType('CreateSessionRe
       session:
           The session to create.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.CreateSessionRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.CreateSessionRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateSessionRequest)
 
-Session = _reflection.GeneratedProtocolMessageType('Session', (_message.Message,), dict(
-
-  LabelsEntry = _reflection.GeneratedProtocolMessageType('LabelsEntry', (_message.Message,), dict(
-    DESCRIPTOR = _SESSION_LABELSENTRY,
-    __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-    # @@protoc_insertion_point(class_scope:google.spanner.v1.Session.LabelsEntry)
-    ))
-  ,
-  DESCRIPTOR = _SESSION,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """A session in the Cloud Spanner API.
+Session = _reflection.GeneratedProtocolMessageType(
+    "Session",
+    (_message.Message,),
+    dict(
+        LabelsEntry=_reflection.GeneratedProtocolMessageType(
+            "LabelsEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_SESSION_LABELSENTRY,
+                __module__="google.cloud.spanner_v1.proto.spanner_pb2"
+                # @@protoc_insertion_point(class_scope:google.spanner.v1.Session.LabelsEntry)
+            ),
+        ),
+        DESCRIPTOR=_SESSION,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""A session in the Cloud Spanner API.
   
   
   Attributes:
@@ -1104,31 +1852,37 @@ Session = _reflection.GeneratedProtocolMessageType('Session', (_message.Message,
           last used. It is typically earlier than the actual last use
           time.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.Session)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.Session)
+    ),
+)
 _sym_db.RegisterMessage(Session)
 _sym_db.RegisterMessage(Session.LabelsEntry)
 
-GetSessionRequest = _reflection.GeneratedProtocolMessageType('GetSessionRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETSESSIONREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for [GetSession][google.spanner.v1.Spanner.GetSession].
+GetSessionRequest = _reflection.GeneratedProtocolMessageType(
+    "GetSessionRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETSESSIONREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for [GetSession][google.spanner.v1.Spanner.GetSession].
   
   
   Attributes:
       name:
           Required. The name of the session to retrieve.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.GetSessionRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.GetSessionRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetSessionRequest)
 
-ListSessionsRequest = _reflection.GeneratedProtocolMessageType('ListSessionsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTSESSIONSREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for [ListSessions][google.spanner.v1.Spanner.ListSessions].
+ListSessionsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListSessionsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTSESSIONSREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for [ListSessions][google.spanner.v1.Spanner.ListSessions].
   
   
   Attributes:
@@ -1151,15 +1905,18 @@ ListSessionsRequest = _reflection.GeneratedProtocolMessageType('ListSessionsRequ
           session has the label "env" and the value    of the label
           contains the string "dev".
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.ListSessionsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.ListSessionsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListSessionsRequest)
 
-ListSessionsResponse = _reflection.GeneratedProtocolMessageType('ListSessionsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTSESSIONSRESPONSE,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The response for [ListSessions][google.spanner.v1.Spanner.ListSessions].
+ListSessionsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListSessionsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTSESSIONSRESPONSE,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The response for [ListSessions][google.spanner.v1.Spanner.ListSessions].
   
   
   Attributes:
@@ -1170,15 +1927,18 @@ ListSessionsResponse = _reflection.GeneratedProtocolMessageType('ListSessionsRes
           [ListSessions][google.spanner.v1.Spanner.ListSessions] call to
           fetch more of the matching sessions.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.ListSessionsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.ListSessionsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListSessionsResponse)
 
-DeleteSessionRequest = _reflection.GeneratedProtocolMessageType('DeleteSessionRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETESESSIONREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for
+DeleteSessionRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteSessionRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETESESSIONREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for
   [DeleteSession][google.spanner.v1.Spanner.DeleteSession].
   
   
@@ -1186,22 +1946,27 @@ DeleteSessionRequest = _reflection.GeneratedProtocolMessageType('DeleteSessionRe
       name:
           Required. The name of the session to delete.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.DeleteSessionRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.DeleteSessionRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteSessionRequest)
 
-ExecuteSqlRequest = _reflection.GeneratedProtocolMessageType('ExecuteSqlRequest', (_message.Message,), dict(
-
-  ParamTypesEntry = _reflection.GeneratedProtocolMessageType('ParamTypesEntry', (_message.Message,), dict(
-    DESCRIPTOR = _EXECUTESQLREQUEST_PARAMTYPESENTRY,
-    __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-    # @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry)
-    ))
-  ,
-  DESCRIPTOR = _EXECUTESQLREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
+ExecuteSqlRequest = _reflection.GeneratedProtocolMessageType(
+    "ExecuteSqlRequest",
+    (_message.Message,),
+    dict(
+        ParamTypesEntry=_reflection.GeneratedProtocolMessageType(
+            "ParamTypesEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_EXECUTESQLREQUEST_PARAMTYPESENTRY,
+                __module__="google.cloud.spanner_v1.proto.spanner_pb2"
+                # @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry)
+            ),
+        ),
+        DESCRIPTOR=_EXECUTESQLREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
   [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].
   
   
@@ -1277,16 +2042,19 @@ ExecuteSqlRequest = _reflection.GeneratedProtocolMessageType('ExecuteSqlRequest'
           same response as the first execution.  Required for DML
           statements. Ignored for queries.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteSqlRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteSqlRequest)
+    ),
+)
 _sym_db.RegisterMessage(ExecuteSqlRequest)
 _sym_db.RegisterMessage(ExecuteSqlRequest.ParamTypesEntry)
 
-PartitionOptions = _reflection.GeneratedProtocolMessageType('PartitionOptions', (_message.Message,), dict(
-  DESCRIPTOR = _PARTITIONOPTIONS,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """Options for a PartitionQueryRequest and PartitionReadRequest.
+PartitionOptions = _reflection.GeneratedProtocolMessageType(
+    "PartitionOptions",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PARTITIONOPTIONS,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""Options for a PartitionQueryRequest and PartitionReadRequest.
   
   
   Attributes:
@@ -1305,22 +2073,27 @@ PartitionOptions = _reflection.GeneratedProtocolMessageType('PartitionOptions', 
           is only a hint. The actual number of partitions returned may
           be smaller or larger than this maximum count request.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionOptions)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionOptions)
+    ),
+)
 _sym_db.RegisterMessage(PartitionOptions)
 
-PartitionQueryRequest = _reflection.GeneratedProtocolMessageType('PartitionQueryRequest', (_message.Message,), dict(
-
-  ParamTypesEntry = _reflection.GeneratedProtocolMessageType('ParamTypesEntry', (_message.Message,), dict(
-    DESCRIPTOR = _PARTITIONQUERYREQUEST_PARAMTYPESENTRY,
-    __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-    # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionQueryRequest.ParamTypesEntry)
-    ))
-  ,
-  DESCRIPTOR = _PARTITIONQUERYREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for
+PartitionQueryRequest = _reflection.GeneratedProtocolMessageType(
+    "PartitionQueryRequest",
+    (_message.Message,),
+    dict(
+        ParamTypesEntry=_reflection.GeneratedProtocolMessageType(
+            "ParamTypesEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_PARTITIONQUERYREQUEST_PARAMTYPESENTRY,
+                __module__="google.cloud.spanner_v1.proto.spanner_pb2"
+                # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionQueryRequest.ParamTypesEntry)
+            ),
+        ),
+        DESCRIPTOR=_PARTITIONQUERYREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for
   [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery]
   
   
@@ -1367,16 +2140,19 @@ PartitionQueryRequest = _reflection.GeneratedProtocolMessageType('PartitionQuery
           Additional options that affect how many partitions are
           created.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionQueryRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionQueryRequest)
+    ),
+)
 _sym_db.RegisterMessage(PartitionQueryRequest)
 _sym_db.RegisterMessage(PartitionQueryRequest.ParamTypesEntry)
 
-PartitionReadRequest = _reflection.GeneratedProtocolMessageType('PartitionReadRequest', (_message.Message,), dict(
-  DESCRIPTOR = _PARTITIONREADREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
+PartitionReadRequest = _reflection.GeneratedProtocolMessageType(
+    "PartitionReadRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PARTITIONREADREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
   
   
   Attributes:
@@ -1419,15 +2195,18 @@ PartitionReadRequest = _reflection.GeneratedProtocolMessageType('PartitionReadRe
           Additional options that affect how many partitions are
           created.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionReadRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionReadRequest)
+    ),
+)
 _sym_db.RegisterMessage(PartitionReadRequest)
 
-Partition = _reflection.GeneratedProtocolMessageType('Partition', (_message.Message,), dict(
-  DESCRIPTOR = _PARTITION,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """Information returned for each partition returned in a PartitionResponse.
+Partition = _reflection.GeneratedProtocolMessageType(
+    "Partition",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PARTITION,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""Information returned for each partition returned in a PartitionResponse.
   
   
   Attributes:
@@ -1436,15 +2215,18 @@ Partition = _reflection.GeneratedProtocolMessageType('Partition', (_message.Mess
           or ExecuteStreamingSql requests to restrict the results to
           those identified by this partition token.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.Partition)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.Partition)
+    ),
+)
 _sym_db.RegisterMessage(Partition)
 
-PartitionResponse = _reflection.GeneratedProtocolMessageType('PartitionResponse', (_message.Message,), dict(
-  DESCRIPTOR = _PARTITIONRESPONSE,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The response for
+PartitionResponse = _reflection.GeneratedProtocolMessageType(
+    "PartitionResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PARTITIONRESPONSE,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The response for
   [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery] or
   [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
   
@@ -1455,15 +2237,18 @@ PartitionResponse = _reflection.GeneratedProtocolMessageType('PartitionResponse'
       transaction:
           Transaction created by this request.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.PartitionResponse)
+    ),
+)
 _sym_db.RegisterMessage(PartitionResponse)
 
-ReadRequest = _reflection.GeneratedProtocolMessageType('ReadRequest', (_message.Message,), dict(
-  DESCRIPTOR = _READREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for [Read][google.spanner.v1.Spanner.Read] and
+ReadRequest = _reflection.GeneratedProtocolMessageType(
+    "ReadRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_READREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for [Read][google.spanner.v1.Spanner.Read] and
   [StreamingRead][google.spanner.v1.Spanner.StreamingRead].
   
   
@@ -1525,15 +2310,18 @@ ReadRequest = _reflection.GeneratedProtocolMessageType('ReadRequest', (_message.
           message and the PartitionReadRequest message used to create
           this partition\_token.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.ReadRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.ReadRequest)
+    ),
+)
 _sym_db.RegisterMessage(ReadRequest)
 
-BeginTransactionRequest = _reflection.GeneratedProtocolMessageType('BeginTransactionRequest', (_message.Message,), dict(
-  DESCRIPTOR = _BEGINTRANSACTIONREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for
+BeginTransactionRequest = _reflection.GeneratedProtocolMessageType(
+    "BeginTransactionRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BEGINTRANSACTIONREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for
   [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
   
   
@@ -1543,15 +2331,18 @@ BeginTransactionRequest = _reflection.GeneratedProtocolMessageType('BeginTransac
       options:
           Required. Options for the new transaction.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.BeginTransactionRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.BeginTransactionRequest)
+    ),
+)
 _sym_db.RegisterMessage(BeginTransactionRequest)
 
-CommitRequest = _reflection.GeneratedProtocolMessageType('CommitRequest', (_message.Message,), dict(
-  DESCRIPTOR = _COMMITREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for [Commit][google.spanner.v1.Spanner.Commit].
+CommitRequest = _reflection.GeneratedProtocolMessageType(
+    "CommitRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_COMMITREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for [Commit][google.spanner.v1.Spanner.Commit].
   
   
   Attributes:
@@ -1577,15 +2368,18 @@ CommitRequest = _reflection.GeneratedProtocolMessageType('CommitRequest', (_mess
           All mutations are applied atomically, in the order they appear
           in this list.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.CommitRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.CommitRequest)
+    ),
+)
 _sym_db.RegisterMessage(CommitRequest)
 
-CommitResponse = _reflection.GeneratedProtocolMessageType('CommitResponse', (_message.Message,), dict(
-  DESCRIPTOR = _COMMITRESPONSE,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The response for [Commit][google.spanner.v1.Spanner.Commit].
+CommitResponse = _reflection.GeneratedProtocolMessageType(
+    "CommitResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_COMMITRESPONSE,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The response for [Commit][google.spanner.v1.Spanner.Commit].
   
   
   Attributes:
@@ -1593,15 +2387,18 @@ CommitResponse = _reflection.GeneratedProtocolMessageType('CommitResponse', (_me
           The Cloud Spanner timestamp at which the transaction
           committed.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.CommitResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.CommitResponse)
+    ),
+)
 _sym_db.RegisterMessage(CommitResponse)
 
-RollbackRequest = _reflection.GeneratedProtocolMessageType('RollbackRequest', (_message.Message,), dict(
-  DESCRIPTOR = _ROLLBACKREQUEST,
-  __module__ = 'google.cloud.spanner_v1.proto.spanner_pb2'
-  ,
-  __doc__ = """The request for [Rollback][google.spanner.v1.Spanner.Rollback].
+RollbackRequest = _reflection.GeneratedProtocolMessageType(
+    "RollbackRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ROLLBACKREQUEST,
+        __module__="google.cloud.spanner_v1.proto.spanner_pb2",
+        __doc__="""The request for [Rollback][google.spanner.v1.Spanner.Rollback].
   
   
   Attributes:
@@ -1611,149 +2408,227 @@ RollbackRequest = _reflection.GeneratedProtocolMessageType('RollbackRequest', (_
       transaction_id:
           Required. The transaction to roll back.
   """,
-  # @@protoc_insertion_point(class_scope:google.spanner.v1.RollbackRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.spanner.v1.RollbackRequest)
+    ),
+)
 _sym_db.RegisterMessage(RollbackRequest)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\014SpannerProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\025com.google.spanner.v1B\014SpannerProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1"
+    ),
+)
 _SESSION_LABELSENTRY.has_options = True
-_SESSION_LABELSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
+_SESSION_LABELSENTRY._options = _descriptor._ParseOptions(
+    descriptor_pb2.MessageOptions(), _b("8\001")
+)
 _EXECUTESQLREQUEST_PARAMTYPESENTRY.has_options = True
-_EXECUTESQLREQUEST_PARAMTYPESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
+_EXECUTESQLREQUEST_PARAMTYPESENTRY._options = _descriptor._ParseOptions(
+    descriptor_pb2.MessageOptions(), _b("8\001")
+)
 _PARTITIONQUERYREQUEST_PARAMTYPESENTRY.has_options = True
-_PARTITIONQUERYREQUEST_PARAMTYPESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
+_PARTITIONQUERYREQUEST_PARAMTYPESENTRY._options = _descriptor._ParseOptions(
+    descriptor_pb2.MessageOptions(), _b("8\001")
+)
 
 _SPANNER = _descriptor.ServiceDescriptor(
-  name='Spanner',
-  full_name='google.spanner.v1.Spanner',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=3038,
-  serialized_end=5217,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='CreateSession',
-    full_name='google.spanner.v1.Spanner.CreateSession',
+    name="Spanner",
+    full_name="google.spanner.v1.Spanner",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_CREATESESSIONREQUEST,
-    output_type=_SESSION,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002?\":/v1/{database=projects/*/instances/*/databases/*}/sessions:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetSession',
-    full_name='google.spanner.v1.Spanner.GetSession',
-    index=1,
-    containing_service=None,
-    input_type=_GETSESSIONREQUEST,
-    output_type=_SESSION,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002:\0228/v1/{name=projects/*/instances/*/databases/*/sessions/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListSessions',
-    full_name='google.spanner.v1.Spanner.ListSessions',
-    index=2,
-    containing_service=None,
-    input_type=_LISTSESSIONSREQUEST,
-    output_type=_LISTSESSIONSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002<\022:/v1/{database=projects/*/instances/*/databases/*}/sessions')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteSession',
-    full_name='google.spanner.v1.Spanner.DeleteSession',
-    index=3,
-    containing_service=None,
-    input_type=_DELETESESSIONREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ExecuteSql',
-    full_name='google.spanner.v1.Spanner.ExecuteSql',
-    index=4,
-    containing_service=None,
-    input_type=_EXECUTESQLREQUEST,
-    output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._RESULTSET,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002K\"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ExecuteStreamingSql',
-    full_name='google.spanner.v1.Spanner.ExecuteStreamingSql',
-    index=5,
-    containing_service=None,
-    input_type=_EXECUTESQLREQUEST,
-    output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._PARTIALRESULTSET,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002T\"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='Read',
-    full_name='google.spanner.v1.Spanner.Read',
-    index=6,
-    containing_service=None,
-    input_type=_READREQUEST,
-    output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._RESULTSET,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002E\"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='StreamingRead',
-    full_name='google.spanner.v1.Spanner.StreamingRead',
-    index=7,
-    containing_service=None,
-    input_type=_READREQUEST,
-    output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._PARTIALRESULTSET,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002N\"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='BeginTransaction',
-    full_name='google.spanner.v1.Spanner.BeginTransaction',
-    index=8,
-    containing_service=None,
-    input_type=_BEGINTRANSACTIONREQUEST,
-    output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTION,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002Q\"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='Commit',
-    full_name='google.spanner.v1.Spanner.Commit',
-    index=9,
-    containing_service=None,
-    input_type=_COMMITREQUEST,
-    output_type=_COMMITRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002G\"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='Rollback',
-    full_name='google.spanner.v1.Spanner.Rollback',
-    index=10,
-    containing_service=None,
-    input_type=_ROLLBACKREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002I\"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='PartitionQuery',
-    full_name='google.spanner.v1.Spanner.PartitionQuery',
-    index=11,
-    containing_service=None,
-    input_type=_PARTITIONQUERYREQUEST,
-    output_type=_PARTITIONRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002O\"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='PartitionRead',
-    full_name='google.spanner.v1.Spanner.PartitionRead',
-    index=12,
-    containing_service=None,
-    input_type=_PARTITIONREADREQUEST,
-    output_type=_PARTITIONRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002N\"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\001*')),
-  ),
-])
+    options=None,
+    serialized_start=3038,
+    serialized_end=5217,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="CreateSession",
+            full_name="google.spanner.v1.Spanner.CreateSession",
+            index=0,
+            containing_service=None,
+            input_type=_CREATESESSIONREQUEST,
+            output_type=_SESSION,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002?":/v1/{database=projects/*/instances/*/databases/*}/sessions:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetSession",
+            full_name="google.spanner.v1.Spanner.GetSession",
+            index=1,
+            containing_service=None,
+            input_type=_GETSESSIONREQUEST,
+            output_type=_SESSION,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002:\0228/v1/{name=projects/*/instances/*/databases/*/sessions/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListSessions",
+            full_name="google.spanner.v1.Spanner.ListSessions",
+            index=2,
+            containing_service=None,
+            input_type=_LISTSESSIONSREQUEST,
+            output_type=_LISTSESSIONSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002<\022:/v1/{database=projects/*/instances/*/databases/*}/sessions"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteSession",
+            full_name="google.spanner.v1.Spanner.DeleteSession",
+            index=3,
+            containing_service=None,
+            input_type=_DELETESESSIONREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ExecuteSql",
+            full_name="google.spanner.v1.Spanner.ExecuteSql",
+            index=4,
+            containing_service=None,
+            input_type=_EXECUTESQLREQUEST,
+            output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._RESULTSET,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002K"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ExecuteStreamingSql",
+            full_name="google.spanner.v1.Spanner.ExecuteStreamingSql",
+            index=5,
+            containing_service=None,
+            input_type=_EXECUTESQLREQUEST,
+            output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._PARTIALRESULTSET,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002T"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="Read",
+            full_name="google.spanner.v1.Spanner.Read",
+            index=6,
+            containing_service=None,
+            input_type=_READREQUEST,
+            output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._RESULTSET,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002E"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="StreamingRead",
+            full_name="google.spanner.v1.Spanner.StreamingRead",
+            index=7,
+            containing_service=None,
+            input_type=_READREQUEST,
+            output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._PARTIALRESULTSET,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="BeginTransaction",
+            full_name="google.spanner.v1.Spanner.BeginTransaction",
+            index=8,
+            containing_service=None,
+            input_type=_BEGINTRANSACTIONREQUEST,
+            output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTION,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002Q"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="Commit",
+            full_name="google.spanner.v1.Spanner.Commit",
+            index=9,
+            containing_service=None,
+            input_type=_COMMITREQUEST,
+            output_type=_COMMITRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002G"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="Rollback",
+            full_name="google.spanner.v1.Spanner.Rollback",
+            index=10,
+            containing_service=None,
+            input_type=_ROLLBACKREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002I"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="PartitionQuery",
+            full_name="google.spanner.v1.Spanner.PartitionQuery",
+            index=11,
+            containing_service=None,
+            input_type=_PARTITIONQUERYREQUEST,
+            output_type=_PARTITIONRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002O"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="PartitionRead",
+            full_name="google.spanner.v1.Spanner.PartitionRead",
+            index=12,
+            containing_service=None,
+            input_type=_PARTITIONREADREQUEST,
+            output_type=_PARTITIONRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\001*'
+                ),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_SPANNER)
 
-DESCRIPTOR.services_by_name['Spanner'] = _SPANNER
+DESCRIPTOR.services_by_name["Spanner"] = _SPANNER
 
 # @@protoc_insertion_point(module_scope)

@@ -35,8 +35,7 @@ def _validate_name(name):
 
     # The first and las characters must be alphanumeric.
     if not all([name[0].isalnum(), name[-1].isalnum()]):
-        raise ValueError(
-            'Bucket names must start and end with a number or letter.')
+        raise ValueError("Bucket names must start and end with a number or letter.")
     return name
 
 
@@ -100,12 +99,12 @@ class _PropertyMixin(object):
         client = self._require_client(client)
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
-        query_params = {'projection': 'noAcl'}
+        query_params = {"projection": "noAcl"}
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
         api_response = client._connection.api_request(
-            method='GET', path=self.path, query_params=query_params,
-            _target_object=self)
+            method="GET", path=self.path, query_params=query_params, _target_object=self
+        )
         self._set_properties(api_response)
 
     def _patch_property(self, name, value):
@@ -151,16 +150,19 @@ class _PropertyMixin(object):
         client = self._require_client(client)
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
-        query_params = {'projection': 'full'}
+        query_params = {"projection": "full"}
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
-        update_properties = {key: self._properties[key]
-                             for key in self._changes}
+            query_params["userProject"] = self.user_project
+        update_properties = {key: self._properties[key] for key in self._changes}
 
         # Make the API call.
         api_response = client._connection.api_request(
-            method='PATCH', path=self.path, data=update_properties,
-            query_params=query_params, _target_object=self)
+            method="PATCH",
+            path=self.path,
+            data=update_properties,
+            query_params=query_params,
+            _target_object=self,
+        )
         self._set_properties(api_response)
 
     def update(self, client=None):
@@ -176,18 +178,23 @@ class _PropertyMixin(object):
                        ``client`` stored on the current object.
         """
         client = self._require_client(client)
-        query_params = {'projection': 'full'}
+        query_params = {"projection": "full"}
         if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params["userProject"] = self.user_project
         api_response = client._connection.api_request(
-            method='PUT', path=self.path, data=self._properties,
-            query_params=query_params, _target_object=self)
+            method="PUT",
+            path=self.path,
+            data=self._properties,
+            query_params=query_params,
+            _target_object=self,
+        )
         self._set_properties(api_response)
 
 
 def _scalar_property(fieldname):
     """Create a property descriptor around the :class:`_PropertyMixin` helpers.
     """
+
     def _getter(self):
         """Scalar property getter."""
         return self._properties.get(fieldname)
