@@ -26,7 +26,7 @@ from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.batcher import MutationsBatcher
-from google.cloud.bigtable.batcher import (FLUSH_COUNT, MAX_ROW_BYTES)
+from google.cloud.bigtable.batcher import FLUSH_COUNT, MAX_ROW_BYTES
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
@@ -35,12 +35,11 @@ from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
 from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable import enums
-from google.cloud.bigtable_v2.proto import (
-    bigtable_pb2 as data_messages_v2_pb2)
+from google.cloud.bigtable_v2.proto import bigtable_pb2 as data_messages_v2_pb2
+from google.cloud.bigtable_admin_v2.proto import table_pb2 as admin_messages_v2_pb2
 from google.cloud.bigtable_admin_v2.proto import (
-    table_pb2 as admin_messages_v2_pb2)
-from google.cloud.bigtable_admin_v2.proto import (
-    bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
+    bigtable_table_admin_pb2 as table_admin_messages_v2_pb2,
+)
 
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
@@ -132,7 +131,8 @@ class Table(object):
         instance_id = self._instance.instance_id
         table_client = self._instance._client.table_data_client
         return table_client.table_path(
-            project=project, instance=instance_id, table=self.table_id)
+            project=project, instance=instance_id, table=self.table_id
+        )
 
     def column_family(self, column_family_id, gc_rule=None):
         """Factory to create a column family associated with this table.
@@ -187,7 +187,7 @@ class Table(object):
                  ``filter_`` and ``append`` are used.
         """
         if append and filter_ is not None:
-            raise ValueError('At most one of filter_ and append can be set')
+            raise ValueError("At most one of filter_ and append can be set")
         if append:
             return AppendRow(row_key, self)
         elif filter_ is not None:
@@ -198,8 +198,7 @@ class Table(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return (other.table_id == self.table_id and
-                other._instance == self._instance)
+        return other.table_id == self.table_id and other._instance == self._instance
 
     def __ne__(self, other):
         return not self == other
@@ -232,15 +231,21 @@ class Table(object):
         table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
 
-        families = {id: ColumnFamily(id, self, rule).to_pb()
-                    for (id, rule) in column_families.items()}
+        families = {
+            id: ColumnFamily(id, self, rule).to_pb()
+            for (id, rule) in column_families.items()
+        }
         table = admin_messages_v2_pb2.Table(column_families=families)
 
         split = table_admin_messages_v2_pb2.CreateTableRequest.Split
         splits = [split(key=_to_bytes(key)) for key in initial_split_keys]
 
-        table_client.create_table(parent=instance_name, table_id=self.table_id,
-                                  table=table, initial_splits=splits)
+        table_client.create_table(
+            parent=instance_name,
+            table_id=self.table_id,
+            table=table,
+            initial_splits=splits,
+        )
 
     def exists(self):
         """Check whether the table exists.
@@ -297,8 +302,7 @@ class Table(object):
         result = {}
         for column_family_id, value_pb in table_pb.column_families.items():
             gc_rule = _gc_rule_from_pb(value_pb.gc_rule)
-            column_family = self.column_family(column_family_id,
-                                               gc_rule=gc_rule)
+            column_family = self.column_family(column_family_id, gc_rule=gc_rule)
             result[column_family_id] = column_family
         return result
 
@@ -321,8 +325,10 @@ class Table(object):
         table_client = self._instance._client.table_admin_client
         table_pb = table_client.get_table(self.name, view=REPLICATION_VIEW)
 
-        return {cluster_id: ClusterState(value_pb.replication_state)
-                for cluster_id, value_pb in table_pb.cluster_states.items()}
+        return {
+            cluster_id: ClusterState(value_pb.replication_state)
+            for cluster_id, value_pb in table_pb.cluster_states.items()
+        }
 
     def read_row(self, row_key, filter_=None):
         """Read a single row from this table.
@@ -351,12 +357,19 @@ class Table(object):
         result_iter = iter(self.read_rows(filter_=filter_, row_set=row_set))
         row = next(result_iter, None)
         if next(result_iter, None) is not None:
-            raise ValueError('More than one row was returned.')
+            raise ValueError("More than one row was returned.")
         return row
 
-    def read_rows(self, start_key=None, end_key=None, limit=None,
-                  filter_=None, end_inclusive=False, row_set=None,
-                  retry=DEFAULT_RETRY_READ_ROWS):
+    def read_rows(
+        self,
+        start_key=None,
+        end_key=None,
+        limit=None,
+        filter_=None,
+        end_inclusive=False,
+        row_set=None,
+        retry=DEFAULT_RETRY_READ_ROWS,
+    ):
         """Read rows from this table.
 
         For example:
@@ -406,13 +419,17 @@ class Table(object):
                   the streamed results.
         """
         request_pb = _create_row_request(
-            self.name, start_key=start_key, end_key=end_key,
-            filter_=filter_, limit=limit, end_inclusive=end_inclusive,
-            app_profile_id=self._app_profile_id, row_set=row_set)
+            self.name,
+            start_key=start_key,
+            end_key=end_key,
+            filter_=filter_,
+            limit=limit,
+            end_inclusive=end_inclusive,
+            app_profile_id=self._app_profile_id,
+            row_set=row_set,
+        )
         data_client = self._instance._client.table_data_client
-        return PartialRowsData(
-            data_client.transport.read_rows,
-            request_pb, retry)
+        return PartialRowsData(data_client.transport.read_rows, request_pb, retry)
 
     def yield_rows(self, **kwargs):
         """Read rows from this table.
@@ -486,8 +503,8 @@ class Table(object):
                   sent. These will be in the same order as the `rows`.
         """
         retryable_mutate_rows = _RetryableMutateRowsWorker(
-            self._instance._client, self.name, rows,
-            app_profile_id=self._app_profile_id)
+            self._instance._client, self.name, rows, app_profile_id=self._app_profile_id
+        )
         return retryable_mutate_rows(retry=retry)
 
     def sample_row_keys(self):
@@ -529,7 +546,8 @@ class Table(object):
         """
         data_client = self._instance._client.table_data_client
         response_iterator = data_client.sample_row_keys(
-            self.name, app_profile_id=self._app_profile_id)
+            self.name, app_profile_id=self._app_profile_id
+        )
 
         return response_iterator
 
@@ -556,10 +574,12 @@ class Table(object):
         table_admin_client = client.table_admin_client
         if timeout:
             table_admin_client.drop_row_range(
-                self.name, delete_all_data_from_table=True, timeout=timeout)
+                self.name, delete_all_data_from_table=True, timeout=timeout
+            )
         else:
             table_admin_client.drop_row_range(
-                self.name, delete_all_data_from_table=True)
+                self.name, delete_all_data_from_table=True
+            )
 
     def drop_by_prefix(self, row_key_prefix, timeout=None):
         """
@@ -588,14 +608,14 @@ class Table(object):
         table_admin_client = client.table_admin_client
         if timeout:
             table_admin_client.drop_row_range(
-                self.name, row_key_prefix=_to_bytes(row_key_prefix),
-                timeout=timeout)
+                self.name, row_key_prefix=_to_bytes(row_key_prefix), timeout=timeout
+            )
         else:
             table_admin_client.drop_row_range(
-                self.name, row_key_prefix=_to_bytes(row_key_prefix))
+                self.name, row_key_prefix=_to_bytes(row_key_prefix)
+            )
 
-    def mutations_batcher(self, flush_count=FLUSH_COUNT,
-                          max_row_bytes=MAX_ROW_BYTES):
+    def mutations_batcher(self, flush_count=FLUSH_COUNT, max_row_bytes=MAX_ROW_BYTES):
         """Factory to create a mutation batcher associated with this instance.
 
         For example:
@@ -673,8 +693,7 @@ class _RetryableMutateRowsWorker(object):
 
     @staticmethod
     def _is_retryable(status):
-        return (status is None or
-                status.code in _RetryableMutateRowsWorker.RETRY_CODES)
+        return status is None or status.code in _RetryableMutateRowsWorker.RETRY_CODES
 
     def _do_mutate_retryable_rows(self):
         """Mutate all the rows that are eligible for retry.
@@ -704,23 +723,23 @@ class _RetryableMutateRowsWorker(object):
             return self.responses_statuses
 
         mutate_rows_request = _mutate_rows_request(
-            self.table_name, retryable_rows,
-            app_profile_id=self.app_profile_id)
+            self.table_name, retryable_rows, app_profile_id=self.app_profile_id
+        )
         data_client = self.client.table_data_client
         inner_api_calls = data_client._inner_api_calls
-        if 'mutate_rows' not in inner_api_calls:
-            default_retry = data_client._method_configs['MutateRows'].retry,
-            default_timeout = data_client._method_configs['MutateRows'].timeout
-            data_client._inner_api_calls[
-                'mutate_rows'] = wrap_method(
-                    data_client.transport.mutate_rows,
-                    default_retry=default_retry,
-                    default_timeout=default_timeout,
-                    client_info=data_client._client_info,
-                )
+        if "mutate_rows" not in inner_api_calls:
+            default_retry = (data_client._method_configs["MutateRows"].retry,)
+            default_timeout = data_client._method_configs["MutateRows"].timeout
+            data_client._inner_api_calls["mutate_rows"] = wrap_method(
+                data_client.transport.mutate_rows,
+                default_retry=default_retry,
+                default_timeout=default_timeout,
+                client_info=data_client._client_info,
+            )
 
-        responses = data_client._inner_api_calls['mutate_rows'](
-            mutate_rows_request, retry=None)
+        responses = data_client._inner_api_calls["mutate_rows"](
+            mutate_rows_request, retry=None
+        )
 
         num_responses = 0
         num_retryable_responses = 0
@@ -736,8 +755,11 @@ class _RetryableMutateRowsWorker(object):
 
         if len(retryable_rows) != num_responses:
             raise RuntimeError(
-                'Unexpected number of responses', num_responses,
-                'Expected', len(retryable_rows))
+                "Unexpected number of responses",
+                num_responses,
+                "Expected",
+                len(retryable_rows),
+            )
 
         if num_retryable_responses:
             raise _BigtableRetryableError
@@ -786,11 +808,9 @@ class ClusterState(object):
         replication_dict = {
             enums.Table.ReplicationState.STATE_NOT_KNOWN: "STATE_NOT_KNOWN",
             enums.Table.ReplicationState.INITIALIZING: "INITIALIZING",
-            enums.Table.ReplicationState.PLANNED_MAINTENANCE:
-                "PLANNED_MAINTENANCE",
-            enums.Table.ReplicationState.UNPLANNED_MAINTENANCE:
-                "UNPLANNED_MAINTENANCE",
-            enums.Table.ReplicationState.READY: "READY"
+            enums.Table.ReplicationState.PLANNED_MAINTENANCE: "PLANNED_MAINTENANCE",
+            enums.Table.ReplicationState.UNPLANNED_MAINTENANCE: "UNPLANNED_MAINTENANCE",
+            enums.Table.ReplicationState.READY: "READY",
         }
         return replication_dict[self.replication_state]
 
@@ -822,9 +842,16 @@ class ClusterState(object):
         return not self == other
 
 
-def _create_row_request(table_name, start_key=None, end_key=None,
-                        filter_=None, limit=None, end_inclusive=False,
-                        app_profile_id=None, row_set=None):
+def _create_row_request(
+    table_name,
+    start_key=None,
+    end_key=None,
+    filter_=None,
+    limit=None,
+    end_inclusive=False,
+    app_profile_id=None,
+    row_set=None,
+):
     """Creates a request to read rows in a table.
 
     :type table_name: str
@@ -865,25 +892,22 @@ def _create_row_request(table_name, start_key=None, end_key=None,
     :raises: :class:`ValueError <exceptions.ValueError>` if both
              ``row_set`` and one of ``start_key`` or ``end_key`` are set
     """
-    request_kwargs = {'table_name': table_name}
-    if ((start_key is not None or end_key is not None) and
-            row_set is not None):
-        raise ValueError('Row range and row set cannot be '
-                         'set simultaneously')
+    request_kwargs = {"table_name": table_name}
+    if (start_key is not None or end_key is not None) and row_set is not None:
+        raise ValueError("Row range and row set cannot be " "set simultaneously")
 
     if filter_ is not None:
-        request_kwargs['filter'] = filter_.to_pb()
+        request_kwargs["filter"] = filter_.to_pb()
     if limit is not None:
-        request_kwargs['rows_limit'] = limit
+        request_kwargs["rows_limit"] = limit
     if app_profile_id is not None:
-        request_kwargs['app_profile_id'] = app_profile_id
+        request_kwargs["app_profile_id"] = app_profile_id
 
     message = data_messages_v2_pb2.ReadRowsRequest(**request_kwargs)
 
     if start_key is not None or end_key is not None:
         row_set = RowSet()
-        row_set.add_row_range(RowRange(start_key, end_key,
-                                       end_inclusive=end_inclusive))
+        row_set.add_row_range(RowRange(start_key, end_key, end_inclusive=end_inclusive))
 
     if row_set is not None:
         row_set._update_message_request(message)
@@ -909,7 +933,8 @@ def _mutate_rows_request(table_name, rows, app_profile_id=None):
              greater than 100,000
     """
     request_pb = data_messages_v2_pb2.MutateRowsRequest(
-        table_name=table_name, app_profile_id=app_profile_id)
+        table_name=table_name, app_profile_id=app_profile_id
+    )
     mutations_count = 0
     for row in rows:
         _check_row_table_name(table_name, row)
@@ -918,8 +943,9 @@ def _mutate_rows_request(table_name, rows, app_profile_id=None):
         request_pb.entries.add(row_key=row.row_key, mutations=mutations)
         mutations_count += len(mutations)
     if mutations_count > _MAX_BULK_MUTATIONS:
-        raise TooManyMutationsError('Maximum number of mutations is %s' %
-                                    (_MAX_BULK_MUTATIONS,))
+        raise TooManyMutationsError(
+            "Maximum number of mutations is %s" % (_MAX_BULK_MUTATIONS,)
+        )
     return request_pb
 
 
@@ -938,8 +964,9 @@ def _check_row_table_name(table_name, row):
     """
     if row.table is not None and row.table.name != table_name:
         raise TableMismatchError(
-            'Row %s is a part of %s table. Current table: %s' %
-            (row.row_key, row.table.name, table_name))
+            "Row %s is a part of %s table. Current table: %s"
+            % (row.row_key, row.table.name, table_name)
+        )
 
 
 def _check_row_type(row):
@@ -953,5 +980,6 @@ def _check_row_type(row):
              instance of DirectRow.
     """
     if not isinstance(row, DirectRow):
-        raise TypeError('Bulk processing can not be applied for '
-                        'conditional or append mutations.')
+        raise TypeError(
+            "Bulk processing can not be applied for " "conditional or append mutations."
+        )

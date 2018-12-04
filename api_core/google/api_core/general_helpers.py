@@ -21,7 +21,7 @@ import six
 
 # functools.partial objects lack several attributes present on real function
 # objects. In Python 2 wraps fails on this so use a restricted set instead.
-_PARTIAL_VALID_ASSIGNMENTS = ('__doc__',)
+_PARTIAL_VALID_ASSIGNMENTS = ("__doc__",)
 
 
 def wraps(wrapped):

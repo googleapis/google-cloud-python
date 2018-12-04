@@ -27,20 +27,20 @@ class MetricsServiceV2GrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/cloud-platform.read-only',
-        'https://www.googleapis.com/auth/logging.admin',
-        'https://www.googleapis.com/auth/logging.read',
-        'https://www.googleapis.com/auth/logging.write',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
+        "https://www.googleapis.com/auth/logging.admin",
+        "https://www.googleapis.com/auth/logging.read",
+        "https://www.googleapis.com/auth/logging.write",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='logging.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="logging.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -58,29 +58,25 @@ class MetricsServiceV2GrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'metrics_service_v2_stub':
-            logging_metrics_pb2_grpc.MetricsServiceV2Stub(channel),
+            "metrics_service_v2_stub": logging_metrics_pb2_grpc.MetricsServiceV2Stub(
+                channel
+            )
         }
 
     @classmethod
-    def create_channel(cls,
-                       address='logging.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="logging.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -95,9 +91,7 @@ class MetricsServiceV2GrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -120,7 +114,7 @@ class MetricsServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['metrics_service_v2_stub'].ListLogMetrics
+        return self._stubs["metrics_service_v2_stub"].ListLogMetrics
 
     @property
     def get_log_metric(self):
@@ -133,7 +127,7 @@ class MetricsServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['metrics_service_v2_stub'].GetLogMetric
+        return self._stubs["metrics_service_v2_stub"].GetLogMetric
 
     @property
     def create_log_metric(self):
@@ -146,7 +140,7 @@ class MetricsServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['metrics_service_v2_stub'].CreateLogMetric
+        return self._stubs["metrics_service_v2_stub"].CreateLogMetric
 
     @property
     def update_log_metric(self):
@@ -159,7 +153,7 @@ class MetricsServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['metrics_service_v2_stub'].UpdateLogMetric
+        return self._stubs["metrics_service_v2_stub"].UpdateLogMetric
 
     @property
     def delete_log_metric(self):
@@ -172,4 +166,4 @@ class MetricsServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['metrics_service_v2_stub'].DeleteLogMetric
+        return self._stubs["metrics_service_v2_stub"].DeleteLogMetric

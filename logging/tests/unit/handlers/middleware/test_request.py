@@ -18,7 +18,6 @@ import mock
 
 
 class DjangoBase(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         from django.conf import settings
@@ -36,7 +35,6 @@ class DjangoBase(unittest.TestCase):
 
 
 class TestRequestMiddleware(DjangoBase):
-
     def _get_target_class(self):
         from google.cloud.logging.handlers.middleware import request
 
@@ -50,7 +48,7 @@ class TestRequestMiddleware(DjangoBase):
         from google.cloud.logging.handlers.middleware import request
 
         middleware = self._make_one()
-        mock_request = RequestFactory().get('/')
+        mock_request = RequestFactory().get("/")
         middleware.process_request(mock_request)
 
         django_request = request._get_django_request()
@@ -58,7 +56,6 @@ class TestRequestMiddleware(DjangoBase):
 
 
 class Test__get_django_request(DjangoBase):
-
     @staticmethod
     def _call_fut():
         from google.cloud.logging.handlers.middleware import request
@@ -68,11 +65,12 @@ class Test__get_django_request(DjangoBase):
     @staticmethod
     def _make_patch(new_locals):
         return mock.patch(
-            'google.cloud.logging.handlers.middleware.request._thread_locals',
-            new=new_locals)
+            "google.cloud.logging.handlers.middleware.request._thread_locals",
+            new=new_locals,
+        )
 
     def test_with_request(self):
-        thread_locals = mock.Mock(spec=['request'])
+        thread_locals = mock.Mock(spec=["request"])
         with self._make_patch(thread_locals):
             django_request = self._call_fut()
 

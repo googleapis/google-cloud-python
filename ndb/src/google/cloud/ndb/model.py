@@ -172,10 +172,6 @@ class IndexProperty:
             return NotImplemented
         return self.name == other.name and self.direction == other.direction
 
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
-
     def __hash__(self):
         return hash((self.name, self.direction))
 
@@ -223,10 +219,6 @@ class Index:
             and self.properties == other.properties
             and self.ancestor == other.ancestor
         )
-
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
 
     def __hash__(self):
         return hash((self.kind, self.properties, self.ancestor))
@@ -279,10 +271,6 @@ class IndexState:
             and self.state == other.state
             and self.id == other.id
         )
-
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
 
     def __hash__(self):
         return hash((self.definition, self.state, self.id))
@@ -348,10 +336,6 @@ class _BaseValue:
             return NotImplemented
 
         return self.b_val == other.b_val
-
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
 
     def __hash__(self):
         raise TypeError("_BaseValue is not immutable")
@@ -1839,10 +1823,6 @@ class _CompressedValue:
             return NotImplemented
 
         return self.z_val == other.z_val
-
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
 
     def __hash__(self):
         raise TypeError("_CompressedValue is not immutable")
@@ -3675,6 +3655,67 @@ class Model(metaclass=MetaModel):
         name of the class.
         """
         return cls.__name__
+
+    def __hash__(self):
+        """Not implemented hash function.
+
+        Raises:
+            TypeError: Always, to emphasize that entities are mutable.
+        """
+        raise TypeError("Model is mutable, so cannot be hashed.")
+
+    def __eq__(self, other):
+        """Compare two entities of the same class for equality."""
+        if type(other) is not type(self):
+            return NotImplemented
+
+        if self._key != other._key:
+            return False
+
+        return self._equivalent(other)
+
+    def _equivalent(self, other):
+        """Compare two entities of the same class, excluding keys.
+
+        Args:
+            other (Model): An entity of the same class. It is assumed that
+                the type and the key of ``other`` match the current entity's
+                type and key (and the caller is responsible for checking).
+
+        Returns:
+            bool: Indicating if the current entity and ``other`` are
+            equivalent.
+        """
+        if set(self._projection) != set(other._projection):
+            return False
+
+        prop_names = set(self._properties.keys())
+        # Restrict properties to the projection if set.
+        if self._projection:
+            prop_names = set(self._projection)
+
+        for name in prop_names:
+            value = self._properties[name]._get_value(self)
+            if value != other._properties[name]._get_value(other):
+                return False
+
+        return True
+
+    def __lt__(self, value):
+        """The ``<`` comparison is not well-defined."""
+        raise TypeError("Model instances are not orderable.")
+
+    def __le__(self, value):
+        """The ``<=`` comparison is not well-defined."""
+        raise TypeError("Model instances are not orderable.")
+
+    def __gt__(self, value):
+        """The ``>`` comparison is not well-defined."""
+        raise TypeError("Model instances are not orderable.")
+
+    def __ge__(self, value):
+        """The ``>=`` comparison is not well-defined."""
+        raise TypeError("Model instances are not orderable.")
 
     def _set_projection(self, projection):
         """Set the projected properties for this instance.

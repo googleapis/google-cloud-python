@@ -18,19 +18,19 @@ These enable many types of implicit behavior in both production
 and tests.
 """
 
-GCD_DATASET = 'DATASTORE_DATASET'
+GCD_DATASET = "DATASTORE_DATASET"
 """Environment variable defining default dataset ID under GCD."""
 
-GCD_HOST = 'DATASTORE_EMULATOR_HOST'
+GCD_HOST = "DATASTORE_EMULATOR_HOST"
 """Environment variable defining host for GCD dataset server."""
 
-PUBSUB_EMULATOR = 'PUBSUB_EMULATOR_HOST'
+PUBSUB_EMULATOR = "PUBSUB_EMULATOR_HOST"
 """Environment variable defining host for Pub/Sub emulator."""
 
-BIGTABLE_EMULATOR = 'BIGTABLE_EMULATOR_HOST'
+BIGTABLE_EMULATOR = "BIGTABLE_EMULATOR_HOST"
 """Environment variable defining host for Bigtable emulator."""
 
-DISABLE_GRPC = 'GOOGLE_CLOUD_DISABLE_GRPC'
+DISABLE_GRPC = "GOOGLE_CLOUD_DISABLE_GRPC"
 """Environment variable acting as flag to disable gRPC.
 
 To be used for APIs where both an HTTP and gRPC implementation

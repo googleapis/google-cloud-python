@@ -20,12 +20,12 @@ from google.cloud import obsolete
 
 
 def test_complain_noop():
-    with mock.patch.object(warnings, 'warn', autospec=True) as warn:
-        obsolete.complain('bogus_package')
+    with mock.patch.object(warnings, "warn", autospec=True) as warn:
+        obsolete.complain("bogus_package")
         assert warn.call_count == 0
 
 
 def test_complain():
-    with mock.patch.object(warnings, 'warn', autospec=True) as warn:
-        obsolete.complain('google-cloud-core')
+    with mock.patch.object(warnings, "warn", autospec=True) as warn:
+        obsolete.complain("google-cloud-core")
         warn.assert_called_once_with(mock.ANY, DeprecationWarning)

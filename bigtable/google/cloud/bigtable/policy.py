@@ -12,23 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.iam import Policy as BasePolicy
+from google.api_core.iam import Policy as BasePolicy
 from google.cloud._helpers import _to_bytes
 
 """IAM roles supported by Bigtable Instance resource"""
-BIGTABLE_ADMIN_ROLE = 'roles/bigtable.admin'
+BIGTABLE_ADMIN_ROLE = "roles/bigtable.admin"
 """Administers all instances within a project, including the data stored
 within tables. Can create new instances. Intended for project administrators.
 """
-BIGTABLE_USER_ROLE = 'roles/bigtable.user'
+BIGTABLE_USER_ROLE = "roles/bigtable.user"
 """Provides read-write access to the data stored within tables. Intended for
 application developers or service accounts.
 """
-BIGTABLE_READER_ROLE = 'roles/bigtable.reader'
+BIGTABLE_READER_ROLE = "roles/bigtable.reader"
 """Provides read-only access to the data stored within tables. Intended for
 data scientists, dashboard generators, and other data-analysis scenarios.
 """
-BIGTABLE_VIEWER_ROLE = 'roles/bigtable.viewer'
+BIGTABLE_VIEWER_ROLE = "roles/bigtable.viewer"
 """Provides no data access. Intended as a minimal set of permissions to access
 the GCP Console for Cloud Bigtable.
 """
@@ -70,10 +70,11 @@ class Policy(BasePolicy):
                  If no etag is provided in the call to setIamPolicy, then the
                  existing policy is overwritten blindly.
     """
+
     def __init__(self, etag=None, version=None):
-        BasePolicy.__init__(self,
-                            etag=etag if etag is None else _to_bytes(etag),
-                            version=version)
+        BasePolicy.__init__(
+            self, etag=etag if etag is None else _to_bytes(etag), version=version
+        )
 
     @property
     def bigtable_admins(self):

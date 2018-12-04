@@ -25,14 +25,14 @@ from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _to_bytes
 
-_RFC3339_MICROS_NO_ZULU = '%Y-%m-%dT%H:%M:%S.%f'
-_TIMEONLY_WO_MICROS = '%H:%M:%S'
-_TIMEONLY_W_MICROS = '%H:%M:%S.%f'
+_RFC3339_MICROS_NO_ZULU = "%Y-%m-%dT%H:%M:%S.%f"
+_TIMEONLY_WO_MICROS = "%H:%M:%S"
+_TIMEONLY_W_MICROS = "%H:%M:%S.%f"
 
 
 def _not_null(value, field):
     """Check whether 'value' should be coerced to 'field' type."""
-    return value is not None or field.mode != 'NULLABLE'
+    return value is not None or field.mode != "NULLABLE"
 
 
 def _int_from_json(value, field):
@@ -56,7 +56,7 @@ def _decimal_from_json(value, field):
 def _bool_from_json(value, field):
     """Coerce 'value' to a bool, if set or not nullable."""
     if _not_null(value, field):
-        return value.lower() in ['t', 'true', '1']
+        return value.lower() in ["t", "true", "1"]
 
 
 def _string_from_json(value, _):
@@ -93,19 +93,21 @@ def _timestamp_query_param_from_json(value, field):
         # Canonical formats for timestamps in BigQuery are flexible. See:
         # g.co/cloud/bigquery/docs/reference/standard-sql/data-types#timestamp-type
         # The separator between the date and time can be 'T' or ' '.
-        value = value.replace(' ', 'T', 1)
+        value = value.replace(" ", "T", 1)
         # The UTC timezone may be formatted as Z or +00:00.
-        value = value.replace('Z', '')
-        value = value.replace('+00:00', '')
+        value = value.replace("Z", "")
+        value = value.replace("+00:00", "")
 
-        if '.' in value:
+        if "." in value:
             # YYYY-MM-DDTHH:MM:SS.ffffff
-            return datetime.datetime.strptime(
-                value, _RFC3339_MICROS_NO_ZULU).replace(tzinfo=UTC)
+            return datetime.datetime.strptime(value, _RFC3339_MICROS_NO_ZULU).replace(
+                tzinfo=UTC
+            )
         else:
             # YYYY-MM-DDTHH:MM:SS
-            return datetime.datetime.strptime(
-                value, _RFC3339_NO_FRACTION).replace(tzinfo=UTC)
+            return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION).replace(
+                tzinfo=UTC
+            )
     else:
         return None
 
@@ -123,7 +125,7 @@ def _datetime_from_json(value, field):
         :data:`None`).
     """
     if _not_null(value, field):
-        if '.' in value:
+        if "." in value:
             # YYYY-MM-DDTHH:MM:SS.ffffff
             return datetime.datetime.strptime(value, _RFC3339_MICROS_NO_ZULU)
         else:
@@ -156,37 +158,37 @@ def _record_from_json(value, field):
     """Coerce 'value' to a mapping, if set or not nullable."""
     if _not_null(value, field):
         record = {}
-        record_iter = zip(field.fields, value['f'])
+        record_iter = zip(field.fields, value["f"])
         for subfield, cell in record_iter:
             converter = _CELLDATA_FROM_JSON[subfield.field_type]
-            if subfield.mode == 'REPEATED':
-                value = [converter(item['v'], subfield) for item in cell['v']]
+            if subfield.mode == "REPEATED":
+                value = [converter(item["v"], subfield) for item in cell["v"]]
             else:
-                value = converter(cell['v'], subfield)
+                value = converter(cell["v"], subfield)
             record[subfield.name] = value
         return record
 
 
 _CELLDATA_FROM_JSON = {
-    'INTEGER': _int_from_json,
-    'INT64': _int_from_json,
-    'FLOAT': _float_from_json,
-    'FLOAT64': _float_from_json,
-    'NUMERIC': _decimal_from_json,
-    'BOOLEAN': _bool_from_json,
-    'BOOL': _bool_from_json,
-    'STRING': _string_from_json,
-    'GEOGRAPHY': _string_from_json,
-    'BYTES': _bytes_from_json,
-    'TIMESTAMP': _timestamp_from_json,
-    'DATETIME': _datetime_from_json,
-    'DATE': _date_from_json,
-    'TIME': _time_from_json,
-    'RECORD': _record_from_json,
+    "INTEGER": _int_from_json,
+    "INT64": _int_from_json,
+    "FLOAT": _float_from_json,
+    "FLOAT64": _float_from_json,
+    "NUMERIC": _decimal_from_json,
+    "BOOLEAN": _bool_from_json,
+    "BOOL": _bool_from_json,
+    "STRING": _string_from_json,
+    "GEOGRAPHY": _string_from_json,
+    "BYTES": _bytes_from_json,
+    "TIMESTAMP": _timestamp_from_json,
+    "DATETIME": _datetime_from_json,
+    "DATE": _date_from_json,
+    "TIME": _time_from_json,
+    "RECORD": _record_from_json,
 }
 
 _QUERY_PARAMS_FROM_JSON = dict(_CELLDATA_FROM_JSON)
-_QUERY_PARAMS_FROM_JSON['TIMESTAMP'] = _timestamp_query_param_from_json
+_QUERY_PARAMS_FROM_JSON["TIMESTAMP"] = _timestamp_query_param_from_json
 
 
 def _field_to_index_mapping(schema):
@@ -210,13 +212,12 @@ def _row_tuple_from_json(row, schema):
     :returns: A tuple of data converted to native types.
     """
     row_data = []
-    for field, cell in zip(schema, row['f']):
+    for field, cell in zip(schema, row["f"]):
         converter = _CELLDATA_FROM_JSON[field.field_type]
-        if field.mode == 'REPEATED':
-            row_data.append([converter(item['v'], field)
-                             for item in cell['v']])
+        if field.mode == "REPEATED":
+            row_data.append([converter(item["v"], field) for item in cell["v"]])
         else:
-            row_data.append(converter(cell['v'], field))
+            row_data.append(converter(cell["v"], field))
 
     return tuple(row_data)
 
@@ -226,8 +227,7 @@ def _rows_from_json(values, schema):
     from google.cloud.bigquery import Row
 
     field_to_index = _field_to_index_mapping(schema)
-    return [Row(_row_tuple_from_json(r, schema), field_to_index)
-            for r in values]
+    return [Row(_row_tuple_from_json(r, schema), field_to_index) for r in values]
 
 
 def _int_to_json(value):
@@ -252,14 +252,14 @@ def _decimal_to_json(value):
 def _bool_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, bool):
-        value = 'true' if value else 'false'
+        value = "true" if value else "false"
     return value
 
 
 def _bytes_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, bytes):
-        value = base64.standard_b64encode(value).decode('ascii')
+        value = base64.standard_b64encode(value).decode("ascii")
     return value
 
 
@@ -272,8 +272,7 @@ def _timestamp_to_json_parameter(value):
         if value.tzinfo not in (None, UTC):
             # Convert to UTC and remove the time zone info.
             value = value.replace(tzinfo=None) - value.utcoffset()
-        value = '%s %s+00:00' % (
-            value.date().isoformat(), value.time().isoformat())
+        value = "%s %s+00:00" % (value.date().isoformat(), value.time().isoformat())
     return value
 
 
@@ -310,30 +309,30 @@ def _time_to_json(value):
 
 # Converters used for scalar values marshalled as row data.
 _SCALAR_VALUE_TO_JSON_ROW = {
-    'INTEGER': _int_to_json,
-    'INT64': _int_to_json,
-    'FLOAT': _float_to_json,
-    'FLOAT64': _float_to_json,
-    'NUMERIC': _decimal_to_json,
-    'BOOLEAN': _bool_to_json,
-    'BOOL': _bool_to_json,
-    'BYTES': _bytes_to_json,
-    'TIMESTAMP': _timestamp_to_json_row,
-    'DATETIME': _datetime_to_json,
-    'DATE': _date_to_json,
-    'TIME': _time_to_json,
+    "INTEGER": _int_to_json,
+    "INT64": _int_to_json,
+    "FLOAT": _float_to_json,
+    "FLOAT64": _float_to_json,
+    "NUMERIC": _decimal_to_json,
+    "BOOLEAN": _bool_to_json,
+    "BOOL": _bool_to_json,
+    "BYTES": _bytes_to_json,
+    "TIMESTAMP": _timestamp_to_json_row,
+    "DATETIME": _datetime_to_json,
+    "DATE": _date_to_json,
+    "TIME": _time_to_json,
 }
 
 
 # Converters used for scalar values marshalled as query parameters.
 _SCALAR_VALUE_TO_JSON_PARAM = _SCALAR_VALUE_TO_JSON_ROW.copy()
-_SCALAR_VALUE_TO_JSON_PARAM['TIMESTAMP'] = _timestamp_to_json_parameter
+_SCALAR_VALUE_TO_JSON_PARAM["TIMESTAMP"] = _timestamp_to_json_parameter
 
 
 def _snake_to_camel_case(value):
     """Convert snake case string to camel case."""
-    words = value.split('_')
-    return words[0] + ''.join(map(str.capitalize, words[1:]))
+    words = value.split("_")
+    return words[0] + "".join(map(str.capitalize, words[1:]))
 
 
 def _get_sub_prop(container, keys, default=None):

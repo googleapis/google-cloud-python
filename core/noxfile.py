@@ -18,9 +18,8 @@ import os
 import nox
 
 
-LOCAL_DEPS = (
-    os.path.join('..', 'api_core'),
-)
+LOCAL_DEPS = (os.path.join("..", "api_core"),)
+
 
 def default(session):
     """Default unit test session.
@@ -31,64 +30,59 @@ def default(session):
     """
 
     # Install all test dependencies, then install local packages in-place.
-    session.install(
-        'mock',
-        'pytest',
-        'pytest-cov',
-        'grpcio >= 1.0.2',
-    )
+    session.install("mock", "pytest", "pytest-cov", "grpcio >= 1.0.2")
     for local_dep in LOCAL_DEPS:
-        session.install('-e', local_dep)
-    session.install('-e', '.')
+        session.install("-e", local_dep)
+    session.install("-e", ".")
 
     # Run py.test against the unit tests.
     session.run(
-        'py.test',
-        '--quiet',
-        '--cov=google.cloud',
-        '--cov=tests.unit',
-        '--cov-append',
-        '--cov-config=.coveragerc',
-        '--cov-report=',
-        '--cov-fail-under=97',
-        os.path.join('tests', 'unit'),
+        "py.test",
+        "--quiet",
+        "--cov=google.cloud",
+        "--cov=tests.unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=97",
+        os.path.join("tests", "unit"),
         *session.posargs
     )
 
 
-@nox.session(python=['2.7', '3.5', '3.6', '3.7'])
+@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
 def unit(session):
     """Default unit test session."""
     default(session)
 
-@nox.session(python='3.6')
+
+@nox.session(python="3.6")
 def lint(session):
     """Run linters.
 
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install('flake8', 'flake8-import-order')
-    session.install('.')
-    session.run('flake8', 'google', 'tests')
+    session.install("flake8", "flake8-import-order")
+    session.install(".")
+    session.run("flake8", "google", "tests")
 
 
-@nox.session(python='3.6')
+@nox.session(python="3.6")
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
-    session.install('docutils', 'Pygments')
-    session.run(
-        'python', 'setup.py', 'check', '--restructuredtext', '--strict')
+    session.install("docutils", "Pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-@nox.session(python='3.6')
+@nox.session(python="3.6")
 def cover(session):
     """Run the final coverage report.
 
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.install('coverage', 'pytest-cov')
-    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
-    session.run('coverage', 'erase')
+    session.install("coverage", "pytest-cov")
+    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "erase")

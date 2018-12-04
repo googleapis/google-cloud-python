@@ -46,13 +46,13 @@ from google.cloud.logging.sink import Sink
 _DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
 _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 
-_APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
+_APPENGINE_FLEXIBLE_ENV_VM = "GAE_APPENGINE_HOSTNAME"
 """Environment variable set in App Engine when vm:true is set."""
 
-_APPENGINE_INSTANCE_ID = 'GAE_INSTANCE'
+_APPENGINE_INSTANCE_ID = "GAE_INSTANCE"
 """Environment variable set in App Engine standard and flexible environment."""
 
-_GKE_CLUSTER_NAME = 'instance/attributes/cluster-name'
+_GKE_CLUSTER_NAME = "instance/attributes/cluster-name"
 """Attribute in metadata server when in GKE environment."""
 
 
@@ -92,16 +92,18 @@ class Client(ClientWithProject):
     _sinks_api = None
     _metrics_api = None
 
-    SCOPE = ('https://www.googleapis.com/auth/logging.read',
-             'https://www.googleapis.com/auth/logging.write',
-             'https://www.googleapis.com/auth/logging.admin',
-             'https://www.googleapis.com/auth/cloud-platform')
+    SCOPE = (
+        "https://www.googleapis.com/auth/logging.read",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/logging.admin",
+        "https://www.googleapis.com/auth/cloud-platform",
+    )
     """The scopes required for authenticating as a Logging consumer."""
 
-    def __init__(self, project=None, credentials=None,
-                 _http=None, _use_grpc=None):
+    def __init__(self, project=None, credentials=None, _http=None, _use_grpc=None):
         super(Client, self).__init__(
-            project=project, credentials=credentials, _http=_http)
+            project=project, credentials=credentials, _http=_http
+        )
         self._connection = Connection(self)
         if _use_grpc is None:
             self._use_grpc = _USE_GRPC
@@ -162,8 +164,14 @@ class Client(ClientWithProject):
         """
         return Logger(name, client=self)
 
-    def list_entries(self, projects=None, filter_=None, order_by=None,
-                     page_size=None, page_token=None):
+    def list_entries(
+        self,
+        projects=None,
+        filter_=None,
+        order_by=None,
+        page_size=None,
+        page_token=None,
+    ):
         """Return a page of log entries.
 
         See
@@ -199,8 +207,12 @@ class Client(ClientWithProject):
             projects = [self.project]
 
         return self.logging_api.list_entries(
-            projects=projects, filter_=filter_, order_by=order_by,
-            page_size=page_size, page_token=page_token)
+            projects=projects,
+            filter_=filter_,
+            order_by=order_by,
+            page_size=page_size,
+            page_token=page_token,
+        )
 
     def sink(self, name, filter_=None, destination=None):
         """Creates a sink bound to the current client.
@@ -245,10 +257,9 @@ class Client(ClientWithProject):
                   :class:`~google.cloud.logging.sink.Sink`
                   accessible to the current client.
         """
-        return self.sinks_api.list_sinks(
-            self.project, page_size, page_token)
+        return self.sinks_api.list_sinks(self.project, page_size, page_token)
 
-    def metric(self, name, filter_=None, description=''):
+    def metric(self, name, filter_=None, description=""):
         """Creates a metric bound to the current client.
 
         :type name: str
@@ -289,8 +300,7 @@ class Client(ClientWithProject):
         :returns: Iterator of :class:`~google.cloud.logging.metric.Metric`
                   accessible to the current client.
         """
-        return self.metrics_api.list_metrics(
-            self.project, page_size, page_token)
+        return self.metrics_api.list_metrics(self.project, page_size, page_token)
 
     def get_default_handler(self):
         """Return the default logging handler based on the local environment.
@@ -300,16 +310,19 @@ class Client(ClientWithProject):
         """
         gke_cluster_name = retrieve_metadata_server(_GKE_CLUSTER_NAME)
 
-        if (_APPENGINE_FLEXIBLE_ENV_VM in os.environ or
-                _APPENGINE_INSTANCE_ID in os.environ):
+        if (
+            _APPENGINE_FLEXIBLE_ENV_VM in os.environ
+            or _APPENGINE_INSTANCE_ID in os.environ
+        ):
             return AppEngineHandler(self)
         elif gke_cluster_name is not None:
             return ContainerEngineHandler()
         else:
             return CloudLoggingHandler(self)
 
-    def setup_logging(self, log_level=logging.INFO,
-                      excluded_loggers=EXCLUDED_LOGGER_DEFAULTS):
+    def setup_logging(
+        self, log_level=logging.INFO, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS
+    ):
         """Attach default Stackdriver logging handler to the root logger.
 
         This method uses the default log handler, obtained by
@@ -328,5 +341,4 @@ class Client(ClientWithProject):
                                  itself.
         """
         handler = self.get_default_handler()
-        setup_logging(handler, log_level=log_level,
-                      excluded_loggers=excluded_loggers)
+        setup_logging(handler, log_level=log_level, excluded_loggers=excluded_loggers)

@@ -24,9 +24,4 @@ from google.cloud.translate_v2.client import BASE
 from google.cloud.translate_v2.client import NMT
 
 
-__all__ = (
-    '__version__',
-    'BASE',
-    'Client',
-    'NMT',
-)
+__all__ = ("__version__", "BASE", "Client", "NMT")

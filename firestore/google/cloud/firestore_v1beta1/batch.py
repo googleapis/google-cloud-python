@@ -57,8 +57,7 @@ class WriteBatch(object):
             document_data (dict): Property names and values to use for
                 creating a document.
         """
-        write_pbs = _helpers.pbs_for_create(
-            reference._document_path, document_data)
+        write_pbs = _helpers.pbs_for_create(reference._document_path, document_data)
         self._add_write_pbs(write_pbs)
 
     def set(self, reference, document_data, merge=False):
@@ -80,10 +79,12 @@ class WriteBatch(object):
         """
         if merge is not False:
             write_pbs = _helpers.pbs_for_set_with_merge(
-                reference._document_path, document_data, merge)
+                reference._document_path, document_data, merge
+            )
         else:
             write_pbs = _helpers.pbs_for_set_no_merge(
-                reference._document_path, document_data)
+                reference._document_path, document_data
+            )
 
         self._add_write_pbs(write_pbs)
 
@@ -103,11 +104,11 @@ class WriteBatch(object):
                write option to make assertions / preconditions on the server
                state of the document before applying changes.
         """
-        if option.__class__.__name__ == 'ExistsOption':
-            raise ValueError('you must not pass an explicit write option to '
-                             'update.')
+        if option.__class__.__name__ == "ExistsOption":
+            raise ValueError("you must not pass an explicit write option to " "update.")
         write_pbs = _helpers.pbs_for_update(
-            reference._document_path, field_updates, option)
+            reference._document_path, field_updates, option
+        )
         self._add_write_pbs(write_pbs)
 
     def delete(self, reference, option=None):
@@ -139,8 +140,11 @@ class WriteBatch(object):
             ``update_time`` field.
         """
         commit_response = self._client._firestore_api.commit(
-            self._client._database_string, self._write_pbs,
-            transaction=None, metadata=self._client._rpc_metadata)
+            self._client._database_string,
+            self._write_pbs,
+            transaction=None,
+            metadata=self._client._rpc_metadata,
+        )
 
         self._write_pbs = []
         return list(commit_response.write_results)

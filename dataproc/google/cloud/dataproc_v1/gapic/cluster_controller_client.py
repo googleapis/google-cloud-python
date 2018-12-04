@@ -362,18 +362,138 @@ class ClusterControllerClient(object):
                        }
                      }
 
-                .. note::
+                Note: Currently, only the following fields can be updated:
 
-                    Currently, only the following fields can be updated:
+                .. raw:: html
 
-                    * ``labels``: Update labels
-                    * ``config.worker_config.num_instances``: Resize primary
-                      worker group
-                    * ``config.secondary_worker_config.num_instances``: Resize
-                      secondary worker group
+                   <table>
 
-                    If a dict is provided, it must be of the same form as the protobuf
-                    message :class:`~google.cloud.dataproc_v1.types.FieldMask`
+                .. raw:: html
+
+                   <tbody>
+
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                Mask
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Purpose
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                labels
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Update labels
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                config.worker\_config.num\_instances
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Resize primary worker group
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   <tr>
+
+                .. raw:: html
+
+                   <td>
+
+                config.secondary\_worker\_config.num\_instances
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   <td>
+
+                Resize secondary worker group
+
+                .. raw:: html
+
+                   </td>
+
+                .. raw:: html
+
+                   </tr>
+
+                .. raw:: html
+
+                   </tbody>
+
+                .. raw:: html
+
+                   </table>
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dataproc_v1.types.FieldMask`
             graceful_decommission_timeout (Union[dict, ~google.cloud.dataproc_v1.types.Duration]): Optional. Timeout for graceful YARN decomissioning. Graceful
                 decommissioning allows removing nodes from the cluster without
                 interrupting jobs in progress. Timeout specifies how long to wait for jobs

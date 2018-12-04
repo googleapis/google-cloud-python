@@ -29,7 +29,8 @@ The main concepts with this API are:
 
 
 from pkg_resources import get_distribution
-__version__ = get_distribution('google-cloud-bigquery').version
+
+__version__ = get_distribution("google-cloud-bigquery").version
 
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
@@ -73,52 +74,52 @@ from google.cloud.bigquery.table import TimePartitioningType
 from google.cloud.bigquery.table import TimePartitioning
 
 __all__ = [
-    '__version__',
-    'Client',
+    "__version__",
+    "Client",
     # Queries
-    'QueryJob',
-    'QueryJobConfig',
-    'ArrayQueryParameter',
-    'ScalarQueryParameter',
-    'StructQueryParameter',
+    "QueryJob",
+    "QueryJobConfig",
+    "ArrayQueryParameter",
+    "ScalarQueryParameter",
+    "StructQueryParameter",
     # Datasets
-    'Dataset',
-    'DatasetReference',
-    'AccessEntry',
+    "Dataset",
+    "DatasetReference",
+    "AccessEntry",
     # Tables
-    'EncryptionConfiguration',
-    'Table',
-    'TableReference',
-    'Row',
-    'CopyJob',
-    'CopyJobConfig',
-    'ExtractJob',
-    'ExtractJobConfig',
-    'LoadJob',
-    'LoadJobConfig',
-    'UnknownJob',
-    'TimePartitioningType',
-    'TimePartitioning',
+    "EncryptionConfiguration",
+    "Table",
+    "TableReference",
+    "Row",
+    "CopyJob",
+    "CopyJobConfig",
+    "ExtractJob",
+    "ExtractJobConfig",
+    "LoadJob",
+    "LoadJobConfig",
+    "UnknownJob",
+    "TimePartitioningType",
+    "TimePartitioning",
     # Shared helpers
-    'SchemaField',
-    'UDFResource',
-    'ExternalConfig',
-    'BigtableOptions',
-    'BigtableColumnFamily',
-    'BigtableColumn',
-    'CSVOptions',
-    'GoogleSheetsOptions',
-    'DEFAULT_RETRY',
+    "SchemaField",
+    "UDFResource",
+    "ExternalConfig",
+    "BigtableOptions",
+    "BigtableColumnFamily",
+    "BigtableColumn",
+    "CSVOptions",
+    "GoogleSheetsOptions",
+    "DEFAULT_RETRY",
     # Enum Constants
-    'Compression',
-    'CreateDisposition',
-    'DestinationFormat',
-    'ExternalSourceFormat',
-    'Encoding',
-    'QueryPriority',
-    'SchemaUpdateOption',
-    'SourceFormat',
-    'WriteDisposition'
+    "Compression",
+    "CreateDisposition",
+    "DestinationFormat",
+    "ExternalSourceFormat",
+    "Encoding",
+    "QueryPriority",
+    "SchemaUpdateOption",
+    "SourceFormat",
+    "WriteDisposition",
 ]
 
 
@@ -127,4 +128,5 @@ def load_ipython_extension(ipython):
     from google.cloud.bigquery.magics import _cell_magic
 
     ipython.register_magic_function(
-        _cell_magic, magic_kind='cell', magic_name='bigquery')
+        _cell_magic, magic_kind="cell", magic_name="bigquery"
+    )

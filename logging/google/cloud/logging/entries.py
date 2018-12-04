@@ -28,15 +28,18 @@ from google.cloud._helpers import _rfc3339_nanos_to_datetime
 from google.cloud._helpers import _datetime_to_rfc3339
 
 
-_GLOBAL_RESOURCE = Resource(type='global', labels={})
+_GLOBAL_RESOURCE = Resource(type="global", labels={})
 
 
-_LOGGER_TEMPLATE = re.compile(r"""
+_LOGGER_TEMPLATE = re.compile(
+    r"""
     projects/            # static prefix
     (?P<project>[^/]+)   # initial letter, wordchars + hyphen
     /logs/               # static midfix
     (?P<name>[^/]+)      # initial letter, wordchars + allowed punc
-""", re.VERBOSE)
+""",
+    re.VERBOSE,
+)
 
 
 def logger_name_from_path(path):
@@ -62,28 +65,28 @@ def _int_or_none(value):
 
 
 _LOG_ENTRY_FIELDS = (  # (name, default)
-    ('log_name', None),
-    ('labels', None),
-    ('insert_id', None),
-    ('severity', None),
-    ('http_request', None),
-    ('timestamp', None),
-    ('resource', _GLOBAL_RESOURCE),
-    ('trace', None),
-    ('span_id', None),
-    ('trace_sampled', None),
-    ('source_location', None),
-    ('operation', None),
-    ('logger', None),
-    ('payload', None),
+    ("log_name", None),
+    ("labels", None),
+    ("insert_id", None),
+    ("severity", None),
+    ("http_request", None),
+    ("timestamp", None),
+    ("resource", _GLOBAL_RESOURCE),
+    ("trace", None),
+    ("span_id", None),
+    ("trace_sampled", None),
+    ("source_location", None),
+    ("operation", None),
+    ("logger", None),
+    ("payload", None),
 )
 
 
 _LogEntryTuple = collections.namedtuple(
-        'LogEntry', (field for field, _ in _LOG_ENTRY_FIELDS))
+    "LogEntry", (field for field, _ in _LOG_ENTRY_FIELDS)
+)
 
-_LogEntryTuple.__new__.__defaults__ = tuple(
-    default for _, default in _LOG_ENTRY_FIELDS)
+_LogEntryTuple.__new__.__defaults__ = tuple(default for _, default in _LOG_ENTRY_FIELDS)
 
 
 _LOG_ENTRY_PARAM_DOCSTRING = """\
@@ -142,10 +145,14 @@ _LOG_ENTRY_SEE_ALSO_DOCSTRING = """\
 
 
 class LogEntry(_LogEntryTuple):
-    __doc__ = """
+    __doc__ = (
+        """
     Log entry.
 
-    """ + _LOG_ENTRY_PARAM_DOCSTRING + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+    """
+        + _LOG_ENTRY_PARAM_DOCSTRING
+        + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+    )
 
     received_timestamp = None
 
@@ -176,29 +183,29 @@ class LogEntry(_LogEntryTuple):
         """
         if loggers is None:
             loggers = {}
-        logger_fullname = resource['logName']
+        logger_fullname = resource["logName"]
         logger = loggers.get(logger_fullname)
         if logger is None:
             logger_name = logger_name_from_path(logger_fullname)
             logger = loggers[logger_fullname] = client.logger(logger_name)
         payload = cls._extract_payload(resource)
-        insert_id = resource.get('insertId')
-        timestamp = resource.get('timestamp')
+        insert_id = resource.get("insertId")
+        timestamp = resource.get("timestamp")
         if timestamp is not None:
             timestamp = _rfc3339_nanos_to_datetime(timestamp)
-        labels = resource.get('labels')
-        severity = resource.get('severity')
-        http_request = resource.get('httpRequest')
-        trace = resource.get('trace')
-        span_id = resource.get('spanId')
-        trace_sampled = resource.get('traceSampled')
-        source_location = resource.get('sourceLocation')
+        labels = resource.get("labels")
+        severity = resource.get("severity")
+        http_request = resource.get("httpRequest")
+        trace = resource.get("trace")
+        span_id = resource.get("spanId")
+        trace_sampled = resource.get("traceSampled")
+        source_location = resource.get("sourceLocation")
         if source_location is not None:
-            line = source_location.pop('line', None)
-            source_location['line'] = _int_or_none(line)
-        operation = resource.get('operation')
+            line = source_location.pop("line", None)
+            source_location["line"] = _int_or_none(line)
+        operation = resource.get("operation")
 
-        monitored_resource_dict = resource.get('resource')
+        monitored_resource_dict = resource.get("resource")
         monitored_resource = None
         if monitored_resource_dict is not None:
             monitored_resource = Resource._from_dict(monitored_resource_dict)
@@ -219,7 +226,7 @@ class LogEntry(_LogEntryTuple):
             logger=logger,
             payload=payload,
         )
-        received = resource.get('receiveTimestamp')
+        received = resource.get("receiveTimestamp")
         if received is not None:
             inst.received_timestamp = _rfc3339_nanos_to_datetime(received)
         return inst
@@ -229,94 +236,109 @@ class LogEntry(_LogEntryTuple):
         """
         info = {}
         if self.log_name is not None:
-            info['logName'] = self.log_name
+            info["logName"] = self.log_name
         if self.resource is not None:
-            info['resource'] = self.resource._to_dict()
+            info["resource"] = self.resource._to_dict()
         if self.labels is not None:
-            info['labels'] = self.labels
+            info["labels"] = self.labels
         if self.insert_id is not None:
-            info['insertId'] = self.insert_id
+            info["insertId"] = self.insert_id
         if self.severity is not None:
-            info['severity'] = self.severity
+            info["severity"] = self.severity
         if self.http_request is not None:
-            info['httpRequest'] = self.http_request
+            info["httpRequest"] = self.http_request
         if self.timestamp is not None:
-            info['timestamp'] = _datetime_to_rfc3339(self.timestamp)
+            info["timestamp"] = _datetime_to_rfc3339(self.timestamp)
         if self.trace is not None:
-            info['trace'] = self.trace
+            info["trace"] = self.trace
         if self.span_id is not None:
-            info['spanId'] = self.span_id
+            info["spanId"] = self.span_id
         if self.trace_sampled is not None:
-            info['traceSampled'] = self.trace_sampled
+            info["traceSampled"] = self.trace_sampled
         if self.source_location is not None:
             source_location = self.source_location.copy()
-            source_location['line'] = str(source_location.pop('line', 0))
-            info['sourceLocation'] = source_location
+            source_location["line"] = str(source_location.pop("line", 0))
+            info["sourceLocation"] = source_location
         if self.operation is not None:
-            info['operation'] = self.operation
+            info["operation"] = self.operation
         return info
 
 
 class TextEntry(LogEntry):
-    __doc__ = """
+    __doc__ = (
+        """
     Log entry with text payload.
 
-    """ + _LOG_ENTRY_PARAM_DOCSTRING + """
+    """
+        + _LOG_ENTRY_PARAM_DOCSTRING
+        + """
 
     :type payload: str | unicode
     :param payload: payload for the log entry.
-    """ + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+    """
+        + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+    )
 
     @classmethod
     def _extract_payload(cls, resource):
         """Helper for :meth:`from_api_repr`"""
-        return resource['textPayload']
+        return resource["textPayload"]
 
     def to_api_repr(self):
         """API repr (JSON format) for entry.
         """
         info = super(TextEntry, self).to_api_repr()
-        info['textPayload'] = self.payload
+        info["textPayload"] = self.payload
         return info
 
 
 class StructEntry(LogEntry):
-    __doc__ = """
+    __doc__ = (
+        """
     Log entry with JSON payload.
 
-    """ + _LOG_ENTRY_PARAM_DOCSTRING + """
+    """
+        + _LOG_ENTRY_PARAM_DOCSTRING
+        + """
 
     :type payload: dict
     :param payload: payload for the log entry.
-    """ + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+    """
+        + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+    )
 
     @classmethod
     def _extract_payload(cls, resource):
         """Helper for :meth:`from_api_repr`"""
-        return resource['jsonPayload']
+        return resource["jsonPayload"]
 
     def to_api_repr(self):
         """API repr (JSON format) for entry.
         """
         info = super(StructEntry, self).to_api_repr()
-        info['jsonPayload'] = self.payload
+        info["jsonPayload"] = self.payload
         return info
 
 
 class ProtobufEntry(LogEntry):
-    __doc__ = """
+    __doc__ = (
+        """
     Log entry with protobuf message payload.
 
-    """ + _LOG_ENTRY_PARAM_DOCSTRING + """
+    """
+        + _LOG_ENTRY_PARAM_DOCSTRING
+        + """
 
     :type payload: protobuf message
     :param payload: payload for the log entry.
-    """ + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+    """
+        + _LOG_ENTRY_SEE_ALSO_DOCSTRING
+    )
 
     @classmethod
     def _extract_payload(cls, resource):
         """Helper for :meth:`from_api_repr`"""
-        return resource['protoPayload']
+        return resource["protoPayload"]
 
     @property
     def payload_pb(self):
@@ -332,7 +354,7 @@ class ProtobufEntry(LogEntry):
         """API repr (JSON format) for entry.
         """
         info = super(ProtobufEntry, self).to_api_repr()
-        info['protoPayload'] = MessageToDict(self.payload)
+        info["protoPayload"] = MessageToDict(self.payload)
         return info
 
     def parse_message(self, message):

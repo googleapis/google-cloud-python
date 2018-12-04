@@ -27,38 +27,44 @@ from google.protobuf import wrappers_pb2
 
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import document
+from google.cloud.firestore_v1beta1 import transforms
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import query_pb2
 from google.cloud.firestore_v1beta1.order import Order
 from google.cloud.firestore_v1beta1.watch import Watch
 
-_EQ_OP = '=='
+_EQ_OP = "=="
 _operator_enum = enums.StructuredQuery.FieldFilter.Operator
 _COMPARISON_OPERATORS = {
-    '<': _operator_enum.LESS_THAN,
-    '<=': _operator_enum.LESS_THAN_OR_EQUAL,
+    "<": _operator_enum.LESS_THAN,
+    "<=": _operator_enum.LESS_THAN_OR_EQUAL,
     _EQ_OP: _operator_enum.EQUAL,
-    '>=': _operator_enum.GREATER_THAN_OR_EQUAL,
-    '>': _operator_enum.GREATER_THAN,
-    'array_contains': _operator_enum.ARRAY_CONTAINS,
+    ">=": _operator_enum.GREATER_THAN_OR_EQUAL,
+    ">": _operator_enum.GREATER_THAN,
+    "array_contains": _operator_enum.ARRAY_CONTAINS,
 }
-_BAD_OP_STRING = 'Operator string {!r} is invalid. Valid choices are: {}.'
-_BAD_OP_NAN_NULL = (
-    'Only an equality filter ("==") can be used with None or NaN values')
-_BAD_DIR_STRING = 'Invalid direction {!r}. Must be one of {!r} or {!r}.'
+_BAD_OP_STRING = "Operator string {!r} is invalid. Valid choices are: {}."
+_BAD_OP_NAN_NULL = 'Only an equality filter ("==") can be used with None or NaN values'
+_INVALID_WHERE_TRANSFORM = "Transforms cannot be used as where values."
+_BAD_DIR_STRING = "Invalid direction {!r}. Must be one of {!r} or {!r}."
+_INVALID_CURSOR_TRANSFORM = "Transforms cannot be used as cursor values."
 _MISSING_ORDER_BY = (
     'The "order by" field path {!r} is not present in the cursor data {!r}. '
-    'All fields sent to ``order_by()`` must be present in the fields '
-    'if passed to one of ``start_at()`` / ``start_after()`` / '
-    '``end_before()`` / ``end_at()`` to define a cursor.')
+    "All fields sent to ``order_by()`` must be present in the fields "
+    "if passed to one of ``start_at()`` / ``start_after()`` / "
+    "``end_before()`` / ``end_at()`` to define a cursor."
+)
 _NO_ORDERS_FOR_CURSOR = (
-    'Attempting to create a cursor with no fields to order on. '
-    'When defining a cursor with one of ``start_at()`` / ``start_after()`` / '
-    '``end_before()`` / ``end_at()``, all fields in the cursor must '
-    'come from fields set in ``order_by()``.')
+    "Attempting to create a cursor with no fields to order on. "
+    "When defining a cursor with one of ``start_at()`` / ``start_after()`` / "
+    "``end_before()`` / ``end_at()``, all fields in the cursor must "
+    "come from fields set in ``order_by()``."
+)
+_MISMATCH_CURSOR_W_ORDER_BY = "The cursor {!r} does not match the order fields {!r}."
 _EMPTY_DOC_TEMPLATE = (
-    'Unexpected server response. All responses other than the first must '
-    'contain a document. The response at index {} was\n{}.')
+    "Unexpected server response. All responses other than the first must "
+    "contain a document. The response at index {} was\n{}."
+)
 
 
 class Query(object):
@@ -110,14 +116,22 @@ class Query(object):
             will be used in the order given by ``orders``.
     """
 
-    ASCENDING = 'ASCENDING'
+    ASCENDING = "ASCENDING"
     """str: Sort query results in ascending order on a field."""
-    DESCENDING = 'DESCENDING'
+    DESCENDING = "DESCENDING"
     """str: Sort query results in descending order on a field."""
 
     def __init__(
-            self, parent, projection=None, field_filters=(), orders=(),
-            limit=None, offset=None, start_at=None, end_at=None):
+        self,
+        parent,
+        projection=None,
+        field_filters=(),
+        orders=(),
+        limit=None,
+        offset=None,
+        start_at=None,
+        end_at=None,
+    ):
         self._parent = parent
         self._projection = projection
         self._field_filters = field_filters
@@ -156,12 +170,18 @@ class Query(object):
             ~.firestore_v1beta1.query.Query: A "projected" query. Acts as
             a copy of the current query, modified with the newly added
             projection.
+        Raises:
+            ValueError: If any ``field_path`` is invalid.
         """
+        field_paths = list(field_paths)
+        for field_path in field_paths:
+            _helpers.split_field_path(field_path)  # raises
+
         new_projection = query_pb2.StructuredQuery.Projection(
             fields=[
                 query_pb2.StructuredQuery.FieldReference(field_path=field_path)
                 for field_path in field_paths
-            ],
+            ]
         )
         return self.__class__(
             self._parent,
@@ -200,32 +220,31 @@ class Query(object):
             copy of the current query, modified with the newly added filter.
 
         Raises:
+            ValueError: If ``field_path`` is invalid.
             ValueError: If ``value`` is a NaN or :data:`None` and
                 ``op_string`` is not ``==``.
         """
+        _helpers.split_field_path(field_path)  # raises
+
         if value is None:
             if op_string != _EQ_OP:
                 raise ValueError(_BAD_OP_NAN_NULL)
             filter_pb = query_pb2.StructuredQuery.UnaryFilter(
-                field=query_pb2.StructuredQuery.FieldReference(
-                    field_path=field_path,
-                ),
+                field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
                 op=enums.StructuredQuery.UnaryFilter.Operator.IS_NULL,
             )
         elif _isnan(value):
             if op_string != _EQ_OP:
                 raise ValueError(_BAD_OP_NAN_NULL)
             filter_pb = query_pb2.StructuredQuery.UnaryFilter(
-                field=query_pb2.StructuredQuery.FieldReference(
-                    field_path=field_path,
-                ),
+                field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
                 op=enums.StructuredQuery.UnaryFilter.Operator.IS_NAN,
             )
+        elif isinstance(value, (transforms.Sentinel, transforms._ValueList)):
+            raise ValueError(_INVALID_WHERE_TRANSFORM)
         else:
             filter_pb = query_pb2.StructuredQuery.FieldFilter(
-                field=query_pb2.StructuredQuery.FieldReference(
-                    field_path=field_path,
-                ),
+                field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
                 op=_enum_from_op_string(op_string),
                 value=_helpers.encode_value(value),
             )
@@ -265,13 +284,14 @@ class Query(object):
             "order by" constraint.
 
         Raises:
+            ValueError: If ``field_path`` is invalid.
             ValueError: If ``direction`` is not one of :attr:`ASCENDING` or
                 :attr:`DESCENDING`.
         """
+        _helpers.split_field_path(field_path)  # raises
+
         order_pb = query_pb2.StructuredQuery.Order(
-            field=query_pb2.StructuredQuery.FieldReference(
-                field_path=field_path,
-            ),
+            field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
             direction=_enum_from_direction(direction),
         )
 
@@ -349,10 +369,10 @@ class Query(object):
 
         Args:
             document_fields (Union[~.firestore_v1beta1.\
-                document.DocumentSnapshot, dict]): Either a document snapshot
-                or a dictionary of fields representing a query results
-                cursor. A cursor is a collection of values that represent a
-                position in a query result set.
+                document.DocumentSnapshot, dict, list, tuple]): a document
+                snapshot or a dictionary/list/tuple of fields representing a
+                query results cursor. A cursor is a collection of values that
+                represent a position in a query result set.
             before (bool): Flag indicating if the document in
                 ``document_fields`` should (:data:`False`) or
                 shouldn't (:data:`True`) be included in the result set.
@@ -364,27 +384,28 @@ class Query(object):
             a copy of the current query, modified with the newly added
             "start at" cursor.
         """
-        if isinstance(document_fields, dict):
+        if isinstance(document_fields, tuple):
+            document_fields = list(document_fields)
+        elif isinstance(document_fields, document.DocumentSnapshot):
+            document_fields = document_fields.to_dict()
+        else:
             # NOTE: We copy so that the caller can't modify after calling.
             document_fields = copy.deepcopy(document_fields)
-        else:
-            # NOTE: This **assumes** a DocumentSnapshot.
-            document_fields = document_fields.to_dict()
 
         cursor_pair = document_fields, before
         query_kwargs = {
-            'projection': self._projection,
-            'field_filters': self._field_filters,
-            'orders': self._orders,
-            'limit': self._limit,
-            'offset': self._offset,
+            "projection": self._projection,
+            "field_filters": self._field_filters,
+            "orders": self._orders,
+            "limit": self._limit,
+            "offset": self._offset,
         }
         if start:
-            query_kwargs['start_at'] = cursor_pair
-            query_kwargs['end_at'] = self._end_at
+            query_kwargs["start_at"] = cursor_pair
+            query_kwargs["end_at"] = self._end_at
         else:
-            query_kwargs['start_at'] = self._start_at
-            query_kwargs['end_at'] = cursor_pair
+            query_kwargs["start_at"] = self._start_at
+            query_kwargs["end_at"] = cursor_pair
 
         return self.__class__(self._parent, **query_kwargs)
 
@@ -405,10 +426,10 @@ class Query(object):
 
         Args:
             document_fields (Union[~.firestore_v1beta1.\
-                document.DocumentSnapshot, dict]): Either a document snapshot
-                or a dictionary of fields representing a query results
-                cursor. A cursor is a collection of values that represent a
-                position in a query result set.
+                document.DocumentSnapshot, dict, list, tuple]): a document
+                snapshot or a dictionary/list/tuple of fields representing a
+                query results cursor. A cursor is a collection of values that
+                represent a position in a query result set.
 
         Returns:
             ~.firestore_v1beta1.query.Query: A query with cursor. Acts as
@@ -434,10 +455,10 @@ class Query(object):
 
         Args:
             document_fields (Union[~.firestore_v1beta1.\
-                document.DocumentSnapshot, dict]): Either a document snapshot
-                or a dictionary of fields representing a query results
-                cursor. A cursor is a collection of values that represent a
-                position in a query result set.
+                document.DocumentSnapshot, dict, list, tuple]): a document
+                snapshot or a dictionary/list/tuple of fields representing a
+                query results cursor. A cursor is a collection of values that
+                represent a position in a query result set.
 
         Returns:
             ~.firestore_v1beta1.query.Query: A query with cursor. Acts as
@@ -463,10 +484,10 @@ class Query(object):
 
         Args:
             document_fields (Union[~.firestore_v1beta1.\
-                document.DocumentSnapshot, dict]): Either a document snapshot
-                or a dictionary of fields representing a query results
-                cursor. A cursor is a collection of values that represent a
-                position in a query result set.
+                document.DocumentSnapshot, dict, list, tuple]): a document
+                snapshot or a dictionary/list/tuple of fields representing a
+                query results cursor. A cursor is a collection of values that
+                represent a position in a query result set.
 
         Returns:
             ~.firestore_v1beta1.query.Query: A query with cursor. Acts as
@@ -492,10 +513,10 @@ class Query(object):
 
         Args:
             document_fields (Union[~.firestore_v1beta1.\
-                document.DocumentSnapshot, dict]): Either a document snapshot
-                or a dictionary of fields representing a query results
-                cursor. A cursor is a collection of values that represent a
-                position in a query result set.
+                document.DocumentSnapshot, dict, list, tuple]): a document
+                snapshot or a dictionary/list/tuple of fields representing a
+                query results cursor. A cursor is a collection of values that
+                represent a position in a query result set.
 
         Returns:
             ~.firestore_v1beta1.query.Query: A query with cursor. Acts as
@@ -523,12 +544,68 @@ class Query(object):
         else:
             composite_filter = query_pb2.StructuredQuery.CompositeFilter(
                 op=enums.StructuredQuery.CompositeFilter.Operator.AND,
-                filters=[
-                    _filter_pb(filter_) for filter_ in self._field_filters
-                ],
+                filters=[_filter_pb(filter_) for filter_ in self._field_filters],
             )
-            return query_pb2.StructuredQuery.Filter(
-                composite_filter=composite_filter)
+            return query_pb2.StructuredQuery.Filter(composite_filter=composite_filter)
+
+    @staticmethod
+    def _normalize_projection(projection):
+        """Helper:  convert field paths to message."""
+        if projection is not None:
+
+            fields = list(projection.fields)
+
+            if not fields:
+                field_ref = query_pb2.StructuredQuery.FieldReference(
+                    field_path="__name__"
+                )
+                return query_pb2.StructuredQuery.Projection(fields=[field_ref])
+
+        return projection
+
+    def _normalize_cursor(self, cursor, orders):
+        """Helper: convert cursor to a list of values based on orders."""
+        if cursor is None:
+            return
+
+        if not orders:
+            raise ValueError(_NO_ORDERS_FOR_CURSOR)
+
+        document_fields, before = cursor
+
+        order_keys = [order.field.field_path for order in orders]
+
+        if isinstance(document_fields, dict):
+            # Transform to list using orders
+            values = []
+            data = document_fields
+            for order_key in order_keys:
+                try:
+                    values.append(_helpers.get_nested_value(order_key, data))
+                except KeyError:
+                    msg = _MISSING_ORDER_BY.format(order_key, data)
+                    raise ValueError(msg)
+            document_fields = values
+
+        if len(document_fields) != len(orders):
+            msg = _MISMATCH_CURSOR_W_ORDER_BY.format(document_fields, order_keys)
+            raise ValueError(msg)
+
+        _transform_bases = (transforms.Sentinel, transforms._ValueList)
+
+        for index, key_field in enumerate(zip(order_keys, document_fields)):
+            key, field = key_field
+
+            if isinstance(field, _transform_bases):
+                msg = _INVALID_CURSOR_TRANSFORM
+                raise ValueError(msg)
+
+            if key == "__name__" and "/" not in field:
+                document_fields[index] = "{}/{}/{}".format(
+                    self._client._database_string, "/".join(self._parent._path), field
+                )
+
+        return document_fields, before
 
     def _to_protobuf(self):
         """Convert the current query into the equivalent protobuf.
@@ -537,22 +614,26 @@ class Query(object):
             google.cloud.firestore_v1beta1.types.StructuredQuery: The
             query protobuf.
         """
+        projection = self._normalize_projection(self._projection)
+        start_at = self._normalize_cursor(self._start_at, self._orders)
+        end_at = self._normalize_cursor(self._end_at, self._orders)
+
         query_kwargs = {
-            'select': self._projection,
-            'from': [
+            "select": projection,
+            "from": [
                 query_pb2.StructuredQuery.CollectionSelector(
-                    collection_id=self._parent.id,
-                ),
+                    collection_id=self._parent.id
+                )
             ],
-            'where': self._filters_pb(),
-            'order_by': self._orders,
-            'start_at': _cursor_pb(self._start_at, self._orders),
-            'end_at': _cursor_pb(self._end_at, self._orders),
+            "where": self._filters_pb(),
+            "order_by": self._orders,
+            "start_at": _cursor_pb(start_at),
+            "end_at": _cursor_pb(end_at),
         }
         if self._offset is not None:
-            query_kwargs['offset'] = self._offset
+            query_kwargs["offset"] = self._offset
         if self._limit is not None:
-            query_kwargs['limit'] = wrappers_pb2.Int32Value(value=self._limit)
+            query_kwargs["limit"] = wrappers_pb2.Int32Value(value=self._limit)
 
         return query_pb2.StructuredQuery(**query_kwargs)
 
@@ -583,19 +664,24 @@ class Query(object):
         """
         parent_path, expected_prefix = self._parent._parent_info()
         response_iterator = self._client._firestore_api.run_query(
-            parent_path, self._to_protobuf(),
+            parent_path,
+            self._to_protobuf(),
             transaction=_helpers.get_transaction_id(transaction),
-            metadata=self._client._rpc_metadata)
+            metadata=self._client._rpc_metadata,
+        )
 
         empty_stream = False
         for index, response_pb in enumerate(response_iterator):
             if empty_stream:
                 raise ValueError(
-                    'First response in stream was empty',
-                    'Received second response', response_pb)
+                    "First response in stream was empty",
+                    "Received second response",
+                    response_pb,
+                )
 
             snapshot, skipped_results = _query_response_to_snapshot(
-                response_pb, self._parent, expected_prefix)
+                response_pb, self._parent, expected_prefix
+            )
             if snapshot is None:
                 if index != 0:
                     msg = _EMPTY_DOC_TEMPLATE.format(index, response_pb)
@@ -630,10 +716,9 @@ class Query(object):
             # Terminate this watch
             query_watch.unsubscribe()
         """
-        return Watch.for_query(self,
-                               callback,
-                               document.DocumentSnapshot,
-                               document.DocumentReference)
+        return Watch.for_query(
+            self, callback, document.DocumentSnapshot, document.DocumentReference
+        )
 
     def _comparator(self, doc1, doc2):
         _orders = self._orders
@@ -650,21 +735,20 @@ class Query(object):
         orderBys = list(_orders)
 
         order_pb = query_pb2.StructuredQuery.Order(
-            field=query_pb2.StructuredQuery.FieldReference(
-                field_path='id',
-            ),
+            field=query_pb2.StructuredQuery.FieldReference(field_path="id"),
             direction=_enum_from_direction(lastDirection),
         )
         orderBys.append(order_pb)
 
         for orderBy in orderBys:
-            if orderBy.field.field_path == 'id':
+            if orderBy.field.field_path == "id":
                 # If ordering by docuent id, compare resource paths.
-                comp = Order()._compare_to(
-                    doc1.reference._path, doc2.reference._path)
+                comp = Order()._compare_to(doc1.reference._path, doc2.reference._path)
             else:
-                if orderBy.field.field_path not in doc1._data or \
-                   orderBy.field.field_path not in doc2._data:
+                if (
+                    orderBy.field.field_path not in doc1._data
+                    or orderBy.field.field_path not in doc2._data
+                ):
                     raise ValueError(
                         "Can only compare fields that exist in the "
                         "DocumentSnapshot. Please include the fields you are "
@@ -676,7 +760,7 @@ class Query(object):
                 encoded_v2 = _helpers.encode_value(v2)
                 comp = Order().compare(encoded_v1, encoded_v2)
 
-            if (comp != 0):
+            if comp != 0:
                 # 1 == Ascending, -1 == Descending
                 return orderBy.direction * comp
 
@@ -703,7 +787,7 @@ def _enum_from_op_string(op_string):
     try:
         return _COMPARISON_OPERATORS[op_string]
     except KeyError:
-        choices = ', '.join(sorted(_COMPARISON_OPERATORS.keys()))
+        choices = ", ".join(sorted(_COMPARISON_OPERATORS.keys()))
         msg = _BAD_OP_STRING.format(op_string, choices)
         raise ValueError(msg)
 
@@ -745,8 +829,7 @@ def _enum_from_direction(direction):
     elif direction == Query.DESCENDING:
         return enums.StructuredQuery.Direction.DESCENDING
     else:
-        msg = _BAD_DIR_STRING.format(
-            direction, Query.ASCENDING, Query.DESCENDING)
+        msg = _BAD_DIR_STRING.format(direction, Query.ASCENDING, Query.DESCENDING)
         raise ValueError(msg)
 
 
@@ -771,58 +854,28 @@ def _filter_pb(field_or_unary):
     elif isinstance(field_or_unary, query_pb2.StructuredQuery.UnaryFilter):
         return query_pb2.StructuredQuery.Filter(unary_filter=field_or_unary)
     else:
-        raise ValueError(
-            'Unexpected filter type', type(field_or_unary), field_or_unary)
+        raise ValueError("Unexpected filter type", type(field_or_unary), field_or_unary)
 
 
-def _cursor_pb(cursor_pair, orders):
+def _cursor_pb(cursor_pair):
     """Convert a cursor pair to a protobuf.
 
     If ``cursor_pair`` is :data:`None`, just returns :data:`None`.
 
     Args:
-        cursor_pair (Optional[Tuple[dict, bool]]): Two-tuple of
+        cursor_pair (Optional[Tuple[list, bool]]): Two-tuple of
 
-            * a mapping of fields. Any field that is present in this mapping
-              must also be present in ``orders``
+            * a list of field values.
             * a ``before`` flag
-
-        orders (Tuple[google.cloud.proto.firestore.v1beta1.\
-            query_pb2.StructuredQuery.Order, ...]]): The "order by" entries
-            to use for a query. (We use this rather than a list of field path
-            strings just because it is how a query stores calls
-            to ``order_by``.)
 
     Returns:
         Optional[google.cloud.firestore_v1beta1.types.Cursor]: A
         protobuf cursor corresponding to the values.
-
-    Raises:
-        ValueError: If ``cursor_pair`` is not :data:`None`, but there are
-            no ``orders``.
-        ValueError: If one of the field paths in ``orders`` is not contained
-            in the ``data`` (i.e. the first component of ``cursor_pair``).
     """
-    if cursor_pair is None:
-        return None
-
-    if len(orders) == 0:
-        raise ValueError(_NO_ORDERS_FOR_CURSOR)
-
-    data, before = cursor_pair
-    value_pbs = []
-    for order in orders:
-        field_path = order.field.field_path
-        try:
-            value = _helpers.get_nested_value(field_path, data)
-        except KeyError:
-            msg = _MISSING_ORDER_BY.format(field_path, data)
-            raise ValueError(msg)
-
-        value_pb = _helpers.encode_value(value)
-        value_pbs.append(value_pb)
-
-    return query_pb2.Cursor(values=value_pbs, before=before)
+    if cursor_pair is not None:
+        data, before = cursor_pair
+        value_pbs = [_helpers.encode_value(value) for value in data]
+        return query_pb2.Cursor(values=value_pbs, before=before)
 
 
 def _query_response_to_snapshot(response_pb, collection, expected_prefix):
@@ -843,19 +896,18 @@ def _query_response_to_snapshot(response_pb, collection, expected_prefix):
         results. If ``response_pb.document`` is not set, the snapshot will be
         :data:`None`.
     """
-    if not response_pb.HasField('document'):
+    if not response_pb.HasField("document"):
         return None, response_pb.skipped_results
 
-    document_id = _helpers.get_doc_id(
-        response_pb.document, expected_prefix)
+    document_id = _helpers.get_doc_id(response_pb.document, expected_prefix)
     reference = collection.document(document_id)
-    data = _helpers.decode_dict(
-        response_pb.document.fields, collection._client)
+    data = _helpers.decode_dict(response_pb.document.fields, collection._client)
     snapshot = document.DocumentSnapshot(
         reference,
         data,
         exists=True,
         read_time=response_pb.read_time,
         create_time=response_pb.document.create_time,
-        update_time=response_pb.document.update_time)
+        update_time=response_pb.document.update_time,
+    )
     return snapshot, response_pb.skipped_results

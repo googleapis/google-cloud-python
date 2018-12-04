@@ -58,14 +58,15 @@ _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
 _MAX_MULTIPART_SIZE = 5 * 1024 * 1024
 _DEFAULT_NUM_RETRIES = 6
 _BASE_UPLOAD_TEMPLATE = (
-    u'https://www.googleapis.com/upload/bigquery/v2/projects/'
-    u'{project}/jobs?uploadType=')
-_MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u'multipart'
-_RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u'resumable'
-_GENERIC_CONTENT_TYPE = u'*/*'
+    u"https://www.googleapis.com/upload/bigquery/v2/projects/"
+    u"{project}/jobs?uploadType="
+)
+_MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"multipart"
+_RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"resumable"
+_GENERIC_CONTENT_TYPE = u"*/*"
 _READ_LESS_THAN_SIZE = (
-    'Size {:d} was specified but the file-like object only had '
-    '{:d} bytes remaining.')
+    "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
+)
 
 
 class Project(object):
@@ -80,6 +81,7 @@ class Project(object):
     :type friendly_name: str
     :param friendly_name: Display name of the project
     """
+
     def __init__(self, project_id, numeric_id, friendly_name):
         self.project_id = project_id
         self.numeric_id = numeric_id
@@ -88,8 +90,7 @@ class Project(object):
     @classmethod
     def from_api_repr(cls, resource):
         """Factory: construct an instance from a resource dict."""
-        return cls(
-            resource['id'], resource['numericId'], resource['friendlyName'])
+        return cls(resource["id"], resource["numericId"], resource["friendlyName"])
 
 
 class Client(ClientWithProject):
@@ -124,15 +125,23 @@ class Client(ClientWithProject):
             to acquire default credentials.
     """
 
-    SCOPE = ('https://www.googleapis.com/auth/bigquery',
-             'https://www.googleapis.com/auth/cloud-platform')
+    SCOPE = (
+        "https://www.googleapis.com/auth/bigquery",
+        "https://www.googleapis.com/auth/cloud-platform",
+    )
     """The scopes required for authenticating as a BigQuery consumer."""
 
     def __init__(
-            self, project=None, credentials=None, _http=None,
-            location=None, default_query_job_config=None):
+        self,
+        project=None,
+        credentials=None,
+        _http=None,
+        location=None,
+        default_query_job_config=None,
+    ):
         super(Client, self).__init__(
-            project=project, credentials=credentials, _http=_http)
+            project=project, credentials=credentials, _http=_http
+        )
         self._connection = Connection(self)
         self._location = location
         self._default_query_job_config = default_query_job_config
@@ -167,12 +176,11 @@ class Client(ClientWithProject):
         """
         if project is None:
             project = self.project
-        path = '/projects/%s/serviceAccount' % (project,)
-        api_response = self._connection.api_request(method='GET', path=path)
-        return api_response['email']
+        path = "/projects/%s/serviceAccount" % (project,)
+        api_response = self._connection.api_request(method="GET", path=path)
+        return api_response["email"]
 
-    def list_projects(self, max_results=None, page_token=None,
-                      retry=DEFAULT_RETRY):
+    def list_projects(self, max_results=None, page_token=None, retry=DEFAULT_RETRY):
         """List projects for the project associated with this client.
 
         See
@@ -201,15 +209,22 @@ class Client(ClientWithProject):
         return page_iterator.HTTPIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
-            path='/projects',
+            path="/projects",
             item_to_value=_item_to_project,
-            items_key='projects',
+            items_key="projects",
             page_token=page_token,
-            max_results=max_results)
+            max_results=max_results,
+        )
 
     def list_datasets(
-            self, project=None, include_all=False, filter=None,
-            max_results=None, page_token=None, retry=DEFAULT_RETRY):
+        self,
+        project=None,
+        include_all=False,
+        filter=None,
+        max_results=None,
+        page_token=None,
+        retry=DEFAULT_RETRY,
+    ):
         """List datasets for the project associated with this client.
 
         See
@@ -248,21 +263,22 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
         if include_all:
-            extra_params['all'] = True
+            extra_params["all"] = True
         if filter:
             # TODO: consider supporting a dict of label -> value for filter,
             # and converting it into a string here.
-            extra_params['filter'] = filter
-        path = '/projects/%s/datasets' % (project,)
+            extra_params["filter"] = filter
+        path = "/projects/%s/datasets" % (project,)
         return page_iterator.HTTPIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
             path=path,
             item_to_value=_item_to_dataset,
-            items_key='datasets',
+            items_key="datasets",
             page_token=page_token,
             max_results=max_results,
-            extra_params=extra_params)
+            extra_params=extra_params,
+        )
 
     def dataset(self, dataset_id, project=None):
         """Construct a reference to a dataset.
@@ -312,18 +328,18 @@ class Client(ClientWithProject):
         """
         if isinstance(dataset, str):
             dataset = DatasetReference.from_string(
-                dataset, default_project=self.project)
+                dataset, default_project=self.project
+            )
         if isinstance(dataset, DatasetReference):
             dataset = Dataset(dataset)
 
-        path = '/projects/%s/datasets' % (dataset.project,)
+        path = "/projects/%s/datasets" % (dataset.project,)
 
         data = dataset.to_api_repr()
-        if data.get('location') is None and self.location is not None:
-            data['location'] = self.location
+        if data.get("location") is None and self.location is not None:
+            data["location"] = self.location
 
-        api_response = self._connection.api_request(
-            method='POST', path=path, data=data)
+        api_response = self._connection.api_request(method="POST", path=path, data=data)
 
         return Dataset.from_api_repr(api_response)
 
@@ -349,15 +365,14 @@ class Client(ClientWithProject):
                 A new ``Table`` returned from the service.
         """
         if isinstance(table, str):
-            table = TableReference.from_string(
-                table, default_project=self.project)
+            table = TableReference.from_string(table, default_project=self.project)
         if isinstance(table, TableReference):
             table = Table(table)
 
-        path = '/projects/%s/datasets/%s/tables' % (
-            table.project, table.dataset_id)
+        path = "/projects/%s/datasets/%s/tables" % (table.project, table.dataset_id)
         api_response = self._connection.api_request(
-            method='POST', path=path, data=table.to_api_repr())
+            method="POST", path=path, data=table.to_api_repr()
+        )
         return Table.from_api_repr(api_response)
 
     def _call_api(self, retry, **kwargs):
@@ -387,10 +402,10 @@ class Client(ClientWithProject):
         """
         if isinstance(dataset_ref, str):
             dataset_ref = DatasetReference.from_string(
-                dataset_ref, default_project=self.project)
+                dataset_ref, default_project=self.project
+            )
 
-        api_response = self._call_api(
-            retry, method='GET', path=dataset_ref.path)
+        api_response = self._call_api(retry, method="GET", path=dataset_ref.path)
         return Dataset.from_api_repr(api_response)
 
     def get_table(self, table_ref, retry=DEFAULT_RETRY):
@@ -414,9 +429,10 @@ class Client(ClientWithProject):
         """
         if isinstance(table_ref, str):
             table_ref = TableReference.from_string(
-                table_ref, default_project=self.project)
+                table_ref, default_project=self.project
+            )
 
-        api_response = self._call_api(retry, method='GET', path=table_ref.path)
+        api_response = self._call_api(retry, method="GET", path=table_ref.path)
         return Table.from_api_repr(api_response)
 
     def update_dataset(self, dataset, fields, retry=DEFAULT_RETRY):
@@ -447,15 +463,12 @@ class Client(ClientWithProject):
         """
         partial = dataset._build_resource(fields)
         if dataset.etag is not None:
-            headers = {'If-Match': dataset.etag}
+            headers = {"If-Match": dataset.etag}
         else:
             headers = None
         api_response = self._call_api(
-            retry,
-            method='PATCH',
-            path=dataset.path,
-            data=partial,
-            headers=headers)
+            retry, method="PATCH", path=dataset.path, data=partial, headers=headers
+        )
         return Dataset.from_api_repr(api_response)
 
     def update_table(self, table, fields, retry=DEFAULT_RETRY):
@@ -485,16 +498,17 @@ class Client(ClientWithProject):
         """
         partial = table._build_resource(fields)
         if table.etag is not None:
-            headers = {'If-Match': table.etag}
+            headers = {"If-Match": table.etag}
         else:
             headers = None
         api_response = self._call_api(
-            retry,
-            method='PATCH', path=table.path, data=partial, headers=headers)
+            retry, method="PATCH", path=table.path, data=partial, headers=headers
+        )
         return Table.from_api_repr(api_response)
 
-    def list_tables(self, dataset, max_results=None, page_token=None,
-                    retry=DEFAULT_RETRY):
+    def list_tables(
+        self, dataset, max_results=None, page_token=None, retry=DEFAULT_RETRY
+    ):
         """List tables in the dataset.
 
         See
@@ -531,26 +545,26 @@ class Client(ClientWithProject):
         """
         if isinstance(dataset, str):
             dataset = DatasetReference.from_string(
-                dataset, default_project=self.project)
+                dataset, default_project=self.project
+            )
 
         if not isinstance(dataset, (Dataset, DatasetReference)):
-            raise TypeError(
-                'dataset must be a Dataset, DatasetReference, or string')
+            raise TypeError("dataset must be a Dataset, DatasetReference, or string")
 
-        path = '%s/tables' % dataset.path
+        path = "%s/tables" % dataset.path
         result = page_iterator.HTTPIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
             path=path,
             item_to_value=_item_to_table,
-            items_key='tables',
+            items_key="tables",
             page_token=page_token,
-            max_results=max_results)
+            max_results=max_results,
+        )
         result.dataset = dataset
         return result
 
-    def delete_dataset(self, dataset, delete_contents=False,
-                       retry=DEFAULT_RETRY):
+    def delete_dataset(self, dataset, delete_contents=False, retry=DEFAULT_RETRY):
         """Delete a dataset.
 
         See
@@ -575,19 +589,17 @@ class Client(ClientWithProject):
         """
         if isinstance(dataset, str):
             dataset = DatasetReference.from_string(
-                dataset, default_project=self.project)
+                dataset, default_project=self.project
+            )
 
         if not isinstance(dataset, (Dataset, DatasetReference)):
-            raise TypeError('dataset must be a Dataset or a DatasetReference')
+            raise TypeError("dataset must be a Dataset or a DatasetReference")
 
         params = {}
         if delete_contents:
-            params['deleteContents'] = 'true'
+            params["deleteContents"] = "true"
 
-        self._call_api(retry,
-                       method='DELETE',
-                       path=dataset.path,
-                       query_params=params)
+        self._call_api(retry, method="DELETE", path=dataset.path, query_params=params)
 
     def delete_table(self, table, retry=DEFAULT_RETRY):
         """Delete a table
@@ -609,15 +621,15 @@ class Client(ClientWithProject):
                 (Optional) How to retry the RPC.
         """
         if isinstance(table, str):
-            table = TableReference.from_string(
-                table, default_project=self.project)
+            table = TableReference.from_string(table, default_project=self.project)
 
         if not isinstance(table, (Table, TableReference)):
-            raise TypeError('table must be a Table or a TableReference')
-        self._call_api(retry, method='DELETE', path=table.path)
+            raise TypeError("table must be a Table or a TableReference")
+        self._call_api(retry, method="DELETE", path=table.path)
 
     def _get_query_results(
-            self, job_id, retry, project=None, timeout_ms=None, location=None):
+        self, job_id, retry, project=None, timeout_ms=None, location=None
+    ):
         """Get the query results object for a query job.
 
         Arguments:
@@ -637,27 +649,28 @@ class Client(ClientWithProject):
                 A new ``_QueryResults`` instance.
         """
 
-        extra_params = {'maxResults': 0}
+        extra_params = {"maxResults": 0}
 
         if project is None:
             project = self.project
 
         if timeout_ms is not None:
-            extra_params['timeoutMs'] = timeout_ms
+            extra_params["timeoutMs"] = timeout_ms
 
         if location is None:
             location = self.location
 
         if location is not None:
-            extra_params['location'] = location
+            extra_params["location"] = location
 
-        path = '/projects/{}/queries/{}'.format(project, job_id)
+        path = "/projects/{}/queries/{}".format(project, job_id)
 
         # This call is typically made in a polling loop that checks whether the
         # job is complete (from QueryJob.done(), called ultimately from
         # QueryJob.result()). So we don't need to poll here.
         resource = self._call_api(
-            retry, method='GET', path=path, query_params=extra_params)
+            retry, method="GET", path=path, query_params=extra_params
+        )
         return _QueryResults.from_api_repr(resource)
 
     def job_from_resource(self, resource):
@@ -673,19 +686,18 @@ class Client(ClientWithProject):
                 or :class:`google.cloud.bigquery.job.QueryJob`
         :returns: the job instance, constructed via the resource
         """
-        config = resource.get('configuration', {})
-        if 'load' in config:
+        config = resource.get("configuration", {})
+        if "load" in config:
             return job.LoadJob.from_api_repr(resource, self)
-        elif 'copy' in config:
+        elif "copy" in config:
             return job.CopyJob.from_api_repr(resource, self)
-        elif 'extract' in config:
+        elif "extract" in config:
             return job.ExtractJob.from_api_repr(resource, self)
-        elif 'query' in config:
+        elif "query" in config:
             return job.QueryJob.from_api_repr(resource, self)
         return job.UnknownJob.from_api_repr(resource, self)
 
-    def get_job(
-            self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
+    def get_job(self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
         """Fetch a job for the project associated with this client.
 
         See
@@ -709,7 +721,7 @@ class Client(ClientWithProject):
                   google.cloud.bigquery.job.QueryJob]:
                 Job instance, based on the resource returned by the API.
         """
-        extra_params = {'projection': 'full'}
+        extra_params = {"projection": "full"}
 
         if project is None:
             project = self.project
@@ -718,17 +730,17 @@ class Client(ClientWithProject):
             location = self.location
 
         if location is not None:
-            extra_params['location'] = location
+            extra_params["location"] = location
 
-        path = '/projects/{}/jobs/{}'.format(project, job_id)
+        path = "/projects/{}/jobs/{}".format(project, job_id)
 
         resource = self._call_api(
-            retry, method='GET', path=path, query_params=extra_params)
+            retry, method="GET", path=path, query_params=extra_params
+        )
 
         return self.job_from_resource(resource)
 
-    def cancel_job(
-            self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
+    def cancel_job(self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
         """Attempt to cancel a job from a job ID.
 
         See
@@ -752,7 +764,7 @@ class Client(ClientWithProject):
                   google.cloud.bigquery.job.QueryJob]:
                 Job instance, based on the resource returned by the API.
         """
-        extra_params = {'projection': 'full'}
+        extra_params = {"projection": "full"}
 
         if project is None:
             project = self.project
@@ -761,19 +773,27 @@ class Client(ClientWithProject):
             location = self.location
 
         if location is not None:
-            extra_params['location'] = location
+            extra_params["location"] = location
 
-        path = '/projects/{}/jobs/{}/cancel'.format(project, job_id)
+        path = "/projects/{}/jobs/{}/cancel".format(project, job_id)
 
         resource = self._call_api(
-            retry, method='POST', path=path, query_params=extra_params)
+            retry, method="POST", path=path, query_params=extra_params
+        )
 
-        return self.job_from_resource(resource['job'])
+        return self.job_from_resource(resource["job"])
 
     def list_jobs(
-            self, project=None, max_results=None, page_token=None,
-            all_users=None, state_filter=None, retry=DEFAULT_RETRY,
-            min_creation_time=None, max_creation_time=None):
+        self,
+        project=None,
+        max_results=None,
+        page_token=None,
+        all_users=None,
+        state_filter=None,
+        retry=DEFAULT_RETRY,
+        min_creation_time=None,
+        max_creation_time=None,
+    ):
         """List jobs for the project associated with this client.
 
         See
@@ -816,42 +836,47 @@ class Client(ClientWithProject):
                 Iterable of job instances.
         """
         extra_params = {
-            'allUsers': all_users,
-            'stateFilter': state_filter,
-            'minCreationTime': _str_or_none(
-                google.cloud._helpers._millis_from_datetime(
-                    min_creation_time)),
-            'maxCreationTime': _str_or_none(
-                google.cloud._helpers._millis_from_datetime(
-                    max_creation_time)),
-            'projection': 'full'
+            "allUsers": all_users,
+            "stateFilter": state_filter,
+            "minCreationTime": _str_or_none(
+                google.cloud._helpers._millis_from_datetime(min_creation_time)
+            ),
+            "maxCreationTime": _str_or_none(
+                google.cloud._helpers._millis_from_datetime(max_creation_time)
+            ),
+            "projection": "full",
         }
 
-        extra_params = {param: value for param, value in extra_params.items()
-                        if value is not None}
+        extra_params = {
+            param: value for param, value in extra_params.items() if value is not None
+        }
 
         if project is None:
             project = self.project
 
-        path = '/projects/%s/jobs' % (project,)
+        path = "/projects/%s/jobs" % (project,)
         return page_iterator.HTTPIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
             path=path,
             item_to_value=_item_to_job,
-            items_key='jobs',
+            items_key="jobs",
             page_token=page_token,
             max_results=max_results,
-            extra_params=extra_params)
+            extra_params=extra_params,
+        )
 
     def load_table_from_uri(
-            self, source_uris, destination,
-            job_id=None,
-            job_id_prefix=None,
-            location=None,
-            project=None,
-            job_config=None,
-            retry=DEFAULT_RETRY):
+        self,
+        source_uris,
+        destination,
+        job_id=None,
+        job_id_prefix=None,
+        location=None,
+        project=None,
+        job_config=None,
+        retry=DEFAULT_RETRY,
+    ):
         """Starts a job for loading data into a table from CloudStorage.
 
         See
@@ -905,19 +930,27 @@ class Client(ClientWithProject):
 
         if isinstance(destination, str):
             destination = TableReference.from_string(
-                destination, default_project=self.project)
+                destination, default_project=self.project
+            )
 
-        load_job = job.LoadJob(
-            job_ref, source_uris, destination, self, job_config)
+        load_job = job.LoadJob(job_ref, source_uris, destination, self, job_config)
         load_job._begin(retry=retry)
 
         return load_job
 
     def load_table_from_file(
-            self, file_obj, destination, rewind=False, size=None,
-            num_retries=_DEFAULT_NUM_RETRIES, job_id=None,
-            job_id_prefix=None, location=None, project=None,
-            job_config=None):
+        self,
+        file_obj,
+        destination,
+        rewind=False,
+        size=None,
+        num_retries=_DEFAULT_NUM_RETRIES,
+        job_id=None,
+        job_id_prefix=None,
+        location=None,
+        project=None,
+        job_config=None,
+    ):
         """Upload the contents of this table from a file-like object.
 
         Similar to :meth:`load_table_from_uri`, this method creates, starts and
@@ -976,7 +1009,8 @@ class Client(ClientWithProject):
 
         if isinstance(destination, str):
             destination = TableReference.from_string(
-                destination, default_project=self.project)
+                destination, default_project=self.project
+            )
 
         job_ref = job._JobReference(job_id, project=project, location=location)
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
@@ -990,20 +1024,28 @@ class Client(ClientWithProject):
         try:
             if size is None or size >= _MAX_MULTIPART_SIZE:
                 response = self._do_resumable_upload(
-                    file_obj, job_resource, num_retries)
+                    file_obj, job_resource, num_retries
+                )
             else:
                 response = self._do_multipart_upload(
-                    file_obj, job_resource, size, num_retries)
+                    file_obj, job_resource, size, num_retries
+                )
         except resumable_media.InvalidResponse as exc:
             raise exceptions.from_http_response(exc.response)
 
         return self.job_from_resource(response.json())
 
-    def load_table_from_dataframe(self, dataframe, destination,
-                                  num_retries=_DEFAULT_NUM_RETRIES,
-                                  job_id=None, job_id_prefix=None,
-                                  location=None, project=None,
-                                  job_config=None):
+    def load_table_from_dataframe(
+        self,
+        dataframe,
+        destination,
+        num_retries=_DEFAULT_NUM_RETRIES,
+        job_id=None,
+        job_id_prefix=None,
+        location=None,
+        project=None,
+        job_config=None,
+    ):
         """Upload the contents of a table from a pandas DataFrame.
 
         Similar to :meth:`load_table_from_uri`, this method creates, starts and
@@ -1058,7 +1100,8 @@ class Client(ClientWithProject):
             location = self.location
 
         return self.load_table_from_file(
-            buffer, destination,
+            buffer,
+            destination,
             num_retries=num_retries,
             rewind=True,
             job_id=job_id,
@@ -1086,7 +1129,8 @@ class Client(ClientWithProject):
                   is uploaded.
         """
         upload, transport = self._initiate_resumable_upload(
-            stream, metadata, num_retries)
+            stream, metadata, num_retries
+        )
 
         while not upload.finished:
             response = upload.transmit_next_chunk(transport)
@@ -1124,11 +1168,12 @@ class Client(ClientWithProject):
 
         if num_retries is not None:
             upload._retry_strategy = resumable_media.RetryStrategy(
-                max_retries=num_retries)
+                max_retries=num_retries
+            )
 
         upload.initiate(
-            transport, stream, metadata, _GENERIC_CONTENT_TYPE,
-            stream_final=False)
+            transport, stream, metadata, _GENERIC_CONTENT_TYPE, stream_final=False
+        )
 
         return upload, transport
 
@@ -1168,17 +1213,24 @@ class Client(ClientWithProject):
 
         if num_retries is not None:
             upload._retry_strategy = resumable_media.RetryStrategy(
-                max_retries=num_retries)
+                max_retries=num_retries
+            )
 
-        response = upload.transmit(
-            self._http, data, metadata, _GENERIC_CONTENT_TYPE)
+        response = upload.transmit(self._http, data, metadata, _GENERIC_CONTENT_TYPE)
 
         return response
 
     def copy_table(
-            self, sources, destination, job_id=None, job_id_prefix=None,
-            location=None, project=None, job_config=None,
-            retry=DEFAULT_RETRY):
+        self,
+        sources,
+        destination,
+        job_id=None,
+        job_id_prefix=None,
+        location=None,
+        project=None,
+        job_config=None,
+        retry=DEFAULT_RETRY,
+    ):
         """Copy one or more tables to another table.
 
         See
@@ -1229,27 +1281,34 @@ class Client(ClientWithProject):
         job_ref = job._JobReference(job_id, project=project, location=location)
 
         if isinstance(sources, str):
-            sources = TableReference.from_string(
-                sources, default_project=self.project)
+            sources = TableReference.from_string(sources, default_project=self.project)
 
         if isinstance(destination, str):
             destination = TableReference.from_string(
-                destination, default_project=self.project)
+                destination, default_project=self.project
+            )
 
         if not isinstance(sources, collections_abc.Sequence):
             sources = [sources]
 
         copy_job = job.CopyJob(
-            job_ref, sources, destination, client=self,
-            job_config=job_config)
+            job_ref, sources, destination, client=self, job_config=job_config
+        )
         copy_job._begin(retry=retry)
 
         return copy_job
 
     def extract_table(
-            self, source, destination_uris, job_id=None, job_id_prefix=None,
-            location=None, project=None, job_config=None,
-            retry=DEFAULT_RETRY):
+        self,
+        source,
+        destination_uris,
+        job_id=None,
+        job_id_prefix=None,
+        location=None,
+        project=None,
+        job_config=None,
+        retry=DEFAULT_RETRY,
+    ):
         """Start a job to extract a table into Cloud Storage files.
 
         See
@@ -1300,24 +1359,28 @@ class Client(ClientWithProject):
         job_ref = job._JobReference(job_id, project=project, location=location)
 
         if isinstance(source, str):
-            source = TableReference.from_string(
-                source, default_project=self.project)
+            source = TableReference.from_string(source, default_project=self.project)
 
         if isinstance(destination_uris, six.string_types):
             destination_uris = [destination_uris]
 
         extract_job = job.ExtractJob(
-            job_ref, source, destination_uris, client=self,
-            job_config=job_config)
+            job_ref, source, destination_uris, client=self, job_config=job_config
+        )
         extract_job._begin(retry=retry)
 
         return extract_job
 
     def query(
-            self, query,
-            job_config=None,
-            job_id=None, job_id_prefix=None,
-            location=None, project=None, retry=DEFAULT_RETRY):
+        self,
+        query,
+        job_config=None,
+        job_id=None,
+        job_id_prefix=None,
+        location=None,
+        project=None,
+        retry=DEFAULT_RETRY,
+    ):
         """Run a SQL query.
 
         See
@@ -1366,13 +1429,13 @@ class Client(ClientWithProject):
                 # should be filled in with the default
                 # the incoming therefore has precedence
                 job_config = job_config._fill_from_default(
-                    self._default_query_job_config)
+                    self._default_query_job_config
+                )
             else:
                 job_config = self._default_query_job_config
 
         job_ref = job._JobReference(job_id, project=project, location=location)
-        query_job = job.QueryJob(
-            job_ref, query, client=self, job_config=job_config)
+        query_job = job.QueryJob(job_ref, query, client=self, job_config=job_config)
         query_job._begin(retry=retry)
 
         return query_job
@@ -1419,19 +1482,18 @@ class Client(ClientWithProject):
             ValueError: if table's schema is not set
         """
         if isinstance(table, str):
-            table = TableReference.from_string(
-                table, default_project=self.project)
+            table = TableReference.from_string(table, default_project=self.project)
 
         if selected_fields is not None:
             schema = selected_fields
         elif isinstance(table, TableReference):
-            raise ValueError('need selected_fields with TableReference')
+            raise ValueError("need selected_fields with TableReference")
         elif isinstance(table, Table):
             if len(table.schema) == 0:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:
-            raise TypeError('table should be Table or TableReference')
+            raise TypeError("table should be Table or TableReference")
 
         json_rows = []
 
@@ -1450,9 +1512,16 @@ class Client(ClientWithProject):
 
         return self.insert_rows_json(table, json_rows, **kwargs)
 
-    def insert_rows_json(self, table, json_rows, row_ids=None,
-                         skip_invalid_rows=None, ignore_unknown_values=None,
-                         template_suffix=None, retry=DEFAULT_RETRY):
+    def insert_rows_json(
+        self,
+        table,
+        json_rows,
+        row_ids=None,
+        skip_invalid_rows=None,
+        ignore_unknown_values=None,
+        template_suffix=None,
+        retry=DEFAULT_RETRY,
+    ):
         """Insert rows into a table without applying local type conversions.
 
         See
@@ -1493,40 +1562,36 @@ class Client(ClientWithProject):
                 the mappings describing one or more problems with the row.
         """
         if isinstance(table, str):
-            table = TableReference.from_string(
-                table, default_project=self.project)
+            table = TableReference.from_string(table, default_project=self.project)
 
         rows_info = []
-        data = {'rows': rows_info}
+        data = {"rows": rows_info}
 
         for index, row in enumerate(json_rows):
-            info = {'json': row}
+            info = {"json": row}
             if row_ids is not None:
-                info['insertId'] = row_ids[index]
+                info["insertId"] = row_ids[index]
             else:
-                info['insertId'] = str(uuid.uuid4())
+                info["insertId"] = str(uuid.uuid4())
             rows_info.append(info)
 
         if skip_invalid_rows is not None:
-            data['skipInvalidRows'] = skip_invalid_rows
+            data["skipInvalidRows"] = skip_invalid_rows
 
         if ignore_unknown_values is not None:
-            data['ignoreUnknownValues'] = ignore_unknown_values
+            data["ignoreUnknownValues"] = ignore_unknown_values
 
         if template_suffix is not None:
-            data['templateSuffix'] = template_suffix
+            data["templateSuffix"] = template_suffix
 
         # We can always retry, because every row has an insert ID.
         response = self._call_api(
-            retry,
-            method='POST',
-            path='%s/insertAll' % table.path,
-            data=data)
+            retry, method="POST", path="%s/insertAll" % table.path, data=data
+        )
         errors = []
 
-        for error in response.get('insertErrors', ()):
-            errors.append({'index': int(error['index']),
-                           'errors': error['errors']})
+        for error in response.get("insertErrors", ()):
+            errors.append({"index": int(error["index"]), "errors": error["errors"]})
 
         return errors
 
@@ -1548,23 +1613,31 @@ class Client(ClientWithProject):
                 A list of the partition ids present in the partitioned table
         """
         if isinstance(table, str):
-            table = TableReference.from_string(
-                table, default_project=self.project)
+            table = TableReference.from_string(table, default_project=self.project)
 
         meta_table = self.get_table(
             TableReference(
                 self.dataset(table.dataset_id, project=table.project),
-                '%s$__PARTITIONS_SUMMARY__' % table.table_id))
+                "%s$__PARTITIONS_SUMMARY__" % table.table_id,
+            )
+        )
 
-        subset = [col for col in
-                  meta_table.schema if col.name == 'partition_id']
-        return [row[0] for row in self.list_rows(meta_table,
-                selected_fields=subset,
-                retry=retry)]
+        subset = [col for col in meta_table.schema if col.name == "partition_id"]
+        return [
+            row[0]
+            for row in self.list_rows(meta_table, selected_fields=subset, retry=retry)
+        ]
 
-    def list_rows(self, table, selected_fields=None, max_results=None,
-                  page_token=None, start_index=None, page_size=None,
-                  retry=DEFAULT_RETRY):
+    def list_rows(
+        self,
+        table,
+        selected_fields=None,
+        max_results=None,
+        page_token=None,
+        start_index=None,
+        page_size=None,
+        retry=DEFAULT_RETRY,
+    ):
         """List the rows of the table.
 
         See
@@ -1616,36 +1689,35 @@ class Client(ClientWithProject):
                 current page: ``iterator.page.num_items``).
         """
         if isinstance(table, str):
-            table = TableReference.from_string(
-                table, default_project=self.project)
+            table = TableReference.from_string(table, default_project=self.project)
 
         if selected_fields is not None:
             schema = selected_fields
         elif isinstance(table, TableReference):
-            raise ValueError('need selected_fields with TableReference')
+            raise ValueError("need selected_fields with TableReference")
         elif isinstance(table, Table):
             if len(table.schema) == 0 and table.created is None:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:
-            raise TypeError('table should be Table or TableReference')
+            raise TypeError("table should be Table or TableReference")
 
         params = {}
         if selected_fields is not None:
-            params['selectedFields'] = ','.join(
-                field.name for field in selected_fields)
+            params["selectedFields"] = ",".join(field.name for field in selected_fields)
         if start_index is not None:
-            params['startIndex'] = start_index
+            params["startIndex"] = start_index
 
         row_iterator = RowIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
-            path='%s/data' % (table.path,),
+            path="%s/data" % (table.path,),
             schema=schema,
             page_token=page_token,
             max_results=max_results,
             page_size=page_size,
-            extra_params=params)
+            extra_params=params,
+        )
         return row_iterator
 
 
@@ -1663,6 +1735,8 @@ def _item_to_project(iterator, resource):
     :returns: The next project in the page.
     """
     return Project.from_api_repr(resource)
+
+
 # pylint: enable=unused-argument
 
 
@@ -1740,18 +1814,20 @@ def _check_mode(stream):
     :raises: :exc:`ValueError` if the ``stream.mode`` is a valid attribute
              and is not among ``rb``, ``r+b`` or ``rb+``.
     """
-    mode = getattr(stream, 'mode', None)
+    mode = getattr(stream, "mode", None)
 
     if isinstance(stream, gzip.GzipFile):
         if mode != gzip.READ:
             raise ValueError(
                 "Cannot upload gzip files opened in write mode:  use "
-                "gzip.GzipFile(filename, mode='rb')")
+                "gzip.GzipFile(filename, mode='rb')"
+            )
     else:
-        if mode is not None and mode not in ('rb', 'r+b', 'rb+'):
+        if mode is not None and mode not in ("rb", "r+b", "rb+"):
             raise ValueError(
                 "Cannot upload files opened in text mode:  use "
-                "open(filename, mode='rb') or open(filename, mode='r+b')")
+                "open(filename, mode='rb') or open(filename, mode='r+b')"
+            )
 
 
 def _get_upload_headers(user_agent):
@@ -1764,8 +1840,8 @@ def _get_upload_headers(user_agent):
     :returns: The headers to be used for the request.
     """
     return {
-        'Accept': 'application/json',
-        'Accept-Encoding': 'gzip, deflate',
-        'User-Agent': user_agent,
-        'content-type': 'application/json',
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "User-Agent": user_agent,
+        "content-type": "application/json",
     }

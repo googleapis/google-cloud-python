@@ -80,6 +80,7 @@ class ConstantTimeout(object):
             wrapped function. If `None`, the target function is expected to
             never timeout.
     """
+
     def __init__(self, timeout=None):
         self._timeout = timeout
 
@@ -93,15 +94,17 @@ class ConstantTimeout(object):
         Returns:
             Callable: The wrapped function.
         """
+
         @general_helpers.wraps(func)
         def func_with_timeout(*args, **kwargs):
             """Wrapped function that adds timeout."""
-            kwargs['timeout'] = self._timeout
+            kwargs["timeout"] = self._timeout
             return func(*args, **kwargs)
+
         return func_with_timeout
 
     def __str__(self):
-        return '<ConstantTimeout timeout={:.1f}>'.format(self._timeout)
+        return "<ConstantTimeout timeout={:.1f}>".format(self._timeout)
 
 
 def _exponential_timeout_generator(initial, maximum, multiplier, deadline):
@@ -117,9 +120,9 @@ def _exponential_timeout_generator(initial, maximum, multiplier, deadline):
         float: A timeout value.
     """
     if deadline is not None:
-        deadline_datetime = (
-            datetime_helpers.utcnow() +
-            datetime.timedelta(seconds=deadline))
+        deadline_datetime = datetime_helpers.utcnow() + datetime.timedelta(
+            seconds=deadline
+        )
     else:
         deadline_datetime = datetime.datetime.max
 
@@ -132,7 +135,8 @@ def _exponential_timeout_generator(initial, maximum, multiplier, deadline):
             # The set maximum timeout.
             maximum,
             # The remaining time before the deadline is reached.
-            float((deadline_datetime - now).seconds))
+            float((deadline_datetime - now).seconds),
+        )
         timeout = timeout * multiplier
 
 
@@ -160,12 +164,14 @@ class ExponentialTimeout(object):
             :mod:`google.api_core.retry`. If ``None``, the timeouts will not
             be adjusted to accomodate an overall deadline.
     """
+
     def __init__(
-            self,
-            initial=_DEFAULT_INITIAL_TIMEOUT,
-            maximum=_DEFAULT_MAXIMUM_TIMEOUT,
-            multiplier=_DEFAULT_TIMEOUT_MULTIPLIER,
-            deadline=_DEFAULT_DEADLINE):
+        self,
+        initial=_DEFAULT_INITIAL_TIMEOUT,
+        maximum=_DEFAULT_MAXIMUM_TIMEOUT,
+        multiplier=_DEFAULT_TIMEOUT_MULTIPLIER,
+        deadline=_DEFAULT_DEADLINE,
+    ):
         self._initial = initial
         self._maximum = maximum
         self._multiplier = multiplier
@@ -184,7 +190,8 @@ class ExponentialTimeout(object):
             initial=self._initial,
             maximum=self._maximum,
             multiplier=self._multiplier,
-            deadline=deadline)
+            deadline=deadline,
+        )
 
     def __call__(self, func):
         """Apply the timeout decorator.
@@ -197,19 +204,21 @@ class ExponentialTimeout(object):
             Callable: The wrapped function.
         """
         timeouts = _exponential_timeout_generator(
-            self._initial, self._maximum, self._multiplier, self._deadline)
+            self._initial, self._maximum, self._multiplier, self._deadline
+        )
 
         @general_helpers.wraps(func)
         def func_with_timeout(*args, **kwargs):
             """Wrapped function that adds timeout."""
-            kwargs['timeout'] = next(timeouts)
+            kwargs["timeout"] = next(timeouts)
             return func(*args, **kwargs)
 
         return func_with_timeout
 
     def __str__(self):
         return (
-            '<ExponentialTimeout initial={:.1f}, maximum={:.1f}, '
-            'multiplier={:.1f}, deadline={:.1f}>'.format(
-                self._initial, self._maximum, self._multiplier,
-                self._deadline))
+            "<ExponentialTimeout initial={:.1f}, maximum={:.1f}, "
+            "multiplier={:.1f}, deadline={:.1f}>".format(
+                self._initial, self._maximum, self._multiplier, self._deadline
+            )
+        )
