@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.database &#8212; google-cloud d363d23 documentation</title>
+    <title>google.cloud.spanner_v1.database &#8212; google-cloud f9a725c documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -289,7 +289,7 @@
         <span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_database_ddl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ddl_statements</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">statements</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Database.update_ddl"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.update_ddl">[docs]</a>    <span class="k">def</span> <span class="nf">update_ddl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.update_ddl"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.update_ddl">[docs]</a>    <span class="k">def</span> <span class="nf">update_ddl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="p">,</span> <span class="n">operation_id</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update DDL for this database.</span>
 
 <span class="sd">        Apply any configured schema from :attr:`ddl_statements`.</span>
@@ -299,6 +299,8 @@
 
 <span class="sd">        :type ddl_statements: Sequence[str]</span>
 <span class="sd">        :param ddl_statements: a list of DDL statements to use on this database</span>
+<span class="sd">        :type operation_id: str</span>
+<span class="sd">        :param operation_id: (optional) a string ID for the long-running operation</span>
 
 <span class="sd">        :rtype: :class:`google.api_core.operation.Operation`</span>
 <span class="sd">        :returns: an operation instance</span>
@@ -309,7 +311,7 @@
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">future</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">update_database_ddl</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="p">,</span> <span class="n">operation_id</span><span class="o">=</span><span class="n">operation_id</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">future</span></div>
 
