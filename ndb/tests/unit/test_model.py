@@ -2833,7 +2833,6 @@ class TestModel:
 
 
 class Test_entity_from_protobuf:
-
     @staticmethod
     def test_standard_case():
         class ThisKind(model.Model):
@@ -2872,7 +2871,6 @@ class Test_entity_from_protobuf:
         assert entity.e == [gherkin, dill]
         assert entity._key == key_module.Key("ThisKind", 123, app="testing")
         assert entity.notaproperty is True
-
 
     @staticmethod
     def test_property_named_key():
