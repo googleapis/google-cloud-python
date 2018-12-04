@@ -279,7 +279,7 @@ class TableReference(object):
             "tableId": self._table_id,
         }
 
-    def to_bqstorage(self, selected_fields=None):
+    def to_bqstorage(self):
         """Construct a BigQuery Storage API representation of this table.
 
         If the ``table_id`` contains a partition identifier (e.g.
@@ -852,21 +852,11 @@ class Table(object):
         """
         return copy.deepcopy(self._properties)
 
-    def to_bqstorage(self, selected_fields=None):
+    def to_bqstorage(self):
         """Construct a BigQuery Storage API representation of this table.
 
-        Args:
-            selected_fields (Sequence[ \
-                google.cloud.bigquery.schema.SchemaField, \
-            ]):
-                Optional. A subset of columns to select from this table.
-
         Returns:
-            Tuple[ \
-                google.cloud.bigquery_storage_v1beta1.types.TableReference, \
-                google.cloud.bigquery_storage_v1beta1.types.TableModifiers, \
-                google.cloud.bigquery_storage_v1beta1.types.TableReadOptions, \
-            ]:
+            google.cloud.bigquery_storage_v1beta1.types.TableReference:
                 A reference to this table in the BigQuery Storage API.
         """
         return self.reference.to_bqstorage(selected_fields=selected_fields)
@@ -1048,21 +1038,11 @@ class TableListItem(object):
             {"tableReference": TableReference.from_string(full_table_id).to_api_repr()}
         )
 
-    def to_bqstorage(self, selected_fields=None):
+    def to_bqstorage(self):
         """Construct a BigQuery Storage API representation of this table.
 
-        Args:
-            selected_fields (Sequence[ \
-                google.cloud.bigquery.schema.SchemaField, \
-            ]):
-                Optional. A subset of columns to select from this table.
-
         Returns:
-            Tuple[ \
-                google.cloud.bigquery_storage_v1beta1.types.TableReference, \
-                google.cloud.bigquery_storage_v1beta1.types.TableModifiers, \
-                google.cloud.bigquery_storage_v1beta1.types.TableReadOptions, \
-            ]:
+            google.cloud.bigquery_storage_v1beta1.types.TableReference:
                 A reference to this table in the BigQuery Storage API.
         """
         return self.reference.to_bqstorage(selected_fields=selected_fields)
