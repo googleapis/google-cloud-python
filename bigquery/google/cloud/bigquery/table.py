@@ -282,18 +282,16 @@ class TableReference(object):
     def to_bqstorage(self, selected_fields=None):
         """Construct a BigQuery Storage API representation of this table.
 
-        Args:
-            selected_fields (Sequence[ \
-                google.cloud.bigquery.schema.SchemaField, \
-            ]):
-                Optional. A subset of columns to select from this table.
+        If the ``table_id`` contains a partition identifier (e.g.
+        ``my_table$201812``) or a snapshot identifier (e.g.
+        ``mytable@1234567890``), it is ignored. Use
+        :class:`google.cloud.bigquery_storage_v1beta1.types.TableReadOptions`
+        to filter rows by partition. Use
+        :class:`google.cloud.bigquery_storage_v1beta1.types.TableModifiers`
+        to select a specific snapshot to read from.
 
         Returns:
-            Tuple[ \
-                google.cloud.bigquery_storage_v1beta1.types.TableReference, \
-                google.cloud.bigquery_storage_v1beta1.types.TableModifiers, \
-                google.cloud.bigquery_storage_v1beta1.types.TableReadOptions, \
-            ]:
+            google.cloud.bigquery_storage_v1beta1.types.TableReference:
                 A reference to this table in the BigQuery Storage API.
         """
         from google.cloud import bigquery_storage_v1beta1
@@ -301,30 +299,17 @@ class TableReference(object):
         table_ref = bigquery_storage_v1beta1.types.TableReference()
         table_ref.project_id = self._project
         table_ref.dataset_id = self._dataset_id
-
-        modifiers = bigquery_storage_v1beta1.types.TableModifiers()
-        read_options = bigquery_storage_v1beta1.types.TableReadOptions()
         table_id = self._table_id
-        partition = None
 
         if "@" in table_id:
-            table_id, snapshot_time = table_id.split("@")
-            snapshot_time = int(snapshot_time)
-            modifiers.snapshot_time.FromMilliseconds(snapshot_time)
+            table_id = table_id.split("@")[0]
 
         if "$" in table_id:
-            table_id, partition = table_id.split("$")
-            read_options.row_restriction = "_PARTITIONTIME = TIMESTAMP('{}-{}-{}')".format(
-                partition[:4], partition[4:6], partition[6:]
-            )
+            table_id = table_id.split("$")[0]
 
         table_ref.table_id = table_id
 
-        if selected_fields is not None:
-            for field in selected_fields:
-                read_options.selected_fields.append(field.name)
-
-        return (table_ref, modifiers, read_options)
+        return table_ref
 
     def _key(self):
         """A tuple key that uniquely describes this field.
