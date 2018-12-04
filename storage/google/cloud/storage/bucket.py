@@ -623,12 +623,18 @@ class Bucket(_PropertyMixin):
         If :attr:`user_project` is set, bills the API request to that project.
 
         :type max_results: int
-        :param max_results: (Optional) Maximum number of blobs to return.
+        :param max_results:
+            (Optional) The maximum number of blobs in each page of results
+            from this request. Non-positive values are ignored. Defaults to
+            a sensible value set by the API.
 
         :type page_token: str
-        :param page_token: (Optional) Opaque marker for the next "page" of
-                           blobs. If not passed, will return the first page
-                           of blobs.
+        :param page_token:
+            (Optional) If present, return the next batch of blobs, using the
+            value, which must correspond to the ``nextPageToken`` value
+            returned in the previous response.  Deprecated: use the ``pages``
+            property of the returned iterator instead of manually passing the
+            token.
 
         :type prefix: str
         :param prefix: (Optional) prefix used to filter blobs.
