@@ -1240,7 +1240,9 @@ class RowIterator(HTTPIterator):
         page_token (str): A token identifying a page in a result set to start
             fetching results from.
         max_results (int, optional): The maximum number of results to fetch.
-        page_size (int, optional): The number of items to return per page.
+        page_size (int, optional): The maximum number of rows in each page
+            of results from this request. Non-positive values are ignored.
+            Defaults to a sensible value set by the API.
         extra_params (Dict[str, object]):
             Extra query string parameters for the API call.
         table (Union[ \
