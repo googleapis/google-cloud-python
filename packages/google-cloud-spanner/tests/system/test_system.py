@@ -21,6 +21,7 @@ import struct
 import threading
 import time
 import unittest
+import uuid
 
 import pytest
 
@@ -323,7 +324,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
             "5629"
         )
     )
-    def test_update_database_ddl(self):
+    def test_update_database_ddl_with_operation_id(self):
         pool = BurstyPool(labels={"testcase": "update_database_ddl"})
         temp_db_id = "temp_db" + unique_resource_id("_")
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
@@ -331,12 +332,15 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         self.to_delete.append(temp_db)
 
         # We want to make sure the operation completes.
-        create_op.result(120)  # raises on failure / timeout.
+        create_op.result(240)  # raises on failure / timeout.
+        # random but shortish always start with letter
+        operation_id = 'a' + str(uuid.uuid4())[:8]
+        operation = temp_db.update_ddl(DDL_STATEMENTS, operation_id=operation_id)
 
-        operation = temp_db.update_ddl(DDL_STATEMENTS)
+        self.assertEqual(operation_id, operation.operation.name.split('/')[-1])
 
         # We want to make sure the operation completes.
-        operation.result(120)  # raises on failure / timeout.
+        operation.result(240)  # raises on failure / timeout.
 
         temp_db.reload()
 
