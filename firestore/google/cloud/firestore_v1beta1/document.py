@@ -458,7 +458,9 @@ class DocumentReference(object):
         """List subcollections of the current document.
 
         Args:
-            page_size (Optional[int]]): Iterator page size.
+            page_size (Optional[int]]): The maximum number of collections
+            in each page of results from this request. Non-positive values
+            are ignored. Defaults to a sensible value set by the API.
 
         Returns:
             Sequence[~.firestore_v1beta1.collection.CollectionReference]:
