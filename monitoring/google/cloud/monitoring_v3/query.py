@@ -426,9 +426,9 @@ class Query(object):
 
         :type page_size: int
         :param page_size:
-            (Optional) Positive number specifying the maximum number of points
-            to return per page. This can be used to control how far the
-            iterator reads ahead.
+            (Optional) The maximum number of points in each page of results
+            from this request. Non-positive values are ignored. Defaults
+            to a sensible value set by the API.
 
         :raises: :exc:`ValueError` if the query time interval has not been
             specified.
@@ -450,7 +450,9 @@ class Query(object):
 
         :type page_size: int
         :param page_size:
-            (Optional) A limit on the number of points to return per page.
+            (Optional) The maximum number of points in each page of results
+            from this request. Non-positive values are ignored. Defaults
+            to a sensible value set by the API.
         """
         params = {"name": self._project_path, "filter_": self.filter}
 
