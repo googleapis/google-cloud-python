@@ -146,9 +146,10 @@ class Client(BaseClient):
                               details.
 
         :type page_size: int
-        :param page_size: (Optional) Maximum number of projects to return in a
-                          single page. If not passed, defaults to a value set
-                          by the API.
+        :param page_size: (Optional) The maximum number of projects in each
+                          page of results from this request. Non-positive
+                          values are ignored. Defaults to a sensible value
+                          set by the API.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of all
