@@ -130,11 +130,11 @@ Datastore API, rather than the legacy App Engine Datastore. In general, for
 users coding to the public interface, this won't be an issue, but users relying
 on pieces of the ostensibly private API that are exposed to the bare metal of
 the original datastore implementation will have to rewrite those pieces.
-Specifically, any function or method that dealt directly with protocol buffers will
-no longer work. Datastore, itself, has moved to gRPC and protobuffers
-themselves are significantly different from legacy Datastore.  Additionally,
-this version of NDB makes less direct use of protobuffers and relies more
-heavily on Datastore for parsing and generating protobuffers, which is a
+Specifically, any function or method that dealt directly with protocol buffers
+will no longer work. The Datastore `.protobuf` definitions have changed
+significantly from the barely public API used by App Engine to the current
+published API.  Additionally, this version of NDB mostly delegates to
+`google.cloud.datastore` for parsing data returned by RPCs, which is a
 significant internal refactoring.
 
 - `ModelAdapter` is no longer used. In legacy NDB, this was passed to Datastore
@@ -142,10 +142,11 @@ significant internal refactoring.
   Datastore RPC calls. AFAIK, Datastore no longer accepts an adapter for
   adpating entities. At any rate, we no longer do it that way.
 - `Property._db_get_value` is no longer used. It worked directly with Datastore
-  protobuffers, work which is now delegated to Datastore.
-- `Model._deserialize` is no longer used. It worked directly with protobuffers,
-  so wasn't really salvageable. Unfortunately, there were comments indicating
-  it was overridden by subclasses. Hopefully this isn't broadly the case.
+  protocol buffers, work which is now delegated to Datastore.
+- `Model._deserialize` is no longer used. It worked directly with protocol
+  buffers, so wasn't really salvageable. Unfortunately, there were comments
+  indicating it was overridden by subclasses. Hopefully this isn't broadly the
+  case.
 
 ## Comments
 
