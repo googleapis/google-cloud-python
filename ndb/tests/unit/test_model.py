@@ -2832,58 +2832,62 @@ class TestModel:
             model.Model._lookup_model("NoKind")
 
 
-def test__entity_from_protobuf():
-    class ThisKind(model.Model):
-        a = model.IntegerProperty()
-        b = model.BooleanProperty()
-        c = model.PickleProperty()
-        d = model.StringProperty(repeated=True)
-        e = model.PickleProperty(repeated=True)
-        notaproperty = True
+class Test_entity_from_protobuf:
 
-    dill = {"sandwiches": ["turkey", "reuben"], "not_sandwiches": "tacos"}
-    gherkin = [{"a": {"b": "c"}, "d": 0}, [1, 2, 3], "himom"]
-    key = datastore.Key("ThisKind", 123, project="testing")
-    datastore_entity = datastore.Entity(key=key)
-    datastore_entity.update(
-        {
-            "a": 42,
-            "b": None,
-            "c": pickle.dumps(gherkin, pickle.HIGHEST_PROTOCOL),
-            "d": ["foo", "bar", "baz"],
-            "e": [
-                pickle.dumps(gherkin, pickle.HIGHEST_PROTOCOL),
-                pickle.dumps(dill, pickle.HIGHEST_PROTOCOL),
-            ],
-            "notused": 32,
-            "notaproperty": None,
-        }
-    )
-    protobuf = helpers.entity_to_protobuf(datastore_entity)
-    entity = model._entity_from_protobuf(protobuf)
-    assert isinstance(entity, ThisKind)
-    assert entity.a == 42
-    assert entity.b is None
-    assert entity.c == gherkin
-    assert entity.d == ["foo", "bar", "baz"]
-    assert entity.e == [gherkin, dill]
-    assert entity._key == key_module.Key("ThisKind", 123, app="testing")
-    assert entity.notaproperty is True
+    @staticmethod
+    def test_standard_case():
+        class ThisKind(model.Model):
+            a = model.IntegerProperty()
+            b = model.BooleanProperty()
+            c = model.PickleProperty()
+            d = model.StringProperty(repeated=True)
+            e = model.PickleProperty(repeated=True)
+            notaproperty = True
+
+        dill = {"sandwiches": ["turkey", "reuben"], "not_sandwiches": "tacos"}
+        gherkin = [{"a": {"b": "c"}, "d": 0}, [1, 2, 3], "himom"]
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.update(
+            {
+                "a": 42,
+                "b": None,
+                "c": pickle.dumps(gherkin, pickle.HIGHEST_PROTOCOL),
+                "d": ["foo", "bar", "baz"],
+                "e": [
+                    pickle.dumps(gherkin, pickle.HIGHEST_PROTOCOL),
+                    pickle.dumps(dill, pickle.HIGHEST_PROTOCOL),
+                ],
+                "notused": 32,
+                "notaproperty": None,
+            }
+        )
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        assert isinstance(entity, ThisKind)
+        assert entity.a == 42
+        assert entity.b is None
+        assert entity.c == gherkin
+        assert entity.d == ["foo", "bar", "baz"]
+        assert entity.e == [gherkin, dill]
+        assert entity._key == key_module.Key("ThisKind", 123, app="testing")
+        assert entity.notaproperty is True
 
 
-def test__entity_from_protobuf_w_property_named_key():
-    class ThisKind(model.Model):
-        key = model.StringProperty()
+    @staticmethod
+    def test_property_named_key():
+        class ThisKind(model.Model):
+            key = model.StringProperty()
 
-    key = datastore.Key("ThisKind", 123, project="testing")
-    datastore_entity = datastore.Entity(key=key)
-    datastore_entity.update({"key": "luck"})
-    protobuf = helpers.entity_to_protobuf(datastore_entity)
-    entity = model._entity_from_protobuf(protobuf)
-    assert isinstance(entity, ThisKind)
-    assert entity.key == "luck"
-    assert entity._key.kind() == "ThisKind"
-    assert entity._key.id() == 123
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.update({"key": "luck"})
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        assert isinstance(entity, ThisKind)
+        assert entity.key == "luck"
+        assert entity._key.kind() == "ThisKind"
+        assert entity._key.id() == 123
 
 
 class TestExpando:
