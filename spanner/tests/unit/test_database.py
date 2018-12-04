@@ -588,6 +588,28 @@ class TestDatabase(_BaseTest):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+    def test_update_ddl_w_operation_id(self):
+        from tests._fixtures import DDL_STATEMENTS
+
+        op_future = object()
+        client = _Client()
+        api = client.database_admin_api = self._make_database_admin_api()
+        api.update_database_ddl.return_value = op_future
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        future = database.update_ddl(DDL_STATEMENTS, operation_id='someOperationId')
+
+        self.assertIs(future, op_future)
+
+        api.update_database_ddl.assert_called_once_with(
+            self.DATABASE_NAME,
+            DDL_STATEMENTS,
+            "someOperationId",
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
     def test_drop_grpc_error(self):
         from google.api_core.exceptions import Unknown
 
