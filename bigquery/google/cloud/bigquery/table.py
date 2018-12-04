@@ -859,7 +859,7 @@ class Table(object):
             google.cloud.bigquery_storage_v1beta1.types.TableReference:
                 A reference to this table in the BigQuery Storage API.
         """
-        return self.reference.to_bqstorage(selected_fields=selected_fields)
+        return self.reference.to_bqstorage()
 
     def _build_resource(self, filter_fields):
         """Generate a resource for ``update``."""
@@ -1045,7 +1045,7 @@ class TableListItem(object):
             google.cloud.bigquery_storage_v1beta1.types.TableReference:
                 A reference to this table in the BigQuery Storage API.
         """
-        return self.reference.to_bqstorage(selected_fields=selected_fields)
+        return self.reference.to_bqstorage()
 
 
 def _row_from_mapping(mapping, schema):
