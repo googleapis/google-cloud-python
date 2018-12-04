@@ -343,7 +343,7 @@ def parse_query(testcase):
         elif kind == "end_before":
             cursor = parse_cursor(clause.end_before, client)
             query = query.end_before(cursor)
-        else:
+        else:  # pragma: NO COVER
             raise ValueError("Unknown query clause: {}".format(kind))
 
     return query
