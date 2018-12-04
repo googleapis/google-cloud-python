@@ -9,7 +9,7 @@
 12-03-2018 15:54 PST
 
 ### Breaking Changes
-- Remove iam module from core. ([#6775](https://github.com/googleapis/google-cloud-python/pull/6775))
+- Remove iam module from core. This module is now available as part of google-api-core. ([#6775](https://github.com/googleapis/google-cloud-python/pull/6775))
 
 ### Implementation Changes
 - Fix '_time_from_iso8601_time_naive' for values with micros. ([#5756](https://github.com/googleapis/google-cloud-python/pull/5756))
