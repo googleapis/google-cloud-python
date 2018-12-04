@@ -36,3 +36,19 @@ def property_clean_cache():
     finally:
         assert model.Property._FIND_METHODS_CACHE != {}
         model.Property._FIND_METHODS_CACHE.clear()
+
+
+@pytest.fixture
+def reset_kind_map():
+    """Reset ``Model._kind_map``.
+
+    This mapping of "kind" to class is set whenever a new subclass of ``Model``
+    is created. We create ``Model`` subclasses in tests and don't want those
+    definitions to leak to other tests, so this fixture resets the mapping to
+    its value before the text. (Since some classes might be declared at module
+    scope, we can't just clear the mapping altogether.)
+    """
+    previous = model.Model._kind_map
+    model.Model._kind_map = previous.copy()
+    yield
+    model.Model._kind_map = previous

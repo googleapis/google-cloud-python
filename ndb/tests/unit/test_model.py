@@ -2626,6 +2626,7 @@ class TestModel:
         assert entity.__dict__ == {"_values": {"key": 1001}}
 
     @staticmethod
+    @pytest.mark.usefixtures("reset_kind_map")
     def test_constructor_with_projection():
         class Book(model.Model):
             pages = model.IntegerProperty()
@@ -2654,12 +2655,14 @@ class TestModel:
             TimeTravelVehicle(speed=28)
 
     @staticmethod
+    @pytest.mark.usefixtures("reset_kind_map")
     def test_repr():
         entity = ManyFields(self=909, id="hi", key=[88.5, 0.0], value=None)
         expected = "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None)"
         assert repr(entity) == expected
 
     @staticmethod
+    @pytest.mark.usefixtures("reset_kind_map")
     def test_repr_with_projection():
         entity = ManyFields(
             self=909,
@@ -2675,6 +2678,7 @@ class TestModel:
         assert repr(entity) == expected
 
     @staticmethod
+    @pytest.mark.usefixtures("reset_kind_map")
     def test_repr_with_property_named_key():
         entity = ManyFields(
             self=909, id="hi", key=[88.5, 0.0], value=None, _id=78
@@ -2686,6 +2690,7 @@ class TestModel:
         assert repr(entity) == expected
 
     @staticmethod
+    @pytest.mark.usefixtures("reset_kind_map")
     def test_repr_with_property_named_key_not_set():
         entity = ManyFields(self=909, id="hi", value=None, _id=78)
         expected = (
@@ -2806,22 +2811,22 @@ class TestModel:
         with pytest.raises(NotImplementedError):
             entity._put()
 
-    @pytest.mark.usefixtures("property_clean_cache")
     @staticmethod
+    @pytest.mark.usefixtures("reset_kind_map")
     def test__lookup_model():
         class ThisKind(model.Model):
             pass
 
         assert model.Model._lookup_model("ThisKind") is ThisKind
 
-    @pytest.mark.usefixtures("property_clean_cache")
     @staticmethod
+    @pytest.mark.usefixtures("reset_kind_map")
     def test__lookup_model_use_default():
         sentinel = object()
         assert model.Model._lookup_model("NoKind", sentinel) is sentinel
 
-    @pytest.mark.usefixtures("property_clean_cache")
     @staticmethod
+    @pytest.mark.usefixtures("reset_kind_map")
     def test__lookup_model_not_found():
         with pytest.raises(model.KindError):
             model.Model._lookup_model("NoKind")
