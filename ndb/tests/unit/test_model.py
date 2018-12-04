@@ -2867,8 +2867,7 @@ def test__entity_from_protobuf():
     assert entity.c == gherkin
     assert entity.d == ["foo", "bar", "baz"]
     assert entity.e == [gherkin, dill]
-    assert entity._key.kind() == "ThisKind"
-    assert entity._key.id() == 123
+    assert entity._key == key_module.Key("ThisKind", 123, app="testing")
     assert entity.notaproperty is True
 
 
