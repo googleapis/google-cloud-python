@@ -9,14 +9,14 @@
 12-03-2018 15:54 PST
 
 ### Breaking Changes
-- Remove iam module from core. ([#6775](https://github.com/googleapis/google-cloud-python/pull/6775))
+- Remove iam module from core. This module is now available as part of google-api-core. ([#6775](https://github.com/googleapis/google-cloud-python/pull/6775))
 
 ### Implementation Changes
-- Fix '_time_from_iso8601_time_naive' for values with micros. ([#5756](https://github.com/googleapis/google-cloud-python/pull/5756))
-- Import stdlib ABCs from 'collections.abc' rather than 'collections'. ([#6451](https://github.com/googleapis/google-cloud-python/pull/6451))
+- Fix `_time_from_iso8601_time_naive` for values with micros. ([#5756](https://github.com/googleapis/google-cloud-python/pull/5756))
+- Import stdlib ABCs from `collections.abc` rather than `collections`. ([#6451](https://github.com/googleapis/google-cloud-python/pull/6451))
 
 ### Dependencies
-- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+- Bump minimum `api_core` version to 1.0.0. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
 
 ### Internal / Testing Changes
 - Blacken api_core and core. ([#6668](https://github.com/googleapis/google-cloud-python/pull/6668))
