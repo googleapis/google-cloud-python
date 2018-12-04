@@ -2755,16 +2755,6 @@ class TestModel:
         assert not entity1 == entity2
 
     @staticmethod
-    def test__equivalent_wrong_type():
-        class Simple(model.Model):
-            pass
-
-        entity1 = ManyFields(self=909, id="hi", value=None, _id=78)
-        entity2 = Simple()
-        with pytest.raises(NotImplementedError):
-            entity1._equivalent(entity2)
-
-    @staticmethod
     def test___ne__():
         class Simple(model.Model):
             pass

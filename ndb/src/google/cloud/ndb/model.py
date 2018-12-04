@@ -3685,16 +3685,7 @@ class Model(metaclass=MetaModel):
         Returns:
             bool: Indicating if the current entity and ``other`` are
             equivalent.
-
-        Raises:
-            NotImplementedError: If the type's don't match.
         """
-        if type(other) is not type(self):
-            raise NotImplementedError(
-                "Cannot compare different model classes. {} is "
-                "not {}".format(type(self).__name__, type(other).__name__)
-            )
-
         if set(self._projection) != set(other._projection):
             return False
 
