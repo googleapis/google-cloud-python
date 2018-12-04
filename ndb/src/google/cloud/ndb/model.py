@@ -304,7 +304,7 @@ def _entity_from_protobuf(protobuf):
             continue
         if value is not None:
             if prop._repeated:
-                value = [_BaseValue(x) for x in value]
+                value = [_BaseValue(sub_value) for sub_value in value]
             else:
                 value = _BaseValue(value)
         prop._store_value(entity, value)
