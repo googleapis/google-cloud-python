@@ -82,9 +82,11 @@ class Client(ClientWithProject):
                             passed, defaults to a value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of zones. If
-                           not passed, the API will return the first page of
-                           zones.
+        :param page_token: Optional. If present, return the next batch of
+            zones, using the value, which must correspond to the
+            ``nextPageToken`` value returned in the previous response.
+            Deprecated: use the ``pages`` property of the returned iterator
+            instead of manually passing the token.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.dns.zone.ManagedZone`
