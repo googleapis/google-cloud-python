@@ -24,10 +24,14 @@ copyright = '2018, Google LLC'
 author = 'Luke Sneeringer'
 
 # The short X.Y version
-version = '0.0.4'
+version = os.environ.get('CIRCLE_TAG', 'latest')
 # The full version, including alpha/beta/rc tags
-release = '0.0.4'
+release = os.environ.get('CIRCLE_TAG', 'latest')
 
+# Replace |version| in the docs with the actual version string.
+rst_epilog = """
+.. |version| replace:: {version}
+""".format(version=version)
 
 # -- General configuration ---------------------------------------------------
 

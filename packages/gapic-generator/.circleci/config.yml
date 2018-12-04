@@ -14,7 +14,7 @@ workflows:
 jobs:
   unit-3.6:
     docker:
-      - image: 'python:3.6'
+      - image: python:3.6-slim
     steps:
       - checkout
       - run:
@@ -36,7 +36,7 @@ jobs:
           when: always
   unit-3.7:
     docker:
-      - image: 'python:3.7'
+      - image: python:3.7-slim
     steps:
       - checkout
       - run:
@@ -58,17 +58,17 @@ jobs:
           when: always
   showcase:
     docker:
-      - image: 'python:3.7'
+      - image: python:3.7-slim
     steps:
       - checkout
       - run:
-          name: Install nox.
-          command: pip install --pre nox-automation
-      - run:
-          name: Install pandoc and unzip.
+          name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y pandoc unzip
+            apt-get install -y curl pandoc unzip
+      - run:
+          name: Install nox.
+          command: pip install --pre nox-automation
       - run:
           name: Install protoc 3.6.1.
           command: |
@@ -94,7 +94,7 @@ jobs:
           command: nox -s showcase
   docs:
     docker:
-      - image: 'python:3.6'
+      - image: python:3.6-slim
     steps:
       - checkout
       - run:

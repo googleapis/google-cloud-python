@@ -1,10 +1,13 @@
+# Version control scaffolding
+.git
+.gitignore
+
+# Docker scaffolding
+Dockerfile
+.dockerignore
+
+# Python scaffolding
 *.py[cod]
-*.sw[op]
-
-# C extensions
-*.so
-
-# Packages
 *.egg
 *.egg-info
 dist

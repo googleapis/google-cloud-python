@@ -18,8 +18,7 @@ implemented as a plugin to ``protoc``, the protocol buffer compiler.
 .. toctree::
   :maxdepth: 2
 
-  installing
-  getting-started
+  getting-started/index
   api-configuration
   process
   templates

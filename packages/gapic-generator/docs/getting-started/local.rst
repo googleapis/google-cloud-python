@@ -1,3 +1,22 @@
+.. _getting-started/local:
+
+Local Installation
+==================
+
+If you are just getting started with code generation for protobuf-based APIs,
+or if you do not have a robust Python environment already available, it is
+probably easier to get started using Docker: :ref:`getting-started/docker`
+
+However, this tool offers first-class support for local execution using
+``protoc``. It is still reasonably easy, but initial setup will take a bit
+longer.
+
+.. note::
+
+    If you are interested in contributing, setup according to these steps
+    is recommended.
+
+
 Installing
 ----------
 
@@ -87,3 +106,51 @@ To ensure the tool is installed properly:
 
 .. _pyenv: https://github.com/pyenv/pyenv
 .. _pipsi: https://github.com/mitsuhiko/pipsi
+
+Usage
+-----
+
+.. include:: _usage_intro.rst
+
+Example
+~~~~~~~
+
+.. include:: _example.rst
+
+You will also need the common protos, currently in experimental status,
+which define certain client-specific annotations. These are in the
+`api-common-protos`_ repository. Clone this from GitHub also:
+
+.. code-block:: shell
+
+  $ git clone git@github.com:googleapis/api-common-protos.git
+  $ cd api-common-protos
+  $ git checkout --track -b input-contract origin/input-contract
+  $ cd ..
+
+.. _api-common-protos: https://github.com/googleapis/api-common-protos/tree/input-contract
+
+
+Compiling an API
+~~~~~~~~~~~~~~~~
+
+Compile the API into a client library by invoking ``protoc`` directly.
+This plugin is invoked under the hood via. the ``--python_gapic_out`` switch.
+
+.. code-block:: shell
+
+  # This is assumed to be in the `googleapis` project root, and we also
+  # assume that api-common-protos is next to it.
+  $ protoc google/cloud/vision/v1/*.proto \
+      --proto_path=../api-common-protos/ --proto_path=. \
+      --python_gapic_out=/dest/
+
+.. note::
+
+  **A reminder about paths.**
+
+  Remember that ``protoc`` is particular about paths. It requires all paths
+  where it expects to find protos, and *order matters*. In this case,
+  the common protos must come first, and then the path to the API being built.
+
+.. include:: _verifying.rst
