@@ -708,7 +708,7 @@ class TestQuery(unittest.TestCase):
 
         self.assertEqual(query._normalize_cursor(cursor, query._orders), ([1], True))
 
-    def test__normalize_cursor_w___name___w_slash(self):
+    def test__normalize_cursor_w___name___w_reference(self):
         db_string = "projects/my-project/database/(default)"
         client = mock.Mock(spec=["_database_string"])
         client._database_string = db_string
@@ -716,8 +716,11 @@ class TestQuery(unittest.TestCase):
         parent._client = client
         parent._path = ["C"]
         query = self._make_one(parent).order_by("__name__", "ASCENDING")
-        expected = "{}/C/b".format(db_string)
-        cursor = ([expected], True)
+        docref = self._make_docref("here", "doc_id")
+        values = {"a": 7}
+        snapshot = self._make_snapshot(docref, values)
+        expected = docref
+        cursor = (snapshot, True)
 
         self.assertEqual(
             query._normalize_cursor(cursor, query._orders), ([expected], True)
@@ -727,16 +730,18 @@ class TestQuery(unittest.TestCase):
         db_string = "projects/my-project/database/(default)"
         client = mock.Mock(spec=["_database_string"])
         client._database_string = db_string
-        parent = mock.Mock(spec=["_path", "_client"])
+        parent = mock.Mock(spec=["_path", "_client", "document"])
         parent._client = client
         parent._path = ["C"]
+        document = parent.document.return_value = mock.Mock(spec=[])
         query = self._make_one(parent).order_by("__name__", "ASCENDING")
         cursor = (["b"], True)
-        expected = "{}/C/b".format(db_string)
+        expected = document
 
         self.assertEqual(
             query._normalize_cursor(cursor, query._orders), ([expected], True)
         )
+        parent.document.assert_called_once_with("b")
 
     def test__to_protobuf_all_fields(self):
         from google.protobuf import wrappers_pb2

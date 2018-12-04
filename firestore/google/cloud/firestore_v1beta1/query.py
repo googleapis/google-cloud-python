@@ -648,10 +648,8 @@ class Query(object):
                 msg = _INVALID_CURSOR_TRANSFORM
                 raise ValueError(msg)
 
-            if key == "__name__" and "/" not in field:
-                document_fields[index] = "{}/{}/{}".format(
-                    self._client._database_string, "/".join(self._parent._path), field
-                )
+            if key == "__name__" and isinstance(field, str):
+                document_fields[index] = self._parent.document(field)
 
         return document_fields, before
 
