@@ -74,9 +74,6 @@ class ParameterizedThing:
     def __eq__(self, other):
         raise NotImplementedError
 
-    def __ne__(self, other):
-        return not self == other
-
 
 class Parameter(ParameterizedThing):
     """Represents a bound variable in a GQL query.
@@ -171,9 +168,6 @@ class Node:
 
     def __eq__(self, other):
         raise NotImplementedError
-
-    def __ne__(self, other):
-        return not self == other
 
     def __le__(self, unused_other):
         raise TypeError("Nodes cannot be ordered")
