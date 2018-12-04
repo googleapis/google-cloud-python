@@ -29,7 +29,7 @@ version = '0.30.0'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 4 - Beta'
 dependencies = [
-    'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
+    'google-api-core[grpc] >= 1.6.0, < 2.0.0dev',
     'google-cloud-core >= 0.29.0, < 0.30dev',
     'pytz',
 ]
