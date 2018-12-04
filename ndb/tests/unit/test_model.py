@@ -2871,22 +2871,6 @@ def test__entity_from_protobuf():
     assert entity._key.id() == 123
 
 
-def test__entity_from_protobuf_model_has_constructor():
-    class ThisKind(model.Model):
-        a = model.IntegerProperty()
-
-        def __init__(self, somearg):
-            pass
-
-    key = datastore.Key("ThisKind", 123, project="testing")
-    datastore_entity = datastore.Entity(key=key)
-    datastore_entity.update({"a": 43})
-    protobuf = helpers.entity_to_protobuf(datastore_entity)
-    entity = model._entity_from_protobuf(protobuf)
-    assert isinstance(entity, ThisKind)
-    assert entity.a == 43
-
-
 def test__entity_from_protobuf_w_property_named_key():
     class ThisKind(model.Model):
         key = model.StringProperty()
