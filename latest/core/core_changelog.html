@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud 689486f documentation</title>
+    <title>Changelog &#8212; google-cloud 6b327e9 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -38,9 +38,43 @@
 <span id="changelog"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-core/#history">PyPI History</a></p>
 <div class="section" id="">
-<span id="id1"></span><h2>0.28.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>0.29.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<p>12-03-2018 15:54 PST</p>
+<div class="section" id="breaking-changes">
+<span id="breaking-changes"></span><h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Remove iam module from core. This module is now available as part of google-api-core. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6775">#6775</a>)</li>
+</ul>
+</div>
+<div class="section" id="implementation-changes">
+<span id="implementation-changes"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Fix <code class="docutils literal notranslate"><span class="pre">_time_from_iso8601_time_naive</span></code> for values with micros. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5756">#5756</a>)</li>
+<li>Import stdlib ABCs from <code class="docutils literal notranslate"><span class="pre">collections.abc</span></code> rather than <code class="docutils literal notranslate"><span class="pre">collections</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6451">#6451</a>)</li>
+</ul>
+</div>
 <div class="section" id="dependencies">
 <span id="dependencies"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Bump minimum <code class="docutils literal notranslate"><span class="pre">api_core</span></code> version to 1.0.0. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6391">#6391</a>)</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Blacken api_core and core. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6668">#6668</a>)</li>
+<li>Add / fix badges for PyPI / versions. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6158">#6158</a>)</li>
+<li>Use new Nox. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6175">#6175</a>)</li>
+<li>Use inplace installs for nox (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5865">#5865</a>)</li>
+<li>Fix bad trove classifier.</li>
+<li>Add Test runs for Python 3.7 and remove 3.4 (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5295">#5295</a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="">
+<span id="id2"></span><h2>0.28.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<div class="section" id="dependencies">
+<span id="id3"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Update dependency range for api-core to include v1.0.0 releases (#4944)</li>
 <li>Requiring ‘grpcio &gt;= 1.8.2’. (#4642)</li>
@@ -65,7 +99,7 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id2"></span><h2>0.28.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id4"></span><h2>0.28.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="notable-implementation-changes">
 <span id="notable-implementation-changes"></span><h3>Notable Implementation Changes<a class="headerlink" href="#notable-implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -75,7 +109,7 @@
 </ul>
 </div>
 <div class="section" id="dependencies">
-<span id="id3"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<span id="id5"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Explicit depending on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> and upgrading to
 <code class="docutils literal notranslate"><span class="pre">grpcio</span> <span class="pre">&gt;=</span> <span class="pre">1.7.0</span></code> (see #4096, #4280 and
