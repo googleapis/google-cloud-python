@@ -254,7 +254,7 @@ class Database(object):
         response = api.get_database_ddl(self.name, metadata=metadata)
         self._ddl_statements = tuple(response.statements)
 
-    def update_ddl(self, ddl_statements):
+    def update_ddl(self, ddl_statements, operation_id=''):
         """Update DDL for this database.
 
         Apply any configured schema from :attr:`ddl_statements`.
@@ -264,6 +264,8 @@ class Database(object):
 
         :type ddl_statements: Sequence[str]
         :param ddl_statements: a list of DDL statements to use on this database
+        :type operation_id: str
+        :param operation_id: (optional) a string ID for the long-running operation
 
         :rtype: :class:`google.api_core.operation.Operation`
         :returns: an operation instance
@@ -274,7 +276,7 @@ class Database(object):
         metadata = _metadata_with_prefix(self.name)
 
         future = api.update_database_ddl(
-            self.name, ddl_statements, "", metadata=metadata
+            self.name, ddl_statements, operation_id=operation_id, metadata=metadata
         )
         return future
 
