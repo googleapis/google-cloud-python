@@ -63,6 +63,7 @@ __all__ = [
     "make_connection",
     "MetaModel",
     "Model",
+    "ModelAdapter",
     "ModelAttribute",
     "ModelKey",
     "ndb_context",
@@ -161,6 +162,7 @@ from google.cloud.ndb.model import LocalStructuredProperty
 from google.cloud.ndb.model import make_connection
 from google.cloud.ndb.model import MetaModel
 from google.cloud.ndb.model import Model
+from google.cloud.ndb.model import ModelAdapter
 from google.cloud.ndb.model import ModelAttribute
 from google.cloud.ndb.model import ModelKey
 from google.cloud.ndb.model import non_transactional

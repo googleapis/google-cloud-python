@@ -270,6 +270,13 @@ class TestIndexState:
         assert hash(index_state1) == hash((self.INDEX, "error", 88))
 
 
+class TestModelAdapter:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            model.ModelAdapter()
+
+
 def test_make_connection():
     with pytest.raises(NotImplementedError):
         model.make_connection()
@@ -1249,6 +1256,12 @@ class TestProperty:
             prop._serialize(None, None)
 
     @staticmethod
+    def test__deserialize():
+        prop = model.Property(name="prop")
+        with pytest.raises(NotImplementedError):
+            prop._deserialize(None, None)
+
+    @staticmethod
     def test__prepare_for_put():
         prop = model.Property(name="prop")
         assert prop._prepare_for_put(None) is None
@@ -1423,6 +1436,12 @@ class TestBooleanProperty:
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
 
+    @staticmethod
+    def test__db_get_value():
+        prop = model.BooleanProperty(name="certify")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
+
 
 class TestIntegerProperty:
     @staticmethod
@@ -1448,6 +1467,12 @@ class TestIntegerProperty:
         prop = model.IntegerProperty(name="count")
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.IntegerProperty(name="count")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestFloatProperty:
@@ -1480,6 +1505,12 @@ class TestFloatProperty:
         prop = model.FloatProperty(name="continuous")
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.FloatProperty(name="continuous")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class Test_CompressedValue:
@@ -1649,6 +1680,12 @@ class TestBlobProperty:
         with pytest.raises(NotImplementedError):
             prop._db_set_uncompressed_meaning(None)
 
+    @staticmethod
+    def test__db_get_value():
+        prop = model.BlobProperty(name="blob")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
+
 
 class TestTextProperty:
     @staticmethod
@@ -1775,6 +1812,12 @@ class TestGeoPtProperty:
         prop = model.GeoPtProperty(name="cartesian")
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.GeoPtProperty(name="cartesian")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestPickleProperty:
@@ -2105,6 +2148,12 @@ class TestUserProperty:
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
 
+    @staticmethod
+    def test__db_get_value():
+        prop = model.UserProperty(name="u")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
+
 
 class TestKeyProperty:
     @staticmethod
@@ -2238,6 +2287,12 @@ class TestKeyProperty:
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
 
+    @staticmethod
+    def test__db_get_value():
+        prop = model.KeyProperty("keyp", kind="Simple")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
+
 
 class TestBlobKeyProperty:
     @staticmethod
@@ -2257,6 +2312,12 @@ class TestBlobKeyProperty:
         prop = model.BlobKeyProperty(name="object-gcs")
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.BlobKeyProperty(name="object-gcs")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestDateTimeProperty:
@@ -2370,6 +2431,12 @@ class TestDateTimeProperty:
         prop = model.DateTimeProperty(name="dt_val")
         with pytest.raises(NotImplementedError):
             prop._db_set_value(None, None, None)
+
+    @staticmethod
+    def test__db_get_value():
+        prop = model.DateTimeProperty(name="dt_val")
+        with pytest.raises(NotImplementedError):
+            prop._db_get_value(None, None)
 
 
 class TestDateProperty:

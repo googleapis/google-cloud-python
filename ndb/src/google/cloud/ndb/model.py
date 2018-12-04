@@ -50,6 +50,7 @@ __all__ = [
     "IndexProperty",
     "Index",
     "IndexState",
+    "ModelAdapter",
     "make_connection",
     "ModelAttribute",
     "Property",
@@ -97,6 +98,7 @@ __all__ = [
 
 _MEANING_PREDEFINED_ENTITY_USER = 20
 _MAX_STRING_LENGTH = 1500
+_NO_LONGER_IMPLEMENTED = "No longer used"
 Key = key_module.Key
 BlobKey = _datastore_types.BlobKey
 GeoPt = helpers.GeoPoint
@@ -273,6 +275,13 @@ class IndexState:
 
     def __hash__(self):
         return hash((self.definition, self.state, self.id))
+
+
+class ModelAdapter:
+    __slots__ = ()
+
+    def __new__(self, *args, **kwargs):
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 def _entity_from_protobuf(protobuf):
@@ -1476,6 +1485,14 @@ class Property(ModelAttribute):
         """
         raise NotImplementedError
 
+    def _deserialize(self, entity, p, unused_depth=1):
+        """Deserialize this property from a protocol buffer.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+
     def _prepare_for_put(self, entity):
         """Allow this property to define a pre-put hook.
 
@@ -1697,6 +1714,14 @@ class BooleanProperty(Property):
         """
         raise NotImplementedError
 
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+
 
 class IntegerProperty(Property):
     """A property that contains values of type integer.
@@ -1737,6 +1762,14 @@ class IntegerProperty(Property):
             NotImplementedError: Always. This method is virtual.
         """
         raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class FloatProperty(Property):
@@ -1779,6 +1812,14 @@ class FloatProperty(Property):
             NotImplementedError: Always. This method is virtual.
         """
         raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class _CompressedValue:
@@ -1974,6 +2015,14 @@ class BlobProperty(Property):
             NotImplementedError: Always. This method is virtual.
         """
         raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class TextProperty(BlobProperty):
@@ -2175,6 +2224,14 @@ class GeoPtProperty(Property):
             NotImplementedError: Always. This method is virtual.
         """
         raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class PickleProperty(BlobProperty):
@@ -2666,6 +2723,14 @@ class UserProperty(Property):
         """
         raise NotImplementedError
 
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+
 
 class KeyProperty(Property):
     """A property that contains :class:`.Key` values.
@@ -2893,6 +2958,14 @@ class KeyProperty(Property):
         """
         raise NotImplementedError
 
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+
 
 class BlobKeyProperty(Property):
     """A property containing :class:`~google.cloud.ndb.model.BlobKey` values.
@@ -2924,6 +2997,14 @@ class BlobKeyProperty(Property):
             NotImplementedError: Always. This method is virtual.
         """
         raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class DateTimeProperty(Property):
@@ -3068,6 +3149,14 @@ class DateTimeProperty(Property):
             NotImplementedError: Always. This method is virtual.
         """
         raise NotImplementedError
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class DateProperty(DateTimeProperty):
