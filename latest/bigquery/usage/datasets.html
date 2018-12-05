@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Managing Datasets &#8212; google-cloud ca2b8d6 documentation</title>
+    <title>Managing Datasets &#8212; google-cloud 36137e8 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -116,7 +116,7 @@ dataset will have the value as their expiration period.</li>
 <span class="n">dataset</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;US&quot;</span>
 
 <span class="c1"># Send the dataset to the API for creation.</span>
-<span class="c1"># Raises google.api_core.exceptions.AlreadyExists if the Dataset already</span>
+<span class="c1"># Raises google.api_core.exceptions.Conflict if the Dataset already</span>
 <span class="c1"># exists within the project.</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>  <span class="c1"># API request</span>
 </pre></div>
