@@ -449,7 +449,7 @@ class TestProperty:
             prop._comparison("!=", "red")
 
     @staticmethod
-    def test__comparison(property_clean_cache):
+    def test__comparison():
         prop = model.Property("sentiment", indexed=True)
         filter_node = prop._comparison(">=", 0.0)
         assert filter_node == query.FilterNode("sentiment", ">=", 0.0)
@@ -463,7 +463,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test___eq__(property_clean_cache):
+    def test___eq__():
         prop = model.Property("name", indexed=True)
         value = 1337
         expected = query.FilterNode("name", "=", value)
@@ -474,7 +474,7 @@ class TestProperty:
         assert filter_node_right == expected
 
     @staticmethod
-    def test___ne__(property_clean_cache):
+    def test___ne__():
         prop = model.Property("name", indexed=True)
         value = 7.0
         expected = query.DisjunctionNode(
@@ -488,7 +488,7 @@ class TestProperty:
         assert or_node_right == expected
 
     @staticmethod
-    def test___lt__(property_clean_cache):
+    def test___lt__():
         prop = model.Property("name", indexed=True)
         value = 2.0
         expected = query.FilterNode("name", "<", value)
@@ -499,7 +499,7 @@ class TestProperty:
         assert filter_node_right == expected
 
     @staticmethod
-    def test___le__(property_clean_cache):
+    def test___le__():
         prop = model.Property("name", indexed=True)
         value = 20.0
         expected = query.FilterNode("name", "<=", value)
@@ -510,7 +510,7 @@ class TestProperty:
         assert filter_node_right == expected
 
     @staticmethod
-    def test___gt__(property_clean_cache):
+    def test___gt__():
         prop = model.Property("name", indexed=True)
         value = "new"
         expected = query.FilterNode("name", ">", value)
@@ -521,7 +521,7 @@ class TestProperty:
         assert filter_node_right == expected
 
     @staticmethod
-    def test___ge__(property_clean_cache):
+    def test___ge__():
         prop = model.Property("name", indexed=True)
         value = "old"
         expected = query.FilterNode("name", ">=", value)
@@ -550,7 +550,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test__IN(property_clean_cache):
+    def test__IN():
         prop = model.Property("name", indexed=True)
         or_node = prop._IN(["a", None, "xy"])
         expected = query.DisjunctionNode(
@@ -575,7 +575,7 @@ class TestProperty:
             +prop
 
     @staticmethod
-    def test__do_validate(property_clean_cache):
+    def test__do_validate():
         validator = unittest.mock.Mock(spec=())
         value = 18
         choices = (1, 2, validator.return_value)
@@ -597,7 +597,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test__do_validate_validator_none(property_clean_cache):
+    def test__do_validate_validator_none():
         validator = unittest.mock.Mock(spec=(), return_value=None)
         value = 18
 
@@ -608,7 +608,7 @@ class TestProperty:
         validator.assert_called_once_with(prop, value)
 
     @staticmethod
-    def test__do_validate_not_in_choices(property_clean_cache):
+    def test__do_validate_not_in_choices():
         value = 18
         prop = model.Property(name="foo", choices=(1, 2))
 
@@ -616,7 +616,7 @@ class TestProperty:
             prop._do_validate(value)
 
     @staticmethod
-    def test__do_validate_call_validation(property_clean_cache):
+    def test__do_validate_call_validation():
         class SimpleProperty(model.Property):
             def _validate(self, value):
                 value.append("SimpleProperty._validate")
@@ -653,7 +653,7 @@ class TestProperty:
         assert entity._values == {prop._name: unittest.mock.sentinel.value}
 
     @staticmethod
-    def test__set_value(property_clean_cache):
+    def test__set_value():
         entity = unittest.mock.Mock(
             _projection=None, _values={}, spec=("_projection", "_values")
         )
@@ -673,7 +673,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test__set_value_repeated(property_clean_cache):
+    def test__set_value_repeated():
         entity = unittest.mock.Mock(
             _projection=None, _values={}, spec=("_projection", "_values")
         )
@@ -735,7 +735,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test__get_user_value_wrapped(property_clean_cache):
+    def test__get_user_value_wrapped():
         class SimpleProperty(model.Property):
             def _from_base_type(self, value):
                 return value * 2.0
@@ -746,7 +746,7 @@ class TestProperty:
         assert prop._get_user_value(entity) == 19.0
 
     @staticmethod
-    def test__get_base_value(property_clean_cache):
+    def test__get_base_value():
         class SimpleProperty(model.Property):
             def _validate(self, value):
                 return value + 1
@@ -767,7 +767,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test__get_base_value_unwrapped_as_list(property_clean_cache):
+    def test__get_base_value_unwrapped_as_list():
         class SimpleProperty(model.Property):
             def _validate(self, value):
                 return value + 11
@@ -786,7 +786,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test__get_base_value_unwrapped_as_list_repeated(property_clean_cache):
+    def test__get_base_value_unwrapped_as_list_repeated():
         class SimpleProperty(model.Property):
             def _validate(self, value):
                 return value / 10.0
@@ -806,7 +806,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test__opt_call_from_base_type_wrapped(property_clean_cache):
+    def test__opt_call_from_base_type_wrapped():
         class SimpleProperty(model.Property):
             def _from_base_type(self, value):
                 return value * 2.0
@@ -816,7 +816,7 @@ class TestProperty:
         assert prop._opt_call_from_base_type(value) == 17.0
 
     @staticmethod
-    def test__value_to_repr(property_clean_cache):
+    def test__value_to_repr():
         class SimpleProperty(model.Property):
             def _from_base_type(self, value):
                 return value * 3.0
@@ -826,7 +826,7 @@ class TestProperty:
         assert prop._value_to_repr(value) == "27.75"
 
     @staticmethod
-    def test__opt_call_to_base_type(property_clean_cache):
+    def test__opt_call_to_base_type():
         class SimpleProperty(model.Property):
             def _validate(self, value):
                 return value + 1
@@ -845,7 +845,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test__call_from_base_type(property_clean_cache):
+    def test__call_from_base_type():
         class SimpleProperty(model.Property):
             def _from_base_type(self, value):
                 value.append("SimpleProperty._from_base_type")
@@ -910,7 +910,7 @@ class TestProperty:
 
         return A, B, C
 
-    def test__call_to_base_type(self, property_clean_cache):
+    def test__call_to_base_type(self):
         _, _, PropertySubclass = self._property_subtype_chain()
         prop = PropertySubclass(name="prop")
         value = []
@@ -923,7 +923,7 @@ class TestProperty:
             "A._to_base_type",
         ]
 
-    def test__call_shallow_validation(self, property_clean_cache):
+    def test__call_shallow_validation(self):
         _, _, PropertySubclass = self._property_subtype_chain()
         prop = PropertySubclass(name="prop")
         value = []
@@ -931,7 +931,7 @@ class TestProperty:
         assert value == ["C._validate", "B._validate"]
 
     @staticmethod
-    def test__call_shallow_validation_no_break(property_clean_cache):
+    def test__call_shallow_validation_no_break():
         class SimpleProperty(model.Property):
             def _validate(self, value):
                 value.append("SimpleProperty._validate")
@@ -957,7 +957,7 @@ class TestProperty:
 
         return SomeProperty
 
-    def test__find_methods(self, property_clean_cache):
+    def test__find_methods(self):
         SomeProperty = self._property_subtype()
         # Make sure cache is empty.
         assert model.Property._FIND_METHODS_CACHE == {}
@@ -976,7 +976,7 @@ class TestProperty:
             key: {("IN", "find_me"): methods}
         }
 
-    def test__find_methods_reverse(self, property_clean_cache):
+    def test__find_methods_reverse(self):
         SomeProperty = self._property_subtype()
         # Make sure cache is empty.
         assert model.Property._FIND_METHODS_CACHE == {}
@@ -995,7 +995,7 @@ class TestProperty:
             key: {("IN", "find_me"): list(reversed(methods))}
         }
 
-    def test__find_methods_cached(self, property_clean_cache):
+    def test__find_methods_cached(self):
         SomeProperty = self._property_subtype()
         # Set cache
         methods = unittest.mock.sentinel.methods
@@ -1007,7 +1007,7 @@ class TestProperty:
         }
         assert SomeProperty._find_methods("IN", "find_me") is methods
 
-    def test__find_methods_cached_reverse(self, property_clean_cache):
+    def test__find_methods_cached_reverse(self):
         SomeProperty = self._property_subtype()
         # Set cache
         methods = ["a", "b"]
@@ -1221,7 +1221,7 @@ class TestProperty:
         assert model.Property._FIND_METHODS_CACHE == {}
 
     @staticmethod
-    def test_instance_descriptors(property_clean_cache):
+    def test_instance_descriptors():
         class Model:
             prop = model.Property(name="prop", required=True)
 
@@ -2626,7 +2626,6 @@ class TestModel:
         assert entity.__dict__ == {"_values": {"key": 1001}}
 
     @staticmethod
-    @pytest.mark.usefixtures("reset_kind_map")
     def test_constructor_with_projection():
         class Book(model.Model):
             pages = model.IntegerProperty()
@@ -2655,14 +2654,12 @@ class TestModel:
             TimeTravelVehicle(speed=28)
 
     @staticmethod
-    @pytest.mark.usefixtures("reset_kind_map")
     def test_repr():
         entity = ManyFields(self=909, id="hi", key=[88.5, 0.0], value=None)
         expected = "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None)"
         assert repr(entity) == expected
 
     @staticmethod
-    @pytest.mark.usefixtures("reset_kind_map")
     def test_repr_with_projection():
         entity = ManyFields(
             self=909,
@@ -2678,7 +2675,6 @@ class TestModel:
         assert repr(entity) == expected
 
     @staticmethod
-    @pytest.mark.usefixtures("reset_kind_map")
     def test_repr_with_property_named_key():
         entity = ManyFields(
             self=909, id="hi", key=[88.5, 0.0], value=None, _id=78
@@ -2690,7 +2686,6 @@ class TestModel:
         assert repr(entity) == expected
 
     @staticmethod
-    @pytest.mark.usefixtures("reset_kind_map")
     def test_repr_with_property_named_key_not_set():
         entity = ManyFields(self=909, id="hi", value=None, _id=78)
         expected = (
@@ -2812,7 +2807,6 @@ class TestModel:
             entity._put()
 
     @staticmethod
-    @pytest.mark.usefixtures("reset_kind_map")
     def test__lookup_model():
         class ThisKind(model.Model):
             pass
@@ -2820,13 +2814,11 @@ class TestModel:
         assert model.Model._lookup_model("ThisKind") is ThisKind
 
     @staticmethod
-    @pytest.mark.usefixtures("reset_kind_map")
     def test__lookup_model_use_default():
         sentinel = object()
         assert model.Model._lookup_model("NoKind", sentinel) is sentinel
 
     @staticmethod
-    @pytest.mark.usefixtures("reset_kind_map")
     def test__lookup_model_not_found():
         with pytest.raises(model.KindError):
             model.Model._lookup_model("NoKind")
