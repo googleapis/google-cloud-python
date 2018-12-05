@@ -140,7 +140,7 @@ significant internal refactoring.
 - `ModelAdapter` is no longer used. In legacy NDB, this was passed to the 
   Datastore RPC client so that calls to Datastore RPCs could yield NDB entities
   directly from Datastore RPC calls. AFAIK, Datastore no longer accepts an
-  adapter for adpating entities. At any rate, we no longer do it that way.
+  adapter for adapting entities. At any rate, we no longer do it that way.
 - `Property._db_get_value` is no longer used. It worked directly with Datastore
   protocol buffers, work which is now delegated to `google.cloud.datastore`.
 - `Model._deserialize` is no longer used. It worked directly with protocol
