@@ -300,7 +300,7 @@ def _entity_from_protobuf(protobuf):
     entity._key = key_module.Key._from_ds_key(ds_entity.key)
     for name, value in ds_entity.items():
         prop = getattr(model_class, name, None)
-        if not (prop and isinstance(prop, Property)):
+        if not (prop is not None and isinstance(prop, Property)):
             continue
         if value is not None:
             if prop._repeated:
