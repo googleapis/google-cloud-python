@@ -12,11 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import itertools
 import unittest
 
 import mock
+import pytest
 import six
 
+try:
+    from google.cloud import bigquery_storage_v1beta1
+except ImportError:  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
 try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
@@ -1688,3 +1694,28 @@ class TestTimePartitioning(unittest.TestCase):
         time_partitioning = self._make_one()
         time_partitioning.expiration_ms = None
         assert time_partitioning._properties["expirationMs"] is None
+
+
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+def test_table_reference_to_bqstorage():
+    from google.cloud.bigquery import table as mut
+
+    # Can't use parametrized pytest because bigquery_storage_v1beta1 may not be
+    # available.
+    expected = bigquery_storage_v1beta1.types.TableReference(
+        project_id="my-project", dataset_id="my_dataset", table_id="my_table"
+    )
+    cases = (
+        "my-project.my_dataset.my_table",
+        "my-project.my_dataset.my_table$20181225",
+        "my-project.my_dataset.my_table@1234567890",
+        "my-project.my_dataset.my_table$20181225@1234567890",
+    )
+
+    classes = (mut.TableReference, mut.Table, mut.TableListItem)
+
+    for case, cls in itertools.product(cases, classes):
+        got = cls.from_string(case).to_bqstorage()
+        assert got == expected

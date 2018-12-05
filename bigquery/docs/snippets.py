@@ -1314,7 +1314,7 @@ def test_load_table_from_file(client, to_delete):
 
 
 def test_load_table_from_uri_avro(client, to_delete, capsys):
-    dataset_id = 'load_table_from_uri_avro_{}'.format(_millis())
+    dataset_id = "load_table_from_uri_avro_{}".format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -1327,23 +1327,22 @@ def test_load_table_from_uri_avro(client, to_delete, capsys):
     dataset_ref = client.dataset(dataset_id)
     job_config = bigquery.LoadJobConfig()
     job_config.source_format = bigquery.SourceFormat.AVRO
-    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.avro'
+    uri = "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
 
     load_job = client.load_table_from_uri(
-        uri,
-        dataset_ref.table('us_states'),
-        job_config=job_config)  # API request
-    print('Starting job {}'.format(load_job.job_id))
+        uri, dataset_ref.table("us_states"), job_config=job_config
+    )  # API request
+    print("Starting job {}".format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
-    print('Job finished.')
+    print("Job finished.")
 
-    destination_table = client.get_table(dataset_ref.table('us_states'))
-    print('Loaded {} rows.'.format(destination_table.num_rows))
+    destination_table = client.get_table(dataset_ref.table("us_states"))
+    print("Loaded {} rows.".format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_avro]
 
     out, _ = capsys.readouterr()
-    assert 'Loaded 50 rows.' in out
+    assert "Loaded 50 rows." in out
 
 
 def test_load_table_from_uri_csv(client, to_delete, capsys):
