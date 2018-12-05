@@ -207,7 +207,7 @@ def test_create_dataset(client, to_delete):
     dataset.location = "US"
 
     # Send the dataset to the API for creation.
-    # Raises google.api_core.exceptions.AlreadyExists if the Dataset already
+    # Raises google.api_core.exceptions.Conflict if the Dataset already
     # exists within the project.
     dataset = client.create_dataset(dataset)  # API request
     # [END bigquery_create_dataset]
