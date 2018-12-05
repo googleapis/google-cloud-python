@@ -4,6 +4,43 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## 0.20.0
+
+12-05-2018 13:16 PST
+
+
+### Implementation Changes
+- Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Pick up fixes to GAPIC generator. ([#6577](https://github.com/googleapis/google-cloud-python/pull/6577))
+- Fix client_info bug, update docstrings and timeouts. ([#6424](https://github.com/googleapis/google-cloud-python/pull/6424))
+- Pass credentials into TraceServiceClient ([#5596](https://github.com/googleapis/google-cloud-python/pull/5596))
+- Avoid overwriting '__module__' of messages from shared modules. ([#5364](https://github.com/googleapis/google-cloud-python/pull/5364))
+
+### New Features
+- Add 'synth.py'. ([#6083](https://github.com/googleapis/google-cloud-python/pull/6083))
+
+### Dependencies
+- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+### Documentation
+- Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Add static HTML redirect page for 'trace/starting.html'. ([#6142](https://github.com/googleapis/google-cloud-python/pull/6142))
+- Prep docs for repo split. ([#6024](https://github.com/googleapis/google-cloud-python/pull/6024))
+- Replace links to '/stable/' with '/latest/'. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
+
+### Internal / Testing Changes
+- Updates to noxfile and other templates. Start Blackening. ([#6792](https://github.com/googleapis/google-cloud-python/pull/6792)),
+  ([#6701](https://github.com/googleapis/google-cloud-python/pull/6701)),
+  ([#6698](https://github.com/googleapis/google-cloud-python/pull/6698)),
+  ([#6666](https://github.com/googleapis/google-cloud-python/pull/6666)),
+  ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+- Add kokoro for trace, remove trace from CircleCI ([#6112](https://github.com/googleapis/google-cloud-python/pull/6112))
+- Use inplace installs ([#5865](https://github.com/googleapis/google-cloud-python/pull/5865))
+- Add Test runs for Python 3.7 and remove 3.4 ([#5295](https://github.com/googleapis/google-cloud-python/pull/5295))
+- Fix bad trove classifier
+- Move unit test from gax to gapic ([#4988](https://github.com/googleapis/google-cloud-python/pull/4988))
+
 ## 0.19.0
 
 ### Dependencies
