@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud 74b4db8 documentation</title>
+    <title>Changelog &#8212; google-cloud a48f30d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -38,9 +38,60 @@
 <span id="changelog"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-trace/#history">PyPI History</a></p>
 <div class="section" id="">
-<span id="id1"></span><h2>0.19.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>0.20.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<p>12-05-2018 13:16 PST</p>
+<div class="section" id="implementation-changes">
+<span id="implementation-changes"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Use moved iam.policy now at google.api_core.iam.policy (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6741">#6741</a>)</li>
+<li>Pick up fixes to GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6577">#6577</a>)</li>
+<li>Fix client_info bug, update docstrings and timeouts. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6424">#6424</a>)</li>
+<li>Pass credentials into TraceServiceClient (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5596">#5596</a>)</li>
+<li>Avoid overwriting ‘<strong>module</strong>’ of messages from shared modules. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5364">#5364</a>)</li>
+</ul>
+</div>
+<div class="section" id="new-features">
+<span id="new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Add ‘synth.py’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6083">#6083</a>)</li>
+</ul>
+</div>
 <div class="section" id="dependencies">
 <span id="dependencies"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Bump minimum ‘api_core’ version for all GAPIC libs to 1.4.1. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6391">#6391</a>)</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Normalize use of support level badges (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6159">#6159</a>)</li>
+<li>Add static HTML redirect page for ‘trace/starting.html’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6142">#6142</a>)</li>
+<li>Prep docs for repo split. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6024">#6024</a>)</li>
+<li>Replace links to ‘/stable/’ with ‘/latest/’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5901">#5901</a>)</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Updates to noxfile and other templates. Start Blackening. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6792">#6792</a>),
+(<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6701">#6701</a>),
+(<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6698">#6698</a>),
+(<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6666">#6666</a>),
+(<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6642">#6642</a>)</li>
+<li>Use new Nox (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6175">#6175</a>)</li>
+<li>Add kokoro for trace, remove trace from CircleCI (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6112">#6112</a>)</li>
+<li>Use inplace installs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5865">#5865</a>)</li>
+<li>Add Test runs for Python 3.7 and remove 3.4 (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5295">#5295</a>)</li>
+<li>Fix bad trove classifier</li>
+<li>Move unit test from gax to gapic (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/4988">#4988</a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="">
+<span id="id2"></span><h2>0.19.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<div class="section" id="dependencies">
+<span id="id3"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>The minimum version for <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> has been updated to version 1.0.0. This may cause some incompatibility with older google-cloud libraries, you will need to update those libraries if you have a dependency conflict. (#4944, #4946)</li>
 </ul>
@@ -55,7 +106,7 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id2"></span><h2>0.18.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id4"></span><h2>0.18.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="breaking-changes">
 <span id="breaking-changes"></span><h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -66,7 +117,7 @@ methods. (#4799)</li>
 </div>
 </div>
 <div class="section" id="">
-<span id="id3"></span><h2>0.17.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id5"></span><h2>0.17.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="notable-implementation-changes">
 <span id="notable-implementation-changes"></span><h3>Notable Implementation Changes<a class="headerlink" href="#notable-implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -77,9 +128,9 @@ Using V1 API needs to be explicitly specified in the import.(#4437)</li>
 </div>
 </div>
 <div class="section" id="">
-<span id="id4"></span><h2>0.16.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id6"></span><h2>0.16.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="dependencies">
-<span id="id5"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<span id="id7"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
 on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</li>
