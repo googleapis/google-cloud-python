@@ -279,6 +279,38 @@ class TableReference(object):
             "tableId": self._table_id,
         }
 
+    def to_bqstorage(self):
+        """Construct a BigQuery Storage API representation of this table.
+
+        If the ``table_id`` contains a partition identifier (e.g.
+        ``my_table$201812``) or a snapshot identifier (e.g.
+        ``mytable@1234567890``), it is ignored. Use
+        :class:`google.cloud.bigquery_storage_v1beta1.types.TableReadOptions`
+        to filter rows by partition. Use
+        :class:`google.cloud.bigquery_storage_v1beta1.types.TableModifiers`
+        to select a specific snapshot to read from.
+
+        Returns:
+            google.cloud.bigquery_storage_v1beta1.types.TableReference:
+                A reference to this table in the BigQuery Storage API.
+        """
+        from google.cloud import bigquery_storage_v1beta1
+
+        table_ref = bigquery_storage_v1beta1.types.TableReference()
+        table_ref.project_id = self._project
+        table_ref.dataset_id = self._dataset_id
+        table_id = self._table_id
+
+        if "@" in table_id:
+            table_id = table_id.split("@")[0]
+
+        if "$" in table_id:
+            table_id = table_id.split("$")[0]
+
+        table_ref.table_id = table_id
+
+        return table_ref
+
     def _key(self):
         """A tuple key that uniquely describes this field.
 
@@ -820,6 +852,15 @@ class Table(object):
         """
         return copy.deepcopy(self._properties)
 
+    def to_bqstorage(self):
+        """Construct a BigQuery Storage API representation of this table.
+
+        Returns:
+            google.cloud.bigquery_storage_v1beta1.types.TableReference:
+                A reference to this table in the BigQuery Storage API.
+        """
+        return self.reference.to_bqstorage()
+
     def _build_resource(self, filter_fields):
         """Generate a resource for ``update``."""
         partial = {}
@@ -970,6 +1011,41 @@ class TableListItem(object):
         return self._properties.get("friendlyName")
 
     view_use_legacy_sql = property(_view_use_legacy_sql_getter)
+
+    @classmethod
+    def from_string(cls, full_table_id):
+        """Construct a table from fully-qualified table ID.
+
+        Args:
+            full_table_id (str):
+                A fully-qualified table ID in standard SQL format. Must
+                included a project ID, dataset ID, and table ID, each
+                separated by ``.``.
+
+        Returns:
+            Table: Table parsed from ``full_table_id``.
+
+        Examples:
+            >>> Table.from_string('my-project.mydataset.mytable')
+            Table(TableRef...(D...('my-project', 'mydataset'), 'mytable'))
+
+        Raises:
+            ValueError:
+                If ``full_table_id`` is not a fully-qualified table ID in
+                standard SQL format.
+        """
+        return cls(
+            {"tableReference": TableReference.from_string(full_table_id).to_api_repr()}
+        )
+
+    def to_bqstorage(self):
+        """Construct a BigQuery Storage API representation of this table.
+
+        Returns:
+            google.cloud.bigquery_storage_v1beta1.types.TableReference:
+                A reference to this table in the BigQuery Storage API.
+        """
+        return self.reference.to_bqstorage()
 
 
 def _row_from_mapping(mapping, schema):
