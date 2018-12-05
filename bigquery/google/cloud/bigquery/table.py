@@ -1360,9 +1360,7 @@ class RowIterator(HTTPIterator):
             rowstream = bqstorage_client.read_rows(position)
             return rowstream.to_dataframe(session)
 
-        with concurrent.futures.ThreadPoolExecutor(
-            thread_name_prefix="to_dataframe_"
-        ) as pool:
+        with concurrent.futures.ThreadPoolExecutor() as pool:
             frames = pool.map(get_dataframe, session.streams)
 
         # rowstream.to_dataframe() does not preserve column order. Rearrange at
