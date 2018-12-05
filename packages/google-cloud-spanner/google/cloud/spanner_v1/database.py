@@ -254,7 +254,7 @@ class Database(object):
         response = api.get_database_ddl(self.name, metadata=metadata)
         self._ddl_statements = tuple(response.statements)
 
-    def update_ddl(self, ddl_statements, operation_id=''):
+    def update_ddl(self, ddl_statements, operation_id=""):
         """Update DDL for this database.
 
         Apply any configured schema from :attr:`ddl_statements`.
