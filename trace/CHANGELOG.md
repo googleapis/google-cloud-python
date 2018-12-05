@@ -4,6 +4,42 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## 0.20.0
+
+12-05-2018 12:40 PST
+
+
+### Implementation Changes
+- Pick up fixes to GAPIC generator. ([#6577](https://github.com/googleapis/google-cloud-python/pull/6577))
+- Fix `client_info` bug, update docstrings and timeouts. ([#6424](https://github.com/googleapis/google-cloud-python/pull/6424))
+- Pass credentials into TraceServiceClient ([#5596](https://github.com/googleapis/google-cloud-python/pull/5596))
+- Avoid overwriting `__module__` of messages from shared modules. ([#5364](https://github.com/googleapis/google-cloud-python/pull/5364))
+- Fix bad trove classifier
+
+### Dependencies
+- Bump minimum `api_core` version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+### Documentation
+- Normalize use of support level badges in docs. ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Add static HTML redirect page for `trace/starting.html`. ([#6142](https://github.com/googleapis/google-cloud-python/pull/6142))
+- Prepare docs for repo split. ([#6024](https://github.com/googleapis/google-cloud-python/pull/6024))
+- Replace links to `/stable/` with `/latest/` in docs. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
+
+### Internal / Testing Changes
+- Import `iam.policy` from `google.api_core` ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Update noxfile.
+- Blacken all gen'd libs ([#6792](https://github.com/googleapis/google-cloud-python/pull/6792))
+- Omit local dependencies from coverage. ([#6701](https://github.com/googleapis/google-cloud-python/pull/6701))
+- Run black at end of synth.py ([#6698](https://github.com/googleapis/google-cloud-python/pull/6698))
+- Run Black on Generated libraries ([#6666](https://github.com/googleapis/google-cloud-python/pull/6666))
+- Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+- Add kokoro for trace, remove trace from CircleCI ([#6112](https://github.com/googleapis/google-cloud-python/pull/6112))
+- Add `synth.py`. ([#6083](https://github.com/googleapis/google-cloud-python/pull/6083))
+- Nox: use inplace installs ([#5865](https://github.com/googleapis/google-cloud-python/pull/5865))
+- Add Test runs for Python 3.7 and remove 3.4 ([#5295](https://github.com/googleapis/google-cloud-python/pull/5295))
+- Move unit test from gax to gapic ([#4988](https://github.com/googleapis/google-cloud-python/pull/4988))
+
 ## 0.19.0
 
 ### Dependencies
