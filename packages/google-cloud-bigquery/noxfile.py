@@ -20,7 +20,7 @@ import nox
 
 
 LOCAL_DEPS = (
-    os.path.join('..', 'api_core'),
+    os.path.join('..', 'api_core[grpc]'),
     os.path.join('..', 'core'),
 )
 
@@ -40,9 +40,9 @@ def default(session):
 
     # Pyarrow does not support Python 3.7
     if session.python == '3.7':
-        dev_install = '.[pandas]'
+        dev_install = '.[bqstorage, pandas]'
     else:
-        dev_install = '.[pandas, pyarrow]'
+        dev_install = '.[bqstorage, pandas, pyarrow]'
     session.install('-e', dev_install)
 
     # IPython does not support Python 2 after version 5.x
