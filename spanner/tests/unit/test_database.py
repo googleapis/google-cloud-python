@@ -599,7 +599,7 @@ class TestDatabase(_BaseTest):
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        future = database.update_ddl(DDL_STATEMENTS, operation_id='someOperationId')
+        future = database.update_ddl(DDL_STATEMENTS, operation_id="someOperationId")
 
         self.assertIs(future, op_future)
 

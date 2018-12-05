@@ -334,10 +334,10 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         # We want to make sure the operation completes.
         create_op.result(240)  # raises on failure / timeout.
         # random but shortish always start with letter
-        operation_id = 'a' + str(uuid.uuid4())[:8]
+        operation_id = "a" + str(uuid.uuid4())[:8]
         operation = temp_db.update_ddl(DDL_STATEMENTS, operation_id=operation_id)
 
-        self.assertEqual(operation_id, operation.operation.name.split('/')[-1])
+        self.assertEqual(operation_id, operation.operation.name.split("/")[-1])
 
         # We want to make sure the operation completes.
         operation.result(240)  # raises on failure / timeout.
