@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud f48ea0b documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud ca2b8d6 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -313,6 +313,38 @@
             <span class="s2">&quot;datasetId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
             <span class="s2">&quot;tableId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">,</span>
         <span class="p">}</span></div>
+
+<div class="viewcode-block" id="TableReference.to_bqstorage"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.to_bqstorage">[docs]</a>    <span class="k">def</span> <span class="nf">to_bqstorage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a BigQuery Storage API representation of this table.</span>
+
+<span class="sd">        If the ``table_id`` contains a partition identifier (e.g.</span>
+<span class="sd">        ``my_table$201812``) or a snapshot identifier (e.g.</span>
+<span class="sd">        ``mytable@1234567890``), it is ignored. Use</span>
+<span class="sd">        :class:`google.cloud.bigquery_storage_v1beta1.types.TableReadOptions`</span>
+<span class="sd">        to filter rows by partition. Use</span>
+<span class="sd">        :class:`google.cloud.bigquery_storage_v1beta1.types.TableModifiers`</span>
+<span class="sd">        to select a specific snapshot to read from.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.bigquery_storage_v1beta1.types.TableReference:</span>
+<span class="sd">                A reference to this table in the BigQuery Storage API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_storage_v1beta1</span>
+
+        <span class="n">table_ref</span> <span class="o">=</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">TableReference</span><span class="p">()</span>
+        <span class="n">table_ref</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span>
+        <span class="n">table_ref</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>
+        <span class="n">table_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span>
+
+        <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="n">table_id</span><span class="p">:</span>
+            <span class="n">table_id</span> <span class="o">=</span> <span class="n">table_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s2">&quot;$&quot;</span> <span class="ow">in</span> <span class="n">table_id</span><span class="p">:</span>
+            <span class="n">table_id</span> <span class="o">=</span> <span class="n">table_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">table_ref</span><span class="o">.</span><span class="n">table_id</span> <span class="o">=</span> <span class="n">table_id</span>
+
+        <span class="k">return</span> <span class="n">table_ref</span></div>
 
     <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
@@ -855,6 +887,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Table.to_bqstorage"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table.to_bqstorage">[docs]</a>    <span class="k">def</span> <span class="nf">to_bqstorage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a BigQuery Storage API representation of this table.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.bigquery_storage_v1beta1.types.TableReference:</span>
+<span class="sd">                A reference to this table in the BigQuery Storage API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">to_bqstorage</span><span class="p">()</span></div>
+
     <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_fields</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for ``update``.&quot;&quot;&quot;</span>
         <span class="n">partial</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1004,7 +1045,42 @@
         <span class="sd">&quot;&quot;&quot;Union[str, None]: Title of the table (defaults to :data:`None`).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;friendlyName&quot;</span><span class="p">)</span>
 
-    <span class="n">view_use_legacy_sql</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_view_use_legacy_sql_getter</span><span class="p">)</span></div>
+    <span class="n">view_use_legacy_sql</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_view_use_legacy_sql_getter</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TableListItem.from_string"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableListItem.html#google.cloud.bigquery.table.TableListItem.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">full_table_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a table from fully-qualified table ID.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            full_table_id (str):</span>
+<span class="sd">                A fully-qualified table ID in standard SQL format. Must</span>
+<span class="sd">                included a project ID, dataset ID, and table ID, each</span>
+<span class="sd">                separated by ``.``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Table: Table parsed from ``full_table_id``.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Table.from_string(&#39;my-project.mydataset.mytable&#39;)</span>
+<span class="sd">            Table(TableRef...(D...(&#39;my-project&#39;, &#39;mydataset&#39;), &#39;mytable&#39;))</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If ``full_table_id`` is not a fully-qualified table ID in</span>
+<span class="sd">                standard SQL format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;tableReference&quot;</span><span class="p">:</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">full_table_id</span><span class="p">)</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()}</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="TableListItem.to_bqstorage"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableListItem.html#google.cloud.bigquery.table.TableListItem.to_bqstorage">[docs]</a>    <span class="k">def</span> <span class="nf">to_bqstorage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a BigQuery Storage API representation of this table.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.bigquery_storage_v1beta1.types.TableReference:</span>
+<span class="sd">                A reference to this table in the BigQuery Storage API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">to_bqstorage</span><span class="p">()</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_row_from_mapping</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>

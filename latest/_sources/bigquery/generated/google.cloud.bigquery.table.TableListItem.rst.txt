@@ -10,6 +10,12 @@ google.cloud.bigquery.table.TableListItem
 .. autosummary::
 
    
+   
+   ~TableListItem.from_string
+   
+   
+   ~TableListItem.to_bqstorage
+   
 
 
 

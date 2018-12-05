@@ -19,6 +19,9 @@ google.cloud.bigquery.table.Table
    
    ~Table.to_api_repr
    
+   
+   ~Table.to_bqstorage
+   
 
 
 
