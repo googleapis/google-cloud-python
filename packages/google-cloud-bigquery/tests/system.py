@@ -29,6 +29,10 @@ import six
 import pytest
 
 try:
+    from google.cloud import bigquery_storage_v1beta1
+except ImportError:  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
+try:
     import pandas
 except ImportError:  # pragma: NO COVER
     pandas = None
@@ -1496,7 +1500,7 @@ class TestBigQuery(unittest.TestCase):
     def test_query_results_to_dataframe(self):
         QUERY = """
             SELECT id, author, time_ts, dead
-            from `bigquery-public-data.hacker_news.comments`
+            FROM `bigquery-public-data.hacker_news.comments`
             LIMIT 10
         """
 
@@ -1506,6 +1510,53 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(df), 10)  # verify the number of rows
         column_names = ["id", "author", "time_ts", "dead"]
         self.assertEqual(list(df), column_names)  # verify the column names
+        exp_datatypes = {
+            "id": int,
+            "author": six.text_type,
+            "time_ts": pandas.Timestamp,
+            "dead": bool,
+        }
+        for index, row in df.iterrows():
+            for col in column_names:
+                # all the schema fields are nullable, so None is acceptable
+                if not row[col] is None:
+                    self.assertIsInstance(row[col], exp_datatypes[col])
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_query_results_to_dataframe_w_bqstorage(self):
+        dest_dataset = self.temp_dataset(_make_dataset_id("bqstorage_to_dataframe_"))
+        dest_ref = dest_dataset.table("query_results")
+
+        query = """
+            SELECT id, author, time_ts, dead
+            FROM `bigquery-public-data.hacker_news.comments`
+            LIMIT 10
+        """
+
+        bqstorage_client = bigquery_storage_v1beta1.BigQueryStorageClient(
+            credentials=Config.CLIENT._credentials
+        )
+        df = (
+            Config.CLIENT.query(
+                query,
+                # There is a known issue reading small anonymous query result
+                # tables with the BQ Storage API. Writing to a destination
+                # table works around this issue.
+                job_config=bigquery.QueryJobConfig(
+                    destination=dest_ref, write_disposition="WRITE_TRUNCATE"
+                ),
+            )
+            .result()
+            .to_dataframe(bqstorage_client)
+        )
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 10)  # verify the number of rows
+        column_names = ["id", "author", "time_ts", "dead"]
+        self.assertEqual(list(df), column_names)
         exp_datatypes = {
             "id": int,
             "author": six.text_type,
