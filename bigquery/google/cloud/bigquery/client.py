@@ -1717,6 +1717,10 @@ class Client(ClientWithProject):
             max_results=max_results,
             page_size=page_size,
             extra_params=params,
+            table=table,
+            # Pass in selected_fields separately from schema so that full
+            # tables can be fetched without a column filter.
+            selected_fields=selected_fields,
         )
         return row_iterator
 
