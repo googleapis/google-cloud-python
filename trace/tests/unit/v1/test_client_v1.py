@@ -60,6 +60,15 @@ class TestClient(unittest.TestCase):
         self.assertIs(api, api_obj)
         self.assertEqual(clients, [client])
 
+    def test_trace_api_existing(self):
+        """Check that the client caches _trace_api."""
+        client = self._make_one(project=self.project,
+                                credentials=_make_credentials())
+        self.assertIsNone(client._trace_api)
+        trace_api = client.trace_api
+        self.assertIsNotNone(client._trace_api)
+        self.assertIs(client.trace_api, trace_api)
+
     def test_patch_traces_default(self):
         from google.cloud.trace.v1._gapic import _TraceAPI
 
