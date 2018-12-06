@@ -123,6 +123,31 @@ The primary differences come from:
   is also a user-defined property named `key`. For an example, see the
   class docstring for `Model`.
 
+## Bare Metal
+
+One of the largest classes of differences comes from the use of the current
+Datastore API, rather than the legacy App Engine Datastore. In general, for
+users coding to the public interface, this won't be an issue, but users relying
+on pieces of the ostensibly private API that are exposed to the bare metal of
+the original datastore implementation will have to rewrite those pieces.
+Specifically, any function or method that dealt directly with protocol buffers
+will no longer work. The Datastore `.protobuf` definitions have changed
+significantly from the barely public API used by App Engine to the current
+published API. Additionally, this version of NDB mostly delegates to
+`google.cloud.datastore` for parsing data returned by RPCs, which is a
+significant internal refactoring.
+
+- `ModelAdapter` is no longer used. In legacy NDB, this was passed to the 
+  Datastore RPC client so that calls to Datastore RPCs could yield NDB entities
+  directly from Datastore RPC calls. AFAIK, Datastore no longer accepts an
+  adapter for adapting entities. At any rate, we no longer do it that way.
+- `Property._db_get_value` is no longer used. It worked directly with Datastore
+  protocol buffers, work which is now delegated to `google.cloud.datastore`.
+- `Model._deserialize` is no longer used. It worked directly with protocol
+  buffers, so wasn't really salvageable. Unfortunately, there were comments
+  indicating it was overridden by subclasses. Hopefully this isn't broadly the
+  case.
+
 ## Comments
 
 - There is rampant use (and abuse) of `__new__` rather than `__init__` as
