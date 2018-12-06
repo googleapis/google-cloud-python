@@ -98,6 +98,7 @@ __all__ = [
 
 _MEANING_PREDEFINED_ENTITY_USER = 20
 _MAX_STRING_LENGTH = 1500
+_NO_LONGER_IMPLEMENTED = "No longer used"
 Key = key_module.Key
 BlobKey = _datastore_types.BlobKey
 GeoPt = helpers.GeoPoint
@@ -279,8 +280,36 @@ class IndexState:
 class ModelAdapter:
     __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    def __new__(self, *args, **kwargs):
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+
+
+def _entity_from_protobuf(protobuf):
+    """Deserialize an entity from a protobuffer.
+
+    Args:
+        protobuf (google.cloud.datastore_v1.proto.entity.Entity): An
+            entity protobuf to be deserialized.
+
+    Returns:
+        .Model: The deserialized entity.
+    """
+    ds_entity = helpers.entity_from_protobuf(protobuf)
+    model_class = Model._lookup_model(ds_entity.kind)
+    entity = model_class()
+    entity._key = key_module.Key._from_ds_key(ds_entity.key)
+    for name, value in ds_entity.items():
+        prop = getattr(model_class, name, None)
+        if not (prop is not None and isinstance(prop, Property)):
+            continue
+        if value is not None:
+            if prop._repeated:
+                value = [_BaseValue(sub_value) for sub_value in value]
+            else:
+                value = _BaseValue(value)
+        prop._store_value(entity, value)
+
+    return entity
 
 
 def make_connection(*args, **kwargs):
@@ -1457,21 +1486,12 @@ class Property(ModelAttribute):
         raise NotImplementedError
 
     def _deserialize(self, entity, p, unused_depth=1):
-        """Deserialize this property to a protocol buffer.
-
-        Some subclasses may override this method.
-
-        Args:
-            entity (Model): The entity that owns this property.
-            p (google.cloud.datastore_v1.proto.entity_pb2.Value): A property
-                value protobuf to be deserialized.
-            depth (int): Optional nesting depth, default 1 (unused here, but
-                used by some subclasses that override this method).
+        """Deserialize this property from a protocol buffer.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
     def _prepare_for_put(self, entity):
         """Allow this property to define a pre-put hook.
@@ -1698,9 +1718,9 @@ class BooleanProperty(Property):
         """Helper for :meth:`_deserialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class IntegerProperty(Property):
@@ -1747,9 +1767,9 @@ class IntegerProperty(Property):
         """Helper for :meth:`_deserialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class FloatProperty(Property):
@@ -1797,9 +1817,9 @@ class FloatProperty(Property):
         """Helper for :meth:`_deserialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class _CompressedValue:
@@ -2000,9 +2020,9 @@ class BlobProperty(Property):
         """Helper for :meth:`_deserialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class TextProperty(BlobProperty):
@@ -2209,9 +2229,9 @@ class GeoPtProperty(Property):
         """Helper for :meth:`_deserialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class PickleProperty(BlobProperty):
@@ -2707,9 +2727,9 @@ class UserProperty(Property):
         """Helper for :meth:`_deserialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class KeyProperty(Property):
@@ -2942,9 +2962,9 @@ class KeyProperty(Property):
         """Helper for :meth:`_deserialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class BlobKeyProperty(Property):
@@ -2982,9 +3002,9 @@ class BlobKeyProperty(Property):
         """Helper for :meth:`_deserialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class DateTimeProperty(Property):
@@ -3134,9 +3154,9 @@ class DateTimeProperty(Property):
         """Helper for :meth:`_deserialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError
+        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
 
 
 class DateProperty(DateTimeProperty):
@@ -3716,6 +3736,32 @@ class Model(metaclass=MetaModel):
     def __ge__(self, value):
         """The ``>=`` comparison is not well-defined."""
         raise TypeError("Model instances are not orderable.")
+
+    @classmethod
+    def _lookup_model(cls, kind, default_model=None):
+        """Get the model class for the given kind.
+
+        Args:
+            kind (str): The name of the kind to look up.
+            default_model (Optional[type]): The model class to return if the
+                kind can't be found.
+
+        Returns:
+            type: The model class for the requested kind or the default model.
+
+        Raises:
+            .KindError: If the kind was not found and no ``default_model`` was
+                provided.
+        """
+        model_class = cls._kind_map.get(kind, default_model)
+        if model_class is None:
+            raise KindError(
+                (
+                    "No model class found for the kind '{}'. Did you forget to "
+                    "import it?"
+                ).format(kind)
+            )
+        return model_class
 
     def _set_projection(self, projection):
         """Set the projected properties for this instance.
