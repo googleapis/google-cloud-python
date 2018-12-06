@@ -2655,12 +2655,14 @@ class TestModel:
 
     @staticmethod
     def test_repr():
+        ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=909, id="hi", key=[88.5, 0.0], value=None)
         expected = "ManyFields(id='hi', key=[88.5, 0.0], self=909, value=None)"
         assert repr(entity) == expected
 
     @staticmethod
     def test_repr_with_projection():
+        ManyFields = ManyFieldsFactory()
         entity = ManyFields(
             self=909,
             id="hi",
@@ -2676,6 +2678,7 @@ class TestModel:
 
     @staticmethod
     def test_repr_with_property_named_key():
+        ManyFields = ManyFieldsFactory()
         entity = ManyFields(
             self=909, id="hi", key=[88.5, 0.0], value=None, _id=78
         )
@@ -2687,6 +2690,7 @@ class TestModel:
 
     @staticmethod
     def test_repr_with_property_named_key_not_set():
+        ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=909, id="hi", value=None, _id=78)
         expected = (
             "ManyFields(_key=Key('ManyFields', 78), id='hi', "
@@ -2714,6 +2718,7 @@ class TestModel:
 
     @staticmethod
     def test___hash__():
+        ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=909, id="hi", value=None, _id=78)
         with pytest.raises(TypeError):
             hash(entity)
@@ -2723,18 +2728,21 @@ class TestModel:
         class Simple(model.Model):
             pass
 
+        ManyFields = ManyFieldsFactory()
         entity1 = ManyFields(self=909, id="hi", value=None, _id=78)
         entity2 = Simple()
         assert not entity1 == entity2
 
     @staticmethod
     def test___eq__wrong_key():
+        ManyFields = ManyFieldsFactory()
         entity1 = ManyFields(_id=78)
         entity2 = ManyFields(_id="seventy-eight")
         assert not entity1 == entity2
 
     @staticmethod
     def test___eq__wrong_projection():
+        ManyFields = ManyFieldsFactory()
         entity1 = ManyFields(self=90, projection=("self",))
         entity2 = ManyFields(
             value="a", unused=0.0, projection=("value", "unused")
@@ -2743,6 +2751,7 @@ class TestModel:
 
     @staticmethod
     def test___eq__same_type_same_key():
+        ManyFields = ManyFieldsFactory()
         entity1 = ManyFields(self=909, id="hi", _id=78)
         entity2 = ManyFields(self=909, id="bye", _id=78)
         assert entity1 == entity1
@@ -2750,6 +2759,7 @@ class TestModel:
 
     @staticmethod
     def test___eq__same_type_same_key_same_projection():
+        ManyFields = ManyFieldsFactory()
         entity1 = ManyFields(self=-9, id="hi", projection=("self", "id"))
         entity2 = ManyFields(self=-9, id="bye", projection=("self", "id"))
         assert entity1 == entity1
@@ -2760,6 +2770,7 @@ class TestModel:
         class Simple(model.Model):
             pass
 
+        ManyFields = ManyFieldsFactory()
         entity1 = ManyFields(self=-9, id="hi")
         entity2 = Simple()
         entity3 = ManyFields(self=-9, id="bye")
@@ -2773,24 +2784,28 @@ class TestModel:
 
     @staticmethod
     def test___lt__():
+        ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=-9, id="hi")
         with pytest.raises(TypeError):
             entity < entity
 
     @staticmethod
     def test___le__():
+        ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=-9, id="hi")
         with pytest.raises(TypeError):
             entity <= entity
 
     @staticmethod
     def test___gt__():
+        ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=-9, id="hi")
         with pytest.raises(TypeError):
             entity > entity
 
     @staticmethod
     def test___ge__():
+        ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=-9, id="hi")
         with pytest.raises(TypeError):
             entity >= entity
@@ -2962,9 +2977,19 @@ def test_get_indexes():
         model.get_indexes()
 
 
-class ManyFields(model.Model):
-    self = model.IntegerProperty()
-    id = model.StringProperty()
-    key = model.FloatProperty(repeated=True)
-    value = model.StringProperty()
-    unused = model.FloatProperty()
+def ManyFieldsFactory():
+    """Model type class factory.
+
+    This indirection makes sure ``Model._kind_map`` isn't mutated at module
+    scope, since any mutations would be reset by the ``reset_state`` fixture
+    run for each test.
+    """
+
+    class ManyFields(model.Model):
+        self = model.IntegerProperty()
+        id = model.StringProperty()
+        key = model.FloatProperty(repeated=True)
+        value = model.StringProperty()
+        unused = model.FloatProperty()
+
+    return ManyFields

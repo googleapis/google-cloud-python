@@ -35,5 +35,8 @@ def reset_state():
     - ``model.Property._FIND_METHODS_CACHE``
     - ``model.Model._kind_map``
     """
+    assert model.Property._FIND_METHODS_CACHE == {}
+    assert model.Model._kind_map == {}
+    yield
     model.Property._FIND_METHODS_CACHE.clear()
     model.Model._kind_map.clear()
