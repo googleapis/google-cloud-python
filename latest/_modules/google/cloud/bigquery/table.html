@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud a48f30d documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 8b59a92 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -53,6 +53,7 @@
 
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">operator</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
@@ -1277,6 +1278,17 @@
 <span class="sd">        page_size (int, optional): The number of items to return per page.</span>
 <span class="sd">        extra_params (Dict[str, object]):</span>
 <span class="sd">            Extra query string parameters for the API call.</span>
+<span class="sd">        table (Union[ \</span>
+<span class="sd">            :class:`~google.cloud.bigquery.table.Table`, \</span>
+<span class="sd">            :class:`~google.cloud.bigquery.table.TableReference`, \</span>
+<span class="sd">        ]):</span>
+<span class="sd">            Optional. The table which these rows belong to, or a reference to</span>
+<span class="sd">            it. Used to call the BigQuery Storage API to fetch rows.</span>
+<span class="sd">        selected_fields (Sequence[ \</span>
+<span class="sd">            google.cloud.bigquery.schema.SchemaField, \</span>
+<span class="sd">        ]):</span>
+<span class="sd">            Optional. A subset of columns to select from this table.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
@@ -1289,6 +1301,8 @@
         <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">table</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RowIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">client</span><span class="p">,</span>
@@ -1306,6 +1320,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_field_to_index</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_field_to_index_mapping</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_total_rows</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_page_size</span> <span class="o">=</span> <span class="n">page_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selected_fields</span> <span class="o">=</span> <span class="n">selected_fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span>
 
     <span class="k">def</span> <span class="nf">_get_next_page_response</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Requests the next page from the path provided.</span>
@@ -1331,8 +1348,80 @@
         <span class="sd">&quot;&quot;&quot;int: The total number of rows in the table.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_rows</span>
 
-<div class="viewcode-block" id="RowIterator.to_dataframe"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.RowIterator.html#google.cloud.bigquery.table.RowIterator.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_to_dataframe_tabledata_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Use (slower, but free) tabledata.list to construct a DataFrame.&quot;&quot;&quot;</span>
+        <span class="n">column_headers</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span>
+        <span class="c1"># Use generator, rather than pulling the whole rowset into memory.</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">column_headers</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_to_dataframe_bqstorage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Use (faster, but billable) BQ Storage API to construct DataFrame.&quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">concurrent.futures</span>
+        <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_storage_v1beta1</span>
+
+        <span class="k">if</span> <span class="s2">&quot;$&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">table_id</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Reading from a specific partition is not currently supported.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">table_id</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Reading from a specific snapshot is not currently supported.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">read_options</span> <span class="o">=</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">TableReadOptions</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_fields</span><span class="p">:</span>
+                <span class="n">read_options</span><span class="o">.</span><span class="n">selected_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">session</span> <span class="o">=</span> <span class="n">bqstorage_client</span><span class="o">.</span><span class="n">create_read_session</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">to_bqstorage</span><span class="p">(),</span>
+            <span class="s2">&quot;projects/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">),</span>
+            <span class="n">read_options</span><span class="o">=</span><span class="n">read_options</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># We need to parse the schema manually so that we can rearrange the</span>
+        <span class="c1"># columns.</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">avro_schema</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]]</span>
+
+        <span class="c1"># Avoid reading rows from an empty table. pandas.concat will fail on an</span>
+        <span class="c1"># empty list.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">session</span><span class="o">.</span><span class="n">streams</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">get_dataframe</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamPosition</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">)</span>
+            <span class="n">rowstream</span> <span class="o">=</span> <span class="n">bqstorage_client</span><span class="o">.</span><span class="n">read_rows</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">rowstream</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+            <span class="n">frames</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">get_dataframe</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
+
+        <span class="c1"># rowstream.to_dataframe() does not preserve column order. Rearrange at</span>
+        <span class="c1"># the end using manually-parsed schema.</span>
+        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)[</span><span class="n">columns</span><span class="p">]</span>
+
+<div class="viewcode-block" id="RowIterator.to_dataframe"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.RowIterator.html#google.cloud.bigquery.table.RowIterator.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a pandas DataFrame from the query results.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bqstorage_client ( \</span>
+<span class="sd">                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \</span>
+<span class="sd">            ):</span>
+<span class="sd">                Optional. A BigQuery Storage API client. If supplied, use the</span>
+<span class="sd">                faster BigQuery Storage API to fetch rows from BigQuery. This</span>
+<span class="sd">                API is a billable API.</span>
+
+<span class="sd">                This method requires the ``fastavro`` and</span>
+<span class="sd">                ``google-cloud-bigquery-storage`` libraries.</span>
+
+<span class="sd">                Reading from a specific partition or snapshot is not</span>
+<span class="sd">                currently supported by this method.</span>
+
+<span class="sd">                **Caution**: There is a known issue reading small anonymous</span>
+<span class="sd">                query result tables with the BQ Storage API. Write your query</span>
+<span class="sd">                results to a destination table to work around this issue.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pandas.DataFrame:</span>
@@ -1347,11 +1436,10 @@
         <span class="k">if</span> <span class="n">pandas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_NO_PANDAS_ERROR</span><span class="p">)</span>
 
-        <span class="n">column_headers</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span>
-        <span class="c1"># Use generator, rather than pulling the whole rowset into memory.</span>
-        <span class="n">rows</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">column_headers</span><span class="p">)</span></div></div>
+        <span class="k">if</span> <span class="n">bqstorage_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_bqstorage</span><span class="p">(</span><span class="n">bqstorage_client</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_tabledata_list</span><span class="p">()</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">_EmptyRowIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
