@@ -18,6 +18,7 @@ from __future__ import absolute_import
 
 import copy
 import datetime
+import json
 import operator
 import warnings
 
@@ -1242,6 +1243,17 @@ class RowIterator(HTTPIterator):
         page_size (int, optional): The number of items to return per page.
         extra_params (Dict[str, object]):
             Extra query string parameters for the API call.
+        table (Union[ \
+            :class:`~google.cloud.bigquery.table.Table`, \
+            :class:`~google.cloud.bigquery.table.TableReference`, \
+        ]):
+            Optional. The table which these rows belong to, or a reference to
+            it. Used to call the BigQuery Storage API to fetch rows.
+        selected_fields (Sequence[ \
+            google.cloud.bigquery.schema.SchemaField, \
+        ]):
+            Optional. A subset of columns to select from this table.
+
     """
 
     def __init__(
@@ -1254,6 +1266,8 @@ class RowIterator(HTTPIterator):
         max_results=None,
         page_size=None,
         extra_params=None,
+        table=None,
+        selected_fields=None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1271,6 +1285,9 @@ class RowIterator(HTTPIterator):
         self._field_to_index = _helpers._field_to_index_mapping(schema)
         self._total_rows = None
         self._page_size = page_size
+        self._table = table
+        self._selected_fields = selected_fields
+        self._project = client.project
 
     def _get_next_page_response(self):
         """Requests the next page from the path provided.
@@ -1296,8 +1313,80 @@ class RowIterator(HTTPIterator):
         """int: The total number of rows in the table."""
         return self._total_rows
 
-    def to_dataframe(self):
+    def _to_dataframe_tabledata_list(self):
+        """Use (slower, but free) tabledata.list to construct a DataFrame."""
+        column_headers = [field.name for field in self.schema]
+        # Use generator, rather than pulling the whole rowset into memory.
+        rows = (row.values() for row in iter(self))
+        return pandas.DataFrame(rows, columns=column_headers)
+
+    def _to_dataframe_bqstorage(self, bqstorage_client):
+        """Use (faster, but billable) BQ Storage API to construct DataFrame."""
+        import concurrent.futures
+        from google.cloud import bigquery_storage_v1beta1
+
+        if "$" in self._table.table_id:
+            raise ValueError(
+                "Reading from a specific partition is not currently supported."
+            )
+        if "@" in self._table.table_id:
+            raise ValueError(
+                "Reading from a specific snapshot is not currently supported."
+            )
+
+        read_options = bigquery_storage_v1beta1.types.TableReadOptions()
+        if self._selected_fields is not None:
+            for field in self._selected_fields:
+                read_options.selected_fields.append(field.name)
+
+        session = bqstorage_client.create_read_session(
+            self._table.to_bqstorage(),
+            "projects/{}".format(self._project),
+            read_options=read_options,
+        )
+
+        # We need to parse the schema manually so that we can rearrange the
+        # columns.
+        schema = json.loads(session.avro_schema.schema)
+        columns = [field["name"] for field in schema["fields"]]
+
+        # Avoid reading rows from an empty table. pandas.concat will fail on an
+        # empty list.
+        if not session.streams:
+            return pandas.DataFrame(columns=columns)
+
+        def get_dataframe(stream):
+            position = bigquery_storage_v1beta1.types.StreamPosition(stream=stream)
+            rowstream = bqstorage_client.read_rows(position)
+            return rowstream.to_dataframe(session)
+
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            frames = pool.map(get_dataframe, session.streams)
+
+        # rowstream.to_dataframe() does not preserve column order. Rearrange at
+        # the end using manually-parsed schema.
+        return pandas.concat(frames)[columns]
+
+    def to_dataframe(self, bqstorage_client=None):
         """Create a pandas DataFrame from the query results.
+
+        Args:
+            bqstorage_client ( \
+                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
+            ):
+                Optional. A BigQuery Storage API client. If supplied, use the
+                faster BigQuery Storage API to fetch rows from BigQuery. This
+                API is a billable API.
+
+                This method requires the ``fastavro`` and
+                ``google-cloud-bigquery-storage`` libraries.
+
+                Reading from a specific partition or snapshot is not
+                currently supported by this method.
+
+                **Caution**: There is a known issue reading small anonymous
+                query result tables with the BQ Storage API. Write your query
+                results to a destination table to work around this issue.
 
         Returns:
             pandas.DataFrame:
@@ -1312,11 +1401,10 @@ class RowIterator(HTTPIterator):
         if pandas is None:
             raise ValueError(_NO_PANDAS_ERROR)
 
-        column_headers = [field.name for field in self.schema]
-        # Use generator, rather than pulling the whole rowset into memory.
-        rows = (row.values() for row in iter(self))
-
-        return pandas.DataFrame(rows, columns=column_headers)
+        if bqstorage_client is not None:
+            return self._to_dataframe_bqstorage(bqstorage_client)
+        else:
+            return self._to_dataframe_tabledata_list()
 
 
 class _EmptyRowIterator(object):
