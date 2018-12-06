@@ -21,11 +21,11 @@ See: `Speech Asynchronous Recognize`_
     >>> client = speech.SpeechClient()
     >>> audio = speech.types.RecognitionAudio(
     ...     uri='gs://my-bucket/recording.flac')
-    >>> config=speech.types.RecognitionConfig(
+    >>> config = speech.types.RecognitionConfig(
     ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
     ...     language_code='en-US',
     ...     sample_rate_hertz=44100)
-    >>> operation = client.long_running_recognize(config, audio)
+    >>> operation = client.long_running_recognize(config=config, audio=audio)
     >>> op_result = operation.result()
     >>> for result in op_result.results:
     ...     for alternative in result.alternatives:
@@ -52,11 +52,11 @@ Great Britain.
     >>> client = speech.SpeechClient()
     >>> audio = speech.types.RecognitionAudio(
     ...     uri='gs://my-bucket/recording.flac')
-    >>> config=speech.types.RecognitionConfig(
+    >>> config = speech.types.RecognitionConfig(
     ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
     ...     language_code='en-US',
     ...     sample_rate_hertz=44100)
-    >>> results = client.recognize(config, audio)
+    >>> results = client.recognize(config=config, audio=audio)
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
@@ -77,12 +77,12 @@ Example of using the profanity filter.
     >>> client = speech.SpeechClient()
     >>> audio = speech.types.RecognitionAudio(
     ...     uri='gs://my-bucket/recording.flac')
-    >>> config=speech.types.RecognitionConfig(
+    >>> config = speech.types.RecognitionConfig(
     ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
     ...     language_code='en-US',
     ...     sample_rate_hertz=44100,
     ...     profanity_filter=True)
-    >>> results = client.recognize(config, audio)
+    >>> results = client.recognize(config=config, audio=audio)
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
@@ -103,14 +103,14 @@ words to the vocabulary of the recognizer.
     >>> client = speech.SpeechClient()
     >>> audio = speech.types.RecognitionAudio(
     ...     uri='gs://my-bucket/recording.flac')
-    >>> config=speech.types.RecognitionConfig(
+    >>> config = speech.types.RecognitionConfig(
     ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
     ...     language_code='en-US',
     ...     sample_rate_hertz=44100,
     ...     speech_contexts=[speech.types.SpeechContext(
     ...         phrases=['hi', 'good afternoon'],
     ...     )])
-    >>> results = client.recognize(config, audio)
+    >>> results = client.recognize(config=config, audio=audio)
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
