@@ -62,8 +62,7 @@ class TestClient(unittest.TestCase):
 
     def test_trace_api_existing(self):
         """Check that the client caches _trace_api."""
-        client = self._make_one(project=self.project,
-                                credentials=_make_credentials())
+        client = self._make_one(project=self.project, credentials=_make_credentials())
         client._trace_api = mock.sentinel.trace_api
         self.assertIs(client.trace_api, mock.sentinel.trace_api)
 
