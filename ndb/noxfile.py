@@ -45,7 +45,7 @@ def unit(session):
         run_args.extend(
             [
                 "--cov=google.cloud.ndb",
-                "--cov=tests",
+                "--cov=tests.unit",
                 "--cov-config",
                 get_path(".coveragerc"),
                 "--cov-report=",
@@ -87,6 +87,14 @@ def run_black(session, use_check=False):
 
 
 @nox.session(py=DEFAULT_INTERPRETER)
+def blacken(session):
+    # Install all dependencies.
+    session.install("black")
+    # Run ``black``.
+    run_black(session)
+
+
+@nox.session(py=DEFAULT_INTERPRETER)
 def lint(session):
     """Run linters.
     Returns a failure if the linters find linting errors or sufficiently
@@ -95,14 +103,6 @@ def lint(session):
     session.install("flake8", "black")
     run_black(session, use_check=True)
     session.run("flake8", "google", "tests")
-
-
-@nox.session(py=DEFAULT_INTERPRETER)
-def blacken(session):
-    # Install all dependencies.
-    session.install("black")
-    # Run ``black``.
-    run_black(session)
 
 
 @nox.session(py=DEFAULT_INTERPRETER)
