@@ -90,9 +90,12 @@ class TestPolicy:
         MEMBER = "user:phred@example.com"
         expected = set([MEMBER])
         policy = self._make_one()
-        with warnings.catch_warnings():
-            warnings.simplefilter("always")
+
+        with warnings.catch_warnings(record=True) as warned:
             policy.owners = [MEMBER]
+
+        warning, = warned
+        assert warning.category is DeprecationWarning
         assert policy[OWNER_ROLE] == expected
 
     def test_editors_getter(self):
@@ -111,9 +114,12 @@ class TestPolicy:
         MEMBER = "user:phred@example.com"
         expected = set([MEMBER])
         policy = self._make_one()
-        with warnings.catch_warnings():
-            warnings.simplefilter("always")
+
+        with warnings.catch_warnings(record=True) as warned:
             policy.editors = [MEMBER]
+
+        warning, = warned
+        assert warning.category is DeprecationWarning
         assert policy[EDITOR_ROLE] == expected
 
     def test_viewers_getter(self):
@@ -132,9 +138,12 @@ class TestPolicy:
         MEMBER = "user:phred@example.com"
         expected = set([MEMBER])
         policy = self._make_one()
-        with warnings.catch_warnings():
-            warnings.simplefilter("always")
+
+        with warnings.catch_warnings(record=True) as warned:
             policy.viewers = [MEMBER]
+
+        warning, = warned
+        assert warning.category is DeprecationWarning
         assert policy[VIEWER_ROLE] == expected
 
     def test_user(self):
@@ -240,17 +249,20 @@ class TestPolicy:
         assert policy.to_api_repr() == {}
 
     def test_to_api_repr_binding_w_duplicates(self):
+        import warnings
         from google.api_core.iam import OWNER_ROLE
 
         OWNER = "group:cloud-logs@google.com"
         policy = self._make_one()
-        policy.owners = [OWNER, OWNER]
+        with warnings.catch_warnings(record=True):
+            policy.owners = [OWNER, OWNER]
         assert policy.to_api_repr() == {
             "bindings": [{"role": OWNER_ROLE, "members": [OWNER]}]
         }
 
     def test_to_api_repr_full(self):
         import operator
+        import warnings
         from google.api_core.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
 
         OWNER1 = "group:cloud-logs@google.com"
@@ -265,9 +277,10 @@ class TestPolicy:
             {"role": VIEWER_ROLE, "members": [VIEWER1, VIEWER2]},
         ]
         policy = self._make_one("DEADBEEF", 17)
-        policy.owners = [OWNER1, OWNER2]
-        policy.editors = [EDITOR1, EDITOR2]
-        policy.viewers = [VIEWER1, VIEWER2]
+        with warnings.catch_warnings(record=True):
+            policy.owners = [OWNER1, OWNER2]
+            policy.editors = [EDITOR1, EDITOR2]
+            policy.viewers = [VIEWER1, VIEWER2]
         resource = policy.to_api_repr()
         assert resource["etag"] == "DEADBEEF"
         assert resource["version"] == 17
