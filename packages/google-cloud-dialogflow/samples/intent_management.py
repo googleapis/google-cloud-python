@@ -81,7 +81,8 @@ def create_intent(project_id, display_name, training_phrases_parts,
     intent = dialogflow.types.Intent(
         display_name=display_name,
         training_phrases=training_phrases,
-        messages=[message])
+        messages=[message],
+        ml_enabled=True)
 
     response = intents_client.create_intent(parent, intent)
 
