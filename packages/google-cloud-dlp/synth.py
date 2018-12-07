@@ -43,26 +43,13 @@ s.replace(
     "# -*- coding: utf-8 -*-\n\g<0>",
 )
 
-# Fix unindentation of bullet list second line
-s.replace(
-    "google/cloud/dlp_v2/gapic/dlp_service_client.py",
-    "(                \* .*\n                )([^\s*])",
-    "\g<1>  \g<2>",
-)
-
-s.replace(
-    "google/cloud/dlp_v2/gapic/dlp_service_client.py",
-    "(\s+)\*.*\n\s+::\n\n",
-    "\g<1>  ::\n",
-)
-
 # Fix raw-latex bits in storage_pb2.py
-# s.replace(
-#     "google/cloud/dlp_v2/proto/storage_pb2.py",
-#     "number regex.*\n(\s+)latex:.*\n",
-#     "number regex \"(\\d\{3\}) \\d\{3\}-\\d\{4\} \"\\\n"
-#     "\g<1>could be adjusted upwards if the area code is \\\n"
-# )
+s.replace(
+    "google/cloud/dlp_v2/proto/storage_pb2.py",
+    "number regex.*\n(\s+)latex:.*\n",
+    "number regex \"(\\d\{3\}) \\d\{3\}-\\d\{4\} \"\\\n"
+    "\g<1>could be adjusted upwards if the area code is \\\n"
+)
 
 # Fix Docstrings in google/cloud/dlp_v2/proto/storage_pb2.py
 s.replace(
