@@ -243,6 +243,3 @@ class Policy(collections_abc.MutableMapping):
                 del resource["bindings"]
 
         return resource
-
-
-collections_abc.MutableMapping.register(Policy)
