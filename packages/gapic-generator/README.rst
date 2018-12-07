@@ -34,7 +34,7 @@ Disclaimer
 This is not an official Google product.
 
 
-.. |release level| image:: https://img.shields.io/badge/release%20level-pre%20alpha-red.svg?style&#x3D;flat
+.. |release level| image:: https://img.shields.io/badge/release%20level-alpha-orange.svg?style&#x3D;flat
   :target: https://cloud.google.com/terms/launch-stages
 .. |docs| image:: https://readthedocs.org/projects/gapic-generator-python/badge/?version=latest
   :target: https://gapic-generator-python.readthedocs.io/

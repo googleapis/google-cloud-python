@@ -4,13 +4,47 @@ workflows:
   version: 2
   tests:
     jobs:
-      - unit-3.6
-      - unit-3.7
+      - unit-3.6:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - unit-3.7:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
       - showcase:
           requires:
             - unit-3.6
             - unit-3.7
-      - docs
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - docs:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - publish_package:
+          requires:
+            - unit-3.6
+            - unit-3.7
+            - showcase
+            - docs
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - publish_image:
+          requires:
+            - unit-3.6
+            - unit-3.7
+            - showcase
+            - docs
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
 jobs:
   unit-3.6:
     docker:
@@ -103,3 +137,56 @@ jobs:
       - run:
           name: Build the documentation.
           command: nox -s docs
+  publish_package:
+    docker:
+      - image: python:3.7-slim
+    steps:
+      - checkout
+      - run:
+          name: Decrypt the PyPI key.
+          command: |
+            openssl aes-256-cbc -d \
+              -in .circleci/.pypirc.enc \
+              -out ~/.pypirc \
+              -k "${PYPIRC_ENCRYPTION_KEY}"
+      - run:
+          name: Publish to PyPI.
+          command: python setup.py sdist upload
+  publish_image:
+    docker:
+      - image: docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image.
+          command: docker build . -t gcr.io/gapic-images/gapic-generator-python:latest
+      - run:
+          name: Download curl
+          command: apk add --no-cache curl
+      - run:
+          name: Download the GCR credential helper.
+          command: |
+            curl -fsSL https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v1.5.0/docker-credential-gcr_linux_amd64-1.5.0.tar.gz \
+              | tar xz --to-stdout ./docker-credential-gcr \
+              > /usr/bin/docker-credential-gcr && chmod a+x /usr/bin/docker-credential-gcr
+      - run:
+          name: Set up authentication to Google Container Registry.
+          command: |
+            echo ${GCLOUD_SERVICE_KEY} > ${GOOGLE_APPLICATION_CREDENTIALS}
+            docker-credential-gcr configure-docker
+      - run:
+          name: Tag the Docker image and push it to Google Container Registry.
+          command: |
+            if [ -n "$CIRCLE_TAG" ]; then
+              export MAJOR=`echo $CIRCLE_TAG | awk -F '.' '{ print $1; }'`
+              export MINOR=`echo $CIRCLE_TAG | awk -F '.' '{ print $2; }'`
+              export PATCH=`echo $CIRCLE_TAG | awk -F '.' '{ print $3; }'`
+              docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
+              docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
+              docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR
+              docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
+              docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
+              docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR
+            fi
+            docker push gcr.io/gapic-images/gapic-generator-python:latest
