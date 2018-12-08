@@ -42,18 +42,19 @@ from google.cloud.logging_v2.proto import logging_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-logging").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    'google-cloud-logging', ).version
 
 
 class MetricsServiceV2Client(object):
     """Service for configuring logs-based metrics."""
 
-    SERVICE_ADDRESS = "logging.googleapis.com:443"
+    SERVICE_ADDRESS = 'logging.googleapis.com:443'
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.logging.v2.MetricsServiceV2"
+    _INTERFACE_NAME = 'google.logging.v2.MetricsServiceV2'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -69,8 +70,9 @@ class MetricsServiceV2Client(object):
         Returns:
             MetricsServiceV2Client: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -79,24 +81,25 @@ class MetricsServiceV2Client(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            'projects/{project}',
+            project=project,
         )
 
     @classmethod
     def metric_path(cls, project, metric):
         """Return a fully-qualified metric string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/metrics/{metric}", project=project, metric=metric
+            'projects/{project}/metrics/{metric}',
+            project=project,
+            metric=metric,
         )
 
-    def __init__(
-        self,
-        transport=None,
-        channel=None,
-        credentials=None,
-        client_config=None,
-        client_info=None,
-    ):
+    def __init__(self,
+                 transport=None,
+                 channel=None,
+                 credentials=None,
+                 client_config=None,
+                 client_info=None):
         """Constructor.
 
         Args:
@@ -130,19 +133,18 @@ class MetricsServiceV2Client(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                "The `client_config` argument is deprecated.",
+                'The `client_config` argument is deprecated.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
         else:
             client_config = metrics_service_v2_client_config.config
 
         if channel:
             warnings.warn(
-                "The `channel` argument is deprecated; use " "`transport` instead.",
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -151,24 +153,25 @@ class MetricsServiceV2Client(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=metrics_service_v2_grpc_transport.MetricsServiceV2GrpcTransport,
+                    default_class=metrics_service_v2_grpc_transport.
+                    MetricsServiceV2GrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        "Received both a transport instance and "
-                        "credentials; these are mutually exclusive."
-                    )
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
                 self.transport = transport
         else:
             self.transport = metrics_service_v2_grpc_transport.MetricsServiceV2GrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
-            )
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -178,8 +181,7 @@ class MetricsServiceV2Client(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
-        )
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -188,14 +190,12 @@ class MetricsServiceV2Client(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def list_log_metrics(
-        self,
-        parent,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def list_log_metrics(self,
+                         parent,
+                         page_size=None,
+                         retry=google.api_core.gapic_v1.method.DEFAULT,
+                         timeout=google.api_core.gapic_v1.method.DEFAULT,
+                         metadata=None):
         """
         Lists logs-based metrics.
 
@@ -254,41 +254,39 @@ class MetricsServiceV2Client(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_log_metrics" not in self._inner_api_calls:
+        if 'list_log_metrics' not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_log_metrics"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_log_metrics,
-                default_retry=self._method_configs["ListLogMetrics"].retry,
-                default_timeout=self._method_configs["ListLogMetrics"].timeout,
-                client_info=self._client_info,
-            )
+                'list_log_metrics'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_log_metrics,
+                    default_retry=self._method_configs['ListLogMetrics'].retry,
+                    default_timeout=self._method_configs['ListLogMetrics'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = logging_metrics_pb2.ListLogMetricsRequest(
-            parent=parent, page_size=page_size
+            parent=parent,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_log_metrics"],
+                self._inner_api_calls['list_log_metrics'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="metrics",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='metrics',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
-    def get_log_metric(
-        self,
-        metric_name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def get_log_metric(self,
+                       metric_name,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Gets a logs-based metric.
 
@@ -327,29 +325,27 @@ class MetricsServiceV2Client(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_log_metric" not in self._inner_api_calls:
+        if 'get_log_metric' not in self._inner_api_calls:
             self._inner_api_calls[
-                "get_log_metric"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_log_metric,
-                default_retry=self._method_configs["GetLogMetric"].retry,
-                default_timeout=self._method_configs["GetLogMetric"].timeout,
-                client_info=self._client_info,
-            )
+                'get_log_metric'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_log_metric,
+                    default_retry=self._method_configs['GetLogMetric'].retry,
+                    default_timeout=self._method_configs['GetLogMetric'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = logging_metrics_pb2.GetLogMetricRequest(metric_name=metric_name)
-        return self._inner_api_calls["get_log_metric"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = logging_metrics_pb2.GetLogMetricRequest(
+            metric_name=metric_name, )
+        return self._inner_api_calls['get_log_metric'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def create_log_metric(
-        self,
-        parent,
-        metric,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def create_log_metric(self,
+                          parent,
+                          metric,
+                          retry=google.api_core.gapic_v1.method.DEFAULT,
+                          timeout=google.api_core.gapic_v1.method.DEFAULT,
+                          metadata=None):
         """
         Creates a logs-based metric.
 
@@ -398,31 +394,30 @@ class MetricsServiceV2Client(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_log_metric" not in self._inner_api_calls:
+        if 'create_log_metric' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_log_metric"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_log_metric,
-                default_retry=self._method_configs["CreateLogMetric"].retry,
-                default_timeout=self._method_configs["CreateLogMetric"].timeout,
-                client_info=self._client_info,
-            )
+                'create_log_metric'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_log_metric,
+                    default_retry=self._method_configs['CreateLogMetric'].
+                    retry,
+                    default_timeout=self._method_configs['CreateLogMetric'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = logging_metrics_pb2.CreateLogMetricRequest(
-            parent=parent, metric=metric
+            parent=parent,
+            metric=metric,
         )
-        return self._inner_api_calls["create_log_metric"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['create_log_metric'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def update_log_metric(
-        self,
-        metric_name,
-        metric,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def update_log_metric(self,
+                          metric_name,
+                          metric,
+                          retry=google.api_core.gapic_v1.method.DEFAULT,
+                          timeout=google.api_core.gapic_v1.method.DEFAULT,
+                          metadata=None):
         """
         Creates or updates a logs-based metric.
 
@@ -472,30 +467,29 @@ class MetricsServiceV2Client(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "update_log_metric" not in self._inner_api_calls:
+        if 'update_log_metric' not in self._inner_api_calls:
             self._inner_api_calls[
-                "update_log_metric"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_log_metric,
-                default_retry=self._method_configs["UpdateLogMetric"].retry,
-                default_timeout=self._method_configs["UpdateLogMetric"].timeout,
-                client_info=self._client_info,
-            )
+                'update_log_metric'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.update_log_metric,
+                    default_retry=self._method_configs['UpdateLogMetric'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateLogMetric'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = logging_metrics_pb2.UpdateLogMetricRequest(
-            metric_name=metric_name, metric=metric
+            metric_name=metric_name,
+            metric=metric,
         )
-        return self._inner_api_calls["update_log_metric"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['update_log_metric'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def delete_log_metric(
-        self,
-        metric_name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def delete_log_metric(self,
+                          metric_name,
+                          retry=google.api_core.gapic_v1.method.DEFAULT,
+                          timeout=google.api_core.gapic_v1.method.DEFAULT,
+                          metadata=None):
         """
         Deletes a logs-based metric.
 
@@ -531,17 +525,18 @@ class MetricsServiceV2Client(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_log_metric" not in self._inner_api_calls:
+        if 'delete_log_metric' not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_log_metric"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_log_metric,
-                default_retry=self._method_configs["DeleteLogMetric"].retry,
-                default_timeout=self._method_configs["DeleteLogMetric"].timeout,
-                client_info=self._client_info,
-            )
+                'delete_log_metric'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_log_metric,
+                    default_retry=self._method_configs['DeleteLogMetric'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteLogMetric'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = logging_metrics_pb2.DeleteLogMetricRequest(metric_name=metric_name)
-        self._inner_api_calls["delete_log_metric"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = logging_metrics_pb2.DeleteLogMetricRequest(
+            metric_name=metric_name, )
+        self._inner_api_calls['delete_log_metric'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
