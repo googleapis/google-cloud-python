@@ -27,20 +27,17 @@ class BigQueryStorageGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
-
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        "https://www.googleapis.com/auth/bigquery",
-        "https://www.googleapis.com/auth/cloud-platform",
+        'https://www.googleapis.com/auth/bigquery',
+        'https://www.googleapis.com/auth/cloud-platform',
     )
 
-    def __init__(
-        self,
-        channel=None,
-        credentials=None,
-        address="bigquerystorage.googleapis.com:443",
-    ):
+    def __init__(self,
+                 channel=None,
+                 credentials=None,
+                 address='bigquerystorage.googleapis.com:443'):
         """Instantiate the transport class.
 
         Args:
@@ -58,25 +55,29 @@ class BigQueryStorageGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:  # pragma: no cover
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
-            )
+                'The `channel` and `credentials` arguments are mutually '
+                'exclusive.', )
 
         # Create the channel.
         if channel is None:  # pragma: no cover
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+            )
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "big_query_storage_stub": storage_pb2_grpc.BigQueryStorageStub(channel)
+            'big_query_storage_stub':
+            storage_pb2_grpc.BigQueryStorageStub(channel),
         }
 
     @classmethod
-    def create_channel(
-        cls, address="bigquerystorage.googleapis.com:443", credentials=None
-    ):
+    def create_channel(cls,
+                       address='bigquerystorage.googleapis.com:443',
+                       credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -91,7 +92,9 @@ class BigQueryStorageGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(  # pragma: no cover
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
         )
 
     @property
@@ -125,7 +128,7 @@ class BigQueryStorageGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["big_query_storage_stub"].CreateReadSession
+        return self._stubs['big_query_storage_stub'].CreateReadSession
 
     @property
     def read_rows(self):
@@ -146,7 +149,7 @@ class BigQueryStorageGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["big_query_storage_stub"].ReadRows
+        return self._stubs['big_query_storage_stub'].ReadRows
 
     @property
     def batch_create_read_session_streams(self):
@@ -161,7 +164,8 @@ class BigQueryStorageGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["big_query_storage_stub"].BatchCreateReadSessionStreams
+        return self._stubs[
+            'big_query_storage_stub'].BatchCreateReadSessionStreams
 
     @property
     def finalize_stream(self):
@@ -187,7 +191,7 @@ class BigQueryStorageGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["big_query_storage_stub"].FinalizeStream
+        return self._stubs['big_query_storage_stub'].FinalizeStream
 
     @property
     def split_read_stream(self):
@@ -212,4 +216,4 @@ class BigQueryStorageGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["big_query_storage_stub"].SplitReadStream
+        return self._stubs['big_query_storage_stub'].SplitReadStream

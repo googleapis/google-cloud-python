@@ -29,9 +29,7 @@ import grpc
 
 from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client_config
 from google.cloud.bigquery_storage_v1beta1.gapic import enums
-from google.cloud.bigquery_storage_v1beta1.gapic.transports import (
-    big_query_storage_grpc_transport,
-)
+from google.cloud.bigquery_storage_v1beta1.gapic.transports import big_query_storage_grpc_transport
 from google.cloud.bigquery_storage_v1beta1.proto import read_options_pb2
 from google.cloud.bigquery_storage_v1beta1.proto import storage_pb2
 from google.cloud.bigquery_storage_v1beta1.proto import storage_pb2_grpc
@@ -39,8 +37,7 @@ from google.cloud.bigquery_storage_v1beta1.proto import table_reference_pb2
 from google.protobuf import empty_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-bigquery-storage"
-).version
+    'google-cloud-bigquery-storage', ).version
 
 
 class BigQueryStorageClient(object):
@@ -50,12 +47,12 @@ class BigQueryStorageClient(object):
     The BigQuery storage API can be used to read data stored in BigQuery.
     """
 
-    SERVICE_ADDRESS = "bigquerystorage.googleapis.com:443"
+    SERVICE_ADDRESS = 'bigquerystorage.googleapis.com:443'
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.cloud.bigquery.storage.v1beta1.BigQueryStorage"
+    _INTERFACE_NAME = 'google.cloud.bigquery.storage.v1beta1.BigQueryStorage'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -71,20 +68,19 @@ class BigQueryStorageClient(object):
         Returns:
             BigQueryStorageClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
-    def __init__(
-        self,
-        transport=None,
-        channel=None,
-        credentials=None,
-        client_config=None,
-        client_info=None,
-    ):
+    def __init__(self,
+                 transport=None,
+                 channel=None,
+                 credentials=None,
+                 client_config=None,
+                 client_info=None):
         """Constructor.
 
         Args:
@@ -118,19 +114,18 @@ class BigQueryStorageClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                "The `client_config` argument is deprecated.",
+                'The `client_config` argument is deprecated.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
         else:
             client_config = big_query_storage_client_config.config
 
         if channel:
             warnings.warn(
-                "The `channel` argument is deprecated; use " "`transport` instead.",
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -139,24 +134,25 @@ class BigQueryStorageClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=big_query_storage_grpc_transport.BigQueryStorageGrpcTransport,
+                    default_class=big_query_storage_grpc_transport.
+                    BigQueryStorageGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        "Received both a transport instance and "
-                        "credentials; these are mutually exclusive."
-                    )
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
                 self.transport = transport
         else:
             self.transport = big_query_storage_grpc_transport.BigQueryStorageGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
-            )
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -166,8 +162,7 @@ class BigQueryStorageClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
-        )
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -176,18 +171,16 @@ class BigQueryStorageClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def create_read_session(
-        self,
-        table_reference,
-        parent,
-        table_modifiers=None,
-        requested_streams=None,
-        read_options=None,
-        format_=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def create_read_session(self,
+                            table_reference,
+                            parent,
+                            table_modifiers=None,
+                            requested_streams=None,
+                            read_options=None,
+                            format_=None,
+                            retry=google.api_core.gapic_v1.method.DEFAULT,
+                            timeout=google.api_core.gapic_v1.method.DEFAULT,
+                            metadata=None):
         """
         Creates a new read session. A read session divides the contents of a
         BigQuery table into one or more streams, which can then be used to read
@@ -259,15 +252,16 @@ class BigQueryStorageClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_read_session" not in self._inner_api_calls:
+        if 'create_read_session' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_read_session"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_read_session,
-                default_retry=self._method_configs["CreateReadSession"].retry,
-                default_timeout=self._method_configs["CreateReadSession"].timeout,
-                client_info=self._client_info,
-            )
+                'create_read_session'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_read_session,
+                    default_retry=self._method_configs['CreateReadSession'].
+                    retry,
+                    default_timeout=self._method_configs['CreateReadSession'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = storage_pb2.CreateReadSessionRequest(
             table_reference=table_reference,
@@ -281,29 +275,25 @@ class BigQueryStorageClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [
-                ("table_reference.project_id", table_reference.project_id),
-                ("table_reference.dataset_id", table_reference.dataset_id),
-            ]
+            routing_header = [('table_reference.project_id',
+                               table_reference.project_id),
+                              ('table_reference.dataset_id',
+                               table_reference.dataset_id)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(  # pragma: no cover
-                routing_header
-            )
+                routing_header)
             metadata.append(routing_metadata)  # pragma: no cover
 
-        return self._inner_api_calls["create_read_session"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['create_read_session'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def read_rows(
-        self,
-        read_position,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def read_rows(self,
+                  read_position,
+                  retry=google.api_core.gapic_v1.method.DEFAULT,
+                  timeout=google.api_core.gapic_v1.method.DEFAULT,
+                  metadata=None):
         """
         Reads rows from the table in the format prescribed by the read session.
         Each response contains one or more table rows, up to a maximum of 10 MiB
@@ -354,42 +344,39 @@ class BigQueryStorageClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "read_rows" not in self._inner_api_calls:
+        if 'read_rows' not in self._inner_api_calls:
             self._inner_api_calls[
-                "read_rows"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.read_rows,
-                default_retry=self._method_configs["ReadRows"].retry,
-                default_timeout=self._method_configs["ReadRows"].timeout,
-                client_info=self._client_info,
-            )
+                'read_rows'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.read_rows,
+                    default_retry=self._method_configs['ReadRows'].retry,
+                    default_timeout=self._method_configs['ReadRows'].timeout,
+                    client_info=self._client_info,
+                )
 
-        request = storage_pb2.ReadRowsRequest(read_position=read_position)
+        request = storage_pb2.ReadRowsRequest(read_position=read_position, )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("read_position.stream.name", read_position.stream.name)]
+            routing_header = [('read_position.stream.name',
+                               read_position.stream.name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(  # pragma: no cover
-                routing_header
-            )
+                routing_header)
             metadata.append(routing_metadata)  # pragma: no cover
 
-        return self._inner_api_calls["read_rows"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['read_rows'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def batch_create_read_session_streams(
-        self,
-        session,
-        requested_streams,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            requested_streams,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Creates additional streams for a ReadSession. This API can be used to
         dynamically adjust the parallelism of a batch processing task upwards by
@@ -437,47 +424,41 @@ class BigQueryStorageClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "batch_create_read_session_streams" not in self._inner_api_calls:
+        if 'batch_create_read_session_streams' not in self._inner_api_calls:
             self._inner_api_calls[
-                "batch_create_read_session_streams"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.batch_create_read_session_streams,
-                default_retry=self._method_configs[
-                    "BatchCreateReadSessionStreams"
-                ].retry,
-                default_timeout=self._method_configs[
-                    "BatchCreateReadSessionStreams"
-                ].timeout,
-                client_info=self._client_info,
-            )
+                'batch_create_read_session_streams'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.batch_create_read_session_streams,
+                    default_retry=self.
+                    _method_configs['BatchCreateReadSessionStreams'].retry,
+                    default_timeout=self.
+                    _method_configs['BatchCreateReadSessionStreams'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = storage_pb2.BatchCreateReadSessionStreamsRequest(
-            session=session, requested_streams=requested_streams
+            session=session,
+            requested_streams=requested_streams,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session.name", session.name)]
+            routing_header = [('session.name', session.name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(  # pragma: no cover
-                routing_header
-            )
+                routing_header)
             metadata.append(routing_metadata)  # pragma: no cover
 
-        return self._inner_api_calls["batch_create_read_session_streams"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['batch_create_read_session_streams'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def finalize_stream(
-        self,
-        stream,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def finalize_stream(self,
+                        stream,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Triggers the graceful termination of a single stream in a ReadSession. This
         API can be used to dynamically adjust the parallelism of a batch processing
@@ -526,41 +507,37 @@ class BigQueryStorageClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "finalize_stream" not in self._inner_api_calls:
+        if 'finalize_stream' not in self._inner_api_calls:
             self._inner_api_calls[
-                "finalize_stream"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.finalize_stream,
-                default_retry=self._method_configs["FinalizeStream"].retry,
-                default_timeout=self._method_configs["FinalizeStream"].timeout,
-                client_info=self._client_info,
-            )
+                'finalize_stream'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.finalize_stream,
+                    default_retry=self._method_configs['FinalizeStream'].retry,
+                    default_timeout=self._method_configs['FinalizeStream'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = storage_pb2.FinalizeStreamRequest(stream=stream)
+        request = storage_pb2.FinalizeStreamRequest(stream=stream, )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("stream.name", stream.name)]
+            routing_header = [('stream.name', stream.name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(  # pragma: no cover
-                routing_header
-            )
+                routing_header)
             metadata.append(routing_metadata)  # pragma: no cover
 
-        self._inner_api_calls["finalize_stream"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        self._inner_api_calls['finalize_stream'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def split_read_stream(
-        self,
-        original_stream,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def split_read_stream(self,
+                          original_stream,
+                          retry=google.api_core.gapic_v1.method.DEFAULT,
+                          timeout=google.api_core.gapic_v1.method.DEFAULT,
+                          metadata=None):
         """
         Splits a given read stream into two Streams. These streams are referred
         to as the primary and the residual of the split. The original stream can
@@ -611,30 +588,30 @@ class BigQueryStorageClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "split_read_stream" not in self._inner_api_calls:
+        if 'split_read_stream' not in self._inner_api_calls:
             self._inner_api_calls[
-                "split_read_stream"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.split_read_stream,
-                default_retry=self._method_configs["SplitReadStream"].retry,
-                default_timeout=self._method_configs["SplitReadStream"].timeout,
-                client_info=self._client_info,
-            )
+                'split_read_stream'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.split_read_stream,
+                    default_retry=self._method_configs['SplitReadStream'].
+                    retry,
+                    default_timeout=self._method_configs['SplitReadStream'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = storage_pb2.SplitReadStreamRequest(original_stream=original_stream)
+        request = storage_pb2.SplitReadStreamRequest(
+            original_stream=original_stream, )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("original_stream.name", original_stream.name)]
+            routing_header = [('original_stream.name', original_stream.name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(  # pragma: no cover
-                routing_header
-            )
+                routing_header)
             metadata.append(routing_metadata)  # pragma: no cover
 
-        return self._inner_api_calls["split_read_stream"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['split_read_stream'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
