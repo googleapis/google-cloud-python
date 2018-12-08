@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## 0.20.1
+
+12-07-2018 16:06 PST
+
+### Implementation Changes
+- Fix trace client memory leak ([#6856](https://github.com/googleapis/google-cloud-python/pull/6856))
+
+### Dependencies
+- Update version of google-cloud-core ([#6858](https://github.com/googleapis/google-cloud-python/pull/6858))
+
+### Internal / Testing Changes
+- Add baseline for synth.metadata
+
 ## 0.20.0
 
 12-05-2018 13:16 PST
