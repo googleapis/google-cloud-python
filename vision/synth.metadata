@@ -1,0 +1,69 @@
+{
+  "updateTime": "2018-12-08T13:33:30.693760Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.2",
+        "dockerImage": "googleapis/artman@sha256:2f6b261ee7fe1aedf238991c93a20b3820de37a343d0cacf3e3e9555c2aaf2ea"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "6f6505a69b2b0a1260c93e890d636eefb859e76e",
+        "internalRef": "224530961"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2018.12.6"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p1beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p1beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p2beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p2beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p3beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p3beta1.yaml"
+      }
+    }
+  ]
+}
