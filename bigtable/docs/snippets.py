@@ -36,22 +36,31 @@ from test_utils.system import unique_resource_id
 from google.cloud._helpers import UTC
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
+from google.cloud.bigtable import column_family
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id("-")
-CLUSTER_ID = "clus-1-" + unique_resource_id("-")
-LOCATION_ID = "us-central1-f"
-ALT_LOCATION_ID = "us-central1-a"
+INSTANCE_ID = "snippet" + unique_resource_id('-')
+CLUSTER_ID = "clus-1" + unique_resource_id('-')
+TABLE_ID = "tabl-1" + unique_resource_id('-')
+LOCATION_ID = 'us-central1-f'
+ALT_LOCATION_ID = 'us-central1-a'
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
-LABEL_KEY = u"python-snippet"
-LABEL_STAMP = (
-    datetime.datetime.utcnow()
-    .replace(microsecond=0, tzinfo=UTC)
-    .strftime("%Y-%m-%dt%H-%M-%S")
-)
+LABEL_KEY = u'python-snippet'
+LABEL_STAMP = datetime.datetime.utcnow() \
+                               .replace(microsecond=0, tzinfo=UTC,) \
+                               .strftime("%Y-%m-%dt%H-%M-%S")
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
+COLUMN_FAMILY_ID1 = "col_fam_id1"
+COL_NAME1 = b'col-name1'
+CELL_VAL1 = b'cell-val1'
+ROW_KEY1 = b'row_key_id1'
+COLUMN_FAMILY_ID2 = "col_fam_id2"
+COL_NAME2 = b'col-name2'
+CELL_VAL2 = b'cell-val2'
+ROW_KEY2 = b'row_key_id2'
+
 
 
 class Config(object):
@@ -63,29 +72,75 @@ class Config(object):
 
     CLIENT = None
     INSTANCE = None
-
+    TABLE = None
 
 def setup_module():
-    client = Config.CLIENT = Client(admin=True)
-    Config.INSTANCE = client.instance(
-        INSTANCE_ID, instance_type=PRODUCTION, labels=LABELS
-    )
-    cluster = Config.INSTANCE.cluster(
-        CLUSTER_ID,
-        location_id=LOCATION_ID,
-        serve_nodes=SERVER_NODES,
-        default_storage_type=STORAGE_TYPE,
-    )
-    operation = Config.INSTANCE.create(clusters=[cluster])
-    # We want to make sure the operation completes.
-    operation.result(timeout=100)
+    import os
+    from test_utils.system import EmulatorCreds
+    from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
+    Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
+
+    if Config.IN_EMULATOR:
+        credentials = EmulatorCreds()
+        client = Config.CLIENT = Client(admin=True, credentials=credentials)
+    else:
+        client = Config.CLIENT = Client(admin=True)
+    client = Config.CLIENT = Client(project="grass-clump-479", admin=True)
+    #     client = Config.CLIENT = Client(admin=True)
+    Config.INSTANCE = client.instance(INSTANCE_ID,
+                                      instance_type=PRODUCTION,
+                                      labels=LABELS)
+    #     cluster = Config.INSTANCE.cluster(CLUSTER_ID,
+    #                                       location_id=LOCATION_ID,
+    #                                       serve_nodes=SERVER_NODES,
+    #                                       default_storage_type=STORAGE_TYPE)
+    #     Config.INSTANCE.create(clusters=[cluster])
+    #     operation = Config.INSTANCE.create(clusters=[cluster])
+    #     # We want to make sure the operation completes.
+    #     operation.result(timeout=480)
+    Config.TABLE = Config.INSTANCE.table(TABLE_ID)
+    Config.TABLE.create()
+    gc_rule = column_family.MaxVersionsGCRule(2)
+    column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID1,
+                                                gc_rule=gc_rule)
+    column_family1.create()
+    gc_rule2 = column_family.MaxVersionsGCRule(4)
+    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2,
+                                                gc_rule=gc_rule2)
+    column_family2.create()
 
 
 def teardown_module():
+    #     Config.INSTANCE.delete()
+    pass
+
+
+def x___setup_module():
+    client = Config.CLIENT = Client(admin=True)
+    Config.INSTANCE = client.instance(INSTANCE_ID,
+                                      instance_type=PRODUCTION,
+                                      labels=LABELS)
+    cluster = Config.INSTANCE.cluster(CLUSTER_ID,
+                                      location_id=LOCATION_ID,
+                                      serve_nodes=SERVER_NODES,
+                                      default_storage_type=STORAGE_TYPE)
+    operation = Config.INSTANCE.create(clusters=[cluster])
+    # We want to make sure the operation completes.
+    operation.result(timeout=100)
+    Config.TABLE = Config.INSTANCE.table(TABLE_ID)
+    Config.TABLE.create()
+    gc_rule = column_family.MaxVersionsGCRule(2)
+    column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID,
+                                                gc_rule=gc_rule)
+    column_family1.create()
+
+
+def x___teardown_module():
     Config.INSTANCE.delete()
 
 
-def test_bigtable_create_instance():
+def s___test_bigtable_create_instance():
     # [START bigtable_create_prod_instance]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import enums
@@ -114,7 +169,7 @@ def test_bigtable_create_instance():
     instance.delete()
 
 
-def test_bigtable_create_additional_cluster():
+def s___test_bigtable_create_additional_cluster():
     # [START bigtable_create_cluster]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import enums
@@ -147,7 +202,7 @@ def test_bigtable_create_additional_cluster():
     cluster.delete()
 
 
-def test_bigtable_create_app_profile():
+def s___test_bigtable_create_app_profile():
     # [START bigtable_create_app_profile]
     from google.cloud.bigtable import Client
 
@@ -172,7 +227,7 @@ def test_bigtable_create_app_profile():
     app_profile.delete(ignore_warnings=True)
 
 
-def test_bigtable_list_instances():
+def s___test_bigtable_list_instances():
     # [START bigtable_list_instances]
     from google.cloud.bigtable import Client
 
@@ -182,7 +237,7 @@ def test_bigtable_list_instances():
     assert len(instances_list) > 0
 
 
-def test_bigtable_list_clusters_on_instance():
+def s___test_bigtable_list_clusters_on_instance():
     # [START bigtable_list_clusters_on_instance]
     from google.cloud.bigtable import Client
 
@@ -193,7 +248,7 @@ def test_bigtable_list_clusters_on_instance():
     assert len(clusters_list) > 0
 
 
-def test_bigtable_list_clusters_in_project():
+def s___test_bigtable_list_clusters_in_project():
     # [START bigtable_list_clusters_in_project]
     from google.cloud.bigtable import Client
 
@@ -203,7 +258,7 @@ def test_bigtable_list_clusters_in_project():
     assert len(clusters_list) > 0
 
 
-def test_bigtable_list_app_profiles():
+def s___test_bigtable_list_app_profiles():
     # [START bigtable_list_app_profiles]
     from google.cloud.bigtable import Client
 
@@ -223,7 +278,7 @@ def test_bigtable_list_app_profiles():
     assert len(app_profiles_list) > 0
 
 
-def test_bigtable_instance_exists():
+def s___test_bigtable_instance_exists():
     # [START bigtable_check_instance_exists]
     from google.cloud.bigtable import Client
 
@@ -234,7 +289,7 @@ def test_bigtable_instance_exists():
     assert instance_exists
 
 
-def test_bigtable_cluster_exists():
+def s___test_bigtable_cluster_exists():
     # [START bigtable_check_cluster_exists]
     from google.cloud.bigtable import Client
 
@@ -246,7 +301,7 @@ def test_bigtable_cluster_exists():
     assert cluster_exists
 
 
-def test_bigtable_reload_instance():
+def s___test_bigtable_reload_instance():
     # [START bigtable_reload_instance]
     from google.cloud.bigtable import Client
 
@@ -257,7 +312,7 @@ def test_bigtable_reload_instance():
     assert instance.type_ == PRODUCTION.value
 
 
-def test_bigtable_reload_cluster():
+def s___test_bigtable_reload_cluster():
     # [START bigtable_reload_cluster]
     from google.cloud.bigtable import Client
 
@@ -269,7 +324,7 @@ def test_bigtable_reload_cluster():
     assert cluster.serve_nodes == SERVER_NODES
 
 
-def test_bigtable_update_instance():
+def s___test_bigtable_update_instance():
     # [START bigtable_update_instance]
     from google.cloud.bigtable import Client
 
@@ -282,7 +337,7 @@ def test_bigtable_update_instance():
     assert instance.display_name == display_name
 
 
-def test_bigtable_update_cluster():
+def s___test_bigtable_update_cluster():
     # [START bigtable_update_cluster]
     from google.cloud.bigtable import Client
 
@@ -295,7 +350,7 @@ def test_bigtable_update_cluster():
     assert cluster.serve_nodes == 4
 
 
-def test_bigtable_create_table():
+def s___test_bigtable_create_table():
     # [START bigtable_create_table]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import column_family
@@ -310,7 +365,57 @@ def test_bigtable_create_table():
     assert table.exists()
 
 
-def test_bigtable_list_tables():
+
+def test_bigtable_bigtable_ConditionalRow_set_cell():
+    # [START bigtable_ConditionalRow_set_cell]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row = table.row(ROW_KEY1)
+
+    cell_val = b'cell-val'
+    row.set_cell(COLUMN_FAMILY_ID1,
+                 COL_NAME1,
+                 cell_val,
+                 timestamp=datetime.datetime.utcnow())
+    # [END bigtable_ConditionalRow_set_cell]
+
+    response = table.mutate_rows([row])
+    # validate that all rows written successfully
+    for i, status in enumerate(response):
+        assert status.code == 0
+
+    #     # [START bigtable_row_row_key]
+    #     from google.cloud.bigtable import Client
+    # 
+    #     client = Client(admin=True)
+    #     instance = client.instance(INSTANCE_ID)
+    #     table = instance.table(TABLE_ID)
+    # 
+    #     row = table.row(ROW_KEY1)
+    #     row_key = row.row_key
+    #     # [END bigtable_row_row_key]
+    #     assert row_key == ROW_KEY1
+
+    #     # [START bigtable_row_table]
+    #     from google.cloud.bigtable import Client
+    # 
+    #     client = Client(admin=True)
+    #     instance = client.instance(INSTANCE_ID)
+    #     table = instance.table(TABLE_ID)
+    # 
+    #     row = table.row(ROW_KEY1)
+    #     table1 = row.table
+    #     # [END bigtable_row_table]
+
+    assert table1 == table
+    table.truncate(timeout=200)
+
+
+
+def s___test_bigtable_list_tables():
     # [START bigtable_list_tables]
     from google.cloud.bigtable import Client
 
@@ -321,7 +426,7 @@ def test_bigtable_list_tables():
     assert len(tables_list) > 0
 
 
-def test_bigtable_delete_cluster():
+def s___test_bigtable_delete_cluster():
     # [START bigtable_delete_cluster]
     from google.cloud.bigtable import Client
 
@@ -347,7 +452,7 @@ def test_bigtable_delete_cluster():
     assert not cluster_to_delete.exists()
 
 
-def test_bigtable_delete_instance():
+def s___test_bigtable_delete_instance():
     # [START bigtable_delete_instance]
     from google.cloud.bigtable import Client
 
@@ -378,7 +483,7 @@ def test_bigtable_delete_instance():
     assert not instance_to_delete.exists()
 
 
-def test_bigtable_test_iam_permissions():
+def s___test_bigtable_test_iam_permissions():
     # [START bigtable_test_iam_permissions]
     from google.cloud.bigtable import Client
 
@@ -392,7 +497,7 @@ def test_bigtable_test_iam_permissions():
     assert permissions_allowed == permissions
 
 
-def test_bigtable_set_iam_policy_then_get_iam_policy():
+def s___test_bigtable_set_iam_policy_then_get_iam_policy():
     # [START bigtable_set_iam_policy]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.policy import Policy
