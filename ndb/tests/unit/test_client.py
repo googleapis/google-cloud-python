@@ -37,7 +37,7 @@ class TestClient:
             client = client_module.Client()
         assert client.SCOPE == ("https://www.googleapis.com/auth/datastore",)
         assert client.namespace is None
-        assert client._host == client_module._DATASTORE_HOST
+        assert client.host == client_module._DATASTORE_HOST
         assert client.project == "testing"
 
     @staticmethod
