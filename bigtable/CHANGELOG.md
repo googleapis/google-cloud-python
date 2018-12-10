@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 0.32.0
+
+12-10-2018 12:47 PST
+
+
+### Implementation Changes
+- Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Remove 'deepcopy' from 'PartialRowData.cells' property. ([#6648](https://github.com/googleapis/google-cloud-python/pull/6648))
+- Pick up fixes to GAPIC generator. ([#6630](https://github.com/googleapis/google-cloud-python/pull/6630))
+
+### Dependencies
+- Update dependency to google-cloud-core ([#6835](https://github.com/googleapis/google-cloud-python/pull/6835))
+
+### Internal / Testing Changes
+- Blacken all gen'd libs ([#6792](https://github.com/googleapis/google-cloud-python/pull/6792))
+- Omit local deps ([#6701](https://github.com/googleapis/google-cloud-python/pull/6701))
+- Run black at end of synth.py ([#6698](https://github.com/googleapis/google-cloud-python/pull/6698))
+- Blackening Continued... ([#6667](https://github.com/googleapis/google-cloud-python/pull/6667))
+- Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+
 ## 0.31.1
 
 11-02-2018 08:13 PDT
