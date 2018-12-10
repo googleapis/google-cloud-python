@@ -21,7 +21,7 @@
 - Fix installation package in README.rst ([#6426](https://github.com/googleapis/google-cloud-python/pull/6426))
 - Fix [#6321](https://github.com/googleapis/google-cloud-python/pull/6321) Update README service links in quickstart guides. ([#6322](https://github.com/googleapis/google-cloud-python/pull/6322))
 - Docs: normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
-- Translate / Logging / Language: restore detailed usage docs. ([#5999](https://github.com/googleapis/google-cloud-python/pull/5999))
+- Restore detailed usage docs. ([#5999](https://github.com/googleapis/google-cloud-python/pull/5999))
 - Redirect renamed 'usage.html'/'client.html' -> 'index.html'. ([#5996](https://github.com/googleapis/google-cloud-python/pull/5996))
 - Prep translate docs for repo split. ([#5941](https://github.com/googleapis/google-cloud-python/pull/5941))
 
