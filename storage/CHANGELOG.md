@@ -25,7 +25,7 @@
 - Blacken libraries ([#6794](https://github.com/googleapis/google-cloud-python/pull/6794))
 - Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
 - Harden teardown in system tests. ([#6444](https://github.com/googleapis/google-cloud-python/pull/6444))
-- Harden 'create_bucket' call in systests vs. 429 TooManyRequests. ([#6401](https://github.com/googleapis/google-cloud-python/pull/6401))
+- Harden `create_bucket` call in systests vs. 429 TooManyRequests. ([#6401](https://github.com/googleapis/google-cloud-python/pull/6401))
 - Skip public bucket test in VPC Service Controls  ([#6230](https://github.com/googleapis/google-cloud-python/pull/6230))
 - Fix lint failure. ([#6219](https://github.com/googleapis/google-cloud-python/pull/6219))
 - Disable test running in VPC Service Controls  restricted environment ([#6215](https://github.com/googleapis/google-cloud-python/pull/6215))
