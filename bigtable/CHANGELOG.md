@@ -11,7 +11,7 @@
 
 ### Implementation Changes
 - Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
-- Remove 'deepcopy' from 'PartialRowData.cells' property. ([#6648](https://github.com/googleapis/google-cloud-python/pull/6648))
+- Remove `deepcopy` from `PartialRowData.cells` property. ([#6648](https://github.com/googleapis/google-cloud-python/pull/6648))
 - Pick up fixes to GAPIC generator. ([#6630](https://github.com/googleapis/google-cloud-python/pull/6630))
 
 ### Dependencies
