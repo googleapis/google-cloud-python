@@ -15,6 +15,22 @@
 
 For allowed roles / permissions, see:
 https://cloud.google.com/iam/docs/understanding-roles
+
+Example usage:
+
+.. code-block:: python
+
+   # ``get_iam_policy`` returns a :class:'~google.api_core.iam.Policy`.
+   policy = resource.get_iam_policy()
+
+   phred = policy.user("phred@example.com")
+   admin_group = policy.group("admins@groups.example.com")
+   account = policy.service_account("account-1234@accounts.example.com")
+   policy["roles/owner"] = [phred, admin_group, account]
+   policy["roles/editor"] = policy.authenticated_users()
+   policy["roles/viewer"] = policy.all_users()
+
+   resource.set_iam_policy(policy)
 """
 
 import collections
@@ -45,11 +61,9 @@ class Policy(collections_abc.MutableMapping):
     See
     https://cloud.google.com/iam/reference/rest/v1/Policy
 
-    :type etag: str
-    :param etag: ETag used to identify a unique of the policy
-
-    :type version: int
-    :param version: unique version of the policy
+    Args:
+        etag (Optional[str]): ETag used to identify a unique of the policy
+        version (Optional[int]): unique version of the policy
     """
 
     _OWNER_ROLES = (OWNER_ROLE,)
@@ -83,7 +97,9 @@ class Policy(collections_abc.MutableMapping):
 
     @property
     def owners(self):
-        """Legacy access to owner role."""
+        """Legacy access to owner role.
+
+        DEPRECATED:  use ``policy["roles/owners"]`` instead."""
         result = set()
         for role in self._OWNER_ROLES:
             for member in self._bindings.get(role, ()):
@@ -92,7 +108,9 @@ class Policy(collections_abc.MutableMapping):
 
     @owners.setter
     def owners(self, value):
-        """Update owners."""
+        """Update owners.
+
+        DEPRECATED:  use ``policy["roles/owners"] = value`` instead."""
         warnings.warn(
             _ASSIGNMENT_DEPRECATED_MSG.format("owners", OWNER_ROLE), DeprecationWarning
         )
@@ -100,7 +118,9 @@ class Policy(collections_abc.MutableMapping):
 
     @property
     def editors(self):
-        """Legacy access to editor role."""
+        """Legacy access to editor role.
+
+        DEPRECATED:  use ``policy["roles/editors"]`` instead."""
         result = set()
         for role in self._EDITOR_ROLES:
             for member in self._bindings.get(role, ()):
@@ -109,7 +129,9 @@ class Policy(collections_abc.MutableMapping):
 
     @editors.setter
     def editors(self, value):
-        """Update editors."""
+        """Update editors.
+
+        DEPRECATED:  use ``policy["roles/editors"] = value`` instead."""
         warnings.warn(
             _ASSIGNMENT_DEPRECATED_MSG.format("editors", EDITOR_ROLE),
             DeprecationWarning,
@@ -118,7 +140,10 @@ class Policy(collections_abc.MutableMapping):
 
     @property
     def viewers(self):
-        """Legacy access to viewer role."""
+        """Legacy access to viewer role.
+
+        DEPRECATED:  use ``policy["roles/viewers"]`` instead
+        """
         result = set()
         for role in self._VIEWER_ROLES:
             for member in self._bindings.get(role, ()):
@@ -127,7 +152,10 @@ class Policy(collections_abc.MutableMapping):
 
     @viewers.setter
     def viewers(self, value):
-        """Update viewers."""
+        """Update viewers.
+
+        DEPRECATED:  use ``policy["roles/viewers"] = value`` instead.
+        """
         warnings.warn(
             _ASSIGNMENT_DEPRECATED_MSG.format("viewers", VIEWER_ROLE),
             DeprecationWarning,
@@ -138,11 +166,11 @@ class Policy(collections_abc.MutableMapping):
     def user(email):
         """Factory method for a user member.
 
-        :type email: str
-        :param email: E-mail for this particular user.
+        Args:
+            email (str): E-mail for this particular user.
 
-        :rtype: str
-        :returns: A member string corresponding to the given user.
+        Returns:
+            str: A member string corresponding to the given user.
         """
         return "user:%s" % (email,)
 
@@ -150,11 +178,11 @@ class Policy(collections_abc.MutableMapping):
     def service_account(email):
         """Factory method for a service account member.
 
-        :type email: str
-        :param email: E-mail for this particular service account.
+        Args:
+            email (str): E-mail for this particular service account.
 
-        :rtype: str
-        :returns: A member string corresponding to the given service account.
+        Returns:
+            str: A member string corresponding to the given service account.
         """
         return "serviceAccount:%s" % (email,)
 
@@ -162,11 +190,11 @@ class Policy(collections_abc.MutableMapping):
     def group(email):
         """Factory method for a group member.
 
-        :type email: str
-        :param email: An id or e-mail for this particular group.
+        Args:
+            email (str): An id or e-mail for this particular group.
 
-        :rtype: str
-        :returns: A member string corresponding to the given group.
+        Returns:
+            str: A member string corresponding to the given group.
         """
         return "group:%s" % (email,)
 
@@ -174,11 +202,11 @@ class Policy(collections_abc.MutableMapping):
     def domain(domain):
         """Factory method for a domain member.
 
-        :type domain: str
-        :param domain: The domain for this member.
+        Args:
+            domain (str): The domain for this member.
 
-        :rtype: str
-        :returns: A member string corresponding to the given domain.
+        Returns:
+            str: A member string corresponding to the given domain.
         """
         return "domain:%s" % (domain,)
 
@@ -186,8 +214,8 @@ class Policy(collections_abc.MutableMapping):
     def all_users():
         """Factory method for a member representing all users.
 
-        :rtype: str
-        :returns: A member string representing all users.
+        Returns:
+            str: A member string representing all users.
         """
         return "allUsers"
 
@@ -195,20 +223,20 @@ class Policy(collections_abc.MutableMapping):
     def authenticated_users():
         """Factory method for a member representing all authenticated users.
 
-        :rtype: str
-        :returns: A member string representing all authenticated users.
+        Returns:
+            str: A member string representing all authenticated users.
         """
         return "allAuthenticatedUsers"
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Create a policy from the resource returned from the API.
+        """Factory: create a policy from a JSON resource.
 
-        :type resource: dict
-        :param resource: resource returned from the ``getIamPolicy`` API.
+        Args:
+            resource (dict): policy resource returned by ``getIamPolicy`` API.
 
-        :rtype: :class:`Policy`
-        :returns: the parsed policy
+        Returns:
+            :class:`Policy`: the parsed policy
         """
         version = resource.get("version")
         etag = resource.get("etag")
@@ -220,10 +248,10 @@ class Policy(collections_abc.MutableMapping):
         return policy
 
     def to_api_repr(self):
-        """Construct a Policy resource.
+        """Render a JSON policy resource.
 
-        :rtype: dict
-        :returns: a resource to be passed to the ``setIamPolicy`` API.
+        Returns:
+            dict: a resource to be passed to the ``setIamPolicy`` API.
         """
         resource = {}
 
