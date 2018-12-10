@@ -10,7 +10,7 @@
 
 
 ### Implementation Changes
-- Use moved `iam.policy` now at `google.api_core.iam.policy` ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 - Accomodate new back-end restriction on retention period. ([#6388](https://github.com/googleapis/google-cloud-python/pull/6388))
 - Storage: avoid deleting blob renamed to itself ([#6365](https://github.com/googleapis/google-cloud-python/pull/6365))
 
