@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.13.1
+
+12-10-2018 13:31 PST
+
+
+### Implementation Changes
+- Use moved `iam.policy` now at `google.api_core.iam.policy` ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Accomodate new back-end restriction on retention period. ([#6388](https://github.com/googleapis/google-cloud-python/pull/6388))
+- Storage: avoid deleting blob renamed to itself ([#6365](https://github.com/googleapis/google-cloud-python/pull/6365))
+
+### Dependencies
+- Update dependency to google-cloud-core ([#6835](https://github.com/googleapis/google-cloud-python/pull/6835))
+- Bump minimum `api_core` version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+### Documentation
+- Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+
+### Internal / Testing Changes
+- Blacken libraries ([#6794](https://github.com/googleapis/google-cloud-python/pull/6794))
+- Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+- Harden teardown in system tests. ([#6444](https://github.com/googleapis/google-cloud-python/pull/6444))
+- Harden 'create_bucket' call in systests vs. 429 TooManyRequests. ([#6401](https://github.com/googleapis/google-cloud-python/pull/6401))
+- Skip public bucket test in VPCSC ([#6230](https://github.com/googleapis/google-cloud-python/pull/6230))
+- Fix lint failure. ([#6219](https://github.com/googleapis/google-cloud-python/pull/6219))
+- Disable test running in VPCSC restricted environment ([#6215](https://github.com/googleapis/google-cloud-python/pull/6215))
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+
 ## 1.13.0
 
 ### New Features
