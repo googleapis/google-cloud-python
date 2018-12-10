@@ -27,6 +27,8 @@ from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.pool import AbstractSessionPool
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import FixedSizePool
+from google.cloud.spanner_v1.pool import PingingPool
+from google.cloud.spanner_v1.pool import TransactionPingingPool
 
 
 COMMIT_TIMESTAMP = "spanner.commit_timestamp()"
@@ -51,6 +53,8 @@ __all__ = (
     "AbstractSessionPool",
     "BurstyPool",
     "FixedSizePool",
+    "PingingPool",
+    "TransactionPingingPool",
     # google.cloud.spanner_v1.gapic
     "enums",
     # local
