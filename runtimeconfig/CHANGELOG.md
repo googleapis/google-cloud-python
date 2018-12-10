@@ -18,7 +18,7 @@
 - Bump minimum `api_core` version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
 
 ### Documentation
-- Fix [#6321](https://github.com/googleapis/google-cloud-python/pull/6321) Update README service links in quickstart guides. ([#6322](https://github.com/googleapis/google-cloud-python/pull/6322))
+- Update README service links in quickstart guides. ([#6322](https://github.com/googleapis/google-cloud-python/pull/6322))
 - Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
 - Prep docs for repo split. ([#6023](https://github.com/googleapis/google-cloud-python/pull/6023))
 
