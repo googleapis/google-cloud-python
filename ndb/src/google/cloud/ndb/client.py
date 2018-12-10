@@ -73,6 +73,9 @@ class Client(google_client.ClientWithProject):
     SCOPE = ("https://www.googleapis.com/auth/datastore",)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
+    secure = True
+    """Whether to use a secure connection for API calls."""
+
     def __init__(self, project=None, namespace=None, credentials=None):
         super(Client, self).__init__(project=project, credentials=credentials)
         self.namespace = namespace
