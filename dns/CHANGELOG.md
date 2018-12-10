@@ -17,7 +17,7 @@
 - Fix 'Datastore' in text as well as examples / links
 
 ### Internal / Testing Changes
-- add blacken to noxfile ([#6795](https://github.com/googleapis/google-cloud-python/pull/6795))
+- Add blacken to noxfile ([#6795](https://github.com/googleapis/google-cloud-python/pull/6795))
 - Blackening Continued... ([#6667](https://github.com/googleapis/google-cloud-python/pull/6667))
 - Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
 - Docs: normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
