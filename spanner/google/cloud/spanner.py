@@ -27,6 +27,7 @@ from google.cloud.spanner_v1 import KeyRange
 from google.cloud.spanner_v1 import KeySet
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1 import PingingPool
+from google.cloud.spanner_v1 import TransactionPingingPool
 from google.cloud.spanner_v1 import types
 
 
@@ -42,5 +43,6 @@ __all__ = (
     "KeySet",
     "param_types",
     "PingingPool",
+    "TransactionPingingPool",
     "types",
 )
