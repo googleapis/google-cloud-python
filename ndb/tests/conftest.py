@@ -48,7 +48,7 @@ def reset_state(environ):
 @pytest.fixture
 def environ():
     """Copy of ``os.environ``"""
-    original = os.environ.copy()
+    original = os.environ
     environ = original.copy()
     os.environ = environ
     yield environ
