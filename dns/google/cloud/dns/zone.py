@@ -280,9 +280,7 @@ class ManagedZone(object):
         client = self._require_client(client)
 
         try:
-            client._connection.api_request(
-                method="GET", path=self.path, query_params={"fields": "id"}
-            )
+            client._connection.api_request(method="GET", path=self.path)
         except NotFound:
             return False
         else:

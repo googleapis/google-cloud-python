@@ -330,7 +330,6 @@ class TestManagedZone(unittest.TestCase):
         req = conn._requested[0]
         self.assertEqual(req["method"], "GET")
         self.assertEqual(req["path"], "/%s" % PATH)
-        self.assertEqual(req["query_params"], {"fields": "id"})
 
     def test_exists_hit_w_alternate_client(self):
         PATH = "projects/%s/managedZones/%s" % (self.PROJECT, self.ZONE_NAME)
@@ -347,7 +346,6 @@ class TestManagedZone(unittest.TestCase):
         req = conn2._requested[0]
         self.assertEqual(req["method"], "GET")
         self.assertEqual(req["path"], "/%s" % PATH)
-        self.assertEqual(req["query_params"], {"fields": "id"})
 
     def test_reload_w_bound_client(self):
         PATH = "projects/%s/managedZones/%s" % (self.PROJECT, self.ZONE_NAME)
