@@ -16,7 +16,7 @@
 - Pick up enum fixes in the GAPIC generator. ([#6610](https://github.com/googleapis/google-cloud-python/pull/6610))
 
 ### Dependencies
-- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+- Bump minimum `api_core` version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
 - Update version of google-cloud-core ([#6858](https://github.com/googleapis/google-cloud-python/pull/6858))
 
 ### Internal / Testing Changes
