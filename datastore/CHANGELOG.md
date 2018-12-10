@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## 1.7.2
+
+12-10-2018 12:37 PST
+
+
+### Implementation Changes
+- Fix client_info bug, update docstrings. ([#6409](https://github.com/googleapis/google-cloud-python/pull/6409))
+- Pick up fixes in GAPIC generator. ([#6494](https://github.com/googleapis/google-cloud-python/pull/6494))
+- Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Pick up enum fixes in the GAPIC generator. ([#6610](https://github.com/googleapis/google-cloud-python/pull/6610))
+
+### Dependencies
+- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+- Update version of google-cloud-core ([#6858](https://github.com/googleapis/google-cloud-python/pull/6858))
+
+### Internal / Testing Changes
+- Update noxfile.
+- Add synth metadata. ([#6564](https://github.com/googleapis/google-cloud-python/pull/6564))
+- blacken all gen'd libs ([#6792](https://github.com/googleapis/google-cloud-python/pull/6792))
+- omit local deps ([#6701](https://github.com/googleapis/google-cloud-python/pull/6701))
+- Run black at end of synth.py ([#6698](https://github.com/googleapis/google-cloud-python/pull/6698))
+- Run Black on Generated libraries ([#6666](https://github.com/googleapis/google-cloud-python/pull/6666))
+- Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+
 ## 1.7.1
 
 10-29-2018 10:38 PDT
