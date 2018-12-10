@@ -10,9 +10,9 @@
 
 
 ### Implementation Changes
-- Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Use moved `iam.policy` now at `google.api_core.iam.policy` ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 - Pick up fixes to GAPIC generator. ([#6631](https://github.com/googleapis/google-cloud-python/pull/6631))
-- Fix client_info bug, update docstrings via synth. ([#6435](https://github.com/googleapis/google-cloud-python/pull/6435))
+- Fix `client_info` bug, update docstrings via synth. ([#6435](https://github.com/googleapis/google-cloud-python/pull/6435))
 - Revert "Allow turning on JSON Detection in StackDriver" ([#6352](https://github.com/googleapis/google-cloud-python/pull/6352))
 - Allow turning on JSON Detection in StackDriver ([#6293](https://github.com/googleapis/google-cloud-python/pull/6293))
 
@@ -21,7 +21,7 @@
 
 ### Dependencies
 - Update dependency to google-cloud-core ([#6835](https://github.com/googleapis/google-cloud-python/pull/6835))
-- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+- Bump minimum `api_core` version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
 
 
 ### Internal / Testing Changes
