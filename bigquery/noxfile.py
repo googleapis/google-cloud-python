@@ -108,9 +108,9 @@ def system(session):
 
 @nox.session(python=['2.7', '3.6'])
 def snippets(session):
-    """Run the system test suite."""
+    """Run the snippets test suite."""
 
-    # Sanity check: Only run system tests if the environment variable is set.
+    # Sanity check: Only run snippets tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
 
@@ -122,7 +122,7 @@ def snippets(session):
     session.install('-e', os.path.join('..', 'test_utils'))
     session.install('-e', '.[pandas, pyarrow]')
 
-    # Run py.test against the system tests.
+    # Run py.test against the snippets tests.
     session.run(
         'py.test', os.path.join('docs', 'snippets.py'), *session.posargs)
 
