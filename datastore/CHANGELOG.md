@@ -12,7 +12,7 @@
 ### Implementation Changes
 - Fix client_info bug, update docstrings. ([#6409](https://github.com/googleapis/google-cloud-python/pull/6409))
 - Pick up fixes in GAPIC generator. ([#6494](https://github.com/googleapis/google-cloud-python/pull/6494))
-- Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 - Pick up enum fixes in the GAPIC generator. ([#6610](https://github.com/googleapis/google-cloud-python/pull/6610))
 
 ### Dependencies
