@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
-## 1.7.1
+## 1.8.0
 
 12-10-2018 12:39 PST
 
