@@ -40,7 +40,7 @@ def lint(session):
     session.run("flake8", "google", "tests")
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.6")
 def blacken(session):
     """Run black.
 
@@ -78,7 +78,7 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=82",
+        "--cov-fail-under=97",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
@@ -131,6 +131,6 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=83")
+    session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
