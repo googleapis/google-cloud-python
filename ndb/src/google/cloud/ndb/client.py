@@ -38,12 +38,12 @@ def _determine_default_project(project=None):
     * GOOGLE_CLOUD_PROJECT environment variable
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
+_
+    Arguments:
+        project (Optional[str]): The project to use as default.
 
-    :type project: str
-    :param project: Optional. The project to use as default.
-
-    :rtype: str or ``NoneType``
-    :returns: Default project if it can be determined.
+    Returns:
+        Union([str, None]): Default project if it can be determined.
     """
     if project is None:
         project = _get_gcd_project()
