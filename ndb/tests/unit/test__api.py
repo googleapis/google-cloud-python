@@ -24,10 +24,10 @@ class TestStub:
     def test_secure_channel(datastore_pb2_grpc, _helpers):
         channel = _helpers.make_secure_channel.return_value
         client = mock.Mock(
-            credentials="creds",
+            _credentials="creds",
             secure=True,
             host="thehost",
-            spec=("credentials", "secure", "host"),
+            spec=("_credentials", "secure", "host"),
         )
         stub = _api.stub(client)
         assert stub is datastore_pb2_grpc.DatastoreStub.return_value

@@ -33,7 +33,7 @@ def stub(client):
     user_agent = "gcloud-python/ndb"
     if client.secure:
         channel = _helpers.make_secure_channel(
-            client.credentials, user_agent, client.host
+            client._credentials, user_agent, client.host
         )
     else:
         channel = grpc.insecure_channel(client.host)
