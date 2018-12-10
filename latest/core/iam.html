@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Identity and Access Management &#8212; google-cloud 92b7f71 documentation</title>
+    <title>Identity and Access Management &#8212; google-cloud f3bb45e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,6 +39,26 @@
 <p>Non-API-specific IAM policy definitions</p>
 <p>For allowed roles / permissions, see:
 <a class="reference external" href="https://cloud.google.com/iam/docs/understanding-roles">https://cloud.google.com/iam/docs/understanding-roles</a></p>
+<p>Example usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ``get_iam_policy`` returns a :class:&#39;~google.api_core.iam.Policy`.</span>
+<span class="n">policy</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>
+
+<span class="n">phred</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s2">&quot;phred@example.com&quot;</span><span class="p">)</span>
+<span class="n">admin_group</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;admins@groups.example.com&quot;</span><span class="p">)</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">service_account</span><span class="p">(</span><span class="s2">&quot;account-1234@accounts.example.com&quot;</span><span class="p">)</span>
+<span class="n">policy</span><span class="p">[</span><span class="s2">&quot;roles/owner&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">phred</span><span class="p">,</span> <span class="n">admin_group</span><span class="p">,</span> <span class="n">account</span><span class="p">]</span>
+<span class="n">policy</span><span class="p">[</span><span class="s2">&quot;roles/editor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">authenticated_users</span><span class="p">()</span>
+<span class="n">policy</span><span class="p">[</span><span class="s2">&quot;roles/viewer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
+
+<span class="n">resource</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="data">
+<dt id="google.api_core.iam.OWNER_ROLE">
+<code class="descclassname">google.api_core.iam.</code><code class="descname">OWNER_ROLE</code><em class="property"> = 'roles/owner'</em><a class="headerlink" href="#google.api_core.iam.OWNER_ROLE" title="Permalink to this definition">#</a></dt>
+<dd><p>Generic role implying all rights to an object.</p>
+</dd></dl>
+
 <dl class="data">
 <dt id="google.api_core.iam.EDITOR_ROLE">
 <code class="descclassname">google.api_core.iam.</code><code class="descname">EDITOR_ROLE</code><em class="property"> = 'roles/editor'</em><a class="headerlink" href="#google.api_core.iam.EDITOR_ROLE" title="Permalink to this definition">#</a></dt>
@@ -46,9 +66,9 @@
 </dd></dl>
 
 <dl class="data">
-<dt id="google.api_core.iam.OWNER_ROLE">
-<code class="descclassname">google.api_core.iam.</code><code class="descname">OWNER_ROLE</code><em class="property"> = 'roles/owner'</em><a class="headerlink" href="#google.api_core.iam.OWNER_ROLE" title="Permalink to this definition">#</a></dt>
-<dd><p>Generic role implying all rights to an object.</p>
+<dt id="google.api_core.iam.VIEWER_ROLE">
+<code class="descclassname">google.api_core.iam.</code><code class="descname">VIEWER_ROLE</code><em class="property"> = 'roles/viewer'</em><a class="headerlink" href="#google.api_core.iam.VIEWER_ROLE" title="Permalink to this definition">#</a></dt>
+<dd><p>Generic role implying rights to access an object.</p>
 </dd></dl>
 
 <dl class="class">
@@ -63,82 +83,65 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>etag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – ETag used to identify a unique of the policy</li>
-<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – unique version of the policy</li>
+<li><strong>etag</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – ETag used to identify a unique of the policy</li>
+<li><strong>version</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – unique version of the policy</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<dl class="staticmethod">
-<dt id="google.api_core.iam.Policy.all_users">
-<em class="property">static </em><code class="descname">all_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.all_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.all_users" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a member representing all users.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string representing all users.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="google.api_core.iam.Policy.authenticated_users">
-<em class="property">static </em><code class="descname">authenticated_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.authenticated_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.authenticated_users" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a member representing all authenticated users.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string representing all authenticated users.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="google.api_core.iam.Policy.domain">
-<em class="property">static </em><code class="descname">domain</code><span class="sig-paren">(</span><em>domain</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.domain" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a domain member.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The domain for this member.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given domain.</td>
-</tr>
-</tbody>
-</table>
+<dl class="attribute">
+<dt id="google.api_core.iam.Policy.owners">
+<code class="descname">owners</code><a class="headerlink" href="#google.api_core.iam.Policy.owners" title="Permalink to this definition">#</a></dt>
+<dd><p>Legacy access to owner role.</p>
+<p>DEPRECATED:  use <code class="docutils literal notranslate"><span class="pre">policy[&quot;roles/owners&quot;]</span></code> instead.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.api_core.iam.Policy.editors">
 <code class="descname">editors</code><a class="headerlink" href="#google.api_core.iam.Policy.editors" title="Permalink to this definition">#</a></dt>
 <dd><p>Legacy access to editor role.</p>
+<p>DEPRECATED:  use <code class="docutils literal notranslate"><span class="pre">policy[&quot;roles/editors&quot;]</span></code> instead.</p>
 </dd></dl>
 
-<dl class="classmethod">
-<dt id="google.api_core.iam.Policy.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.from_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a policy from the resource returned from the API.</p>
+<dl class="attribute">
+<dt id="google.api_core.iam.Policy.viewers">
+<code class="descname">viewers</code><a class="headerlink" href="#google.api_core.iam.Policy.viewers" title="Permalink to this definition">#</a></dt>
+<dd><p>Legacy access to viewer role.</p>
+<p>DEPRECATED:  use <code class="docutils literal notranslate"><span class="pre">policy[&quot;roles/viewers&quot;]</span></code> instead</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.api_core.iam.Policy.user">
+<em class="property">static </em><code class="descname">user</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.user" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a user member.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – resource returned from the <code class="docutils literal notranslate"><span class="pre">getIamPolicy</span></code> API.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – E-mail for this particular user.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.api_core.iam.Policy" title="google.api_core.iam.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given user.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the parsed policy</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.api_core.iam.Policy.service_account">
+<em class="property">static </em><code class="descname">service_account</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.service_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.service_account" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a service account member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – E-mail for this particular service account.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given service account.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
 </tr>
 </tbody>
 </table>
@@ -154,33 +157,77 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – An id or e-mail for this particular group.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given group.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given group.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="google.api_core.iam.Policy.owners">
-<code class="descname">owners</code><a class="headerlink" href="#google.api_core.iam.Policy.owners" title="Permalink to this definition">#</a></dt>
-<dd><p>Legacy access to owner role.</p>
-</dd></dl>
-
 <dl class="staticmethod">
-<dt id="google.api_core.iam.Policy.service_account">
-<em class="property">static </em><code class="descname">service_account</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.service_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.service_account" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a service account member.</p>
+<dt id="google.api_core.iam.Policy.domain">
+<em class="property">static </em><code class="descname">domain</code><span class="sig-paren">(</span><em>domain</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a domain member.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – E-mail for this particular service account.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The domain for this member.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given domain.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.api_core.iam.Policy.all_users">
+<em class="property">static </em><code class="descname">all_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.all_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.all_users" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a member representing all users.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string representing all users.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given service account.</td>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.api_core.iam.Policy.authenticated_users">
+<em class="property">static </em><code class="descname">authenticated_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.authenticated_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.authenticated_users" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a member representing all authenticated users.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string representing all authenticated users.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.api_core.iam.Policy.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: create a policy from a JSON resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – policy resource returned by <code class="docutils literal notranslate"><span class="pre">getIamPolicy</span></code> API.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the parsed policy</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.api_core.iam.Policy" title="google.api_core.iam.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -189,49 +236,19 @@
 <dl class="method">
 <dt id="google.api_core.iam.Policy.to_api_repr">
 <code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.to_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct a Policy resource.</p>
+<dd><p>Render a JSON policy resource.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a resource to be passed to the <code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code> API.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a resource to be passed to the <code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code> API.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="staticmethod">
-<dt id="google.api_core.iam.Policy.user">
-<em class="property">static </em><code class="descname">user</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/iam.html#Policy.user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.iam.Policy.user" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a user member.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – E-mail for this particular user.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given user.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.api_core.iam.Policy.viewers">
-<code class="descname">viewers</code><a class="headerlink" href="#google.api_core.iam.Policy.viewers" title="Permalink to this definition">#</a></dt>
-<dd><p>Legacy access to viewer role.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="data">
-<dt id="google.api_core.iam.VIEWER_ROLE">
-<code class="descclassname">google.api_core.iam.</code><code class="descname">VIEWER_ROLE</code><em class="property"> = 'roles/viewer'</em><a class="headerlink" href="#google.api_core.iam.VIEWER_ROLE" title="Permalink to this definition">#</a></dt>
-<dd><p>Generic role implying rights to access an object.</p>
 </dd></dl>
 
 </div>
