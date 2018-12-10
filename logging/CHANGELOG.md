@@ -10,7 +10,7 @@
 
 
 ### Implementation Changes
-- Use moved `iam.policy` now at `google.api_core.iam.policy` ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 - Pick up fixes to GAPIC generator. ([#6631](https://github.com/googleapis/google-cloud-python/pull/6631))
 - Fix `client_info` bug, update docstrings via synth. ([#6435](https://github.com/googleapis/google-cloud-python/pull/6435))
 - Revert "Allow turning on JSON Detection in StackDriver" ([#6352](https://github.com/googleapis/google-cloud-python/pull/6352))
