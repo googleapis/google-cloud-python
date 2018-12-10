@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## 0.28.2
+
+12-10-2018 13:00 PST
+
+
+### Implementation Changes
+- Use moved `iam.policy` now at `google.api_core.iam.policy` ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Fix `filter_params` argument in `list_projects` ([#5383](https://github.com/googleapis/google-cloud-python/pull/5383))
+
+### Dependencies
+- Update dependency to google-cloud-core ([#6835](https://github.com/googleapis/google-cloud-python/pull/6835))
+- Bump minimum `api_core` version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+### Documentation
+- Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Prep docs for repo split. ([#6022](https://github.com/googleapis/google-cloud-python/pull/6022))
+- Declutter sidebar by supplying explict short titles. ([#5939](https://github.com/googleapis/google-cloud-python/pull/5939))
+
+### Internal / Testing Changes
+- Add blacken to noxfile ([#6795](https://github.com/googleapis/google-cloud-python/pull/6795))
+- Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+- Nox: use inplace installs ([#5865](https://github.com/googleapis/google-cloud-python/pull/5865))
+- Add Test runs for Python 3.7 and remove 3.4 ([#5295](https://github.com/googleapis/google-cloud-python/pull/5295))
+- Fix bad trove classifier
+
 ## 0.28.1
 
 ### Dependencies
