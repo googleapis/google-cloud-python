@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.9.0
+
+12-10-2018 12:55 PST
+
+
+### Implementation Changes
+- Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Pick up fixes to GAPIC generator. ([#6631](https://github.com/googleapis/google-cloud-python/pull/6631))
+- Fix client_info bug, update docstrings via synth. ([#6435](https://github.com/googleapis/google-cloud-python/pull/6435))
+- Revert "Allow turning on JSON Detection in StackDriver" ([#6352](https://github.com/googleapis/google-cloud-python/pull/6352))
+- Allow turning on JSON Detection in StackDriver ([#6293](https://github.com/googleapis/google-cloud-python/pull/6293))
+
+### New Features
+- Add support for additional 'LogEntry' fields ([#6229](https://github.com/googleapis/google-cloud-python/pull/6229))
+
+### Dependencies
+- Update dependency to google-cloud-core ([#6835](https://github.com/googleapis/google-cloud-python/pull/6835))
+- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+
+### Internal / Testing Changes
+- Change the url to the canonical one ([#6843](https://github.com/googleapis/google-cloud-python/pull/6843))
+- Omit local deps ([#6701](https://github.com/googleapis/google-cloud-python/pull/6701))
+- Run black at end of synth.py ([#6698](https://github.com/googleapis/google-cloud-python/pull/6698))
+- Blackening Continued... ([#6667](https://github.com/googleapis/google-cloud-python/pull/6667))
+- Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+- Logging: add 'synth.py'. ([#6081](https://github.com/googleapis/google-cloud-python/pull/6081))
+
 ## 1.8.0
 
 10-17-2018 14:23 PDT
