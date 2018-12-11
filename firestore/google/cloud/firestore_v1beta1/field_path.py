@@ -37,6 +37,7 @@ _BACKTICK = "`"
 _ESCAPED_BACKTICK = _BACKSLASH + _BACKTICK
 
 _SIMPLE_FIELD_NAME = re.compile("^[_a-zA-Z][_a-zA-Z0-9]*$")
+_LEADING_ALPHA_INVALID = re.compile("^[_a-zA-Z][_a-zA-Z0-9]*[^_a-zA-Z0-9]")
 PATH_ELEMENT_TOKENS = [
     ("SIMPLE", r"[_a-zA-Z][_a-zA-Z0-9]*"),  # unquoted elements
     ("QUOTED", r"`(?:\\`|[^`])*?`"),  # quoted elements, unquoted
@@ -63,6 +64,8 @@ def _tokenize_field_path(path):
         yield value
         pos = match.end()
         match = get_token(path, pos)
+    if pos != len(path):
+        raise ValueError("Path {} not consumed, residue: {}".format(path, path[pos:]))
 
 
 def split_field_path(path):
@@ -273,8 +276,25 @@ class FieldPath(object):
                 raise ValueError(error)
         self.parts = tuple(parts)
 
-    @staticmethod
-    def from_string(string):
+    @classmethod
+    def from_api_repr(cls, api_repr):
+        """Factory: create a FieldPath from the string formatted per the API.
+
+        Args:
+            api_repr (str): a string path, with non-identifier elements quoted
+            It cannot exceed 1500 characters, and cannot be empty.
+        Returns:
+            (:class:`FieldPath`) An instance parsed from ``api_repr``.
+        Raises:
+            ValueError if the parsing fails
+        """
+        api_repr = api_repr.strip()
+        if not api_repr:
+            raise ValueError("Field path API representation cannot be empty.")
+        return cls(*parse_field_path(api_repr))
+
+    @classmethod
+    def from_string(cls, path_string):
         """Factory: create a FieldPath from a unicode string representation.
 
         This method splits on the character `.` and disallows the
@@ -282,22 +302,26 @@ class FieldPath(object):
         those characters, call the constructor.
 
         Args:
-            :type string: str
-            :param string: A unicode string which cannot contain
-                           `~*/[]` characters, cannot exceed 1500 bytes,
-                           and cannot be empty.
+            path_string (str): A unicode string which cannot contain
+            `~*/[]` characters, cannot exceed 1500 bytes, and cannot be empty.
 
         Returns:
-            A :class:`FieldPath` instance with the string split on "."
-            as arguments to `FieldPath`.
+            (:class:`FieldPath`) An instance parsed from ``path_string``.
         """
-        # XXX this should just handle things with the invalid chars
-        invalid_characters = "~*/[]"
-        for invalid_character in invalid_characters:
-            if invalid_character in string:
-                raise ValueError("Invalid characters in string.")
-        string = string.split(".")
-        return FieldPath(*string)
+        try:
+            return cls.from_api_repr(path_string)
+        except ValueError:
+            elements = path_string.split(".")
+            for element in elements:
+                if not element:
+                    raise ValueError("Empty element")
+                if _LEADING_ALPHA_INVALID.match(element):
+                    raise ValueError(
+                        "Non-alphanum char in element with leading alpha: {}".format(
+                            element
+                        )
+                    )
+            return FieldPath(*elements)
 
     def __repr__(self):
         paths = ""

@@ -52,6 +52,14 @@ class Test__tokenize_field_path(unittest.TestCase):
     def test_w_dotted(self):
         self._expect("a.b.`c*de`", ["a", ".", "b", ".", "`c*de`"])
 
+    def test_w_dotted_escaped(self):
+        self._expect("_0.`1`.`+2`", ["_0", ".", "`1`", ".", "`+2`"])
+
+    def test_w_unconsumed_characters(self):
+        path = "a~b"
+        with self.assertRaises(ValueError):
+            list(self._call_fut(path))
+
 
 class Test_split_field_path(unittest.TestCase):
     @staticmethod
@@ -259,32 +267,87 @@ class TestFieldPath(unittest.TestCase):
         field_path = self._make_one("一", "二", "三")
         self.assertEqual(field_path.parts, ("一", "二", "三"))
 
-    def test_from_string_w_empty_string(self):
-        parts = ""
+    def test_from_api_repr_w_empty_string(self):
+        api_repr = ""
         with self.assertRaises(ValueError):
-            self._get_target_class().from_string(parts)
+            self._get_target_class().from_api_repr(api_repr)
 
-    def test_from_string_w_empty_field_name(self):
-        parts = "a..b"
+    def test_from_api_repr_w_empty_field_name(self):
+        api_repr = "a..b"
         with self.assertRaises(ValueError):
-            self._get_target_class().from_string(parts)
+            self._get_target_class().from_api_repr(api_repr)
 
-    def test_from_string_w_invalid_chars(self):
+    def test_from_api_repr_w_invalid_chars(self):
         invalid_parts = ("~", "*", "/", "[", "]", ".")
         for invalid_part in invalid_parts:
             with self.assertRaises(ValueError):
-                self._get_target_class().from_string(invalid_part)
+                self._get_target_class().from_api_repr(invalid_part)
+
+    def test_from_api_repr_w_ascii_single(self):
+        api_repr = "a"
+        field_path = self._get_target_class().from_api_repr(api_repr)
+        self.assertEqual(field_path.parts, ("a",))
+
+    def test_from_api_repr_w_ascii_dotted(self):
+        api_repr = "a.b.c"
+        field_path = self._get_target_class().from_api_repr(api_repr)
+        self.assertEqual(field_path.parts, ("a", "b", "c"))
+
+    def test_from_api_repr_w_non_ascii_dotted_non_quoted(self):
+        api_repr = "a.一"
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_api_repr(api_repr)
+
+    def test_from_api_repr_w_non_ascii_dotted_quoted(self):
+        api_repr = "a.`一`"
+        field_path = self._get_target_class().from_api_repr(api_repr)
+        self.assertEqual(field_path.parts, ("a", "一"))
+
+    def test_from_string_w_empty_string(self):
+        path_string = ""
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_string(path_string)
+
+    def test_from_string_w_empty_field_name(self):
+        path_string = "a..b"
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_string(path_string)
+
+    def test_from_string_w_leading_dot(self):
+        path_string = ".b.c"
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_string(path_string)
+
+    def test_from_string_w_trailing_dot(self):
+        path_string = "a.b."
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_string(path_string)
+
+    def test_from_string_w_leading_invalid_chars(self):
+        invalid_paths = ("~", "*", "/", "[", "]")
+        for invalid_path in invalid_paths:
+            field_path = self._get_target_class().from_string(invalid_path)
+            self.assertEqual(field_path.parts, (invalid_path,))
+
+    def test_from_string_w_embedded_invalid_chars(self):
+        invalid_paths = ("a~b", "x*y", "f/g", "h[j", "k]l")
+        for invalid_path in invalid_paths:
+            with self.assertRaises(ValueError):
+                self._get_target_class().from_string(invalid_path)
 
     def test_from_string_w_ascii_single(self):
-        field_path = self._get_target_class().from_string("a")
+        path_string = "a"
+        field_path = self._get_target_class().from_string(path_string)
         self.assertEqual(field_path.parts, ("a",))
 
     def test_from_string_w_ascii_dotted(self):
-        field_path = self._get_target_class().from_string("a.b.c")
+        path_string = "a.b.c"
+        field_path = self._get_target_class().from_string(path_string)
         self.assertEqual(field_path.parts, ("a", "b", "c"))
 
     def test_from_string_w_non_ascii_dotted(self):
-        field_path = self._get_target_class().from_string("a.一")
+        path_string = "a.一"
+        field_path = self._get_target_class().from_string(path_string)
         self.assertEqual(field_path.parts, ("a", "一"))
 
     def test___hash___w_single_part(self):
